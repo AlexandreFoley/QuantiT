@@ -1,0 +1,82 @@
+\documentclass[15pt]{article}
+\usepackage{fancyhdr}
+\usepackage{amsmath}
+\usepackage{fancyvrb}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.11}
+\pagestyle{fancy}
+\fancyhead{}
+\fancyfoot{}
+\fancyhead[L]{MA401}
+\fancyhead[R]{Date: JAN/12/2018}
+\fancyfoot[C]{\thepage}
+\usepackage{graphicx}
+
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black
+}
+
+\begin{document}
+\title{Notes on libtorch}
+\author{Alexandre Foley}
+
+\maketitle
+
+\tableofcontents
+\section{Linear Algebra operations}
+For tensors of real numbers, the number of decomposition and operations available is extensive. SVD,Eigenvalues,QR,LU and more are present. Of note: all matrix operation act on the last 2 indices of a tensor, the other index are treated as labeling independent matrices. For exemple:
+\begin{verbatim}
+    auto A = torch::rand({4,3,4,4});
+    autop [E,U] = A.eig();
+\end{verbatim}
+will treat this as solving the eigenvalue problem of $4\times3=12$ size $4$ matrices. Therefor E is of dimension $\{4,3,4\}$ and U of dimension $\{ 4,3,4,4\}$.
+
+The equivalent of dmrjulia's contract is torch::tensordot. It differ in two major way: order of arguments, and no overload to permute the output tensor.
+\begin{verbatim}
+    auto A = torch::rand({5,3,4});
+    auto B = torch::rand({4,3,5});
+    auto i_A = {1,2};
+    auto i_B = {1,0};
+    auto C = torch::tensordot(A,B,i_A,i_B); // 5x5 matrix
+\end{verbatim}
+The arguments are the 2 input tensor, and then the lists of index to contract in each tensor.
+
+An arbitrary permutation can be done with torch::Tensor::permute, and tensors can be reshaped with torch::Tensor::reshape.
+
+\section{Tensor class structure}
+
+The tensors of pytorch are build in a somewhat complicated way to offer a simple and uniform interface no matter what is the actual backend on which the computations are done.
+This is accomplished by using the "pointer to implementation" idiom, "pimpl" for short. The torch::Tensor class is only a thin wrapper to a polymorphic pointer on the actual tensor, that tensor type depends on the actual backend but are all derived from the same base class. Those different tensor types therefor must offer the same interface.
+Done this way, the end user gets all the advantages of the multiple backends with none of the additionnal difficulty associated with the differents type, not even polymorphic pointers.
+
+While hiding a quantum tensor behind this interface is not impossible, any specific properties of quantum tensors would be innacessible. This means that constructing a quantum tensor would have to be done through a factory function, and from then on the user cannot do any direct manipulation to a property specific to quantum tensor.
+
+\subsection{Sparse tensors}
+Torch implement a sparse tensor class. The format is similar to the implementation of the quantum tensor of DMRjulia: The non-zero coefficient and their indices are stored densely.
+
+Sparse tensor, much like any potential quantum tensor implementation, require some differences from dense tensor in their interface. Emulating pytorch's implementers approach to these class for our quantum tensor is almost certainly the best way forward.
+
+Also of note: augmenting this sparse tensor class for quantum tensor would closely emulate DMRjulia implementation.
+
+\section{Complex numbers}
+At the moment, complex numbers are badly supported by libtorch and not supported in the current release of pytorch.
+
+Expression that contains both real numbers and complex numbers will cause type compatibility issues, explicit conversion to complex is currently necessary.
+
+The number of supported linear algebra operations is limited. Currently SVD is supported on both CPU and GPU.
+Eigen values is unavaible at the time of writing this.
+
+The current status of Complex number support is tracked in \href{https://github.com/pytorch/pytorch/issues/33152}{issue 33152}
+
+
+
+
+\end{document}
+

@@ -1,0 +1,37 @@
+ /*
+ * File: property.h
+ * Project: QuanTT
+ * File Created: Thursday, 23rd July 2020 11:30:55 am
+ * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)
+ * -----
+ * Last Modified: Thursday, 23rd July 2020 11:30:55 am
+ * Modified By: Alexandre Foley (Alexandre.foley@usherbrooke.ca>)
+ * -----
+ * Copyright (c) 2020 Alexandre Foley
+ * All rights reserved
+ */
+
+/**
+ * 
+ * wrapper for properties, allow direct access to users with checks without an explicit setter and getter.
+ * id is for the situation where it is desirable to have a different type (setter and getter) for a property with the same owning class.
+ * if a completly unique id is necessary an empty lambda []{} can be used
+*/
+
+template <class content,class owner,class id = owner>
+class property final
+{
+	friend owner;
+
+	content value;
+	
+	property() = default;
+	property(content val) = default;
+	public:
+
+	operator const content&() noexcept {return value;} // read access through implicit conversion
+
+	property& operator=( content new_value ); // define it to give write access to the value, with any and all checks necessary.
+
+	~property();
+};

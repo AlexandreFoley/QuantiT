@@ -1,0 +1,4 @@
+\contentsline {section}{\numberline {1}Linear Algebra operations}{1}{section.1}% 
+\contentsline {section}{\numberline {2}Tensor class structure}{2}{section.2}% 
+\contentsline {subsection}{\numberline {2.1}Sparse tensors}{2}{subsection.2.1}% 
+\contentsline {section}{\numberline {3}Complex numbers}{2}{section.3}% 
