@@ -15,7 +15,7 @@ Otherwise follow the instruction below.
 on the command line, begin with the following:
 
 	cd <path to QuanTT>
-	git submodule update --recursive
+	git submodule update --init --recursive
 
 This will download the submodules necessary for QuanTT to compile and work: pytorch and all its' dependencies
 We must then compile pytorch.
