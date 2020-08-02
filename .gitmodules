@@ -1,3 +1,4 @@
 [submodule "extern/pytorch"]
-	path = extern/pytorch
-	url = https://github.com/pytorch/pytorch.git
+    ignore = dirty
+    path = extern/pytorch
+    url = https://github.com/pytorch/pytorch.git

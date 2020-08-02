@@ -14,4 +14,4 @@
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 // with the preceding define, doctest autogenerate a main() function that run the test found in the sources included.
 
-#include "include/MPT.h"
+#include "MPT.h"

@@ -21,6 +21,11 @@
 #include <type_traits>
 #include <algorithm>
 
+//doctest always last. its' macro must work and conflict with pytorch's.
+#include "doctest_redef.h" // makes the redefinition appear without compiler warnings.
+// we don't use pytorch's macro so its fine to redefine them.
+#include "doctest.h"
+
 namespace quantt{
 // matrix product tensors. any rank.
 class MPT
@@ -47,17 +52,17 @@ class MPT
 	MPT(std::initializer_list<Tens> initl):tensors(initl) {}
 	virtual ~MPT() {}
 	
-	void swap(MPT& other) noexcept(noexcept( this->tensors.swap(other.tensors) ) ) 
+	void swap(MPT& other) noexcept
 	{
 		this->tensors.swap(other.tensors);
 	}
-	friend void swap(MPT& lhs, MPT& rhs) noexcept(noexcept(lhs.swap(rhs)))
+	friend void swap(MPT& lhs, MPT& rhs) noexcept
 	{
 		lhs.swap(rhs); 
 		// this is gonna work to swap a MPT with a derived class, might lead to strange behavior...
 		// this, perhaps, is justification enough to make sure implicit conversion between the matrix product classes are not possible.
 	}
-	MPT& operator=(MPT other) noexcept(noexcept( swap(other) ))
+	MPT& operator=(MPT other) noexcept
 	{
 		swap(other);
 		return *this;
@@ -91,7 +96,6 @@ class MPT
 	[[nodiscard]] auto empty() const noexcept {return tensors.empty();}
 	[[nodiscard]] auto size() const noexcept {return tensors.size();}
 	[[nodiscard]] auto max_size() const noexcept {return tensors.max_size();}
-	[[nodiscard]] auto max_size() const noexcept {return tensors.max_size();}
 	void reserve(size_t new_cap)  { tensors.reserve(new_cap);}
 	[[nodiscard]] auto capacity() const noexcept {return tensors.capacity();}
 	void shrink_to_fit()  { tensors.shrink_to_fit();}
@@ -104,13 +108,13 @@ class MPT
 	iterator insert(const_iterator pos,InputIT first, InputIT last) {return tensors.insert(pos,first,last);}
 	iterator insert(const_iterator pos,std::initializer_list<Tens> list) {return tensors.insert(pos,list);}
 	template<class... Args>
-	iterator emplate(const_iterator pos, Args&&... args) {return tensors.emplace(pos,std::forward<Args>(args) );}
+	iterator emplace(const_iterator pos, Args&&... args) {return tensors.emplace(pos,std::forward<Args>(args)... );}
 	iterator erase(const_iterator pos) {return tensors.erase(pos);}
 	iterator erase(const_iterator first,const_iterator last) {return tensors.erase(first,last);}
 	void push_back(const Tens& val) {tensors.push_back(val);}
 	void push_back(Tens&& val) {tensors.push_back(val);}
 	template<class... Args>
-	auto emplace_back(Args&&... args) {return tensors.emplace_back(std::forward<Args>(args));}
+	auto emplace_back(Args&&... args) {return tensors.emplace_back(std::forward<Args>(args)...);}
 	void pop_back() {tensors.pop_back();}
 	void resize(size_type count) {tensors.resize(count);}
 	void resize(size_type count, const Tens& value) {tensors.resize(count,value);}
@@ -123,8 +127,9 @@ class MPT
 		auto out_it = out.begin();
 		std::for_each(this->cbegin(),this->cend(),[&out_it,&options,non_blocking,copy,memory_format](const auto& atensor)
 		{
-			*(out_it++) = atensor.to(options,non_blocking,memory_format);
+			*(out_it++) = atensor.to(options,non_blocking,copy,memory_format);
 		});
+		return out;
 	}
 	MPT to(torch::Device device, torch::ScalarType dtype, bool non_blocking=false,bool copy = false,c10::optional<c10::MemoryFormat> memory_format=c10::nullopt) const
 	{
@@ -132,8 +137,9 @@ class MPT
 		auto out_it = out.begin();
 		std::for_each(this->cbegin(),this->cend(),[&out_it,device,dtype,non_blocking,copy,memory_format](const auto& atensor)
 		{
-			*(out_it++) = atensor.to(device,dtype,non_blocking,memory_format);
+			*(out_it++) = atensor.to(device,dtype,non_blocking,copy,memory_format);
 		});
+		return out;
 	}
 	MPT to(torch::ScalarType dtype, bool non_blocking=false,bool copy = false,c10::optional<c10::MemoryFormat> memory_format=c10::nullopt) const
 	{
@@ -141,8 +147,9 @@ class MPT
 		auto out_it = out.begin();
 		std::for_each(this->cbegin(),this->cend(),[&out_it,dtype,non_blocking,copy,memory_format](const auto& atensor)
 		{
-			*(out_it++) = atensor.to(dtype,non_blocking,memory_format);
+			*(out_it++) = atensor.to(dtype,non_blocking,copy,memory_format);
 		});
+		return out;
 	}
 	MPT to(caffe2::TypeMeta type_meta, bool non_blocking=false,bool copy = false,c10::optional<c10::MemoryFormat> memory_format=c10::nullopt) const
 	{
@@ -150,17 +157,9 @@ class MPT
 		auto out_it = out.begin();
 		std::for_each(this->cbegin(),this->cend(),[&out_it,type_meta,non_blocking,copy,memory_format](const auto& atensor)
 		{
-			*(out_it++) = atensor.to(type_meta,non_blocking,memory_format);
+			*(out_it++) = atensor.to(type_meta,non_blocking,copy,memory_format);
 		});
-	}
-	MPT to(torch::Device device,caffe2::TypeMeta type_meta, bool non_blocking=false,bool copy = false,c10::optional<c10::MemoryFormat> memory_format=c10::nullopt) const
-	{
-		MPT out(this->size());
-		auto out_it = out.begin();
-		std::for_each(this->cbegin(),this->cend(),[&out_it,device,type_meta,non_blocking,copy,memory_format](const auto& atensor)
-		{
-			*(out_it++) = atensor.to(device,type_meta,non_blocking,memory_format);
-		});
+		return out;
 	}
 	MPT to(const torch::Tensor& other, bool non_blocking=false,bool copy = false,c10::optional<c10::MemoryFormat> memory_format=c10::nullopt) const
 	{
@@ -168,14 +167,15 @@ class MPT
 		auto out_it = out.begin();
 		std::for_each(this->cbegin(),this->cend(),[&out_it,&other,non_blocking,copy,memory_format](const auto& atensor)
 		{
-			*(out_it++) = atensor.to(other,non_blocking,memory_format);
+			*(out_it++) = atensor.to(other,non_blocking,copy,memory_format);
 		});
+		return out;
 	}
 	//inplace version of to, will resolve to any equivalent out-of-place equivalent.
 	template<class... Args>
 	void inplace_to(Args&& ... args)
 	{
-		other = this->to(args...);
+		auto other = this->to(std::forward<Args>(args)...);
 		swap(other);
 	}
 };
@@ -205,11 +205,12 @@ class MPS : public MPT // specialization for rank 3 tensors, addionnaly can have
 
 	private:
 		size_t& oc = orthogonality_center.value; // private direct access to the value variable.
+		void check_ranks() const; //make sure all the ranks are MPS compatible
 };
 
 TEST_CASE("MPS basic manipulation")
 {
-	MPS({torch::rand({1,4,3},torch::)})
+	MPS({torch::rand({1,4,3}),torch::rand({3,4,1})});
 }
 
 

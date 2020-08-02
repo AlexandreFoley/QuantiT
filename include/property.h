@@ -26,12 +26,12 @@ class property final
 	content value;
 	
 	property() = default;
-	property(content val) = default;
+	property(content val):value(val) {}
 	public:
 
 	operator const content&() noexcept {return value;} // read access through implicit conversion
 
 	property& operator=( content new_value ); // define it to give write access to the value, with any and all checks necessary.
 
-	~property();
+	~property() {};
 };

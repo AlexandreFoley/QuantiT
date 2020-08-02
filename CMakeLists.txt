@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.0 FATAL_ERROR)
 project(QuanTT)
 
 set(CMAKE_CXX_STANDARD 17)
-set( Torch_DIR "${QuanTT_SOURCE_DIR}/extern/pytorch/torch/share/cmake/Torch)
+set( Torch_DIR "${QuanTT_SOURCE_DIR}/extern/pytorch/torch/share/cmake/Torch")
 find_package(Torch REQUIRED)
 find_package(fmt REQUIRED)
 

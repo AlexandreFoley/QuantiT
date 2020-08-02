@@ -11,9 +11,11 @@
  * All rights reserved
  */
 
-#include "includes/MPT.h"
+#include "MPT.h"
 
-namespace QuanTT{
+#include <exception>
+
+namespace quantt{
 	
 void MPS::move_oc(int i)
 	{
@@ -59,4 +61,14 @@ void MPS::move_oc(int i)
 	}
 	// otherwise we're already there, do nothing.
 	}
+
+void MPS::check_ranks()
+{
+	bool all_rank_3 = std::all_of(begin(),end(),[](const Tens & el)
+	{
+		return el.sizes().size() == 3;
+	});
+	assert(all_rank_3);// a MPS must have only rank 3 tensors
+}
+
 }//namespace QuanTT

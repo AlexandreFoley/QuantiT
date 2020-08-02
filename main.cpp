@@ -50,6 +50,7 @@ int main()
 	}
 	const auto [c_up,c_dn,F,id4] = generate_tens();
 	auto A = torch::rand({5,10},torch::kComplexDouble);
+	auto T = A.to();
 	auto B = torch::rand({5,10},torch::kComplexDouble);
 	auto cc_up = A-B;
 	auto [u,d,v] = cc_up.svd();
