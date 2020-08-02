@@ -2,7 +2,10 @@
 
 ## Installation
 
-If you want to build QuanTT with debug symbols, we must first build pytorch in debug also:
+QuanTT is an extension to pytorch, we must install it first.
+To garantee correct compilation in debug mode, we must compile pytorch ourselves. This can take a significant amount of time.
+If compiling in release mode, we could make use of precompiled pytorch for our platform. The project isn't set up for that, you're on your own if you want to do that.
+
 ### PyTorch's dependencies
 Python3 and some modules are dependencies of PyTorch
 Cuda is an optionnal dependency of PyTorch.
@@ -98,7 +101,7 @@ The project has the following file structure on the top level:
 	main.cpp
 	Readme.md
 
-- extern contain dependencies in the for of git submodules, it is only pytorch at this moment.
+- extern contain dependencies in the form of git submodules (only pytorch at this moment).
 - include contains the headers files: files ending in .h or .hpp
 - Notes contain a small latex project documenting facts and thoughts about pytorch relevent to this project.
 - sources contains the project's source files: files ending in .cpp
