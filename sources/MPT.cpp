@@ -40,6 +40,7 @@ void MPS::move_oc(int i)
 		auto reshaped = curr_oc.reshape({dims[0],prod(1,dims.size())});
 		auto [u,d,v] = torch::svd(reshaped);
 		curr_oc = v.t().reshape(dims); // needs testing. svd documentation makes no mention of complex numbers case.
+		// testing shows that v is only transposed in the complex number case as well.
 		auto ud = torch::matmul(u,torch::diag(d));
 		next_oc = torch::tensordot(next_oc,ud,{2},{0});
 		--oc;
@@ -62,13 +63,42 @@ void MPS::move_oc(int i)
 	// otherwise we're already there, do nothing.
 	}
 
-void MPS::check_ranks()
+void MPS::check_one(const Tens & tens)
 {
-	bool all_rank_3 = std::all_of(begin(),end(),[](const Tens & el)
+	auto sizes = tens.sizes();
+	assert( sizes.size() == 3 and sizes[0] == sizes[2] );
+}
+
+void MPS::check_ranks() const
+{
+	auto prev_bond = operator[](0).sizes()[0];
+	bool all_rank_3 = std::all_of(begin(),end(),[&prev_bond](const Tens & el)
 	{
-		return el.sizes().size() == 3;
+		using std::swap;
+		auto bond = el.sizes()[2];
+		swap(bond,prev_bond);
+		return el.sizes().size() == 3 and bond == el.sizes()[0];
 	});
 	assert(all_rank_3);// a MPS must have only rank 3 tensors
+}
+
+void MPO::check_one(const Tens & tens)
+{
+	auto sizes = tens.sizes();
+	assert( sizes.size() == 4 and sizes[0] == sizes[2] );
+}
+
+void MPO::check_ranks() const
+{
+	auto prev_bond = operator[](0).sizes()[0];
+	bool all_rank_4 = std::all_of(begin(),end(),[&prev_bond](const Tens & el)
+	{
+		using std::swap;
+		auto bond = el.sizes()[2];
+		swap(bond,prev_bond);
+		return el.sizes().size() == 4 and bond == el.sizes()[0];
+	});
+	assert(all_rank_4);// a MPS must have only rank 3 tensors
 }
 
 }//namespace QuanTT

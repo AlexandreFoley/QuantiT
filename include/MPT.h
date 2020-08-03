@@ -27,8 +27,9 @@
 #include "doctest.h"
 
 namespace quantt{
-// matrix product tensors. any rank.
-class MPT
+// matrix product tensors base type. require concrete derived class to implement MPT empty_copy(const S&)
+template <class S>
+class vector_lift
 {
 	std::vector<torch::Tensor> tensors;
 	
@@ -44,25 +45,37 @@ class MPT
 	using const_reference = VTens::const_reference;
 	using reference = VTens::reference;
 	//constructors
-	MPT():tensors(){}
-	MPT(size_type size):tensors(size){}
-	MPT(size_type size, const Tens& val):tensors(size,val){}
-	MPT(const MPT & other ):tensors(other.tensors){}
-	MPT(MPT&& other) noexcept :tensors(std::move(other.tensors))  {}
-	MPT(std::initializer_list<Tens> initl):tensors(initl) {}
-	virtual ~MPT() {}
+	vector_lift():tensors(){}
+	vector_lift(size_type size):tensors(size){}
+	vector_lift(size_type size, const Tens& val):tensors(size,val){}
+	template <class T>
+	friend class vector_lift;
+	template<class T> // can copy and move a vector_lift no matter the derived class.
+	vector_lift(const vector_lift<T> & other ):tensors(other.tensors){}
+	template<class T> 
+	vector_lift(vector_lift<T>&& other) noexcept :tensors(std::move(other.tensors))  {}
+	vector_lift(VTens& other): tensors(other) {}
+	vector_lift(std::initializer_list<Tens> initl):tensors(initl) {}
+	virtual ~vector_lift() {}
 	
-	void swap(MPT& other) noexcept
+
+	explicit operator S()
+	{
+		S out;
+		vector_lift* view = &out;
+		view->tensors = this->tensors;
+		return out;
+	}
+
+	void swap(vector_lift& other) noexcept
 	{
 		this->tensors.swap(other.tensors);
 	}
-	friend void swap(MPT& lhs, MPT& rhs) noexcept
+	friend void swap(vector_lift& lhs, vector_lift& rhs) noexcept
 	{
 		lhs.swap(rhs); 
-		// this is gonna work to swap a MPT with a derived class, might lead to strange behavior...
-		// this, perhaps, is justification enough to make sure implicit conversion between the matrix product classes are not possible.
 	}
-	MPT& operator=(MPT other) noexcept
+	vector_lift& operator=(vector_lift other) noexcept
 	{
 		swap(other);
 		return *this;
@@ -121,9 +134,9 @@ class MPT
 
 	//stuff about the tensors
 
-	MPT to(const torch::TensorOptions& options={}, bool non_blocking=false,bool copy = false,c10::optional<c10::MemoryFormat> memory_format=c10::nullopt) const
-	{
-		MPT out(this->size());
+	S to(const torch::TensorOptions& options={}, bool non_blocking=false,bool copy = false,c10::optional<c10::MemoryFormat> memory_format=c10::nullopt) const
+	{// those function can't really exist outside the derived class if empty_copy is private, which it is for MPT, MPS and MPO.
+		S out = empty_copy(static_cast<S const &>( *this) );
 		auto out_it = out.begin();
 		std::for_each(this->cbegin(),this->cend(),[&out_it,&options,non_blocking,copy,memory_format](const auto& atensor)
 		{
@@ -131,9 +144,9 @@ class MPT
 		});
 		return out;
 	}
-	MPT to(torch::Device device, torch::ScalarType dtype, bool non_blocking=false,bool copy = false,c10::optional<c10::MemoryFormat> memory_format=c10::nullopt) const
+	S to(torch::Device device, torch::ScalarType dtype, bool non_blocking=false,bool copy = false,c10::optional<c10::MemoryFormat> memory_format=c10::nullopt) const
 	{
-		MPT out(this->size());
+		S out = empty_copy(static_cast<S const &>( *this) );
 		auto out_it = out.begin();
 		std::for_each(this->cbegin(),this->cend(),[&out_it,device,dtype,non_blocking,copy,memory_format](const auto& atensor)
 		{
@@ -141,9 +154,9 @@ class MPT
 		});
 		return out;
 	}
-	MPT to(torch::ScalarType dtype, bool non_blocking=false,bool copy = false,c10::optional<c10::MemoryFormat> memory_format=c10::nullopt) const
+	S to(torch::ScalarType dtype, bool non_blocking=false,bool copy = false,c10::optional<c10::MemoryFormat> memory_format=c10::nullopt) const
 	{
-		MPT out(this->size());
+		S out = empty_copy(static_cast<S const &>( *this) );
 		auto out_it = out.begin();
 		std::for_each(this->cbegin(),this->cend(),[&out_it,dtype,non_blocking,copy,memory_format](const auto& atensor)
 		{
@@ -151,9 +164,9 @@ class MPT
 		});
 		return out;
 	}
-	MPT to(caffe2::TypeMeta type_meta, bool non_blocking=false,bool copy = false,c10::optional<c10::MemoryFormat> memory_format=c10::nullopt) const
+	S to(caffe2::TypeMeta type_meta, bool non_blocking=false,bool copy = false,c10::optional<c10::MemoryFormat> memory_format=c10::nullopt) const
 	{
-		MPT out(this->size());
+		S out = empty_copy(static_cast<S const &>( *this) );
 		auto out_it = out.begin();
 		std::for_each(this->cbegin(),this->cend(),[&out_it,type_meta,non_blocking,copy,memory_format](const auto& atensor)
 		{
@@ -161,9 +174,9 @@ class MPT
 		});
 		return out;
 	}
-	MPT to(const torch::Tensor& other, bool non_blocking=false,bool copy = false,c10::optional<c10::MemoryFormat> memory_format=c10::nullopt) const
+	S to(const torch::Tensor& other, bool non_blocking=false,bool copy = false,c10::optional<c10::MemoryFormat> memory_format=c10::nullopt) const
 	{
-		MPT out(this->size());
+		S out = empty_copy(static_cast<S const &>( *this) );
 		auto out_it = out.begin();
 		std::for_each(this->cbegin(),this->cend(),[&out_it,&other,non_blocking,copy,memory_format](const auto& atensor)
 		{
@@ -179,24 +192,64 @@ class MPT
 		swap(other);
 	}
 };
+class MPT final : public vector_lift<MPT>
+{
+	public:
+	
+	MPT():vector_lift<MPT>(){}
+	MPT(size_type size):vector_lift<MPT>(size){}
+	MPT(size_type size, const Tens& val):vector_lift<MPT>(size,val){}
+	MPT(const MPT & other ):vector_lift<MPT>(other){}
+	MPT(MPT&& other) noexcept :vector_lift<MPT>(std::move(other))  {}
+	MPT(std::initializer_list<Tens> initl):vector_lift<MPT>(initl) {}
+	virtual ~MPT() {}
 
+	void swap(MPT& other)
+	{
+		vector_lift<MPT>::swap(other);
+	}
 
-class MPS : public MPT // specialization for rank 3 tensors, addionnaly can have an orthogonality center.
+	friend void swap(MPT& lhs, MPT & rhs)
+	{
+		lhs.swap(rhs);
+	}
+
+	private:
+	static MPT empty_copy(const MPT& in)
+	{
+		return MPT(in.size());
+	}
+};
+
+class MPS final: public vector_lift<MPS> // specialization for rank 3 tensors, addionnaly can have an orthogonality center.
 {
 	public:
 	property<size_t,MPS> orthogonality_center; // read only for users
 	/**
-	 * Check that the rank of all the tensor is three, and that the size of the bond dimension of neighbour tensors matches.
+	 * Check that all the tensors are rank three, and that the size of the bond dimension of neighbouring tensors matches.
 	 */
-	void check_ranks();
-	MPS():MPT(),orthogonality_center(){}
-	MPS(size_type size):MPT(size){}
-	MPS(size_type size, const Tens& val,size_t oc):MPT(size,val),orthogonality_center(oc) {check_ranks();}
-	MPS(const MPT & other,size_t oc=0 ):MPT(other),orthogonality_center(oc) {check_ranks();}
-	MPS(const MPS & other ):MPT(other),orthogonality_center(other.orthogonality_center) {}
-	MPS(MPT&& other,size_t oc=0) noexcept :MPT(std::move(other)),orthogonality_center(oc)  {check_ranks();}
-	MPS(MPS&& other) noexcept :MPT(std::move(other)),orthogonality_center(other.orthogonality_center)  {}
+	void check_ranks() const;
+	static void check_one(const Tens& tens);
+	MPS():vector_lift<MPS>(),orthogonality_center(){}
+	MPS(size_type size):vector_lift<MPS>(size){}
+	MPS(const MPS & other ):vector_lift(other),orthogonality_center(other.orthogonality_center) {}
+	MPS(MPS&& other) noexcept :vector_lift(std::move(other)),orthogonality_center(other.orthogonality_center)  {}
+	
+	MPS(size_type size, const Tens& val,size_t oc):vector_lift(size,val),orthogonality_center(oc) {check_one(val);}
+	
+	MPS(const MPT & other,size_t oc=0 ):vector_lift<MPS>(other),orthogonality_center(oc) {check_ranks();}
+	MPS(MPT&& other,size_t oc=0) noexcept :vector_lift<MPS>(std::move(other)),orthogonality_center(oc)  {check_ranks();}
+	
 	virtual ~MPS() {}
+
+	/**
+	 * explicit conversion to a MPT. discards the position of the orthogonality center and lift the MPS constraints.
+	 * Be careful, this function does not create a copy of the underlying tensors.
+	 */
+	explicit operator MPT()
+	{// careful! the underlying data is shared.
+		return MPT(vector_lift<MPT>(static_cast<vector_lift<MPS>& >(*this) ));
+	}
 
 	/**
 	 * move the orthogonality center to the position i on the chain.
@@ -204,18 +257,83 @@ class MPS : public MPT // specialization for rank 3 tensors, addionnaly can have
 	void move_oc(int i);
 
 	private:
-		size_t& oc = orthogonality_center.value; // private direct access to the value variable.
-		void check_ranks() const; //make sure all the ranks are MPS compatible
+	size_t& oc = orthogonality_center.value; // private direct access to the value variable.
+	static MPS empty_copy(const MPS& in)
+	{
+		return MPS(in.size(),in.oc);
+	}
 };
+
 
 TEST_CASE("MPS basic manipulation")
 {
-	MPS({torch::rand({1,4,3}),torch::rand({3,4,1})});
+	SUBCASE("Construction"){
+		MPS A({torch::rand({1,4,3}),torch::rand({3,4,1})});
+
+		REQUIRE( A.size() == 2);
+		REQUIRE( A.capacity() >= 2);
+
+		CHECK( A.orthogonality_center == 0 );
+		auto size_0 = std::vector{1L,4L,3L};
+		auto size_1 = std::vector{3L,4L,1L};
+		CHECK(  A[0].sizes() == size_0  );
+		CHECK(  A[1].sizes() == size_1  );
+		size_0 = A[0].sizes().vec(); //copy the current size of A[0];
+		SUBCASE("moving orthogonality center"){
+			A.move_oc(1);
+			CHECK( A.orthogonality_center == 1 );
+			CHECK(  A[0].sizes() == size_0  );
+			CHECK(  A[1].sizes() == size_1  );
+		}
+		SUBCASE("conversion to MPT")
+		{
+		auto B = MPT(A);
+		}
+	}
+
 }
 
 
-class MPO : public MPT // specialization for rank 4 tensors
+class MPO final: public vector_lift<MPO> // specialization for rank 4 tensors
 {
+	public:
+	
+	void check_ranks() const;
+	static void check_one(const Tens& tens);
+	
+	MPO():vector_lift<MPO>(){}
+	MPO(size_type size):vector_lift<MPO>(size){}
+	MPO(const MPO & other ):vector_lift<MPO>(other){}
+	MPO(MPO&& other) noexcept :vector_lift<MPO>(std::move(other))  {}
+	MPO(std::initializer_list<Tens> initl):vector_lift<MPO>(initl) {}
+	
+	MPO(size_type size, const Tens& val):vector_lift<MPO>(size,val){check_one(val);}
+	
+	MPO(const MPT & other,size_t oc=0 ):vector_lift<MPO>(other) {check_ranks();}
+	MPO(MPT&& other,size_t oc=0) noexcept :vector_lift<MPO>(std::move(other))  {check_ranks();}
+	
+	virtual ~MPO() {}
+
+	void swap(MPO& other)
+	{
+		vector_lift<MPO>::swap(other);
+	}
+
+	explicit operator MPT()
+	{// careful! the underlying data is shared.
+		return MPT(vector_lift<MPT>(static_cast<vector_lift<MPO>& >(*this) ));
+	}
+	
+	friend void swap(MPO& lhs, MPO & rhs)
+	{
+		lhs.swap(rhs);
+	}
+
+	private:
+	static MPO empty_copy(const MPO& in)
+	{
+		return MPT(in.size());
+	}
 
 };
 

@@ -55,7 +55,11 @@ int main()
 	auto cc_up = A-B;
 	auto [u,d,v] = cc_up.svd();
 
-	
+	auto asize = A.sizes();
+
+	asize = T.sizes();
+
+	auto test_val = asize == std::vector<int64_t>{5,10};	
 
 	auto reconstruct = torch::matmul(torch::matmul(u,torch::diag_embed(d.to(torch::kComplexDouble)) ), v.t() );
 

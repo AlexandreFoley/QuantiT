@@ -15,10 +15,10 @@
  * 
  * wrapper for properties, allow direct access to users with checks without an explicit setter and getter.
  * id is for the situation where it is desirable to have a different type (setter and getter) for a property with the same owning class.
- * if a completly unique id is necessary an empty lambda []{} can be used
+ * if a completly unique type is necessary an empty lambda []{} can be used for unique_type
 */
 
-template <class content,class owner,class id = owner>
+template <class content,class owner,class unique_type = owner>
 class property final
 {
 	friend owner;
@@ -29,7 +29,7 @@ class property final
 	property(content val):value(val) {}
 	public:
 
-	operator const content&() noexcept {return value;} // read access through implicit conversion
+	operator const content&() const noexcept {return value;} // read access through implicit conversion
 
 	property& operator=( content new_value ); // define it to give write access to the value, with any and all checks necessary.
 
