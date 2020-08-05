@@ -19,7 +19,7 @@ namespace quantt{
 	
 void MPS::move_oc(int i)
 	{
-		assert( i>=0 and i<size());
+		if (not ( i>=0 and i<size())) throw std::invalid_argument(" Proposed orthogonality center falls outside the MPS");
 		auto dims = (*this)[orthogonality_center].sizes();
 		auto prod = [&dims](size_t start,size_t end)
 		{
@@ -63,13 +63,13 @@ void MPS::move_oc(int i)
 	// otherwise we're already there, do nothing.
 	}
 
-void MPS::check_one(const Tens & tens)
+bool MPS::check_one(const Tens & tens)
 {
 	auto sizes = tens.sizes();
-	assert( sizes.size() == 3 and sizes[0] == sizes[2] );
+	return (( sizes.size() == 3 and sizes[0] == sizes[2] ));
 }
 
-void MPS::check_ranks() const
+bool MPS::check_ranks() const
 {
 	auto prev_bond = operator[](0).sizes()[0];
 	bool all_rank_3 = std::all_of(begin(),end(),[&prev_bond](const Tens & el)
@@ -79,16 +79,17 @@ void MPS::check_ranks() const
 		swap(bond,prev_bond);
 		return el.sizes().size() == 3 and bond == el.sizes()[0];
 	});
-	assert(all_rank_3);// a MPS must have only rank 3 tensors
+	return all_rank_3;
 }
 
-void MPO::check_one(const Tens & tens)
+bool MPO::check_one(const Tens & tens)
 {
 	auto sizes = tens.sizes();
-	assert( sizes.size() == 4 and sizes[0] == sizes[2] );
+	// if (!( sizes.size() == 4 and sizes[0] == sizes[2] )) throw std::invalid_argument("The input tensor must have rank 4 and equal bond dimensions (dims 0 and 2).");
+	return  ( sizes.size() == 4 and sizes[0] == sizes[2] );
 }
 
-void MPO::check_ranks() const
+bool MPO::check_ranks() const
 {
 	auto prev_bond = operator[](0).sizes()[0];
 	bool all_rank_4 = std::all_of(begin(),end(),[&prev_bond](const Tens & el)
@@ -98,7 +99,8 @@ void MPO::check_ranks() const
 		swap(bond,prev_bond);
 		return el.sizes().size() == 4 and bond == el.sizes()[0];
 	});
-	assert(all_rank_4);// a MPS must have only rank 3 tensors
+	// assert(all_rank_4);// a MPS must have only rank 3 tensors
+	return all_rank_4;
 }
 
 }//namespace QuanTT

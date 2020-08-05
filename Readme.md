@@ -2,7 +2,7 @@
 
 ## Installation
 
-QuanTT is an extension to pytorch, we must install it first.
+QuanTT is an extension to pytorch, so we must install pytorch first.
 To garantee correct compilation in debug mode, we must compile pytorch ourselves. This can take a significant amount of time.
 If compiling in release mode, we could make use of precompiled pytorch for our platform. The project isn't set up for that, you're on your own if you want to do that.
 
@@ -18,19 +18,22 @@ With conda, you can install all the necessary components with the following comm
 	
 	# install MKL (intel's blas and lapack implementation) and other things.
 	conda install numpy ninja pyyaml mkl mkl-include setuptools cmake cffi
+
 Add LAPACK support for the GPU if needed
 
 	conda install -c pytorch magma-cuda102
+
 Add cuDNN if you want, version 7.6.5, for cuda10.2, make sure this is right for you.
 
 	conda install cudnn=7.6.5=cuda10.2_0
 
+if you do not wish to (or can't) use conda, you can install the python packages with pip (numpy pyyaml setuptools cffi), lapack and a BLAS with you package manager, and cuda (magma and  cudnn) have to be installed manually.
 
 ### build PyTorch
 Pytorch is a rather large project, and as such can take a long time to build.
-if you do not need the debug symbols, you can [download](https://pytorch.org/get-started/locally/) libtorch in release mode and drop it in extern/pytorch/torch.
-If you do so, you must make sure QuanTT is configure for release. 
-Note that precompiled in debug mode is also available for windows.
+if you do not need the debug symbols, you can [download](https://pytorch.org/get-started/locally/) libtorch in release mode and drop it in \<path to QuanTT\>/extern/pytorch/torch.
+If you do so, you must make sure QuanTT is configure accordingly to pytorch (only release currently avaible for most platform). 
+Note that pytorch precompiled in debug mode is also available for windows.
 
 Otherwise follow the instruction below.
 
@@ -64,6 +67,10 @@ if you want only libtorch (torch's python binding will be missing with this):
 
 This is somewhat important if you do not want to interfere with the rest of your python installation. Pytorch's build isn't very clean.
 
+if you're using conda: 
+
+	export CMAKE_PREFIX_PATH=${CONDA_PREFIX:-"$(dirname $(which conda))/../"}
+
 Now we can build libtorch.
 
 	python3 setup.py build 
@@ -83,23 +90,21 @@ The configure the project.
 	
 	cmake ..
 	
-And build.
-
-	make
-	
+And build with make or ninja, depending on your preference.
 You're done.
 
 ## Project organization
 The project has the following file structure on the top level:
+
 	QuanTT
 	├── extern/
 	├── include/
 	├── Notes/
 	├── sources/
 	├── tests/
-	CMakeLists.txt
-	main.cpp
-	Readme.md
+	├──CMakeLists.txt
+	├──main.cpp
+	└──Readme.md
 
 - extern contain dependencies in the form of git submodules (only pytorch at this moment).
 - include contains the headers files: files ending in .h or .hpp

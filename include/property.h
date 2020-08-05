@@ -26,7 +26,8 @@ class property final
 	content value;
 	
 	property() = default;
-	property(content val):value(val) {}
+	property(const content& val):value(val) {} // private constructor, allows owning class to construct without check if wanted.
+	// redefine if necessary
 	public:
 
 	operator const content&() const noexcept {return value;} // read access through implicit conversion

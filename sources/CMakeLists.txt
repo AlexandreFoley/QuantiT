@@ -1,10 +1,10 @@
 
 
 
-set(HEADER_LIST "${QuanTT_SOURCE_DIR}/include/MPT.h")
+set(HEADER_LIST "${QuanTT_SOURCE_DIR}/include/MPT.h" "${QuanTT_SOURCE_DIR}/include/LinearAlgebra.h")
 
 # Make an automatic library - will be static or dynamic based on user setting
-add_library(QuanTT_lib MPT.cpp ${HEADER_LIST})
+add_library(QuanTT_lib MPT.cpp LinearAlgebra.cpp ${HEADER_LIST})
 
 # We need this directory, and users of our library will need it too
 target_include_directories(QuanTT_lib PUBLIC ../include)
