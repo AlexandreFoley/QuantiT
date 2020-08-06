@@ -56,7 +56,7 @@ int main()
 	auto [u,d,v] = cc_up.svd();
 
 	auto asize = A.sizes();
-
+	auto asize_vec = asize.vec();
 	auto D = torch::linspace(0,5,5);
 
 	// auto C = A > B;

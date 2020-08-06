@@ -12,6 +12,7 @@
  */
 
 #include "LinearAlgebra.h"
+#include "dimension_manip.h"
 namespace quantt
 {
 
@@ -28,7 +29,6 @@ auto compute_last_index(torch::Tensor d,torch::Scalar tol,torch::Scalar pow)
 	{
 		if (  (trunc_val > tol).any().item().to<bool>() )
 			break;
-		
 		--last_index;
 		trunc_val += d.index({Ellipsis,last_index}).abs().pow(pow);//Again, abs and pow must not be in place...
 	}
@@ -41,7 +41,19 @@ std::tuple<torch::Tensor,torch::Tensor,torch::Tensor> truncate(torch::Tensor u,t
 	// not trying to optimize based on underlying type of the tensors. might be necessary, but will require significant efforts.
 	using namespace torch::indexing;
 	auto last_index = compute_last_index(d,tol,pow);
-	return std::make_tuple(u.index({Ellipsis,last_index}),d.index({Ellipsis,last_index}),v.index({Ellipsis,last_index}));
+	return std::make_tuple(u.index({Ellipsis,Slice(None,last_index)}),d.index({Ellipsis,Slice(None,last_index) }),v.index({Ellipsis,Slice(None,last_index)} ));
+}
+
+
+std::tuple<torch::Tensor,torch::Tensor> truncate(std::tuple<torch::Tensor,torch::Tensor> tensors, torch::Scalar tol=0, torch::Scalar pow=1)
+{	
+	auto& [u,d] = tensors;
+	return truncate(u,d,tol,pow);
+}
+std::tuple<torch::Tensor,torch::Tensor,torch::Tensor> truncate(std::tuple<torch::Tensor,torch::Tensor,torch::Tensor> tensors, torch::Scalar tol=0, torch::Scalar pow=2)
+{	
+	auto& [u,d,v] = tensors;
+	return truncate(u,d,v,tol,pow);
 }
 
 std::tuple<torch::Tensor,torch::Tensor> truncate(torch::Tensor u,torch::Tensor e, torch::Scalar tol=0, torch::Scalar pow=1)
@@ -53,22 +65,41 @@ std::tuple<torch::Tensor,torch::Tensor> truncate(torch::Tensor u,torch::Tensor e
 
 std::tuple<torch::Tensor,torch::Tensor,torch::Tensor> svd(torch::Tensor A, size_t split)
 {
-	auto dims = A.sizes();
-	auto prod = [&dims](size_t start,size_t end)
-	{
-		std::remove_const_t<std::remove_reference_t< decltype(dims[0])> > out = 1; 
-		for (auto i = start; i< end;++i)
-		{
-			out *= dims[i];
-		}
-		return out;
-	};
-	
-	auto rA = A.reshape({prod(0,split),prod(split+1,dims.size()-1)});
-	auto [u,d,v] = A.svd();
-	//u = u.reshape({})
-	
+	auto A_dim = A.sizes();
+	auto left_dims = A_dim.slice(0,split);
+	auto right_dims = A_dim.slice(split,A_dim.size()-split);
+	auto rA = A.reshape({prod(left_dims),prod(right_dims)});
+	auto [u,d,v] = rA.svd();
+	auto bond_size =  d.sizes();
+	u = u.reshape(concat(left_dims , bond_size ) );
+	v = v.reshape(concat(right_dims, bond_size ));
+	return std::make_tuple(u,d,v);
 }
 
+
+std::tuple<torch::Tensor,torch::Tensor,torch::Tensor> svd(torch::Tensor A, size_t split,torch::Scalar tol, torch::Scalar pow = 2)
+{
+	return truncate(svd(A,split), tol, pow);
+}
+
+std::tuple<torch::Tensor,torch::Tensor> eig(torch::Tensor A, size_t split)
+{
+	auto A_dim = A.sizes();
+	auto left_dims = A_dim.slice(0,split);
+	auto right_dims = A_dim.slice(split,A_dim.size()-split);
+	auto l = prod(left_dims);
+	auto r = prod(right_dims);
+	if (l != r) throw std::invalid_argument("The eigenvalue problem is undefined for rectangular matrices. Either you've input the wrong split, or you need svd");
+	auto rA = A.reshape({r,l});
+	auto [u,e] = rA.eig();
+	auto bond_size =  e.sizes();
+	u = u.reshape(concat(left_dims , bond_size ) );
+	return std::make_tuple(u,e);
+}
+
+std::tuple<torch::Tensor,torch::Tensor> eig(torch::Tensor A, size_t split,torch::Scalar tol, torch::Scalar pow = 1)
+{
+	return truncate(eig(A,split),tol,pow);
+}
 
 }//namespace quantt

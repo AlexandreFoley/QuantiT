@@ -32,6 +32,7 @@ namespace quantt
  * Output is in the same order as input
  */
 std::tuple<torch::Tensor,torch::Tensor,torch::Tensor> truncate(torch::Tensor u,torch::Tensor d, torch::Tensor v, torch::Scalar tol=0, torch::Scalar pow=2);
+std::tuple<torch::Tensor,torch::Tensor,torch::Tensor> truncate(std::tuple<torch::Tensor,torch::Tensor,torch::Tensor> tensors, torch::Scalar tol=0, torch::Scalar pow=2);
 
 /**
  * truncate the input tensors according to the small values of e.
@@ -41,6 +42,7 @@ std::tuple<torch::Tensor,torch::Tensor,torch::Tensor> truncate(torch::Tensor u,t
  * Output is in the same order as input
  */
 std::tuple<torch::Tensor,torch::Tensor> truncate(torch::Tensor u,torch::Tensor e, torch::Scalar tol=0, torch::Scalar pow=1);
+std::tuple<torch::Tensor,torch::Tensor> truncate(std::tuple<torch::Tensor,torch::Tensor> tensors, torch::Scalar tol=0, torch::Scalar pow=1);
 
 /**
  * perform the singular value decomposition of the rank N tensor A. 
