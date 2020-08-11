@@ -13,8 +13,12 @@
 
 #include <torch/torch.h>
 #include <fmt/core.h>
-#include "include/tens_formatter.h"
+#include "include/torch_formatter.h"
 #include "fmt/ostream.h"
+
+#include "include/LinearAlgebra.h"
+
+
 
 using tens = torch::Tensor;
 std::tuple<tens,tens,tens,tens> generate_tens()
@@ -48,20 +52,40 @@ int main()
 		fmt::print("CUDA is available!\n");
 		cuda_device = torch::Device(torch::kCUDA); // set the cuda_device to the actual gpu if it would work
 	}
-	const auto [c_up,c_dn,F,id4] = generate_tens();
-	auto A = torch::rand({5,10},torch::kDouble);
-	auto T = A.to();
-	auto B = torch::rand({5,10},torch::kDouble);
-	auto cc_up = (A-B).to(cuda_device);
-	auto [u,d,v] = cc_up.svd();
 
-	auto asize = A.sizes();
-	auto asize_vec = asize.vec();
-	auto D = torch::linspace(0,5,5);
+	// fmt::print("{}",__COUNTER__);
+	// fmt::print("{}",__COUNTER__);
+	// fmt::print("{}",__COUNTER__);
+	// fmt::print("{}\n",__COUNTER__);
+	auto A = torch::rand({2,3,2,3});
+	auto ra = A.reshape({6,6});
+
+	auto [u_o,d_o,v_o] = ra.svd();
+	auto [u,d,v] = quantt::svd(A,2);
+
+	fmt::print("{}\n",u_o.sizes()==std::vector<int64_t>({30,30}));
+	fmt::print("shape: {}\n",u.sizes() );
+	fmt::print("It is the expected shape: {}\n",u.sizes()==std::vector<int64_t>({10,3,30}));
+
+	auto ru_o = u_o.reshape({2,3,6});
+
+	fmt::print("{}\n",torch::allclose(ru_o,u));
+
+	auto [e_o,s_o] = ra.symeig(true);
+	fmt::print("e {}\n",e_o ); //nothing in e, eig doesn't do what i thought it would.
+	fmt::print("e sizes {}\n",e_o.sizes() );
+	auto rs_o = s_o.reshape({2,3,6});
+	auto [e,s] = quantt::symeig(A,2);
+	fmt::print("s sizes {}\n",s.sizes());
+
+	fmt::print("s:{}\nrso{}\n",s,rs_o);
+
+
+	fmt::print("{}\n",s.sizes()==std::vector<int64_t>({2,3,6}));
+	fmt::print("{}\n",torch::allclose(rs_o,s));
 
 	// auto C = A > B;
 
-	fmt::print("comparison \n{}\n{}\n",C,C.any().item().to<bool>() ) ;
 
 	
 	return 0;

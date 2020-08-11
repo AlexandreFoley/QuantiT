@@ -54,4 +54,10 @@ std::vector<int64_t> reverse(torch::IntArrayRef dims)
 	return out;
 }
 
+
+torch::IntArrayRef slice(const std::vector<int64_t>& in, size_t start, size_t n)
+{
+	return torch::IntArrayRef(in).slice(start,n);
+}
+
 }//quantt

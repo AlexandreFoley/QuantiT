@@ -15,3 +15,5 @@
 // with the preceding define, doctest autogenerate a main() function that run the test found in the sources included.
 
 #include "MPT.h"
+#include "dimension_manip.h"
+#include "LinearAlgebra.h"

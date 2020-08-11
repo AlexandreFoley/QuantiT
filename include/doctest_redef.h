@@ -11,6 +11,11 @@
  * All rights reserved
  */
 
+#ifndef C8CCE3D5_354C_49A9_B03C_3B444488A93D
+#define C8CCE3D5_354C_49A9_B03C_3B444488A93D
+
+//eliminate macro redef warning due to pytorch and doctest defining macros with the same name.
+
 #undef CHECK_LE
 #undef CHECK_GE
 #undef CHECK_GE
@@ -20,3 +25,4 @@
 #undef CHECK_LT
 #undef CHECK_LE
 #undef CHECK
+#endif /* C8CCE3D5_354C_49A9_B03C_3B444488A93D */

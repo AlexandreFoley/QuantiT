@@ -11,6 +11,7 @@
  * All rights reserved
  */
 
+#include <exception>
 #include "LinearAlgebra.h"
 #include "dimension_manip.h"
 namespace quantt
@@ -35,7 +36,7 @@ auto compute_last_index(torch::Tensor d,torch::Scalar tol,torch::Scalar pow)
 	return last_index;
 }
 
-std::tuple<torch::Tensor,torch::Tensor,torch::Tensor> truncate(torch::Tensor u,torch::Tensor d, torch::Tensor v, torch::Scalar tol=0, torch::Scalar pow=2)
+std::tuple<torch::Tensor,torch::Tensor,torch::Tensor> truncate(torch::Tensor u,torch::Tensor d, torch::Tensor v, torch::Scalar tol, torch::Scalar pow)
 {
 	//make no asumption regarding the batched nature of the tensors.
 	// not trying to optimize based on underlying type of the tensors. might be necessary, but will require significant efforts.
@@ -45,22 +46,22 @@ std::tuple<torch::Tensor,torch::Tensor,torch::Tensor> truncate(torch::Tensor u,t
 }
 
 
-std::tuple<torch::Tensor,torch::Tensor> truncate(std::tuple<torch::Tensor,torch::Tensor> tensors, torch::Scalar tol=0, torch::Scalar pow=1)
+std::tuple<torch::Tensor,torch::Tensor> truncate(std::tuple<torch::Tensor,torch::Tensor> tensors, torch::Scalar tol, torch::Scalar pow)
 {	
-	auto& [u,d] = tensors;
+	auto& [d,u] = tensors;
 	return truncate(u,d,tol,pow);
 }
-std::tuple<torch::Tensor,torch::Tensor,torch::Tensor> truncate(std::tuple<torch::Tensor,torch::Tensor,torch::Tensor> tensors, torch::Scalar tol=0, torch::Scalar pow=2)
+std::tuple<torch::Tensor,torch::Tensor,torch::Tensor> truncate(std::tuple<torch::Tensor,torch::Tensor,torch::Tensor> tensors, torch::Scalar tol, torch::Scalar pow)
 {	
 	auto& [u,d,v] = tensors;
 	return truncate(u,d,v,tol,pow);
 }
 
-std::tuple<torch::Tensor,torch::Tensor> truncate(torch::Tensor u,torch::Tensor e, torch::Scalar tol=0, torch::Scalar pow=1)
+std::tuple<torch::Tensor,torch::Tensor> truncate(torch::Tensor e,torch::Tensor u, torch::Scalar tol, torch::Scalar pow)
 {
 	using namespace torch::indexing;
 	auto last_index = compute_last_index(e,tol,pow);
-	return std::make_tuple(u.index({Ellipsis,last_index}),e.index({Ellipsis,last_index}));
+	return std::make_tuple(u.index({Ellipsis,Slice(None,last_index)}),e.index({Ellipsis,Slice(None,last_index)}));
 }
 
 std::tuple<torch::Tensor,torch::Tensor,torch::Tensor> svd(torch::Tensor A, size_t split)
@@ -77,12 +78,13 @@ std::tuple<torch::Tensor,torch::Tensor,torch::Tensor> svd(torch::Tensor A, size_
 }
 
 
-std::tuple<torch::Tensor,torch::Tensor,torch::Tensor> svd(torch::Tensor A, size_t split,torch::Scalar tol, torch::Scalar pow = 2)
+std::tuple<torch::Tensor,torch::Tensor,torch::Tensor> svd(torch::Tensor A, size_t split,torch::Scalar tol, torch::Scalar pow)
 {
-	return truncate(svd(A,split), tol, pow);
+	return truncate(quantt::svd(A,split), tol, pow);
 }
 
-std::tuple<torch::Tensor,torch::Tensor> eig(torch::Tensor A, size_t split)
+
+std::tuple<torch::Tensor,torch::Tensor> symeig(torch::Tensor A, size_t split)
 {
 	auto A_dim = A.sizes();
 	auto left_dims = A_dim.slice(0,split);
@@ -90,16 +92,25 @@ std::tuple<torch::Tensor,torch::Tensor> eig(torch::Tensor A, size_t split)
 	auto l = prod(left_dims);
 	auto r = prod(right_dims);
 	if (l != r) throw std::invalid_argument("The eigenvalue problem is undefined for rectangular matrices. Either you've input the wrong split, or you need svd");
-	auto rA = A.reshape({r,l});
-	auto [u,e] = rA.eig();
-	auto bond_size =  e.sizes();
+	auto rA = A.reshape({l,r});
+	auto [d,u] = rA.symeig(true);
+	auto bond_size =  d.sizes();
 	u = u.reshape(concat(left_dims , bond_size ) );
-	return std::make_tuple(u,e);
+	return std::make_tuple(d,u);	
 }
 
-std::tuple<torch::Tensor,torch::Tensor> eig(torch::Tensor A, size_t split,torch::Scalar tol, torch::Scalar pow = 1)
+std::tuple<torch::Tensor,torch::Tensor> symeig(torch::Tensor A, size_t split,torch::Scalar tol, torch::Scalar pow)
 {
-	return truncate(eig(A,split),tol,pow);
+	return truncate(quantt::symeig(A,split),tol,pow);
+}
+
+std::tuple<torch::Tensor,torch::Tensor> eig(torch::Tensor A, size_t split)
+{
+	throw std::logic_error("non-symetric eigen value not implemented: it will wait until a proper complex implementation is available in torch.");
+}
+std::tuple<torch::Tensor,torch::Tensor> eig(torch::Tensor A, size_t split,torch::Scalar tol, torch::Scalar pow)
+{
+	return truncate(quantt::eig(A,split),tol,pow);
 }
 
 }//namespace quantt

@@ -15,8 +15,11 @@
  * 
  * wrapper for properties, allow direct access to users with checks without an explicit setter and getter.
  * id is for the situation where it is desirable to have a different type (setter and getter) for a property with the same owning class.
- * if a completly unique type is necessary an empty lambda []{} can be used for unique_type
+ * if a completly unique type is necessary the type of an empty lambda []{} can be used for unique_type, because all lambda have a unique type.
 */
+
+#ifndef A0DBDDD7_5F5B_48D3_A287_E11E64C8B84C
+#define A0DBDDD7_5F5B_48D3_A287_E11E64C8B84C
 
 template <class content,class owner,class unique_type = owner>
 class property final
@@ -36,3 +39,4 @@ class property final
 
 	~property() {};
 };
+#endif /* A0DBDDD7_5F5B_48D3_A287_E11E64C8B84C */

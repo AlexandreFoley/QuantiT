@@ -6,9 +6,10 @@ set( Torch_DIR "${QuanTT_SOURCE_DIR}/extern/pytorch/torch/share/cmake/Torch")
 find_package(Torch REQUIRED)
 find_package(fmt REQUIRED)
 
+link_libraries( ${TORCH_LIBRARIES} fmt)
+
 include_directories(include)
 
-link_libraries( ${TORCH_LIBRARIES} fmt)
 
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
     include(CTest)
@@ -18,7 +19,10 @@ if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME AND BUILD_TESTING)
 endif()
 
 add_subdirectory(sources)
-add_executable(QuanTT_dev main.cpp)
+
+add_executable(QuanTT_dev main.cpp )
+target_link_libraries(QuanTT_dev PRIVATE QuanTT_lib)
+target_compile_features(QuanTT_dev PRIVATE cxx_std_17)
 
 if (MSVC)
   file(GLOB TORCH_DLLS "${TORCH_INSTALL_PREFIX}/lib/*.dll" )
