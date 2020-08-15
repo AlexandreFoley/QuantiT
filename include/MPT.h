@@ -27,10 +27,13 @@ namespace quantt
 {
 	//forward declaration for dmrg_impl.
 	class env_holder;
-	class dmrg_option;
+	class dmrg_options;
 	class MPS;
 	class MPO;
 	class MPT;
+	namespace details{
+		torch::Scalar dmrg_impl(const MPO& hamiltonian,const MPT& two_sites_hamil, MPS& in_out_state,const dmrg_options& options,env_holder& Env); 
+	}
 	// matrix product tensors base type. require concrete derived class to implement MPT empty_copy(const S&)
 	template <class S>
 	class vector_lift
@@ -235,8 +238,8 @@ namespace quantt
 	 */
 		bool check_ranks() const;
 		static bool check_one(const Tens &tens);
-		MPS() : vector_lift<MPS>(), orthogonality_center() {}
-		MPS(size_type size) : vector_lift<MPS>(size) {}
+		MPS() : vector_lift<MPS>(), orthogonality_center(0) {}
+		MPS(size_type size) : vector_lift<MPS>(size),orthogonality_center(0) {}
 		MPS(const MPS &other) : vector_lift(other), orthogonality_center(other.orthogonality_center) {}
 		MPS(MPS &&other)
 		noexcept : vector_lift(std::move(other)), orthogonality_center(other.orthogonality_center) {}
@@ -284,10 +287,6 @@ namespace quantt
 			swap(other.orthogonality_center.value,orthogonality_center.value);
 		}
 
-		friend void swap(MPS &lhs, MPS &rhs)
-		{
-			lhs.swap(rhs);
-		}
 		MPS& operator=(MPS other)
 		{
 			swap(other);
@@ -309,7 +308,7 @@ namespace quantt
 	 * move the orthogonality center to the position i on the chain.
 	 */
 		void move_oc(int i);
-		friend torch::Scalar dmrg_impl(const MPO& hamiltonian,const MPT& two_sites_hamil, MPS& in_out_state,const dmrg_options& options,env_holder& Env); //allow dmrg to manipulate the oc.
+		friend torch::Scalar details::dmrg_impl(const MPO& hamiltonian,const MPT& two_sites_hamil, MPS& in_out_state,const dmrg_options& options,env_holder& Env); //allow dmrg to manipulate the oc.
 	private:
 		size_t &oc = orthogonality_center.value; // private direct access to the value variable.
 		static MPS empty_copy(const MPS &in)
@@ -317,6 +316,10 @@ namespace quantt
 			return MPS(in.size(), in.oc);
 		}
 	};
+	inline void swap(MPS &lhs, MPS &rhs)
+	{
+		lhs.swap(rhs);
+	}
 
 	class MPO final : public vector_lift<MPO> // specialization for rank 4 tensors
 	{
@@ -368,10 +371,6 @@ namespace quantt
 			return MPT(vector_lift<MPT>(static_cast<vector_lift<MPO> &>(*this)));
 		}
 
-		friend void swap(MPO &lhs, MPO &rhs) noexcept
-		{
-			lhs.swap(rhs);
-		}
 		MPO& operator=(MPO other) noexcept
 		{
 			swap(other);
@@ -384,6 +383,10 @@ namespace quantt
 			return MPT(in.size());
 		}
 	};
+	inline void swap(MPO &lhs, MPO &rhs) noexcept
+	{
+		lhs.swap(rhs);
+	}
 	//TODO: add tests for constructors, swap, operator=, etc. for MPT,MPS and MPO.
 	TEST_CASE("MPT manipulations")
 	{

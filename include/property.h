@@ -30,6 +30,11 @@ class property final
 	
 	property() = default;
 	property(const content& val):value(val) {} // private constructor, allows owning class to construct without check if wanted.
+	//basically, the only thing to do with this for non-friend is to look at or copy the content.
+	property(property&&) = default;
+	property(const property&) = default;
+	property& operator=(const property&)= default;
+	property& operator=(property&&) = default;
 	// redefine if necessary
 	public:
 

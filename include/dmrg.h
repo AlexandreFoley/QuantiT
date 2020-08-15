@@ -68,6 +68,9 @@ torch::Scalar dmrg(const MPO& hamiltonian, MPS& in_out_state,const dmrg_options&
  */
 std::tuple<torch::Scalar,MPS> dmrg(const MPO& hamiltonian,const dmrg_options& options);
 
+namespace details{
+	torch::Scalar dmrg_impl(const MPO& hamiltonian,const MPT& twosites_hamil, MPS& in_out_state,const dmrg_options& options, env_holder& Env);
+}
 
 }//quantt
 
