@@ -14,7 +14,7 @@
 
 #include "dmrg.h"
 #include "LinearAlgebra.h"
-
+#include <fmt/core.h>
 namespace quantt{
 
 struct env_holder
@@ -38,18 +38,18 @@ std::tuple<torch::Tensor,torch::Tensor> two_sites_update(torch::Tensor state,tor
 
 torch::Scalar dmrg(const MPO& hamiltonian, MPS& in_out_state,const dmrg_options& options)
 {
-	if (options.pytorch_gradient)
+	if (!options.pytorch_gradient)
 	{
 		torch::NoGradGuard Gradientdisabled;//Globally (but Thread local) disable gradient computation while this object exists.
 		auto Env = generate_env(hamiltonian,in_out_state);
 		auto TwositesH = compute_2sitesHamil(hamiltonian);
-		return dmrg_impl(hamiltonian,TwositesH,in_out_state,options,Env);
+		return details::dmrg_impl(hamiltonian,TwositesH,in_out_state,options,Env);
 	}//Gradientdisabled gets destroyed here, gradient computation status is restore to what it was before.
 	else
 	{
 		auto Env = generate_env(hamiltonian,in_out_state);
 		auto TwositesH = compute_2sitesHamil(hamiltonian);
-		return dmrg_impl(hamiltonian,TwositesH,in_out_state,options,Env);
+		return details::dmrg_impl(hamiltonian,TwositesH,in_out_state,options,Env);
 	}
 	
 }
@@ -66,15 +66,18 @@ std::tuple<torch::Scalar,MPS> dmrg(const MPO& hamiltonian,const dmrg_options& op
 	return std::make_tuple(E0,out_mps);
 }
 
-template<class T> auto sweep(MPS& state,T update,int step,size_t Nstep)
+template<class T> auto sweep(MPS& state,T update,int step,size_t Nstep, size_t right_edge,size_t left_edge=0)
 {
 	torch::Tensor E0;
+	// fmt::print("sweep!\n");
 	for (size_t i = 0; i<Nstep;++i)
 	{
 		E0 = update(state,step);
 		auto& oc = state.orthogonality_center;
-		step = 2*(oc == 0 ) - 2*(oc == state.size()-1);
+		step += 2*(oc == left_edge ) - 2*(oc == right_edge);
+		// fmt::print("i {} oc {} step {} || ",i,oc,step);
 	}
+	// fmt::print("\n");
 	return std::make_tuple(E0,step);
 }
 
@@ -95,7 +98,7 @@ struct dmrg_2sites_update
 		torch::Tensor E0;
 		auto local_state = torch::tensordot(state[oc],state[oc+1],{2},{0});
 		std::tie(E0,local_state) = two_sites_update(local_state,twosite_hamil[oc],Env[oc-1],Env[oc+2]);
-		auto [u,d,v] = quantt::svd(local_state,2,options.cutoff);
+		auto [u,d,v] = quantt::svd(local_state,2,options.cutoff,options.minimum_bond,options.maximum_bond);
 		if (forward)
 		{
 			state[oc] = u;
@@ -123,14 +126,15 @@ torch::Scalar details::dmrg_impl(const MPO& hamiltonian,const MPT& twosites_hami
 	size_t init_pos = in_out_state.orthogonality_center;
 	auto N_step = twosites_hamil.size()-1;
 	double E0_update;
-	int step = 2*(in_out_state.orthogonality_center==0)-1;
+	int step = (in_out_state.orthogonality_center==0)? 1 : -1;
+	// fmt::print("step {}\n",step);
 	auto& oc = in_out_state.oc;
 	if (oc == in_out_state.size()-1) --oc;
 	dmrg_2sites_update update(hamiltonian,twosites_hamil,oc,Env,options);
 	for (auto iteration=0u;iteration<options.maximum_iterations;++iteration)
 	{	
 		torch::Tensor E0_tens;
-		std::tie(E0_tens,step) = sweep(in_out_state,update,step,N_step);
+		std::tie(E0_tens,step) = sweep(in_out_state,update,step,2*N_step,in_out_state.size()-2); //sweep from the oc and back to it.
 		E0_update = E0_tens.item().to<double>();
 		std::swap(E0,E0_update);
 		if (std::abs(E0_update-E0) < options.convergence_criterion)
@@ -138,6 +142,11 @@ torch::Scalar details::dmrg_impl(const MPO& hamiltonian,const MPT& twosites_hami
 			break;
 		}
 	}
+	if (oc != init_pos) 
+	{
+		if (oc != init_pos-1 and init_pos != in_out_state.size()-1 ) throw std::runtime_error(fmt::format("the orthogonality center finished somewhere surprising! final oc: {}. original oc: {}" ,oc,init_pos) );
+	}
+	if (oc != init_pos) in_out_state.move_oc(init_pos);
 		
 	
 	return E0;
@@ -232,14 +241,14 @@ torch::Tensor compute_left_env(torch::Tensor Hamil,torch::Tensor MPS,torch::Tens
 	return out;
 }
 
-torch::Tensor compute_right_env(torch::Tensor Hamil,torch::Tensor MPS,torch::Tensor left_env)
+torch::Tensor compute_right_env(torch::Tensor Hamil,torch::Tensor MPS,torch::Tensor right_env)
 {
 	/**
 	 * Left-right mirror to compute_left_env, with same index ordering (no mirroring) for Y and H.
 	 */
-	auto out = torch::tensordot(left_env,MPS,{0},{2});
+	auto out = torch::tensordot(right_env,MPS,{0},{2});
 	out = torch::tensordot(out,Hamil,{0,3},{2,3});
-	out = torch::tensordot(out,MPS.conj(),{0,3},{1,2});
+	out = torch::tensordot(out,MPS.conj(),{3,0},{1,2});
 	return out;
 }
 
@@ -258,9 +267,9 @@ MPT compute_2sitesHamil(const MPO & hamil)
 
 torch::Tensor hamil2site_times_state(torch::Tensor state,torch::Tensor hamil,torch::Tensor Lenv,torch::Tensor Renv)
 {
-	auto out = torch::tensordot(Renv,state,{0},{0});
+	auto out = torch::tensordot(Lenv,state,{0},{0});
 	out = torch::tensordot(out,hamil,{0,2,3},{0,5,4});
-	out = torch::tensordot(out,Renv,{4,1},{0,1});
+	out = torch::tensordot(out,Renv,{1,4},{0,1});
 	return out;
 }
 

@@ -14,9 +14,6 @@
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 // with the preceding define, doctest autogenerate a main() function that run the test found in the sources included.
 
-#include "MPT.h"
-#include "dimension_manip.h"
-#include "LinearAlgebra.h"
-#include "dmrg.h"
-#include "operators.h"
-#include "models.h"
+//in here the higher level tests, that combine features from multiple .h
+
+#include "DMRG_heisenberg_test.h"

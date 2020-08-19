@@ -16,34 +16,13 @@
 #include "include/torch_formatter.h"
 #include "fmt/ostream.h"
 
-#include "include/LinearAlgebra.h"
+#include "dmrg.h"
+#include "models.h"
 
-
-
-using tens = torch::Tensor;
-std::tuple<tens,tens,tens,tens> generate_tens()
-{
-	torch::Tensor c_up = torch::zeros({4,4},torch::kInt8);
-	auto c_dn = torch::zeros({4,4},torch::kInt8);
-	auto F = torch::zeros({4,4},torch::kInt8);
-	auto id = torch::zeros({4,4},torch::kInt8);
-
-	auto Acc_cup = c_up.accessor<int8_t,2>();
-	Acc_cup[0][1] = 1;
-	Acc_cup[2][3] = 1;
-	auto Acc_cdn = c_dn.accessor<int8_t,2>();
-	Acc_cdn[0][2] = 1;
-	Acc_cdn[1][3] = -1;
-	auto Acc_F = F.accessor<int8_t,2>();
-	Acc_F[0][0] = Acc_F[3][3] = 1;
-	Acc_F[1][1] = Acc_F[2][2] = -1;
-	auto Acc_id = id.accessor<int8_t,2>();
-	Acc_id[0][0] = Acc_id[1][1] = Acc_id[2][2] = Acc_id[3][3] = 1;
-	return std::make_tuple(c_up,c_dn,F,id);
-}
 
 int main()
 {
+	using namespace quantt;
 	fmt::print("C++ standard version in use {}\n",__cplusplus);
 	torch::set_default_dtype(torch::scalarTypeToTypeMeta(torch::kFloat64)); //otherwise the type promotion always goes to floats when promoting a tensor
 	torch::Device cuda_device(torch::kCPU); // default the cuda device to a cpu. small lie to keep the code working if there isn't one.
@@ -52,41 +31,23 @@ int main()
 		fmt::print("CUDA is available!\n");
 		cuda_device = torch::Device(torch::kCUDA); // set the cuda_device to the actual gpu if it would work
 	}
-
-	// fmt::print("{}",__COUNTER__);
-	// fmt::print("{}",__COUNTER__);
-	// fmt::print("{}",__COUNTER__);
-	// fmt::print("{}\n",__COUNTER__);
-	auto A = torch::rand({2,3,2,3});
-	auto ra = A.reshape({6,6});
-
-	auto [u_o,d_o,v_o] = ra.svd();
-	auto [u,d,v] = quantt::svd(A,2);
-
-	fmt::print("{}\n",u_o.sizes()==std::vector<int64_t>({30,30}));
-	fmt::print("shape: {}\n",u.sizes() );
-	fmt::print("It is the expected shape: {}\n",u.sizes()==std::vector<int64_t>({10,3,30}));
-
-	auto ru_o = u_o.reshape({2,3,6});
-
-	fmt::print("{}\n",torch::allclose(ru_o,u));
-
-	auto [e_o,s_o] = ra.symeig(true);
-	fmt::print("e {}\n",e_o ); //nothing in e, eig doesn't do what i thought it would.
-	fmt::print("e sizes {}\n",e_o.sizes() );
-	auto rs_o = s_o.reshape({2,3,6});
-	auto [e,s] = quantt::symeig(A,2);
-	fmt::print("s sizes {}\n",s.sizes());
-
-	fmt::print("s:{}\nrso{}\n",s,rs_o);
-
-
-	fmt::print("{}\n",s.sizes()==std::vector<int64_t>({2,3,6}));
-	fmt::print("{}\n",torch::allclose(rs_o,s));
-
-	// auto C = A > B;
-
-
+	// auto hamil = quantt::Heisenberg(1,10);
+	// quantt::dmrg_options options;
+	// auto [E0,state] = quantt::dmrg(hamil,options);
+	// fmt::print("10 sites AFM heisenberg Energy {}",E0.to<double>());
 	
+	MPO Hamil(5,torch::rand({2,5,2,5}));
+	dmrg_options opt;
+	opt.maximum_iterations = 10;
+	{
+		using namespace torch::indexing;
+		Hamil[0] = Hamil[0].index({Slice(0,1),Ellipsis});
+		Hamil[Hamil.size()-1] = Hamil[Hamil.size()-1].index({Ellipsis,Slice(0,1),Slice()});
+	}
+	torch::Scalar E;
+	MPS state;
+	// std::tie(E,state) = dmrg(Hamil,opt);
+	(std::tie(E,state) = dmrg(Hamil,opt));
+
 	return 0;
 }

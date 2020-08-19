@@ -24,6 +24,8 @@ add_executable(QuanTT_dev main.cpp )
 target_link_libraries(QuanTT_dev PRIVATE QuanTT_lib)
 target_compile_features(QuanTT_dev PRIVATE cxx_std_17)
 
+set(COMPONENT_SRCS ${HEADER_LIST}) #make vs-code intellisence work with with fresh, unused, header files. HEADER_LIST is definied in sources/CMakeList.txt
+
 if (MSVC)
   file(GLOB TORCH_DLLS "${TORCH_INSTALL_PREFIX}/lib/*.dll" )
   add_custom_command(TARGET QuanTT_test

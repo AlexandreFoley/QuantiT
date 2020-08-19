@@ -12,12 +12,13 @@
  */
 
 #include <exception>
+#include <limits>
 #include "LinearAlgebra.h"
 #include "dimension_manip.h"
 namespace quantt
 {
 
-auto compute_last_index(torch::Tensor d,torch::Scalar tol,torch::Scalar pow)
+auto compute_last_index(torch::Tensor d,torch::Scalar tol,torch::Scalar pow,size_t min_size, size_t max_size)
 {
 
 	//make no asumption regarding the batched nature of the tensors.
@@ -26,9 +27,9 @@ auto compute_last_index(torch::Tensor d,torch::Scalar tol,torch::Scalar pow)
 	auto Last_dim_size = d.sizes()[d.sizes().size()-1];
 	auto last_index = Last_dim_size-1;
 	auto trunc_val = d.index({Ellipsis,last_index}).abs().pow(pow);// will have to test to make sure we're not doing the abs and pow in place in d
-	while (last_index > 0)
+	while (last_index >= min_size)
 	{
-		if (  (trunc_val > tol).any().item().to<bool>() )
+		if (  (trunc_val > tol).any().item().to<double>() and last_index < max_size)
 			break;
 		--last_index;
 		trunc_val += d.index({Ellipsis,last_index}).abs().pow(pow);//Again, abs and pow must not be in place...
@@ -36,31 +37,31 @@ auto compute_last_index(torch::Tensor d,torch::Scalar tol,torch::Scalar pow)
 	return last_index;
 }
 
-std::tuple<torch::Tensor,torch::Tensor,torch::Tensor> truncate(torch::Tensor u,torch::Tensor d, torch::Tensor v, torch::Scalar tol, torch::Scalar pow)
+std::tuple<torch::Tensor,torch::Tensor,torch::Tensor> truncate(torch::Tensor u,torch::Tensor d, torch::Tensor v, torch::Scalar tol,size_t min_size,size_t max_size, torch::Scalar pow)
 {
 	//make no asumption regarding the batched nature of the tensors.
 	// not trying to optimize based on underlying type of the tensors. might be necessary, but will require significant efforts.
 	using namespace torch::indexing;
-	auto last_index = compute_last_index(d,tol,pow);
+	auto last_index = compute_last_index(d,tol,pow,min_size,max_size);
 	return std::make_tuple(u.index({Ellipsis,Slice(None,last_index)}),d.index({Ellipsis,Slice(None,last_index) }),v.index({Ellipsis,Slice(None,last_index)} ));
 }
 
 
-std::tuple<torch::Tensor,torch::Tensor> truncate(std::tuple<torch::Tensor,torch::Tensor> tensors, torch::Scalar tol, torch::Scalar pow)
+std::tuple<torch::Tensor,torch::Tensor> truncate(std::tuple<torch::Tensor,torch::Tensor> tensors, torch::Scalar tol,size_t min_size, size_t max_size, torch::Scalar pow)
 {	
 	auto& [d,u] = tensors;
-	return truncate(u,d,tol,pow);
+	return truncate(u,d,tol,min_size,max_size,pow);
 }
-std::tuple<torch::Tensor,torch::Tensor,torch::Tensor> truncate(std::tuple<torch::Tensor,torch::Tensor,torch::Tensor> tensors, torch::Scalar tol, torch::Scalar pow)
+std::tuple<torch::Tensor,torch::Tensor,torch::Tensor> truncate(std::tuple<torch::Tensor,torch::Tensor,torch::Tensor> tensors, torch::Scalar tol,size_t min_size,size_t max_size, torch::Scalar pow)
 {	
 	auto& [u,d,v] = tensors;
-	return truncate(u,d,v,tol,pow);
+	return truncate(u,d,v,tol,min_size,max_size,pow);
 }
 
-std::tuple<torch::Tensor,torch::Tensor> truncate(torch::Tensor e,torch::Tensor u, torch::Scalar tol, torch::Scalar pow)
+std::tuple<torch::Tensor,torch::Tensor> truncate(torch::Tensor e,torch::Tensor u, torch::Scalar tol,size_t min_size,size_t max_size, torch::Scalar pow)
 {
 	using namespace torch::indexing;
-	auto last_index = compute_last_index(e,tol,pow);
+	auto last_index = compute_last_index(e,tol,pow,min_size,max_size);
 	return std::make_tuple(u.index({Ellipsis,Slice(None,last_index)}),e.index({Ellipsis,Slice(None,last_index)}));
 }
 
@@ -80,7 +81,14 @@ std::tuple<torch::Tensor,torch::Tensor,torch::Tensor> svd(torch::Tensor A, size_
 
 std::tuple<torch::Tensor,torch::Tensor,torch::Tensor> svd(torch::Tensor A, size_t split,torch::Scalar tol, torch::Scalar pow)
 {
-	return truncate(quantt::svd(A,split), tol, pow);
+	size_t min_size = 1;
+	size_t max_size = std::numeric_limits<size_t>::max();
+	return svd(A,split,tol,min_size,max_size,pow);
+}
+
+std::tuple<torch::Tensor,torch::Tensor,torch::Tensor> svd(torch::Tensor A, size_t split,torch::Scalar tol,size_t min_size,size_t max_size, torch::Scalar pow)
+{
+	return truncate(quantt::svd(A,split), tol,min_size,max_size, pow);
 }
 
 
@@ -101,7 +109,14 @@ std::tuple<torch::Tensor,torch::Tensor> symeig(torch::Tensor A, size_t split)
 
 std::tuple<torch::Tensor,torch::Tensor> symeig(torch::Tensor A, size_t split,torch::Scalar tol, torch::Scalar pow)
 {
-	return truncate(quantt::symeig(A,split),tol,pow);
+	size_t min_size = 1;
+	size_t max_size = std::numeric_limits<size_t>::max();
+	return symeig(A,split,tol,min_size,max_size,pow);
+}
+
+std::tuple<torch::Tensor,torch::Tensor> symeig(torch::Tensor A, size_t split,torch::Scalar tol,size_t min_size,size_t max_size, torch::Scalar pow)
+{
+	return truncate(quantt::symeig(A,split),tol,min_size,max_size,pow);
 }
 
 std::tuple<torch::Tensor,torch::Tensor> eig(torch::Tensor A, size_t split)
@@ -110,7 +125,14 @@ std::tuple<torch::Tensor,torch::Tensor> eig(torch::Tensor A, size_t split)
 }
 std::tuple<torch::Tensor,torch::Tensor> eig(torch::Tensor A, size_t split,torch::Scalar tol, torch::Scalar pow)
 {
-	return truncate(quantt::eig(A,split),tol,pow);
+	size_t min_size = 1;
+	size_t max_size = std::numeric_limits<size_t>::max();
+	return eig(A,split,tol,min_size,max_size,pow);
+}
+
+std::tuple<torch::Tensor,torch::Tensor> eig(torch::Tensor A, size_t split,torch::Scalar tol,size_t min_size,size_t max_size, torch::Scalar pow)
+{
+	return truncate(quantt::eig(A,split),tol,min_size,max_size,pow);
 }
 
 }//namespace quantt

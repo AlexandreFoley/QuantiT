@@ -18,6 +18,9 @@
 #include "MPT.h"
 #include <limits>
 
+
+#include "cond_doctest.h"
+
 namespace quantt{
 
 struct dmrg_options
@@ -71,6 +74,25 @@ std::tuple<torch::Scalar,MPS> dmrg(const MPO& hamiltonian,const dmrg_options& op
 namespace details{
 	torch::Scalar dmrg_impl(const MPO& hamiltonian,const MPT& twosites_hamil, MPS& in_out_state,const dmrg_options& options, env_holder& Env);
 }
+
+TEST_CASE("dmrg run test")
+{//only test that dmrg runs and finish as expected.
+
+	MPO Hamil(5,torch::rand({2,5,2,5}));
+	dmrg_options opt;
+	opt.maximum_iterations = 10;
+	{
+		using namespace torch::indexing;
+		Hamil[0] = Hamil[0].index({Slice(0,1),Ellipsis});
+		Hamil[Hamil.size()-1] = Hamil[Hamil.size()-1].index({Ellipsis,Slice(0,1),Slice()});
+	}
+	torch::Scalar E;
+	MPS state;
+	// std::tie(E,state) = dmrg(Hamil,opt);
+	CHECK_NOTHROW(std::tie(E,state) = dmrg(Hamil,opt));
+
+}
+
 
 }//quantt
 
