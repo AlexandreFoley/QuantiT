@@ -252,7 +252,7 @@ namespace quantt
 				throw std::invalid_argument("orthogonality center position greater than the number of defined tensors.");
 		}
 
-		MPS(size_type lenght, const Tens &val, size_t oc) : vector_lift(lenght, val), orthogonality_center(oc)
+		MPS(size_type lenght, const Tens &val, size_t oc=0) : vector_lift(lenght, val), orthogonality_center(oc)
 		{
 			bool ok = check_one(val);
 			if (oc >= size() and oc != 0)
