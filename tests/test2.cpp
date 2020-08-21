@@ -15,6 +15,6 @@
 // with the preceding define, doctest autogenerate a main() function that run the test found in the sources included.
 
 //in here the higher level tests, that combine features from multiple .h
-#ifdef NDEBUG
+// #ifdef NDEBUG
 #include "DMRG_heisenberg_test.h"
-#endif
+// #endif

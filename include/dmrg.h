@@ -17,7 +17,7 @@
 #include <torch/torch.h>
 #include "MPT.h"
 #include <limits>
-
+#include <cmath>
 
 #include "cond_doctest.h"
 
@@ -73,6 +73,7 @@ std::tuple<torch::Scalar,MPS> dmrg(const MPO& hamiltonian,const dmrg_options& op
 
 namespace details{
 	torch::Scalar dmrg_impl(const MPO& hamiltonian,const MPT& twosites_hamil, MPS& in_out_state,const dmrg_options& options, env_holder& Env);
+	std::tuple<torch::Tensor,torch::Tensor,torch::Tensor> eig2x2Mat(torch::Tensor a0,torch::Tensor a1, torch::Tensor b);
 }
 
 TEST_CASE("dmrg run test")
@@ -92,7 +93,28 @@ TEST_CASE("dmrg run test")
 	CHECK_NOTHROW(std::tie(E,state) = dmrg(Hamil,opt));
 
 }
+TEST_CASE("2x2 eigen value problem")
+{
+	// setup: a random answer from which we construct a matrix
+	auto angle = torch::rand({},torch::kFloat64)*2*M_PI;
+	auto E0 = torch::rand({},torch::kFloat64)*-1;
+	auto E1 = torch::rand({},torch::kFloat64);
+	auto psi00 = torch::zeros({},torch::kFloat64);
+	auto psi01 = torch::zeros({},torch::kFloat64);
+	psi00=cos(angle); psi01=sin(angle);
+	auto psi10 = torch::zeros({},torch::kFloat64);
+	auto psi11 = torch::zeros({},torch::kFloat64);
+	psi10= sin(angle); psi11 = -cos(angle);
+	auto a0 = psi00.pow(2)*E0 + psi10.pow(2)*E1;//matrix element
+	auto a1 = psi01.pow(2)*E0 + psi11.pow(2)*E1;//matrix element
+	auto b = psi01*psi00*E0 + psi11*psi10*E1;//matrix element
 
+	auto[T_E0,T_psi00,T_psi01] = details::eig2x2Mat(a0,a1,b);
+	                                                                                     //for the phase gauge freedom.
+	bool state_check = (torch::allclose(psi00,T_psi00) and torch::allclose(psi01,T_psi01)) or (torch::allclose(-1*psi00,T_psi00) and torch::allclose(-1*psi01,T_psi01));
+	CHECK(state_check);
+	CHECK(torch::allclose(T_E0,E0));
+}
 
 }//quantt
 

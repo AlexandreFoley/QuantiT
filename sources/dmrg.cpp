@@ -17,6 +17,8 @@
 #include <fmt/core.h>
 namespace quantt{
 
+using namespace details;
+
 struct env_holder
 {
 	MPT env;
@@ -137,7 +139,7 @@ torch::Scalar details::dmrg_impl(const MPO& hamiltonian,const MPT& twosites_hami
 		std::tie(E0_tens,step) = sweep(in_out_state,update,step,2*N_step,in_out_state.size()-2); //sweep from the oc and back to it.
 		E0_update = E0_tens.item().to<double>();
 		std::swap(E0,E0_update);
-		if (std::abs(E0_update-E0) < options.convergence_criterion)
+		if (!(std::abs(E0_update-E0) > options.convergence_criterion)) // looks weird? it's so it stop on nan (nan compare false with everything).
 		{
 			break;
 		}
@@ -273,11 +275,11 @@ torch::Tensor hamil2site_times_state(torch::Tensor state,torch::Tensor hamil,tor
 	return out;
 }
 
-std::tuple<torch::Tensor,torch::Tensor,torch::Tensor> eig2x2Mat(torch::Tensor a0,torch::Tensor a1, torch::Tensor b)
+std::tuple<torch::Tensor,torch::Tensor,torch::Tensor> details::eig2x2Mat(torch::Tensor a0,torch::Tensor a1, torch::Tensor b)
 {
 	auto E = (a0+a1 - torch::sqrt(torch::pow(a0-a1,2)+4*b.pow(2)))/2;
 	auto o_coeff = b/torch::sqrt(torch::pow(a0-E,2)+b.pow(2));
-	auto n_coeff = torch::sqrt(1-o_coeff.pow(2));
+	auto n_coeff = -(a0-E)*o_coeff/b;//can't use o^2+n^2 = 1: loose important phase information that way.
 	return std::make_tuple(E,o_coeff,n_coeff);
 }
 
@@ -287,6 +289,8 @@ std::tuple<torch::Tensor,torch::Tensor,torch::Tensor> eig2x2Mat(torch::Tensor a0
 std::tuple<torch::Tensor,torch::Tensor> two_sites_update(torch::Tensor state,torch::Tensor hamil,torch::Tensor Lenv,torch::Tensor Renv)
 {
 	// one step of lanczos
+	auto n = torch::sqrt(torch::tensordot(state,state,{0,1,2,3},{0,1,2,3}));
+	state /= n;
 	auto psi_ip = hamil2site_times_state(state,hamil,Lenv,Renv);
 	auto b = torch::sqrt(torch::tensordot(psi_ip,psi_ip.conj(),{0,1,2,3},{0,1,2,3}));
 	psi_ip /= b;
