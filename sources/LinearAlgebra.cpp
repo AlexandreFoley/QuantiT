@@ -43,7 +43,7 @@ std::tuple<torch::Tensor,torch::Tensor,torch::Tensor> truncate(torch::Tensor u,t
 	// not trying to optimize based on underlying type of the tensors. might be necessary, but will require significant efforts.
 	using namespace torch::indexing;
 	auto last_index = compute_last_index(d,tol,pow,min_size,max_size);
-	return std::make_tuple(u.index({Ellipsis,Slice(None,last_index)}),d.index({Ellipsis,Slice(None,last_index) }),v.index({Ellipsis,Slice(None,last_index)} ));
+	return std::make_tuple(u.index({Ellipsis,Slice(None,last_index+1)}),d.index({Ellipsis,Slice(None,last_index+1) }),v.index({Ellipsis,Slice(None,last_index+1)} ));
 }
 
 
@@ -62,7 +62,7 @@ std::tuple<torch::Tensor,torch::Tensor> truncate(torch::Tensor e,torch::Tensor u
 {
 	using namespace torch::indexing;
 	auto last_index = compute_last_index(e,tol,pow,min_size,max_size);
-	return std::make_tuple(u.index({Ellipsis,Slice(None,last_index)}),e.index({Ellipsis,Slice(None,last_index)}));
+	return std::make_tuple(u.index({Ellipsis,Slice(None,last_index+1)}),e.index({Ellipsis,Slice(None,last_index+1)}));
 }
 
 std::tuple<torch::Tensor,torch::Tensor,torch::Tensor> svd(torch::Tensor A, size_t split)

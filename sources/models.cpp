@@ -36,13 +36,13 @@ namespace quantt
 		local_tens.index_put_({4,Slice(),4,Slice()},id);
 		local_tens.contiguous();
 		MPO out(lenght,local_tens);
-		out[0] = out[0].index({Slice(4,5),Ellipsis});
-		out[lenght-1] = out[lenght-1].index({Ellipsis,Slice(0,1),Slice()});
+		out[0] = out[0].index({Slice(4,5),Slice(),Slice(),Slice()});
+		out[lenght-1] = out[lenght-1].index({Slice(),Slice(),Slice(0,1),Slice()});
 		return out;
 	}
 	MPO Heisenberg(torch::Scalar J, size_t lenght)
 	{	
-		return details::Heisenberg_impl(-J/2.0,lenght);
+		return details::Heisenberg_impl(-J/4.0,lenght);
 	}
 
 	MPO Hubbard(torch::Scalar U,torch::Scalar mu,size_t lenght)

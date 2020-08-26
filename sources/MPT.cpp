@@ -103,4 +103,32 @@ bool MPO::check_ranks() const
 	return all_rank_4;
 }
 
+
+torch::Tensor contract(const MPS &a, const MPS &b, const MPO &obs)
+{
+	assert(a.size() == b.size());
+	auto E = torch::ones({1,1,1});
+	for (size_t i = 0; i < a.size(); ++i)
+	{
+		E = torch::tensordot(E, a[i], {0}, {0});
+		E = torch::tensordot(E, obs[i], {0, 2}, {0, 3});
+		E = torch::tensordot(E, b[i], {0, 2}, {0, 1});
+	}
+	auto L = torch::ones({1,1,1});
+	return torch::tensordot(E, L, {0, 1, 2}, {0, 1, 2});
+}
+
+torch::Tensor contract(const MPS& a, const MPS& b)
+{
+	assert(a.size() == b.size());
+	auto E = torch::ones({1,1});
+	for (size_t i = 0; i < a.size(); ++i)
+	{
+		E = torch::tensordot(E, a[i], {0}, {0});
+		E = torch::tensordot(E, b[i].conj(), {0, 1}, {0, 1});
+	}
+	auto L = torch::ones({1,1});
+	return torch::tensordot(E, L, {0, 1}, {0, 1});
+}
+
 }//namespace QuanTT

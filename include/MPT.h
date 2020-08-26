@@ -19,7 +19,7 @@
 #include <algorithm>
 #include <torch/torch.h>
 #include "property.h"
-
+#include <fmt/core.h>
 
 #include "cond_doctest.h"
 
@@ -31,8 +31,9 @@ namespace quantt
 	class MPS;
 	class MPO;
 	class MPT;
-	namespace details{
-		torch::Scalar dmrg_impl(const MPO& hamiltonian,const MPT& two_sites_hamil, MPS& in_out_state,const dmrg_options& options,env_holder& Env); 
+	namespace details
+	{
+		torch::Scalar dmrg_impl(const MPO &hamiltonian, const MPT &two_sites_hamil, MPS &in_out_state, const dmrg_options &options, env_holder &Env);
 	}
 	// matrix product tensors base type. require concrete derived class to implement MPT empty_copy(const S&)
 	template <class S>
@@ -217,11 +218,12 @@ namespace quantt
 		{
 			lhs.swap(rhs);
 		}
-		MPT& operator=(MPT other)
+		MPT &operator=(MPT other)
 		{
 			swap(other);
 			return *this;
 		}
+
 	private:
 		static MPT empty_copy(const MPT &in)
 		{
@@ -239,7 +241,7 @@ namespace quantt
 		bool check_ranks() const;
 		static bool check_one(const Tens &tens);
 		MPS() : vector_lift<MPS>(), orthogonality_center(0) {}
-		MPS(size_type size) : vector_lift<MPS>(size),orthogonality_center(0) {}
+		MPS(size_type size) : vector_lift<MPS>(size), orthogonality_center(0) {}
 		MPS(const MPS &other) : vector_lift(other), orthogonality_center(other.orthogonality_center) {}
 		MPS(MPS &&other)
 		noexcept : vector_lift(std::move(other)), orthogonality_center(other.orthogonality_center) {}
@@ -252,7 +254,7 @@ namespace quantt
 				throw std::invalid_argument("orthogonality center position greater than the number of defined tensors.");
 		}
 
-		MPS(size_type lenght, const Tens &val, size_t oc=0) : vector_lift(lenght, val), orthogonality_center(oc)
+		MPS(size_type lenght, const Tens &val, size_t oc = 0) : vector_lift(lenght, val), orthogonality_center(oc)
 		{
 			bool ok = check_one(val);
 			if (oc >= size() and oc != 0)
@@ -279,21 +281,19 @@ namespace quantt
 		}
 
 		virtual ~MPS() = default;
-		
+
 		void swap(MPS &other)
 		{
 			vector_lift<MPS>::swap(other);
 			using std::swap;
-			swap(other.orthogonality_center.value,orthogonality_center.value);
+			swap(other.orthogonality_center.value, orthogonality_center.value);
 		}
 
-		MPS& operator=(MPS other)
+		MPS &operator=(MPS other)
 		{
 			swap(other);
 			return *this;
 		}
-
-
 
 		/**
 	 * explicit conversion to a MPT. discards the position of the orthogonality center and lift the MPS constraints.
@@ -308,7 +308,7 @@ namespace quantt
 	 * move the orthogonality center to the position i on the chain.
 	 */
 		void move_oc(int i);
-		friend torch::Scalar details::dmrg_impl(const MPO& hamiltonian,const MPT& two_sites_hamil, MPS& in_out_state,const dmrg_options& options,env_holder& Env); //allow dmrg to manipulate the oc.
+		friend torch::Scalar details::dmrg_impl(const MPO &hamiltonian, const MPT &two_sites_hamil, MPS &in_out_state, const dmrg_options &options, env_holder &Env); //allow dmrg to manipulate the oc.
 	private:
 		size_t &oc = orthogonality_center.value; // private direct access to the value variable.
 		static MPS empty_copy(const MPS &in)
@@ -371,7 +371,7 @@ namespace quantt
 			return MPT(vector_lift<MPT>(static_cast<vector_lift<MPO> &>(*this)));
 		}
 
-		MPO& operator=(MPO other) noexcept
+		MPO &operator=(MPO other) noexcept
 		{
 			swap(other);
 			return *this;
@@ -387,7 +387,21 @@ namespace quantt
 	{
 		lhs.swap(rhs);
 	}
-	//TODO: add tests for constructors, swap, operator=, etc. for MPT,MPS and MPO.
+
+	template <class T, class Z = std::enable_if_t<std::is_base_of_v<vector_lift<T>, T>>> // Z only serves to prevent call on something else than MPT,MPS and MPO.
+	void print_dims(const T &mps)
+	{
+		fmt::print("MPS size: ");
+		for (const auto &i : mps)
+		{
+			fmt::print("{},", i.sizes());
+		}
+		fmt::print("\n");
+	}
+
+	torch::Tensor contract(const MPS &a, const MPS &b, const MPO &obs);
+	torch::Tensor contract(const MPS &a, const MPS &b);
+
 	TEST_CASE("MPT manipulations")
 	{
 		MPT amps({torch::rand({1, 2, 3}), torch::rand({3, 2, 6}), torch::rand({6, 2, 4})});
@@ -398,22 +412,22 @@ namespace quantt
 		REQUIRE(ampo.size() == 3);
 		REQUIRE(ampo.capacity() >= 3);
 
-		CHECK_NOTHROW( auto M1 = MPS(amps));// must assign somewhere so the optimizer doesn't play tricks on us.
-		CHECK_NOTHROW( auto M2 = MPO(ampo));
-		CHECK_THROWS_AS(auto M3 = MPS(ampo),std::invalid_argument);
-		CHECK_THROWS_AS(auto M4 = MPO(amps),std::invalid_argument);
-		CHECK_THROWS_AS(auto M5 = MPS(amps,-1),std::invalid_argument);
+		CHECK_NOTHROW(auto M1 = MPS(amps)); // must assign somewhere so the optimizer doesn't play tricks on us.
+		CHECK_NOTHROW(auto M2 = MPO(ampo));
+		CHECK_THROWS_AS(auto M3 = MPS(ampo), std::invalid_argument);
+		CHECK_THROWS_AS(auto M4 = MPO(amps), std::invalid_argument);
+		CHECK_THROWS_AS(auto M5 = MPS(amps, -1), std::invalid_argument);
 	}
 
 	TEST_CASE("MPS basic manipulation")
 	{
 		torch::set_default_dtype(torch::scalarTypeToTypeMeta(torch::kFloat64)); //otherwise the type promotion always goes to floats when promoting a tensor
 		//we must make sure side effects don't leak out of the test when compiling executable other than the test itself.
-		
+
 		SUBCASE("Bad constructions")
 		{
-			CHECK_THROWS_AS(MPS(5,torch::rand({1,3,1}),10),std::invalid_argument);
-			CHECK_THROWS_AS(MPS(5,torch::rand({1,3,5}),1),std::invalid_argument);
+			CHECK_THROWS_AS(MPS(5, torch::rand({1, 3, 1}), 10), std::invalid_argument);
+			CHECK_THROWS_AS(MPS(5, torch::rand({1, 3, 5}), 1), std::invalid_argument);
 		}
 		SUBCASE("Construction")
 		{
@@ -430,19 +444,19 @@ namespace quantt
 			// size_0 = A[0].sizes().vec(); //copy the current size of A[0];
 			SUBCASE("moving orthogonality center")
 			{
-				auto norm2 = torch::tensordot(torch::tensordot(torch::tensordot(A[0],A[0].conj(),{0,1},{0,1}),A[1],{0},{0}),A[1].conj(),{0,1,2},{0,1,2} );
+				auto norm2 = torch::tensordot(torch::tensordot(torch::tensordot(A[0], A[0].conj(), {0, 1}, {0, 1}), A[1], {0}, {0}), A[1].conj(), {0, 1, 2}, {0, 1, 2});
 				A;
 				// REQUIRE(norm2.sizes().size()==1);
 				// REQUIRE(norm2.sizes()[0] == 1);
-				CHECK_THROWS_AS(A.move_oc(2),std::invalid_argument);
+				CHECK_THROWS_AS(A.move_oc(2), std::invalid_argument);
 				A.move_oc(1);
 				CHECK(A.orthogonality_center == 1);
 				CHECK(A[0].sizes() == size_0);
 				CHECK(A[1].sizes() == size_1);
-				auto CC = torch::tensordot(A[0],A[0].conj(),{0,1},{0,1});
-				CHECK(torch::allclose(CC,torch::eye(3)));
+				auto CC = torch::tensordot(A[0], A[0].conj(), {0, 1}, {0, 1});
+				CHECK(torch::allclose(CC, torch::eye(3)));
 				// the default tolerances for the close() familly of function is strange. It's too low for float comparison, but very high for double comparison.
-				auto canon_norm2 = torch::tensordot(A[1],A[1].conj(),{0,1,2},{0,1,2});
+				auto canon_norm2 = torch::tensordot(A[1], A[1].conj(), {0, 1, 2}, {0, 1, 2});
 				// REQUIRE(canon_norm2.sizes().size()==1);
 				// REQUIRE(canon_norm2.sizes()[0] == 1);
 				CHECK(norm2.item().to<double>() == doctest::Approx(canon_norm2.item().to<double>())); // the dynamical nature of the type make extracting a concrete value a bit complicated.
@@ -450,7 +464,7 @@ namespace quantt
 			SUBCASE("conversion to MPT")
 			{
 				auto B = MPT(A);
-				CHECK(torch::equal(B[0],A[0]));
+				CHECK(torch::equal(B[0], A[0]));
 			}
 		}
 	}
@@ -458,7 +472,7 @@ namespace quantt
 	{
 		SUBCASE("Bad constructions")
 		{
-			CHECK_THROWS_AS(MPO(5,torch::rand({1,3,5,3})),std::invalid_argument);
+			CHECK_THROWS_AS(MPO(5, torch::rand({1, 3, 5, 3})), std::invalid_argument);
 		}
 		SUBCASE("Construction")
 		{
@@ -467,7 +481,7 @@ namespace quantt
 			REQUIRE(A.size() == 2);
 			REQUIRE(A.capacity() >= 2);
 
-			auto size_0 = std::vector{1L, 4L, 3L ,4L};
+			auto size_0 = std::vector{1L, 4L, 3L, 4L};
 			auto size_1 = std::vector{3L, 4L, 1L, 4L};
 			CHECK(A[0].sizes() == size_0);
 			CHECK(A[1].sizes() == size_1);
@@ -475,11 +489,47 @@ namespace quantt
 			SUBCASE("conversion to MPT")
 			{
 				auto B = MPT(A);
-				CHECK(torch::equal(B[0],A[0]));
-				CHECK(torch::equal(B[1],A[1]));
+				CHECK(torch::equal(B[0], A[0]));
+				CHECK(torch::equal(B[1], A[1]));
 			}
 		}
 	}
+	TEST_CASE("contraction equivalence tests")
+	{
+		torch::set_default_dtype(torch::scalarTypeToTypeMeta(torch::kFloat64)); //otherwise the type promotion always goes to floats when promoting a tensor
+		MPS state(2, torch::rand({2, 2, 2}));
+		state[0] = state[0].reshape({1, 4, 2});
+		state[1] = state[1].reshape({2, 4, 1});
+		MPO op(2, torch::rand({2, 4, 2, 4}));
+		op[0] = op[0].reshape({1, 4, 4, 4});
+		op[1] = op[1].reshape({4, 4, 1, 4});
 
+		MPO idtt(2,torch::diag(torch::ones({4})).reshape({1,4,1,4}));
+
+		auto conc_idtt = torch::tensordot(idtt[0],idtt[1],{2},{0}).permute({0,1,3,4,2,5}).reshape({16, 16});
+		REQUIRE(torch::allclose(conc_idtt,torch::diag(torch::ones({16}))));
+		auto conc_op = torch::tensordot(op[0], op[1], {2}, {0}).permute({0,1,3,4,2,5}).reshape({16, 16});
+		auto conc_state = torch::tensordot(state[0], state[1], {2}, {0}).reshape({16});
+		
+		auto norm2 = torch::tensordot(conc_state,conc_state,{0},{0});
+		auto norm2_test = contract(state,state);
+		auto norm2_idtt = contract(state,state,idtt);
+		// fmt::print("{}\n",norm2);
+		// fmt::print("{}\n",norm2_test);
+		// fmt::print("{}\n",norm2_idtt);
+		CHECK(torch::allclose(norm2,norm2_test));
+		CHECK(torch::allclose(norm2,norm2_idtt));
+		
+
+		auto aver = torch::tensordot(conc_state, torch::tensordot(conc_op, conc_state, {1}, {0}), {0}, {0});
+		auto aver_norm2 = torch::tensordot(conc_state, torch::tensordot(conc_idtt, conc_state, {1}, {0}), {0}, {0});
+		
+		auto aver_test = contract(state, state, op);
+		// fmt::print("{}\n", aver);
+		// fmt::print("{}\n", aver_test);
+		// fmt::print("{}\n", aver_norm2);
+		CHECK(torch::allclose(aver, aver_test));
+
+	}
 } // namespace quantt
 #endif /* ADA5A359_8ACF_448D_91BC_09C085F510CC */

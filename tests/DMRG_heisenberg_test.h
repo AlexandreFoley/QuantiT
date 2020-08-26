@@ -51,70 +51,88 @@ TEST_CASE("solving the heisenberg model")
 		acc[3][0][0] = 1/std::sqrt(2);
 		acc[3][1][0] = -1/std::sqrt(2);
 	}
-	SUBCASE("10 sites AFM")
+	SUBCASE("2 sites AFM")
 	{	
-		auto hamil = quantt::Heisenberg(1,10);
-		quantt::MPS state(10,local_tens);
+		constexpr size_t size = 3;
+		auto hamil = quantt::Heisenberg(1,size);
+		quantt::MPS state(size,local_tens);
 		{
 			using namespace torch::indexing;
 			state[0] = state[0].index({Slice(0,1),Ellipsis});
-			state[9] = state[9].index({Ellipsis,Slice(0,1)});
+			state[size-1] = state[size-1].index({Ellipsis,Slice(0,1)});
 		}
 		quantt::dmrg_options options;
 		auto start = std::chrono::steady_clock::now();
 		auto E0 = quantt::dmrg(hamil,state,options);
 		auto end = std::chrono::steady_clock::now();
 		std::chrono::duration<double> elapsed_seconds = end - start;
-		fmt::print("10 sites AFM heisenberg Energy {}. obtained in {}\n",E0.to<double>(),elapsed_seconds.count());
+		fmt::print("{} sites AFM heisenberg Energy {}. obtained in {} seconds\n",size,E0.to<double>(),elapsed_seconds.count());
 	}
-	SUBCASE("20 sites AFM")
-	{
-		auto hamil = quantt::Heisenberg(1,20);
-		quantt::MPS state(20,local_tens);
-		{
-			using namespace torch::indexing;
-			state[0] = state[0].index({Slice(0,1),Ellipsis});
-			state[19] = state[19].index({Ellipsis,Slice(0,1)});
-		}
-		quantt::dmrg_options options;
-		auto start = std::chrono::steady_clock::now();
-		auto E0 = quantt::dmrg(hamil,state,options);
-		auto end = std::chrono::steady_clock::now();
-		std::chrono::duration<double> elapsed_seconds = end - start;
-		fmt::print("20 sites AFM heisenberg Energy {}. obtained in {}\n",E0.to<double>(),elapsed_seconds.count());
-	}
-	SUBCASE("50 sites AFM")
-	{
-		auto hamil = quantt::Heisenberg(1,50);
-		quantt::MPS state(50,local_tens);
-		{
-			using namespace torch::indexing;
-			state[0] = state[0].index({Slice(0,1),Ellipsis});
-			state[49] = state[49].index({Ellipsis,Slice(0,1)});
-		}
-		quantt::dmrg_options options;
-		auto start = std::chrono::steady_clock::now();
-		auto E0 = quantt::dmrg(hamil,state,options);
-		auto end = std::chrono::steady_clock::now();
-		std::chrono::duration<double> elapsed_seconds = end - start;
-		fmt::print("50 sites AFM heisenberg Energy {}. obtained in {}\n",E0.to<double>(),elapsed_seconds.count());
-	}
-	SUBCASE("100 sites AFM")
-	{
-		auto hamil = quantt::Heisenberg(1,100);
-		quantt::MPS state(100,local_tens);
-		{
-			using namespace torch::indexing;
-			state[0] = state[0].index({Slice(0,1),Ellipsis});
-			state[99] = state[99].index({Ellipsis,Slice(0,1)});
-		}
-		quantt::dmrg_options options;
-		auto start = std::chrono::steady_clock::now();
-		auto E0 = quantt::dmrg(hamil,state,options);
-		auto end = std::chrono::steady_clock::now();
-		std::chrono::duration<double> elapsed_seconds = end - start;
-		fmt::print("100 sites AFM heisenberg Energy {}. obtained in {}\n",E0.to<double>(),elapsed_seconds.count());
-	}
+	// SUBCASE("10 sites AFM")
+	// {	
+	// 	constexpr size_t size = 10;
+	// 	auto hamil = quantt::Heisenberg(1,size);
+	// 	quantt::MPS state(size,local_tens);
+	// 	{
+	// 		using namespace torch::indexing;
+	// 		state[0] = state[0].index({Slice(0,1),Ellipsis});
+	// 		state[size-1] = state[size-1].index({Ellipsis,Slice(0,1)});
+	// 	}
+	// 	quantt::dmrg_options options;
+	// 	auto start = std::chrono::steady_clock::now();
+	// 	auto E0 = quantt::dmrg(hamil,state,options);
+	// 	auto end = std::chrono::steady_clock::now();
+	// 	std::chrono::duration<double> elapsed_seconds = end - start;
+	// 	fmt::print("10 sites AFM heisenberg Energy {}. obtained in {} seconds\n",E0.to<double>(),elapsed_seconds.count());
+	// }
+	// SUBCASE("20 sites AFM")
+	// {
+	// 	auto hamil = quantt::Heisenberg(1,20);
+	// 	quantt::MPS state(20,local_tens);
+	// 	{
+	// 		using namespace torch::indexing;
+	// 		state[0] = state[0].index({Slice(0,1),Ellipsis});
+	// 		state[19] = state[19].index({Ellipsis,Slice(0,1)});
+	// 	}
+	// 	quantt::dmrg_options options;
+	// 	auto start = std::chrono::steady_clock::now();
+	// 	auto E0 = quantt::dmrg(hamil,state,options);
+	// 	auto end = std::chrono::steady_clock::now();
+	// 	std::chrono::duration<double> elapsed_seconds = end - start;
+	// 	fmt::print("20 sites AFM heisenberg Energy {}. obtained in {}\n",E0.to<double>(),elapsed_seconds.count());
+	// }
+	// SUBCASE("50 sites AFM")
+	// {
+	// 	auto hamil = quantt::Heisenberg(1,50);
+	// 	quantt::MPS state(50,local_tens);
+	// 	{
+	// 		using namespace torch::indexing;
+	// 		state[0] = state[0].index({Slice(0,1),Ellipsis});
+	// 		state[49] = state[49].index({Ellipsis,Slice(0,1)});
+	// 	}
+	// 	quantt::dmrg_options options;
+	// 	auto start = std::chrono::steady_clock::now();
+	// 	auto E0 = quantt::dmrg(hamil,state,options);
+	// 	auto end = std::chrono::steady_clock::now();
+	// 	std::chrono::duration<double> elapsed_seconds = end - start;
+	// 	fmt::print("50 sites AFM heisenberg Energy {}. obtained in {}\n",E0.to<double>(),elapsed_seconds.count());
+	// }
+	// SUBCASE("100 sites AFM")
+	// {
+	// 	auto hamil = quantt::Heisenberg(1,100);
+	// 	quantt::MPS state(100,local_tens);
+	// 	{
+	// 		using namespace torch::indexing;
+	// 		state[0] = state[0].index({Slice(0,1),Ellipsis});
+	// 		state[99] = state[99].index({Ellipsis,Slice(0,1)});
+	// 	}
+	// 	quantt::dmrg_options options;
+	// 	auto start = std::chrono::steady_clock::now();
+	// 	auto E0 = quantt::dmrg(hamil,state,options);
+	// 	auto end = std::chrono::steady_clock::now();
+	// 	std::chrono::duration<double> elapsed_seconds = end - start;
+	// 	fmt::print("100 sites AFM heisenberg Energy {}. obtained in {}\n",E0.to<double>(),elapsed_seconds.count());
+	// }
 // 	SUBCASE("1000 sites AFM")
 // 	{
 // 		auto hamil = quantt::Heisenberg(1,1000);
