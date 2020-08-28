@@ -435,7 +435,6 @@ namespace quantt
 
 			REQUIRE(A.size() == 2);
 			REQUIRE(A.capacity() >= 2);
-			A;
 			CHECK(A.orthogonality_center == 0);
 			auto size_0 = std::vector{1L, 4L, 3L};
 			auto size_1 = std::vector{3L, 4L, 1L};
@@ -445,7 +444,6 @@ namespace quantt
 			SUBCASE("moving orthogonality center")
 			{
 				auto norm2 = torch::tensordot(torch::tensordot(torch::tensordot(A[0], A[0].conj(), {0, 1}, {0, 1}), A[1], {0}, {0}), A[1].conj(), {0, 1, 2}, {0, 1, 2});
-				A;
 				// REQUIRE(norm2.sizes().size()==1);
 				// REQUIRE(norm2.sizes()[0] == 1);
 				CHECK_THROWS_AS(A.move_oc(2), std::invalid_argument);
@@ -504,32 +502,30 @@ namespace quantt
 		op[0] = op[0].reshape({1, 4, 4, 4});
 		op[1] = op[1].reshape({4, 4, 1, 4});
 
-		MPO idtt(2,torch::diag(torch::ones({4})).reshape({1,4,1,4}));
+		MPO idtt(2, torch::diag(torch::ones({4})).reshape({1, 4, 1, 4}));
 
-		auto conc_idtt = torch::tensordot(idtt[0],idtt[1],{2},{0}).permute({0,1,3,4,2,5}).reshape({16, 16});
-		REQUIRE(torch::allclose(conc_idtt,torch::diag(torch::ones({16}))));
-		auto conc_op = torch::tensordot(op[0], op[1], {2}, {0}).permute({0,1,3,4,2,5}).reshape({16, 16});
+		auto conc_idtt = torch::tensordot(idtt[0], idtt[1], {2}, {0}).permute({0, 1, 3, 4, 2, 5}).reshape({16, 16});
+		REQUIRE(torch::allclose(conc_idtt, torch::diag(torch::ones({16}))));
+		auto conc_op = torch::tensordot(op[0], op[1], {2}, {0}).permute({0, 1, 3, 4, 2, 5}).reshape({16, 16});
 		auto conc_state = torch::tensordot(state[0], state[1], {2}, {0}).reshape({16});
-		
-		auto norm2 = torch::tensordot(conc_state,conc_state,{0},{0});
-		auto norm2_test = contract(state,state);
-		auto norm2_idtt = contract(state,state,idtt);
+
+		auto norm2 = torch::tensordot(conc_state, conc_state, {0}, {0});
+		auto norm2_test = contract(state, state);
+		auto norm2_idtt = contract(state, state, idtt);
 		// fmt::print("{}\n",norm2);
 		// fmt::print("{}\n",norm2_test);
 		// fmt::print("{}\n",norm2_idtt);
-		CHECK(torch::allclose(norm2,norm2_test));
-		CHECK(torch::allclose(norm2,norm2_idtt));
-		
+		CHECK(torch::allclose(norm2, norm2_test));
+		CHECK(torch::allclose(norm2, norm2_idtt));
 
 		auto aver = torch::tensordot(conc_state, torch::tensordot(conc_op, conc_state, {1}, {0}), {0}, {0});
 		auto aver_norm2 = torch::tensordot(conc_state, torch::tensordot(conc_idtt, conc_state, {1}, {0}), {0}, {0});
-		
+
 		auto aver_test = contract(state, state, op);
 		// fmt::print("{}\n", aver);
 		// fmt::print("{}\n", aver_test);
 		// fmt::print("{}\n", aver_norm2);
 		CHECK(torch::allclose(aver, aver_test));
-
 	}
 } // namespace quantt
 #endif /* ADA5A359_8ACF_448D_91BC_09C085F510CC */

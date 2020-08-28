@@ -67,8 +67,7 @@ int main()
 	print_MPS_dims(state);
 	fmt::print("{} sites AFM heisenberg Energy per sites {:.10}. obtained in {} seconds\n", size, E0.to<double>() / size, elapsed_seconds.count());
 	fmt::print("norm of the state: \n{}\n", contract(state, state));
-	fmt::print("total energy in the state: \n{}\n", contract(state, state,hamil));
-
+	fmt::print("total energy in the state: \n{}\n", contract(state, state, hamil));
 
 	return 0;
 }

@@ -78,7 +78,7 @@ namespace quantt
 		std::tuple<torch::Tensor, torch::Tensor, torch::Tensor> eig2x2Mat(torch::Tensor a0, torch::Tensor a1, torch::Tensor b);
 		torch::Tensor hamil2site_times_state(torch::Tensor state, torch::Tensor hamil, torch::Tensor Lenv, torch::Tensor Renv);
 		MPT compute_2sitesHamil(const MPO &hamil);
-		std::tuple<torch::Tensor,torch::Tensor,torch::Tensor,torch::Tensor> one_step_lanczos(torch::Tensor state,torch::Tensor hamil,torch::Tensor Lenv,torch::Tensor Renv);
+		std::tuple<torch::Tensor, torch::Tensor, torch::Tensor, torch::Tensor> one_step_lanczos(torch::Tensor state, torch::Tensor hamil, torch::Tensor Lenv, torch::Tensor Renv);
 	} // namespace details
 
 	TEST_CASE("dmrg run test")
@@ -122,63 +122,61 @@ namespace quantt
 		CHECK(torch::allclose(T_E0, E0));
 	}
 
-
 	TEST_CASE("Two sites MPO")
 	{
 		torch::set_default_dtype(torch::scalarTypeToTypeMeta(torch::kFloat64)); //otherwise the type promotion always goes to floats when promoting a tensor
 		using namespace torch::indexing;
-		auto l_ising = torch::zeros({3,2,3,2});
+		auto l_ising = torch::zeros({3, 2, 3, 2});
 		{
-			auto acc = l_ising.accessor<double,4>();
-			acc[1][0][0][1]= acc[1][1][0][0] = 1;
-			acc[2][0][1][1]= acc[2][1][1][0] = 1;
+			auto acc = l_ising.accessor<double, 4>();
+			acc[1][0][0][1] = acc[1][1][0][0] = 1;
+			acc[2][0][1][1] = acc[2][1][1][0] = 1;
 
 			acc[0][0][0][0] = acc[0][1][0][1] = 1;
 			acc[2][0][2][0] = acc[2][1][2][1] = 1;
 		}
-		MPO ising(2,l_ising);
-		ising[0] = ising[0].index({Slice(2,3),Ellipsis});
-		ising[1] = ising[1].index({Slice(),Slice(),Slice(0,1),Slice()});
+		MPO ising(2, l_ising);
+		ising[0] = ising[0].index({Slice(2, 3), Ellipsis});
+		ising[1] = ising[1].index({Slice(), Slice(), Slice(0, 1), Slice()});
 
 		auto two_s_ising = details::compute_2sitesHamil(ising);
 
-
-		MPS rstate(2,torch::rand({2,2,2}));
-		rstate[0] = rstate[0].index({Slice(0,1),Ellipsis});
-		rstate[1] = rstate[1].index({Ellipsis,Slice(1,2)});
+		MPS rstate(2, torch::rand({2, 2, 2}));
+		rstate[0] = rstate[0].index({Slice(0, 1), Ellipsis});
+		rstate[1] = rstate[1].index({Ellipsis, Slice(1, 2)});
 
 		// fmt::print("Norm2 \n{}\n",contract(rstate,rstate));
 		// fmt::print("state\n{}\n{}\n",rstate[0].reshape({4}),rstate[1].reshape({4}));
-		rstate[0] = rstate[0]/torch::sqrt(contract(rstate,rstate)); //normalize
+		rstate[0] = rstate[0] / torch::sqrt(contract(rstate, rstate)); //normalize
 		// fmt::print("normed state\n{}\n{}\n",rstate[0].reshape({4}),rstate[1].reshape({4}));
-		CHECK(torch::allclose(contract(rstate,rstate),torch::ones({})));
+		CHECK(torch::allclose(contract(rstate, rstate), torch::ones({})));
 		// fmt::print("Norm2 \n{}\n",contract(rstate,rstate));
-		auto two_s_state = torch::tensordot(rstate[0],rstate[1],{2},{0});
-		CHECK(torch::allclose(tensordot(two_s_state,two_s_state,{0,1,2,3},{0,1,2,3}),torch::ones({})));
+		auto two_s_state = torch::tensordot(rstate[0], rstate[1], {2}, {0});
+		CHECK(torch::allclose(tensordot(two_s_state, two_s_state, {0, 1, 2, 3}, {0, 1, 2, 3}), torch::ones({})));
 
-		auto H_av = contract(rstate,rstate,ising);
-		auto H_av_2s = torch::squeeze(torch::tensordot(two_s_state,torch::tensordot(two_s_ising[0],two_s_state,{4,5},{1,2}),{1,2},{1,2}));
-		auto triv_env = torch::ones({1,1,1});
-		auto H_av_upd = torch::tensordot(two_s_state,quantt::details::hamil2site_times_state(two_s_state,two_s_ising[0],triv_env,triv_env),{0,1,2,3},{0,1,2,3});
+		auto H_av = contract(rstate, rstate, ising);
+		auto H_av_2s = torch::squeeze(torch::tensordot(two_s_state, torch::tensordot(two_s_ising[0], two_s_state, {4, 5}, {1, 2}), {1, 2}, {1, 2}));
+		auto triv_env = torch::ones({1, 1, 1});
+		auto H_av_upd = torch::tensordot(two_s_state, quantt::details::hamil2site_times_state(two_s_state, two_s_ising[0], triv_env, triv_env), {0, 1, 2, 3}, {0, 1, 2, 3});
 
-		CHECK(torch::allclose(H_av,H_av_2s));
-		CHECK(torch::allclose(H_av,H_av_upd));
+		CHECK(torch::allclose(H_av, H_av_2s));
+		CHECK(torch::allclose(H_av, H_av_upd));
 		// fmt::print("Correct value: \n{}\n",H_av);
 		// fmt::print("from two sites: \n{}\n",H_av_2s);
 		// fmt::print("from two sites update: \n{}\n",H_av_upd);
-		auto [Hpsi,a0,a1,b] = details::one_step_lanczos(two_s_state,two_s_ising[0],triv_env,triv_env);
+		auto [Hpsi, a0, a1, b] = details::one_step_lanczos(two_s_state, two_s_ising[0], triv_env, triv_env);
 		// fmt::print("one step lanczos: \n{}\n",a0);
-		auto [E,o_coeff,n_coeff] = details::eig2x2Mat(a0,a1,b);
-		CHECK(torch::allclose(o_coeff.pow(2)+n_coeff.pow(2),torch::ones({})));
-		auto psi_update = o_coeff*two_s_state + n_coeff*Hpsi;
-		CHECK(torch::allclose(tensordot(psi_update,psi_update,{0,1,2,3},{0,1,2,3}),torch::ones({})) );
-		CHECK(torch::allclose(tensordot(two_s_state,two_s_state,{0,1,2,3},{0,1,2,3}),torch::ones({})) );
-		CHECK(torch::allclose(tensordot(Hpsi,two_s_state,{0,1,2,3},{0,1,2,3}),torch::zeros({})) );
-		CHECK(torch::allclose(tensordot(Hpsi,Hpsi,{0,1,2,3},{0,1,2,3}),torch::ones({})) );
-		auto a1_test = torch::tensordot(Hpsi,quantt::details::hamil2site_times_state(Hpsi,two_s_ising[0],triv_env,triv_env),{0,1,2,3},{0,1,2,3});
-		CHECK(torch::allclose(a1,a1_test));
+		auto [E, o_coeff, n_coeff] = details::eig2x2Mat(a0, a1, b);
+		CHECK(torch::allclose(o_coeff.pow(2) + n_coeff.pow(2), torch::ones({})));
+		auto psi_update = o_coeff * two_s_state + n_coeff * Hpsi;
+		CHECK(torch::allclose(tensordot(psi_update, psi_update, {0, 1, 2, 3}, {0, 1, 2, 3}), torch::ones({})));
+		CHECK(torch::allclose(tensordot(two_s_state, two_s_state, {0, 1, 2, 3}, {0, 1, 2, 3}), torch::ones({})));
+		CHECK(torch::allclose(tensordot(Hpsi, two_s_state, {0, 1, 2, 3}, {0, 1, 2, 3}), torch::zeros({})));
+		CHECK(torch::allclose(tensordot(Hpsi, Hpsi, {0, 1, 2, 3}, {0, 1, 2, 3}), torch::ones({})));
+		auto a1_test = torch::tensordot(Hpsi, quantt::details::hamil2site_times_state(Hpsi, two_s_ising[0], triv_env, triv_env), {0, 1, 2, 3}, {0, 1, 2, 3});
+		CHECK(torch::allclose(a1, a1_test));
 		// fmt::print("a1 \n{}\na1_test\n{}\n",a1,a1_test);
-		auto H_av_Pupd = torch::tensordot(psi_update,quantt::details::hamil2site_times_state(psi_update,two_s_ising[0],triv_env,triv_env),{0,1,2,3},{0,1,2,3});
+		auto H_av_Pupd = torch::tensordot(psi_update, quantt::details::hamil2site_times_state(psi_update, two_s_ising[0], triv_env, triv_env), {0, 1, 2, 3}, {0, 1, 2, 3});
 		// fmt::print("actual update energie: \n{}\n", H_av_Pupd);
 		// fmt::print("predicted update energie: \n{}\n", E);
 	}

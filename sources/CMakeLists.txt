@@ -3,7 +3,7 @@
 set(INC_DIR "${QuanTT_SOURCE_DIR}/include")
 
 set(HEADER_LIST "${INC_DIR}/MPT.h" "${INC_DIR}/LinearAlgebra.h" "${INC_DIR}/dimension_manip.h" "${INC_DIR}/torch_formatter.h" "${INC_DIR}/doctest.h"
-                "${INC_DIR}/dmrg.h" "${INC_DIR}/operators.h" "${INC_DIR}/models.h" )
+                "${INC_DIR}/dmrg.h" "${INC_DIR}/operators.h" "${INC_DIR}/models.h" "${INC_DIR}/numeric.h")
 
 set(SOURCE_LIST )
 
