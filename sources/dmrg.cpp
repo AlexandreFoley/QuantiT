@@ -288,7 +288,7 @@ namespace quantt
 		auto crit = torch::sqrt(torch::pow(a0 - a1, 2) + 4 * (b.pow(2)));
 		auto E0 = (a0 + a1 - crit) / 2;
 
-		auto o_coeff = torch::sqrt((E0 - a1) / (crit)); // from arxiv.org/pdf/1908.03795.pdf
+		auto o_coeff = torch::sqrt((E0 - a1) / (-crit)); // from arxiv.org/pdf/1908.03795.pdf
 		auto n_coeff = -b * o_coeff / (a1 - E0);		//can't use o^2+n^2 = 1: loose important phase information that way.
 		return std::make_tuple(E0, o_coeff, n_coeff);
 		//DMRG doesn't work: testing if there's something wrong with the preceding formulas by taking them out.
