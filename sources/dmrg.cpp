@@ -37,25 +37,25 @@ namespace quantt
 	torch::Tensor compute_left_env(torch::Tensor Hamil, torch::Tensor MPS, torch::Tensor left_env);
 	torch::Tensor compute_right_env(torch::Tensor Hamil, torch::Tensor MPS, torch::Tensor left_env);
 	std::tuple<torch::Tensor, torch::Tensor> two_sites_update(torch::Tensor state, torch::Tensor hamil, torch::Tensor Left_environment, torch::Tensor Right_environment);
-
-	torch::Scalar dmrg(const MPO &hamiltonian, MPS &in_out_state, const dmrg_options &options)
+	
+	torch::Scalar dmrg(const MPO &hamiltonian, MPS &in_out_state, const dmrg_options &options,dmrg_logger& logger)
 	{
 		if (!options.pytorch_gradient)
 		{
 			torch::NoGradGuard Gradientdisabled; //Globally (but Thread local) disable gradient computation while this object exists.
 			auto Env = generate_env(hamiltonian, in_out_state);
 			auto TwositesH = compute_2sitesHamil(hamiltonian);
-			return details::dmrg_impl(hamiltonian, TwositesH, in_out_state, options, Env);
+			return details::dmrg_impl(hamiltonian, TwositesH, in_out_state, options, Env,logger);
 		} //Gradientdisabled gets destroyed here, gradient computation status is restore to what it was before.
 		else
 		{
 			auto Env = generate_env(hamiltonian, in_out_state);
 			auto TwositesH = compute_2sitesHamil(hamiltonian);
-			return details::dmrg_impl(hamiltonian, TwositesH, in_out_state, options, Env);
+			return details::dmrg_impl(hamiltonian, TwositesH, in_out_state, options, Env,logger);
 		}
 	}
 
-	std::tuple<torch::Scalar, MPS> dmrg(const MPO &hamiltonian, const dmrg_options &options)
+	std::tuple<torch::Scalar, MPS> dmrg(const MPO &hamiltonian, const dmrg_options &options,dmrg_logger& logger)
 	{
 		using namespace torch::indexing;
 		auto length = hamiltonian.size();
@@ -125,7 +125,7 @@ namespace quantt
 	/**
 	* The actual implementation.
 	*/
-	torch::Scalar details::dmrg_impl(const MPO &hamiltonian, const MPT &twosites_hamil, MPS &in_out_state, const dmrg_options &options, env_holder &Env)
+	torch::Scalar details::dmrg_impl(const MPO &hamiltonian, const MPT &twosites_hamil, MPS &in_out_state, const dmrg_options &options, env_holder &Env, dmrg_logger& logger)
 	{
 		double E0 = 100000.0;
 		auto sweep_dir = 1;
@@ -140,11 +140,13 @@ namespace quantt
 		if (oc == in_out_state.size() - 1)
 			--oc;
 		dmrg_2sites_update update(hamiltonian, twosites_hamil, oc, Env, options);
-		for (auto iteration = 0u; iteration < options.maximum_iterations; ++iteration)
+		auto iteration=0u;
+		for (iteration = 0u; iteration < options.maximum_iterations; ++iteration)
 		{
 			torch::Tensor E0_tens;
 			// fmt::print("\nSweep\n\n");
 			std::tie(E0_tens, step) = sweep(in_out_state, update, step, 2 * N_step, in_out_state.size() - 2); //sweep from the oc and back to it.
+			logger.it_log_all(iteration,E0_tens,in_out_state);
 			E0_update = E0_tens.item().to<double>();
 			std::swap(E0, E0_update);
 			if (!(std::abs(E0_update - E0) > options.convergence_criterion)) // looks weird? it's so it stop on nan (nan compare false with everything).
@@ -159,6 +161,8 @@ namespace quantt
 		}
 		if (oc != init_pos)
 			in_out_state.move_oc(init_pos);
+		
+		logger.end_log_all(iteration,torch::tensor({E0}),in_out_state);
 
 		return E0;
 	}

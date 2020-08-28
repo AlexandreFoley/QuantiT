@@ -57,24 +57,66 @@ namespace quantt
 		dmrg_options &operator=(const dmrg_options &) = default;
 		dmrg_options &operator=(dmrg_options &&) = default;
 	};
+/**
+ * Pure virtual base class for logging the state of dmrg.
+ * This logger is meant to do macro scale logging: as such it isn't perfomance critical and we can afford the virtual calls.
+ * dmrg call it_log_all at every iterations and call end_log_all once when the state is converged.
+ * the last call to it_log_all receive the same arguments as end_log_all (it's not useful to have both function do something if it_log_all does something at every iterations).
+ */
+	class dmrg_logger
+	{
+		public:
+		virtual void log_step(size_t) = 0;
+		virtual void log_energy(torch::Tensor) = 0;
+		virtual void log_bond_dims(const MPS&)=0;
 
+		virtual void it_log_all(size_t step_num, torch::Tensor E,const MPS& state)
+		{
+			log_all(step_num,E,state);
+		}
+		virtual void end_log_all(size_t step_num, torch::Tensor E,const MPS& state)
+		{
+			log_all(step_num,E,state);
+		}
+
+		virtual void log_all(size_t step_num, torch::Tensor E,const MPS& state)
+		{
+			log_step(step_num);
+			log_energy(E);
+			log_bond_dims(state);
+		}
+
+		virtual ~dmrg_logger(){}
+	};
+	/**
+	 * A default logger that does nothing.
+	 */
+	class dmrg_default_logger final: public dmrg_logger
+	{
+		public:
+		void log_step(size_t ) override {}
+		void log_energy(torch::Tensor) override {}
+		void log_bond_dims(const MPS&) override {}
+
+	};
+	namespace{dmrg_default_logger dummy_logger;}
 	/**
  * Apply the DMRG algorithm to solve the ground state of the input hamiltonian given as a MPO.
  * Uses the supplied MPS in_out_state as a starting point, and store the optimized MPS there.
  * The associated energy is the return value. This might change in the future to a status bundle.
  */
-	torch::Scalar dmrg(const MPO &hamiltonian, MPS &in_out_state, const dmrg_options &options);
+	torch::Scalar dmrg(const MPO &hamiltonian, MPS &in_out_state, const dmrg_options &options, dmrg_logger& logger = dummy_logger);
 
 	/**
  * Apply the DMRG algorithm to solve the ground state of the input hamiltonian given as a MPO.
  * uses a random starting MPS with minimum_bond bond dimension.
  * return the ground state energy and optimized MPS.
  */
-	std::tuple<torch::Scalar, MPS> dmrg(const MPO &hamiltonian, const dmrg_options &options);
+	std::tuple<torch::Scalar, MPS> dmrg(const MPO &hamiltonian, const dmrg_options &options, dmrg_logger& logger = dummy_logger);
 
 	namespace details
 	{
-		torch::Scalar dmrg_impl(const MPO &hamiltonian, const MPT &twosites_hamil, MPS &in_out_state, const dmrg_options &options, env_holder &Env);
+		torch::Scalar dmrg_impl(const MPO &hamiltonian, const MPT &twosites_hamil, MPS &in_out_state, const dmrg_options &options, env_holder &Env, dmrg_logger& logger);
 		std::tuple<torch::Tensor, torch::Tensor, torch::Tensor> eig2x2Mat(torch::Tensor a0, torch::Tensor a1, torch::Tensor b);
 		torch::Tensor hamil2site_times_state(torch::Tensor state, torch::Tensor hamil, torch::Tensor Lenv, torch::Tensor Renv);
 		MPT compute_2sitesHamil(const MPO &hamil);

@@ -28,12 +28,13 @@ namespace quantt
 	//forward declaration for dmrg_impl.
 	class env_holder;
 	class dmrg_options;
+	class dmrg_logger;
 	class MPS;
 	class MPO;
 	class MPT;
 	namespace details
 	{
-		torch::Scalar dmrg_impl(const MPO &hamiltonian, const MPT &two_sites_hamil, MPS &in_out_state, const dmrg_options &options, env_holder &Env);
+		torch::Scalar dmrg_impl(const MPO &hamiltonian, const MPT &two_sites_hamil, MPS &in_out_state, const dmrg_options &options, env_holder &Env, dmrg_logger& logger);
 	}
 	// matrix product tensors base type. require concrete derived class to implement MPT empty_copy(const S&)
 	template <class S>
@@ -308,7 +309,7 @@ namespace quantt
 	 * move the orthogonality center to the position i on the chain.
 	 */
 		void move_oc(int i);
-		friend torch::Scalar details::dmrg_impl(const MPO &hamiltonian, const MPT &two_sites_hamil, MPS &in_out_state, const dmrg_options &options, env_holder &Env); //allow dmrg to manipulate the oc.
+		friend torch::Scalar details::dmrg_impl(const MPO &hamiltonian, const MPT &two_sites_hamil, MPS &in_out_state, const dmrg_options &options, env_holder &Env, dmrg_logger& logger); //allow dmrg to manipulate the oc.
 	private:
 		size_t &oc = orthogonality_center.value; // private direct access to the value variable.
 		static MPS empty_copy(const MPS &in)
