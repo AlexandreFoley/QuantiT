@@ -48,17 +48,25 @@ class dmrg_log_sweeptime final: public quantt::dmrg_logger
 
 	void log_step(size_t it) override {it_num = it;}
 	void log_energy(torch::Tensor) override {}
+
+	void init(const quantt::dmrg_options&) override
+	{
+		then = std::chrono::steady_clock::now();
+	}
+
 	void log_bond_dims(const quantt::MPS& mps) override 
 	{
 		auto pos = mps.size()/2;
 		middle_bond_dim = std::max(mps[pos].sizes()[0],mps[pos].sizes()[2]);
 	}
-	void it_log_all(size_t it, torch::Tensor,const quantt::MPS&) override 
+	void it_log_all(size_t it, torch::Tensor E0,const quantt::MPS&) override 
 	{
 		auto now = std::chrono::steady_clock::now();
 		std::chrono::duration<double> elapsed_seconds = now - then;
 		then = now;
 		time_list[it] = elapsed_seconds.count();
+		log_step(it);
+		log_energy(E0);
 	}
 
 };

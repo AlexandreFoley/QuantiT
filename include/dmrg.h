@@ -60,7 +60,7 @@ namespace quantt
 /**
  * Pure virtual base class for logging the state of dmrg.
  * This logger is meant to do macro scale logging: as such it isn't perfomance critical and we can afford the virtual calls.
- * dmrg call it_log_all at every iterations and call end_log_all once when the state is converged.
+ * dmrg call init before the first sweep, it_log_all at every iterations and call end_log_all once when the state is converged.
  * the last call to it_log_all receive the same arguments as end_log_all (it's not useful to have both function do something if it_log_all does something at every iterations).
  */
 	class dmrg_logger
@@ -69,6 +69,8 @@ namespace quantt
 		virtual void log_step(size_t) = 0;
 		virtual void log_energy(torch::Tensor) = 0;
 		virtual void log_bond_dims(const MPS&)=0;
+
+		virtual void init(const dmrg_options&){}
 
 		virtual void it_log_all(size_t step_num, torch::Tensor E,const MPS& state)
 		{

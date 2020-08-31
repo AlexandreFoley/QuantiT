@@ -141,6 +141,7 @@ namespace quantt
 			--oc;
 		dmrg_2sites_update update(hamiltonian, twosites_hamil, oc, Env, options);
 		auto iteration=0u;
+		logger.init(options);
 		for (iteration = 0u; iteration < options.maximum_iterations; ++iteration)
 		{
 			torch::Tensor E0_tens;
