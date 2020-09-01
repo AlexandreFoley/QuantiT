@@ -45,13 +45,17 @@ class dmrg_log_sweeptime final: public quantt::dmrg_logger
 	size_t middle_bond_dim;
 	std::chrono::steady_clock::time_point then;
 	std::vector<double> time_list;
+	std::vector<size_t> bond_list;
 
 	void log_step(size_t it) override {it_num = it;}
 	void log_energy(torch::Tensor) override {}
 
-	void init(const quantt::dmrg_options&) override
+	void init(const quantt::dmrg_options& opt) override
 	{
 		then = std::chrono::steady_clock::now();
+		time_list = std::vector<double>(opt.maximum_iterations);
+		bond_list = std::vector<size_t>(opt.maximum_iterations);
+
 	}
 
 	void log_bond_dims(const quantt::MPS& mps) override 
@@ -59,11 +63,13 @@ class dmrg_log_sweeptime final: public quantt::dmrg_logger
 		auto pos = mps.size()/2;
 		middle_bond_dim = std::max(mps[pos].sizes()[0],mps[pos].sizes()[2]);
 	}
-	void it_log_all(size_t it, torch::Tensor E0,const quantt::MPS&) override 
+	void it_log_all(size_t it, torch::Tensor E0,const quantt::MPS& mps) override 
 	{
 		auto now = std::chrono::steady_clock::now();
 		std::chrono::duration<double> elapsed_seconds = now - then;
 		then = now;
+		log_bond_dims(mps);
+		bond_list[it] = middle_bond_dim;
 		time_list[it] = elapsed_seconds.count();
 		log_step(it);
 		log_energy(E0);
@@ -118,6 +124,8 @@ TEST_CASE("solving the heisenberg model")
 	}
 	SUBCASE("DMRjulia comparison")
 	{	
+		auto init_num_threads = torch::get_num_threads();
+		torch::set_num_threads(1);
 		constexpr size_t size = 100;
 		auto hamil = quantt::Heisenberg(J, size);
 		dmrg_log_sweeptime logger;
@@ -133,7 +141,6 @@ TEST_CASE("solving the heisenberg model")
 		quantt::dmrg_options options;
 		options.convergence_criterion = 0;
 		options.maximum_iterations=20;
-		logger.time_list = std::vector<double>(options.maximum_iterations,0.0);
 		options.maximum_bond=45;
 		options.cutoff=1e-9;
 		auto start = std::chrono::steady_clock::now();
@@ -144,6 +151,8 @@ TEST_CASE("solving the heisenberg model")
 		fmt::print(print_string, size, E0.to<double>() / size, elapsed_seconds.count());
 		fmt::print("Obtained in {} iterations. Bond dimension at middle of MPS: {}.\n",logger.it_num,logger.middle_bond_dim);
 		fmt::print("time in seconds for each sweeps: {}\n",logger.time_list);
+		fmt::print("bond dimension after each sweeps: {}\n",logger.bond_list);
+		torch::set_num_threads(init_num_threads);
 	}
 	// 	SUBCASE("1000 sites AFM")
 	// 	{
