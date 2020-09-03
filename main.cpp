@@ -43,7 +43,7 @@ int main()
 
 	auto local_tens = 2 * torch::rand({4, 2, 4}) - 1;
 	constexpr size_t size = 10;
-	auto hamil = quantt::Heisenberg(-1., size);
+	auto hamil = quantt::Heisenberg(torch::tensor(-1.), size);
 	quantt::MPS state(size, local_tens);
 	{
 		using namespace torch::indexing;

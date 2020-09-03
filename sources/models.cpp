@@ -15,13 +15,16 @@
 #include <torch/torch.h>
 #include "models.h"
 #include "operators.h"
-
+#include <fmt/core.h>
+#include <exception>
 namespace quantt
 {
-	MPO details::Heisenberg_impl(torch::Scalar J,size_t lenght)
+	MPO details::Heisenberg_impl(torch::Tensor J,size_t lenght)
 	{
+		constexpr char* errorstr = "{0} must be a rank 0 tensor (a scalar), the supplied {0} is rank {1}";
+		if(J.sizes().size()>0) throw std::invalid_argument(fmt::format(errorstr,"J",J.sizes().size()));
 		auto type = torch::get_default_dtype();
-		if (J.isIntegral(true)) type = torch::scalarTypeToTypeMeta(torch::kInt8);
+		if (!J.is_floating_point()) type = torch::scalarTypeToTypeMeta(torch::kInt8);
 		auto local_tens = torch::zeros({5,2,5,2},type);
 		auto [sx,isy,sz,lo,id] = pauli();
 		using namespace torch::indexing;
@@ -40,13 +43,16 @@ namespace quantt
 		out[lenght-1] = out[lenght-1].index({Slice(),Slice(),Slice(0,1),Slice()});
 		return out;
 	}
-	MPO Heisenberg(torch::Scalar J, size_t lenght)
+	MPO Heisenberg(torch::Tensor J, size_t lenght)
 	{	
 		return details::Heisenberg_impl(-J/4.0,lenght);
 	}
 
-	MPO Hubbard(torch::Scalar U,torch::Scalar mu,size_t lenght)
+	MPO Hubbard(torch::Tensor U,torch::Tensor mu,size_t lenght)
 	{
+		constexpr char* errorstr = "{0} must be a rank 0 tensor (a scalar), the supplied {0} is rank {1}";
+		if(U.sizes().size()>0) throw std::invalid_argument(fmt::format(errorstr,"U",U.sizes().size()));
+		if(mu.sizes().size()>0) throw std::invalid_argument(fmt::format(errorstr,"mu",mu.sizes().size()));
 		auto local_tens = torch::zeros({6,4,6,4});
 		auto [c_up,c_dn,F,id] = fermions();
 		auto n_up = torch::matmul(c_up.conj().t(),c_up);

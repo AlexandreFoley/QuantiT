@@ -55,37 +55,51 @@ namespace quantt
 		virtual std::unique_ptr<cgroup_impl> clone() const = 0;
 		virtual bool operator==(const cgroup_impl &) const = 0;
 		virtual bool operator!=(const cgroup_impl &) const = 0;
+		virtual ~cgroup_impl() {}
 	};
 
 	template <class... groups>
 	class conc_cgroup_impl final : public cgroup_impl
 	{
-		tuple<groups...> val;
+		std::tuple<groups...> val;
 
 	public:
 		conc_cgroup_impl(groups... grp) : val(grp...) {}
 
-		std::unique_ptr<conc_cgroup_impl> clone() const
+		std::unique_ptr<cgroup_impl> clone() const override
 		{
-			return std::make_unique(*this);
+			return std::make_unique<conc_cgroup_impl>(*this);
 		}
 
-		conc_cgroup_impl &op(const conc_cgroup_impl &other) override
+		conc_cgroup_impl &op(const conc_cgroup_impl &other)
 		{
 			for_each2(val, other.val, [](auto &&vl, auto &&ovl) { vl.op(ovl); });
 			return *this;
 		}
+		cgroup_impl &op(const cgroup_impl &other) override
+		{
+			return op(dynamic_cast<const conc_cgroup_impl &>(other));
+		}
 		conc_cgroup_impl &inverse_() override
 		{
-			for_each(val, [](auto &&vl) { vl.inverse_(); }) return *this;
+			for_each(val, [](auto &&vl) { vl.inverse_(); });
+			return *this;
 		}
-		bool operator==(const conc_cgroup_impl &other) const override
+		bool operator==(const conc_cgroup_impl &other) const
 		{
 			return val == other.val;
 		}
-		bool operator!=(const conc_cgroup_impl &other) const override
+		bool operator==(const cgroup_impl &other) const override
+		{
+			return operator==(dynamic_cast<const conc_cgroup_impl &>(other));
+		}
+		bool operator!=(const conc_cgroup_impl &other) const
 		{
 			return val != other.val;
+		}
+		bool operator!=(const cgroup_impl &other) const override
+		{
+			return operator!=(dynamic_cast<const conc_cgroup_impl &>(other));
 		}
 	};
 
@@ -95,7 +109,7 @@ namespace quantt
 
 	public:
 		template <class... Groups>
-		cgroup(Groups... groups) : impl(conc_cgroup_impl(std::forward<Groups>(groups...))) {}
+		cgroup(Groups... groups) : impl(conc_cgroup_impl<Groups...>(std::forward<Groups...>(groups...))) {}
 		cgroup() = default;
 		cgroup(const cgroup &other) : impl(other.impl->clone()) {}
 		cgroup(cgroup &&) = default;
@@ -218,11 +232,11 @@ namespace quantt
 				return out.inverse_();
 			}
 
-			bool operator==(Z other)
+			bool operator==(Z other) const
 			{
 				return val == other.val;
 			}
-			bool operator!=(Z other)
+			bool operator!=(Z other) const
 			{
 				return val != other.val;
 			}
@@ -279,11 +293,11 @@ namespace quantt
 				U1 out(*this);
 				return out.inverse_();
 			}
-			bool operator==(U1 other)
+			bool operator==(U1 other) const
 			{
 				return val == other.val;
 			}
-			bool operator!=(U1 other)
+			bool operator!=(U1 other) const
 			{
 				return val != other.val;
 			}

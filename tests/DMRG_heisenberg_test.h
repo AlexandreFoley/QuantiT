@@ -81,11 +81,11 @@ TEST_CASE("solving the heisenberg model")
 {
 	torch::set_default_dtype(torch::scalarTypeToTypeMeta(torch::kFloat64));
 	auto local_tens = torch::rand({4, 2, 4});
-	torch::Scalar J = -1.;
+	int J = -1.;
 	std::string print_string = "{} sites AFM heisenberg Energy per sites {:.15}. obtained in {} seconds\n";
 	dmrg_log_final logger;
 	auto Heisen_afm_test = [&](size_t size) {
-		auto hamil = quantt::Heisenberg(J, size);
+		auto hamil = quantt::Heisenberg(torch::tensor(J), size);
 		quantt::MPS state(size, local_tens);
 		{
 			using namespace torch::indexing;
@@ -127,7 +127,7 @@ TEST_CASE("solving the heisenberg model")
 		auto init_num_threads = torch::get_num_threads();
 		torch::set_num_threads(1);
 		constexpr size_t size = 100;
-		auto hamil = quantt::Heisenberg(J, size);
+		auto hamil = quantt::Heisenberg(torch::tensor(J), size);
 		dmrg_log_sweeptime logger;
 		quantt::MPS state(size);
 		int p = 0;

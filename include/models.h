@@ -24,25 +24,24 @@ namespace quantt
 	/**
 	 * Generate the hamiltonian for the Heisenberg model.
 	 */
-	MPO Heisenberg(torch::Scalar J,size_t lenght);
+	MPO Heisenberg(torch::Tensor J,size_t lenght);
 	namespace details
 	{
-		MPO Heisenberg_impl(torch::Scalar J,size_t lenght);
+		MPO Heisenberg_impl(torch::Tensor J,size_t lenght);
 	}
 
 	/**
 	 * 
 	 * Generate the Hamiltonian for the first neighbor 1D Hubbard model. The enrgy scale is defined by the first neighbor hopping t=1.
 	 */
-	MPO Hubbard(torch::Scalar U,torch::Scalar mu,size_t lenght); 
+	MPO Hubbard(torch::Tensor U,torch::Tensor mu,size_t lenght); 
 
 
 TEST_CASE("Heisenberg")
 {
-	auto J = torch::Scalar(1);
-	REQUIRE(J.isIntegral(false) );
-
-	auto Heis = details::Heisenberg_impl(J,3);
+	int J(1);
+	// REQUIRE(J.isIntegral(false) );
+	auto Heis = details::Heisenberg_impl(torch::tensor(J),3);
 	CHECK(Heis[0].sizes().size() == 4);
 	auto size_left_edge = std::vector{1l,2l,5l,2l};
 	CHECK(Heis[0].sizes().vec() == size_left_edge);
