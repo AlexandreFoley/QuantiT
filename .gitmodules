@@ -2,6 +2,3 @@
     ignore = dirty
     path = extern/pytorch
     url = https://github.com/pytorch/pytorch.git
-[submodule "extern/googletest"]
-	path = extern/googletest
-	url = https://github.com/google/googletest

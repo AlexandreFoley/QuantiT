@@ -86,6 +86,7 @@ TEST_CASE("Pauli matrices")
 	CHECK(torch::equal(torch::matmul(isy,isy),-1*id));
 	CHECK(torch::equal(torch::matmul(sz,sz),id));
 	CHECK(torch::equal(torch::matmul(sx,torch::matmul(isy,sz)),-1*id));
+	// fmt::print("size of torch tensor {}\n",sizeof(sx));
 }
 
 }//quantt

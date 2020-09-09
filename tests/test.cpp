@@ -20,3 +20,4 @@
 #include "dmrg.h"
 #include "operators.h"
 #include "models.h"
+#include "TensorGroup.h"
