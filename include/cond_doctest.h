@@ -24,14 +24,15 @@
 // if we're not in a test context,
 // define the macro of doctest to do nothing at all. hopefully turn all the test code into unused code without any side effects.
 // there's actually many missing macro here. this is the subset i have used so far.
-// test case and subcase are made unnamed namespace: this give them file-local linkage, the contained loose code doesn't violate the single definition rule because of the multiple inclusion points.
-#define CONCAT(x,y,z) x ## y ## z
-#define CONCATENATE(x,y,z) CONCAT(x,y,z)
-#define DOCUNIQ_IMPL(x,y,z) CONCAT(x,y,z)
-#define DOCUNIQ(x) DOCUNIQ_IMPL(x,__COUNTER__,__LINE__)
+// test case are made a static template: this give them file-local linkage, the contained loose code doesn't violate the single definition rule because of the multiple inclusion points.
+#define CONCAT(x, y, z) x##y##z
+#define CONCATENATE(x, y, z) CONCAT(x, y, z)
+#define DOCUNIQ_IMPL(x, y, z) CONCAT(x, y, z)
+#define DOCUNIQ(x) DOCUNIQ_IMPL(x, __COUNTER__, __LINE__)
 
-#define TEST_CASE(...) template<class T> static void DOCUNIQ(TEST_CASE_DUMMY_FCT)(const T& a)
-#define SUBCASE(...) 
+#define TEST_CASE(...) template <class T> \
+static void DOCUNIQ(TEST_CASE_DUMMY_FCT)(const T &a)
+#define SUBCASE(...)
 #define CHECK_LE(...)
 #define CHECK_GE(...)
 #define CHECK_GE(...)
@@ -55,7 +56,6 @@
 #define REQUIRE(...)
 #define REQUIRE_THROWS_AS(...)
 #define REQUIRE_NOTHROW(...)
-
 
 #endif
 

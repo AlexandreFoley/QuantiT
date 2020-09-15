@@ -11,10 +11,11 @@
  * All rights reserved
  */
 
-#include "TensorGroup.h"
+#include "composite_group.h"
+#include "groups.h"
 
 using namespace quantt::groups;
 template class quantt::conc_cgroup_impl<Z>;
-template class quantt::conc_cgroup_impl<Z,Z>;
-template class quantt::conc_cgroup_impl<Z,Z,C<2> >;
-template class quantt::conc_cgroup_impl<C<2> >;
+template class quantt::conc_cgroup_impl<Z, Z>;
+template class quantt::conc_cgroup_impl<Z, Z, C<2>>;
+template class quantt::conc_cgroup_impl<C<2>>;

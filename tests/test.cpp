@@ -12,12 +12,13 @@
  */
 
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
-// with the preceding define, doctest autogenerate a main() function that run the test found in the sources included.
+// with the preceding define, doctest autogenerate a main() function that run
+// the test found in the sources included.
 
+#include "LinearAlgebra.h"
 #include "MPT.h"
 #include "dimension_manip.h"
-#include "LinearAlgebra.h"
 #include "dmrg.h"
-#include "operators.h"
 #include "models.h"
-#include "TensorGroup.h"
+#include "operators.h"
+#include "test_Cgroups.h"
