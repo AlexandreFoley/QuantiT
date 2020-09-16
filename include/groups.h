@@ -46,11 +46,11 @@ public:
 private:
 	static_assert(N > 0, "only value greater than zero make sense, only "
 	                     "greater than 1 are useful.");
-	uint16_t val;
+	uint16_t val; 
 
 public:
-	C(uint16_t _val)
-	noexcept : val(_val)
+	constexpr C(uint16_t _val) // constexpr value contructor, necessary for one of the checks for cgroup
+	    noexcept : val(_val)
 	{
 		val %= N; // only usage of modulo. that thing is expensive.
 		          // this can be bad, if the input is greater than N,
@@ -58,55 +58,57 @@ public:
 		          // Perhaps they made a mistake, but the code will happily keep
 		          // going.
 	}
+	constexpr C() : val(0) {} //default to the neutral element.
+
 	void swap(C& other) noexcept
 	{
 		using std::swap;
 		swap(other.val, val);
 	}
-	operator uint16_t() noexcept
+	constexpr operator uint16_t() noexcept
 	{
 		return val;
 	}
-	C& operator+=(C other) noexcept
+	constexpr C& operator+=(C other) noexcept
 	{
 		val += other.val;
 		val -= (val >= N) * N;
 		return *this;
 	}
 	// this function is what is actually used by the group compositor.
-	C& op(C other) noexcept
+	constexpr C& op(C other) noexcept
 	{
 		return (*this) += other;
 	}
-	C& operator*=(C other) noexcept // in group theory we typically talk of a
-	                                // product operator.
+	constexpr C& operator*=(C other) noexcept // in group theory we typically talk of a
+	                                          // product operator.
 	{
 		return (*this) += other;
 	}
-	friend C operator+(C lhs, C rhs) noexcept
+	constexpr friend C operator+(C lhs, C rhs) noexcept
 	{
 		return lhs += rhs;
 	}
-	friend C operator*(C lhs, C rhs) noexcept
+	friend constexpr C operator*(C lhs, C rhs) noexcept
 	{
 		return lhs *= rhs;
 	}
-	C& inverse_() noexcept
+	constexpr C& inverse_() noexcept
 	{
 		val = N - val;
 		return *this;
 	}
-	C inverse() const noexcept
+	constexpr C inverse() const noexcept
 	{
 		C out(*this);
 		return out.inverse_();
 	}
 
-	bool operator==(C other) const noexcept
+	constexpr bool operator==(C other) const noexcept
 	{
 		return val == other.val;
 	}
-	bool operator!=(C other) const noexcept
+	constexpr bool operator!=(C other) const noexcept
 	{
 		return val != other.val;
 	}
@@ -137,12 +139,15 @@ public:
  */
 class Z
 {
-	int16_t val;
+	int16_t val; 
 
 public:
-	Z(int16_t _val)
-	noexcept : val(_val) {}
-	operator uint16_t() noexcept
+	constexpr Z(int16_t _val) // constexpr value contructor, necessary for one of the checks for cgroup
+	    noexcept : val(_val)
+	{
+	}
+	constexpr Z() : val(0) {} // constexpr value contructor, necessary for one of the checks for cgroup
+	constexpr operator uint16_t() noexcept
 	{
 		return val;
 	}
@@ -151,49 +156,49 @@ public:
 		using std::swap;
 		swap(other.val, val);
 	}
-	Z& operator+=(Z other) noexcept
+	constexpr Z& operator+=(Z other) noexcept
 	{
 		val += other.val;
 		return *this;
 	}
-	Z& operator*=(Z other) noexcept // in group theory we typically talk of a
-	                                // product operator.
+	constexpr Z& operator*=(Z other) noexcept // in group theory we typically talk of a
+	                                          // product operator.
 	{
 		return (*this) += other;
 	}
-	friend Z operator+(Z lhs, Z rhs) noexcept
+	friend constexpr Z operator+(Z lhs, Z rhs) noexcept
 	{
 		return lhs += rhs;
 	}
-	friend Z operator*(Z lhs, Z rhs) noexcept
+	friend constexpr Z operator*(Z lhs, Z rhs) noexcept
 	{
 		return lhs *= rhs;
 	}
 	// Z& op( other) is the function used by cgroup.
-	Z& op(Z other) { return (*this) += other; }
-	Z& inverse_() noexcept
+	constexpr Z& op(Z other) { return (*this) += other; }
+	constexpr Z& inverse_() noexcept
 	{
 		val = -val;
 		return *this;
 	}
-	Z inverse() const noexcept
+	constexpr Z inverse() const noexcept //must be constexpr, allow compiler to verify a necessary property
 	{
 		Z out(*this);
 		return out.inverse_();
 	}
-	bool operator==(Z other) const
+	constexpr bool operator==(Z other) const //must be constexpr, allow compiler to verify a necessary property
 	{
 		return val == other.val;
 	}
-	bool operator!=(Z other) const
+	constexpr bool operator!=(Z other) const
 	{
 		return val != other.val;
 	}
 
 	// compute u such that (*this)*other = u*(*this), and store the result in
 	// other. Z is abelian, therefore this function does nothing
-	void commute(Z& other) const {}
-	void commute_(const Z& other) {}
+	constexpr void commute(Z& other) const {}
+	constexpr void commute_(const Z& other) {}
 	friend std::ostream& operator<<(std::ostream& out, const Z& c);
 };
 

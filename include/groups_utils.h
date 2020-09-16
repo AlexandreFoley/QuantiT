@@ -24,7 +24,7 @@ namespace groups
 // try to implement Grp& op(Grp&& other) in such a way that this template
 // is efficient.
 template <class T>
-T op(T lhs, const T& rhs) { return lhs.op(rhs); }
+constexpr T op(T lhs, const T& rhs) { return lhs.op(rhs); }
 
 // custom simple greoup must satisfy the following type traits to work with the
 // composite group type cgoups.
@@ -72,12 +72,15 @@ using has_comparatornotequal =
     or_<is_detected_exact<bool, comparatornotequal_member_sig, T>,
         is_detected_exact<bool, comparatornotequal_sig, T>>;
 
+template <class T>
+using default_to_neutral = std::integral_constant<bool, T() == groups::op(T(), T().inverse())>;
+
 // the following compile time template constant is true iff the template
 // parameter satisfy the constraint for a group that will work with cgroup
 template <class T>
 using is_group =
     and_<has_op<T>, has_inverse_<T>, has_commute<T>, has_commute_<T>,
-         has_comparatorequal<T>, has_comparatornotequal<T>>;
+         has_comparatorequal<T>, has_comparatornotequal<T>, default_to_neutral<T>>;
 
 template <class T>
 constexpr bool is_group_v = is_group<T>::value;

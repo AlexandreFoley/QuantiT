@@ -33,10 +33,10 @@ class cgroup_impl
 {
 public:
 	/**
- * @brief in place implementation of the group operation.
- * 	*this = (*this)*other, where "other" is the argument givent
- * @return cgroup_impl& : a reference to the current object.
- */
+	* @brief in place implementation of the group operation.
+	*        *this = (*this)*other, where "other" is the argument givent
+	* @return cgroup_impl& : a reference to the current object.
+	*/
 	virtual cgroup_impl& op(const cgroup_impl&) = 0;
 	/**
 	 * @brief in place implementation of the group operation, the result is 
@@ -67,6 +67,13 @@ public:
 	 */
 	virtual std::unique_ptr<cgroup_impl> clone() const = 0;
 
+	/**
+	 * @brief create the neutral element of whatever underlying type
+	 * 
+	 * @return std::unique_ptr<cgroup_impl> : thye neutral element
+	 */
+	virtual std::unique_ptr<cgroup_impl> neutral() const = 0;
+
 	virtual cgroup_impl& operator=(const cgroup_impl&) = 0;
 	virtual bool operator==(const cgroup_impl&) const = 0;
 	virtual bool operator!=(const cgroup_impl&) const = 0;
@@ -88,12 +95,17 @@ class conc_cgroup_impl final : public cgroup_impl
 public:
 	// has default constructor and assigment operator as well.
 	conc_cgroup_impl(Groups... grp) : val(grp...) {}
-	~conc_cgroup_impl() override = default;
-	conc_cgroup_impl& operator=(const conc_cgroup_impl& other);
+	conc_cgroup_impl() = default;
+	conc_cgroup_impl(const conc_cgroup_impl&) = default;
+	conc_cgroup_impl(conc_cgroup_impl&&) = default;
+	~conc_cgroup_impl() override {};
+	conc_cgroup_impl& operator=(conc_cgroup_impl other) noexcept;
 
 	std::unique_ptr<cgroup_impl> clone() const override;
+	std::unique_ptr<cgroup_impl> neutral()const override;
 
-	conc_cgroup_impl& op(const conc_cgroup_impl& other);
+	    conc_cgroup_impl&
+	    op(const conc_cgroup_impl& other);
 	cgroup_impl& op(const cgroup_impl& other) override;
 
 	void op_to(conc_cgroup_impl& other) const;
@@ -111,12 +123,15 @@ public:
 	void swap(conc_cgroup_impl& other);
 	void swap(cgroup_impl& other) override;
 };
-template <class... T>
-conc_cgroup_impl<T...>& conc_cgroup_impl<T...>::operator=(const conc_cgroup_impl<T...>& other)
+
+template<class... T>
+conc_cgroup_impl<T...>& conc_cgroup_impl<T...>::operator=(conc_cgroup_impl other) noexcept
 {
-	val = other.val;
+	using std::swap;
+	swap(val,other.val);
 	return *this;
 }
+
 template <class... T>
 conc_cgroup_impl<T...>& conc_cgroup_impl<T...>::op(const conc_cgroup_impl<T...>& other)
 {
@@ -130,6 +145,13 @@ cgroup_impl& conc_cgroup_impl<T...>::op(const cgroup_impl& other)
 {
 	return op(dynamic_cast<const conc_cgroup_impl&>(other));
 }
+
+template<class... T>
+std::unique_ptr<cgroup_impl> conc_cgroup_impl<T...>::neutral() const
+{
+	return std::make_unique<conc_cgroup_impl<T...> >();
+}
+
 template <class... T>
 std::unique_ptr<cgroup_impl> conc_cgroup_impl<T...>::clone() const
 {
