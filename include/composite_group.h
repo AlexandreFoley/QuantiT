@@ -57,10 +57,15 @@ public:
 	 *     verify that the arguements all satisfy the required group interface.
 	 * @param grps values used to initialized the group
 	 */
+	
 	template <class... Groups, class = std::enable_if_t<groups::all_group_v<Groups...>>>
 	cgroup(Groups... grps) : impl(std::make_unique<conc_cgroup_impl<Groups...>>(grps...)) {}
 
-	cgroup() : impl(std::make_unique<conc_cgroup_impl<groups::C<1>>>()) {} //default to a group that contain only the neutral element. avoid having an unitialized unique_ptr.
+	/**
+	 * @brief Construct a new cgroup object, initialized with a  representation of the trivial group.
+	 * 
+	 */
+	cgroup(); //default to a group that contain only the neutral element. avoid having an unitialized unique_ptr.
 	cgroup(const cgroup& other) : impl(other.impl->clone()) {}
 	explicit cgroup(cgroup_cref other); //explicit to avoid accidental copies and ambiguous overloads
 	explicit cgroup(cgroup_ref other);  //explicit to avoid accidental copies and ambiguous overloads
@@ -141,15 +146,6 @@ public:
 	cgroup inverse() const;
 
 	/**
-	 * @brief compute z such that (*this)*other = z*(*this)
-	 * store the resulting value in the other.
-	 * 
-	 * @param other works with cgroup_ref or cgroup.
-	 */
-	void commute(cgroup_ref other) const;
-	void commute_(cgroup_cref other);
-
-	/**
 	 * @brief equality comparison operator
 	 * 
 	 * @param lhs : works with cgroup,cgroup_ref and cgroup_cref
@@ -186,12 +182,12 @@ public:
 	cgroup_cref() = delete;
 	cgroup_cref(cgroup_impl& other) : ref(&other) {}
 	cgroup_cref(const cgroup_cref& other) : ref(other.ref) {}
+	cgroup_cref(const cgroup_impl* other): ref(other) {}
 
 	cgroup neutral() const;
 	const cgroup_impl& get() const;
 	cgroup inverse() const;
 
-	void commute(cgroup_ref other) const;
 };
 /**
  * @brief Reference type for cgroup. 
@@ -213,6 +209,7 @@ public:
 	                                        // character.
 	cgroup_ref(cgroup_ref& other) : ref(other.ref) {}
 	cgroup_ref(cgroup_impl& other) : ref(&other) {}
+	cgroup_ref(cgroup_impl* other) : ref(other) {}
 	operator cgroup_cref() const;
 	cgroup_ref& operator=(cgroup_cref other);
 
@@ -224,8 +221,6 @@ public:
 	cgroup_ref& operator+=(cgroup_cref other);
 	cgroup_ref& inverse_();
 	cgroup inverse() const;
-	void commute(cgroup_ref other) const;
-	void commute_(cgroup_cref other);
 	void swap(cgroup_ref other);
 };
 
@@ -332,14 +327,6 @@ cgroup& cgroup::operator+=(cgroup_cref other)
 	return (*this) *= other;
 }
 
-void cgroup::commute_(cgroup_cref other)
-{
-	impl->commute_(other.get());
-}
-void cgroup::commute(cgroup_ref other) const
-{
-	impl->commute(other.get());
-}
 bool operator!=(cgroup_cref left, cgroup_cref right)
 {
 	return left.get() != (right.get());
@@ -376,19 +363,7 @@ cgroup_ref& cgroup_ref::operator+=(const cgroup_cref other)
 {
 	return (*this) *= other;
 }
-void cgroup_ref::commute(cgroup_ref other) const
-{
-	get().commute(other.get());
-}
-void cgroup_ref::commute_(cgroup_cref other)
-{
-	get().commute_(other.get());
-}
 
-void cgroup_cref::commute(cgroup_ref other) const
-{
-	get().commute(other.get());
-}
 
 } // namespace quantt
 

@@ -49,6 +49,8 @@ private:
 	uint16_t val; 
 
 public:
+	constexpr static bool is_Abelian = true; //Make sure that your group is actually Abelian. I can't think of a way to check this property in finite time using the compiler.
+
 	constexpr C(uint16_t _val) // constexpr value contructor, necessary for one of the checks for cgroup
 	    noexcept : val(_val)
 	{
@@ -113,12 +115,6 @@ public:
 		return val != other.val;
 	}
 
-	// compute z such that *this*other = z*(*this), and store the result in
-	// other. Cn is Abelian, therefor this function does nothing. Necessary to
-	// support non abelian groups.
-	void commute(C& other) const {}
-	void commute_(const C& other) {}
-
 	friend std::ostream& operator<<(std::ostream& out, const C& c)
 	{
 		out << "grp::C<" << C::N << ">(" << c.val << ')';
@@ -142,6 +138,7 @@ class Z
 	int16_t val; 
 
 public:
+	constexpr static bool is_Abelian = true; //Make sure that your group is actually Abelian. I can't think of a way to check this property in finite time using the compiler.
 	constexpr Z(int16_t _val) // constexpr value contructor, necessary for one of the checks for cgroup
 	    noexcept : val(_val)
 	{
@@ -195,10 +192,6 @@ public:
 		return val != other.val;
 	}
 
-	// compute u such that (*this)*other = u*(*this), and store the result in
-	// other. Z is abelian, therefore this function does nothing
-	constexpr void commute(Z& other) const {}
-	constexpr void commute_(const Z& other) {}
 	friend std::ostream& operator<<(std::ostream& out, const Z& c);
 };
 

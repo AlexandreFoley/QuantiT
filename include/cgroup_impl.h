@@ -23,6 +23,13 @@ namespace quantt
 {
 
 /**
+ * @brief forward declaration of the iterator type used for type erased container
+ * 
+ */
+struct cgroup_iterator;
+struct const_cgroup_iterator;
+
+/**
  * @brief interface type for the implementation of a cgroup
  * cgroup stands for "composite group" and is the tensor product of multiple simple groups.
  * 
@@ -31,13 +38,26 @@ namespace quantt
  */
 class cgroup_impl
 {
+	friend struct cgroup_iterator;
+	friend struct const_cgroup_iterator;
+	/**
+	 * @brief compute the distance between two pointer to a derived type.
+	 *        for use by the iterators cgroup_iterator and const_cgroup_iterator.
+	 * 
+	 * @param rhs 
+	 * @return std::ptrdiff_t 
+	 */
+	virtual std::ptrdiff_t ptr_diff(const cgroup_impl* const rhs) const = 0;
+	virtual cgroup_impl* ptr_add(std::ptrdiff_t rhs) const = 0;
+
 public:
 	/**
 	* @brief in place implementation of the group operation.
 	*        *this = (*this)*other, where "other" is the argument givent
 	* @return cgroup_impl& : a reference to the current object.
 	*/
-	virtual cgroup_impl& op(const cgroup_impl&) = 0;
+	virtual cgroup_impl&
+	op(const cgroup_impl&) = 0;
 	/**
 	 * @brief in place implementation of the group operation, the result is 
 	 * stored in the given argument.
@@ -50,21 +70,7 @@ public:
 	 * @return cgroup_impl& : reference to the current object.
 	 */
 	virtual cgroup_impl& inverse_() = 0;
-	/**
-	 * @brief compute z such that (*this)*other = z*(*this)
-	 * the result z is stored in the method's arguement.
-	 */
-	virtual void commute(cgroup_impl& other) const = 0;
-	/**
-	 * @brief compute z such that (*this)*other = other*z where other.
-	 * z is stored in *this.
-	 */
-	virtual void commute_(const cgroup_impl& other) = 0;
-	/**
-	 * @brief create clone the object.
-	 * 
-	 * @return std::unique_ptr<cgroup_impl> : the clone
-	 */
+
 	virtual std::unique_ptr<cgroup_impl> clone() const = 0;
 
 	/**
@@ -90,8 +96,6 @@ public:
 template <class... Groups>
 class conc_cgroup_impl final : public cgroup_impl
 {
-	std::tuple<Groups...> val;
-
 public:
 	// has default constructor and assigment operator as well.
 	conc_cgroup_impl(Groups... grp) : val(grp...) {}
@@ -111,10 +115,6 @@ public:
 	void op_to(conc_cgroup_impl& other) const;
 	void op_to(cgroup_impl& other) const override;
 	conc_cgroup_impl& inverse_() override;
-	void commute(conc_cgroup_impl& other) const;
-	void commute(cgroup_impl& other) const override;
-	void commute_(const conc_cgroup_impl& other);
-	void commute_(const cgroup_impl& other) override;
 	cgroup_impl& operator=(const cgroup_impl& other) override;
 	bool operator==(const conc_cgroup_impl& other) const;
 	bool operator==(const cgroup_impl& other) const override;
@@ -122,6 +122,30 @@ public:
 	bool operator!=(const cgroup_impl& other) const override;
 	void swap(conc_cgroup_impl& other);
 	void swap(cgroup_impl& other) override;
+
+private:
+	/**
+	 * @brief implementation of the polymophic pointer difference
+	 * 
+	 * this is the way to implement this, basically no matter what.
+	 * 
+	 */
+	std::tuple<Groups...> val;
+	std::ptrdiff_t ptr_diff(const cgroup_impl* const rhs) const override
+	{
+		return this - static_cast<const conc_cgroup_impl* const>(rhs);
+	}
+
+	/**
+	 * @brief implementation of the polymophic pointer addition-assignment
+	 * 
+	 * this is the way to implement this, basically no matter what.
+	 * 
+	 */
+	conc_cgroup_impl* ptr_add(std::ptrdiff_t rhs) const override
+	{
+		return const_cast<conc_cgroup_impl*>(this) + rhs;
+	}
 };
 
 template<class... T>
@@ -176,30 +200,6 @@ conc_cgroup_impl<T...>& conc_cgroup_impl<T...>::inverse_()
 		vl.inverse_();
 	});
 	return *this;
-}
-template <class... T>
-void conc_cgroup_impl<T...>::commute(conc_cgroup_impl<T...>& other) const
-{
-	for_each2(val, other.val, [](auto&& vl, auto&& ovl) {
-		vl.commute(ovl);
-	});
-}
-template <class... T>
-void conc_cgroup_impl<T...>::commute(cgroup_impl& other) const
-{
-	commute(dynamic_cast<conc_cgroup_impl&>(other));
-}
-template <class... T>
-void conc_cgroup_impl<T...>::commute_(const conc_cgroup_impl<T...>& other)
-{
-	for_each2(val, other.val, [](auto&& vl, auto&& ovl) {
-		vl.commute_(ovl);
-	});
-}
-template <class... T>
-void conc_cgroup_impl<T...>::commute_(const cgroup_impl& other)
-{
-	commute_(dynamic_cast<const conc_cgroup_impl&>(other));
 }
 template <class... T>
 cgroup_impl& conc_cgroup_impl<T...>::operator=(const cgroup_impl& other)

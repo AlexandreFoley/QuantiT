@@ -75,7 +75,6 @@ TEST_CASE("composite groups")
 	CHECK(A_ref == A);
 	CHECK(A_ref == A_cref);
 	A_copy = A;
-	CHECK_NOTHROW(A.commute_(B));
 	CHECK(B == B_copy); // commute_ act on the the calling object only.
 	CHECK(A_copy == A); // this is an abelian group.
 	SUBCASE("Cast ambiguity")
@@ -127,7 +126,6 @@ TEST_CASE("composite groups")
 		                                    // operator+(cgroup_cref&,cgroup&&);
 	}
 	auto C = cgroup(B_cref);
-	A_cref.commute(C);
 	// C == A_ref *B_cref;
 	// C == B_cref *A_cref.inverse();
 	// C == A_ref *B_cref *A_cref.inverse();		   //A.commute(B) should be
@@ -136,7 +134,6 @@ TEST_CASE("composite groups")
 	               A_cref.inverse()); // A.commute(B) should be an optimisation
 	                                  // of the formula on the right.
 	C = A;
-	C.commute_(B_ref);
 	CHECK(C == B.inverse() * A * B); // A.commute_(B) should be an optimization
 	                                 // of the formula on the right.
 }

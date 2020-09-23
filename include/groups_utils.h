@@ -49,8 +49,7 @@ using has_commute_ = is_detected_exact<void, commute__sig, T>;
 template <class T>
 using commute_sig =
     decltype(std::declval<const T&>().commute(std::declval<T&>()));
-template <class T>
-using has_commute = is_detected_exact<void, commute_sig, T>;
+
 template <class T>
 using comparatorequal_sig =
     decltype(operator==(std::declval<const T&>(), std::declval<const T&>()));
@@ -72,21 +71,42 @@ using has_comparatornotequal =
     or_<is_detected_exact<bool, comparatornotequal_member_sig, T>,
         is_detected_exact<bool, comparatornotequal_sig, T>>;
 
+template <class T, class = void>
+struct default_to_neutral : std::false_type
+{
+};
 template <class T>
-using default_to_neutral = std::integral_constant<bool, T() == groups::op(T(), T().inverse())>;
-
+struct default_to_neutral<T, std::enable_if_t<has_op<T>::value && std::is_default_constructible_v<T>>>
+    : std::integral_constant<bool, T() == groups::op(T(), T().inverse())>
+{
+};
+template <class T, class = void>
+struct is_Abelian : std::false_type
+{
+};
+template <class T>
+struct is_Abelian<T> : std::integral_constant<bool, T::is_Abelian>
+{
+};
 // the following compile time template constant is true iff the template
 // parameter satisfy the constraint for a group that will work with cgroup
 template <class T>
 using is_group =
-    and_<has_op<T>, has_inverse_<T>, has_commute<T>, has_commute_<T>,
-         has_comparatorequal<T>, has_comparatornotequal<T>, default_to_neutral<T>>;
+    and_<default_to_neutral<T>, has_op<T>, has_inverse_<T>,
+         has_comparatorequal<T>, has_comparatornotequal<T>, is_Abelian<T>>;
 
 template <class T>
 constexpr bool is_group_v = is_group<T>::value;
 
 template <class... T>
 constexpr bool all_group_v = and_<is_group<T>...>::value;
+
+#if __cplusplus == 202002L
+template <class T>
+concept a_group = is_group_v<T>;
+
+#endif
+
 } // namespace groups
 } // namespace quantt
 

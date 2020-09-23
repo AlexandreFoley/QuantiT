@@ -17,6 +17,7 @@
 
 #include "LinearAlgebra.h"
 #include "MPT.h"
+#include "cgroup_container.h"
 #include "dimension_manip.h"
 #include "dmrg.h"
 #include "models.h"
