@@ -205,8 +205,10 @@ void swap(C<N>& lhs, C<N>& rhs) noexcept
 	lhs.swap(rhs);
 }
 
-// using is_group = and_<has_op<T>, has_inverse_<T>, has_commute<T>,
-// has_commute_<T>, has_comparatorequal<T>, has_comparatornotequal<T>>;
+// using is_group =     and_<default_to_neutral<T>, has_op<T>, has_inverse_<T>,
+//         has_comparatorequal<T>, has_comparatornotequal<T>, is_Abelian<T>>;
+static_assert(has_constexpr_equal<Z>::value, "debug");
+
 static_assert(is_group_v<Z>, "Z isn't a group?! something is very wrong");
 static_assert(is_group_v<C<5>>, "C<5> isn't a group?! something is very wrong");
 

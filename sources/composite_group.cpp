@@ -26,3 +26,4 @@ template class quantt::conc_cgroup_impl<C<2>, C<4>>; //parity and rotation of th
 template class quantt::conc_cgroup_impl<C<2>, C<6>>; //parity and rotation of the hexagon
 template class quantt::conc_cgroup_impl<C<4>>;       //rotation of the square
 template class quantt::conc_cgroup_impl<C<6>>;       //rotation of the hexagon
+

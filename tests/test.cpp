@@ -17,9 +17,9 @@
 
 #include "LinearAlgebra.h"
 #include "MPT.h"
-#include "cgroup_container.h"
 #include "dimension_manip.h"
 #include "dmrg.h"
 #include "models.h"
 #include "operators.h"
-#include "test_Cgroups.h"
+#include "composite_group.h"
+#include "cgroup_container.h"

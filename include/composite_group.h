@@ -19,7 +19,7 @@
 #define D56E4C12_98E1_4C9E_B0C4_5B35A5A3CD17
 
 #include "cgroup_impl.h"
-#include "groups_utils.h"
+#include "groups.h"
 #include "templateMeta.h"
 #include <cstdint>
 #include <fmt/core.h>
@@ -42,11 +42,11 @@ class cgroup final
 {
 	std::unique_ptr<cgroup_impl> impl;
 
-	cgroup(const cgroup_impl& other) : impl(impl->clone()) {}
 	friend cgroup_ref;
 	friend cgroup_cref;
 
 public:
+	cgroup(const cgroup_impl& other) : impl(other.clone()) {}
 	cgroup(std::unique_ptr<cgroup_impl>&& _impl) : impl(std::move(_impl)) {}
 
 	/**
@@ -67,9 +67,12 @@ public:
 	 */
 	cgroup(); //default to a group that contain only the neutral element. avoid having an unitialized unique_ptr.
 	cgroup(const cgroup& other) : impl(other.impl->clone()) {}
-	explicit cgroup(cgroup_cref other); //explicit to avoid accidental copies and ambiguous overloads
-	explicit cgroup(cgroup_ref other);  //explicit to avoid accidental copies and ambiguous overloads
+	cgroup(cgroup_cref other); //explicit to avoid accidental copies and ambiguous overloads
+	cgroup(cgroup_ref other);  //explicit to avoid accidental copies and ambiguous overloads
 	cgroup(cgroup&&) = default;
+
+	cgroup_impl& get();
+	const cgroup_impl& get() const;
 
 	/**
 	 * @brief swap function with reference to cgroup. Always work.
@@ -128,9 +131,9 @@ public:
 	* @return cgroup a new cgroup object.
 	*/
 	friend cgroup operator*(cgroup_cref lhs, cgroup_cref rhs);
-	friend cgroup operator*(cgroup_cref lhs, cgroup&& rhs);
+	// friend cgroup operator*(cgroup_cref lhs, cgroup&& rhs);
 	friend cgroup operator+(cgroup_cref lhs, cgroup_cref rhs);
-	friend cgroup operator+(cgroup_cref lhs, cgroup&& rhs);
+	// friend cgroup operator+(cgroup_cref lhs, cgroup&& rhs);
 
 	/**
 	 * @brief in place inverse
@@ -180,7 +183,7 @@ class cgroup_cref
 
 public:
 	cgroup_cref() = delete;
-	cgroup_cref(cgroup_impl& other) : ref(&other) {}
+	cgroup_cref(const cgroup_impl& other) : ref(&other) {}
 	cgroup_cref(const cgroup_cref& other) : ref(other.ref) {}
 	cgroup_cref(const cgroup_impl* other): ref(other) {}
 
@@ -188,6 +191,14 @@ public:
 	const cgroup_impl& get() const;
 	cgroup inverse() const;
 
+	const cgroup_impl* operator&() const
+	{
+		return ref;
+	}
+	operator const cgroup_impl&() const
+	{
+		return get();
+	}
 };
 /**
  * @brief Reference type for cgroup. 
@@ -222,6 +233,22 @@ public:
 	cgroup_ref& inverse_();
 	cgroup inverse() const;
 	void swap(cgroup_ref other);
+	cgroup_impl* operator&()
+	{
+		return ref;
+	}
+	const cgroup_impl* operator&() const
+	{
+		return ref;
+	}
+	operator const cgroup_impl&() const
+	{
+		return get();
+	}
+	operator cgroup_impl&()
+	{
+		return get();
+	}
 };
 
 //method definitions in no particular order...
@@ -300,19 +327,19 @@ cgroup operator*(cgroup_cref lhs, cgroup_cref rhs)
 {
 	return cgroup(lhs) *= rhs;
 }
-cgroup operator*(cgroup_cref lhs, cgroup&& rhs)
-{
-	lhs.get().op_to(*rhs.impl);
-	return rhs;
-}
+// cgroup operator*(cgroup_cref lhs, cgroup&& rhs)
+// {
+// 	lhs.get().op_to(*rhs.impl);
+// 	return rhs;
+// }
 cgroup operator+(cgroup_cref lhs, cgroup_cref rhs)
 {
 	return lhs * rhs;
 }
-cgroup operator+(cgroup_cref lhs, cgroup&& rhs)
-{
-	return lhs * rhs;
-}
+// cgroup operator+(cgroup_cref lhs, cgroup&& rhs)
+// {
+// 	return lhs * rhs;
+// }
 cgroup& cgroup::operator=(cgroup_cref other)
 {
 	impl = other.get().clone();
@@ -320,7 +347,7 @@ cgroup& cgroup::operator=(cgroup_cref other)
 }
 cgroup& cgroup::operator=(cgroup_ref other)
 {
-	return operator=(cgroup_cref(other));
+	return operator=(cgroup(other));
 }
 cgroup& cgroup::operator+=(cgroup_cref other)
 {
@@ -363,8 +390,139 @@ cgroup_ref& cgroup_ref::operator+=(const cgroup_cref other)
 {
 	return (*this) *= other;
 }
+cgroup_impl& cgroup::get()
+{
+	return *impl;
+}
+const cgroup_impl& cgroup::get() const
+{
+	return *impl;
+}
 
+TEST_CASE("composite groups")
+{
+	using namespace quantt;
+	using namespace groups;
+	cgroup A(C<2>(0), Z(3)); // order matters.
+	cgroup B(C<2>(1), Z(-1));
+	using ccgroup = conc_cgroup_impl<C<2>, Z>;
+	auto EFF = cgroup(ccgroup(0, 0));
+	CHECK_NOTHROW(auto a = cgroup(ccgroup(0, 0)));
+	cgroup A_copy(A);
+	cgroup B_copy(B);
+	CHECK_NOTHROW(auto c = A + B);
+	cgroup D(Z(0), C<2>(1)); // D has a different underlying type.
+
+	// the cast to void silences warnings about unused return values and
+	// comparison. We know, it's ok.
+	CHECK_THROWS_AS((void)(D == A),
+	                const std::bad_cast&); // A and D have different derived
+	                                       // type: they're not compatible
+	CHECK_THROWS_AS((void)(D != A),
+	                const std::bad_cast&); // A and D have different derived
+	                                       // type: they're not compatible
+	CHECK_THROWS_AS((void)(D * A),
+	                const std::bad_cast&); // A and D have different derived
+	                                       // type: they're not compatible
+	CHECK_THROWS_AS(D *= A,
+	                const std::bad_cast&); // A and D have different derived
+	                                       // type: they're not compatible
+	CHECK_THROWS_AS(D += A,
+	                const std::bad_cast&); // A and D have different derived
+	                                       // type: they're not compatible
+	CHECK_THROWS_AS((void)(D + A),
+	                const std::bad_cast&); // A and D have different derived
+	                                       // type: they're not compatible
+	cgroup_ref A_ref(A);
+	cgroup_cref A_cref(A);
+	cgroup_cref B_cref(B);
+	cgroup_ref B_ref(B);
+	// cgroup_ref is a drop-in replacement for a reference to cgroup
+	// cgroup_cref is a drop-in-replacement for a reference to a constant
+	// cgroup. Those two classes exists to facilitate manipulation of single
+	// cgroup located within a special container for this polymorphic type. We
+	// make extensive use of the reference type within the tests specifically to
+	// verify the correctness of their implementation. We advise avoiding those
+	// two reference type whenever possible. const cgroup& and cgroup& are
+	// perfectly fine for most purpose.
+	CHECK_NOTHROW(A_copy = A_ref);
+	CHECK_NOTHROW(A_copy = A_cref);
+	// Checking that the ref type doesn't loose track of its target.
+	CHECK(A_cref == A_ref);
+	CHECK(A_ref == A_cref);
+	CHECK(A_ref == A);
+	CHECK_NOTHROW(A_ref *= B);
+	CHECK(A_ref == A);
+	CHECK(A_ref == A_cref);
+	CHECK_NOTHROW(A_ref += B);
+	CHECK(A_ref == A);
+	CHECK(A_ref == A_cref);
+	A_copy = A;
+	CHECK(B == B_copy); // commute_ act on the the calling object only.
+	CHECK(A_copy == A); // this is an abelian group.
+	SUBCASE("Cast ambiguity")
+	{
+		// In this subcase with test different combination of cgroup,cgroup_ref
+		// and cgroup_cref to make sure all operation resolve correctly. Because
+		// of the different type and the ways in which they are equivalent, a
+		// mistake could lead to some operations failing.
+		CHECK_NOTHROW(auto _t = A * B);
+		CHECK_NOTHROW(auto _t = A_ref * B);
+		CHECK_NOTHROW(auto _t = A_cref * B);
+		CHECK_NOTHROW(auto _t = A * B_ref);
+		CHECK_NOTHROW(auto _t = A_ref * B_ref);
+		CHECK_NOTHROW(auto _t = A_cref * B_ref);
+		CHECK_NOTHROW(auto _t = A * B_cref);
+		CHECK_NOTHROW(auto _t = A_ref * B_cref);
+		CHECK_NOTHROW(auto _t = A_cref * B_cref);
+		CHECK_NOTHROW(
+		    auto _t =
+		        A * B_cref.inverse()); // this should use the
+		                               // operator*(cgroup_cref&,cgroup&&);
+		CHECK_NOTHROW(
+		    auto _t = A_ref * B.inverse()); // this should use the
+		                                    // operator*(cgroup_cref&,cgroup&&);
+		CHECK_NOTHROW(auto _t =
+		                  A_cref *
+		                  B_ref.inverse()); // this should use the
+		                                    // operator*(cgroup_cref&,cgroup&&);
+		//+ and * are completly equivalent.
+		CHECK_NOTHROW(auto _t = A + B);
+		CHECK_NOTHROW(auto _t = A_ref + B);
+		CHECK_NOTHROW(auto _t = A_cref + B);
+		CHECK_NOTHROW(auto _t = A + B_ref);
+		CHECK_NOTHROW(auto _t = A_ref + B_ref);
+		CHECK_NOTHROW(auto _t = A_cref + B_ref);
+		CHECK_NOTHROW(auto _t = A + B_cref);
+		CHECK_NOTHROW(auto _t = A_ref + B_cref);
+		CHECK_NOTHROW(auto _t = A_cref + B_cref);
+		CHECK_NOTHROW(
+		    auto _t =
+		        A + B_cref.inverse()); // this should use the
+		                               // operator+(cgroup_cref&,cgroup&&);
+		CHECK_NOTHROW(
+		    auto _t = A_ref + B.inverse()); // this should use the
+		                                    // operator+(cgroup_cref&,cgroup&&);
+		CHECK_NOTHROW(auto _t =
+		                  A_cref +
+		                  B_ref.inverse()); // this should use the
+		                                    // operator+(cgroup_cref&,cgroup&&);
+	}
+	auto C = cgroup(B_cref);
+	// C == A_ref *B_cref;
+	// C == B_cref *A_cref.inverse();
+	// C == A_ref *B_cref *A_cref.inverse();		   //A.commute(B) should be
+	// an optimisation of the formula on the right.
+	CHECK(C == A_ref * B_cref *
+	               A_cref.inverse()); // A.commute(B) should be an optimisation
+	                                  // of the formula on the right.
+	C = A;
+	CHECK(C == B.inverse() * A * B); // A.commute_(B) should be an optimization
+	                                 // of the formula on the right.
+}
 
 } // namespace quantt
+
+#include "cgroup_container.h"
 
 #endif /* D56E4C12_98E1_4C9E_B0C4_5B35A5A3CD17 */

@@ -56,10 +56,46 @@ using comparatorequal_sig =
 template <class T>
 using comparatorequal_member_sig =
     decltype(std::declval<const T&>().operator==(std::declval<const T&>()));
+
+template <class subject, class E = void>
+struct constexprequal_membertest
+{
+	constexpr static bool call() { return false; }
+};
+template <class subject>
+struct constexprequal_membertest<subject, std::enable_if_t<is_detected_v<comparatorequal_member_sig, subject>>>
+{
+	template <int Value = subject().operator==(subject())>
+	constexpr static std::true_type do_call(int) { return std::true_type(); }
+
+	constexpr static std::false_type do_call(...) { return std::false_type(); }
+
+	constexpr static bool call() { return do_call(0); }
+};
 template <class T>
-using has_comparatorequal =
-    or_<is_detected_exact<bool, comparatorequal_member_sig, T>,
-        is_detected_exact<bool, comparatorequal_sig, T>>;
+using has_constexpr_equal_member = std::bool_constant<constexprequal_membertest<T>::call()>;
+template <class subject, class E = void>
+struct constexprequal_test
+{
+	constexpr static bool call() { return false; }
+};
+template <class subject>
+struct constexprequal_test<subject, std::enable_if_t<is_detected_v<comparatorequal_sig, subject>>>
+{
+	template <int Value = operator==(subject(), subject())>
+	constexpr static std::true_type do_call(int) { return std::true_type(); }
+
+	constexpr static std::false_type do_call(...) { return std::false_type(); }
+
+	constexpr static bool call() { return do_call(0); }
+};
+template <class T>
+using has_constexpr_equal_outclass = std::bool_constant<constexprequal_test<T>::call()>;
+template <class T>
+using has_constexpr_equal = or_<has_constexpr_equal_member<T>, has_constexpr_equal_outclass<T>>;
+
+template <class T>
+using has_comparatorequal = or_<is_detected_exact<bool, comparatorequal_member_sig, T>, is_detected_exact<bool, comparatorequal_sig, T>>;
 template <class T>
 using comparatornotequal_member_sig =
     decltype(std::declval<const T&>().operator!=(std::declval<const T&>()));
@@ -75,9 +111,10 @@ template <class T, class = void>
 struct default_to_neutral : std::false_type
 {
 };
+
 template <class T>
-struct default_to_neutral<T, std::enable_if_t<has_op<T>::value && std::is_default_constructible_v<T>>>
-    : std::integral_constant<bool, T() == groups::op(T(), T().inverse())>
+struct default_to_neutral<T, std::enable_if_t<has_op<T>::value && std::is_default_constructible_v<T> && has_inverse_<T>::value && has_constexpr_equal<T>::value>>
+    : std::integral_constant<bool, T() == groups::op(T(), T().inverse_())>
 {
 };
 template <class T, class = void>
@@ -85,7 +122,9 @@ struct is_Abelian : std::false_type
 {
 };
 template <class T>
-struct is_Abelian<T> : std::integral_constant<bool, T::is_Abelian>
+using abelian_present = decltype(T::is_Abelian);
+template <class T>
+struct is_Abelian<T, std::enable_if_t<is_detected_v<abelian_present, T>>> : std::integral_constant<bool, T::is_Abelian>
 {
 };
 // the following compile time template constant is true iff the template
@@ -99,7 +138,9 @@ template <class T>
 constexpr bool is_group_v = is_group<T>::value;
 
 template <class... T>
-constexpr bool all_group_v = and_<is_group<T>...>::value;
+using all_group = and_<is_group<T>...>;
+template <class... T>
+constexpr bool all_group_v = all_group<T...>::value;
 
 #if __cplusplus == 202002L
 template <class T>

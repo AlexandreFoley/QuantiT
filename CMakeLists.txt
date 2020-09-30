@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.0 FATAL_ERROR)
 project(QuanTT LANGUAGES CXX)
 
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 17)
 set( Torch_DIR "${QuanTT_SOURCE_DIR}/extern/pytorch/torch/share/cmake/Torch")
 find_package(Torch REQUIRED)
 find_package(fmt REQUIRED)
@@ -22,7 +22,7 @@ add_subdirectory(sources)
 
 add_executable(QuanTT_dev main.cpp )
 target_link_libraries(QuanTT_dev PRIVATE QuanTT_lib)
-target_compile_features(QuanTT_dev PRIVATE cxx_std_20)
+target_compile_features(QuanTT_dev PRIVATE cxx_std_17)
 
 set(COMPONENT_SRCS ${HEADER_LIST}) #make vs-code intellisence work with with fresh, unused, header files. HEADER_LIST is definied in sources/CMakeList.txt
 

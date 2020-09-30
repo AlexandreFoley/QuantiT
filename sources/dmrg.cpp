@@ -295,27 +295,22 @@ namespace quantt
 
 		auto o_coeff = torch::sqrt((E0 - a1) / (-crit)); // from arxiv.org/pdf/1908.03795.pdf
 		auto n_coeff = -b * o_coeff / (a1 - E0);		//can't use o^2+n^2 = 1: loose important phase information that way.
-		return std::make_tuple(E0, o_coeff, n_coeff);
-		//DMRG doesn't work: testing if there's something wrong with the preceding formulas by taking them out.
-		// auto matrix = torch::zeros({2,2});
-		// matrix.index_put_({0,0},a0);
-		// matrix.index_put_({0,1},b);
-		// matrix.index_put_({1,0},b);
-		// matrix.index_put_({1,1},a1);
-		// auto [E,V] = matrix.symeig(true);
-		// return std::make_tuple(E.index({0}),V.index({0,0}),V.index({0,1}));
-	}
+	    return std::make_tuple(E0, o_coeff, n_coeff);
+    }
 
 	std::tuple<torch::Tensor, torch::Tensor, torch::Tensor, torch::Tensor> details::one_step_lanczos(torch::Tensor state, torch::Tensor hamil, torch::Tensor Lenv, torch::Tensor Renv)
 	{
 		auto psi_ip = hamil2site_times_state(state, hamil, Lenv, Renv);
-		auto a0 = torch::tensordot(psi_ip, state.conj(), {0, 1, 2, 3}, {0, 1, 2, 3});//will have to use the content of numeric.h to ensure that this is all real numbers.
-		psi_ip -= state * a0;
-		auto b = torch::sqrt(torch::tensordot(psi_ip, psi_ip.conj(), {0, 1, 2, 3}, {0, 1, 2, 3}));
-		if (torch::ge(b.abs(), 1e-15).item().to<bool>())
+	    //auto a0 = torch::real(torch::tensordot(psi_ip, state.conj(), {0, 1, 2, 3}, {0, 1, 2, 3}));//real doesn't work id the dtype isn't complex... hopefully will be solved on pytorch's end once the complex support is completed
+	    auto a0 = (torch::tensordot(psi_ip, state.conj(), {0, 1, 2, 3}, {0, 1, 2, 3}));
+	    psi_ip -= state * a0;
+	    //auto b = torch::sqrt(torch::real(torch::tensordot(psi_ip, psi_ip.conj(), {0, 1, 2, 3}, {0, 1, 2, 3})));
+	    auto b = torch::sqrt((torch::tensordot(psi_ip, psi_ip.conj(), {0, 1, 2, 3}, {0, 1, 2, 3})));
+	    if (torch::ge(b.abs(), 1e-15).item().to<bool>())
 			psi_ip /= b;
-		auto a1 = torch::tensordot(psi_ip.conj(), quantt::details::hamil2site_times_state(psi_ip, hamil, Lenv, Renv), {0, 1, 2, 3}, {0, 1, 2, 3});
-		return std::make_tuple(psi_ip, a0, a1, b);
+	    // auto a1 = torch::real(torch::tensordot(psi_ip.conj(), quantt::details::hamil2site_times_state(psi_ip, hamil, Lenv, Renv), {0, 1, 2, 3}, {0, 1, 2, 3}));
+	    auto a1 = (torch::tensordot(psi_ip.conj(), quantt::details::hamil2site_times_state(psi_ip, hamil, Lenv, Renv), {0, 1, 2, 3}, {0, 1, 2, 3}));
+	    return std::make_tuple(psi_ip, a0, a1, b);
 	}
 
 	/**

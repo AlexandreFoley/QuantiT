@@ -18,6 +18,7 @@
 #include "templateMeta.h"
 #include <memory>
 #include <type_traits>
+#include <vector>
 
 namespace quantt
 {
@@ -28,6 +29,7 @@ namespace quantt
  */
 struct cgroup_iterator;
 struct const_cgroup_iterator;
+class cgroup_vector_impl;
 
 /**
  * @brief interface type for the implementation of a cgroup
@@ -72,11 +74,12 @@ public:
 	virtual cgroup_impl& inverse_() = 0;
 
 	virtual std::unique_ptr<cgroup_impl> clone() const = 0;
+	virtual std::unique_ptr<cgroup_vector_impl> make_vector(size_t cnt) const = 0;
 
 	/**
 	 * @brief create the neutral element of whatever underlying type
 	 * 
-	 * @return std::unique_ptr<cgroup_impl> : thye neutral element
+	 * @return std::unique_ptr<cgroup_impl> : the neutral element
 	 */
 	virtual std::unique_ptr<cgroup_impl> neutral() const = 0;
 
@@ -122,6 +125,8 @@ public:
 	bool operator!=(const cgroup_impl& other) const override;
 	void swap(conc_cgroup_impl& other);
 	void swap(cgroup_impl& other) override;
+
+	std::unique_ptr<cgroup_vector_impl> make_vector(size_t cnt) const override;
 
 private:
 	/**
@@ -237,6 +242,16 @@ void conc_cgroup_impl<T...>::swap(cgroup_impl& other)
 {
 	swap(dynamic_cast<conc_cgroup_impl<T...>&>(other));
 }
+
+template <class>
+struct is_conc_cgroup_impl : public std::false_type
+{
+};
+template <class... S>
+struct is_conc_cgroup_impl<conc_cgroup_impl<S...>> : public groups::all_group<S...>
+{
+};
+
 } // namespace quantt
 
 #endif /* F2547C1C_9177_4373_9C66_8D4C8621C7CC */

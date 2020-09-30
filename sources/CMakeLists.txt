@@ -8,7 +8,8 @@ set(HEADER_LIST "${INC_DIR}/MPT.h" "${INC_DIR}/LinearAlgebra.h" "${INC_DIR}/dime
                 "${INC_DIR}/models.h" "${INC_DIR}/numeric.h" "${INC_DIR}/composite_group.h" "${INC_DIR}/groups.h"
                 "${INC_DIR}/templateMeta.h" "${BST_DIR}/stl_interfaces/config.hpp" "${BST_DIR}/stl_interfaces/fwd.hpp"
                 "${BST_DIR}/stl_interfaces/iterator_interface.hpp" "${BST_DIR}/stl_interfaces/view_interface.hpp"
-                "${BST_DIR}/stl_interfaces/sequence_container_interface.hpp")
+                "${BST_DIR}/stl_interfaces/sequence_container_interface.hpp" "${INC_DIR}/cgroup_container.h"
+                "${INC_DIR}/cgroup_impl.h" "${INC_DIR}/composite_group.h" "${INC_DIR}/cgroup_container_impl.h")
 
 set(SOURCE_LIST )
 

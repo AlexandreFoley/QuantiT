@@ -26,14 +26,14 @@ namespace quantt
  * Will do that when it officially comes out.
  * The code is lifted from cpp possible implementation about std::experiemental.
  */
-namespace
+namespace details
 {
 struct nonesuch
 {
 
 	~nonesuch() = delete;
-	nonesuch(nonesuch const &) = delete;
-	void operator=(nonesuch const &) = delete;
+	nonesuch(nonesuch const&) = delete;
+	void operator=(nonesuch const&) = delete;
 };
 
 template <class Default, class AlwaysVoid,
@@ -51,16 +51,15 @@ struct detector<Default, ::std::void_t<Op<Args...>>, Op, Args...>
 	using type = Op<Args...>;
 };
 
-} // namespace
+} // namespace details
+template <template <class...> class Op, class... Args>
+using is_detected = typename details::detector<details::nonesuch, void, Op, Args...>::value_t;
 
 template <template <class...> class Op, class... Args>
-using is_detected = typename detector<nonesuch, void, Op, Args...>::value_t;
-
-template <template <class...> class Op, class... Args>
-using detected_t = typename detector<nonesuch, void, Op, Args...>::type;
+using detected_t = typename details::detector<details::nonesuch, void, Op, Args...>::type;
 
 template <class Default, template <class...> class Op, class... Args>
-using detected_or = detector<Default, void, Op, Args...>;
+using detected_or = details::detector<Default, void, Op, Args...>;
 
 template <template <class...> class Op, class... Args>
 constexpr bool is_detected_v = is_detected<Op, Args...>::value;
@@ -86,7 +85,7 @@ struct and_ : std::true_type
 };
 
 template <typename Cond, typename... Conds>
-struct and_<Cond, Conds...> : std::conditional<Cond::value, and_<Conds...>, std::false_type>::type
+struct and_<Cond, Conds...> : std::conditional_t<Cond::value, and_<Conds...>, std::false_type>
 {
 };
 
@@ -95,14 +94,14 @@ struct or_ : std::false_type
 {
 };
 template <class cond, class... conds>
-struct or_<cond, conds...> : std::conditional_t<cond::value, std::true_type, or_<conds...>>::type
+struct or_<cond, conds...> : std::conditional_t<cond::value, std::true_type, or_<conds...>>
 {
 };
 
 template <class Tuple1, class F>
-constexpr decltype(auto) for_each(Tuple1 &&T1, F &&f)
+constexpr decltype(auto) for_each(Tuple1&& T1, F&& f)
 {
-	std::apply([&](auto &&... t1) {
+	std::apply([&](auto&&... t1) {
 		if constexpr (std::is_same_v<decltype(f(std::get<0>(T1))), void>)
 		{                 // we return void..
 			(f(t1), ...); // apply the function to each arguments
@@ -117,10 +116,10 @@ constexpr decltype(auto) for_each(Tuple1 &&T1, F &&f)
 	           T1);
 } // namespace quantt
 template <class Tuple1, class Tuple2, class F>
-constexpr decltype(auto) for_each2(Tuple1 &&T1, Tuple2 &&T2, F &&f)
+constexpr decltype(auto) for_each2(Tuple1&& T1, Tuple2&& T2, F&& f)
 {
-	std::apply([&](auto &&... t1) {                               // std::apply require gcc7 or more recent
-		return std::apply([&T1, &T2, &f, &t1...](auto &&... t2) { // need explicit capture list here for clang8 and older.
+	std::apply([&](auto&&... t1) {                               // std::apply require gcc7 or more recent
+		return std::apply([&T1, &T2, &f, &t1...](auto&&... t2) { // need explicit capture list here for clang8 and older.
 			if constexpr (std::is_same_v<decltype(f(std::get<0>(T1), std::get<0>(T2))),
 			                             void>)
 			{                     // we return void..
