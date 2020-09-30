@@ -41,6 +41,7 @@ class property final
 	operator const content&() const noexcept {return value;} // read access through implicit conversion
 
 	property& operator=( content new_value ); // define it to give write access to the value, with any and all checks necessary.
+	//don't define it to keep the property read only.
 
 	~property() {};
 };

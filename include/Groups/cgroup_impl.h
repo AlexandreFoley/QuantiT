@@ -14,7 +14,7 @@
 #ifndef F2547C1C_9177_4373_9C66_8D4C8621C7CC
 #define F2547C1C_9177_4373_9C66_8D4C8621C7CC
 
-#include "groups_utils.h"
+#include "Groups/groups_utils.h"
 #include "templateMeta.h"
 #include <memory>
 #include <type_traits>
@@ -42,15 +42,6 @@ class cgroup_impl
 {
 	friend struct cgroup_iterator;
 	friend struct const_cgroup_iterator;
-	/**
-	 * @brief compute the distance between two pointer to a derived type.
-	 *        for use by the iterators cgroup_iterator and const_cgroup_iterator.
-	 * 
-	 * @param rhs 
-	 * @return std::ptrdiff_t 
-	 */
-	virtual std::ptrdiff_t ptr_diff(const cgroup_impl* const rhs) const = 0;
-	virtual cgroup_impl* ptr_add(std::ptrdiff_t rhs) const = 0;
 
 public:
 	/**
@@ -136,21 +127,6 @@ private:
 	 * 
 	 */
 	std::tuple<Groups...> val;
-	std::ptrdiff_t ptr_diff(const cgroup_impl* const rhs) const override
-	{
-		return this - static_cast<const conc_cgroup_impl* const>(rhs);
-	}
-
-	/**
-	 * @brief implementation of the polymophic pointer addition-assignment
-	 * 
-	 * this is the way to implement this, basically no matter what.
-	 * 
-	 */
-	conc_cgroup_impl* ptr_add(std::ptrdiff_t rhs) const override
-	{
-		return const_cast<conc_cgroup_impl*>(this) + rhs;
-	}
 };
 
 template<class... T>

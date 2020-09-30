@@ -20,7 +20,7 @@
 #include <fmt/core.h>
 #include <fmt/ostream.h>
 
-#include "cond_doctest.h"
+#include "doctest/cond_doctest.h"
 
 namespace quantt{
 /**

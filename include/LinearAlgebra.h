@@ -20,7 +20,7 @@
 #include <fmt/ostream.h>
 #include "torch_formatter.h"
 
-#include "cond_doctest.h"
+#include "doctest/cond_doctest.h"
 
 // //doctest always last. its' macro must work and conflict with pytorch's.
 // #include "doctest_redef.h" // makes the redefinition appear without compiler warnings.

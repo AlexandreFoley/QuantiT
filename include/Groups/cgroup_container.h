@@ -15,11 +15,11 @@
 #define D34E37A6_732F_4F45_9171_6B931CC1F812
 
 #include "composite_group.h"
-#include "groups.h"
+#include "Groups/groups.h"
 #include <vector>
-#include "cgroup_container_impl.h"
+#include "Groups/cgroup_container_impl.h"
 
-#include "cond_doctest.h"
+#include "doctest/cond_doctest.h"
 
 namespace quantt
 {

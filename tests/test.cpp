@@ -15,11 +15,11 @@
 // with the preceding define, doctest autogenerate a main() function that run
 // the test found in the sources included.
 
+#include "Groups/cgroup_container.h"
+#include "Groups/composite_group.h"
 #include "LinearAlgebra.h"
 #include "MPT.h"
 #include "dimension_manip.h"
 #include "dmrg.h"
 #include "models.h"
 #include "operators.h"
-#include "composite_group.h"
-#include "cgroup_container.h"

@@ -13,12 +13,12 @@
 
 #ifndef EF30AFAC_8403_46CD_A139_264F626DA567
 #define EF30AFAC_8403_46CD_A139_264F626DA567
-#include "groups_utils.h"
+#include "Groups/groups_utils.h"
 #include "templateMeta.h"
 #include <cstdint>
 #include <ostream>
 
-#include "cond_doctest.h"
+#include "doctest/cond_doctest.h"
 namespace quantt
 {
 /**

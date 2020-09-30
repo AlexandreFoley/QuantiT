@@ -11,8 +11,8 @@
  * All rights reserved
  */
 
-#include "composite_group.h"
-#include "groups.h"
+#include "Groups/composite_group.h"
+#include "Groups/groups.h"
 quantt::cgroup::cgroup() : impl(std::make_unique<conc_cgroup_impl<groups::C<1>>>()) {}
 using namespace quantt::groups;
 template class quantt::conc_cgroup_impl<Z>;          //spin or particle

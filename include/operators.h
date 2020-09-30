@@ -16,7 +16,7 @@
 
 #include <torch/torch.h>
 
-#include "cond_doctest.h"
+#include "doctest/cond_doctest.h"
 
 #include <fmt/core.h>
 namespace quantt{

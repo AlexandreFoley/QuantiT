@@ -10,7 +10,7 @@
  * Copyright (c) 2020 Alexandre Foley
  * All rights reserved
  */
-#include "groups.h"
+#include "Groups/groups.h"
 #include <ostream>
 namespace quantt
 {
