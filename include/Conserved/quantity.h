@@ -1,5 +1,5 @@
 /*
- * File: groups.h
+ * File:quantity.h
  * Project: quantt
  * File Created: Tuesday, 15th September 2020 12:19:54 pm
  * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)
@@ -13,7 +13,7 @@
 
 #ifndef EF30AFAC_8403_46CD_A139_264F626DA567
 #define EF30AFAC_8403_46CD_A139_264F626DA567
-#include "Groups/groups_utils.h"
+#include "Conserved/quantity_utils.h"
 #include "templateMeta.h"
 #include <cstdint>
 #include <ostream>
@@ -26,11 +26,13 @@ namespace quantt
  * I want it to be easy to refer to litterature, so we use those short names.
  * So a namespace will protect us from name clashes.
  */
-namespace groups
+namespace conserved
 {
 
 /**
- * C_N: the cyclic group with N elements.
+ * @brief C_N, the cyclic group with N elements. The conserved quantities
+ * associated with discrete rotationnal symmetry are element of this familly of groups.
+ * 
  * Oftentime called Z_N in the literature.
  * This would create a name clash with the infinite group Z.
  *
@@ -46,12 +48,12 @@ public:
 private:
 	static_assert(N > 0, "only value greater than zero make sense, only "
 	                     "greater than 1 are useful.");
-	uint16_t val; 
+	uint16_t val;
 
 public:
 	constexpr static bool is_Abelian = true; //Make sure that your group is actually Abelian. I can't think of a way to check this property in finite time using the compiler.
 
-	constexpr C(uint16_t _val) // constexpr value contructor, necessary for one of the checks for cgroup
+	constexpr C(uint16_t _val) // constexpr value contructor, necessary for one of the checks for any_quantity
 	    noexcept : val(_val)
 	{
 		val %= N; // only usage of modulo. that thing is expensive.
@@ -124,26 +126,25 @@ public:
 
 /**
  * Abelian group formed by integers under the action of addition.
- * Useful for particles and spin conservation.
+ * Useful for particles and spin conservation (along the quantization axis only).
  * In principle Z has an infinite domain, but here it is limited
  * to [-32767,32767] by usage of int16_t in the implementation
  *
- * Note: In the case of particles conservation it is related to the U(1)
- * symmetry of the phase of the wavefunction. It is sometime (an abuse of
- * language) called U(1). U(1) is a continuous group with a finite domain while
- * N is a discrete group with an infinite domain. They are isomorphic.
+ * This group can represent the conservation of the charges associated with U1 symmetries
  */
 class Z
 {
-	int16_t val; 
+	int16_t val;
 
 public:
-	constexpr static bool is_Abelian = true; //Make sure that your group is actually Abelian. I can't think of a way to check this property in finite time using the compiler.
-	constexpr Z(int16_t _val) // constexpr value contructor, necessary for one of the checks for cgroup
+	constexpr static bool is_Abelian = true; //Tag that the conserved quantity emerge from an Abelian group.
+	//conserved quantities that emerge from non-abelian symmetries are currently not supported.
+	//This tag MUST be set to true for the conserved quantitie class to be accepted.
+	constexpr Z(int16_t _val) // constexpr value contructor, necessary for one of the checks for any_quantity
 	    noexcept : val(_val)
 	{
 	}
-	constexpr Z() : val(0) {} // constexpr value contructor, necessary for one of the checks for cgroup
+	constexpr Z() : val(0) {} // constexpr value contructor, necessary for one of the checks for any_quantity
 	constexpr operator uint16_t() noexcept
 	{
 		return val;
@@ -171,7 +172,7 @@ public:
 	{
 		return lhs *= rhs;
 	}
-	// Z& op( other) is the function used by cgroup.
+	// Z& op( other) is the function used by any_quantity.
 	constexpr Z& op(Z other) { return (*this) += other; }
 	constexpr Z& inverse_() noexcept
 	{
@@ -205,18 +206,18 @@ void swap(C<N>& lhs, C<N>& rhs) noexcept
 	lhs.swap(rhs);
 }
 
-// using is_group =     and_<default_to_neutral<T>, has_op<T>, has_inverse_<T>,
+// using is_conversed_quantt =     and_<default_to_neutral<T>, has_op<T>, has_inverse_<T>,
 //         has_comparatorequal<T>, has_comparatornotequal<T>, is_Abelian<T>>;
 static_assert(has_constexpr_equal<Z>::value, "debug");
 
-static_assert(is_group_v<Z>, "Z isn't a group?! something is very wrong");
-static_assert(is_group_v<C<5>>, "C<5> isn't a group?! something is very wrong");
+static_assert(is_conserved_quantt_v<Z>, "Z isn't a group?! something is very wrong");
+static_assert(is_conserved_quantt_v<C<5>>, "C<5> isn't a group?! something is very wrong");
 
-} // namespace groups
+} // namespace conserved
 
-TEST_CASE("simple groups")
+TEST_CASE("simple conserved")
 {
-	using namespace groups;
+	using namespace conserved;
 	C<2> c2_1(1);
 	C<2> c2_0(0);
 	C<2> c2_11 = c2_1 * c2_1;

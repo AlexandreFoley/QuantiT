@@ -10,11 +10,11 @@
  * Copyright (c) 2020 Alexandre Foley
  * All rights reserved
  */
-#include "Groups/groups.h"
+#include "Conserved/quantity.h"
 #include <ostream>
 namespace quantt
 {
-namespace groups
+namespace conserved
 {
 
 std::ostream &operator<<(std::ostream &out, const Z &c)

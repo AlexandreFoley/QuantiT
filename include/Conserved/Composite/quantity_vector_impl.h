@@ -1,5 +1,5 @@
 /*
- * File: cgroup_container_impl.h
+ * File: quantity_vector_impl.h
  * Project: quantt
  * File Created: Monday, 28th September 2020 1:46:36 pm
  * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)
@@ -14,8 +14,8 @@
 #ifndef BBF1F73E_87CC_4C69_9CCC_5D2526535A4F
 #define BBF1F73E_87CC_4C69_9CCC_5D2526535A4F
 
+#include "Conserved/Composite/quantity.h"
 #include "boost/stl_interfaces/iterator_interface.hpp"
-#include "composite_group.h"
 
 namespace quantt
 {
@@ -23,34 +23,34 @@ namespace quantt
 class blocklist
 {
 };
-class Qtensor
-{
-};
+class btensor;
 
+namespace vquantt_iterator
+{
 struct virt_ptr_aritmetic
 {
-	virtual std::ptrdiff_t ptr_diff(const cgroup_impl* lhs, const cgroup_impl* rhs) const = 0;
-	virtual cgroup_impl* ptr_add(cgroup_impl* ptr, std::ptrdiff_t n) const = 0;
-	virtual const cgroup_impl* ptr_add(const cgroup_impl* ptr, std::ptrdiff_t n) const = 0;
+	virtual std::ptrdiff_t ptr_diff(const vquantity* lhs, const vquantity* rhs) const = 0;
+	virtual vquantity* ptr_add(vquantity* ptr, std::ptrdiff_t n) const = 0;
+	virtual const vquantity* ptr_add(const vquantity* ptr, std::ptrdiff_t n) const = 0;
 };
 
-struct const_cgroup_iterator : public boost::stl_interfaces::iterator_interface<const_cgroup_iterator, std::random_access_iterator_tag, cgroup, cgroup_cref, const cgroup_impl*>
+struct const_cgroup_iterator : public boost::stl_interfaces::iterator_interface<const_cgroup_iterator, std::random_access_iterator_tag, any_quantity, any_quantity_cref, const vquantity*>
 {
 private:
-	const cgroup_impl* it;
+	const vquantity* it;
 	const virt_ptr_aritmetic* ar;
 	friend boost::stl_interfaces::access;
 
-	const cgroup_impl*& base_reference() noexcept { return it; }
-	const cgroup_impl* base_reference() const noexcept { return it; }
+	const vquantity*& base_reference() noexcept { return it; }
+	const vquantity* base_reference() const noexcept { return it; }
 
 public:
 	constexpr const_cgroup_iterator() : it(nullptr), ar(nullptr) {}
-	constexpr const_cgroup_iterator(const cgroup_impl* _it, const virt_ptr_aritmetic* _ar) : it(_it), ar(_ar) {}
-	using base_type = boost::stl_interfaces::iterator_interface<const_cgroup_iterator, std::random_access_iterator_tag, cgroup, cgroup_cref, const cgroup_impl*>;
-	cgroup_cref operator*()
+	constexpr const_cgroup_iterator(const vquantity* _it, const virt_ptr_aritmetic* _ar) : it(_it), ar(_ar) {}
+	using base_type = boost::stl_interfaces::iterator_interface<const_cgroup_iterator, std::random_access_iterator_tag, any_quantity, any_quantity_cref, const vquantity*>;
+	any_quantity_cref operator*()
 	{
-		return cgroup_cref(it);
+		return any_quantity_cref(it);
 	}
 	base_type::difference_type operator-(const_cgroup_iterator rhs)
 	{
@@ -61,7 +61,7 @@ public:
 		it = ar->ptr_add(it, n);
 		return *this;
 	}
-	const cgroup_impl* base() const
+	const vquantity* base() const
 	{
 		return it;
 	}
@@ -70,23 +70,23 @@ public:
 		return ar;
 	}
 };
-struct cgroup_iterator : public boost::stl_interfaces::iterator_interface<cgroup_iterator, std::random_access_iterator_tag, cgroup, cgroup_ref, cgroup_impl*>
+struct cgroup_iterator : public boost::stl_interfaces::iterator_interface<cgroup_iterator, std::random_access_iterator_tag, any_quantity, any_quantity_ref, vquantity*>
 {
 private:
-	cgroup_impl* it;
+	vquantity* it;
 	const virt_ptr_aritmetic* ar;
 	friend boost::stl_interfaces::access;
 
-	cgroup_impl*& base_reference() noexcept { return it; }
-	cgroup_impl* base_reference() const noexcept { return it; }
+	vquantity*& base_reference() noexcept { return it; }
+	vquantity* base_reference() const noexcept { return it; }
 
 public:
 	constexpr cgroup_iterator() : it(nullptr), ar(nullptr) {}
-	constexpr cgroup_iterator(cgroup_impl* _it, const virt_ptr_aritmetic* _ar) : it(_it), ar(_ar) {}
-	using base_type = boost::stl_interfaces::iterator_interface<cgroup_iterator, std::random_access_iterator_tag, cgroup, cgroup_ref, cgroup_impl*>;
-	cgroup_ref operator*() const
+	constexpr cgroup_iterator(vquantity* _it, const virt_ptr_aritmetic* _ar) : it(_it), ar(_ar) {}
+	using base_type = boost::stl_interfaces::iterator_interface<cgroup_iterator, std::random_access_iterator_tag, any_quantity, any_quantity_ref, vquantity*>;
+	any_quantity_ref operator*() const
 	{
-		return cgroup_ref(it);
+		return any_quantity_ref(it);
 	}
 	base_type::difference_type operator-(cgroup_iterator rhs)
 	{
@@ -97,7 +97,7 @@ public:
 		it = ar->ptr_add(it, n);
 		return *this;
 	}
-	cgroup_impl* base()
+	vquantity* base()
 	{
 		return it;
 	}
@@ -110,9 +110,11 @@ public:
 		return ar;
 	}
 };
+
+} // namespace vquantt_iterator
 //so that different vector type have a different base type
 /**
- * @brief polymorphic (type-erased?) container of cgroup.
+ * @brief polymorphic (type-erased?) container of any_quantity.
  * All the element in the container are of the same concrete type, but the concrete type doesn't change the type of the container.
  * Implement most of the interface of std::vector (some parts are templates that
  * can't be replaced with run time polymorphism). 
@@ -128,33 +130,36 @@ public:
  * Note: I can't help but feel there's one too many inderection level necessary here (pointer to conc_vect.data, data is a pointer to the actual data)
  *       There's almost certainly a design without this extra indirection and the same interface.
  */
-class cgroup_vector_impl
+class vquantity_vector
 {
 public:
-	using iterator = cgroup_iterator;
-	using const_iterator = const_cgroup_iterator;
+	using iterator = vquantt_iterator::cgroup_iterator;
+	using const_iterator = vquantt_iterator::const_cgroup_iterator;
 	using reverse_iterator = std::reverse_iterator<iterator>;
 	using const_reverse_iterator = std::reverse_iterator<const_iterator>;
 
-	virtual blocklist identify_blocks(const Qtensor&) const = 0;
-	virtual std::unique_ptr<cgroup_vector_impl> clone() const = 0;
+	virtual ~vquantity_vector() {}
+
+	virtual blocklist identify_blocks(const btensor&) const = 0;
+	virtual std::unique_ptr<vquantity_vector> clone() const = 0;
+
 	/**
 	 * @brief accessors.
 	 * 	can be implemented as virtual, by exploiting the covariant return type.
 	 * 
-	 * @return cgroup_impl& 
+	 * @return vquantity& 
 	 */
-	virtual cgroup_impl& operator[](size_t) = 0;
-	virtual const cgroup_impl& operator[](size_t) const = 0;
-	virtual cgroup_impl& at(size_t) = 0;
-	virtual const cgroup_impl& at(size_t) const = 0;
+	virtual vquantity& operator[](size_t) = 0;
+	virtual const vquantity& operator[](size_t) const = 0;
+	virtual vquantity& at(size_t) = 0;
+	virtual const vquantity& at(size_t) const = 0;
 
-	virtual cgroup_impl& front() = 0;
-	virtual const cgroup_impl& front() const = 0;
-	virtual cgroup_impl& back() = 0;
-	virtual const cgroup_impl& back() const = 0;
-	virtual cgroup_impl* data() = 0;
-	virtual const cgroup_impl* data() const = 0;
+	virtual vquantity& front() = 0;
+	virtual const vquantity& front() const = 0;
+	virtual vquantity& back() = 0;
+	virtual const vquantity& back() const = 0;
+	virtual vquantity* data() = 0;
+	virtual const vquantity* data() const = 0;
 	// capacity
 	[[nodiscard]] virtual bool empty() const = 0;
 	[[nodiscard]] virtual size_t size() const = 0;
@@ -164,17 +169,17 @@ public:
 	virtual void shrink_to_fit() = 0;
 	//modifiers
 	virtual void clear() = 0;
-	virtual iterator insert(const_iterator pos, const cgroup_impl& Val) = 0;
-	virtual iterator insert(const_iterator pos, size_t count, const cgroup_impl& Val) = 0;
+	virtual iterator insert(const_iterator pos, const vquantity& Val) = 0;
+	virtual iterator insert(const_iterator pos, size_t count, const vquantity& Val) = 0;
 	virtual iterator insert(const_iterator pos, const_iterator first, const_iterator last) = 0;
 	virtual iterator insert(const_iterator pos, const_reverse_iterator first, const_reverse_iterator last) = 0;
 	virtual iterator erase(const_iterator pos) = 0;
 	virtual iterator erase(const_iterator first, const_iterator last) = 0;
-	virtual void push_back(const cgroup_impl& value) = 0;
+	virtual void push_back(const vquantity& value) = 0;
 	virtual void pop_back() = 0;
 	virtual void resize(size_t count) = 0;
-	virtual void resize(size_t count, const cgroup_impl& val) = 0;
-	virtual void swap(cgroup_vector_impl& other) = 0;
+	virtual void resize(size_t count, const vquantity& val) = 0;
+	virtual void swap(vquantity_vector& other) = 0;
 
 private:
 	/**
@@ -243,8 +248,8 @@ public:
 	}
 };
 
-template <class S, class Allocator = std::allocator<S>, class = std::enable_if_t<std::is_base_of_v<cgroup_impl, S>>>
-class conc_cgroup_vector_impl final : public cgroup_vector_impl, public std::vector<S, Allocator>
+template <class S, class Allocator = std::allocator<S>, class = std::enable_if_t<std::is_base_of_v<vquantity, S>>>
+class quantity_vector final : public vquantity_vector, public std::vector<S, Allocator>
 {
 public:
 	using iterator = typename std::vector<S>::iterator;
@@ -261,10 +266,10 @@ public:
 	using const_pointer = typename std::vector<S>::const_pointer;
 
 	using std::vector<S, Allocator>::vector; //so we have all of vector's constructors as well as the rest of its interface.
-	conc_cgroup_vector_impl(const std::vector<S, Allocator>& other) : conc_cgroup_vector_impl(static_cast<const conc_cgroup_vector_impl&>(other)) {}
-	conc_cgroup_vector_impl(std::vector<S, Allocator>&& other) : conc_cgroup_vector_impl(static_cast<conc_cgroup_vector_impl&&>(other)) {}
+	quantity_vector(const std::vector<S, Allocator>& other) : quantity_vector(static_cast<const quantity_vector&>(other)) {}
+	quantity_vector(std::vector<S, Allocator>&& other) : quantity_vector(static_cast<quantity_vector&&>(other)) {}
 
-	blocklist identify_blocks(const Qtensor&) const override
+	blocklist identify_blocks(const btensor&) const override
 	{
 		//dummy implementation so that the template instantiation is concrete.
 		return blocklist();
@@ -348,17 +353,17 @@ public:
 	{
 		return std::vector<S>::clear(); //virtualize
 	}
-	struct ptr_aritmetic_t : virt_ptr_aritmetic
+	struct ptr_aritmetic_t : vquantt_iterator::virt_ptr_aritmetic
 	{
-		std::ptrdiff_t ptr_diff(const cgroup_impl* lhs, const cgroup_impl* rhs) const override
+		std::ptrdiff_t ptr_diff(const vquantity* lhs, const vquantity* rhs) const override
 		{
 			return static_cast<const S*>(lhs) - static_cast<const S*>(rhs);
 		}
-		const cgroup_impl* ptr_add(const cgroup_impl* ptr, std::ptrdiff_t n) const override
+		const vquantity* ptr_add(const vquantity* ptr, std::ptrdiff_t n) const override
 		{
 			return static_cast<const S*>(ptr) + n;
 		}
-		cgroup_impl* ptr_add(cgroup_impl* ptr, std::ptrdiff_t n) const override
+		vquantity* ptr_add(vquantity* ptr, std::ptrdiff_t n) const override
 		{
 			return static_cast<S*>(ptr) + n;
 		}
@@ -366,34 +371,34 @@ public:
 	constexpr static ptr_aritmetic_t ar = ptr_aritmetic_t();
 
 	using std::vector<S>::insert;
-	cgroup_iterator insert(const_cgroup_iterator pos, const cgroup_impl& Val) override
+	vquantity_vector::iterator insert(vquantity_vector::const_iterator pos, const vquantity& Val) override
 	{
-		return cgroup_iterator(insert(to_S_iterator(pos), dynamic_cast<const S&>(Val)).base(), &ar);
+		return vquantity_vector::iterator(insert(to_S_iterator(pos), dynamic_cast<const S&>(Val)).base(), &ar);
 	}
-	cgroup_iterator insert(const_cgroup_iterator pos, size_t count, const cgroup_impl& Val) override
+	vquantity_vector::iterator insert(vquantity_vector::const_iterator pos, size_t count, const vquantity& Val) override
 	{
-		return cgroup_iterator(insert(to_S_iterator(pos), count, dynamic_cast<const S&>(Val)).base(), &ar);
+		return vquantity_vector::iterator(insert(to_S_iterator(pos), count, dynamic_cast<const S&>(Val)).base(), &ar);
 	}
-	cgroup_iterator insert(const_cgroup_iterator pos, const_cgroup_iterator first, const_cgroup_iterator last) override
+	vquantity_vector::iterator insert(vquantity_vector::const_iterator pos, vquantity_vector::const_iterator first, vquantity_vector::const_iterator last) override
 	{
-		return cgroup_iterator(insert(to_S_iterator(pos), to_S_iterator(first), to_S_iterator(last)).base(), &ar);
+		return vquantity_vector::iterator(insert(to_S_iterator(pos), to_S_iterator(first), to_S_iterator(last)).base(), &ar);
 	}
-	cgroup_iterator insert(const_cgroup_iterator pos, cgroup_vector_impl::const_reverse_iterator first, cgroup_vector_impl::const_reverse_iterator last) override
+	vquantity_vector::iterator insert(vquantity_vector::const_iterator pos, vquantity_vector::const_reverse_iterator first, vquantity_vector::const_reverse_iterator last) override
 	{
-		return cgroup_iterator(insert(to_S_iterator(pos), to_S_iterator(first), to_S_iterator(last)).base(), &ar);
+		return vquantity_vector::iterator(insert(to_S_iterator(pos), to_S_iterator(first), to_S_iterator(last)).base(), &ar);
 	}
 	using std::vector<S>::emplace; // can't virtualize (template)
 	using std::vector<S>::erase;   //virtual proxy
-	cgroup_iterator erase(const_cgroup_iterator pos) override
+	vquantity_vector::iterator erase(vquantity_vector::const_iterator pos) override
 	{
-		return cgroup_iterator(erase(to_S_iterator(pos)).base(), &ar);
+		return vquantity_vector::iterator(erase(to_S_iterator(pos)).base(), &ar);
 	}
-	cgroup_iterator erase(const_cgroup_iterator first, const_cgroup_iterator last) override
+	vquantity_vector::iterator erase(vquantity_vector::const_iterator first, vquantity_vector::const_iterator last) override
 	{
-		return cgroup_iterator(erase(to_S_iterator(first), to_S_iterator(last)).base(), &ar);
+		return vquantity_vector::iterator(erase(to_S_iterator(first), to_S_iterator(last)).base(), &ar);
 	}
 	using std::vector<S>::push_back; // virtual proxy
-	void push_back(const cgroup_impl& val)
+	void push_back(const vquantity& val) override
 	{
 		return push_back(dynamic_cast<const S&>(val));
 	}
@@ -406,67 +411,67 @@ public:
 	{
 		return std::vector<S>::resize(count); //virtualize}
 	}
-	void resize(size_t count, const cgroup_impl& val) override
+	void resize(size_t count, const vquantity& val) override
 	{
 		return std::vector<S>::resize(count, dynamic_cast<const S&>(val));
 	}
 	using std::vector<S>::resize;
 	using std::vector<S>::swap; //virtualize
-	void swap(cgroup_vector_impl& other) override
+	void swap(vquantity_vector& other) override
 	{
-		std::vector<S>::swap(dynamic_cast<conc_cgroup_vector_impl&>(other));
+		std::vector<S>::swap(dynamic_cast<quantity_vector&>(other));
 	}
 
 private:
-	typename cgroup_vector_impl::iterator begin_impl() override
+	typename vquantity_vector::iterator begin_impl() override
 	{
-		return cgroup_vector_impl::iterator(begin().base(), &ar);
+		return vquantity_vector::iterator(begin().base(), &ar);
 	}
-	typename cgroup_vector_impl::iterator end_impl() override
+	typename vquantity_vector::iterator end_impl() override
 	{
-		return cgroup_vector_impl::iterator(end().base(), &ar);
+		return vquantity_vector::iterator(end().base(), &ar);
 	}
 
-	typename cgroup_vector_impl::const_iterator cbegin_impl() const override
+	typename vquantity_vector::const_iterator cbegin_impl() const override
 	{
-		return cgroup_vector_impl::const_iterator(cbegin().base(), &ar);
+		return vquantity_vector::const_iterator(cbegin().base(), &ar);
 	}
-	typename cgroup_vector_impl::const_iterator cend_impl() const override
+	typename vquantity_vector::const_iterator cend_impl() const override
 	{
-		return cgroup_vector_impl::const_iterator(cend().base(), &ar);
+		return vquantity_vector::const_iterator(cend().base(), &ar);
 	}
-	static const_iterator to_S_iterator(const_cgroup_iterator in)
+	static const_iterator to_S_iterator(vquantity_vector::const_iterator in)
 	{
 		if (in.vt() != &ar)
 			throw std::bad_cast();
 		const S* _ptr = static_cast<const S*>(in.base());
 		return const_iterator(_ptr);
 	}
-	static reverse_iterator to_S_iterator(std::reverse_iterator<cgroup_iterator> in)
+	static reverse_iterator to_S_iterator(std::reverse_iterator<vquantity_vector::iterator> in)
 	{
 		return reverse_iterator(to_S_iterator(in.base())); //base() of reverse_iterator<base_iterator> is of type base_iterator
 	}
-	static const_reverse_iterator to_S_iterator(std::reverse_iterator<const_cgroup_iterator> in)
+	static const_reverse_iterator to_S_iterator(std::reverse_iterator<vquantity_vector::const_iterator> in)
 	{
 		return const_reverse_iterator(to_S_iterator(in.base())); //base() of reverse_iterator<base_iterator> is of type base_iterator
 	}
-	static iterator to_S_iterator(cgroup_iterator in)
+	static iterator to_S_iterator(vquantity_vector::iterator in)
 	{
 		if (in.vt() != &ar)
 			throw std::bad_cast();
 		return iterator(static_cast<S*>(in.base()));
 	}
 
-	std::unique_ptr<cgroup_vector_impl> clone() const override
+	std::unique_ptr<vquantity_vector> clone() const override
 	{
-		return std::make_unique<conc_cgroup_vector_impl>(*this);
+		return std::make_unique<quantity_vector>(*this);
 	}
 };
 
 template <class... T>
-std::unique_ptr<cgroup_vector_impl> conc_cgroup_impl<T...>::make_vector(size_t cnt) const
+std::unique_ptr<vquantity_vector> quantity<T...>::make_vector(size_t cnt) const
 {
-	return std::make_unique<conc_cgroup_vector_impl<conc_cgroup_impl<T...>>>(cnt, *this);
+	return std::make_unique<quantity_vector<quantity<T...>>>(cnt, *this);
 }
 
 } // namespace quantt

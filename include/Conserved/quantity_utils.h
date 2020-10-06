@@ -1,5 +1,5 @@
 /*
- * File: groups_utils.h
+ * File:quantity_utils.h
  * Project: quantt
  * File Created: Tuesday, 15th September 2020 1:16:37 pm
  * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)
@@ -17,7 +17,7 @@
 #include <utility>
 namespace quantt
 {
-namespace groups
+namespace conserved
 {
 
 // this template must work with your implemented group.
@@ -30,9 +30,9 @@ constexpr T op(T lhs, const T& rhs) { return lhs.op(rhs); }
 // composite group type cgoups.
 template <class T>
 using op2_sig = decltype(
-    groups::op(std::declval<const T&>(),
-               std::declval<const T&>())); // this template must work with your
-                                           // implemented group.
+    conserved::op(std::declval<const T&>(),
+                  std::declval<const T&>())); // this template must work with your
+                                              // implemented group.
 template <class T>
 using op_sig = decltype(std::declval<T&>().op(std::declval<T&>()));
 template <class T>
@@ -114,7 +114,7 @@ struct default_to_neutral : std::false_type
 
 template <class T>
 struct default_to_neutral<T, std::enable_if_t<has_op<T>::value && std::is_default_constructible_v<T> && has_inverse_<T>::value && has_constexpr_equal<T>::value>>
-    : std::integral_constant<bool, T() == groups::op(T(), T().inverse_())>
+    : std::integral_constant<bool, T() == conserved::op(T(), T().inverse_())>
 {
 };
 template <class T, class = void>
@@ -128,27 +128,27 @@ struct is_Abelian<T, std::enable_if_t<is_detected_v<abelian_present, T>>> : std:
 {
 };
 // the following compile time template constant is true iff the template
-// parameter satisfy the constraint for a group that will work with cgroup
+// parameter satisfy the constraint for a group that will work with any_quantity
 template <class T>
-using is_group =
+using is_conversed_quantt =
     and_<default_to_neutral<T>, has_op<T>, has_inverse_<T>,
          has_comparatorequal<T>, has_comparatornotequal<T>, is_Abelian<T>>;
 
 template <class T>
-constexpr bool is_group_v = is_group<T>::value;
+constexpr bool is_conserved_quantt_v = is_conversed_quantt<T>::value;
 
 template <class... T>
-using all_group = and_<is_group<T>...>;
+using all_conserved_quantt = and_<is_conversed_quantt<T>...>;
 template <class... T>
-constexpr bool all_group_v = all_group<T...>::value;
+constexpr bool all_group_v = all_conserved_quantt<T...>::value;
 
 #if __cplusplus == 202002L
 template <class T>
-concept a_group = is_group_v<T>;
+concept a_group = is_conserved_quantt_v<T>;
 
 #endif
 
-} // namespace groups
+} // namespace conserved
 } // namespace quantt
 
 #endif /* D241DFD2_9200_4C66_8225_2C3BBD27EDE4 */

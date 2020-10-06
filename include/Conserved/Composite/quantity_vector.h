@@ -1,5 +1,5 @@
 /*
- * File: cgroup_vector.h
+ * File: any_quantity_vector.h
  * Project: quantt
  * File Created: Friday, 18th September 2020 4:07:41 pm
  * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)
@@ -14,44 +14,43 @@
 #ifndef D34E37A6_732F_4F45_9171_6B931CC1F812
 #define D34E37A6_732F_4F45_9171_6B931CC1F812
 
-#include "composite_group.h"
-#include "Groups/groups.h"
+#include "Conserved/Composite/quantity_vector_impl.h"
+#include "Conserved/Composite/quantity.h"
+#include "Conserved/quantity.h"
 #include <vector>
-#include "Groups/cgroup_container_impl.h"
 
 #include "doctest/cond_doctest.h"
 
 namespace quantt
 {
 
-
-class cgroup_vector final
+class any_quantity_vector final
 {
-	std::unique_ptr<cgroup_vector_impl> ptr;
+	std::unique_ptr<vquantity_vector> ptr;
 
 public:
-	using iterator = cgroup_iterator;
-	using const_iterator = const_cgroup_iterator;
+	using iterator = vquantity_vector::iterator;
+	using const_iterator = vquantity_vector::const_iterator;
 	using reverse_iterator = std::reverse_iterator<iterator>;
 	using const_reverse_iterator = std::reverse_iterator<const_iterator>;
-	using value_type = cgroup;
+	using value_type = any_quantity;
 	using size_type = size_t;
 	using difference_type = std::ptrdiff_t;
-	using reference = cgroup_ref;
-	using const_reference = cgroup_cref;
+	using reference = any_quantity_ref;
+	using const_reference = any_quantity_cref;
 	using pointer = typename iterator::pointer;
 	using const_pointer = typename const_iterator::pointer;
 
-	cgroup_vector(std::unique_ptr<cgroup_vector_impl>&& _ptr) : ptr(std::move(_ptr)) {}
-	cgroup_vector() = default;
-	cgroup_vector(const cgroup_vector& other) : ptr(other.ptr->clone()) {}
-	cgroup_vector(cgroup_vector&& other) : ptr(std::move(other.ptr)) {}
-	cgroup_vector(size_t cnt, cgroup_cref val) : ptr(val.get().make_vector(cnt)) {}
+	any_quantity_vector(std::unique_ptr<vquantity_vector>&& _ptr) : ptr(std::move(_ptr)) {}
+	any_quantity_vector() = default;
+	any_quantity_vector(const any_quantity_vector& other) : ptr(other.ptr->clone()) {}
+	any_quantity_vector(any_quantity_vector&& other) : ptr(std::move(other.ptr)) {}
+	any_quantity_vector(size_t cnt, any_quantity_cref val) : ptr(val.get().make_vector(cnt)) {}
 	/**
-	 * @brief Construct a new cgroup vector object from an initializer list of cgroup
-	 * @param list all the cgroup must have the same concrete type, or an exception will be raised
+	 * @brief Construct a new any_quantity vector object from an initializer list of any_quantity
+	 * @param list all the any_quantity must have the same concrete type, or an exception will be raised
 	 */
-	cgroup_vector(std::initializer_list<cgroup> list) : ptr(list.begin()->get().make_vector(0))
+	any_quantity_vector(std::initializer_list<any_quantity> list) : ptr(list.begin()->get().make_vector(0))
 	{
 		ptr->reserve(list.end() - list.begin());
 		for (const_reference a : list)
@@ -59,18 +58,18 @@ public:
 			push_back(a);
 		}
 	}
-	cgroup_vector(const cgroup_vector_impl& other) : ptr(other.clone()) {}
+	any_quantity_vector(const vquantity_vector& other) : ptr(other.clone()) {}
 	template <class Conc_cgroup, class = std::enable_if_t<is_conc_cgroup_impl<Conc_cgroup>::value>>
-	cgroup_vector(std::initializer_list<Conc_cgroup> list) : ptr(std::make_unique<conc_cgroup_vector_impl<Conc_cgroup>>(list)) {}
+	any_quantity_vector(std::initializer_list<Conc_cgroup> list) : ptr(std::make_unique<quantity_vector<Conc_cgroup>>(list)) {}
 	template <class Conc_cgroup, class Allocator, class = std::enable_if_t<is_conc_cgroup_impl<Conc_cgroup>::value>>
-	cgroup_vector(const conc_cgroup_vector_impl<Conc_cgroup, Allocator>& other) : ptr(other.clone()) {}
+	any_quantity_vector(const quantity_vector<Conc_cgroup, Allocator>& other) : ptr(other.clone()) {}
 	template <class Conc_cgroup, class Allocator, class = std::enable_if_t<is_conc_cgroup_impl<Conc_cgroup>::value>>
-	cgroup_vector(conc_cgroup_vector_impl<Conc_cgroup, Allocator>&& other) : ptr(std::make_unique<conc_cgroup_vector_impl<Conc_cgroup, Allocator>>())
+	any_quantity_vector(quantity_vector<Conc_cgroup, Allocator>&& other) : ptr(std::make_unique<quantity_vector<Conc_cgroup, Allocator>>())
 	{
 		*ptr = std::move(other);
 	}
 
-	cgroup_vector(std::initializer_list<cgroup_cref> list) : ptr(list.begin()->get().make_vector(0))
+	any_quantity_vector(std::initializer_list<any_quantity_cref> list) : ptr(list.begin()->get().make_vector(0))
 	{
 		ptr->reserve(list.end() - list.begin());
 		for (const_reference a : list)
@@ -78,7 +77,7 @@ public:
 			push_back(a);
 		}
 	}
-	cgroup_vector(std::initializer_list<cgroup_ref> list) : ptr(list.begin()->get().make_vector(0))
+	any_quantity_vector(std::initializer_list<any_quantity_ref> list) : ptr(list.begin()->get().make_vector(0))
 	{
 		ptr->reserve(list.end() - list.begin());
 		for (const_reference a : list)
@@ -87,7 +86,7 @@ public:
 		}
 	}
 
-	cgroup_vector& operator=(cgroup_vector other)
+	any_quantity_vector& operator=(any_quantity_vector other)
 	{
 		ptr = std::move(other.ptr);
 		return *this;
@@ -95,7 +94,7 @@ public:
 
 	reference operator[](size_t n)
 	{
-		return cgroup_ref((*ptr)[n]);
+		return any_quantity_ref((*ptr)[n]);
 	}
 	const_reference operator[](size_t n) const
 	{
@@ -204,7 +203,7 @@ public:
 	{
 		ptr->resize(count, val.get());
 	}
-	void swap(cgroup_vector& other)
+	void swap(any_quantity_vector& other)
 	{
 		using std::swap;
 		swap(ptr, other.ptr);
@@ -259,17 +258,16 @@ public:
 		return (crend());
 	}
 };
-void swap(cgroup_vector& a, cgroup_vector& b)
+void swap(any_quantity_vector& a, any_quantity_vector& b)
 {
 	a.swap(b);
 }
 
-
-TEST_CASE("concrete cgroup container implementation")
+TEST_CASE("concrete any_quantity container implementation")
 {
-	using ccgroup = conc_cgroup_impl<groups::C<2>, groups::Z>;
-	conc_cgroup_vector_impl<ccgroup> t1{ccgroup(1, 1), ccgroup(0, 0), ccgroup(1, -1)};
-	const conc_cgroup_vector_impl<ccgroup> t2{ccgroup(1, 1), ccgroup(0, 0), ccgroup(1, -1)};
+	using ccgroup = quantity<conserved::C<2>, conserved::Z>;
+	quantity_vector<ccgroup> t1{ccgroup(1, 1), ccgroup(0, 0), ccgroup(1, -1)};
+	const quantity_vector<ccgroup> t2{ccgroup(1, 1), ccgroup(0, 0), ccgroup(1, -1)};
 	REQUIRE(t1.size() > 0);
 	REQUIRE(t2.size() > 0);
 	SUBCASE("Access operator[]")
@@ -331,7 +329,7 @@ TEST_CASE("concrete cgroup container implementation")
 		t1.clear();
 		CHECK(t1.capacity() == c);
 		CHECK(t1.size() == 0);
-		conc_cgroup_vector_impl<ccgroup> t3{ccgroup(1, 1), ccgroup(0, 0), ccgroup(1, -1)};
+		quantity_vector<ccgroup> t3{ccgroup(1, 1), ccgroup(0, 0), ccgroup(1, -1)};
 		auto data1 = t1.data();
 		auto data3 = t3.data();
 		swap(t1, t3);
@@ -339,14 +337,13 @@ TEST_CASE("concrete cgroup container implementation")
 		CHECK(data3 == t1.data());
 	}
 }
-TEST_CASE("polymorphic cgroup container with value semantic")
+TEST_CASE("polymorphic any_quantity container with value semantic")
 {
-	using ccgroup = conc_cgroup_impl<groups::C<2>, groups::Z>;
-	conc_cgroup_vector_impl<ccgroup> conc_t1{ccgroup(1, 1), ccgroup(0, 0), ccgroup(1, -1)};
-	const conc_cgroup_vector_impl<ccgroup> conc_t2{ccgroup(1, 1), ccgroup(0, 0), ccgroup(1, -1)};
-
-	cgroup_vector t1{cgroup(groups::C<2>(1), groups::Z(1)), cgroup(ccgroup(0, 0)), cgroup(ccgroup(1, -1))};
-	const cgroup_vector t2{cgroup(groups::C<2>(1), groups::Z(1)), cgroup(ccgroup(0, 0)), cgroup(ccgroup(1, -1))};
+	using ccgroup = quantity<conserved::C<2>, conserved::Z>;
+	quantity_vector<ccgroup> conc_t1{ccgroup(1, 1), ccgroup(0, 0), ccgroup(1, -1)};
+	const quantity_vector<ccgroup> conc_t2{ccgroup(1, 1), ccgroup(0, 0), ccgroup(1, -1)};
+	any_quantity_vector t1{any_quantity(conserved::C<2>(1), conserved::Z(1)), any_quantity(ccgroup(0, 0)), any_quantity(ccgroup(1, -1))};
+	const any_quantity_vector t2{any_quantity(conserved::C<2>(1), conserved::Z(1)), any_quantity(ccgroup(0, 0)), any_quantity(ccgroup(1, -1))};
 
 	REQUIRE(t1.size() > 0);
 	REQUIRE(t2.size() > 0);
@@ -355,9 +352,9 @@ TEST_CASE("polymorphic cgroup container with value semantic")
 		auto a = t1[0]; //makes a reference
 		auto b = t2[0]; //makes a reference
 		//if you want a copy, you have to be specific about the return type.
-		// cgroup c = t1[1]; //make a copy of the value.
-		CHECK(std::is_same_v<decltype(a), cgroup_ref>);
-		CHECK(std::is_same_v<decltype(b), cgroup_cref>);
+		// any_quantity c = t1[1]; //make a copy of the value.
+		CHECK(std::is_same_v<decltype(a), any_quantity_ref>);
+		CHECK(std::is_same_v<decltype(b), any_quantity_cref>);
 	}
 	SUBCASE("Access method at")
 	{
@@ -365,8 +362,8 @@ TEST_CASE("polymorphic cgroup container with value semantic")
 		REQUIRE_NOTHROW(t2.at(0));
 		auto a = t1.at(0); //makes a reference
 		auto b = t2.at(0); //makes a reference
-		CHECK(std::is_same_v<decltype(a), cgroup_ref>);
-		CHECK(std::is_same_v<decltype(b), cgroup_cref>);
+		CHECK(std::is_same_v<decltype(a), any_quantity_ref>);
+		CHECK(std::is_same_v<decltype(b), any_quantity_cref>);
 		CHECK_THROWS_AS(t2.at(t2.size()), std::out_of_range);
 		CHECK_THROWS_AS(t1.at(t1.size()), std::out_of_range);
 	}
@@ -378,12 +375,12 @@ TEST_CASE("polymorphic cgroup container with value semantic")
 		auto b2 = t2.back();  //makes a reference
 		auto d1 = t1.data();  //makes a reference
 		auto d2 = t2.data();  //makes a reference
-		CHECK(std::is_same_v<decltype(f1), cgroup_ref>);
-		CHECK(std::is_same_v<decltype(b1), cgroup_ref>);
-		CHECK(std::is_same_v<decltype(f2), cgroup_cref>);
-		CHECK(std::is_same_v<decltype(b2), cgroup_cref>);
-		CHECK(std::is_same_v<decltype(d1), typename cgroup_vector::pointer>);
-		CHECK(std::is_same_v<decltype(d2), typename cgroup_vector::const_pointer>);
+		CHECK(std::is_same_v<decltype(f1), any_quantity_ref>);
+		CHECK(std::is_same_v<decltype(b1), any_quantity_ref>);
+		CHECK(std::is_same_v<decltype(f2), any_quantity_cref>);
+		CHECK(std::is_same_v<decltype(b2), any_quantity_cref>);
+		CHECK(std::is_same_v<decltype(d1), typename any_quantity_vector::pointer>);
+		CHECK(std::is_same_v<decltype(d2), typename any_quantity_vector::const_pointer>);
 	}
 	SUBCASE("capacity")
 	{
@@ -409,14 +406,14 @@ TEST_CASE("polymorphic cgroup container with value semantic")
 		CHECK(t1.size() == 0);
 		t1.push_back(ccgroup(1,1));
 		CHECK_NOTHROW(t1.push_back( ccgroup(1,1)));
-		CHECK_THROWS_AS(t1.push_back(cgroup(groups::C<2>(1),groups::C<4>(1))), std::bad_cast);
-		cgroup_vector t3{cgroup(ccgroup(1, 1)), cgroup(ccgroup(0, 0)), cgroup(ccgroup(1, -1))};
+		CHECK_THROWS_AS(t1.push_back(any_quantity(conserved::C<2>(1), conserved::C<4>(1))), std::bad_cast);
+		any_quantity_vector t3{any_quantity(ccgroup(1, 1)), any_quantity(ccgroup(0, 0)), any_quantity(ccgroup(1, -1))};
 		SUBCASE("insert, pop_back and erase")
 		{
 			auto it = t1.begin();
-			CHECK_THROWS_AS(t1.insert(t1.begin(),cgroup(groups::C<5>(0))),std::bad_cast);// the cgroup has the wrong concrete type for the container.
-			CHECK_NOTHROW(it = t1.insert(t1.begin(),cgroup(ccgroup(1,-1))));
-			CHECK(t1[0] == cgroup(ccgroup(1,-1)));//The insertion happen *before* the position of the given iterator. In this case the inserted value should become the 0th element
+			CHECK_THROWS_AS(t1.insert(t1.begin(), any_quantity(conserved::C<5>(0))), std::bad_cast); // the any_quantity has the wrong concrete type for the container.
+			CHECK_NOTHROW(it = t1.insert(t1.begin(), any_quantity(ccgroup(1, -1))));
+			CHECK(t1[0] == any_quantity(ccgroup(1, -1))); //The insertion happen *before* the position of the given iterator. In this case the inserted value should become the 0th element
 			CHECK(it == t1.begin());//the return iterator points to the first (or only) element inserted.
 			//current implementation incorrect because the end() iterator does not point to a valid object... iterator comparator needs to be implemented in a way that doesn't rely on the vtable.
 			CHECK_NOTHROW(it = t1.insert(t1.end(), 3,ccgroup(1,5) )); //insert 3 ccgroup(1,5) before the end;
@@ -424,7 +421,7 @@ TEST_CASE("polymorphic cgroup container with value semantic")
 			{
 				CHECK(*it == ccgroup(1,5) );
 			}
-			cgroup_vector t4{cgroup(groups::C<2>(1)), groups::C<2>(0), groups::C<2>(-1)};
+			any_quantity_vector t4{any_quantity(conserved::C<2>(1)), conserved::C<2>(0), conserved::C<2>(-1)};
 			CHECK_THROWS_AS(it = t1.insert(t1.begin()+2, t4.begin(),t4.end()),std::bad_cast); //t4 is incompatible with t1.
 			CHECK_NOTHROW(it = t1.insert(t1.begin()+2, t3.begin(),t3.end()));
 			int i = 0;
@@ -438,7 +435,7 @@ TEST_CASE("polymorphic cgroup container with value semantic")
 			{
 				CHECK(*it == t3[i--]);
 			}
-			cgroup last = *(t1.end()-2);
+			any_quantity last = *(t1.end() - 2);
 			CHECK_NOTHROW(t1.erase(t1.end()-1));
 			CHECK(last == *(t1.end()-1));
 			auto size = t1.size();
