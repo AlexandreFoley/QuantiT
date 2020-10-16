@@ -49,7 +49,50 @@ The equivalent of dmrjulia's contract is torch::tensordot. It differ in two majo
 The arguments are the 2 input tensor, and then the lists of index to contract in each tensor.
 
 An arbitrary permutation can be done with torch::Tensor::permute, and tensors can be reshaped with torch::Tensor::reshape.
+\subsection{Missing linear algebra kernels}
 
+Some linear algebra kernels are not presently available within pytorch. Nothing fundamental stands in the way, they are simply not implemented.
+The most notable of the missing algorithm are the following: LQ decomposition, rank-revealing QR and rank revealing LQ. LQ is simply the transpose of the QR algorithm.
+Together, rank revealing LQ and rank revealing QR could replace the usage we make of SVD in general, for a somewhat cheaper numerical cost. (QR is a step in many SVD implementation)
+
+Relevent documentation regarding how to preceed can be found in\\
+pytorch/aten/src/ATen/native/cpu/README.md.
+This file suggest that the yaml files might be a deprecated registration method. I am unsure.\\
+pytorch/aten/src/ATen/native/README.md instruct to use the yaml for "native functions", and to use the registration macros for the content of the cpu folder.\\
+https://pytorch.org/tutorials/advanced/dispatcher.html indicate that the macros is the mecanism of choice to extend pytorch from an external position.
+
+The implementation of (not rank revealing) QR is a blueprint for the implementation of LQ.
+This implementation contain the following:
+
+\begin{enumerate}
+    \item template on the type of number wrapper for the relevent lapack functions (xGEQRF, xORGQR and xUNGQR).
+    \item wrapper for those preceding template that take care of the batching.
+    \item Call the batched implementation and check lapack error codes. (\_qr\_helper\_cpu and \_qr\_helper\_cuda)
+    \item Registering with the dispatcher.
+    \item All the equivalent stuff for CUDA, etc..
+\end{enumerate}
+The registering to the dispatcher seems to be done using a generator that reads from native\_functions.yaml in pytorch/src/ATen/native/.
+The relevent entry for QR are
+\begin{verbatim}
+- func: qr(Tensor self, bool some=True) -> (Tensor Q, Tensor R)
+use_c10_dispatcher: full
+variants: method, function
+
+- func: _qr_helper(Tensor self, bool some) -> (Tensor, Tensor)
+use_c10_dispatcher: full
+variants: function
+dispatch:
+CPU: _qr_helper_cpu
+CUDA: _qr_helper_cuda
+\end{verbatim}
+
+The implemenation of qr\_backward is found in\\ pytorch/torch/csrc/autograd/FunctionsManual.cpp:$1843$ .
+and for the derivative through QR, the registration yaml can be found in \\
+pytorch/tools/autograd/derivatives.yaml:
+\begin{verbatim}
+- name: qr(Tensor self, bool some=True) -> (Tensor Q, Tensor R)
+  self: qr_backward(grads, self, some, Q, R)
+\end{verbatim}
 \section{Tensor class structure}
 
 The tensors of pytorch are build in a somewhat complicated way to offer a simple and uniform interface no matter what is the actual backend on which the computations are done.
@@ -57,6 +100,17 @@ This is accomplished by using the "pointer to implementation" idiom, "pimpl" for
 Done this way, the end user gets all the advantages of the multiple backends with none of the additionnal difficulty associated with the differents type, not even polymorphic pointers.
 
 While hiding a quantum tensor behind this interface is not impossible, any specific properties of quantum tensors would be innacessible. This means that constructing a quantum tensor would have to be done through a factory function, and from then on the user cannot do any direct manipulation to a property specific to quantum tensor.
+
+\subsection{scantly documented methods and functions}
+torch::Tensor have a slice(int direction,int begin,int end) method. this function gives a slice from the direction "direction" begining at begin and ending just before end.
+For exemple
+\begin{verbatim}
+torch::Tensor a = torch::rand({5,5});
+return a.slice(0,1,3); 
+\end{verbatim}
+will return a matrix containing a view on the rows [1,2].
+The direction can be labeled in reversed order using negative numbers.
+
 
 \subsection{Sparse tensors}
 Torch implement a sparse tensor class. The format is similar to the implementation of the quantum tensor of DMRjulia: The non-zero coefficient and their indices are stored densely.

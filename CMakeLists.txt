@@ -8,7 +8,6 @@ find_package(fmt REQUIRED)
 
 link_libraries( ${TORCH_LIBRARIES} fmt)
 
-include_directories(include)
 
 
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)

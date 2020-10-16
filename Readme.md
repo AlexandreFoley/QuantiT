@@ -6,6 +6,8 @@ QuanTT is an extension to pytorch, so we must install pytorch first.
 To garantee correct compilation in debug mode, we must compile pytorch ourselves. This can take a significant amount of time.
 If compiling in release mode, we could make use of precompiled pytorch for our platform. The project isn't set up for that, you're on your own if you want to do that.
 
+This project depends on the {fmt} library, install it with a package manager. (package often called libfmt)
+
 ### PyTorch's dependencies
 Python3 and some modules are dependencies of PyTorch
 Cuda is an optionnal dependency of PyTorch.

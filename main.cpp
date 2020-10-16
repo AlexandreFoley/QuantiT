@@ -16,6 +16,7 @@
 #include "include/torch_formatter.h"
 #include "models.h"
 #include <fmt/core.h>
+#include <map>
 #include <ostream>
 #include <torch/torch.h>
 
@@ -41,5 +42,22 @@ int main()
 		cuda_device = torch::Device(torch::kCUDA); // set the cuda_device to the actual gpu if it would work
 	}
 
+	std::map<int, int> test_map;
+	test_map.emplace(5, 5);
+
+	auto a = torch::rand({4, 5}, torch::kComplexDouble);
+	fmt::print("a \n{}\n", torch::real(a));
+	fmt::print("slice {} {} {}:\n {}\n", 2, 0, 1, torch::real(a.slice(-2, 0, 2)));
+	fmt::print("slice {} {} {}:\n {}\n", -1, 0, 2, torch::real(a.slice(-1, 0, 2)));
+	fmt::print("slice {} {} {}:\n {}\n", 0, 0, 1, torch::real(a.slice(0, 0, 2)));
+	fmt::print("slice {} {} {}:\n {}\n", 1, 0, 2, torch::real(a.slice(1, 0, 2)));
+	fmt::print("slice {} {} {}:\n {}\n", -1, -1, 1, torch::real(a.slice(-1, -1, 2)));
+	fmt::print("slice {} {} {}:\n {}\n", -2, 1, 2, torch::real(a.slice(-2, 1, 2)));
+
+	auto [q, r] = torch::qr(a);
+	fmt::print("real q:\n{}\n", torch::real(q));
+	fmt::print("imag q:\n{}\n", torch::imag(q));
+	fmt::print("real r:\n{}\n", torch::real(r));
+	fmt::print("imag r:\n{}\n", torch::imag(r));
 	return 0;
 }

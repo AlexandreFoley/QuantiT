@@ -20,7 +20,7 @@ set(SOURCE_LIST )
 
 # Make an automatic library - will be static or dynamic based on user setting
 add_library(QuanTT_lib MPT.cpp LinearAlgebra.cpp dimension_manip.cpp torch_formatter.cpp dmrg.cpp operators.cpp 
-            models.cpp any_quantity.cpp groups.cpp ${HEADER_LIST})
+            models.cpp any_quantity.cpp groups.cpp btensor.cpp ${HEADER_LIST})
 
 # We need this directory, and users of our library will need it too
 target_include_directories(QuanTT_lib PUBLIC ../include)
