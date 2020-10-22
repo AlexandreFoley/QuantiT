@@ -10,6 +10,8 @@
  * Copyright (c) 2020 Alexandre Foley
  * All rights reserved
  */
+#define DOCTEST_CONFIG_IMPLEMENT
+#include "doctest/doctest_proxy.h"
 
 #include "dmrg.h"
 #include "fmt/ostream.h"
@@ -32,6 +34,9 @@ void print_MPS_dims(const quantt::MPS &mps)
 
 int main()
 {
+	doctest::Context doctest_context;
+	doctest_context.addFilter("test-case-exclude", "**"); //don't run the tests. with this qtt_CHECKS, qtt_REQUIRES, etc. should work outside test context. not that i want to do that.
+
 	using namespace quantt;
 	fmt::print("C++ standard version in use {}\n", __cplusplus);
 	torch::set_default_dtype(torch::scalarTypeToTypeMeta(torch::kFloat64)); //otherwise the type promotion always goes to floats when promoting a tensor

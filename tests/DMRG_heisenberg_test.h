@@ -15,7 +15,7 @@
 #define E0106B85_7787_42FD_9E7E_47803E425A61
 
 #include "dmrg.h"
-#include "doctest/cond_doctest.h"
+#include "doctest/doctest_proxy.h"
 #include "models.h"
 #include "torch_formatter.h"
 #include <chrono>
@@ -76,7 +76,7 @@ class dmrg_log_sweeptime final: public quantt::dmrg_logger
 
 };
 
-TEST_CASE("solving the heisenberg model")
+qtt_TEST_CASE("solving the heisenberg model")
 {
 	torch::set_default_dtype(torch::scalarTypeToTypeMeta(torch::kFloat64));
 	auto local_tens = torch::rand({4, 2, 4});
@@ -99,29 +99,29 @@ TEST_CASE("solving the heisenberg model")
 		fmt::print(print_string, size, E0.to<double>() / size, elapsed_seconds.count());
 		fmt::print("Obtained in {} iterations. Bond dimension at middle of MPS: {}.\n",logger.it_num,logger.middle_bond_dim);
 	};
-	SUBCASE("2 sites AFM")
+	qtt_SUBCASE("2 sites AFM")
 	{
 		constexpr size_t size = 2;
 		Heisen_afm_test(size);
 	}
-	SUBCASE("10 sites AFM")
+	qtt_SUBCASE("10 sites AFM")
 	{
 		constexpr size_t size = 10;
 		Heisen_afm_test(size);
 	}
-	SUBCASE("20 sites AFM")
+	qtt_SUBCASE("20 sites AFM")
 	{
 		Heisen_afm_test(20);
 	}
-	SUBCASE("50 sites AFM")
+	qtt_SUBCASE("50 sites AFM")
 	{
 		Heisen_afm_test(50);
 	}
-	SUBCASE("100 sites AFM")
+	qtt_SUBCASE("100 sites AFM")
 	{
 		Heisen_afm_test(100);
 	}
-	SUBCASE("DMRjulia comparison")
+	qtt_SUBCASE("DMRjulia comparison")
 	{	
 		auto init_num_threads = torch::get_num_threads();
 		torch::set_num_threads(1);
@@ -153,7 +153,7 @@ TEST_CASE("solving the heisenberg model")
 		fmt::print("bond dimension after each sweeps: {}\n",logger.bond_list);
 		torch::set_num_threads(init_num_threads);
 	}
-	// 	SUBCASE("1000 sites AFM")
+	// 	qtt_SUBCASE("1000 sites AFM")
 	// 	{
 	// 		auto hamil = quantt::Heisenberg(1,1000);
 	// 		quantt::MPS state(1000,local_tens);

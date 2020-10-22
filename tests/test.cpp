@@ -20,6 +20,7 @@
 #include "LinearAlgebra.h"
 #include "MPT.h"
 #include "blockTensor/btensor.h"
+#include "blockTensor/flat_map.h"
 #include "dimension_manip.h"
 #include "dmrg.h"
 #include "models.h"

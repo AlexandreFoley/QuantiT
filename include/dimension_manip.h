@@ -20,7 +20,7 @@
 #include <fmt/core.h>
 #include <fmt/ostream.h>
 
-#include "doctest/cond_doctest.h"
+#include "doctest/doctest_proxy.h"
 
 namespace quantt{
 /**
@@ -54,30 +54,27 @@ std::vector<int64_t> reverse(torch::IntArrayRef dims);
 torch::IntArrayRef slice(const std::vector<int64_t>& in, size_t start, size_t n);
 torch::IntArrayRef slice(torch::IntArrayRef in, size_t start, size_t n);
 
-
-TEST_CASE("dimension manipulation tools")
+qtt_TEST_CASE("dimension manipulation tools")
 {
 	std::vector<int64_t> dim1({2,3,4});
 	std::vector<int64_t> dim2({5,6});
 	std::vector<int64_t> dim3({7,8});
 
-	CHECK(prod(dim1)==24);
-	CHECK(prod(dim2)==30);
-	CHECK(prod(dim3)==56);
-	CHECK(prod(dim1,0,3)==24);
-	CHECK(prod(dim2,0,2)==30);
-	CHECK(prod(dim3,0,2)==56);
-
-
-	CHECK_NOTHROW(auto ref1 = slice(dim1,0,1));
+	qtt_CHECK(prod(dim1) == 24);
+	qtt_CHECK(prod(dim2) == 30);
+	qtt_CHECK(prod(dim3) == 56);
+	qtt_CHECK(prod(dim1, 0, 3) == 24);
+	qtt_CHECK(prod(dim2, 0, 2) == 30);
+	qtt_CHECK(prod(dim3, 0, 2) == 56);
+	qtt_CHECK_NOTHROW(auto ref1 = slice(dim1, 0, 1));
 	std::vector<int64_t> concat12 = {2,3,4,5,6};
 	std::vector<int64_t> concat21 = {5,6,2,3,4} ;
-	CHECK(concat12 == concat(dim1,dim2));
-	CHECK(concat21 == concat(dim2,dim1));
+	qtt_CHECK(concat12 == concat(dim1, dim2));
+	qtt_CHECK(concat21 == concat(dim2, dim1));
 	std::vector<int64_t> concat123 = {2,3,4,5,6,7,8};
-	CHECK(concat123 == concat(dim1,dim2,dim3));
+	qtt_CHECK(concat123 == concat(dim1, dim2, dim3));
 
-	CHECK(prod(concat(dim1,dim2,dim3)) == 40320);
+	qtt_CHECK(prod(concat(dim1, dim2, dim3)) == 40320);
 }
 
 

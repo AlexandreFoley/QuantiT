@@ -24,8 +24,8 @@ template <>
 struct fmt::formatter<torch::Tensor>
 {
 	uint linelenght = 80;
-	
-	constexpr auto parse(parse_context &ctx)
+
+	constexpr auto parse(format_parse_context& ctx)
 	{
 		auto it = ctx.begin(), end = ctx.end();
 		if (*it != '}')

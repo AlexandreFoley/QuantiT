@@ -399,7 +399,7 @@ const vquantity& any_quantity::get() const
 	return *impl;
 }
 
-TEST_CASE("composite conserved")
+qtt_TEST_CASE("composite conserved")
 {
 	using namespace quantt;
 	using namespace conserved;
@@ -407,32 +407,32 @@ TEST_CASE("composite conserved")
 	any_quantity B(C<2>(1), Z(-1));
 	using ccgroup = quantity<C<2>, Z>;
 	auto EFF = any_quantity(ccgroup(0, 0));
-	CHECK_NOTHROW(auto a = any_quantity(ccgroup(0, 0)));
+	qtt_CHECK_NOTHROW(auto a = any_quantity(ccgroup(0, 0)));
 	any_quantity A_copy(A);
 	any_quantity B_copy(B);
-	CHECK_NOTHROW(auto c = A + B);
+	qtt_CHECK_NOTHROW(auto c = A + B);
 	any_quantity D(Z(0), C<2>(1)); // D has a different underlying type.
 
 	// the cast to void silences warnings about unused return values and
 	// comparison. We know, it's ok.
-	CHECK_THROWS_AS((void)(D == A),
-	                const std::bad_cast&); // A and D have different derived
-	                                       // type: they're not compatible
-	CHECK_THROWS_AS((void)(D != A),
-	                const std::bad_cast&); // A and D have different derived
-	                                       // type: they're not compatible
-	CHECK_THROWS_AS((void)(D * A),
-	                const std::bad_cast&); // A and D have different derived
-	                                       // type: they're not compatible
-	CHECK_THROWS_AS(D *= A,
-	                const std::bad_cast&); // A and D have different derived
-	                                       // type: they're not compatible
-	CHECK_THROWS_AS(D += A,
-	                const std::bad_cast&); // A and D have different derived
-	                                       // type: they're not compatible
-	CHECK_THROWS_AS((void)(D + A),
-	                const std::bad_cast&); // A and D have different derived
-	                                       // type: they're not compatible
+	qtt_CHECK_THROWS_AS((void)(D == A),
+	                    const std::bad_cast&); // A and D have different derived
+	                                           // type: they're not compatible
+	qtt_CHECK_THROWS_AS((void)(D != A),
+	                    const std::bad_cast&); // A and D have different derived
+	                                           // type: they're not compatible
+	qtt_CHECK_THROWS_AS((void)(D * A),
+	                    const std::bad_cast&); // A and D have different derived
+	                                           // type: they're not compatible
+	qtt_CHECK_THROWS_AS(D *= A,
+	                    const std::bad_cast&); // A and D have different derived
+	                                           // type: they're not compatible
+	qtt_CHECK_THROWS_AS(D += A,
+	                    const std::bad_cast&); // A and D have different derived
+	                                           // type: they're not compatible
+	qtt_CHECK_THROWS_AS((void)(D + A),
+	                    const std::bad_cast&); // A and D have different derived
+	                                           // type: they're not compatible
 	any_quantity_ref A_ref(A);
 	any_quantity_cref A_cref(A);
 	any_quantity_cref B_cref(B);
@@ -445,80 +445,80 @@ TEST_CASE("composite conserved")
 	// verify the correctness of their implementation. We advise avoiding those
 	// two reference type whenever possible. const any_quantity& and any_quantity& are
 	// perfectly fine for most purpose.
-	CHECK_NOTHROW(A_copy = A_ref);
-	CHECK_NOTHROW(A_copy = A_cref);
+	qtt_CHECK_NOTHROW(A_copy = A_ref);
+	qtt_CHECK_NOTHROW(A_copy = A_cref);
 	// Checking that the ref type doesn't loose track of its target.
-	CHECK(A_cref == A_ref);
-	CHECK(A_ref == A_cref);
-	CHECK(A_ref == A);
-	CHECK_NOTHROW(A_ref *= B);
-	CHECK(A_ref == A);
-	CHECK(A_ref == A_cref);
-	CHECK_NOTHROW(A_ref += B);
-	CHECK(A_ref == A);
-	CHECK(A_ref == A_cref);
+	qtt_CHECK(A_cref == A_ref);
+	qtt_CHECK(A_ref == A_cref);
+	qtt_CHECK(A_ref == A);
+	qtt_CHECK_NOTHROW(A_ref *= B);
+	qtt_CHECK(A_ref == A);
+	qtt_CHECK(A_ref == A_cref);
+	qtt_CHECK_NOTHROW(A_ref += B);
+	qtt_CHECK(A_ref == A);
+	qtt_CHECK(A_ref == A_cref);
 	A_copy = A;
-	CHECK(B == B_copy); // commute_ act on the the calling object only.
-	CHECK(A_copy == A); // this is an abelian group.
-	SUBCASE("Cast ambiguity")
+	qtt_CHECK(B == B_copy); // commute_ act on the the calling object only.
+	qtt_CHECK(A_copy == A); // this is an abelian group.
+	qtt_SUBCASE("Cast ambiguity")
 	{
 		// In this subcase with test different combination of any_quantity,any_quantity_ref
 		// and any_quantity_cref to make sure all operation resolve correctly. Because
 		// of the different type and the ways in which they are equivalent, a
 		// mistake could lead to some operations failing.
-		CHECK_NOTHROW(auto _t = A * B);
-		CHECK_NOTHROW(auto _t = A_ref * B);
-		CHECK_NOTHROW(auto _t = A_cref * B);
-		CHECK_NOTHROW(auto _t = A * B_ref);
-		CHECK_NOTHROW(auto _t = A_ref * B_ref);
-		CHECK_NOTHROW(auto _t = A_cref * B_ref);
-		CHECK_NOTHROW(auto _t = A * B_cref);
-		CHECK_NOTHROW(auto _t = A_ref * B_cref);
-		CHECK_NOTHROW(auto _t = A_cref * B_cref);
-		CHECK_NOTHROW(
+		qtt_CHECK_NOTHROW(auto _t = A * B);
+		qtt_CHECK_NOTHROW(auto _t = A_ref * B);
+		qtt_CHECK_NOTHROW(auto _t = A_cref * B);
+		qtt_CHECK_NOTHROW(auto _t = A * B_ref);
+		qtt_CHECK_NOTHROW(auto _t = A_ref * B_ref);
+		qtt_CHECK_NOTHROW(auto _t = A_cref * B_ref);
+		qtt_CHECK_NOTHROW(auto _t = A * B_cref);
+		qtt_CHECK_NOTHROW(auto _t = A_ref * B_cref);
+		qtt_CHECK_NOTHROW(auto _t = A_cref * B_cref);
+		qtt_CHECK_NOTHROW(
 		    auto _t =
 		        A * B_cref.inverse()); // this should use the
 		                               // operator*(any_quantity_cref&,any_quantity&&);
-		CHECK_NOTHROW(
+		qtt_CHECK_NOTHROW(
 		    auto _t = A_ref * B.inverse()); // this should use the
 		                                    // operator*(any_quantity_cref&,any_quantity&&);
-		CHECK_NOTHROW(auto _t =
-		                  A_cref *
-		                  B_ref.inverse()); // this should use the
-		                                    // operator*(any_quantity_cref&,any_quantity&&);
+		qtt_CHECK_NOTHROW(auto _t =
+		                      A_cref *
+		                      B_ref.inverse()); // this should use the
+		                                        // operator*(any_quantity_cref&,any_quantity&&);
 		//+ and * are completly equivalent.
-		CHECK_NOTHROW(auto _t = A + B);
-		CHECK_NOTHROW(auto _t = A_ref + B);
-		CHECK_NOTHROW(auto _t = A_cref + B);
-		CHECK_NOTHROW(auto _t = A + B_ref);
-		CHECK_NOTHROW(auto _t = A_ref + B_ref);
-		CHECK_NOTHROW(auto _t = A_cref + B_ref);
-		CHECK_NOTHROW(auto _t = A + B_cref);
-		CHECK_NOTHROW(auto _t = A_ref + B_cref);
-		CHECK_NOTHROW(auto _t = A_cref + B_cref);
-		CHECK_NOTHROW(
+		qtt_CHECK_NOTHROW(auto _t = A + B);
+		qtt_CHECK_NOTHROW(auto _t = A_ref + B);
+		qtt_CHECK_NOTHROW(auto _t = A_cref + B);
+		qtt_CHECK_NOTHROW(auto _t = A + B_ref);
+		qtt_CHECK_NOTHROW(auto _t = A_ref + B_ref);
+		qtt_CHECK_NOTHROW(auto _t = A_cref + B_ref);
+		qtt_CHECK_NOTHROW(auto _t = A + B_cref);
+		qtt_CHECK_NOTHROW(auto _t = A_ref + B_cref);
+		qtt_CHECK_NOTHROW(auto _t = A_cref + B_cref);
+		qtt_CHECK_NOTHROW(
 		    auto _t =
 		        A + B_cref.inverse()); // this should use the
 		                               // operator+(any_quantity_cref&,any_quantity&&);
-		CHECK_NOTHROW(
+		qtt_CHECK_NOTHROW(
 		    auto _t = A_ref + B.inverse()); // this should use the
 		                                    // operator+(any_quantity_cref&,any_quantity&&);
-		CHECK_NOTHROW(auto _t =
-		                  A_cref +
-		                  B_ref.inverse()); // this should use the
-		                                    // operator+(any_quantity_cref&,any_quantity&&);
+		qtt_CHECK_NOTHROW(auto _t =
+		                      A_cref +
+		                      B_ref.inverse()); // this should use the
+		                                        // operator+(any_quantity_cref&,any_quantity&&);
 	}
 	auto C = any_quantity(B_cref);
 	// C == A_ref *B_cref;
 	// C == B_cref *A_cref.inverse();
 	// C == A_ref *B_cref *A_cref.inverse();		   //A.commute(B) should be
 	// an optimisation of the formula on the right.
-	CHECK(C == A_ref * B_cref *
-	               A_cref.inverse()); // A.commute(B) should be an optimisation
-	                                  // of the formula on the right.
+	qtt_CHECK(C == A_ref * B_cref *
+	                   A_cref.inverse()); // A.commute(B) should be an optimisation
+	                                      // of the formula on the right.
 	C = A;
-	CHECK(C == B.inverse() * A * B); // A.commute_(B) should be an optimization
-	                                 // of the formula on the right.
+	qtt_CHECK(C == B.inverse() * A * B); // A.commute_(B) should be an optimization
+	                                     // of the formula on the right.
 }
 
 } // namespace quantt

@@ -1,5 +1,5 @@
 /*
- * File: cond_doctest.h
+ * File: doctest_proxy.h
  * Project: quantt
  * File Created: Saturday, 8th August 2020 11:06:52 am
  * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)

@@ -19,7 +19,7 @@
 #include "Conserved/quantity.h"
 #include <vector>
 
-#include "doctest/cond_doctest.h"
+#include "doctest/doctest_proxy.h"
 
 namespace quantt
 {
@@ -263,32 +263,32 @@ void swap(any_quantity_vector& a, any_quantity_vector& b)
 	a.swap(b);
 }
 
-TEST_CASE("concrete any_quantity container implementation")
+qtt_TEST_CASE("concrete any_quantity container implementation")
 {
 	using ccgroup = quantity<conserved::C<2>, conserved::Z>;
 	quantity_vector<ccgroup> t1{ccgroup(1, 1), ccgroup(0, 0), ccgroup(1, -1)};
 	const quantity_vector<ccgroup> t2{ccgroup(1, 1), ccgroup(0, 0), ccgroup(1, -1)};
-	REQUIRE(t1.size() > 0);
-	REQUIRE(t2.size() > 0);
-	SUBCASE("Access operator[]")
+	qtt_REQUIRE(t1.size() > 0);
+	qtt_REQUIRE(t2.size() > 0);
+	qtt_SUBCASE("Access operator[]")
 	{
 		auto& a = t1[0];
 		auto& b = t2[0];
-		CHECK(std::is_same_v<decltype(a), ccgroup&>);
-		CHECK(std::is_same_v<decltype(b), const ccgroup&>);
+		qtt_CHECK(std::is_same_v<decltype(a), ccgroup&>);
+		qtt_CHECK(std::is_same_v<decltype(b), const ccgroup&>);
 	}
-	SUBCASE("Access method at")
+	qtt_SUBCASE("Access method at")
 	{
-		REQUIRE_NOTHROW(t1.at(0));
-		REQUIRE_NOTHROW(t2.at(0));
+		qtt_REQUIRE_NOTHROW(t1.at(0));
+		qtt_REQUIRE_NOTHROW(t2.at(0));
 		auto& a = t1.at(0);
 		auto& b = t2.at(0);
-		CHECK(std::is_same_v<decltype(a), ccgroup&>);
-		CHECK(std::is_same_v<decltype(b), const ccgroup&>);
-		CHECK_THROWS_AS(t2.at(t2.size()), std::out_of_range);
-		CHECK_THROWS_AS(t1.at(t1.size()), std::out_of_range);
+		qtt_CHECK(std::is_same_v<decltype(a), ccgroup&>);
+		qtt_CHECK(std::is_same_v<decltype(b), const ccgroup&>);
+		qtt_CHECK_THROWS_AS(t2.at(t2.size()), std::out_of_range);
+		qtt_CHECK_THROWS_AS(t1.at(t1.size()), std::out_of_range);
 	}
-	SUBCASE("front and back and data")
+	qtt_SUBCASE("front and back and data")
 	{
 		auto& f1 = t1.front();
 		auto& b1 = t1.back();
@@ -296,48 +296,48 @@ TEST_CASE("concrete any_quantity container implementation")
 		auto& b2 = t2.back();
 		auto d1 = t1.data();
 		auto d2 = t2.data();
-		CHECK(std::is_same_v<decltype(f1), ccgroup&>);
-		CHECK(std::is_same_v<decltype(b1), ccgroup&>);
-		CHECK(std::is_same_v<decltype(f2), const ccgroup&>);
-		CHECK(std::is_same_v<decltype(b2), const ccgroup&>);
-		CHECK(std::is_same_v<decltype(d1), ccgroup*>);
-		CHECK(std::is_same_v<decltype(d2), const ccgroup*>);
+		qtt_CHECK(std::is_same_v<decltype(f1), ccgroup&>);
+		qtt_CHECK(std::is_same_v<decltype(b1), ccgroup&>);
+		qtt_CHECK(std::is_same_v<decltype(f2), const ccgroup&>);
+		qtt_CHECK(std::is_same_v<decltype(b2), const ccgroup&>);
+		qtt_CHECK(std::is_same_v<decltype(d1), ccgroup*>);
+		qtt_CHECK(std::is_same_v<decltype(d2), const ccgroup*>);
 	}
-	SUBCASE("capacity")
+	qtt_SUBCASE("capacity")
 	{
 		auto s = t1.size();
 		auto c = t1.capacity();
-		CHECK_FALSE(t1.empty());
-		CHECK(t1.max_size() > 1000);
+		qtt_CHECK_FALSE(t1.empty());
+		qtt_CHECK(t1.max_size() > 1000);
 		t1.reserve(c + 5);
-		CHECK(t1.capacity() >= (c + 5));
-		CHECK(t1.size() == s);
+		qtt_CHECK(t1.capacity() >= (c + 5));
+		qtt_CHECK(t1.size() == s);
 		t1.shrink_to_fit();
-		CHECK(t1.capacity() >= s);
-		WARN_MESSAGE(t1.capacity() == s, "shrink_to_fit doesn't fully shrink the vector. This behavior is allowed by the standard for std::vector");
+		qtt_CHECK(t1.capacity() >= s);
+		qtt_WARN_MESSAGE(t1.capacity() == s, "shrink_to_fit doesn't fully shrink the vector. This behavior is allowed by the standard for std::vector");
 	}
-	SUBCASE("modifiers")
+	qtt_SUBCASE("modifiers")
 	{
 		t1.emplace(t1.cbegin(), 3, -2);
-		CHECK(t1[0] == ccgroup(3, -2));
+		qtt_CHECK(t1[0] == ccgroup(3, -2));
 		t1.emplace_back(0, 10);
-		CHECK(t1[t1.size() - 1] == ccgroup(0, 10));
+		qtt_CHECK(t1[t1.size() - 1] == ccgroup(0, 10));
 		auto s = t1.size();
 		t1.pop_back();
-		CHECK(t1.size() == (s - 1));
+		qtt_CHECK(t1.size() == (s - 1));
 		auto c = t1.capacity();
 		t1.clear();
-		CHECK(t1.capacity() == c);
-		CHECK(t1.size() == 0);
+		qtt_CHECK(t1.capacity() == c);
+		qtt_CHECK(t1.size() == 0);
 		quantity_vector<ccgroup> t3{ccgroup(1, 1), ccgroup(0, 0), ccgroup(1, -1)};
 		auto data1 = t1.data();
 		auto data3 = t3.data();
 		swap(t1, t3);
-		CHECK(data1 == t3.data());
-		CHECK(data3 == t1.data());
+		qtt_CHECK(data1 == t3.data());
+		qtt_CHECK(data3 == t1.data());
 	}
 }
-TEST_CASE("polymorphic any_quantity container with value semantic")
+qtt_TEST_CASE("polymorphic any_quantity container with value semantic")
 {
 	using ccgroup = quantity<conserved::C<2>, conserved::Z>;
 	quantity_vector<ccgroup> conc_t1{ccgroup(1, 1), ccgroup(0, 0), ccgroup(1, -1)};
@@ -345,29 +345,29 @@ TEST_CASE("polymorphic any_quantity container with value semantic")
 	any_quantity_vector t1{any_quantity(conserved::C<2>(1), conserved::Z(1)), any_quantity(ccgroup(0, 0)), any_quantity(ccgroup(1, -1))};
 	const any_quantity_vector t2{any_quantity(conserved::C<2>(1), conserved::Z(1)), any_quantity(ccgroup(0, 0)), any_quantity(ccgroup(1, -1))};
 
-	REQUIRE(t1.size() > 0);
-	REQUIRE(t2.size() > 0);
-	SUBCASE("Access operator[]")
+	qtt_REQUIRE(t1.size() > 0);
+	qtt_REQUIRE(t2.size() > 0);
+	qtt_SUBCASE("Access operator[]")
 	{
 		auto a = t1[0]; //makes a reference
 		auto b = t2[0]; //makes a reference
 		//if you want a copy, you have to be specific about the return type.
 		// any_quantity c = t1[1]; //make a copy of the value.
-		CHECK(std::is_same_v<decltype(a), any_quantity_ref>);
-		CHECK(std::is_same_v<decltype(b), any_quantity_cref>);
+		qtt_CHECK(std::is_same_v<decltype(a), any_quantity_ref>);
+		qtt_CHECK(std::is_same_v<decltype(b), any_quantity_cref>);
 	}
-	SUBCASE("Access method at")
+	qtt_SUBCASE("Access method at")
 	{
-		REQUIRE_NOTHROW(t1.at(0));
-		REQUIRE_NOTHROW(t2.at(0));
+		qtt_REQUIRE_NOTHROW(t1.at(0));
+		qtt_REQUIRE_NOTHROW(t2.at(0));
 		auto a = t1.at(0); //makes a reference
 		auto b = t2.at(0); //makes a reference
-		CHECK(std::is_same_v<decltype(a), any_quantity_ref>);
-		CHECK(std::is_same_v<decltype(b), any_quantity_cref>);
-		CHECK_THROWS_AS(t2.at(t2.size()), std::out_of_range);
-		CHECK_THROWS_AS(t1.at(t1.size()), std::out_of_range);
+		qtt_CHECK(std::is_same_v<decltype(a), any_quantity_ref>);
+		qtt_CHECK(std::is_same_v<decltype(b), any_quantity_cref>);
+		qtt_CHECK_THROWS_AS(t2.at(t2.size()), std::out_of_range);
+		qtt_CHECK_THROWS_AS(t1.at(t1.size()), std::out_of_range);
 	}
-	SUBCASE("front and back and data")
+	qtt_SUBCASE("front and back and data")
 	{
 		auto f1 = t1.front(); //makes a reference
 		auto b1 = t1.back();  //makes a reference
@@ -375,90 +375,90 @@ TEST_CASE("polymorphic any_quantity container with value semantic")
 		auto b2 = t2.back();  //makes a reference
 		auto d1 = t1.data();  //makes a reference
 		auto d2 = t2.data();  //makes a reference
-		CHECK(std::is_same_v<decltype(f1), any_quantity_ref>);
-		CHECK(std::is_same_v<decltype(b1), any_quantity_ref>);
-		CHECK(std::is_same_v<decltype(f2), any_quantity_cref>);
-		CHECK(std::is_same_v<decltype(b2), any_quantity_cref>);
-		CHECK(std::is_same_v<decltype(d1), typename any_quantity_vector::pointer>);
-		CHECK(std::is_same_v<decltype(d2), typename any_quantity_vector::const_pointer>);
+		qtt_CHECK(std::is_same_v<decltype(f1), any_quantity_ref>);
+		qtt_CHECK(std::is_same_v<decltype(b1), any_quantity_ref>);
+		qtt_CHECK(std::is_same_v<decltype(f2), any_quantity_cref>);
+		qtt_CHECK(std::is_same_v<decltype(b2), any_quantity_cref>);
+		qtt_CHECK(std::is_same_v<decltype(d1), typename any_quantity_vector::pointer>);
+		qtt_CHECK(std::is_same_v<decltype(d2), typename any_quantity_vector::const_pointer>);
 	}
-	SUBCASE("capacity")
+	qtt_SUBCASE("capacity")
 	{
 		auto s = t1.size();
 		auto c = t1.capacity();
-		CHECK_FALSE(t1.empty());
-		CHECK(t1.max_size() > 1000);
+		qtt_CHECK_FALSE(t1.empty());
+		qtt_CHECK(t1.max_size() > 1000);
 		t1.reserve(c + 5);
-		CHECK(t1.capacity() >= (c + 5));
-		CHECK(t1.size() == s);
+		qtt_CHECK(t1.capacity() >= (c + 5));
+		qtt_CHECK(t1.size() == s);
 		t1.shrink_to_fit();
-		CHECK(t1.capacity() >= s);
-		WARN_MESSAGE(t1.capacity() == s, "shrink_to_fit doesn't fully (or at all) shrink the vector. This behavior is allowed by the standard for std::vector");
+		qtt_CHECK(t1.capacity() >= s);
+		qtt_WARN_MESSAGE(t1.capacity() == s, "shrink_to_fit doesn't fully (or at all) shrink the vector. This behavior is allowed by the standard for std::vector");
 	}
-	SUBCASE("modifiers")
+	qtt_SUBCASE("modifiers")
 	{
 		auto s = t1.size();
 		t1.pop_back();
-		CHECK(t1.size() == (s - 1));
+		qtt_CHECK(t1.size() == (s - 1));
 		auto c = t1.capacity();
 		t1.clear();
-		CHECK(t1.capacity() == c);
-		CHECK(t1.size() == 0);
+		qtt_CHECK(t1.capacity() == c);
+		qtt_CHECK(t1.size() == 0);
 		t1.push_back(ccgroup(1,1));
-		CHECK_NOTHROW(t1.push_back( ccgroup(1,1)));
-		CHECK_THROWS_AS(t1.push_back(any_quantity(conserved::C<2>(1), conserved::C<4>(1))), std::bad_cast);
+		qtt_CHECK_NOTHROW(t1.push_back(ccgroup(1, 1)));
+		qtt_CHECK_THROWS_AS(t1.push_back(any_quantity(conserved::C<2>(1), conserved::C<4>(1))), std::bad_cast);
 		any_quantity_vector t3{any_quantity(ccgroup(1, 1)), any_quantity(ccgroup(0, 0)), any_quantity(ccgroup(1, -1))};
-		SUBCASE("insert, pop_back and erase")
+		qtt_SUBCASE("insert, pop_back and erase")
 		{
 			auto it = t1.begin();
-			CHECK_THROWS_AS(t1.insert(t1.begin(), any_quantity(conserved::C<5>(0))), std::bad_cast); // the any_quantity has the wrong concrete type for the container.
-			CHECK_NOTHROW(it = t1.insert(t1.begin(), any_quantity(ccgroup(1, -1))));
-			CHECK(t1[0] == any_quantity(ccgroup(1, -1))); //The insertion happen *before* the position of the given iterator. In this case the inserted value should become the 0th element
-			CHECK(it == t1.begin());//the return iterator points to the first (or only) element inserted.
+			qtt_CHECK_THROWS_AS(t1.insert(t1.begin(), any_quantity(conserved::C<5>(0))), std::bad_cast); // the any_quantity has the wrong concrete type for the container.
+			qtt_CHECK_NOTHROW(it = t1.insert(t1.begin(), any_quantity(ccgroup(1, -1))));
+			qtt_CHECK(t1[0] == any_quantity(ccgroup(1, -1))); //The insertion happen *before* the position of the given iterator. In this case the inserted value should become the 0th element
+			qtt_CHECK(it == t1.begin());                      //the return iterator points to the first (or only) element inserted.
 			//current implementation incorrect because the end() iterator does not point to a valid object... iterator comparator needs to be implemented in a way that doesn't rely on the vtable.
-			CHECK_NOTHROW(it = t1.insert(t1.end(), 3,ccgroup(1,5) )); //insert 3 ccgroup(1,5) before the end;
+			qtt_CHECK_NOTHROW(it = t1.insert(t1.end(), 3, ccgroup(1, 5))); //insert 3 ccgroup(1,5) before the end;
 			for (; it != t1.end();++it)
 			{
-				CHECK(*it == ccgroup(1,5) );
+				qtt_CHECK(*it == ccgroup(1, 5));
 			}
 			any_quantity_vector t4{any_quantity(conserved::C<2>(1)), conserved::C<2>(0), conserved::C<2>(-1)};
-			CHECK_THROWS_AS(it = t1.insert(t1.begin()+2, t4.begin(),t4.end()),std::bad_cast); //t4 is incompatible with t1.
-			CHECK_NOTHROW(it = t1.insert(t1.begin()+2, t3.begin(),t3.end()));
+			qtt_CHECK_THROWS_AS(it = t1.insert(t1.begin() + 2, t4.begin(), t4.end()), std::bad_cast); //t4 is incompatible with t1.
+			qtt_CHECK_NOTHROW(it = t1.insert(t1.begin() + 2, t3.begin(), t3.end()));
 			int i = 0;
 			for(auto end = it+(t3.end()-t3.begin()); it != end;++it )
 			{
-				CHECK(*it == t3[i++]);
+				qtt_CHECK(*it == t3[i++]);
 			}
-			CHECK_NOTHROW(it = t1.insert(t1.begin()+2, t3.rbegin(),t3.rend())); //insertion by reverse iterator.
+			qtt_CHECK_NOTHROW(it = t1.insert(t1.begin() + 2, t3.rbegin(), t3.rend())); //insertion by reverse iterator.
 			i = t3.size()-1;
 			for(auto end = it+(t3.end()-t3.begin()); it != end;++it )
 			{
-				CHECK(*it == t3[i--]);
+				qtt_CHECK(*it == t3[i--]);
 			}
 			any_quantity last = *(t1.end() - 2);
-			CHECK_NOTHROW(t1.erase(t1.end()-1));
-			CHECK(last == *(t1.end()-1));
+			qtt_CHECK_NOTHROW(t1.erase(t1.end() - 1));
+			qtt_CHECK(last == *(t1.end() - 1));
 			auto size = t1.size();
-			CHECK_NOTHROW( t1.erase(t1.begin(),t1.begin()+3));
-			CHECK(size-3 == t1.size());
+			qtt_CHECK_NOTHROW(t1.erase(t1.begin(), t1.begin() + 3));
+			qtt_CHECK(size - 3 == t1.size());
 			i = t1.size();
-			CHECK_NOTHROW(t1.pop_back());
-			CHECK(i-1 == t1.size());
+			qtt_CHECK_NOTHROW(t1.pop_back());
+			qtt_CHECK(i - 1 == t1.size());
 		}
 		auto size = t1.size();
-		CHECK_NOTHROW(t1.resize(size+2));
-		CHECK(t1.back() == ccgroup());
-		CHECK(t1.size() == size + 2);
-		CHECK_NOTHROW(t1.resize(size));
-		CHECK(size == t1.size());
-		CHECK_NOTHROW(t1.resize(size+2,ccgroup(1,10)));
-		CHECK(t1.back() == ccgroup(1,10));
-		CHECK(t1.size() == size+2);
+		qtt_CHECK_NOTHROW(t1.resize(size + 2));
+		qtt_CHECK(t1.back() == ccgroup());
+		qtt_CHECK(t1.size() == size + 2);
+		qtt_CHECK_NOTHROW(t1.resize(size));
+		qtt_CHECK(size == t1.size());
+		qtt_CHECK_NOTHROW(t1.resize(size + 2, ccgroup(1, 10)));
+		qtt_CHECK(t1.back() == ccgroup(1, 10));
+		qtt_CHECK(t1.size() == size + 2);
 		auto data1 = t1.data();
 		auto data3 = t3.data();
 		swap(t1, t3);
-		CHECK(data1 == t3.data());
-		CHECK(data3 == t1.data());
+		qtt_CHECK(data1 == t3.data());
+		qtt_CHECK(data3 == t1.data());
 	}
 }
 

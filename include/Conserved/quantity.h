@@ -18,7 +18,7 @@
 #include <cstdint>
 #include <ostream>
 
-#include "doctest/cond_doctest.h"
+#include "doctest/doctest_proxy.h"
 namespace quantt
 {
 /**
@@ -215,46 +215,46 @@ static_assert(is_conserved_quantt_v<C<5>>, "C<5> isn't a group?! something is ve
 
 } // namespace conserved
 
-TEST_CASE("simple conserved")
+qtt_TEST_CASE("simple conserved")
 {
 	using namespace conserved;
 	C<2> c2_1(1);
 	C<2> c2_0(0);
 	C<2> c2_11 = c2_1 * c2_1;
-	CHECK(c2_0 == c2_11);
+	qtt_CHECK(c2_0 == c2_11);
 
 	C<5> c5_3(3);
 	C<5> c5_2(2);
-	CHECK(c5_3 != c5_2);
-	CHECK(
+	qtt_CHECK(c5_3 != c5_2);
+	qtt_CHECK(
 	    c5_3.inverse() * c5_3 ==
 	    C<5>(
 	        0)); // the product with one's own inverse give the trivial element.
-	CHECK(c5_3.inverse() == c5_2);
-	CHECK(c5_2.inverse() == c5_3);
-	CHECK(c5_2.inverse().inverse() ==
-	      c5_2); // inverse twice gives back the original value
-	CHECK(C<5>(c5_2).inverse_().inverse_() ==
-	      c5_2); // inverse in place twice gives back the original value
-	CHECK(c5_2.op(c5_2) == C<5>(4));
+	qtt_CHECK(c5_3.inverse() == c5_2);
+	qtt_CHECK(c5_2.inverse() == c5_3);
+	qtt_CHECK(c5_2.inverse().inverse() ==
+	          c5_2); // inverse twice gives back the original value
+	qtt_CHECK(C<5>(c5_2).inverse_().inverse_() ==
+	          c5_2); // inverse in place twice gives back the original value
+	qtt_CHECK(c5_2.op(c5_2) == C<5>(4));
 
 	Z Z_1(1);
 	Z Z_2(2);
 	Z Z_11 = Z_1 * Z_1;
-	CHECK(Z_2 == Z_11);
+	qtt_CHECK(Z_2 == Z_11);
 
 	Z Z_3(3);
 	Z Z_m3(-3);
-	CHECK(Z_3 != Z_m3);
-	CHECK(Z_3.inverse() * Z_3 ==
-	      Z(0)); // the product with one's own inverse give the trivial element.
-	CHECK(Z_3.inverse() == Z_m3);
-	CHECK(Z_m3.inverse() == Z_3);
-	CHECK(Z_m3.inverse().inverse() ==
-	      Z_m3); // inverse twice gives back the original value
-	CHECK(Z(Z_m3).inverse_().inverse_() ==
-	      Z_m3); // inverse in place twice gives back the original value
-	CHECK(Z_3.op(Z_3) == Z(6));
+	qtt_CHECK(Z_3 != Z_m3);
+	qtt_CHECK(Z_3.inverse() * Z_3 ==
+	          Z(0)); // the product with one's own inverse give the trivial element.
+	qtt_CHECK(Z_3.inverse() == Z_m3);
+	qtt_CHECK(Z_m3.inverse() == Z_3);
+	qtt_CHECK(Z_m3.inverse().inverse() ==
+	          Z_m3); // inverse twice gives back the original value
+	qtt_CHECK(Z(Z_m3).inverse_().inverse_() ==
+	          Z_m3); // inverse in place twice gives back the original value
+	qtt_CHECK(Z_3.op(Z_3) == Z(6));
 }
 
 } // namespace quantt

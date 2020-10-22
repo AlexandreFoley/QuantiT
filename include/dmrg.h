@@ -19,7 +19,7 @@
 #include <limits>
 #include <cmath>
 
-#include "doctest/cond_doctest.h"
+#include "doctest/doctest_proxy.h"
 
 namespace quantt
 {
@@ -125,8 +125,8 @@ namespace quantt
 		std::tuple<torch::Tensor, torch::Tensor, torch::Tensor, torch::Tensor> one_step_lanczos(torch::Tensor state, torch::Tensor hamil, torch::Tensor Lenv, torch::Tensor Renv);
 	} // namespace details
 
-	TEST_CASE("dmrg run test")
-	{ //only test that dmrg runs and finish as expected.
+    qtt_TEST_CASE("dmrg run test")
+    { //only test that dmrg runs and finish as expected.
 
 		MPO Hamil(5, torch::rand({2, 5, 2, 5}));
 		dmrg_options opt;
@@ -139,10 +139,10 @@ namespace quantt
 		torch::Scalar E;
 		MPS state;
 		// std::tie(E,state) = dmrg(Hamil,opt);
-		CHECK_NOTHROW(std::tie(E, state) = dmrg(Hamil, opt));
-	}
-	TEST_CASE("2x2 eigen value problem")
-	{
+	    qtt_CHECK_NOTHROW(std::tie(E, state) = dmrg(Hamil, opt));
+    }
+    qtt_TEST_CASE("2x2 eigen value problem")
+    {
 		// setup: a random answer from which we construct a matrix
 		auto angle = torch::rand({}, torch::kFloat64) * 2 * M_PI;
 		auto E0 = torch::rand({}, torch::kFloat64) * -1;
@@ -162,12 +162,12 @@ namespace quantt
 		auto [T_E0, T_psi00, T_psi01] = details::eig2x2Mat(a0, a1, b);
 		//for the phase gauge freedom.
 		bool state_check = (torch::allclose(psi00, T_psi00) and torch::allclose(psi01, T_psi01)) or (torch::allclose(-1 * psi00, T_psi00) and torch::allclose(-1 * psi01, T_psi01));
-		CHECK(state_check);
-		CHECK(torch::allclose(T_E0, E0));
-	}
+	    qtt_CHECK(state_check);
+	    qtt_CHECK(torch::allclose(T_E0, E0));
+    }
 
-	TEST_CASE("Two sites MPO")
-	{
+    qtt_TEST_CASE("Two sites MPO")
+    {
 		torch::set_default_dtype(torch::scalarTypeToTypeMeta(torch::kFloat64)); //otherwise the type promotion always goes to floats when promoting a tensor
 		using namespace torch::indexing;
 		auto l_ising = torch::zeros({3, 2, 3, 2});
@@ -193,33 +193,33 @@ namespace quantt
 		// fmt::print("state\n{}\n{}\n",rstate[0].reshape({4}),rstate[1].reshape({4}));
 		rstate[0] = rstate[0] / torch::sqrt(contract(rstate, rstate)); //normalize
 		// fmt::print("normed state\n{}\n{}\n",rstate[0].reshape({4}),rstate[1].reshape({4}));
-		CHECK(torch::allclose(contract(rstate, rstate), torch::ones({})));
-		// fmt::print("Norm2 \n{}\n",contract(rstate,rstate));
+	    qtt_CHECK(torch::allclose(contract(rstate, rstate), torch::ones({})));
+	    // fmt::print("Norm2 \n{}\n",contract(rstate,rstate));
 		auto two_s_state = torch::tensordot(rstate[0], rstate[1], {2}, {0});
-		CHECK(torch::allclose(tensordot(two_s_state, two_s_state, {0, 1, 2, 3}, {0, 1, 2, 3}), torch::ones({})));
+	    qtt_CHECK(torch::allclose(tensordot(two_s_state, two_s_state, {0, 1, 2, 3}, {0, 1, 2, 3}), torch::ones({})));
 
-		auto H_av = contract(rstate, rstate, ising);
+	    auto H_av = contract(rstate, rstate, ising);
 		auto H_av_2s = torch::squeeze(torch::tensordot(two_s_state, torch::tensordot(two_s_ising[0], two_s_state, {4, 5}, {1, 2}), {1, 2}, {1, 2}));
 		auto triv_env = torch::ones({1, 1, 1});
 		auto H_av_upd = torch::tensordot(two_s_state, quantt::details::hamil2site_times_state(two_s_state, two_s_ising[0], triv_env, triv_env), {0, 1, 2, 3}, {0, 1, 2, 3});
 
-		CHECK(torch::allclose(H_av, H_av_2s));
-		CHECK(torch::allclose(H_av, H_av_upd));
-		// fmt::print("Correct value: \n{}\n",H_av);
+	    qtt_CHECK(torch::allclose(H_av, H_av_2s));
+	    qtt_CHECK(torch::allclose(H_av, H_av_upd));
+	    // fmt::print("Correct value: \n{}\n",H_av);
 		// fmt::print("from two sites: \n{}\n",H_av_2s);
 		// fmt::print("from two sites update: \n{}\n",H_av_upd);
 		auto [Hpsi, a0, a1, b] = details::one_step_lanczos(two_s_state, two_s_ising[0], triv_env, triv_env);
 		// fmt::print("one step lanczos: \n{}\n",a0);
 		auto [E, o_coeff, n_coeff] = details::eig2x2Mat(a0, a1, b);
-		CHECK(torch::allclose(o_coeff.pow(2) + n_coeff.pow(2), torch::ones({})));
-		auto psi_update = o_coeff * two_s_state + n_coeff * Hpsi;
-		CHECK(torch::allclose(tensordot(psi_update, psi_update, {0, 1, 2, 3}, {0, 1, 2, 3}), torch::ones({})));
-		CHECK(torch::allclose(tensordot(two_s_state, two_s_state, {0, 1, 2, 3}, {0, 1, 2, 3}), torch::ones({})));
-		CHECK(torch::allclose(tensordot(Hpsi, two_s_state, {0, 1, 2, 3}, {0, 1, 2, 3}), torch::zeros({})));
-		CHECK(torch::allclose(tensordot(Hpsi, Hpsi, {0, 1, 2, 3}, {0, 1, 2, 3}), torch::ones({})));
-		auto a1_test = torch::tensordot(Hpsi, quantt::details::hamil2site_times_state(Hpsi, two_s_ising[0], triv_env, triv_env), {0, 1, 2, 3}, {0, 1, 2, 3});
-		CHECK(torch::allclose(a1, a1_test));
-		// fmt::print("a1 \n{}\na1_test\n{}\n",a1,a1_test);
+	    qtt_CHECK(torch::allclose(o_coeff.pow(2) + n_coeff.pow(2), torch::ones({})));
+	    auto psi_update = o_coeff * two_s_state + n_coeff * Hpsi;
+	    qtt_CHECK(torch::allclose(tensordot(psi_update, psi_update, {0, 1, 2, 3}, {0, 1, 2, 3}), torch::ones({})));
+	    qtt_CHECK(torch::allclose(tensordot(two_s_state, two_s_state, {0, 1, 2, 3}, {0, 1, 2, 3}), torch::ones({})));
+	    qtt_CHECK(torch::allclose(tensordot(Hpsi, two_s_state, {0, 1, 2, 3}, {0, 1, 2, 3}), torch::zeros({})));
+	    qtt_CHECK(torch::allclose(tensordot(Hpsi, Hpsi, {0, 1, 2, 3}, {0, 1, 2, 3}), torch::ones({})));
+	    auto a1_test = torch::tensordot(Hpsi, quantt::details::hamil2site_times_state(Hpsi, two_s_ising[0], triv_env, triv_env), {0, 1, 2, 3}, {0, 1, 2, 3});
+	    qtt_CHECK(torch::allclose(a1, a1_test));
+	    // fmt::print("a1 \n{}\na1_test\n{}\n",a1,a1_test);
 		auto H_av_Pupd = torch::tensordot(psi_update, quantt::details::hamil2site_times_state(psi_update, two_s_ising[0], triv_env, triv_env), {0, 1, 2, 3}, {0, 1, 2, 3});
 		// fmt::print("actual update energie: \n{}\n", H_av_Pupd);
 		// fmt::print("predicted update energie: \n{}\n", E);

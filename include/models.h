@@ -17,7 +17,7 @@
 #include <torch/torch.h>
 #include "MPT.h"
 
-#include "doctest/cond_doctest.h"
+#include "doctest/doctest_proxy.h"
 
 namespace quantt
 {
@@ -37,22 +37,22 @@ namespace quantt
 	MPO Hubbard(torch::Tensor U,torch::Tensor mu,size_t lenght); 
 
 
-TEST_CASE("Heisenberg")
+qtt_TEST_CASE("Heisenberg")
 {
 	int J(1);
-	// REQUIRE(J.isIntegral(false) );
+	// qtt_REQUIRE(J.isIntegral(false) );
 	auto Heis = details::Heisenberg_impl(torch::tensor(J),3);
-	CHECK(Heis[0].sizes().size() == 4);
+	qtt_CHECK(Heis[0].sizes().size() == 4);
 	auto size_left_edge = std::vector{1l,2l,5l,2l};
-	CHECK(Heis[0].sizes().vec() == size_left_edge);
-	CHECK(Heis[1].sizes().size() == 4);
+	qtt_CHECK(Heis[0].sizes().vec() == size_left_edge);
+	qtt_CHECK(Heis[1].sizes().size() == 4);
 	auto size_middle = std::vector{5l,2l,5l,2l};
-	CHECK(Heis[1].sizes().vec() == size_middle);
-	CHECK(Heis[2].sizes().size() == 4);
+	qtt_CHECK(Heis[1].sizes().vec() == size_middle);
+	qtt_CHECK(Heis[2].sizes().size() == 4);
 	auto size_right_edge = std::vector{5l,2l,1l,2l}; 
-	CHECK(Heis[2].sizes().vec() == size_right_edge);
+	qtt_CHECK(Heis[2].sizes().vec() == size_right_edge);
 
-	REQUIRE(!Heis[0].is_floating_point());
+	qtt_REQUIRE(!Heis[0].is_floating_point());
 
 
 	auto test_Heis =  torch::zeros({8,8},torch::kInt8);
@@ -66,7 +66,7 @@ TEST_CASE("Heisenberg")
 
 	auto cont_Heis = torch::tensordot(Heis[0],Heis[1],{2},{0}).permute({0,1,3,4,2,5}).reshape({1,4,5,4});
 	cont_Heis = torch::tensordot(cont_Heis,Heis[2],{2},{0}).permute({0,1,3,4,2,5}).reshape({8,8});
-	CHECK(torch::equal(cont_Heis,test_Heis));
+	qtt_CHECK(torch::equal(cont_Heis,test_Heis));
 }
 
 

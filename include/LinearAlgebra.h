@@ -20,7 +20,7 @@
 #include <fmt/ostream.h>
 #include "torch_formatter.h"
 
-#include "doctest/cond_doctest.h"
+#include "doctest/doctest_proxy.h"
 
 // //doctest always last. its' macro must work and conflict with pytorch's.
 // #include "doctest_redef.h" // makes the redefinition appear without compiler warnings.
@@ -74,8 +74,7 @@ inline std::tuple<torch::Tensor,torch::Tensor> symeig(torch::Tensor A, int split
 std::tuple<torch::Tensor,torch::Tensor> symeig(torch::Tensor A, size_t split,torch::Scalar tol, torch::Scalar pow = 1);
 std::tuple<torch::Tensor,torch::Tensor> symeig(torch::Tensor A, size_t split,torch::Scalar tol, size_t min_size,size_t max_size,torch::Scalar pow = 1);
 
-
-TEST_CASE("Linear Algebra for Tensor network")
+qtt_TEST_CASE("Linear Algebra for Tensor network")
 {
 	torch::set_default_dtype(torch::scalarTypeToTypeMeta(torch::kFloat64)); //otherwise the type promotion always goes to floats when promoting a tensor
 	auto split = 2;
@@ -88,24 +87,22 @@ TEST_CASE("Linear Algebra for Tensor network")
 	auto [u_o,d_o,v_o] = ra.svd();
 	auto [u,d,v] = svd(A,2);
 
+	qtt_CHECK(u_o.sizes() == std::vector<int64_t>(matrix_shape));
+	qtt_REQUIRE(u.sizes() == std::vector<int64_t>(u_shape));
 
-	CHECK(u_o.sizes()==std::vector<int64_t>(matrix_shape));
-	REQUIRE(u.sizes()==std::vector<int64_t>(u_shape));
-
-	REQUIRE_NOTHROW( auto ru_o = u_o.reshape(u_shape) );
+	qtt_REQUIRE_NOTHROW(auto ru_o = u_o.reshape(u_shape));
 	auto ru_o = u_o.reshape(u_shape);
 
-	CHECK(torch::allclose(ru_o,u));
+	qtt_CHECK(torch::allclose(ru_o, u));
 
 	auto [e_o,s_o] = ra.symeig(true); 
 	auto rs_o = s_o.reshape(u_shape);
 	auto [e,s] = symeig(A,2);
-	
 
-	REQUIRE(s.sizes()==std::vector<int64_t>(u_shape));
+	qtt_REQUIRE(s.sizes() == std::vector<int64_t>(u_shape));
 	// fmt::print("s {}\n",s);
 	// fmt::print("s_o {}\n",rs_o);
-	CHECK(torch::allclose(rs_o,s));
+	qtt_CHECK(torch::allclose(rs_o, s));
 }
 
 }//namespace quantt

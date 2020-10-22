@@ -4,7 +4,7 @@ project(QuanTT LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set( Torch_DIR "${QuanTT_SOURCE_DIR}/extern/pytorch/torch/share/cmake/Torch")
 find_package(Torch REQUIRED)
-find_package(fmt REQUIRED)
+find_package(fmt 6 REQUIRED)
 
 link_libraries( ${TORCH_LIBRARIES} fmt)
 

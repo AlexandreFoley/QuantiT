@@ -16,7 +16,7 @@
 
 #include <torch/torch.h>
 
-#include "doctest/cond_doctest.h"
+#include "doctest/doctest_proxy.h"
 
 #include <fmt/core.h>
 namespace quantt{
@@ -49,7 +49,7 @@ std::tuple<tens,tens,tens,tens,tens> pauli();
 
 
 
-TEST_CASE("half spin fermions")
+qtt_TEST_CASE("half spin fermions")
 {
 	auto [c_up,c_dn,F,id] = fermions();
 
@@ -57,35 +57,35 @@ TEST_CASE("half spin fermions")
 	auto cd_dn = c_dn.conj().t();
 	//The specific content of those matrices isn't all that important, so long as they have the following properties
 	//anticommutation
-	CHECK(torch::equal(torch::matmul(cd_up,c_up),id - torch::matmul(c_up,cd_up)));
-	CHECK(torch::equal(torch::matmul(cd_dn,c_dn),id - torch::matmul(c_dn,cd_dn)));
+	qtt_CHECK(torch::equal(torch::matmul(cd_up,c_up),id - torch::matmul(c_up,cd_up)));
+	qtt_CHECK(torch::equal(torch::matmul(cd_dn,c_dn),id - torch::matmul(c_dn,cd_dn)));
 	
-	CHECK(torch::equal(torch::matmul(cd_up,c_dn),-1*torch::matmul(c_dn,cd_up)));
-	CHECK(torch::equal(torch::matmul(cd_dn,c_up),-1*torch::matmul(c_up,cd_dn)));
+	qtt_CHECK(torch::equal(torch::matmul(cd_up,c_dn),-1*torch::matmul(c_dn,cd_up)));
+	qtt_CHECK(torch::equal(torch::matmul(cd_dn,c_up),-1*torch::matmul(c_up,cd_dn)));
 
-	CHECK(torch::equal(torch::matmul(c_up,c_dn),-1*torch::matmul(c_dn,c_up)));
-	CHECK(torch::equal(torch::matmul(c_up,c_up),-1*torch::matmul(c_up,c_up)));
-	CHECK(torch::equal(torch::matmul(c_dn,c_dn),-1*torch::matmul(c_dn,c_dn)));
+	qtt_CHECK(torch::equal(torch::matmul(c_up,c_dn),-1*torch::matmul(c_dn,c_up)));
+	qtt_CHECK(torch::equal(torch::matmul(c_up,c_up),-1*torch::matmul(c_up,c_up)));
+	qtt_CHECK(torch::equal(torch::matmul(c_dn,c_dn),-1*torch::matmul(c_dn,c_dn)));
 	
-	CHECK(torch::equal(torch::matmul(c_up,F),-1*torch::matmul(F,c_up)));
-	CHECK(torch::equal(torch::matmul(c_dn,F),-1*torch::matmul(F,c_dn)));
+	qtt_CHECK(torch::equal(torch::matmul(c_up,F),-1*torch::matmul(F,c_up)));
+	qtt_CHECK(torch::equal(torch::matmul(c_dn,F),-1*torch::matmul(F,c_dn)));
 	//F^2 = 1
-	CHECK(torch::equal(torch::matmul(F,F),id));
+	qtt_CHECK(torch::equal(torch::matmul(F,F),id));
 	//identity
-	CHECK(torch::equal(torch::matmul(id,id),id));
-	CHECK(torch::equal(torch::matmul(id,c_up),c_up));
-	CHECK(torch::equal(torch::matmul(id,F),F));
-	CHECK(torch::equal(torch::matmul(id,c_dn),c_dn));
+	qtt_CHECK(torch::equal(torch::matmul(id,id),id));
+	qtt_CHECK(torch::equal(torch::matmul(id,c_up),c_up));
+	qtt_CHECK(torch::equal(torch::matmul(id,F),F));
+	qtt_CHECK(torch::equal(torch::matmul(id,c_dn),c_dn));
 }
-TEST_CASE("Pauli matrices")
+qtt_TEST_CASE("Pauli matrices")
 {
 	auto [sx,isy,sz,lo,id] = pauli();
 
-	CHECK(torch::equal(torch::matmul(lo,lo),torch::zeros({2,2},torch::kInt8)));
-	CHECK(torch::equal(torch::matmul(sx,sx),id));
-	CHECK(torch::equal(torch::matmul(isy,isy),-1*id));
-	CHECK(torch::equal(torch::matmul(sz,sz),id));
-	CHECK(torch::equal(torch::matmul(sx,torch::matmul(isy,sz)),-1*id));
+	qtt_CHECK(torch::equal(torch::matmul(lo,lo),torch::zeros({2,2},torch::kInt8)));
+	qtt_CHECK(torch::equal(torch::matmul(sx,sx),id));
+	qtt_CHECK(torch::equal(torch::matmul(isy,isy),-1*id));
+	qtt_CHECK(torch::equal(torch::matmul(sz,sz),id));
+	qtt_CHECK(torch::equal(torch::matmul(sx,torch::matmul(isy,sz)),-1*id));
 	// fmt::print("size of torch tensor {}\n",sizeof(sx));
 }
 
