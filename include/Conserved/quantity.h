@@ -16,6 +16,8 @@
 #include "Conserved/quantity_utils.h"
 #include "templateMeta.h"
 #include <cstdint>
+#include <fmt/core.h>
+#include <fmt/format.h>
 #include <ostream>
 
 #include "doctest/doctest_proxy.h"
@@ -119,9 +121,10 @@ public:
 
 	friend std::ostream& operator<<(std::ostream& out, const C& c)
 	{
-		out << "grp::C<" << C::N << ">(" << c.val << ')';
+		out << fmt::format("grp::C<{}>({})", C::N, c.val);
 		return out;
 	}
+	friend struct fmt::formatter<quantt::conserved::C<N>>;
 };
 
 /**
@@ -194,6 +197,7 @@ public:
 	}
 
 	friend std::ostream& operator<<(std::ostream& out, const Z& c);
+	friend struct fmt::formatter<quantt::conserved::Z>;
 };
 
 inline void swap(Z& lhs, Z& rhs) noexcept
@@ -259,4 +263,47 @@ qtt_TEST_CASE("simple conserved")
 
 } // namespace quantt
 
+template <size_t N>
+struct fmt::formatter<quantt::conserved::C<N>>
+{
+	constexpr auto parse(format_parse_context& ctx)
+	{
+		auto it = ctx.begin(), end = ctx.end();
+		if (it != end and *it != '}')
+			throw format_error("invalid format, no formatting option for quantt::quantity");
+		if (*it != '}')
+			throw format_error("invalid format,closing brace missing");
+
+		// Return an iterator past the end of the parsed range:
+		return it;
+	}
+
+	template <class FormatContext>
+	auto format(const quantt::conserved::C<N>& z, FormatContext& ctx)
+	{
+
+		return format_to(ctx.out(), "C<{}>({})", N, z.val); //right now qt.format_to is only define for fmt::format_context. Should work for any output stream.
+	}
+};
+template <>
+struct fmt::formatter<quantt::conserved::Z>
+{
+	constexpr auto parse(format_parse_context& ctx)
+	{
+		auto it = ctx.begin(), end = ctx.end();
+		if (it != end and *it != '}')
+			throw format_error("invalid format, no formatting option for quantt::quantity");
+		if (*it != '}')
+			throw format_error("invalid format,closing brace missing");
+
+		// Return an iterator past the end of the parsed range:
+		return it;
+	}
+
+	template <class FormatContext>
+	auto format(const quantt::conserved::Z& z, FormatContext& ctx)
+	{
+		return format_to(ctx.out(), "Z({})", z.val); //right now qt.format_to is only define for fmt::format_context. Should work for any output stream.
+	}
+};
 #endif /* EF30AFAC_8403_46CD_A139_264F626DA567 */

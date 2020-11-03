@@ -47,6 +47,8 @@ class any_quantity final
 
 public:
 	any_quantity(const vquantity& other) : impl(other.clone()) {}
+	// template <class... Groups, class = std::enable_if_t<conserved::all_group_v<Groups...>>>
+	// any_quantity(const quantity<Groups...>& other) : impl(other.clone()) {}
 	any_quantity(std::unique_ptr<vquantity>&& _impl) : impl(std::move(_impl)) {}
 
 	/**
@@ -199,6 +201,10 @@ public:
 	{
 		return get();
 	}
+	auto format_to(fmt::format_context& ctx) const
+	{
+		return ref->format_to(ctx);
+	}
 };
 /**
  * @brief Reference type for any_quantity. 
@@ -252,78 +258,78 @@ public:
 };
 
 //method definitions in no particular order...
-const vquantity& any_quantity_cref::get() const
+inline const vquantity& any_quantity_cref::get() const
 {
 	return *ref;
 }
-any_quantity any_quantity_cref::inverse() const
+inline any_quantity any_quantity_cref::inverse() const
 {
 	return any_quantity(*this).inverse_();
 }
-any_quantity_ref& any_quantity_ref::inverse_()
+inline any_quantity_ref& any_quantity_ref::inverse_()
 {
 	get().inverse_();
 	return *this;
 }
-any_quantity any_quantity_ref::inverse() const
+inline any_quantity any_quantity_ref::inverse() const
 {
 	return any_quantity(ref->clone()).inverse_();
 }
-any_quantity any_quantity::neutral() const
+inline any_quantity any_quantity::neutral() const
 {
 	return any_quantity(impl->neutral());
 }
-any_quantity any_quantity_ref::neutral() const
+inline any_quantity any_quantity_ref::neutral() const
 {
 	return any_quantity(get().neutral());
 }
-any_quantity any_quantity_cref::neutral() const
+inline any_quantity any_quantity_cref::neutral() const
 {
 	return any_quantity(get().neutral());
 }
 
-void any_quantity_ref::swap(any_quantity_ref other)
+inline void any_quantity_ref::swap(any_quantity_ref other)
 {
 	ref->swap(other.get());
 }
-any_quantity::any_quantity(any_quantity_cref other) : impl(other.get().clone()) {}
-any_quantity::any_quantity(any_quantity_ref other) : impl(other.get().clone()) {}
+inline any_quantity::any_quantity(any_quantity_cref other) : impl(other.get().clone()) {}
+inline any_quantity::any_quantity(any_quantity_ref other) : impl(other.get().clone()) {}
 
-void any_quantity::swap(any_quantity& other) noexcept
+inline void any_quantity::swap(any_quantity& other) noexcept
 {
 	using std::swap;
 	swap(other.impl, impl);
 }
-any_quantity& any_quantity::operator=(any_quantity&& other) // will work even when the underlying type isn't the same...
+inline any_quantity& any_quantity::operator=(any_quantity&& other) // will work even when the underlying type isn't the same...
 {
 	swap(other);
 	return *this;
 }
-any_quantity& any_quantity::inverse_()
+inline any_quantity& any_quantity::inverse_()
 {
 	impl->inverse_();
 	return *this;
 }
-any_quantity any_quantity::inverse() const
+inline any_quantity any_quantity::inverse() const
 {
 	return any_quantity(*this).inverse_();
 }
-any_quantity& any_quantity::operator=(const any_quantity& other)
+inline any_quantity& any_quantity::operator=(const any_quantity& other)
 {
 	*impl = *other.impl;
 	return *this;
 }
-void any_quantity::swap(any_quantity_ref other) { impl->swap(other.get()); }
-void swap(any_quantity& lhs, any_quantity& rhs) { lhs.swap(rhs); }
-void swap(any_quantity_ref lhs, any_quantity_ref rhs) { lhs.swap(rhs); }
-any_quantity::operator any_quantity_cref() const { return any_quantity_cref(*impl.get()); }
-any_quantity::operator any_quantity_ref() { return any_quantity_ref(*impl.get()); }
-any_quantity& any_quantity::operator*=(any_quantity_cref other)
+inline void any_quantity::swap(any_quantity_ref other) { impl->swap(other.get()); }
+inline void swap(any_quantity& lhs, any_quantity& rhs) { lhs.swap(rhs); }
+inline void swap(any_quantity_ref lhs, any_quantity_ref rhs) { lhs.swap(rhs); }
+inline any_quantity::operator any_quantity_cref() const { return any_quantity_cref(*impl.get()); }
+inline any_quantity::operator any_quantity_ref() { return any_quantity_ref(*impl.get()); }
+inline any_quantity& any_quantity::operator*=(any_quantity_cref other)
 {
 	impl->op(other.get());
 	return *this;
 }
-any_quantity operator*(any_quantity_cref lhs, any_quantity_cref rhs)
+inline any_quantity operator*(any_quantity_cref lhs, any_quantity_cref rhs)
 {
 	return any_quantity(lhs) *= rhs;
 }
@@ -332,7 +338,7 @@ any_quantity operator*(any_quantity_cref lhs, any_quantity_cref rhs)
 // 	lhs.get().op_to(*rhs.impl);
 // 	return rhs;
 // }
-any_quantity operator+(any_quantity_cref lhs, any_quantity_cref rhs)
+inline any_quantity operator+(any_quantity_cref lhs, any_quantity_cref rhs)
 {
 	return lhs * rhs;
 }
@@ -340,61 +346,61 @@ any_quantity operator+(any_quantity_cref lhs, any_quantity_cref rhs)
 // {
 // 	return lhs * rhs;
 // }
-any_quantity& any_quantity::operator=(any_quantity_cref other)
+inline any_quantity& any_quantity::operator=(any_quantity_cref other)
 {
 	impl = other.get().clone();
 	return *this;
 }
-any_quantity& any_quantity::operator=(any_quantity_ref other)
+inline any_quantity& any_quantity::operator=(any_quantity_ref other)
 {
 	return operator=(any_quantity(other));
 }
-any_quantity& any_quantity::operator+=(any_quantity_cref other)
+inline any_quantity& any_quantity::operator+=(any_quantity_cref other)
 {
 	return (*this) *= other;
 }
 
-bool operator!=(any_quantity_cref left, any_quantity_cref right)
+inline bool operator!=(any_quantity_cref left, any_quantity_cref right)
 {
 	return left.get() != (right.get());
 }
-bool operator==(const any_quantity_cref left, const any_quantity_cref right)
+inline bool operator==(const any_quantity_cref left, const any_quantity_cref right)
 {
 	return left.get() == (right.get());
 }
 
-const vquantity& any_quantity_ref::get() const
+inline const vquantity& any_quantity_ref::get() const
 {
 	return *ref;
 }
-vquantity& any_quantity_ref::get()
+inline vquantity& any_quantity_ref::get()
 {
 	return *ref;
 }
-any_quantity_ref::operator any_quantity_cref() const
+inline any_quantity_ref::operator any_quantity_cref() const
 {
 	return any_quantity_cref(*ref);
 }
-any_quantity_ref& any_quantity_ref::operator=(any_quantity_cref other)
+inline any_quantity_ref& any_quantity_ref::operator=(any_quantity_cref other)
 {
 	get() = other.get();
 	return *this;
 }
-any_quantity_ref& any_quantity_ref::operator*=(const any_quantity_cref other)
+inline any_quantity_ref& any_quantity_ref::operator*=(const any_quantity_cref other)
 {
 	get().op(other.get());
 	return *this;
 }
 
-any_quantity_ref& any_quantity_ref::operator+=(const any_quantity_cref other)
+inline any_quantity_ref& any_quantity_ref::operator+=(const any_quantity_cref other)
 {
 	return (*this) *= other;
 }
-vquantity& any_quantity::get()
+inline vquantity& any_quantity::get()
 {
 	return *impl;
 }
-const vquantity& any_quantity::get() const
+inline const vquantity& any_quantity::get() const
 {
 	return *impl;
 }
@@ -412,7 +418,6 @@ qtt_TEST_CASE("composite conserved")
 	any_quantity B_copy(B);
 	qtt_CHECK_NOTHROW(auto c = A + B);
 	any_quantity D(Z(0), C<2>(1)); // D has a different underlying type.
-
 	// the cast to void silences warnings about unused return values and
 	// comparison. We know, it's ok.
 	qtt_CHECK_THROWS_AS((void)(D == A),
@@ -524,5 +529,35 @@ qtt_TEST_CASE("composite conserved")
 } // namespace quantt
 
 #include "quantity_vector.h"
+
+template <>
+struct fmt::formatter<quantt::any_quantity_cref>
+{
+	constexpr auto parse(format_parse_context& ctx)
+	{
+		auto it = ctx.begin(), end = ctx.end();
+		if (it != end and *it != '}')
+			throw format_error("invalid format, no formatting option for quantt::quantity");
+		if (*it != '}')
+			throw format_error("invalid format,closing brace missing");
+
+		// Return an iterator past the end of the parsed range:
+		return it;
+	}
+
+	template <class FormatContext>
+	auto format(quantt::any_quantity_cref qt, FormatContext& ctx)
+	{
+		return qt.format_to(ctx); //right now qt.format_to is only define for fmt::format_context. Should work for any output stream.
+	}
+};
+template <>
+struct fmt::formatter<quantt::any_quantity_ref> : public fmt::formatter<quantt::any_quantity_cref>
+{
+};
+template <>
+struct fmt::formatter<quantt::any_quantity> : public fmt::formatter<quantt::any_quantity_cref>
+{
+};
 
 #endif /* D56E4C12_98E1_4C9E_B0C4_5B35A5A3CD17 */

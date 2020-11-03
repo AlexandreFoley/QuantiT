@@ -11,6 +11,7 @@
  * All rights reserved
  */
 #include "Conserved/quantity.h"
+#include <fmt/core.h>
 #include <ostream>
 namespace quantt
 {
@@ -19,7 +20,7 @@ namespace conserved
 
 std::ostream &operator<<(std::ostream &out, const Z &c)
 {
-	out << "grp::Z(" << c.val << ')';
+	out << fmt::format("grp::Z({})", c.val);
 	return out;
 }
 

@@ -34,12 +34,10 @@ struct virt_ptr_aritmetic
 	virtual const vquantity* ptr_add(const vquantity* ptr, std::ptrdiff_t n) const = 0;
 	// virtual ~virt_ptr_aritmetic() {} //this thing is a virtual base class, but cannot have a virtual destructor.
 	// This severly limit scope of use. The derived type cannot be owned through a pointer to base and be correctly destroyed.
-	// All base type pointer MUST be non-owning. (no unique_ptr<virt_ptr_arithmetic> ever)
+	// All base type pointer MUST be non-owning. (no unique_ptr<virt_ptr_arithmetic> without specifying a deleter ever)
 
 	// A virtual destructor is not possible in this case because the derived type of this class are constexpr, it is
 	// only meant to do the correct casts for the pointer arithmetic of the quantity_vector<quantity<...>>
-
-	// So long as all the derived type also have a trivial destructor, a owning pointer to base isn't truly a problem. but we have no way to enforce that.
 };
 
 struct const_cgroup_iterator : public boost::stl_interfaces::iterator_interface<const_cgroup_iterator, std::random_access_iterator_tag, any_quantity, any_quantity_cref, const vquantity*>

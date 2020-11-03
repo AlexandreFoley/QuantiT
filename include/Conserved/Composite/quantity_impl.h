@@ -16,6 +16,8 @@
 
 #include "Conserved/quantity_utils.h"
 #include "templateMeta.h"
+#include <fmt/format.h>
+#include <fmt/ranges.h>
 #include <memory>
 #include <type_traits>
 #include <vector>
@@ -78,6 +80,7 @@ public:
 	virtual bool operator==(const vquantity&) const = 0;
 	virtual bool operator!=(const vquantity&) const = 0;
 	virtual void swap(vquantity&) = 0;
+	virtual auto format_to(fmt::format_context& ctx) const -> decltype(ctx.out()) = 0;
 	virtual ~vquantity() {}
 };
 
@@ -106,10 +109,10 @@ public:
 	quantity operator+(quantity&&);
 	quantity operator+=(const quantity&);
 	void swap(quantity& other);
-	
+
 	std::unique_ptr<vquantity> clone() const override;
 	std::unique_ptr<vquantity> neutral() const override;
-	
+
 	quantity& op(const quantity& other);
 	vquantity& op(const vquantity& other) override;
 	void op_to(quantity& other) const;
@@ -123,6 +126,12 @@ public:
 	void swap(vquantity& other) override;
 
 	std::unique_ptr<vquantity_vector> make_vector(size_t cnt) const override;
+
+	friend struct fmt::formatter<quantt::quantity<Groups...>>;
+	auto format_to(fmt::format_context& ctx) const -> decltype(ctx.out()) override
+	{
+		return fmt::formatter<quantt::quantity<Groups...>>().format(*this, ctx);
+	}
 
 private:
 	/**
@@ -265,5 +274,70 @@ struct is_conc_cgroup_impl<quantity<S...>> : public conserved::all_conserved_qua
 };
 
 } // namespace quantt
+
+template <class... Groups>
+struct fmt::formatter<quantt::quantity<Groups...>>
+{
+	constexpr auto parse(format_parse_context& ctx)
+	{
+		auto it = ctx.begin(), end = ctx.end();
+		if (it != end and *it != '}')
+			throw format_error("invalid format, no formatting option for quantt::quantity");
+		// if (*it != '}')
+		// {
+		// 	++it;
+		// 	auto first_pos = it;
+		// 	while (it != end && *it != '}')
+		// 	{
+		// 		++it;
+		// 	}
+		// 	auto last_pos = it - 1;
+		// 	uint width = 80;
+		// 	if (last_pos > first_pos)
+		// 	{
+		// 		auto code = std::from_chars(first_pos, last_pos, width);
+		// 		if (code.ptr != last_pos || std::errc::invalid_argument == code.ec)
+		// 			throw format_error("invalid format, no formatting option for quatt::quantity");
+		// 		else
+		// 		{
+		// 			linelenght = width;
+		// 		}
+		// 	}
+		// }
+		if (*it != '}')
+			throw format_error("invalid format,closing brace missing");
+
+		// Return an iterator past the end of the parsed range:
+		return it;
+	}
+
+	template <typename FormatContext>
+	auto format(const quantt::quantity<Groups...>& qt, FormatContext& ctx)
+	{
+		return format_to(ctx.out(), "[{}]", fmt::join(qt.val, ","));
+	}
+};
+
+template <>
+struct fmt::formatter<quantt::vquantity>
+{
+	constexpr auto parse(format_parse_context& ctx)
+	{
+		auto it = ctx.begin(), end = ctx.end();
+		if (it != end and *it != '}')
+			throw format_error("invalid format, no formatting option for quantt::quantity");
+		if (*it != '}')
+			throw format_error("invalid format,closing brace missing");
+
+		// Return an iterator past the end of the parsed range:
+		return it;
+	}
+
+	template <class FormatContext>
+	auto format(const quantt::vquantity& qt, FormatContext& ctx)
+	{
+		return qt.format_to(ctx); //right now qt.format_to is only defined for fmt::format_context. Should work for any output stream.
+	}
+};
 
 #endif /* F2547C1C_9177_4373_9C66_8D4C8621C7CC */

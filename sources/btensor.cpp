@@ -12,17 +12,18 @@
  */
 
 #include "blockTensor/btensor.h"
+#include <torch/torch.h>
 namespace quantt
 {
-void throw_on_bad_arg_blocks(size_t index, size_t block, size_t rank, size_t block_size)
+void throw_on_bad_arg_blocks(size_t index, size_t block, size_t rank, size_t section_size)
 {
 	if (index >= rank)
 		throw std::invalid_argument(fmt::format("given index {} is too large for rank {}.", index, rank));
-	if (block >= block_size)
-		std::invalid_argument(fmt::format("there are only {} blocks along the dimension {}. block requested {}", block_size, index, block));
+	if (block >= section_size)
+		std::invalid_argument(fmt::format("there are only {} blocks along the dimension {}. block requested {}", section_size, index, block));
 }
 
-size_t btensor::block_size(size_t index, size_t block) const
+size_t btensor::section_size(size_t index, size_t block) const
 {
 #ifndef NDEBUG
 	throw_on_bad_arg_blocks(index, block, rank, sections_sizes[index]);
@@ -31,7 +32,7 @@ size_t btensor::block_size(size_t index, size_t block) const
 	return sections_sizes[ori + block];
 }
 
-any_quantity_cref btensor::block_conserved_qtt(size_t index, size_t block) const
+any_quantity_cref btensor::section_conserved_qtt(size_t index, size_t block) const
 {
 #ifndef NDEBUG
 	throw_on_bad_arg_blocks(index, block, rank, sections_sizes[index]);
@@ -40,7 +41,7 @@ any_quantity_cref btensor::block_conserved_qtt(size_t index, size_t block) const
 	return c_vals[ori + block];
 }
 
-std::tuple<size_t, any_quantity_cref> btensor::block_size_cqtt(size_t index, size_t block) const
+std::tuple<size_t, any_quantity_cref> btensor::section_size_cqtt(size_t index, size_t block) const
 {
 #ifndef NDEBUG
 	throw_on_bad_arg_blocks(index, block, rank, sections_sizes[index]);
@@ -48,7 +49,7 @@ std::tuple<size_t, any_quantity_cref> btensor::block_size_cqtt(size_t index, siz
 	auto ori = std::accumulate(sections_by_dim.begin(), sections_by_dim.begin() + index - 1, 0);
 	return std::make_tuple(sections_sizes[ori + block], c_vals[ori + block]);
 }
-size_t tensor_list_size_guess(const std::initializer_list<std::initializer_list<std::tuple<size_t&, any_quantity_cref>>>& list,
+size_t tensor_list_size_guess(const btensor::init_list_t& list,
                               any_quantity_cref sel_rul, size_t rank, const btensor::index_list& sections_by_dims)
 {
 	constexpr size_t max_guess = 50;
@@ -86,7 +87,7 @@ size_t tensor_list_size_guess(const std::initializer_list<std::initializer_list<
 	}
 	return guess;
 }
-btensor::index_list block_shapes_from_struct_list(const std::initializer_list<std::initializer_list<std::tuple<size_t&, any_quantity_cref>>>& list, size_t rank)
+btensor::index_list block_shapes_from_struct_list(const btensor::init_list_t& list, size_t rank)
 {
 	btensor::index_list sections_by_dims(rank);
 	for (size_t i = 0; i < rank; ++i) //computed the number of section along each dims, will get it from the btensor instead. implies reordering of members.
@@ -95,7 +96,7 @@ btensor::index_list block_shapes_from_struct_list(const std::initializer_list<st
 	}
 	return sections_by_dims;
 }
-btensor::index_list block_sizes_from_struct_list(const std::initializer_list<std::initializer_list<std::tuple<size_t&, any_quantity_cref>>>& list, btensor::index_list sections_by_dim)
+btensor::index_list block_sizes_from_struct_list(const btensor::init_list_t& list, btensor::index_list sections_by_dim)
 {
 	btensor::index_list section_sizes(std::accumulate(sections_by_dim.begin(), sections_by_dim.end(), 1, [](auto&& a, auto&& b) { return a * b; }));
 	size_t i = 0;
@@ -109,7 +110,7 @@ btensor::index_list block_sizes_from_struct_list(const std::initializer_list<std
 	}
 	return section_sizes;
 }
-any_quantity_vector c_vals_from_struct_list(const std::initializer_list<std::initializer_list<std::tuple<size_t&, any_quantity_cref>>>& list, size_t size, any_quantity_cref sel_rul)
+any_quantity_vector c_vals_from_struct_list(const btensor::init_list_t& list, size_t size, any_quantity_cref sel_rul)
 {
 	any_quantity_vector c_vals(size, sel_rul.neutral());
 	size_t i = 0;
@@ -117,6 +118,7 @@ any_quantity_vector c_vals_from_struct_list(const std::initializer_list<std::ini
 	{
 		for (const auto& pair : pair_list)
 		{
+			any_quantity x = std::get<1>(pair);
 			c_vals[i] = std::get<1>(pair);
 			++i;
 		}
@@ -124,37 +126,117 @@ any_quantity_vector c_vals_from_struct_list(const std::initializer_list<std::ini
 	return c_vals;
 }
 
-btensor::btensor(size_t _rank, block_list_t _blocks, index_list _block_shapes, index_list _block_sizes,
+btensor::btensor(size_t _rank, block_list_t _blocks, index_list _sections_by_dim, index_list _block_shapes, index_list _block_sizes,
                  any_quantity_vector _c_vals, any_quantity _sel_rule)
-    : selection_rule(std::move(_sel_rule)), rank(rank), blocks(std::move(_blocks)), sections_by_dim(std::move(sections_by_dim)), sections_sizes(std::move(_block_sizes)),
+    : selection_rule(std::move(_sel_rule)), rank(_rank), blocks(std::move(_blocks)), sections_by_dim(std::move(_sections_by_dim)), sections_sizes(std::move(_block_sizes)),
       c_vals(std::move(_c_vals))
 {
 	std::string check_result = check_tensor(*this);
 	if (check_result.size())
-		throw std::invalid_argument(fmt::format("Invalid argument to construct a block tensor: {}", check_result));
+		throw std::invalid_argument(fmt::format("Invalid argument to construct a block tensor: \n{}", check_result));
 }
-btensor::btensor(std::initializer_list<std::initializer_list<std::tuple<size_t&, any_quantity_cref>>> dir_block_size_cqtt,
+btensor::btensor(btensor::init_list_t dir_block_size_cqtt,
                  any_quantity_cref selection_rule)
     : selection_rule(std::move(selection_rule)), rank(dir_block_size_cqtt.size()),
       sections_by_dim(block_shapes_from_struct_list(dir_block_size_cqtt, rank)),
       sections_sizes(block_sizes_from_struct_list(dir_block_size_cqtt, sections_by_dim)),
       blocks(tensor_list_size_guess(dir_block_size_cqtt, selection_rule, rank, sections_by_dim)),
-      c_vals(c_vals_from_struct_list(dir_block_size_cqtt, sections_by_dim.size(), selection_rule))
+      c_vals(c_vals_from_struct_list(dir_block_size_cqtt, sections_sizes.size(), selection_rule))
 {
-	// blocks(tensor_list_size_guess(dir_block_size_cqtt, selection_rule, rank, sections_by_dims)),
+#ifndef NDEBUG
 	std::string check_result = check_tensor(*this);
 	if (check_result.size())
 		throw std::invalid_argument(fmt::format("Invalid argument to construct a block tensor: {}", check_result));
+#endif
 }
-btensor::btensor(std::initializer_list<std::initializer_list<std::tuple<size_t&, any_quantity_cref>>> dir_block_size_cqtt,
+btensor::btensor(btensor::init_list_t dir_block_size_cqtt,
                  any_quantity_cref selection_rule, size_t num_blocks)
     : selection_rule(std::move(selection_rule)), rank(dir_block_size_cqtt.size()),
       sections_by_dim(block_shapes_from_struct_list(dir_block_size_cqtt, rank)),
       sections_sizes(block_sizes_from_struct_list(dir_block_size_cqtt, sections_by_dim)), blocks(num_blocks),
-      c_vals(c_vals_from_struct_list(dir_block_size_cqtt, sections_by_dim.size(), selection_rule))
+      c_vals(c_vals_from_struct_list(dir_block_size_cqtt, sections_sizes.size(), selection_rule))
 {
 	std::string check_result = check_tensor(*this);
 	if (check_result.size())
 		throw std::invalid_argument(fmt::format("Invalid argument to construct a block tensor: {}", check_result));
 }
+torch::Tensor btensor::block_at(const index_list& block_index)
+{
+	return blocks.at(block_index);
+}
+
+torch::Tensor btensor::block(const index_list& block_index) //create the block if it is allowed.
+{
+	return blocks[block_index];
+}
+
+std::string btensor::check_tensor(const btensor& T)
+{
+	//things to check:
+	//coherent redondent information:
+	//    - the non-zero block have same sizes as stored in section_sizes
+	//    - all the same rank, same as the number of block indexes.
+	//    -
+	//all non-zero block satisfy the conservation rule.
+	std::string M = "";
+	if (T.rank != T.sections_by_dim.size())
+		M += fmt::format("rank ({}) incoherent with with internal sections_by_dim (size {})\n", T.rank, T.sections_by_dim.size());
+	auto total_sections = std::accumulate(T.sections_by_dim.begin(), T.sections_by_dim.end(), 0);
+	if (total_sections != T.sections_sizes.size())
+		M += fmt::format("number of section accross all dimension ({}) incoherent with number of specified section sizes ({})\n", total_sections, T.sections_sizes.size());
+
+	for (const auto& a : T.blocks)
+	{
+		auto& ind = std::get<0>(a);
+		if (ind.size() != T.rank)
+			M += fmt::format("block index {} invalid: number of index differ from rank", std::get<0>(a));
+		any_quantity sel_test = T.selection_rule.value.neutral();
+		{
+			std::string cq = "";
+			for (auto i = 0U; i < ind.size(); ++i)
+			{
+				if (!(ind[i] < T.sections_by_dim[i]))
+					M += fmt::format("block index {} {}th element is greater than the number of section along that dimension ({})\n", ind, i, T.sections_by_dim[i]);
+				sel_test += T.section_conserved_qtt(i, ind[i]);
+				cq += fmt::format("index {}: {}\n", i, T.section_conserved_qtt(i, ind[i]));
+			}
+			if (sel_test != T.selection_rule)
+			{
+				M += fmt::format("block with index {} incompatible with selection rule {}.\n conserved quantities of the block: \n {}", ind, T.selection_rule.value, cq);
+			}
+		} //destroy cq
+		auto sizes = std::get<1>(a).sizes();
+		if (sizes.size() != T.rank)
+			M += fmt::format("block with index {} has rank ({}) incompatible with the btensor ({})\n", ind, sizes.size(), T.rank);
+		else
+		{
+			std::string sub = "";
+			for (auto i = 0U; i < T.rank; ++i)
+			{
+				if (T.section_size(i, ind[i]) != sizes[i])
+					sub += fmt::format("\t- {}th dimension size incompatible: btensor has {} and block {}\n", i, T.section_size(i, ind[i]), sizes[i]);
+			}
+			if (sub != "")
+			{
+				M += fmt::format("for block index {}:\n{}", ind, sub);
+			}
+		}
+	}
+	return M;
+}
+
+btensor::const_block_qtt_view btensor::block_quantities(index_list block_index) const
+{
+	return const_block_qtt_view(c_vals.cbegin(), c_vals.cend(), sections_by_dim, std::move(block_index));
+}
+// btensor::block_qtt_view btensor::block_quantities(index_list block_index)
+// {
+// 	return block_qtt_view(c_vals.begin(), c_vals.end(), sections_by_dim, std::move(block_index));
+// }
+btensor::const_block_size_view btensor::block_size(index_list block_index) const
+{
+	auto a = sections_sizes.begin();
+	return const_block_size_view(sections_sizes.begin(), sections_sizes.end(), sections_by_dim, std::move(block_index));
+}
+
 } // namespace quantt

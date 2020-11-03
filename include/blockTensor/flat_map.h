@@ -16,6 +16,7 @@
 
 #include "doctest/doctest_proxy.h"
 #include <algorithm>
+#include <cassert>
 #include <fmt/core.h>
 #include <fmt/ranges.h>
 #include <functional>
@@ -168,8 +169,8 @@ public:
 	mapped_type& at(const key_type& key)
 	{
 		auto it = std::lower_bound(content.begin(), content.end(), key, comp);
-		if (it == content.end() or it->first != key)
-			throw std::out_of_range("key absent from sorted array.");
+		if (it == content.end() or comp(key, *it))
+			throw std::out_of_range("key absent from flat_map.");
 		return it->second;
 	}
 	const mapped_type& at(const key_type& key) const
@@ -179,7 +180,7 @@ public:
 	mapped_type& operator[](const key_type key)
 	{
 		auto it = std::lower_bound(content.begin(), content.end(), key, comp);
-		if (it == content.end() or it->first != key)
+		if (it == content.end() or comp(key, *it))
 			it = content.insert(it, value_type());
 		return it->second;
 		//no const version of this one, because it inserts an element if the key isn't already present.
@@ -286,7 +287,7 @@ public:
 		return std::make_pair(it, success);
 	}
 	template <class P, class = std::enable_if_t<std::is_constructible_v<value_type, P&&>>>
-	std::pair<iterator, bool> instert(P&& value)
+	std::pair<iterator, bool> insert(P&& value)
 	{
 		static_assert(std::is_constructible_v<value_type, P&&>, "Don't try to bypass the enable if");
 		return insert(value_type(value));
@@ -326,24 +327,10 @@ public:
 	void insert(InputIt first, InputIt last, Collision&& collision)
 	{
 		static_assert(!std::is_convertible_v<InputIt, const_iterator>, "Don't try to bypass the enable if");
-		auto s2 = std::distance(first, last);
-		auto s1 = size();
-		content.insert(end(), first, last);
-		sort(end() - s2, end()); //sort the new stuff.
-		auto i = end() - s2;
-		while (i != begin() and s2 > 0)
-		{
-			i = std::lower_bound(begin(), i, content[s1 + s2], comp);
-			if (!comp(content[s1 + s2], *i)) //order of argument reversed, this is not(greater_than(*i,content[])). we already know it's not less_than
-			{
-				collision(i->second, content[s1 + s2].second); //do something about the collision, nothing by default;will be useful to do the addition as an insertion.
-				std::swap(content[s1 + s2], *end());           //move the colliding element of the inserted span to the end
-				content.pop_back();                            //move the end back by one, taking the colliding element out of scope.
-			}
-			--s2;
-		}
-		//find the repeats. should be feasable in O(n)
-		sort(content.begin(), content.end()); //sort everything.
+		content.insert(content.end(), first, last);
+		sort();
+		auto l = filter_unique(content.begin(), content.end(), collision); //pack the unique element at the begining, mainting order
+		content.resize(l - begin());                                       //l is the new end pointer.
 	}
 	//specialisation for the case of a inserting an ordered array, we can take some small shortcut in that case.
 	//should be templated on the iterator such that it accept iterator to ordered array with a value_type convertible to this value_type.
@@ -367,7 +354,7 @@ public:
 					      // collision(look->second, i->second);
 				}
 			}
-			content.resize(content.size() + n1); //invalidates iterators
+			content.resize(content.size() + n1); //potentially invalidates iterators. could be more time efficient if we need to reallocate, at the cost of holding the previous memory space  abit longer
 			//Copy the stuff from the input that has a larger key than the largest key in this.
 			look = end() - n1; //the pointer past the end of the original, to be moved, elements
 		}                      //pop n1 from the stack
@@ -378,7 +365,7 @@ public:
 			//part A: copy element in [first,last[ larger than *(look-1) at move_to_end.
 			{
 				auto la = std::lower_bound(first, last, *(look - 1), comp);
-				found_collision = !comp(*(look - 1), *la);
+				found_collision = la != last and !comp(*(look - 1), *la);
 				std::copy_backward(la + found_collision, last, move_to_end);
 				move_to_end -= last - (la + found_collision);
 				last = la;
@@ -386,8 +373,10 @@ public:
 			if (found_collision)
 				collision(move_to_end->second, last->second); // if we move the collision treatment here, to allow parallelism.
 			//part B: move the elements in [begin,look[ that are greater than *(last-1) to move_to_end
-			if (last == first)
+			if (last == first) // we've copied everything, there's nothing to move.
+			{
 				break;
+			}
 			{
 				auto lb = std::lower_bound(begin(), look, *(last - 1), comp);
 				std::move_backward(lb, look, move_to_end);
@@ -399,7 +388,7 @@ public:
 				collision(move_to_end->second, (last - 1)->second); //if we move collision treatment here, to allow parallelism
 			last -= found_collision;
 		}
-		assert((last - first) == 0 or (move_to_end - begin()) == (last - first)); //we've copy everything, or we still have some stuff to copy and the room necessary
+		assert((last - first) == 0 or (move_to_end - begin()) == (last - first)); //we've copied everything, or we still have some stuff to copy and the room necessary
 		std::copy_backward(first, last, move_to_end);
 	}
 
@@ -410,7 +399,7 @@ public:
 		auto it = std::lower_bound(begin(), end(), k, comp);
 		if (comp(k, *it))
 		{
-			it = content.insert(it, value_type(k, std::forward<M>(obj)));
+			it = content.emplace(it, k, std::forward<M>(obj));
 			success = true;
 		}
 		else
@@ -426,7 +415,7 @@ public:
 		auto it = std::lower_bound(begin(), end(), k, comp);
 		if (comp(k, *it))
 		{
-			it = content.insert(it, value_type(std::move(k), std::forward<M>(obj)));
+			it = content.emplace(it, std::move(k), std::forward<M>(obj));
 			success = true;
 		}
 		else
@@ -443,7 +432,7 @@ public:
 		iterator it = std::lower_bound(first, last, k, comp); //that's not a big saving if the hint is really good. except if the element is near the ends
 		if (comp(k, *it))
 		{
-			it = content.insert(it, value_type(k, std::forward<M>(obj)));
+			it = content.emplace(it, k, std::forward<M>(obj));
 		}
 		else
 		{
@@ -455,12 +444,11 @@ public:
 	template <class M>
 	iterator insert_or_assign(const_iterator hint, key_type&& k, M&& obj)
 	{
-		int hint_bool = comp(*hint, k);
 		auto [first, last] = use_hint(hint, k);
 		iterator it = std::lower_bound(first, last, k, comp); //that's not a big saving if the hint is really good. except if the element is near the ends
 		if (comp(k, *it))
 		{
-			it = content.insert(it, value_type(std::move(k), std::forward<M>(obj)));
+			it = content.emplace(it, std::move(k), std::forward<M>(obj));
 		}
 		else
 		{
@@ -476,7 +464,7 @@ public:
 		auto it = std::lower_bound(begin(), end(), val, comp);
 		if (comp(val, *it))
 		{
-			it = content.insert(it, std::move(val));
+			it = content.emplace(it, std::move(val));
 			success = true;
 		}
 		return std::make_pair(it, success);
@@ -490,7 +478,7 @@ public:
 		iterator it = std::lower_bound(first, last, val, comp); //that's not a big saving if the hint is really good. except if the element is near the ends
 		if (comp(val, *it))
 		{
-			it = content.insert(it, std::move(val));
+			it = content.emplace(it, std::move(val));
 			success = true;
 		}
 		return std::make_pair(it, success);
@@ -503,7 +491,7 @@ public:
 		bool success = false;
 		if (comp(k, *it))
 		{
-			it = content.insert(it, value_type(k, std::forward<Args>(args)...));
+			it = content.emplace(it, k, std::forward<Args>(args)...);
 			success = true;
 		}
 		return std::make_pair(it, success);
@@ -515,7 +503,7 @@ public:
 		bool success = false;
 		if (comp(k, *it))
 		{
-			it = content.insert(it, value_type(std::move(k), std::forward<Args>(args)...));
+			it = content.emplace(it, std::move(k), std::forward<Args>(args)...);
 			success = true;
 		}
 		return std::make_pair(it, success);
@@ -528,7 +516,7 @@ public:
 		bool success = false;
 		if (comp(k, *it))
 		{
-			it = content.insert(it, value_type(k, std::forward<Args>(args)...));
+			it = content.emplace(it, k, std::forward<Args>(args)...);
 			success = true;
 		}
 		return std::make_pair(it, success);
@@ -541,7 +529,7 @@ public:
 		bool success = false;
 		if (comp(k, *it))
 		{
-			it = content.insert(it, value_type(std::move(k), std::forward<Args>(args)...));
+			it = content.emplace(it, std::move(k), std::forward<Args>(args)...);
 			success = true;
 		}
 		return std::make_pair(it, success);
@@ -587,7 +575,7 @@ public:
 		if (source.capacity() >= source.size() + size()) //reuse source's resources if it avoid doing an allocation.
 		{
 			swap(content, source.content); //if the source has enough capacity, we'll keep it instead.
-			insert(source.begin(), source.end(), [collision](auto& a, auto& b) {collision(b,a); std::swap(a,b); });
+			insert(source.begin(), source.end(), [collision](auto& a, auto& b) {std::swap(a,b);collision(a,b); });
 		}
 		else
 		{
@@ -606,6 +594,7 @@ public:
 		if (source.capacity() >= source.size() + size())
 		{
 			swap(content, source.content); //if the source has enough capacity, we'll keep it instead.
+			using std::swap;
 			insert(source.begin(), source.end(), swap);
 		}
 		else
@@ -692,9 +681,13 @@ public:
 	* @param last iterator to the element after the range to sort
 	*
 	*/
-	void sort(iterator first = begin(), iterator last = end())
+	void sort(iterator first, iterator last)
 	{
 		std::sort(first, last, comp);
+	}
+	void sort()
+	{
+		std::sort(begin(), end(), comp);
 	}
 
 protected:
@@ -714,9 +707,8 @@ private:
 	// }
 	std::pair<const_iterator, const_iterator> use_hint(const_iterator hint, key_type& key) const
 	{
-		int hint_bool = comp(*hint, key);
-		const_iterator first = hint_bool ? hint : begin();
-		const_iterator last = hint_bool ? end() : hint + 1;
+		const_iterator first = comp(*hint, key) ? hint : begin();
+		const_iterator last = comp(key, *hint) ? end() : hint + 1;
 		return std::make_pair(first, last);
 	}
 	std::pair<iterator, iterator> use_hint(const_iterator hint, key_type& key)
@@ -725,19 +717,25 @@ private:
 		iterator last = comp(key, *hint) ? const_cast<value_type*>(hint.base() + 1) : end();
 		return std::make_pair(first, last);
 	}
-
 	typename content_t::iterator filter_unique(typename content_t::iterator first, typename content_t::iterator last)
+	{
+		return filter_unique(first, last, [](auto&, auto&) {});
+	}
+	template <class Collision>
+	typename content_t::iterator filter_unique(typename content_t::iterator first, typename content_t::iterator last, Collision collision)
 	{
 		using std::swap;
 		auto l = first;
-		first = std::upper_bound(first, last, *l, comp);
+		auto second = std::upper_bound(first, last, *l, comp);
 		while (first != last)
 		{
+			std::for_each(first + 1, second, [collision, l](auto& x) { collision(*l, x); });
 			++l;
-			swap(*l, *first); //when there's only one element of a given value it swaps with self.
-			first = std::upper_bound(first, last, *l, comp);
+			swap(*l, *second); //when there's only one element of a given value it swaps with self.
+			first = second;
+			second = std::upper_bound(first, last, *l, comp);
 		}
-		return ++l;
+		return l;
 	}
 };
 
@@ -763,6 +761,7 @@ bool operator==(const flat_map<key, val, C1, alloc1, array1>& a, const flat_map<
 qtt_TEST_CASE("flat_map")
 {
 	flat_map<int, double> a{{40, 1.1}, {20, 1.2}, {30, 1.3}, {10, 1.4}};
+	qtt_REQUIRE(a == flat_map<int, double>({{10, 1.4}, {20, 1.2}, {30, 1.3}, {40, 1.1}}));
 
 	// qtt_CHECK(false == true);
 	qtt_SUBCASE("insert a flat_map before, in and at the end, with collisions")
@@ -792,7 +791,7 @@ qtt_TEST_CASE("flat_map")
 		qtt_CHECK(a == result);
 		qtt_CHECK(collisions == 2);
 	}
-	qtt_SUBCASE("insert a flat_map before, in and at the end, no collisions")
+	qtt_SUBCASE("insert a flat_map before, in middle and at the end, no collisions")
 	{
 		int collisions = 0;
 		flat_map<int, double> b{{1, 6e10}, {50, 1e10}, {33, 1e12}, {70, 1e11}};
@@ -818,6 +817,15 @@ qtt_TEST_CASE("flat_map")
 		a.insert(b.begin(), b.end(), [&collisions](auto&&, auto&&) { ++collisions; });
 		qtt_CHECK(a == result);
 		qtt_CHECK(collisions == 0);
+	}
+	qtt_SUBCASE("insert unsorted sequence")
+	{
+		int collisions = 0;
+		std::vector<std::pair<int, double>> b{{1, 6e10}, {1, 6e10}, {10, 6e10}, {50, 1e10}, {50, 1e10}, {50, 1e10}, {30, 1}, {33, 1e12}, {70, 1e11}};
+		flat_map<int, double> result{{10, 1.4}, {20, 1.2}, {30, 1.3}, {33, 1e12}, {40, 1.1}, {1, 6e10}, {50, 1e10}, {70, 1e11}};
+		a.insert(b.begin(), b.end(), [&collisions](auto&&, auto&&) { ++collisions; });
+		qtt_CHECK(a == result);
+		qtt_CHECK(collisions == 5);
 	}
 }
 

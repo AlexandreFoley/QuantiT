@@ -258,7 +258,8 @@ public:
 		return (crend());
 	}
 };
-void swap(any_quantity_vector& a, any_quantity_vector& b)
+
+inline void swap(any_quantity_vector& a, any_quantity_vector& b)
 {
 	a.swap(b);
 }
