@@ -263,7 +263,7 @@ qtt_TEST_CASE("simple conserved")
 
 } // namespace quantt
 
-template <size_t N>
+template <uint16_t N>
 struct fmt::formatter<quantt::conserved::C<N>>
 {
 	constexpr auto parse(format_parse_context& ctx)

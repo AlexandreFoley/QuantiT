@@ -1,0 +1,45 @@
+\documentclass[15pt]{book}
+\usepackage{fancyhdr}
+\usepackage{amsmath}
+\usepackage{fancyvrb}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.11}
+\pagestyle{fancy}
+\fancyhead{}
+\fancyfoot{}
+\fancyhead[L]{QuantiT design document}
+\fancyhead[R]{Date: \today}
+\fancyfoot[C]{\thepage}
+\usepackage{graphicx}
+
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black
+}
+
+\begin{document}
+\title{Design of QuantiT}
+\author{Alexandre Foley}
+
+\maketitle
+
+\tableofcontents
+\chapter*{Goals}
+
+\chapter{Tensor Networks, in general}
+
+\section{torch::Tensor for Tensor Network}
+
+
+\chapter{Conserved quantities (quantum numbers)}
+\section{Abelian vs non-Abelian}
+\section{Design of the conserved quantities}
+\subsection{Design outline for non-Abelian symmetries}
+\chapter{Practicalities: project structure}
+\end{document}

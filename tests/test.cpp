@@ -25,3 +25,4 @@
 #include "dmrg.h"
 #include "models.h"
 #include "operators.h"
+#include "tensorgdot.h"

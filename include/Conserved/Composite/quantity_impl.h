@@ -79,6 +79,7 @@ public:
 	virtual vquantity& operator=(const vquantity&) = 0;
 	virtual bool operator==(const vquantity&) const = 0;
 	virtual bool operator!=(const vquantity&) const = 0;
+	virtual bool same_type(const vquantity& other) const = 0;
 	virtual void swap(vquantity&) = 0;
 	virtual auto format_to(fmt::format_context& ctx) const -> decltype(ctx.out()) = 0;
 	virtual ~vquantity() {}
@@ -123,6 +124,7 @@ public:
 	bool operator==(const vquantity& other) const override;
 	bool operator!=(const quantity& other) const;
 	bool operator!=(const vquantity& other) const override;
+	bool same_type(const vquantity& other) const override;
 	void swap(vquantity& other) override;
 
 	std::unique_ptr<vquantity_vector> make_vector(size_t cnt) const override;
@@ -142,6 +144,11 @@ private:
 	 */
 	std::tuple<Groups...> val;
 };
+template <class... Qts>
+bool quantity<Qts...>::same_type(const vquantity& other) const
+{ //dynamic cast on pointers return a null pointer which convert to false when the types are incompatible.
+	return dynamic_cast<const quantity<Qts...>*>(&other);
+}
 template <class... Qts>
 quantity<Qts...> quantity<Qts...>::operator*(const quantity<Qts...>& other)
 {

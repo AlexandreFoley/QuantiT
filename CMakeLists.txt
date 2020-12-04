@@ -8,6 +8,7 @@ find_package(fmt 6 REQUIRED)
 
 link_libraries( ${TORCH_LIBRARIES} fmt)
 
+add_compile_options("-ftemplate-backtrace-limit=0")
 
 
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)

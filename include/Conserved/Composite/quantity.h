@@ -193,17 +193,9 @@ public:
 	const vquantity& get() const;
 	any_quantity inverse() const;
 
-	const vquantity* operator&() const
-	{
-		return ref;
-	}
 	operator const vquantity&() const
 	{
 		return get();
-	}
-	auto format_to(fmt::format_context& ctx) const
-	{
-		return ref->format_to(ctx);
 	}
 };
 /**
@@ -239,14 +231,7 @@ public:
 	any_quantity_ref& inverse_();
 	any_quantity inverse() const;
 	void swap(any_quantity_ref other);
-	vquantity* operator&()
-	{
-		return ref;
-	}
-	const vquantity* operator&() const
-	{
-		return ref;
-	}
+
 	operator const vquantity&() const
 	{
 		return get();
@@ -531,24 +516,12 @@ qtt_TEST_CASE("composite conserved")
 #include "quantity_vector.h"
 
 template <>
-struct fmt::formatter<quantt::any_quantity_cref>
+struct fmt::formatter<quantt::any_quantity_cref> : fmt::formatter<quantt::vquantity>
 {
-	constexpr auto parse(format_parse_context& ctx)
-	{
-		auto it = ctx.begin(), end = ctx.end();
-		if (it != end and *it != '}')
-			throw format_error("invalid format, no formatting option for quantt::quantity");
-		if (*it != '}')
-			throw format_error("invalid format,closing brace missing");
-
-		// Return an iterator past the end of the parsed range:
-		return it;
-	}
-
 	template <class FormatContext>
-	auto format(quantt::any_quantity_cref qt, FormatContext& ctx)
+	auto format(const quantt::any_quantity_cref& qt, FormatContext& ctx)
 	{
-		return qt.format_to(ctx); //right now qt.format_to is only define for fmt::format_context. Should work for any output stream.
+		return fmt::formatter<quantt::vquantity>::format(qt.get(), ctx); //right now qt.format_to is only define for fmt::format_context. Should work for any output stream.
 	}
 };
 template <>

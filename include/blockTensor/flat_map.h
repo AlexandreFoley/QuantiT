@@ -31,10 +31,8 @@ public:
 	using mapped_type = Value;
 	using value_type = std::pair<Key, Value>;
 
-private:
 	using content_t = Array<std::pair<Key, Value>, Allocator>;
 
-public:
 	// currently giving access to keys in a mutable form... that's bad.
 	// can't have the key be stored as const because of inplace sorting.
 	// this means creating a proxy iterator >< to ensure user cannot screw the ordering.
@@ -94,14 +92,22 @@ public:
 		}
 	};
 	//constructors
-	flat_map() : comp(), content(){};
+	// flat_map() : comp(), content(){};
 	explicit flat_map(size_type capacity, const key_compare& _comp = key_compare(),
 	                  const allocator_type& _alloc = allocator_type())
 	    : comp(_comp), content(capacity, _alloc) { content.resize(0); }
 	explicit flat_map(const key_compare& _comp, const allocator_type& _alloc = allocator_type())
 	    : comp(_comp), content(_alloc) {}
-	explicit flat_map(allocator_type& _alloc = allocator_type())
+	flat_map(const allocator_type& _alloc = allocator_type())
 	    : comp(), content(_alloc) {}
+	flat_map(content_t&& in) : comp(), content(std::move(in))
+	{
+		sort(content.begin(), content.end());
+	}
+	flat_map(const content_t& in) : comp(), content((in))
+	{
+		sort(content.begin(), content.end());
+	}
 	template <class InputIt>
 	flat_map(InputIt first, InputIt last, const key_compare& _comp = key_compare(),
 	         const allocator_type& _alloc = allocator_type())
@@ -148,17 +154,20 @@ public:
 	flat_map& operator=(const flat_map& other)
 	{
 		content = other.content;
-		comp = other.comp;
+		comp = other.compu;
+		return *this;
 	}
 	flat_map& operator=(flat_map&& other) noexcept
 	{
 		content = std::move(other.content);
 		comp = std::move(other.comp);
+		return *this;
 	}
 	flat_map& operator=(std::initializer_list<value_type> ilist)
 	{
 		content.resize(0);
 		content.insert(ilist.begin(), ilist.end());
+		return *this;
 	}
 
 	allocator_type get_allocator() const noexcept
@@ -169,7 +178,9 @@ public:
 	mapped_type& at(const key_type& key)
 	{
 		auto it = std::lower_bound(content.begin(), content.end(), key, comp);
-		if (it == content.end() or comp(key, *it))
+		auto val = comp(key, *it);
+		if (it == content.end() or val)
+			//we should enter here only if *it != key or it is at the end
 			throw std::out_of_range("key absent from flat_map.");
 		return it->second;
 	}
@@ -181,7 +192,7 @@ public:
 	{
 		auto it = std::lower_bound(content.begin(), content.end(), key, comp);
 		if (it == content.end() or comp(key, *it))
-			it = content.insert(it, value_type());
+			it = content.insert(it, std::make_pair(key, mapped_type()));
 		return it->second;
 		//no const version of this one, because it inserts an element if the key isn't already present.
 	}
@@ -220,7 +231,7 @@ public:
 	}
 	const_reverse_iterator crbegin() const
 	{
-		return reverse_iterator(cend());
+		return const_reverse_iterator(cend());
 	}
 	const_reverse_iterator rbegin() const
 	{
@@ -228,7 +239,7 @@ public:
 	}
 	const_reverse_iterator crend() const
 	{
-		return reverse_iterator(cbegin());
+		return const_reverse_iterator(cbegin());
 	}
 	const_reverse_iterator rend() const
 	{
@@ -826,6 +837,17 @@ qtt_TEST_CASE("flat_map")
 		a.insert(b.begin(), b.end(), [&collisions](auto&&, auto&&) { ++collisions; });
 		qtt_CHECK(a == result);
 		qtt_CHECK(collisions == 5);
+	}
+}
+qtt_TEST_CASE("accessors")
+{
+	flat_map<int, int> A;
+	A[0] = 5;
+	A[0] = 6;
+	qtt_SUBCASE("first access")
+	{
+		qtt_REQUIRE_NOTHROW(A.at(0));
+		qtt_CHECK(A[0] == 6);
 	}
 }
 

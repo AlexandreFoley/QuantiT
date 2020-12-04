@@ -16,7 +16,7 @@
 
 #include "Conserved/Composite/quantity.h"
 #include "boost/stl_interfaces/iterator_interface.hpp"
-
+#include <numeric>
 namespace quantt
 {
 
@@ -186,6 +186,7 @@ public:
 	virtual void resize(size_t count) = 0;
 	virtual void resize(size_t count, const vquantity& val) = 0;
 	virtual void swap(vquantity_vector& other) = 0;
+	virtual std::unique_ptr<vquantity_vector> virtual_permute(const int64_t* permute_begin, const int64_t* permute_end, const std::vector<int64_t>& repetition) const = 0;
 
 private:
 	/**
@@ -355,7 +356,7 @@ public:
 	{
 		return std::vector<S>::shrink_to_fit(); //virtualize
 	}                                           //modifiers
-	void clear() override
+		void clear() override
 	{
 		return std::vector<S>::clear(); //virtualize
 	}
@@ -428,7 +429,27 @@ public:
 		std::vector<S>::swap(dynamic_cast<quantity_vector&>(other));
 	}
 
+	quantity_vector permute(const int64_t* permute_begin, const int64_t* permute_end, const std::vector<int64_t> repetition) const
+	{
+		quantity_vector out(size());
+		size_t p = 0;
+		for (; permute_begin != permute_end; ++permute_begin) //to properly break this up would while reusing the s value would require a coroutine.
+		{
+			auto rep = repetition[*permute_begin];
+			auto s = std::accumulate(repetition.begin(), repetition.begin() + *permute_begin, 0);
+			for (size_t i = 0; i < rep; ++i, ++p)
+			{
+				out[p] = (*this)[s + i];
+			}
+		}
+		return out;
+	}
+
 private:
+	std::unique_ptr<vquantity_vector> virtual_permute(const int64_t* permute_begin, const int64_t* permute_end, const std::vector<int64_t>& repetition) const override
+	{
+		return std::make_unique<quantity_vector>(permute(permute_begin, permute_end, repetition));
+	}
 	typename vquantity_vector::iterator begin_impl() override
 	{
 		return vquantity_vector::iterator(begin().base(), &ar);

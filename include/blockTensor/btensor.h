@@ -18,9 +18,10 @@
 #include "Conserved/Composite/quantity_vector.h"
 #include "Conserved/quantity.h"
 #include "blockTensor/flat_map.h"
-#include "property.h"
 #include "boost/stl_interfaces/iterator_interface.hpp"
 #include "boost/stl_interfaces/view_interface.hpp"
+#include "property.h"
+#include "torch_formatter.h"
 #include <algorithm>
 #include <exception>
 #include <torch/torch.h>
@@ -67,7 +68,7 @@ class block_qtt_view;
  * \endverbatim
  * In the preceding exemple, the rows are separated in 4 sections, and the columns in 3 sections.
  * This make up to 12 blocks, that we label by section.
- * Let's consider that the conserved quantity is simply an integer,that the column section [-2,-1,1], the row section 
+ * Let's consider that the conserved quantity is simply an integer under the addition,that the column section [-2,-1,1], the row section 
  * have the conserved quantity [1,2,3,-1] and the selection rule is 0.
  * In that case, only the blocks [(1,0),(0,1),(2,3)] can be non-zero.
  * 
@@ -75,9 +76,10 @@ class block_qtt_view;
 class btensor
 {
 public:
-	using index_list = std::vector<size_t>;
+	using index_list = std::vector<int64_t>;
 	using block_list_t = flat_map<index_list, torch::Tensor>;
 	using init_list_t = std::initializer_list<std::initializer_list<std::tuple<size_t, any_quantity>>>;
+	using Scalar = torch::Scalar;
 	property<any_quantity, btensor, any_quantity_cref> selection_rule; //dmrjulia equiv: the flux.
 	/**
 	 * @brief Construct a new btensor object
@@ -90,23 +92,41 @@ public:
 	btensor(init_list_t dir_block_size_cqtt, any_quantity_cref selection_rule);
 	btensor(init_list_t dir_block_size_cqtt, any_quantity_cref selection_rule, size_t num_blocks);
 
+	btensor(index_list _sections_by_dim, any_quantity_vector _c_vals, index_list _section_sizes, any_quantity _sel_rule);
+	btensor(const btensor& other) : selection_rule((other.selection_rule.value)), rank(other.rank),
+	                                sections_by_dim((other.sections_by_dim)), sections_sizes((other.sections_sizes)),
+	                                blocks((other.blocks)), c_vals((other.c_vals)) {}
+	btensor(btensor&& other) : selection_rule(std::move(other.selection_rule.value)), rank(other.rank),
+	                           sections_by_dim(std::move(other.sections_by_dim)), sections_sizes(std::move(other.sections_sizes)),
+	                           blocks(std::move(other.blocks)), c_vals(std::move(other.c_vals)) {}
+	btensor& operator=(btensor other)
+	{
+		swap(other);
+		return *this;
+	}
+	btensor() = default;
 	/**
 	 * @brief Construct a new btensor object. construct from raw structure elements. Avoid using this constructor if you can.
 	 * 
 	 * @param _rank : the number of dimension of the tensor
 	 * @param _blocks : list of pair<position,sub-tensor>, the position is stored in a block index
-	 * @param _block_shapes : number of section for each dimension of the tensor
-	 * @param _block_sizes : number of element for each section of each dimension
+	 * @param _sections_by_dim : number of section for each dimension of the tensor
+	 * @param _section_sizes : number of element for each section of each dimension
 	 * @param _c_vals : conserved quantity associated to each of the section in each of the dimension
 	 * @param _sel_rule : overall selection rule, the sum over the dimension of the conserved quantities of a given block must equal this value for a block to be allowed to differ from zero. 
 	 */
-	btensor(size_t _rank, block_list_t _blocks, index_list _sections_by_dim, index_list _block_shapes, index_list _block_sizes,
+	btensor(size_t _rank, block_list_t _blocks, index_list _sections_by_dims, index_list _sections_sizes,
 	        any_quantity_vector _c_vals, any_quantity _sel_rule);
 
-	size_t section_size(size_t index, size_t block) const;
-	any_quantity_cref section_conserved_qtt(size_t index, size_t block) const;
-	std::tuple<size_t, any_quantity_cref> section_size_cqtt(size_t index, size_t block) const;
+	/**
+	 * @brief increment a block index for this tensor
+	 * 
+	 * @param block_index reference to the block index to increment.
+	 */
+	void block_increment(btensor::index_list& block_index) const;
+	static size_t btensor_compute_max_size(const btensor& btens, size_t max = std::numeric_limits<size_t>::max());
 
+	void swap(btensor&);
 	//utility classes
 	template <class val_iter>
 	struct block_prop_iter;
@@ -121,17 +141,101 @@ public:
 	using block_qtt_view = block_prop_view<block_qtt_iter>;
 	using const_block_qtt_view = const_block_prop_view<const_block_qtt_iter, block_qtt_iter>;
 	using block_size_iter = block_prop_iter<index_list::iterator>;
-	using const_block_size_iter = const_block_prop_iter<index_list::const_iterator,index_list::iterator>;
+	using const_block_size_iter = const_block_prop_iter<index_list::const_iterator, index_list::iterator>;
 	using block_size_view = block_prop_view<block_size_iter>;
-	using const_block_size_view = const_block_prop_view<const_block_size_iter,block_size_iter>;
+	using const_block_size_view = const_block_prop_view<const_block_size_iter, block_size_iter>;
 
+	bool block_conservation_rule_test(const index_list& block_index) const;
 
-	//accessor
-	torch::Tensor block_at(const index_list&); //throws if the block isn't present.
-	torch::Tensor block(const index_list&);    //create the block if it isn't present and allowed
+	size_t section_size(size_t dim, size_t section) const;
+	std::tuple<index_list::const_iterator, index_list::const_iterator> section_sizes(size_t dim) const;
+	std::tuple<any_quantity_vector::const_iterator, any_quantity_vector::const_iterator> section_cqtts(size_t dim) const;
+	std::tuple<index_list::const_iterator, index_list::const_iterator, any_quantity_vector::const_iterator, any_quantity_vector::const_iterator>
+	section_sizes_cqtts(size_t dim) const;
+
+	any_quantity_cref section_conserved_qtt(size_t dim, size_t section) const;
+	std::tuple<size_t, any_quantity_cref> section_size_cqtt(size_t dim, size_t section) const;
+	//block accessor
+	torch::Tensor& block_at(const index_list&); //throws if the block isn't present.
+	torch::Tensor& block(const index_list&);    //create the block if it isn't present and allowed
 	const_block_qtt_view block_quantities(index_list block_index) const;
-	const_block_size_view block_size(index_list block_index) const;
+	const_block_size_view block_sizes(index_list block_index) const;
+	size_t dim() const { return rank; }
+	size_t section_number(size_t dim) const { return sections_by_dim[dim]; }
 	// block_qtt_view block_quantities(index_list block_index);
+
+	//iterator
+	block_list_t::const_iterator begin() const { return blocks.begin(); }
+	block_list_t::const_iterator end() const { return blocks.end(); }
+	block_list_t::const_iterator cbegin() const { return blocks.cbegin(); }
+	block_list_t::const_iterator cend() const { return blocks.cend(); }
+	block_list_t::iterator begin() { return blocks.begin(); }
+	block_list_t::iterator end() { return blocks.end(); }
+	block_list_t::reverse_iterator rbegin() { return blocks.rbegin(); }
+	block_list_t::reverse_iterator rend() { return blocks.rend(); }
+	block_list_t::const_reverse_iterator rbegin() const { return blocks.rbegin(); }
+	block_list_t::const_reverse_iterator rend() const { return blocks.rend(); }
+	block_list_t::const_reverse_iterator crbegin() const { return blocks.crbegin(); }
+	block_list_t::const_reverse_iterator crend() const { return blocks.crend(); }
+
+	torch::Tensor to_dense() const;
+	//properties check
+	static std::string check_tensor(const btensor&);
+	static void throw_bad_tensor(const btensor&);
+	//Algebra
+	btensor add(const btensor& other, Scalar alpha = 1) const;
+	btensor add(btensor&& other, Scalar alpha = 1) const;
+	btensor& add_(const btensor& other, Scalar alpha = 1);
+	btensor& add_(btensor&& other, Scalar alpha = 1);
+	btensor& operator+=(const btensor& other) { return add_(other); }
+	btensor& operator+=(btensor&& other) { return add_(std::move(other)); }
+	btensor& operator-=(const btensor& other) { return add_(other, -1); }
+	btensor& operator-=(btensor&& other) { return add_(std::move(other), -1); }
+	btensor addmv(const btensor& mat, const btensor& vec, Scalar beta = 1, Scalar alpha = 1) const;
+	btensor& addmv(const btensor& mat, const btensor& vec, Scalar beta = 1);
+	btensor addmm(const btensor& mat, const btensor& mat2, Scalar beta = 1, Scalar alpha = 1) const;
+	btensor& addbmm_(const btensor& mat, const btensor& mat2, Scalar beta = 1, Scalar alpha = 1);
+	btensor addbmm(const btensor& mat, const btensor& mat2, Scalar beta = 1, Scalar alpha = 1) const;
+	btensor& addcdiv_(const btensor& tensor1, const btensor& tensor2, Scalar beta = 1);
+	btensor addcdiv(const btensor& tensor1, const btensor& tensor2, Scalar beta = 1);
+	btensor& addcmul_(const btensor& tensor1, const btensor& tensor2, Scalar beta = 1);
+	btensor addcmul(const btensor& tensor1, const btensor& tensor2, Scalar beta = 1);
+	btensor& addmm_(const btensor& mat, const btensor& mat2, Scalar beta = 1, Scalar alpha = 1);
+	btensor baddbmm(const btensor& bathc1, const btensor& batch2, Scalar beta = 1, Scalar alpha = 1) const;
+	btensor& baddbmm_(const btensor& bathc1, const btensor& batch2, Scalar beta = 1, Scalar alpha = 1);
+	btensor bmm(const btensor& mat) const;
+	btensor dot(const btensor& other) const;
+	btensor vdot(const btensor& other) const;
+	btensor kron(const btensor& other) const;
+	btensor matmul(const btensor& other) const;
+	btensor mm(const btensor& other) const;
+	btensor mul(const btensor& other) const;
+	btensor& mul_(const btensor& other) const;
+	btensor mul(Scalar other) const;
+	btensor& mul_(Scalar other) const;
+	btensor multiply(const btensor& other) const;
+	btensor& multiply_(const btensor& other) const;
+	btensor multiply(Scalar other) const;
+	btensor& multiply_(Scalar other) const;
+	btensor mv(const btensor& vec) const;
+	btensor permute(torch::IntArrayRef) const;
+	btensor& permute_(torch::IntArrayRef);
+	btensor reshape(torch::IntArrayRef shape) const;
+	btensor reshape_as(torch::IntArrayRef shape) const;
+	btensor transpose(int64_t dim0, int64_t dim1) const;
+	btensor transpose(torch::Dimname dim0, torch::Dimname dim1) const;
+	btensor& transpose_(int64_t dim0, int64_t dim1);
+	btensor sub(const btensor& other, Scalar alpha = 1) const;
+	btensor& sub_(const btensor& other, Scalar alpha = 1) const;
+	btensor sub(Scalar other, Scalar alpha = 1) const;
+	btensor& sub_(Scalar other, Scalar alpha = 1) const;
+	btensor subtract(const btensor& other, Scalar alpha = 1) const;
+	btensor& subtract_(const btensor& other, Scalar alpha = 1) const;
+	btensor subtract(Scalar other, Scalar alpha = 1) const;
+	btensor& subtract_(Scalar other, Scalar alpha = 1) const;
+	btensor tensordot(const btensor& other, torch::IntArrayRef dim_self, torch::IntArrayRef dims_other) const;
+	btensor tensorgdot(const btensor& mul1, const btensor& mul2, torch::IntArrayRef dims1, torch::IntArrayRef dims2, Scalar beta = 1, Scalar alpha = 1) const;
+	btensor& tensorgdot_(const btensor& mul1, const btensor& mul2, torch::IntArrayRef dims1, torch::IntArrayRef dims2, Scalar beta = 1, Scalar alpha = 1);
 
 private:
 	size_t rank;
@@ -140,19 +244,59 @@ private:
 	//truncation should remove any and all empty slices, but user-written tensor could have empty slices.
 	block_list_t blocks;        //
 	any_quantity_vector c_vals; //dmrjulia equiv: QnumSum in the QTensor class. This structure doesn't need the full list (QnumMat)
-	static std::string check_tensor(const btensor&);
+	friend struct fmt::formatter<quantt::btensor>;
 };
+
+inline void swap(btensor& a, btensor& b)
+{
+	a.swap(b);
+}
 
 qtt_TEST_CASE("btensor")
 {
 	qtt_SUBCASE("contruction")
 	{
 		using cqt = conserved::C<5>;
+		using index = btensor::index_list;
 		any_quantity flux(cqt(0));
 
 		btensor A({{{2, cqt(0)}, {3, cqt(1)}},
-		           {{2, cqt(0)}, {3, cqt(-1)}}},
+		           {{2, cqt(0)}, {3, cqt(1).inverse()}}},
 		          flux);
+		qtt_CHECK(A.end() - A.begin() == 0);
+		auto A00 = torch::rand({2, 2});
+		auto A11 = torch::rand({3, 3});
+		A.block({0, 0}) = A00;
+		A.block({1, 1}) = A11;
+		qtt_REQUIRE_NOTHROW(btensor::throw_bad_tensor(A));
+		qtt_CHECK(A.end() - A.begin() == 2);
+		qtt_CHECK_NOTHROW(A.block_at({0, 0}));
+		qtt_CHECK_THROWS_AS(A.block_at({1, 0}), std::out_of_range);  //there's no block here.
+		qtt_CHECK_THROWS_AS(A.block({1, 0}), std::invalid_argument); //and we can't create one.
+		qtt_CHECK(btensor::check_tensor(A) == "");
+		// fmt::print("{}", A);
+		qtt_SUBCASE("tensor contraction")
+		{
+			btensor B({{{3, cqt(4)}, {2, cqt(0)}}, {{2, cqt(0)}, {3, cqt(1)}}, {{1, cqt(1)}, {3, cqt(0)}}}, any_quantity(cqt(1)));
+			auto B100 = torch::rand({2, 2, 1});
+			auto B010 = torch::rand({3, 3, 1});
+			auto B111 = torch::rand({2, 3, 3});
+			B.block({0, 1, 0}) = B010;
+			B.block({1, 1, 1}) = B111;
+			B.block({1, 0, 0}) = B100;
+			qtt_REQUIRE_NOTHROW(btensor::throw_bad_tensor(B));
+			btensor C;
+			auto C100 = torch::tensordot(A11, B010, {1}, {1});
+			auto C010 = torch::tensordot(A00, B100, {1}, {1});
+			auto C111 = torch::tensordot(A11, B111, {1}, {1});
+			qtt_CHECK_NOTHROW(C = A.tensordot(B, {1}, {1}));
+			qtt_REQUIRE_NOTHROW(C.block_at({0, 1, 0}));
+			qtt_REQUIRE_NOTHROW(C.block_at({1, 0, 0}));
+			qtt_REQUIRE_NOTHROW(C.block_at({1, 1, 1}));
+			qtt_CHECK(torch::allclose(C.block_at({0, 1, 0}), C010));
+			qtt_CHECK(torch::allclose(C.block_at({1, 0, 0}), C100));
+			qtt_CHECK(torch::allclose(C.block_at({1, 1, 1}), C111));
+		}
 	}
 }
 
@@ -184,7 +328,7 @@ public:
 	bool operator==(const block_prop_iter& other)
 	{
 		return val_iter == other.val_iter && section_by_dim == other.section_by_dim &&
-		       block_index == other.block_index;
+		       *block_index == *(other.block_index);
 	}
 	block_prop_iter& operator++()
 	{
@@ -226,24 +370,24 @@ struct btensor::const_block_prop_iter : btensor::block_prop_iter<const_value_ite
 	using block_prop_iter<const_value_iter>::block_prop_iter;
 	const_block_prop_iter& operator++()
 	{
-		block_prop_iter<const_value_iter>::operator++(); 
+		block_prop_iter<const_value_iter>::operator++();
 		return *this;
 	}
 	const_block_prop_iter& operator--()
 	{
-		block_prop_iter<const_value_iter>::operator--(); 
+		block_prop_iter<const_value_iter>::operator--();
 		return *this;
 	}
 	const_block_prop_iter& operator++(int)
 	{
 		auto out = *this;
-		block_prop_iter<const_value_iter>::operator++(); 
+		block_prop_iter<const_value_iter>::operator++();
 		return out;
 	}
 	const_block_prop_iter& operator--(int)
 	{
 		auto out = *this;
-		block_prop_iter<const_value_iter>::operator--(); 
+		block_prop_iter<const_value_iter>::operator--();
 		return out;
 	}
 };
@@ -279,9 +423,42 @@ struct btensor::const_block_prop_view : btensor::block_prop_view<const_iterator>
 	using block_prop_view<const_iterator>::block_prop_view;
 	const_block_prop_view(const btensor::block_prop_view<iterator>& other)
 	    : block_prop_view<const_iterator>(other.begin().get_val_iter(), other.end().get_val_iter(), other.begin().get_section(),
-	                      other.end().get_section(), other.get_index()) {}
+	                                      other.end().get_section(), other.get_index()) {}
 };
 
 } // namespace quantt
 
+template <>
+struct fmt::formatter<quantt::btensor>
+{
+	constexpr auto parse(format_parse_context& ctx)
+	{
+		auto it = ctx.begin(), end = ctx.end();
+		if (it != end and *it != '}')
+			throw format_error("invalid format, no formatting option for quantt::quantity");
+		if (*it != '}')
+			throw format_error("invalid format,closing brace missing");
+
+		// Return an iterator past the end of the parsed range:
+		return it;
+	}
+
+	template <class FormatContext>
+	auto format(const quantt::btensor& t, FormatContext& ctx)
+	{
+		constexpr auto btensor_fmt_string =
+		    "btensor rank {}\n selection rule {}\n number of sections by dim {}\n "
+		    "sections sizes {}\n sections conserved quantity {}\n";
+		constexpr auto btensor_fmt_blocks = "block at {}\n {}\n";
+		auto out = format_to(ctx.out(), btensor_fmt_string, t.rank, t.selection_rule,
+		                     t.sections_by_dim, t.sections_sizes, t.c_vals);
+		for (const auto& b : t.blocks)
+		{
+			out = format_to(out, btensor_fmt_blocks, b.first, b.second);
+		}
+		return out;
+	}
+};
+
 #endif /* D49FFA60_85C4_431A_BA62_9B1D30D67E86 */
+  	

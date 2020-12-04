@@ -50,6 +50,25 @@ class property final
 	property& operator=( content&& new_value ); // define it to give write access to the value, with any and all checks necessary.
 	//don't define it to keep the property read only.
 
+	/**
+	 * @brief Arrow dereferencing operator. let you call the members const without going through the convertion operator first.
+	 * 
+	 * @return auto* 
+	 */
+	const content* operator->() const
+	{
+		return &value;
+	}
+
 	~property() {};
 };
+
+#if __has_include(<fmt/format.h>)
+#include <fmt/format.h>
+template <class content, class owner, class cref_type, class unique_type>
+struct fmt::formatter<property<content, owner, cref_type, unique_type>> : fmt::formatter<content>
+{
+};
+#endif
+
 #endif /* A0DBDDD7_5F5B_48D3_A287_E11E64C8B84C */

@@ -1,0 +1,7 @@
+\BOOKMARK [0][-]{chapter.1}{Tensor Networks, in general}{}% 1
+\BOOKMARK [1][-]{section.1.1}{torch::Tensor for Tensor Network}{chapter.1}% 2
+\BOOKMARK [0][-]{chapter.2}{Conserved quantities \(quantum numbers\)}{}% 3
+\BOOKMARK [1][-]{section.2.1}{Abelian vs non-Abelian}{chapter.2}% 4
+\BOOKMARK [1][-]{section.2.2}{Design of the conserved quantities}{chapter.2}% 5
+\BOOKMARK [2][-]{subsection.2.2.1}{Design outline for non-Abelian symmetries}{section.2.2}% 6
+\BOOKMARK [0][-]{chapter.3}{Practicalities: project structure}{}% 7

@@ -257,6 +257,11 @@ public:
 	{
 		return (crend());
 	}
+
+	any_quantity_vector permute(const int64_t* permute_begin, const int64_t* permute_end, const std::vector<int64_t> repetition) const
+	{
+		return any_quantity_vector(ptr->virtual_permute(permute_begin, permute_end, repetition));
+	}
 };
 
 inline void swap(any_quantity_vector& a, any_quantity_vector& b)
