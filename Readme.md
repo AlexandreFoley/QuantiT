@@ -58,7 +58,7 @@ Otherwise, pytorch will build for a large array of different architecture, this 
 	
 	export TORCH_GPU_ARCH_LIST="Turing"
 
-The latest RTX cards have the "7.5" Turing architecture. Consult [this table](https://en.wikipedia.org/wiki/CUDA#GPUs_supported) to determine the architecture of your GPU.
+The 20XX RTX cards have the "7.5" Turing architecture. Consult [this table](https://en.wikipedia.org/wiki/CUDA#GPUs_supported) to determine the architecture of your GPU.
 
 It can be necessarry to compile Torch in debug in order to debug QuanTT, libtorch tend to be binary incompatible with programs compiled differently.
 This may vary by compiler.
