@@ -92,6 +92,15 @@ public:
 		return *this;
 	}
 
+	bool operator==(const any_quantity_vector& other) const
+	{
+		return *ptr == *(other.ptr);
+	}
+	bool operator!=(const any_quantity_vector& other) const
+	{
+		return *ptr != *(other.ptr);
+	}
+
 	reference operator[](size_t n)
 	{
 		return any_quantity_ref((*ptr)[n]);

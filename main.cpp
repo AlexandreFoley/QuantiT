@@ -48,11 +48,26 @@ int main()
 		cuda_device = torch::Device(torch::kCUDA); // set the cuda_device to the actual gpu if it would work
 	}
 
-
-	using namespace torch;
 	using cqt = conserved::C<5>;
-	btensor B({{{3, cqt(4)}, {2, cqt(0)}}, {{2, cqt(0)}, {3, cqt(1)}}, {{1, cqt(1)}, {3, cqt(0)}}}, any_quantity(cqt(1)));
+	using index = btensor::index_list;
+	any_quantity flux(cqt(0));
 
+	btensor A({{{2, cqt(0)}, {3, cqt(1)}},
+			   {{2, cqt(0)}, {3, cqt(1).inverse()}}},
+			  flux);
+	auto A00 = torch::rand({2, 2});
+	auto A11 = torch::rand({3, 3});
+	A.block({0, 0}) = A00;
+	A.block({1, 1}) = A11;
+	auto B00 = 2 * A00;
+	auto B11 = 2 * A11;
+	auto C00 = 3 * A00; //also A post add_
+	auto C11 = 3 * A11; //also A post add_
+	auto B = A.add(A);
+	auto C = A.add(B);
+	B.block_at({0, 0});
+	C.add_(B);
+	A.add_(std::move(B));
 
 	return 0;
 }

@@ -76,7 +76,7 @@ public:
 		return ar;
 	}
 };
-struct cgroup_iterator : public boost::stl_interfaces::iterator_interface<cgroup_iterator, std::random_access_iterator_tag, any_quantity, any_quantity_ref, vquantity*>
+struct cgroup_iterator : public boost::stl_interfaces::iterator_interface<cgroup_iterator, std::random_access_iterator_tag, any_quantity, any_quantity_ref, vquantity*,std::ptrdiff_t>
 {
 private:
 	vquantity* it;
@@ -89,7 +89,7 @@ private:
 public:
 	constexpr cgroup_iterator() : it(nullptr), ar(nullptr) {}
 	constexpr cgroup_iterator(vquantity* _it, const virt_ptr_aritmetic* _ar) : it(_it), ar(_ar) {}
-	using base_type = boost::stl_interfaces::iterator_interface<cgroup_iterator, std::random_access_iterator_tag, any_quantity, any_quantity_ref, vquantity*>;
+	using base_type = typename boost::stl_interfaces::iterator_interface<cgroup_iterator, std::random_access_iterator_tag, any_quantity, any_quantity_ref, vquantity*, std::ptrdiff_t>;
 	any_quantity_ref operator*() const
 	{
 		return any_quantity_ref(it);
@@ -116,6 +116,7 @@ public:
 		return ar;
 	}
 };
+
 
 } // namespace vquantt_iterator
 //so that different vector type have a different base type
@@ -166,6 +167,9 @@ public:
 	virtual const vquantity& back() const = 0;
 	virtual vquantity* data() = 0;
 	virtual const vquantity* data() const = 0;
+	//comparator
+	virtual bool operator==(const vquantity_vector&) const = 0;
+	virtual bool operator!=(const vquantity_vector&) const = 0;
 	// capacity
 	[[nodiscard]] virtual bool empty() const = 0;
 	[[nodiscard]] virtual size_t size() const = 0;
@@ -259,18 +263,19 @@ template <class S, class Allocator = std::allocator<S>, class = std::enable_if_t
 class quantity_vector final : public vquantity_vector, public std::vector<S, Allocator>
 {
 public:
-	using iterator = typename std::vector<S>::iterator;
-	using const_iterator = typename std::vector<S>::const_iterator;
-	using reverse_iterator = typename std::vector<S>::reverse_iterator;
-	using const_reverse_iterator = typename std::vector<S>::const_reverse_iterator;
-	using value_type = typename std::vector<S>::value_type;
-	using allocator_type = typename std::vector<S>::allocator_type;
-	using size_type = typename std::vector<S>::size_type;
-	using difference_type = typename std::vector<S>::difference_type;
-	using reference = typename std::vector<S>::reference;
-	using const_reference = typename std::vector<S>::const_reference;
-	using pointer = typename std::vector<S>::pointer;
-	using const_pointer = typename std::vector<S>::const_pointer;
+	using base_vector = std::vector<S,Allocator>;
+	using iterator = typename base_vector::iterator;
+	using const_iterator = typename base_vector::const_iterator;
+	using reverse_iterator = typename base_vector::reverse_iterator;
+	using const_reverse_iterator = typename base_vector::const_reverse_iterator;
+	using value_type = typename base_vector::value_type;
+	using allocator_type = typename base_vector::allocator_type;
+	using size_type = typename base_vector::size_type;
+	using difference_type = typename base_vector::difference_type;
+	using reference = typename base_vector::reference;
+	using const_reference = typename base_vector::const_reference;
+	using pointer = typename base_vector::pointer;
+	using const_pointer = typename base_vector::const_pointer;
 
 	using std::vector<S, Allocator>::vector; //so we have all of vector's constructors as well as the rest of its interface.
 	quantity_vector(const std::vector<S, Allocator>& other) : quantity_vector(static_cast<const quantity_vector&>(other)) {}
@@ -284,81 +289,81 @@ public:
 	//since both parent class define those functions, we have to disambiguate which to use or override.
 	S& operator[](size_t n) override
 	{
-		return std::vector<S>::operator[](n);
+		return base_vector::operator[](n);
 	}
 	const S& operator[](size_t n) const override
 	{
-		return std::vector<S>::operator[](n);
+		return base_vector::operator[](n);
 	}
 	S& at(size_t n) override
 	{
-		return std::vector<S>::at(n);
+		return base_vector::at(n);
 	}
 	const S& at(size_t n) const override
 	{
-		return std::vector<S>::at(n);
+		return base_vector::at(n);
 	}
 	// iterators
-	using std::vector<S>::begin;   //ok
-	using std::vector<S>::end;     //ok
-	using std::vector<S>::cend;    //ok
-	using std::vector<S>::cbegin;  //ok
-	using std::vector<S>::rbegin;  //ok
-	using std::vector<S>::rend;    //ok
-	using std::vector<S>::crbegin; //ok
-	using std::vector<S>::crend;   //ok
+	using base_vector::begin;   //ok
+	using base_vector::end;     //ok
+	using base_vector::cend;    //ok
+	using base_vector::cbegin;  //ok
+	using base_vector::rbegin;  //ok
+	using base_vector::rend;    //ok
+	using base_vector::crbegin; //ok
+	using base_vector::crend;   //ok
 	S& front() override
 	{
-		return std::vector<S>::front(); //covriant -> virtualize
+		return base_vector::front(); //covriant -> virtualize
 	}
 	const S& front() const override
 	{
-		return std::vector<S>::front(); //covriant -> virtualize
+		return base_vector::front(); //covriant -> virtualize
 	}
 	S& back() override
 	{
-		return std::vector<S>::back(); //covariant -> virtualize
+		return base_vector::back(); //covariant -> virtualize
 	}
 	const S& back() const override
 	{
-		return std::vector<S>::back(); //covariant -> virtualize
+		return base_vector::back(); //covariant -> virtualize
 	}
 	S* data() override
 	{
-		return std::vector<S>::data();
+		return base_vector::data();
 	} //covariant -> virtualize
 	const S* data() const override
 	{
-		return std::vector<S>::data();
+		return base_vector::data();
 	} //covariant -> virtualize
 	// capacity
 	bool empty() const override
 	{
-		return std::vector<S>::empty(); //virtualize
+		return base_vector::empty(); //virtualize
 	}
 	size_t size() const override
 	{
-		return std::vector<S>::size(); //virtualize
+		return base_vector::size(); //virtualize
 	}
 	size_t max_size() const override
 	{
-		return std::vector<S>::max_size(); //virtualize
+		return base_vector::max_size(); //virtualize
 	}
 	void reserve(size_t n) override
 	{
-		return std::vector<S>::reserve(n); //virtualize
+		return base_vector::reserve(n); //virtualize
 	}
 	size_t capacity() const override
 	{
-		return std::vector<S>::capacity(); //virtualize
+		return base_vector::capacity(); //virtualize
 	}
 	void shrink_to_fit() override
 	{
-		return std::vector<S>::shrink_to_fit(); //virtualize
+		return base_vector::shrink_to_fit(); //virtualize
 	}                                           //modifiers
 		void clear() override
 	{
-		return std::vector<S>::clear(); //virtualize
+		return base_vector::clear(); //virtualize
 	}
 	struct ptr_aritmetic_t : vquantt_iterator::virt_ptr_aritmetic
 	{
@@ -377,7 +382,7 @@ public:
 	};
 	constexpr static ptr_aritmetic_t ar = ptr_aritmetic_t();
 
-	using std::vector<S>::insert;
+	using base_vector::insert;
 	vquantity_vector::iterator insert(vquantity_vector::const_iterator pos, const vquantity& Val) override
 	{
 		return vquantity_vector::iterator(insert(to_S_iterator(pos), dynamic_cast<const S&>(Val)).base(), &ar);
@@ -394,8 +399,8 @@ public:
 	{
 		return vquantity_vector::iterator(insert(to_S_iterator(pos), to_S_iterator(first), to_S_iterator(last)).base(), &ar);
 	}
-	using std::vector<S>::emplace; // can't virtualize (template)
-	using std::vector<S>::erase;   //virtual proxy
+	using base_vector::emplace; // can't virtualize (template)
+	using base_vector::erase;   //virtual proxy
 	vquantity_vector::iterator erase(vquantity_vector::const_iterator pos) override
 	{
 		return vquantity_vector::iterator(erase(to_S_iterator(pos)).base(), &ar);
@@ -404,29 +409,29 @@ public:
 	{
 		return vquantity_vector::iterator(erase(to_S_iterator(first), to_S_iterator(last)).base(), &ar);
 	}
-	using std::vector<S>::push_back; // virtual proxy
+	using base_vector::push_back; // virtual proxy
 	void push_back(const vquantity& val) override
 	{
 		return push_back(dynamic_cast<const S&>(val));
 	}
-	using std::vector<S>::emplace_back; // can't virtualize (template)
+	using base_vector::emplace_back; // can't virtualize (template)
 	void pop_back() override
 	{
-		return std::vector<S>::pop_back();
+		return base_vector::pop_back();
 	}
 	void resize(size_t count) override
 	{
-		return std::vector<S>::resize(count); //virtualize}
+		return base_vector::resize(count); //virtualize}
 	}
 	void resize(size_t count, const vquantity& val) override
 	{
-		return std::vector<S>::resize(count, dynamic_cast<const S&>(val));
+		return base_vector::resize(count, dynamic_cast<const S&>(val));
 	}
-	using std::vector<S>::resize;
-	using std::vector<S>::swap; //virtualize
+	using base_vector::resize;
+	using base_vector::swap; //virtualize
 	void swap(vquantity_vector& other) override
 	{
-		std::vector<S>::swap(dynamic_cast<quantity_vector&>(other));
+		base_vector::swap(dynamic_cast<quantity_vector&>(other));
 	}
 
 	quantity_vector permute(const int64_t* permute_begin, const int64_t* permute_end, const std::vector<int64_t> repetition) const
@@ -436,7 +441,7 @@ public:
 		for (; permute_begin != permute_end; ++permute_begin) //to properly break this up would while reusing the s value would require a coroutine.
 		{
 			auto rep = repetition[*permute_begin];
-			auto s = std::accumulate(repetition.begin(), repetition.begin() + *permute_begin, 0);
+			auto s = std::reduce(repetition.begin(), repetition.begin() + *permute_begin, 0);
 			for (size_t i = 0; i < rep; ++i, ++p)
 			{
 				out[p] = (*this)[s + i];
@@ -444,7 +449,20 @@ public:
 		}
 		return out;
 	}
-
+	bool operator==(const quantity_vector& other) const
+	{
+		return static_cast<const base_vector&>(*this) == static_cast<const base_vector&>(other);
+	}
+	bool operator!=(const quantity_vector& other) const
+	{
+		return static_cast<const base_vector&>(*this) != static_cast<const base_vector&>(other);
+	}
+	bool operator==(const vquantity_vector& other) const override{
+		return operator==(dynamic_cast<const quantity_vector&>(other));
+	}
+	bool operator!=(const vquantity_vector& other) const override{
+		return operator!=(dynamic_cast<const quantity_vector&>(other));
+	}
 private:
 	std::unique_ptr<vquantity_vector> virtual_permute(const int64_t* permute_begin, const int64_t* permute_end, const std::vector<int64_t>& repetition) const override
 	{

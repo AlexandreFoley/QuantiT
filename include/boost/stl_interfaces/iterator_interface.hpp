@@ -790,7 +790,7 @@ namespace boost { namespace stl_interfaces { BOOST_STL_INTERFACES_NAMESPACE_V2 {
                               DifferenceType> const &);
 
         template<typename D>
-        concept derived_iter = requires (D d) { v2_dtl::derived_iterator(d); };
+        concept derived_iter = requires (D d) { v2_dtl::derived_iterator(std::declval<D>()); };
     }
 
     template<typename D1, typename D2>

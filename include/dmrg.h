@@ -126,9 +126,9 @@ namespace quantt
 	} // namespace details
 
     qtt_TEST_CASE("dmrg run test")
-    { //only test that dmrg runs and finish as expected.
-
-		MPO Hamil(5, torch::rand({2, 5, 2, 5}));
+    { 
+		auto T =  torch::rand({2, 5, 2, 5});
+		MPO Hamil(5, T);
 		dmrg_options opt;
 		opt.maximum_iterations = 10;
 		{

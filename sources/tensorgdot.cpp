@@ -163,11 +163,11 @@ torch::Tensor& tensorgdot_(torch::Tensor& output, const torch::Tensor& input1, c
 	std::vector<int64_t> rsizes(t1.dim() + t2.dim() - 2 * dims);
 	auto rit = rsizes.begin();
 	auto prod = [&rit](auto& a, auto& b) {
-		*(rit++) = b; //assign b then increment iterator
+		*(rit++) = b; //assign b then increment iterator, this construct the output section size vector.
 		return a * b;
 	};
-	int size1 = std::accumulate(sizes1.begin(), sizes1.end() - dims, 1, prod);
-	int size2 = std::accumulate(sizes2.begin() + dims, sizes2.end(), 1, prod);
+	int size1 = std::accumulate(sizes1.begin(), sizes1.end() - dims, 1, prod); //cannot use reduce, operation must be done in order
+	int size2 = std::accumulate(sizes2.begin() + dims, sizes2.end(), 1, prod); //cannot use reduce, operation must be done in order
 	constexpr auto output_tensor_shape = "output tensor shape {} does not match the result of the contraction {}."; 
 	TORCH_CHECK(rsizes == output.sizes(), fmt::format(output_tensor_shape,fmt::join(output.sizes(),","),rsizes));
 	int csize = 1;
