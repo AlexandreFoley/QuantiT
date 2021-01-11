@@ -2,7 +2,18 @@ cmake_minimum_required(VERSION 3.0 FATAL_ERROR)
 project(QuanTT LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
-set( Torch_DIR "${QuanTT_SOURCE_DIR}/extern/pytorch/torch/share/cmake/Torch")
+
+option(USE_EXTERN_TORCH "use the torch intallation located in the project extern folder" FALSE)
+
+if (USE_EXTERN_TORCH)
+    MESSAGE("Using Torch located in extern/pytorch")
+    set( Torch_DIR "${QuanTT_SOURCE_DIR}/extern/pytorch/torch/share/cmake/Torch")
+else()
+    execute_process( COMMAND python3 -c "import torch;print(torch.utils.cmake_prefix_path)" OUTPUT_VARIABLE Torch_DIR)
+    string(REGEX REPLACE "\n$" "" Torch_DIR "${Torch_DIR}" )
+    set(Torch_DIR "${Torch_DIR}/Torch")
+    MESSAGE("System installed Torch: ${Torch_DIR}")
+endif()
 find_package(Torch REQUIRED)
 find_package(fmt 6 REQUIRED)
 

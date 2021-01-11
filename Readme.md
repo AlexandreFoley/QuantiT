@@ -9,7 +9,7 @@ If compiling in release mode, we could make use of precompiled pytorch for our p
 This project depends on the {fmt} v6 library, install it with a package manager. (package often called libfmt)
 
 ### PyTorch's dependencies
-Python3 and some modules are dependencies of PyTorch
+Python3 and some modules are dependencies of PyTorch.
 Cuda is an optionnal dependency of PyTorch.
 
 For python, I suggest using anaconda or miniconda, because this make installing some of the additionnal (and optionnal) cuda libraries significantly easier

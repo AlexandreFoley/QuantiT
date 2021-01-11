@@ -1,13 +1,13 @@
 /*
- * File: blocktensor.h
+ * File: btensor.h
  * Project: quantt
  * File Created: Thursday, 1st October 2020 10:54:53 am
  * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)
  * -----
- * Last Modified: Thursday, 1st October 2020 10:54:53 am
+ * Last Modified: Friday, 8th January 2021 12:02:08 pm
  * Modified By: Alexandre Foley (Alexandre.foley@usherbrooke.ca>)
  * -----
- * Copyright (c) 2020 Alexandre Foley
+ * Copyright (c) 2021 Alexandre Foley
  * All rights reserved
  */
 
@@ -26,9 +26,9 @@
 #include <exception>
 #include <torch/torch.h>
 #include <vector>
+
 namespace quantt
 {
-
 	class block_qtt_view;
 	/**
  * @brief btensor is a type meant to represent block sparse tensor with conservation laws.
@@ -105,7 +105,7 @@ namespace quantt
 			return *this;
 		}
 		btensor() = default;
-		/**
+	/**
 	 * @brief Construct a new btensor object. construct from raw structure elements. Avoid using this constructor if you can.
 	 * 
 	 * @param _rank : the number of dimension of the tensor

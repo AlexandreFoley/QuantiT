@@ -10,3 +10,6 @@ Notes/*.synctex.gz
 Notes/*.toc
 Notes/*.out
 Notes/*.fdb_latexmk
+Documentation/html/*
+Documentation/latex/*
+Documentation/xml/*

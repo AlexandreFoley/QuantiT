@@ -3,10 +3,7 @@
  * Project: QuanTT
  * File Created: Thursday, 16th July 2020 1:47:39 pm
  * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)
- * -----
- * Last Modified: Thursday, 23rd July 2020 10:29:13 am
- * Modified By: Alexandre Foley (Alexandre.foley@usherbrooke.ca>)
- * -----
+ *
  * Copyright (c) 2020 Alexandre Foley
  * All rights reserved
  */
