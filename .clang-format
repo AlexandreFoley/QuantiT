@@ -1,0 +1,11 @@
+﻿---
+BasedOnStyle: Microsoft
+AllowAllArgumentsOnNextLine: 'true'
+AllowShortFunctionsOnASingleLine: All
+AllowShortIfStatementsOnASingleLine: Never
+BreakBeforeBraces: Allman
+ColumnLimit: '120'
+SortIncludes: 'true'
+UseTab: ForIndentation
+
+...

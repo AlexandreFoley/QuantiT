@@ -14,6 +14,7 @@
 
 #ifndef A0DBDDD7_5F5B_48D3_A287_E11E64C8B84C
 #define A0DBDDD7_5F5B_48D3_A287_E11E64C8B84C
+#include <utility>
 // with c++20, we can use unique_type = decltype([]{}), to get a completly unique type, even if all the other
 // template argument are identical. Doing that mean that every time the template is explicitly written, a new type is generated.
 
@@ -28,8 +29,9 @@
 template <class content,class owner,class cref_type= const content&, class unique_type = owner>
 class property final
 {
+	// @cond
 	friend owner;
-
+	// @endcond
 	content value;
 	
 	property() = default;

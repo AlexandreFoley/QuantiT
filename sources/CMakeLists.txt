@@ -1,9 +1,9 @@
 
 
-set(INC_DIR "${QuanTT_SOURCE_DIR}/include")
-set(BST_DIR "${QuanTT_SOURCE_DIR}/extern/boost/boost")
+set(INC_DIR "${PROJECT_SOURCE_DIR}/include")
+set(BST_DIR "${PROJECT_SOURCE_DIR}/extern/boost/boost")
 set(GRP_DIR "${INC_DIR}/Conserved")
-set(DCT_DIR "${QuanTT_SOURCE_DIR}/extern/doctest")
+set(DCT_DIR "${PROJECT_SOURCE_DIR}/extern/doctest")
 set(BTEN_DIR "${INC_DIR}/blockTensor")
 
 set(HEADER_LIST "${INC_DIR}/MPT.h" "${INC_DIR}/LinearAlgebra.h" "${INC_DIR}/dimension_manip.h" 
@@ -24,7 +24,7 @@ add_library(QuanTT_lib MPT.cpp LinearAlgebra.cpp dimension_manip.cpp torch_forma
             models.cpp any_quantity.cpp groups.cpp btensor.cpp tensorgdot.cpp ${HEADER_LIST})
 
 # We need this directory, and users of our library will need it too
-target_include_directories(QuanTT_lib PUBLIC ../include ../extern/boost ../extern/doctest)
+target_include_directories(QuanTT_lib PUBLIC ../extern/boost ../extern/doctest ../include)
 
 # This doesn't depends on (header only) boost. present as an exemple.
 # target_link_libraries(QuanTT_lib PRIVATE Boost::boost)

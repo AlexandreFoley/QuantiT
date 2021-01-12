@@ -110,7 +110,7 @@ namespace quantt
 	 * 
 	 * @param _rank : the number of dimension of the tensor
 	 * @param _blocks : list of pair<position,sub-tensor>, the position is stored in a block index
-	 * @param _sections_by_dim : number of section for each dimension of the tensor
+	 * @param _sections_by_dims : number of section for each dimension of the tensor
 	 * @param _section_sizes : number of element for each section of each dimension
 	 * @param _c_vals : conserved quantity associated to each of the section in each of the dimension
 	 * @param _sel_rule : overall selection rule, the sum over the dimension of the conserved quantities of a given block must equal this value for a block to be allowed to differ from zero. 

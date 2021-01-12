@@ -19,7 +19,7 @@
 namespace quantt
 {
 /**
- * @brief generalized tensordot, performs D_{ij...klm} = alpha*C_{ij...klm} + beta*\Sum_{...klm} A_{ij...klm}*B_{ij...klm}
+ * @brief generalized tensordot, performs \f$ D_{ij...klm} = alpha*C_{ij...klm} + beta*\Sum_{...klm} A_{ij...klm}*B_{ij...klm} \f$
  *        Like tensordot is the equivalent of the matrix mutiplcation for tensors, this routine is the equivalent of 
  *        the generalized matrix multiplication for tensor (torch::addmm).
  * @param add The input tensor C
@@ -35,7 +35,7 @@ torch::Tensor tensorgdot(const torch::Tensor& add, const torch::Tensor& mul1, co
                          torch::IntArrayRef dims1, torch::IntArrayRef dims2,
                          torch::Scalar beta = 1, torch::Scalar alpha = 1);
 /**
- * @brief generalized tensordot, performs C_{ij...klm} = alpha*C_{ij...klm} + beta*\Sum_{...klm} A_{ij...klm}*B_{ij...klm}
+ * @brief generalized tensordot, performs \f$ C_{ij...klm} = alpha*C_{ij...klm} + beta*\Sum_{...klm} A_{ij...klm}*B_{ij...klm} ­\f$
  *        Like tensordot is the equivalent of the matrix mutiplcation for tensors, this routine is the equivalent of 
  *        the generalized matrix multiplication for tensor (torch::addmm).
  * 
@@ -53,7 +53,7 @@ torch::Tensor& tensorgdot_(torch::Tensor& output, const torch::Tensor& mul1, con
                            torch::Scalar beta = 1, torch::Scalar alpha = 1);
 
 /**
- * @brief generalized tensordot, performs D_{ij...klm} = alpha*C_{ij...klm} + beta*\Sum_{...klm} A_{ij...klm}*B_{ij...klm}
+ * generalized tensordot, performs \f$ D_{ij...klm} = alpha*C_{ij...klm} + beta*\Sum_{...klm} A_{ij...klm}*B_{ij...klm} \f$
  *        Like tensordot is the equivalent of the matrix mutiplcation for tensors, this routine is the equivalent of 
  *        the generalized matrix multiplication for tensor (torch::addmm).
  * @param output the output tensor D
@@ -70,7 +70,7 @@ torch::Tensor& tensorgdot_out(torch::Tensor& output, const torch::Tensor& add, c
                               torch::IntArrayRef dims1, torch::IntArrayRef dims2,
                               torch::Scalar beta = 1, torch::Scalar alpha = 1);
 /**
- * @brief generalized tensordot, performs C_{ij...klm} = alpha*C_{ij...klm} + beta*\Sum_{...klm} A_{ij...klm}*B_{ij...klm}
+ * @brief generalized tensordot, performs \f$ C_{ij...klm} = alpha*C_{ij...klm} + beta*\Sum_{...klm} A_{ij...klm}*B_{ij...klm} \f$
  *        Like tensordot is the equivalent of the matrix mutiplcation for tensors, this routine is the equivalent of 
  *        the generalized matrix multiplication for tensor (torch::addmm).
  * @param output output tensor C, result of the contraction is added to it.

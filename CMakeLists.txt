@@ -1,18 +1,18 @@
 cmake_minimum_required(VERSION 3.0 FATAL_ERROR)
-project(QuanTT LANGUAGES CXX)
+project(QuantiT LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 
 option(USE_EXTERN_TORCH "use the torch intallation located in the project extern folder" FALSE)
 
 if (USE_EXTERN_TORCH)
-    MESSAGE("Using Torch located in extern/pytorch")
-    set( Torch_DIR "${QuanTT_SOURCE_DIR}/extern/pytorch/torch/share/cmake/Torch")
+    set( Torch_DIR "${PROJECT_SOURCE_DIR}/extern/pytorch/torch/share/cmake/Torch")
+    MESSAGE("Using Torch located in ${Torch_DIR}")
 else()
     execute_process( COMMAND python3 -c "import torch;print(torch.utils.cmake_prefix_path)" OUTPUT_VARIABLE Torch_DIR)
     string(REGEX REPLACE "\n$" "" Torch_DIR "${Torch_DIR}" )
     set(Torch_DIR "${Torch_DIR}/Torch")
-    MESSAGE("System installed Torch: ${Torch_DIR}")
+    MESSAGE("System installed Torch found: ${Torch_DIR}")
 endif()
 find_package(Torch REQUIRED)
 find_package(fmt 6 REQUIRED)
@@ -21,6 +21,7 @@ link_libraries( ${TORCH_LIBRARIES} fmt)
 
 add_compile_options("-ftemplate-backtrace-limit=0")
 
+set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
 
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
     include(CTest)
@@ -30,6 +31,7 @@ if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME AND BUILD_TESTING)
 endif()
 
 add_subdirectory(sources)
+add_subdirectory(Documentation)
 
 add_executable(QuanTT_dev main.cpp )
 target_link_libraries(QuanTT_dev PRIVATE QuanTT_lib)

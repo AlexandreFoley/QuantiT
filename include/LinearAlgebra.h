@@ -31,10 +31,10 @@ namespace quantt
 {
 
 //TODO: add possibility of pre-allocated output, and the possibility not to compute the eigen/singular vectors.
-
+ 
 /**
- * truncate the input tensors according to the small values of d.
- * truncate all the values of d, d_i, such that \sum_i abs(d_i)^pow <= tol.
+ * @brief truncate the input tensors according to the small values of \f$ d \f$.
+ * truncate all the values of \f$ d, d_i \f$, such that \f$ \sum_i abs(d_i)^pow <= tol \f$.
  * Assumes the entry of d are ordered in decreasing order.
  * The last dimension of u and v are the one that are truncated along with d.
  * Output is in the same order as input
@@ -44,7 +44,7 @@ std::tuple<torch::Tensor,torch::Tensor,torch::Tensor> truncate(std::tuple<torch:
 
 /**
  * truncate the input tensors according to the small values of e.
- * truncate all the values of e, e_i, such that \sum_i abs(e_i)^pow <= tol.
+ * truncate all the values of \f$ e, e_i \f$, such that \f$ \sum_i abs(e_i)^pow <= tol \f$.
  * Assumes the entry of e are ordered in decreasing order.
  * The last dimension of u is the one that is truncated along with e.
  * Output is in the same order as input
