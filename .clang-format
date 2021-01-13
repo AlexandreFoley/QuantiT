@@ -3,6 +3,7 @@ BasedOnStyle: Microsoft
 AllowAllArgumentsOnNextLine: 'true'
 AllowShortFunctionsOnASingleLine: All
 AllowShortIfStatementsOnASingleLine: Never
+AlwaysBreakTemplateDeclarations: 'Yes'
 BreakBeforeBraces: Allman
 ColumnLimit: '120'
 SortIncludes: 'true'

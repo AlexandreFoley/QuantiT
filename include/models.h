@@ -31,7 +31,6 @@ namespace quantt
 	}
 
 	/**
-	 * 
 	 * Generate the Hamiltonian for the first neighbor 1D Hubbard model. The enrgy scale is defined by the first neighbor hopping t=1.
 	 */
 	MPO Hubbard(torch::Tensor U,torch::Tensor mu,size_t lenght); 

@@ -445,7 +445,7 @@ namespace quantt
 	btensor &btensor::permute_(torch::IntArrayRef permutation)
 	{
 		auto new_val = permute(permutation);
-		swap(new_val); //temporary. a better implementation will come.
+		swap(new_val); //TODO: temporary. a better implementation will come.
 		return *this;
 	}
 

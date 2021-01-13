@@ -20,6 +20,10 @@
 #include <charconv>
 
 
+/**
+ * @brief fmt::formatter for torch::Tensor
+ * 
+ */
 template <>
 struct fmt::formatter<torch::Tensor>
 {

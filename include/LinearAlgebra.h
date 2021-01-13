@@ -50,6 +50,20 @@ std::tuple<torch::Tensor,torch::Tensor,torch::Tensor> truncate(std::tuple<torch:
  * Output is in the same order as input
  */
 std::tuple<torch::Tensor,torch::Tensor> truncate(torch::Tensor u,torch::Tensor e, torch::Scalar tol=0,size_t min_size=1,size_t max_size=-1, torch::Scalar pow=1);
+/**
+ * @brief truncate the tensors in the tuple according to the values in the second element.
+ * 
+ * Assume the seconds tensors value are ordered from maximum to minimum.
+ * truncate all the values of \f$ e_i \f$, such that \f$ \sum_i abs(e_i)^pow <= tol \f$.
+ * where the \f$ e_i \f$ are the values of the second tensor
+ * 
+ * @param tensors tuple of tensors, the second is a diagonnal matrix
+ * @param tol maximal truncation error
+ * @param min_size minimum size of the output
+ * @param max_size maximum size of the output
+ * @param pow power in the computation of the truncation error
+ * @return std::tuple<torch::Tensor,torch::Tensor> 
+ */
 std::tuple<torch::Tensor,torch::Tensor> truncate(std::tuple<torch::Tensor,torch::Tensor> tensors, torch::Scalar tol=0,size_t min_size=1,size_t max_size=-1, torch::Scalar pow=1);
 
 /**

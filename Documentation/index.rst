@@ -22,21 +22,10 @@ Indices and tables
 * :ref:`search`
 
 
-.. doxygenclass:: this_is_a_test
-   :outline:
-   :members:
 
+Stupid list of everything Doxygen has indexed
+=============================================
 
-.. Stupid list of everything Doxygen has indexed
-.. =============================================
-
-.. .. doxygenindex::
-..    :project: QuantiT
-..    :outline:
-..    :no-link:
-
-.. One free function
-.. =================
-
-.. .. doxygenfunction:: quantt::truncate(std::tuple<torch::Tensor, torch::Tensor, torch::Tensor>, torch::Scalar, size_t, size_t, torch::Scalar)
-..    :outline:
+.. doxygenindex::
+   :project: QuantiT
+   :no-link:

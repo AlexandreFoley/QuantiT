@@ -23,56 +23,9 @@
 
 #include "doctest/doctest_proxy.h"
 
-/**
- * 
- * long description --
- * 
- */
-class this_is_a_test
-{
-	public:
-	/**
-	 * @brief member brief
-	 * 
-	 * member long description
-	 * 
-	 */
-	int a;
-
-	/**
-	 * @brief add to a
-	 * 
-	 * add the argument to a
-	 * 
-	 * @param x value to add
-	 * 
-	 * @return original value of a
-	 */
-	int add(int x);
-
-	void not_documented(double Ah);
-};
 
 namespace quantt
 {
-/**
- * @brief Test brief
- * 
- * long description --
- * 
- */
-class this_is_a_test
-{
-	public:
-	/**
-	 * @brief member brief
-	 * 
-	 * member long description
-	 * 
-	 */
-	int a;
-};
-
 
 // forward declaration for dmrg_impl.
 class env_holder;
@@ -83,10 +36,28 @@ class MPO;
 class MPT;
 namespace details
 {
+/**
+ * @brief implementation for dmrg algorithms
+ * 
+ * @param hamiltonian 
+ * @param two_sites_hamil MPT which contain the contraction of neighbouring sites of the MPO
+ * @param in_out_state the state to optimize
+ * @param options 
+ * @param Env local environment container
+ * @param logger 
+ * @return torch::Scalar optimized Energy
+ */
 torch::Scalar dmrg_impl(const MPO &hamiltonian, const MPT &two_sites_hamil, MPS &in_out_state,
                         const dmrg_options &options, env_holder &Env, dmrg_logger &logger);
 }
 // matrix product tensors base type. require concrete derived class to implement MPT empty_copy(const S&)
+/**
+ * @brief base type for MPT, MPS, MPO.
+ * 
+ * Give us the ability to reuse the interface of std::vector multiple without inheriting from it and with minimal boiler plate.
+ * 
+ * @tparam S the derived type
+ */
 template <class S> class vector_lift
 {
 	std::vector<torch::Tensor> tensors;
@@ -257,6 +228,10 @@ template <class S> class vector_lift
 		swap(other);
 	}
 };
+/**
+ * @brief tensor train type
+ * 
+ */
 class MPT final : public vector_lift<MPT>
 {
   public:
