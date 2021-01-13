@@ -2,9 +2,14 @@ cmake_minimum_required(VERSION 3.0 FATAL_ERROR)
 project(QuantiT LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
-
+if(APPLE) #for some reason, cmake fail to determine how to link to the threads library on my mac...
+    set(CMAKE_THREAD_LIBS_INIT "-lpthread")
+    set(CMAKE_HAVE_THREADS_LIBRARY 1)
+    set(CMAKE_USEWIN32_THREADS_INIT 0)
+    set(CMAKE_USE_PTHREADS_INIT 1)
+    SET(THREADS_PREFER_PTHREAD_FLAG ON)
+endif()
 option(USE_EXTERN_TORCH "use the torch intallation located in the project extern folder" FALSE)
-
 if (USE_EXTERN_TORCH)
     set( Torch_DIR "${PROJECT_SOURCE_DIR}/extern/pytorch/torch/share/cmake/Torch")
     MESSAGE("Using Torch located in ${Torch_DIR}")
