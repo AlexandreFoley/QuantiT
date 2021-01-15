@@ -19,10 +19,6 @@
 
 #include "doctest.h"
 
-#define DOXYSKIP_impl(x) /// @cond \	
-x \
-/// @endcond \
-
 #define qtt_TEST_CASE DOCTEST_TEST_CASE
 #define qtt_TEST_CASE_CLASS DOCTEST_TEST_CASE_CLASS
 #define qtt_TEST_CASE_FIXTURE DOCTEST_TEST_CASE_FIXTURE

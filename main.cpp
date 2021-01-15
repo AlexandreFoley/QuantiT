@@ -65,6 +65,6 @@ int main()
 	B.block_at({0, 0});
 	C.add_(B);
 	A.add_(std::move(B));
-
+	fmt::print("{}\n",A);
 	return 0;
 }

@@ -288,7 +288,7 @@ struct fmt::formatter<quantt::quantity<Groups...>>
 	constexpr auto parse(format_parse_context& ctx)
 	{
 		auto it = ctx.begin(), end = ctx.end();
-		if (it != end and *it != '}')
+		if (it and it != end and *it != '}')
 			throw format_error("invalid format, no formatting option for quantt::quantity");
 		// if (*it != '}')
 		// {
@@ -311,7 +311,7 @@ struct fmt::formatter<quantt::quantity<Groups...>>
 		// 		}
 		// 	}
 		// }
-		if (*it != '}')
+		if (it and *it != '}')
 			throw format_error("invalid format,closing brace missing");
 
 		// Return an iterator past the end of the parsed range:
@@ -331,9 +331,9 @@ struct fmt::formatter<quantt::vquantity>
 	constexpr auto parse(format_parse_context& ctx)
 	{
 		auto it = ctx.begin(), end = ctx.end();
-		if (it != end and *it != '}')
+		if (it and it != end and *it != '}')
 			throw format_error("invalid format, no formatting option for quantt::quantity");
-		if (*it != '}')
+		if (it and *it != '}')
 			throw format_error("invalid format,closing brace missing");
 
 		// Return an iterator past the end of the parsed range:

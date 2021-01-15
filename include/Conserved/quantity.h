@@ -269,11 +269,12 @@ struct fmt::formatter<quantt::conserved::C<N>>
 	constexpr auto parse(format_parse_context& ctx)
 	{
 		auto it = ctx.begin(), end = ctx.end();
+		if(it){
 		if (it != end and *it != '}')
 			throw format_error("invalid format, no formatting option for quantt::quantity");
 		if (*it != '}')
 			throw format_error("invalid format,closing brace missing");
-
+}
 		// Return an iterator past the end of the parsed range:
 		return it;
 	}
@@ -291,11 +292,12 @@ struct fmt::formatter<quantt::conserved::Z>
 	constexpr auto parse(format_parse_context& ctx)
 	{
 		auto it = ctx.begin(), end = ctx.end();
+		if (it){
 		if (it != end and *it != '}')
-			throw format_error("invalid format, no formatting option for quantt::quantity");
+			throw format_error("invalid format, no formatting option for quantt::conserved::Z");
 		if (*it != '}')
 			throw format_error("invalid format,closing brace missing");
-
+}
 		// Return an iterator past the end of the parsed range:
 		return it;
 	}

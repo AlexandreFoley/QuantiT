@@ -32,7 +32,7 @@ struct fmt::formatter<torch::Tensor>
 	constexpr auto parse(format_parse_context& ctx)
 	{
 		auto it = ctx.begin(), end = ctx.end();
-		if (*it != '}')
+		if (it and *it != '}')
 		{
 			++it;
 			auto first_pos = it;
@@ -53,7 +53,7 @@ struct fmt::formatter<torch::Tensor>
 				}
 			}
 		}
-		if (*it != '}')
+		if (it and *it != '}')
 			throw format_error("invalid format,closing brace missing");
 
 		// Return an iterator past the end of the parsed range:

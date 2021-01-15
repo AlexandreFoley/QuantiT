@@ -42,13 +42,13 @@ qtt_TEST_CASE("Heisenberg")
 	// qtt_REQUIRE(J.isIntegral(false) );
 	auto Heis = details::Heisenberg_impl(torch::tensor(J),3);
 	qtt_CHECK(Heis[0].sizes().size() == 4);
-	auto size_left_edge = std::vector{1l,2l,5l,2l};
+	auto size_left_edge = std::vector<int64_t>{1l,2l,5l,2l};
 	qtt_CHECK(Heis[0].sizes().vec() == size_left_edge);
 	qtt_CHECK(Heis[1].sizes().size() == 4);
-	auto size_middle = std::vector{5l,2l,5l,2l};
+	auto size_middle = std::vector<int64_t>{5l,2l,5l,2l};
 	qtt_CHECK(Heis[1].sizes().vec() == size_middle);
 	qtt_CHECK(Heis[2].sizes().size() == 4);
-	auto size_right_edge = std::vector{5l,2l,1l,2l}; 
+	auto size_right_edge = std::vector<int64_t>{5l,2l,1l,2l}; 
 	qtt_CHECK(Heis[2].sizes().vec() == size_right_edge);
 
 	qtt_REQUIRE(!Heis[0].is_floating_point());

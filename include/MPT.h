@@ -473,8 +473,8 @@ qtt_TEST_CASE("MPS basic manipulation")
 		qtt_REQUIRE(A.size() == 2);
 		qtt_REQUIRE(A.capacity() >= 2);
 		qtt_CHECK(A.orthogonality_center == 0);
-		auto size_0 = std::vector{1L, 4L, 3L};
-		auto size_1 = std::vector{3L, 4L, 1L};
+		auto size_0 = std::vector<int64_t>{1, 4, 3};
+		auto size_1 = std::vector<int64_t>{3, 4, 1};
 		qtt_CHECK(A[0].sizes() == size_0);
 		qtt_CHECK(A[1].sizes() == size_1);
 		// size_0 = A[0].sizes().vec(); //copy the current size of A[0];
@@ -519,8 +519,8 @@ qtt_TEST_CASE("MPO basic manipulation")
 		qtt_REQUIRE(A.size() == 2);
 		qtt_REQUIRE(A.capacity() >= 2);
 
-		auto size_0 = std::vector{1L, 4L, 3L, 4L};
-		auto size_1 = std::vector{3L, 4L, 1L, 4L};
+		auto size_0 = std::vector{1LL, 4LL, 3LL, 4LL};
+		auto size_1 = std::vector{3LL, 4LL, 1LL, 4LL};
 		qtt_CHECK(A[0].sizes() == size_0);
 		qtt_CHECK(A[1].sizes() == size_1);
 		size_0 = A[0].sizes().vec(); // copy the current size of A[0];

@@ -92,12 +92,11 @@ qtt_TEST_CASE("Linear Algebra for Tensor network")
 {
 	torch::set_default_dtype(torch::scalarTypeToTypeMeta(torch::kFloat64)); //otherwise the type promotion always goes to floats when promoting a tensor
 	auto split = 2;
-	auto tensor_shape = {10L,3L,10L,3L};
-	auto matrix_shape = {30L,30L};
-	auto u_shape = {10L,3L,30L};
+	auto tensor_shape = {10LL,3LL,10LL,3LL};
+	auto matrix_shape = {30LL,30LL};
+	auto u_shape = {10LL,3LL,30LL};
 	auto A = torch::rand(tensor_shape);
 	auto ra = A.reshape(matrix_shape);
-
 	auto [u_o,d_o,v_o] = ra.svd();
 	auto [u,d,v] = svd(A,2);
 
