@@ -65,23 +65,23 @@ class flat_map
 		friend const_iterator;
 
 	  public:
-		explicit iterator(const typename content_t::iterator &in) : it(in) {}
-		iterator() : it() {}
-		iterator(const iterator &in) : it(in.it) {}
-		iterator &operator+=(std::ptrdiff_t in)
+		explicit constexpr iterator(const typename content_t::iterator &in) : it(in) {}
+		constexpr iterator() : it() {}
+		constexpr iterator(const iterator &in) : it(in.it) {}
+		constexpr iterator &operator+=(std::ptrdiff_t in)
 		{
 			it += in;
 			return *this;
 		}
-		difference_type operator-(iterator in) { return it - in.it; }
-		value_type *base() { return it.base(); }
+		// constexpr difference_type operator-(iterator in) { return it - in.it; }
+		constexpr value_type *base() { return it.base(); }
 		// reference operator*() const {return *it;}
 		// bool operator==( const iterator& in) {return it == in.it;}
 
 	  private:
 		friend boost::stl_interfaces::access;
-		constexpr pointer &base_reference() noexcept { return it.base(); }
-		constexpr pointer base_reference() const noexcept { return it.base(); }
+		constexpr it_type &base_reference() noexcept { return it; }
+		constexpr it_type base_reference() const noexcept { return it; }
 	}; // require random access.
 	class const_iterator
 	    : public boost::stl_interfaces::iterator_interface<const_iterator, const_iterator_tag, const value_type,
@@ -92,24 +92,24 @@ class flat_map
 		typename content_t::const_iterator it;
 
 	  public:
-		explicit const_iterator(const typename content_t::iterator &in) : it(in) {}
-		explicit const_iterator(const typename content_t::const_iterator &in) : it(in) {}
-		const_iterator() : it() {}
-		const_iterator(const iterator &in) : it(in.it) {}
-		const_iterator(const const_iterator &in) : it(in.it) {}
-		const_iterator &operator+=(std::ptrdiff_t in)
+		explicit constexpr const_iterator(const typename content_t::iterator &in) : it(in) {}
+		explicit constexpr const_iterator(const typename content_t::const_iterator &in) : it(in) {}
+		constexpr const_iterator() : it() {}
+		constexpr const_iterator(const iterator &in) : it(in.it) {}
+		constexpr const_iterator(const const_iterator &in) : it(in.it) {}
+		constexpr const_iterator &operator+=(std::ptrdiff_t in)
 		{
 			it += in;
 			return *this;
 		}
-		difference_type operator-(const_iterator in) { return it - in.it; }
-		const value_type *base() { return it.base(); }
+		// constexpr difference_type operator-(const_iterator in) { return it - in.it; }
+		constexpr const value_type *base() { return it.base(); }
 		// const_reference operator*() const {return *it;}
 		// bool operator==( const const_iterator& in) {return it == in.it;}
 	  private:
 		friend boost::stl_interfaces::access;
-		constexpr const_pointer &base_reference() noexcept { return it.base(); }
-		constexpr const_pointer base_reference() const noexcept { return it.base(); }
+		constexpr it_type &base_reference() noexcept { return it; }
+		constexpr it_type base_reference() const noexcept { return it; }
 	}; // require random access.
 	using reverse_iterator = std::reverse_iterator<iterator>;
 	using const_reverse_iterator = std::reverse_iterator<const_iterator>;
@@ -270,11 +270,11 @@ class flat_map
 		}
 		return std::make_pair(it, success);
 	}
-	template <class P, class = std::enable_if_t<std::is_constructible_v<value_type, P &&>>>
-	std::pair<iterator, bool> insert(P &&value)
+	template <class... P, class = std::enable_if_t<std::is_constructible_v<value_type, P&&...>>>
+	std::pair<iterator, bool> insert(P&&... value)
 	{
-		static_assert(std::is_constructible_v<value_type, P &&>, "Don't try to bypass the enable if");
-		return insert(value_type(value));
+		static_assert(std::is_constructible_v<value_type, P &&...>, "Don't try to bypass the enable if");
+		return insert(value_type(std::forward<P>(value)...));
 	}
 	iterator insert(const_iterator hint, const value_type &value)
 	{
@@ -300,11 +300,11 @@ class flat_map
 		}
 		return it;
 	}
-	template <class P, class = std::enable_if_t<std::is_constructible_v<value_type, P &&>>>
-	iterator insert(const_iterator hint, P &&value)
+	template <class... P, class = std::enable_if_t<std::is_constructible_v<value_type, P&&...>>>
+	iterator insert(const_iterator hint, P&& ... value)
 	{
-		static_assert(std::is_constructible_v<value_type, P &&>, "Don't try to bypass the enable if");
-		return insert(hint, value_type(std::forward<P>(value)));
+		static_assert(std::is_constructible_v<value_type, P&&...>, "Don't try to bypass the enable if");
+		return insert(hint, value_type(std::forward<P>(value)...));
 	}
 	template <class InputIt>
 	void insert(InputIt first, InputIt last)

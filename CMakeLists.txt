@@ -16,7 +16,7 @@ else()
     MESSAGE("System installed Torch found: ${Torch_DIR}")
 endif()
 find_package(Torch REQUIRED)
-find_package(fmt 6 REQUIRED)
+find_package(fmt 7 REQUIRED)
 
 link_libraries( ${TORCH_LIBRARIES} fmt::fmt-header-only)
 

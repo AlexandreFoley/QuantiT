@@ -31,9 +31,15 @@
 
 \tableofcontents
 \chapter*{Goals}
+The goal of this library is library is to provide a framework to facilitate the implementation of tensor network methods for quantum mechanics, using Torch tensors as backend.
+Without optimization for conserved quantities and symmetries, this is demonstrably an easy and effiecient procedure.
+Implementing conservation law at the level of tensor is tricky business.
+
+\chapter{Practicalities: project structure}
 
 \chapter{Tensor Networks, in general}
-
+Tensor network method need only a few operation to be workable: tensor contraction, tensor reshape, dimension permute, eigenvalue decomposion (EVD) and a singular value decomposion (SVD).
+Other decompostion can be useful and are sometime optimal, but SVD can be used almost universally instead. For exemple rank revealing QR and rank rank revealing LQ decompision can be used instead of SVD
 \section{torch::Tensor for Tensor Network}
 
 
@@ -41,5 +47,4 @@
 \section{Abelian vs non-Abelian}
 \section{Design of the conserved quantities}
 \subsection{Design outline for non-Abelian symmetries}
-\chapter{Practicalities: project structure}
 \end{document}

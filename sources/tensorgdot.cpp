@@ -162,7 +162,7 @@ torch::Tensor& tensorgdot_(torch::Tensor& output, const torch::Tensor& input1, c
 	// auto [p1, p2, rsizes, size1, csize, size2] = compute_shape(output, t1, t2, input1, input2, dims1, dims2);
 	std::vector<int64_t> rsizes(t1.dim() + t2.dim() - 2 * dims);
 	auto rit = rsizes.begin();
-	auto prod = [&rit](auto& a, auto& b) {
+	auto prod = [&rit](auto&& a, auto&& b) {
 		*(rit++) = b; //assign b then increment iterator, this construct the output section size vector.
 		return a * b;
 	};

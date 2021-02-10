@@ -31,7 +31,7 @@ if(Doxygen_FOUND)
 
     find_package(Sphinx)
 
-    execute_process(COMMAND python3 -c "import breathe" RESULT_VARIABLE breathe_RETURN OUTPUT_VARIABLE OUTPUT_QUIET ERROR_QUIET)
+    execute_process(COMMAND python3 -c "import breathe" RESULT_VARIABLE breathe_RETURN OUTPUT_QUIET ERROR_QUIET)
     execute_process(COMMAND python3 -c "import sphinx_rtd_theme" RESULT_VARIABLE sphinx_rtd_theme_RETURN OUTPUT_QUIET ERROR_QUIET)
     if(Sphinx_FOUND AND breathe_RETURN EQUAL 0 AND sphinx_rtd_theme_RETURN EQUAL 0) #Damn cmake is shit.
         set(SPHINX_SOURCE ${CMAKE_CURRENT_SOURCE_DIR})

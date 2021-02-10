@@ -54,9 +54,8 @@ struct const_cgroup_iterator
 	const virt_ptr_aritmetic *ar;
 	friend boost::stl_interfaces::access;
 
-	const vquantity *&base_reference() noexcept { return it; }
-	const vquantity *base_reference() const noexcept { return it; }
-
+	// const vquantity *&base_reference() noexcept { return it; }
+	// const vquantity *base_reference() const noexcept { return it; }
   public:
 	constexpr const_cgroup_iterator() : it(nullptr), ar(nullptr) {}
 	constexpr const_cgroup_iterator(const vquantity *_it, const virt_ptr_aritmetic *_ar) : it(_it), ar(_ar) {}
@@ -81,8 +80,8 @@ struct cgroup_iterator
 	const virt_ptr_aritmetic *ar;
 	friend boost::stl_interfaces::access;
 
-	vquantity *&base_reference() noexcept { return it; }
-	vquantity *base_reference() const noexcept { return it; }
+	// vquantity *&base_reference() noexcept { return it; }
+	// vquantity *base_reference() const noexcept { return it; }
 
   public:
 	constexpr cgroup_iterator() : it(nullptr), ar(nullptr) {}

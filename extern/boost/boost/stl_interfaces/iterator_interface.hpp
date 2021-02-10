@@ -729,9 +729,9 @@ namespace boost { namespace stl_interfaces { BOOST_STL_INTERFACES_NAMESPACE_V2 {
         requires requires { derived() += -n; } {
           return derived() += -n;
         }
-      friend constexpr auto operator-(D lhs, D rhs)
-        requires requires { access::base(lhs) - access::base(rhs); } {
-          return access::base(lhs) - access::base(rhs);
+      constexpr auto operator-( D rhs)
+        requires requires { access::base(this->derived()) - access::base(rhs); } {
+          return access::base(this->derived()) - access::base(rhs);
         }
       friend constexpr auto operator-(D it, difference_type n)
         requires requires { it += -n; } {
