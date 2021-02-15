@@ -38,7 +38,7 @@ namespace quantt
 		constexpr static double def_cutoff = 1e-6;
 		constexpr static double def_conv_crit = 1e-5;
 		constexpr static size_t def_max_bond = std::numeric_limits<size_t>::max(); // a rather large number.
-		constexpr static size_t def_min_bond = 4;								   //I have found that dmrg behave better if we prevent bond dimension from going to low.
+		constexpr static size_t def_min_bond = 4;								   //I have found that dmrg behave better if we prevent bond dimension from going too low.
 		constexpr static size_t def_max_it = 1000;
 		constexpr static bool def_pytorch_gradient = false;
 

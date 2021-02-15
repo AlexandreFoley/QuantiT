@@ -129,5 +129,14 @@ Eigen values is unavaible at the time of writing this.
 
 The current status of Complex number support is tracked in \href{https://github.com/pytorch/pytorch/issues/33152}{issue 33152}
 
+\section{Other Machine learning and Tensor related libraries}
+
+\href{http://tvm.apache.org/}{TVM} is a project of the apache foundation, it is an optimizer for machine learning models and work against pyTorch, amongst others.
+It might be able to extract some more performance out of a pytorch built tensor network.
+
+\href{https://github.com/xtensor-stack/xtensor}{Xtensor} is a tensor library for C++ inspired by numpy. It has additionnal extension for simd vectorization, linear algebra and serialization, as well as python,julia and R facing frontends.
+
+\href{https://halide-lang.org/}{Halide} is a domain specific language built within C++ to decouple optimization from the actual computation performed on tensors. It has an extension to facilitate writing kernels for pytorch.
+
 \end{document}
 

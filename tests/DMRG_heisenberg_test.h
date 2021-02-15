@@ -121,6 +121,48 @@ qtt_TEST_CASE("solving the heisenberg model")
 	{
 		Heisen_afm_test(100);
 	}
+	qtt_SUBCASE("ITensors julia comparison")
+	{	
+		auto init_num_threads = torch::get_num_threads();
+		torch::set_num_threads(1);
+		constexpr size_t size = 100;
+		auto hamil = quantt::Heisenberg(torch::tensor(J), size);
+		dmrg_log_sweeptime logger;
+		quantt::MPS state(size);
+		int p = 0;
+		for (auto& site:state)
+		{//antiferromagnetic slatter determinant.
+			using namespace torch::indexing;
+			site = torch::rand({8,2,8});
+			site.index_put_({0,p,0},1);
+			p = -p+1;
+			site.index_put_({0,p,0},0);
+		}
+		{
+			using namespace torch::indexing;
+			state[0] = state[0].index({Slice(0, 1), Ellipsis});
+			state[size - 1] = state[size - 1].index({Ellipsis, Slice(0, 1)});
+		}
+		quantt::dmrg_options options;
+		options.convergence_criterion = 0;
+		options.maximum_iterations=50;
+		options.maximum_bond=10;
+		options.cutoff=1e-11;
+		auto E00 = quantt::dmrg(hamil, state, options);
+		options.maximum_iterations=20;
+		options.maximum_bond=130;
+		options.cutoff=1e-11;
+		auto start = std::chrono::steady_clock::now();
+		auto E0 = quantt::dmrg(hamil, state, options,logger);
+		auto end = std::chrono::steady_clock::now();
+		std::chrono::duration<double> elapsed_seconds = end - start;
+		std::string print_string = "julia Itensor comparison: {} sites AFM heisenberg Energy per sites {:.15}. obtained in {} seconds\n";
+		fmt::print(print_string, size, E0.to<double>() / size, elapsed_seconds.count());
+		fmt::print("Obtained in {} iterations. Bond dimension at middle of MPS: {}.\n",logger.it_num,logger.middle_bond_dim);
+		fmt::print("time in seconds for each sweeps: {}\n",logger.time_list);
+		fmt::print("bond dimension after each sweeps: {}\n",logger.bond_list);
+		torch::set_num_threads(init_num_threads);
+	}
 	qtt_SUBCASE("DMRjulia comparison")
 	{	
 		auto init_num_threads = torch::get_num_threads();
