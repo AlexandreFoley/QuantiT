@@ -50,6 +50,17 @@ int main()
 
 	fmt::print("{}\n",Y);
 	fmt::print("{}\n",Y.index({0,1}));
-	
+
+	auto C = torch::zeros({2,2});
+	C.index_put_({0,1},1);
+	C.index_put_({1,0},2);
+	C.index_put_({1,1},3);
+
+	fmt::print("{}\n",C);
+
+	auto D = C.reshape({4});
+
+	fmt::print("{}\n",D);
+
 	return 0;
 }

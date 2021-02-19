@@ -55,6 +55,8 @@ private:
 public:
 	constexpr static bool is_Abelian = true; //Make sure that your group is actually Abelian. I can't think of a way to check this property in finite time using the compiler.
 
+	//TODO: add a constructor that accept and treats signed integers. currently, negative number are accepted and won't map to inv(abs(i)) like we would expect based on Z's behavior.
+	//Note: simply using signed integer is not really an option: we would have a degenerate reprentation: -n == N-n. This would complicate comparison.
 	constexpr C(uint16_t _val) // constexpr value contructor, necessary for one of the checks for any_quantity
 	    noexcept : val(_val)
 	{

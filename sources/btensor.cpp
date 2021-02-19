@@ -597,8 +597,8 @@ btensor btensor::tensordot(const btensor &other, torch::IntArrayRef dim_self, to
 	}(); // a lambda that capture everything that we call immediatly. leave us with a somewhat clean namespace in the
 	     // scope.
 
-	fmt::print("out_btens section sizes {}\n", out_btens.sections_sizes);
-	fmt::print("input section sizes {}\n", other.sections_sizes);
+	// fmt::print("out_btens section sizes {}\n", out_btens.sections_sizes);
+	// fmt::print("input section sizes {}\n", other.sections_sizes);
 
 	auto next_index = [dim_l](const auto &iterator) {
 		auto next = std::get<0>(*iterator);
@@ -720,12 +720,12 @@ template struct Rob<weakcount_theft, &c10::intrusive_ptr_target::weakcount_>;
 } // namespace Evil
 /**
  * @brief Get the reference count of the tensor
- * 
+ *
  * There are some (very few) optimisation that require knowledge of the reference count to apply correctly.
- * This function expose the value of this variable. Reading this variable is an atomic load, do not poll this function uselessly.
- * if you need it multiple times, store the value locally.
- * 
- * @param tens 
+ * This function expose the value of this variable. Reading this variable is an atomic load, do not poll this function
+ * uselessly. if you need it multiple times, store the value locally.
+ *
+ * @param tens
  * @return size_t number of reference to this tensor.
  */
 size_t get_refcount(const torch::Tensor &tens)
@@ -741,19 +741,19 @@ size_t get_refcount(const torch::Tensor &tens)
 }
 /**
  * @brief Get the weak reference count of the tensor.
- * 
+ *
  * There are some (very few) optimisation that require knowledge of the reference count to apply correctly.
- * This function expose the value of this variable. Reading this variable is an atomic load, do not poll this function uselessly.
- * if you need it multiple times, store the value locally.
- * 
- * @param tens 
+ * This function expose the value of this variable. Reading this variable is an atomic load, do not poll this function
+ * uselessly. if you need it multiple times, store the value locally.
+ *
+ * @param tens
  * @return size_t  number of weak reference.
  */
 size_t get_weakcount(const torch::Tensor &tens)
 {
 	using namespace Evil;
 	auto refcounted_ptr_1 = tens.unsafeGetTensorImpl();
-	auto refcount_1 = ((*refcounted_ptr_1).*get(weakcount_theft())).load();//this is an atomic load.
+	auto refcount_1 = ((*refcounted_ptr_1).*get(weakcount_theft())).load(); // this is an atomic load.
 	// auto weakcount_1 = ((*refcounted_ptr_1).*get(weakcount_theft())).load();
 	// auto refcounted_ptr_2 = tens.unsafeGetTensorImpl();
 	// auto weakcount_2 = ((*refcounted_ptr_2).*get(weakcount_theft())).load();
@@ -896,44 +896,167 @@ T reshape_block_prop(torch::IntArrayRef index_groups, const T &block_values, con
 			{
 				(*out_it) *= block_values[addresses[i] + j[i]];
 			}
-			increment(j, size_j, rank)++ out_it;
+			increment(j, size_j, rank);
+			++out_it;
 		} while (any_truth(j));
-	});
+	}
 
 	return out;
 }
+/**
+ * @brief
+ * Note: this whole buisiness of computing the new block index could be avoided if we used the vectorized index always
+ * for ordering. Drawback: permute then becomes much harder.
+ * @param index_groups
+ * @param block_index
+ * @param out_rank
+ * @param in_sections_by_dim
+ * @return btensor::index_list
+ */
 btensor::index_list reshape_block_index(torch::IntArrayRef index_groups, const btensor::index_list &block_index,
-                                        size_t out_rank, const btensor::index_list& in_sections_by_dim)
+                                        size_t out_rank, const btensor::index_list &in_sections_by_dim)
 {
 
-	btensor::index_list out(out_rank);// would be much simpler if i could zip shifts and block_index.
-	std::transform(index_groups.rbegin()-1, index_groups.rend() , index_groups.rbegin(), out.rbegin(),
+	btensor::index_list out(out_rank); // would be much simpler if i could zip shifts and block_index.
+	std::transform(index_groups.rbegin() + 1, index_groups.rend(), index_groups.rbegin(), out.rbegin(),
 	               [&](auto &&a, auto &&b) {
-					int64_t out = 0;
-					int64_t S = 1;
-					auto index_start = block_index.begin()+a;
-					auto index_finish = block_index.begin()+b;
-					auto dim_start = in_sections_by_dim.begin()+a;
-					auto dim_end = in_sections_by_dim.begin()+b;
-					while(index_start != index_finish)
-					{
-						--index_finish;
-						--dim_end;
-						out += S * (*index_finish);
-						S *= *dim_end;
-					}
-					return out;
+		               int64_t out = 0;
+		               int64_t S = 1;
+		               auto index_start = block_index.begin() + a;
+		               auto index_finish = block_index.begin() + b;
+		               auto dim_start = in_sections_by_dim.begin() + a;
+		               auto dim_end = in_sections_by_dim.begin() + b;
+		               while (index_start != index_finish)
+		               {
+			               --index_finish;
+			               --dim_end;
+			               out += S * (*index_finish);
+			               S *= *dim_end;
+		               }
+		               return out;
 	               });
 	return out;
 }
-btensor::index_list new_block_shape(torch::IntArrayRef index_groups, btensor::const_block_size_view block_sizes,size_t rank)
+btensor::index_list new_block_shape(torch::IntArrayRef index_groups, btensor::const_block_size_view block_sizes,
+                                    size_t rank)
 {
-	btensor::index_list out(rank);
-	std::transform(index_groups.begin(), index_groups.end() - 1, index_groups.begin() + 1, out.begin(),
-	               [&block_sizes](auto &&a, auto &&b) {
-		               return std::reduce(block_sizes.begin() + a, block_sizes.begin() + b, 1,
-		                                  std::multiplies());
-	               });
+	btensor::index_list out(rank, 1);
+	auto old_rank = index_groups.back();
+	auto size_it = block_sizes.begin();
+	auto out_it = out.begin();
+	auto index_it = index_groups.begin() + 1;
+	for (auto i = index_groups.front(); i < old_rank; ++i)
+	{
+		if (i >= (*index_it))
+		{
+			++out_it;
+			++index_it;
+		}
+		*out_it *= *size_it;
+		++size_it;
+	}
+	// implementation if i updgrade the block_size_view to random access.
+	// std::transform(index_groups.begin(), index_groups.end() - 1, index_groups.begin() + 1, out.begin(),
+	//                [&block_sizes](auto &&a, auto &&b) {
+	// 	               return std::reduce(block_sizes.begin() + a, block_sizes.begin() + b, 1, std::multiplies());
+	//                });
+	return out;
+}
+/**
+ * @brief compute the new block index of a block
+ * Note: this whole buisiness of computing the new block index could be avoided if we used the vectorized index always
+ * for ordering. Drawback: permute then becomes much harder. consequence: functions that access a block would first
+ * compute the vectorized index. time cost perhaps O(rank), we have to factor in the cost of the search with the
+ * index_list instead of a single integer to be sure... The performance consideration are likely to be irrelevent.
+ * @param in_block_index old block index
+ * @param out_rank output rank (lenght of out_block_index)
+ * @param out_sections_by_dim number of section along each dimension of the output
+ * @param in_rank current rank
+ * @param sections_by_dim current number of section along each dimension
+ * @return btensor::index_list out_block_index
+ */
+btensor::index_list reshape_block_index(btensor::index_list in_block_index, size_t out_rank,
+                                        btensor::index_list out_sections_by_dim, btensor::index_list sections_by_dim)
+{
+	// i can't think of a more clever algorithm than this right now.
+	auto flatten = [](auto &&index, auto &&sizes) {
+		size_t out = 0;
+		size_t s = 1;
+		auto size_it = sizes.begin();
+		auto index_it = index.begin();
+		while (index_it != index.end())
+		{
+			out += s * (*index_it);
+			s *= *size_it;
+			++size_it;
+			++index_it;
+		}
+		return out;
+	};
+	auto unflatten = [out_rank](size_t flat, auto &&sizes) {
+		auto out = btensor::index_list(out_rank);
+		auto out_it = out.begin();
+		auto size_it = sizes.begin();
+		while (out_it != out.end())
+		{
+			*out_it = flat % (*size_it);
+			flat /= *size_it;
+			++out_it;
+			++size_it;
+		}
+		return out;
+	};
+	size_t flat_index = flatten(in_block_index, sections_by_dim);
+	return unflatten(flat_index, out_sections_by_dim);
+}
+bool check_compatible_sections_by_dim(const btensor::index_list &lhs_sections_by_dim,
+                                      const btensor::index_list &rhs_sections_by_dim)
+{
+	auto lhs = std::reduce(lhs_sections_by_dim.begin(), lhs_sections_by_dim.end(), 1, std::multiplies());
+	auto rhs = std::reduce(rhs_sections_by_dim.begin(), rhs_sections_by_dim.end(), 1, std::multiplies());
+	return lhs == rhs;
+}
+// each of those possible block have the same associated flux. (product of all the conserved quantity associated
+// with the block)
+bool check_compatible_c_vals(const btensor &lhs, const btensor &rhs)
+{
+	bool out = true;
+	auto lhs_index = btensor::index_list(lhs.dim(), 0);
+	auto rhs_index = btensor::index_list(rhs.dim(), 0);
+	auto increment = [](btensor::index_list &index, torch::IntArrayRef max_index, size_t rank) {
+		increment_index_right(index, max_index, rank);
+	};
+	do
+	{
+		auto lhs_c_vals = lhs.block_quantities(lhs_index);
+		auto rhs_c_vals = lhs.block_quantities(rhs_index);
+		auto lhs_f = std::accumulate(++lhs_c_vals.begin(),lhs_c_vals.end(),*lhs_c_vals.begin(),std::multiplies());
+		auto rhs_f = std::accumulate(++rhs_c_vals.begin(),rhs_c_vals.end(),*rhs_c_vals.begin(),std::multiplies());
+		out &= lhs_f == rhs_f;
+		increment(lhs_index, lhs.section_numbers(), lhs.dim());
+		increment(rhs_index, rhs.section_numbers(), rhs.dim());
+	} while (any_truth(lhs_index) and out);
+	return out;
+}
+// each of the possible block have the same total number of elements.
+bool check_compatible_block_size(const btensor &lhs, const btensor &rhs) 
+{
+	bool out = true;
+	auto lhs_index = btensor::index_list(lhs.dim(), 0);
+	auto rhs_index = btensor::index_list(rhs.dim(), 0);
+	auto increment = [](btensor::index_list &index, torch::IntArrayRef max_index, size_t rank) {
+		increment_index_right(index, max_index, rank);
+	};
+	do
+	{
+		auto lhs_vals = lhs.block_sizes(lhs_index);
+		auto rhs_vals = lhs.block_sizes(rhs_index);
+		auto lhs_f = std::accumulate(++lhs_vals.begin(),lhs_vals.end(),*lhs_vals.begin(),std::multiplies());
+		auto rhs_f = std::accumulate(++rhs_vals.begin(),rhs_vals.end(),*rhs_vals.begin(),std::multiplies());
+		out &= lhs_f == rhs_f;
+		increment(lhs_index, lhs.section_numbers(), lhs.dim());
+		increment(rhs_index, rhs.section_numbers(), rhs.dim());
+	} while (any_truth(lhs_index) and out);
 	return out;
 }
 } // namespace reshape_helpers
@@ -943,7 +1066,7 @@ btensor btensor::reshape(torch::IntArrayRef index_groups) const
 	size_t out_rank = index_groups.size() + 1;
 	// make the information about the grouping explicit. The begining of the first group and the end of the last is not
 	// explicitly present in the input supplied (it's always 0 and the rank respectivily)
-	std::vector<int64_t> m_index_group(out_rank + 2);
+	std::vector<int64_t> m_index_group(out_rank + 1);
 	m_index_group[0] = 0;
 	m_index_group.back() = rank;
 	std::copy(index_groups.begin(), index_groups.end(), m_index_group.begin() + 1);
@@ -965,14 +1088,52 @@ btensor btensor::reshape(torch::IntArrayRef index_groups) const
 	auto block_it = blocks.begin();
 	while (out_block_it != out_blocks.end())
 	{
-		auto new_block_index = reshape_block_index(m_index_group, std::get<0>(*block_it));
-		auto reshaped_block =
-		    std::get<1>(*block_it).reshape(new_block_shape(m_index_group, block_sizes(std::get<0>(*block_it))));
+		auto new_block_index = reshape_block_index(m_index_group, std::get<0>(*block_it), out_rank, sections_by_dim);
+		auto reshaped_block = std::get<1>(*block_it).reshape(
+		    new_block_shape(m_index_group, block_sizes(std::get<0>(*block_it)), out_rank));
 		*out_block_it = std::make_pair(std::move(new_block_index), std::move(reshaped_block));
 		++out_block_it;
 		++block_it;
 	}
-	return btensor(rank, blocks, out_sections_by_dim, out_sections_sizes, out_c_vals, selection_rule.value);
+	return btensor(out_rank, out_blocks, out_sections_by_dim, out_sections_sizes, out_c_vals, selection_rule.value);
+}
+
+btensor btensor::reshape(const btensor &other) const
+{
+	using namespace reshape_helpers;
+	// Check compatibility
+	// total possible number of block must be the same. (product of the number of section along each dimension)
+	if (not check_compatible_sections_by_dim(other.sections_by_dim, sections_by_dim))
+		throw std::invalid_argument(
+		    fmt::format("incompatible sections layouts {} and {}", sections_by_dim, other.sections_by_dim));
+	// each of those possible block have the same associated flux. (product of all the conserved quantity associated
+	// with the block)
+	if (not check_compatible_c_vals(*this, other))
+		throw std::invalid_argument(
+		    "incompatible conserved quantities"); // hard to offer a more detailed human readable diagnostic, without
+		                                          // having the throw in the test loop.
+	// each of the possible block have the same total number of elements.
+	if (not check_compatible_block_size(*this, other))
+		throw std::invalid_argument("incompatible block dimensions"); // idem to c_vals
+	// ok
+
+	std::vector<std::pair<btensor::index_list, torch::Tensor>> out_blocks(blocks.size());
+	auto out_block_it = out_blocks.begin();
+	auto block_it = blocks.begin();
+	while (out_block_it != out_blocks.end())
+	{
+		auto new_block_index =
+		    reshape_block_index(std::get<0>(*block_it), other.rank, other.sections_by_dim, sections_by_dim);
+		auto new_shape_view = other.block_sizes(new_block_index);
+		std::vector<int64_t> new_shape(new_shape_view.begin(), new_shape_view.end());
+		auto reshaped_block = std::get<1>(*block_it).reshape(new_shape);
+		*out_block_it = std::make_pair(std::move(new_block_index), std::move(reshaped_block));
+		++out_block_it;
+		++block_it;
+	}
+
+	return btensor(other.rank, out_blocks, other.sections_by_dim, other.sections_sizes, other.c_vals,
+	               selection_rule.value);
 }
 
 // btensor btensor::sub(const btensor &other, Scalar alpha) const

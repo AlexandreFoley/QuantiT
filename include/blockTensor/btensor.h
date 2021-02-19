@@ -87,7 +87,7 @@ class btensor
 	 * @param dir_block_size_cqtt a nested list of pair of section size and conserved quantities. The number of element
 	 * in the first is level is the rank of the tensor. The number of elements in the second level is the number of
 	 * section for that dimension of the tensor
-	 * @param selection_rule
+	 * @param selection_rule determine which blocks are allowed to be non-zero.
 	 */
 	btensor(init_list_t dir_block_size_cqtt, any_quantity_cref selection_rule);
 	btensor(init_list_t dir_block_size_cqtt, any_quantity_cref selection_rule, size_t num_blocks);
@@ -110,7 +110,7 @@ class btensor
 		swap(other);
 		return *this;
 	}
-	btensor() = default;
+	explicit btensor() = default;
 	/**
 	 * @brief Construct a new btensor object. construct from raw structure elements. Avoid using this constructor if you
 	 * can.
@@ -176,6 +176,7 @@ class btensor
 	const_block_size_view block_sizes(index_list block_index) const;
 	size_t dim() const { return rank; }
 	size_t section_number(size_t dim) const { return sections_by_dim[dim]; }
+	const auto & section_numbers() const { return sections_by_dim; }
 	// block_qtt_view block_quantities(index_list block_index);
 
 	// iterator
@@ -236,26 +237,38 @@ class btensor
 	btensor &permute_(torch::IntArrayRef);
 	/**
 	 * @brief Reshape the btensor into a btensor of a lower rank
-	 * 
-	 * This function is significantly different from torch's equivalent, both in the required input and the resulting tensor.
-	 * The reshaping is done once on the block structure and once on the block content. Consequently, the content is permuted relative to the same reshape done on a regular tensor.
-	 * 
+	 *
+	 * This function is significantly different from torch's equivalent, both in the required input and the resulting
+	 * tensor. The reshaping is done once on the block structure and once on the block content. Consequently, the
+	 * content is permuted relative to the same reshape done on a regular tensor.
+	 *
 	 * @param index_group each integer mark the first element of the next bundle of index to group
-	 * for exemple: [3,4,5] would group index 0,1,2 into a single new index, leave 3 and 4 as they are, and group 5..rank-1 together 
+	 * for exemple: [3,4,5] would group index 0,1,2 into a single new index, leave 3 and 4 as they are, and
+	 * group 5..rank-1 together
 	 * @return btensor reshaped tensor
 	 */
 	btensor reshape(torch::IntArrayRef index_group) const;
 	/**
 	 * @brief reshape the tensor into the shape of the supplied tensor.
-	 * 
+	 *
 	 * The supplied tensor must have conserved quantities compatible with this.
 	 * Therefore: - the conservation rules must match.
-	 *            - the conserved quantities of the blocks of this must factorize into the conserved quanity of the matching block of the arguement.
-	 * Can reshape into a tensor of greater rank.
+	 *            - the conserved quantities of the blocks of this must factorize into the conserved quanity of the
+	 * matching block of the arguement. Can reshape into a tensor of greater rank.
 	 * @param other Tensor with the target shape.
 	 * @return btensor Reshaped tensor
 	 */
-	btensor reshape(const btensor& other) const;
+	btensor reshape(const btensor &other) const;
+	/**
+	 * @brief reshape the btensor into a btensor of a lower rank
+	 *
+	 * redirect to reshape(torch::IntArrayRef), because GCC can't resolve the overload table in some cases without this
+	 * helper. clang and MSVC are fine without this.
+	 *
+	 * @param a list for reshape(torch::IntArrayRef)
+	 * @return btensor reshaped tensor
+	 */
+	btensor reshape(std::initializer_list<int64_t> a) { return reshape(torch::IntArrayRef(a)); }
 	btensor reshape_as(torch::IntArrayRef shape) const;
 	btensor transpose(int64_t dim0, int64_t dim1) const;
 	btensor transpose(torch::Dimname dim0, torch::Dimname dim1) const;
@@ -371,8 +384,8 @@ class btensor
 		for (auto &b : blocks)
 		{
 			new_blocks.insert(new_blocks.end(), std::get<0>(b),
-			                        std::invoke(std::forward<F>(f), std::get<1>(b), std::forward<Args>(args)...));
-			a(std::get<0>(*(new_blocks.end()-1)));
+			                  std::invoke(std::forward<F>(f), std::get<1>(b), std::forward<Args>(args)...));
+			a(std::get<0>(*(new_blocks.end() - 1)));
 		}
 		return new_blocks;
 	}
@@ -386,9 +399,9 @@ class btensor
 	 * @return block_list_t block_list containing the transformed tensors
 	 */
 	template <class F, class... Args>
-	block_list_t new_block_list_apply_to_all_blocks( F &&f, Args &&...args) const
+	block_list_t new_block_list_apply_to_all_blocks(F &&f, Args &&...args) const
 	{
-		return new_block_list_apply_to_all_blocks([](auto&){},std::forward<F>(f),std::forward<Args>(args)...);
+		return new_block_list_apply_to_all_blocks([](auto &) {}, std::forward<F>(f), std::forward<Args>(args)...);
 	}
 };
 
@@ -396,95 +409,6 @@ size_t get_refcount(const torch::Tensor &tens);
 
 inline void swap(btensor &a, btensor &b) { a.swap(b); }
 
-qtt_TEST_CASE("btensor")
-{
-	qtt_SUBCASE("contruction")
-	{
-		using cqt = conserved::C<5>;
-		using index = btensor::index_list;
-		any_quantity flux(cqt(0));
-
-		btensor A({{{2, cqt(0)}, {3, cqt(1)}}, {{2, cqt(0)}, {3, cqt(1).inverse()}}}, flux);
-		qtt_CHECK(A.end() - A.begin() == 0);
-		auto A00 = torch::rand({2, 2});
-		auto A11 = torch::rand({3, 3});
-		A.block({0, 0}) = A00;
-		A.block({1, 1}) = A11;
-		qtt_REQUIRE_NOTHROW(btensor::throw_bad_tensor(A));
-		qtt_CHECK(A.end() - A.begin() == 2);
-		qtt_CHECK_NOTHROW(A.block_at({0, 0}));
-		qtt_CHECK_THROWS_AS(A.block_at({1, 0}), std::out_of_range);  // there's no block here.
-		qtt_CHECK_THROWS_AS(A.block({1, 0}), std::invalid_argument); // and we can't create one.
-		qtt_CHECK(btensor::check_tensor(A) == "");
-		// fmt::print("{}", A);
-		qtt_SUBCASE("tensor contraction")
-		{
-			btensor B({{{3, cqt(4)}, {2, cqt(0)}}, {{2, cqt(0)}, {3, cqt(1)}}, {{1, cqt(1)}, {3, cqt(0)}}},
-			          any_quantity(cqt(1)));
-			auto B100 = torch::rand({2, 2, 1});
-			auto B010 = torch::rand({3, 3, 1});
-			auto B111 = torch::rand({2, 3, 3});
-			B.block({0, 1, 0}) = B010;
-			B.block({1, 1, 1}) = B111;
-			B.block({1, 0, 0}) = B100;
-			qtt_REQUIRE_NOTHROW(btensor::throw_bad_tensor(B));
-			btensor C;
-			auto C100 = torch::tensordot(A11, B010, {1}, {1});
-			auto C010 = torch::tensordot(A00, B100, {1}, {1});
-			auto C111 = torch::tensordot(A11, B111, {1}, {1});
-			qtt_CHECK_NOTHROW(C = A.tensordot(B, {1}, {1}));
-			qtt_REQUIRE_NOTHROW(C.block_at({0, 1, 0}));
-			qtt_REQUIRE_NOTHROW(C.block_at({1, 0, 0}));
-			qtt_REQUIRE_NOTHROW(C.block_at({1, 1, 1}));
-			qtt_CHECK(torch::allclose(C.block_at({0, 1, 0}), C010));
-			qtt_CHECK(torch::allclose(C.block_at({1, 0, 0}), C100));
-			qtt_CHECK(torch::allclose(C.block_at({1, 1, 1}), C111));
-		}
-		qtt_SUBCASE("addition")
-		{
-			btensor AA00({{{2, cqt(0)}, {3, cqt(1)}}, {{2, cqt(0)}, {3, cqt(1).inverse()}}}, flux);
-			btensor AA11({{{2, cqt(0)}, {3, cqt(1)}}, {{2, cqt(0)}, {3, cqt(1).inverse()}}}, flux);
-			AA00.block({0, 0}) = A00;
-			AA11.block({1, 1}) = A11;
-			AA00.add_(AA11);
-			auto B00 = 2 * A00;
-			auto B11 = 2 * A11;
-			auto AP00 = 3 * A00; // A post add_
-			auto AP11 = 3 * A11; // A post add_
-			auto C00 = 5 * A00;
-			auto C11 = 5 * A11;
-			auto B = A.add(A);
-			auto C = A.add(B);
-			C.add_(B);
-			qtt_CHECK(torch::allclose(A.block_at({0, 0}), A00));
-			qtt_CHECK(torch::allclose(A.block_at({1, 1}), A11)); // A unchanged
-			qtt_CHECK_THROWS(A.block_at({0, 1}));
-			qtt_CHECK_THROWS(A.block_at({1, 0}));
-			qtt_CHECK_THROWS(B.block_at({0, 1}));
-			qtt_CHECK_THROWS(B.block_at({1, 0}));
-			qtt_CHECK_THROWS(C.block_at({0, 1}));
-			qtt_CHECK_THROWS(C.block_at({1, 0}));
-			qtt_REQUIRE_NOTHROW(A.block_at({0, 0}));
-			qtt_REQUIRE_NOTHROW(A.block_at({1, 1}));
-			qtt_REQUIRE_NOTHROW(B.block_at({0, 0}));
-			qtt_REQUIRE_NOTHROW(B.block_at({1, 1}));
-			qtt_REQUIRE_NOTHROW(C.block_at({0, 0}));
-			qtt_REQUIRE_NOTHROW(C.block_at({1, 1}));
-			qtt_CHECK(torch::allclose(B.block_at({0, 0}), B00));
-			qtt_CHECK(torch::allclose(B.block_at({1, 1}), B11));
-			qtt_CHECK(torch::allclose(C.block_at({0, 0}), C00));
-			qtt_CHECK(torch::allclose(C.block_at({1, 1}), C11));
-			qtt_REQUIRE_NOTHROW(AA00.block_at({0, 0}));
-			qtt_CHECK_THROWS(AA00.block_at({1, 0}));
-			qtt_REQUIRE_NOTHROW(AA00.block_at({1, 1}));
-			qtt_CHECK_THROWS(AA00.block_at({0, 1}));
-			A.add_(std::move(B)); // this destroys B, so any state verification on it must be done.
-			qtt_CHECK(torch::allclose(A.block_at({0, 0}), AP00));
-			qtt_CHECK(torch::allclose(A.block_at({1, 1}), AP11));
-			qtt_CHECK(get_refcount(AA00.block_at({1, 1})) == 1);
-		}
-	}
-}
 template <class value_iterator>
 struct btensor::block_prop_iter
     : boost::stl_interfaces::iterator_interface<block_prop_iter<value_iterator>, std::bidirectional_iterator_tag,
@@ -605,6 +529,111 @@ struct btensor::const_block_prop_view : btensor::block_prop_view<const_iterator>
 	{
 	}
 };
+
+qtt_TEST_CASE("btensor")
+{
+	using cqt = conserved::C<5>; // don't put negative number in the constructor and expect sensible results.
+	using index = btensor::index_list;
+	any_quantity flux(cqt(0));
+
+	btensor A({{{2, cqt(0)}, {3, cqt(1)}}, {{2, cqt(0)}, {3, cqt(1).inverse()}}}, flux);
+	qtt_CHECK(A.end() - A.begin() == 0);
+	auto A00 = torch::rand({2, 2});
+	auto A11 = torch::rand({3, 3});
+	A.block({0, 0}) = A00;
+	A.block({1, 1}) = A11;
+	qtt_REQUIRE_NOTHROW(btensor::throw_bad_tensor(A));
+	qtt_CHECK(A.end() - A.begin() == 2);
+	qtt_CHECK_NOTHROW(A.block_at({0, 0}));
+	qtt_CHECK_THROWS_AS(A.block_at({1, 0}), std::out_of_range);  // there's no block here.
+	qtt_CHECK_THROWS_AS(A.block({1, 0}), std::invalid_argument); // and we can't create one.
+	qtt_CHECK(btensor::check_tensor(A) == "");
+	// fmt::print("{}", A);
+	qtt_SUBCASE("tensor contraction")
+	{
+		btensor B({{{3, cqt(4)}, {2, cqt(0)}}, {{2, cqt(0)}, {3, cqt(1)}}, {{1, cqt(1)}, {3, cqt(0)}}},
+		          any_quantity(cqt(1)));
+		auto B100 = torch::rand({2, 2, 1});
+		auto B010 = torch::rand({3, 3, 1});
+		auto B111 = torch::rand({2, 3, 3});
+		B.block({0, 1, 0}) = B010;
+		B.block({1, 1, 1}) = B111;
+		B.block({1, 0, 0}) = B100;
+		qtt_REQUIRE_NOTHROW(btensor::throw_bad_tensor(B));
+		btensor C;
+		auto C100 = torch::tensordot(A11, B010, {1}, {1});
+		auto C010 = torch::tensordot(A00, B100, {1}, {1});
+		auto C111 = torch::tensordot(A11, B111, {1}, {1});
+		qtt_CHECK_NOTHROW(C = A.tensordot(B, {1}, {1}));
+		qtt_REQUIRE_NOTHROW(C.block_at({0, 1, 0}));
+		qtt_REQUIRE_NOTHROW(C.block_at({1, 0, 0}));
+		qtt_REQUIRE_NOTHROW(C.block_at({1, 1, 1}));
+		qtt_CHECK(torch::allclose(C.block_at({0, 1, 0}), C010));
+		qtt_CHECK(torch::allclose(C.block_at({1, 0, 0}), C100));
+		qtt_CHECK(torch::allclose(C.block_at({1, 1, 1}), C111));
+	}
+	qtt_SUBCASE("addition")
+	{
+		btensor AA00({{{2, cqt(0)}, {3, cqt(1)}}, {{2, cqt(0)}, {3, cqt(1).inverse()}}}, flux);
+		btensor AA11({{{2, cqt(0)}, {3, cqt(1)}}, {{2, cqt(0)}, {3, cqt(1).inverse()}}}, flux);
+		AA00.block({0, 0}) = A00;
+		AA11.block({1, 1}) = A11;
+		AA00.add_(AA11);
+		auto B00 = 2 * A00;
+		auto B11 = 2 * A11;
+		auto AP00 = 3 * A00; // A post add_
+		auto AP11 = 3 * A11; // A post add_
+		auto C00 = 5 * A00;
+		auto C11 = 5 * A11;
+		auto B = A.add(A);
+		auto C = A.add(B);
+		C.add_(B);
+		qtt_CHECK(torch::allclose(A.block_at({0, 0}), A00));
+		qtt_CHECK(torch::allclose(A.block_at({1, 1}), A11)); // A unchanged
+		qtt_CHECK_THROWS(A.block_at({0, 1}));
+		qtt_CHECK_THROWS(A.block_at({1, 0}));
+		qtt_CHECK_THROWS(B.block_at({0, 1}));
+		qtt_CHECK_THROWS(B.block_at({1, 0}));
+		qtt_CHECK_THROWS(C.block_at({0, 1}));
+		qtt_CHECK_THROWS(C.block_at({1, 0}));
+		qtt_REQUIRE_NOTHROW(A.block_at({0, 0}));
+		qtt_REQUIRE_NOTHROW(A.block_at({1, 1}));
+		qtt_REQUIRE_NOTHROW(B.block_at({0, 0}));
+		qtt_REQUIRE_NOTHROW(B.block_at({1, 1}));
+		qtt_REQUIRE_NOTHROW(C.block_at({0, 0}));
+		qtt_REQUIRE_NOTHROW(C.block_at({1, 1}));
+		qtt_CHECK(torch::allclose(B.block_at({0, 0}), B00));
+		qtt_CHECK(torch::allclose(B.block_at({1, 1}), B11));
+		qtt_CHECK(torch::allclose(C.block_at({0, 0}), C00));
+		qtt_CHECK(torch::allclose(C.block_at({1, 1}), C11));
+		qtt_REQUIRE_NOTHROW(AA00.block_at({0, 0}));
+		qtt_CHECK_THROWS(AA00.block_at({1, 0}));
+		qtt_REQUIRE_NOTHROW(AA00.block_at({1, 1}));
+		qtt_CHECK_THROWS(AA00.block_at({0, 1}));
+		A.add_(std::move(B)); // this destroys B, so any state verification on it must be done.
+		qtt_CHECK(torch::allclose(A.block_at({0, 0}), AP00));
+		qtt_CHECK(torch::allclose(A.block_at({1, 1}), AP11));
+		qtt_CHECK(get_refcount(AA00.block_at({1, 1})) == 1);
+	}
+	qtt_SUBCASE("Reshape")
+	{
+		auto B = A.reshape({});
+		qtt_CHECK_NOTHROW(B.block_at({0})); // on diagonnal block of A
+		qtt_CHECK_NOTHROW(B.block_at({3})); // on-diagonal block of A
+		qtt_CHECK_THROWS(B.block_at({1}));  // off-diagonal block of A, empty
+		qtt_CHECK_THROWS(B.block_at({2}));  // off-diagonal block of A, empty
+		qtt_CHECK((*B.block_quantities({0}).begin()) == any_quantity(flux));
+		qtt_CHECK((*B.block_quantities({3}).begin()) == any_quantity(flux));
+		qtt_CHECK((*B.block_quantities({1}).begin()) == any_quantity(cqt(4))); // This is the correct value indeed.
+		qtt_CHECK((*B.block_quantities({2}).begin()) == any_quantity(cqt(1)));
+		qtt_CHECK((*B.block_sizes({0}).begin()) == 4);
+		qtt_CHECK((*B.block_sizes({3}).begin()) == 9);
+		qtt_CHECK((*B.block_sizes({1}).begin()) == 6);
+		qtt_CHECK((*B.block_sizes({2}).begin()) == 6);
+		qtt_CHECK((B.block_at({0}).sizes()) == std::vector<int64_t>{4});
+		qtt_CHECK((B.block_at({3}).sizes()) == std::vector<int64_t>{9});
+	}
+}
 
 } // namespace quantt
 

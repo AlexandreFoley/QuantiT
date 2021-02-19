@@ -851,11 +851,11 @@ qtt_TEST_CASE("flat_map")
 		flat_map<int, double> result{{10, 1.4}, {20, 1.2}, {30, 1.3},  {33, 1e12},
 		                             {40, 1.1}, {1, 6e10}, {50, 1e10}, {70, 1e11}};
 		qtt_REQUIRE(!std::is_convertible_v<decltype(b)::iterator, decltype(a)::const_iterator>);
-		fmt::print("a pre {}\n",a);
+		// fmt::print("a pre {}\n",a);
 		a.insert(b.begin(), b.end(), [&collisions](auto &&, auto &&) { ++collisions; });
 		qtt_CHECK(a == result);
-		fmt::print("a post {}\n",a);
-		fmt::print("result {}\n",result);
+		// fmt::print("a post {}\n",a);
+		// fmt::print("result {}\n",result);
 		qtt_CHECK(collisions == 5);
 	}
 	qtt_SUBCASE("merge sequences, collision moment test")

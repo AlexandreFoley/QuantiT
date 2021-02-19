@@ -13,3 +13,7 @@ Notes/*.fdb_latexmk
 Documentation/html/*
 Documentation/latex/*
 Documentation/xml/*
+Design document/Doc.synctex.gz
+Design document/Doc.log
+Design document/Doc.fls
+Design document/Doc.fdb_latexmk
