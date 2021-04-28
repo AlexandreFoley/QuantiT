@@ -29,7 +29,7 @@
 
 namespace quantt
 {
-
+//doing away with those reference like class won't be easy. First attempt was a failure. 
 class any_quantity_ref;
 class any_quantity_cref;
 class any_quantity;
@@ -98,10 +98,10 @@ public:
 	 * @param other: a any_quantity, any_quantity_ref or any_quantity_cref
 	 * @return any_quantity& :reference to *this
 	 */
-	any_quantity& operator=(any_quantity_cref other);
-	any_quantity& operator=(any_quantity_ref other);
-	any_quantity& operator=(const any_quantity& other);
-	any_quantity& operator=(any_quantity&& other);
+	any_quantity_ref operator=(any_quantity_cref other);
+	any_quantity_ref operator=(any_quantity_ref other);
+	any_quantity_ref operator=(const any_quantity& other);
+	any_quantity_ref operator=(any_quantity&& other);
 	/**
 	 * @brief implicit conversion to the reference to const type
 	 * 
@@ -123,8 +123,9 @@ public:
 	 *                work with any_quantity, any_quantity_ref and any_quantity_cref for input.
 	 * @return any_quantity& reference to *this
 	 */
-	any_quantity& operator*=(any_quantity_cref other);
-	any_quantity& operator+=(any_quantity_cref other);
+	any_quantity_ref operator*=(any_quantity_cref other);
+	any_quantity_ref operator+=(any_quantity_cref other);
+	any_quantity_ref op(any_quantity_cref other, bool cond);
 	/**
 	* @brief out of place group operation, on two composite group element of the same type
 	* 
@@ -142,7 +143,7 @@ public:
 	 * 
 	 * @return any_quantity& 
 	 */
-	any_quantity& inverse_();
+	any_quantity_ref inverse_();
 	/**
 	 * @brief return a new any_quantity object that is the inverse of this.
 	 * 
@@ -179,7 +180,7 @@ public:
  */
 class any_quantity_cref
 {
-	const vquantity* const ref;
+	const vquantity* ref;
 	friend any_quantity_ref;
 	friend any_quantity;
 
@@ -208,7 +209,7 @@ public:
  */
 class any_quantity_ref final
 {
-	vquantity* const ref;
+	vquantity* ref;
 	friend any_quantity_cref;
 	friend any_quantity;
 
@@ -228,6 +229,8 @@ public:
 
 	any_quantity_ref& operator*=(any_quantity_cref other);
 	any_quantity_ref& operator+=(any_quantity_cref other);
+	any_quantity_ref& op(any_quantity_cref other,bool cond);
+	any_quantity_ref& op(any_quantity_cref other);
 	any_quantity_ref& inverse_();
 	any_quantity inverse() const;
 	void swap(any_quantity_ref other);
@@ -285,12 +288,12 @@ inline void any_quantity::swap(any_quantity& other) noexcept
 	using std::swap;
 	swap(other.impl, impl);
 }
-inline any_quantity& any_quantity::operator=(any_quantity&& other) // will work even when the underlying type isn't the same...
+inline any_quantity_ref any_quantity::operator=(any_quantity&& other) // will work even when the underlying type isn't the same...
 {
 	swap(other);
 	return *this;
 }
-inline any_quantity& any_quantity::inverse_()
+inline any_quantity_ref any_quantity::inverse_()
 {
 	impl->inverse_();
 	return *this;
@@ -299,7 +302,7 @@ inline any_quantity any_quantity::inverse() const
 {
 	return any_quantity(*this).inverse_();
 }
-inline any_quantity& any_quantity::operator=(const any_quantity& other)
+inline any_quantity_ref any_quantity::operator=(const any_quantity& other)
 {
 	*impl = *other.impl;
 	return *this;
@@ -309,7 +312,7 @@ inline void swap(any_quantity& lhs, any_quantity& rhs) { lhs.swap(rhs); }
 inline void swap(any_quantity_ref lhs, any_quantity_ref rhs) { lhs.swap(rhs); }
 inline any_quantity::operator any_quantity_cref() const { return any_quantity_cref(*impl.get()); }
 inline any_quantity::operator any_quantity_ref() { return any_quantity_ref(*impl.get()); }
-inline any_quantity& any_quantity::operator*=(any_quantity_cref other)
+inline any_quantity_ref any_quantity::operator*=(any_quantity_cref other)
 {
 	impl->op(other.get());
 	return *this;
@@ -317,6 +320,11 @@ inline any_quantity& any_quantity::operator*=(any_quantity_cref other)
 inline any_quantity operator*(any_quantity_cref lhs, any_quantity_cref rhs)
 {
 	return any_quantity(lhs) *= rhs;
+}
+inline any_quantity_ref any_quantity::op(any_quantity_cref other, bool cond)
+{
+	impl->op(other.get(),cond);
+	return *this;
 }
 // any_quantity operator*(any_quantity_cref lhs, any_quantity&& rhs)
 // {
@@ -331,16 +339,16 @@ inline any_quantity operator+(any_quantity_cref lhs, any_quantity_cref rhs)
 // {
 // 	return lhs * rhs;
 // }
-inline any_quantity& any_quantity::operator=(any_quantity_cref other)
+inline any_quantity_ref any_quantity::operator=(any_quantity_cref other)
 {
-	impl = other.get().clone();
+	impl = other.get().clone(); //allocate a new thing or copy the value? allocating a new thing allow changing the underlying type
 	return *this;
 }
-inline any_quantity& any_quantity::operator=(any_quantity_ref other)
+inline any_quantity_ref any_quantity::operator=(any_quantity_ref other)
 {
 	return operator=(any_quantity(other));
 }
-inline any_quantity& any_quantity::operator+=(any_quantity_cref other)
+inline any_quantity_ref any_quantity::operator+=(any_quantity_cref other)
 {
 	return (*this) *= other;
 }

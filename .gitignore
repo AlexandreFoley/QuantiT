@@ -1,19 +1,15 @@
 build/
 .vscode/
 .history/
-/Notes/*.pdf
-Notes/*.dvi
-Notes/*.fls
-Notes/*.aux
-Notes/*.log
-Notes/*.synctex.gz
-Notes/*.toc
-Notes/*.out
-Notes/*.fdb_latexmk
+*.pdf
+*.dvi
+*.fls
+*.aux
+*.log
+*.synctex.gz
+*.toc
+*.out
+*.fdb_latexmk
 Documentation/html/*
 Documentation/latex/*
 Documentation/xml/*
-Design document/Doc.synctex.gz
-Design document/Doc.log
-Design document/Doc.fls
-Design document/Doc.fdb_latexmk

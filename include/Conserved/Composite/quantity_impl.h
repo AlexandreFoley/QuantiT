@@ -27,7 +27,7 @@ namespace quantt
 
 /**
  * @brief forward declaration of the iterator type used for type erased container
- * 
+ *
  */
 struct cgroup_iterator;
 struct const_cgroup_iterator;
@@ -36,7 +36,7 @@ class vquantity_vector;
 /**
  * @brief interface type for the implementation of a any_quantity
  * any_quantity stands for "composite group" and is the tensor product of multiple simple groups.
- * 
+ *
  * The function that take a vquantity as an argument are not expected to work
  * if the actual type of the argument isn't the same derived type as this.
  */
@@ -45,43 +45,49 @@ class vquantity
 	friend struct cgroup_iterator;
 	friend struct const_cgroup_iterator;
 
-public:
+  public:
 	/**
-	* @brief in place implementation of the group operation.
-	*        *this = (*this)*other, where "other" is the argument givent
-	* @return vquantity& : a reference to the current object.
-	*/
-	virtual vquantity&
-	op(const vquantity&) = 0;
-	/**
-	 * @brief in place implementation of the group operation, the result is 
-	 * stored in the given argument.
-	 * 
+	 * @brief in place implementation of the group operation.
+	 *        *this = (*this)*other, where "other" is the argument givent
+	 * @return vquantity& : a reference to the current object.
 	 */
-	virtual void op_to(vquantity&) const = 0;
+	virtual vquantity &op(const vquantity &) = 0;
+	/**
+	 * @brief conditionnal, in place application of the group operation
+	 * 
+	 * @param cond does nothing to this when false
+	 * @return vquantity& reference to the current object
+	 */
+	virtual vquantity &op(const vquantity &, bool cond) = 0;
+	/**
+	 * @brief in place implementation of the group operation, the result is
+	 * stored in the given argument.
+	 *
+	 */
+	virtual void op_to(vquantity &) const = 0;
 	/**
 	 * @brief in place computation of the inverse of *this.
-	 * 
+	 *
 	 * @return vquantity& : reference to the current object.
 	 */
-	virtual vquantity& inverse_() = 0;
+	virtual vquantity &inverse_() = 0;
 
 	virtual std::unique_ptr<vquantity> clone() const = 0;
 	virtual std::unique_ptr<vquantity_vector> make_vector(size_t cnt) const = 0;
 
 	/**
 	 * @brief create the neutral element of whatever underlying type
-	 * 
+	 *
 	 * @return std::unique_ptr<vquantity> : the neutral element
 	 */
 	virtual std::unique_ptr<vquantity> neutral() const = 0;
 
-	virtual vquantity& operator=(const vquantity&) = 0;
-	virtual bool operator==(const vquantity&) const = 0;
-	virtual bool operator!=(const vquantity&) const = 0;
-	virtual bool same_type(const vquantity& other) const = 0;
-	virtual void swap(vquantity&) = 0;
-	virtual auto format_to(fmt::format_context& ctx) const -> decltype(ctx.out()) = 0;
+	virtual vquantity &operator=(const vquantity &) = 0;
+	virtual bool operator==(const vquantity &) const = 0;
+	virtual bool operator!=(const vquantity &) const = 0;
+	virtual bool same_type(const vquantity &other) const = 0;
+	virtual void swap(vquantity &) = 0;
+	virtual auto format_to(fmt::format_context &ctx) const -> decltype(ctx.out()) = 0;
 	virtual ~vquantity() {}
 };
 
@@ -89,100 +95,103 @@ public:
  * @brief template implementation of the concrete composite group types.
  * This template of class is used by the type any_quantity, any_quantity_ref and any_quantity_cref
  * defined in composite_group.h
- * @tparam Groups 
+ * @tparam Groups
  */
 template <class... Groups>
 class quantity final : public vquantity
 {
-public:
+  public:
 	// has default constructor and assigment operator as well.
+	static_assert(quantt::conserved::all_group_v<Groups...>,"all template argument must statisfy the constraints of a group. See quantt/Conserved/quantity.h for 2 working exemples: C<N> and Z");
 	quantity(Groups... grp) : val(grp...) {}
 	quantity() = default;
-	quantity(const quantity&) = default;
-	quantity(quantity&&) = default;
+	quantity(const quantity &) = default;
+	quantity(quantity &&) = default;
 	~quantity() override{};
-	quantity& operator=(quantity other) noexcept;
+	quantity &operator=(quantity other) noexcept;
 
-	quantity operator*(const quantity&);
-	quantity operator*(quantity&&);
-	quantity operator*=(const quantity&);
-	quantity operator+(const quantity&);
-	quantity operator+(quantity&&);
-	quantity operator+=(const quantity&);
-	void swap(quantity& other);
+	quantity operator*(const quantity &);
+	quantity operator*(quantity &&);
+	quantity operator*=(const quantity &);
+	quantity operator+(const quantity &);
+	quantity operator+(quantity &&);
+	quantity operator+=(const quantity &);
+	void swap(quantity &other);
 
 	std::unique_ptr<vquantity> clone() const override;
 	std::unique_ptr<vquantity> neutral() const override;
 
-	quantity& op(const quantity& other);
-	vquantity& op(const vquantity& other) override;
-	void op_to(quantity& other) const;
-	void op_to(vquantity& other) const override;
-	quantity& inverse_() override;
-	vquantity& operator=(const vquantity& other) override;
-	bool operator==(const quantity& other) const;
-	bool operator==(const vquantity& other) const override;
-	bool operator!=(const quantity& other) const;
-	bool operator!=(const vquantity& other) const override;
-	bool same_type(const vquantity& other) const override;
-	void swap(vquantity& other) override;
+	quantity &op(const quantity &other);
+	vquantity &op(const vquantity &other) override;
+	quantity &op(const quantity &other,bool cond);
+	vquantity &op(const vquantity &other,bool cond) override;
+	void op_to(quantity &other) const;
+	void op_to(vquantity &other) const override;
+	quantity &inverse_() override;
+	vquantity &operator=(const vquantity &other) override;
+	bool operator==(const quantity &other) const;
+	bool operator==(const vquantity &other) const override;
+	bool operator!=(const quantity &other) const;
+	bool operator!=(const vquantity &other) const override;
+	bool same_type(const vquantity &other) const override;
+	void swap(vquantity &other) override;
 
 	std::unique_ptr<vquantity_vector> make_vector(size_t cnt) const override;
 
 	friend struct fmt::formatter<quantt::quantity<Groups...>>;
-	auto format_to(fmt::format_context& ctx) const -> decltype(ctx.out()) override
+	auto format_to(fmt::format_context &ctx) const -> decltype(ctx.out()) override
 	{
 		return fmt::formatter<quantt::quantity<Groups...>>().format(*this, ctx);
 	}
 
-private:
+  private:
 	/**
 	 * @brief implementation of the polymophic pointer difference
-	 * 
+	 *
 	 * this is the way to implement this, basically no matter what.
-	 * 
+	 *
 	 */
 	std::tuple<Groups...> val;
 };
 template <class... Qts>
-bool quantity<Qts...>::same_type(const vquantity& other) const
-{ //dynamic cast on pointers return a null pointer which convert to false when the types are incompatible.
-	return dynamic_cast<const quantity<Qts...>*>(&other);
+bool quantity<Qts...>::same_type(const vquantity &other) const
+{ // dynamic cast on pointers return a null pointer which convert to false when the types are incompatible.
+	return dynamic_cast<const quantity<Qts...> *>(&other);
 }
 template <class... Qts>
-quantity<Qts...> quantity<Qts...>::operator*(const quantity<Qts...>& other)
+quantity<Qts...> quantity<Qts...>::operator*(const quantity<Qts...> &other)
 {
 	return quantity<Qts...>(*this).op(other);
 }
 template <class... Qts>
-quantity<Qts...> quantity<Qts...>::operator*(quantity<Qts...>&& other)
+quantity<Qts...> quantity<Qts...>::operator*(quantity<Qts...> &&other)
 {
 	op_to(other);
 	return other;
 }
 template <class... Qts>
-quantity<Qts...> quantity<Qts...>::operator*=(const quantity<Qts...>& other)
+quantity<Qts...> quantity<Qts...>::operator*=(const quantity<Qts...> &other)
 {
 	op(other);
 	return *this;
 }
 template <class... Qts>
-quantity<Qts...> quantity<Qts...>::operator+(const quantity<Qts...>& other)
+quantity<Qts...> quantity<Qts...>::operator+(const quantity<Qts...> &other)
 {
 	return *this * other;
 }
 template <class... Qts>
-quantity<Qts...> quantity<Qts...>::operator+(quantity<Qts...>&& other)
+quantity<Qts...> quantity<Qts...>::operator+(quantity<Qts...> &&other)
 {
 	return *this * std::move(other);
 }
 template <class... Qts>
-quantity<Qts...> quantity<Qts...>::operator+=(const quantity<Qts...>& other)
+quantity<Qts...> quantity<Qts...>::operator+=(const quantity<Qts...> &other)
 {
 	return *this *= other;
 }
 template <class... T>
-quantity<T...>& quantity<T...>::operator=(quantity other) noexcept
+quantity<T...> &quantity<T...>::operator=(quantity other) noexcept
 {
 	using std::swap;
 	swap(val, other.val);
@@ -190,17 +199,27 @@ quantity<T...>& quantity<T...>::operator=(quantity other) noexcept
 }
 
 template <class... T>
-quantity<T...>& quantity<T...>::op(const quantity<T...>& other)
+quantity<T...> &quantity<T...>::op(const quantity<T...> &other)
 {
-	for_each2(val, other.val, [](auto&& vl, auto&& ovl) {
-		vl.op(ovl);
-	});
+	for_each2(val, other.val, [](auto &&vl, auto &&ovl) { vl.op(ovl); });
 	return *this;
 }
 template <class... T>
-vquantity& quantity<T...>::op(const vquantity& other)
+quantity<T...> &quantity<T...>::op(const quantity<T...> &other,bool cond)
 {
-	return op(dynamic_cast<const quantity&>(other));
+	for_each2(val, other.val, [cond](auto &&vl, auto &&ovl) { vl.op(ovl,cond); });
+	return *this;
+}
+template <class... T>
+vquantity &quantity<T...>::op(const vquantity &other,bool cond)
+{
+	return op(dynamic_cast<const quantity &>(other),cond);
+}
+
+template <class... T>
+vquantity &quantity<T...>::op(const vquantity &other)
+{
+	return op(dynamic_cast<const quantity &>(other));
 }
 
 template <class... T>
@@ -215,60 +234,56 @@ std::unique_ptr<vquantity> quantity<T...>::clone() const
 	return std::make_unique<quantity<T...>>(*this);
 }
 template <class... T>
-void quantity<T...>::op_to(quantity<T...>& other) const
+void quantity<T...>::op_to(quantity<T...> &other) const
 {
-	for_each2(val, other.val, [](auto&& vl, auto&& ovl) {
-		ovl = conserved::op(vl, ovl);
-	});
+	for_each2(val, other.val, [](auto &&vl, auto &&ovl) { ovl = conserved::op(vl, ovl); });
 }
 template <class... T>
-void quantity<T...>::op_to(vquantity& other) const
+void quantity<T...>::op_to(vquantity &other) const
 {
-	return op_to(dynamic_cast<quantity<T...>&>(other));
+	return op_to(dynamic_cast<quantity<T...> &>(other));
 }
 template <class... T>
-quantity<T...>& quantity<T...>::inverse_()
+quantity<T...> &quantity<T...>::inverse_()
 {
-	for_each(val, [](auto&& vl) {
-		vl.inverse_();
-	});
+	for_each(val, [](auto &&vl) { vl.inverse_(); });
 	return *this;
 }
 template <class... T>
-vquantity& quantity<T...>::operator=(const vquantity& other)
+vquantity &quantity<T...>::operator=(const vquantity &other)
 {
-	return (*this) = dynamic_cast<const quantity<T...>&>(other);
+	return (*this) = dynamic_cast<const quantity<T...> &>(other);
 }
 template <class... T>
-bool quantity<T...>::operator==(const quantity<T...>& other) const
+bool quantity<T...>::operator==(const quantity<T...> &other) const
 {
 	return val == other.val;
 }
 template <class... T>
-bool quantity<T...>::operator==(const vquantity& other) const
+bool quantity<T...>::operator==(const vquantity &other) const
 {
-	return operator==(dynamic_cast<const quantity<T...>&>(other));
+	return operator==(dynamic_cast<const quantity<T...> &>(other));
 }
 template <class... T>
-bool quantity<T...>::operator!=(const quantity<T...>& other) const
+bool quantity<T...>::operator!=(const quantity<T...> &other) const
 {
 	return val != other.val;
 }
 template <class... T>
-bool quantity<T...>::operator!=(const vquantity& other) const
+bool quantity<T...>::operator!=(const vquantity &other) const
 {
-	return operator!=(dynamic_cast<const quantity<T...>&>(other));
+	return operator!=(dynamic_cast<const quantity<T...> &>(other));
 }
 template <class... T>
-void quantity<T...>::swap(quantity<T...>& other)
+void quantity<T...>::swap(quantity<T...> &other)
 {
 	using std::swap;
 	swap(val, other.val);
 }
 template <class... T>
-void quantity<T...>::swap(vquantity& other)
+void quantity<T...>::swap(vquantity &other)
 {
-	swap(dynamic_cast<quantity<T...>&>(other));
+	swap(dynamic_cast<quantity<T...> &>(other));
 }
 
 template <class>
@@ -285,7 +300,7 @@ struct is_conc_cgroup_impl<quantity<S...>> : public conserved::all_conserved_qua
 template <class... Groups>
 struct fmt::formatter<quantt::quantity<Groups...>>
 {
-	constexpr auto parse(format_parse_context& ctx)
+	constexpr auto parse(format_parse_context &ctx)
 	{
 		auto it = ctx.begin(), end = ctx.end();
 		if (it and it != end and *it != '}')
@@ -319,7 +334,7 @@ struct fmt::formatter<quantt::quantity<Groups...>>
 	}
 
 	template <typename FormatContext>
-	auto format(const quantt::quantity<Groups...>& qt, FormatContext& ctx)
+	auto format(const quantt::quantity<Groups...> &qt, FormatContext &ctx)
 	{
 		return format_to(ctx.out(), "[{}]", fmt::join(qt.val, ","));
 	}
@@ -328,7 +343,7 @@ struct fmt::formatter<quantt::quantity<Groups...>>
 template <>
 struct fmt::formatter<quantt::vquantity>
 {
-	constexpr auto parse(format_parse_context& ctx)
+	constexpr auto parse(format_parse_context &ctx)
 	{
 		auto it = ctx.begin(), end = ctx.end();
 		if (it and it != end and *it != '}')
@@ -341,9 +356,10 @@ struct fmt::formatter<quantt::vquantity>
 	}
 
 	template <class FormatContext>
-	auto format(const quantt::vquantity& qt, FormatContext& ctx)
+	auto format(const quantt::vquantity &qt, FormatContext &ctx)
 	{
-		return qt.format_to(ctx); //right now qt.format_to is only defined for fmt::format_context. Should work for any output stream.
+		return qt.format_to(
+		    ctx); // right now qt.format_to is only defined for fmt::format_context. Should work for any output stream.
 	}
 };
 

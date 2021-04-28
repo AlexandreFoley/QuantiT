@@ -58,10 +58,10 @@ class flat_map
 	class const_iterator;
 	class iterator : public boost::stl_interfaces::iterator_interface<iterator, iterator_tag, value_type, reference, pointer,
 	                                                                  difference_type>
-	// algorithm specifcally for iterator of this type will no accept iterator of a content_t
+	// algorithm specifically for iterator of this type will not accept iterator of a content_t
 	{
 		using it_type = typename content_t::iterator;
-		typename content_t::iterator it;
+		it_type it;
 		friend const_iterator;
 
 	  public:
@@ -80,8 +80,10 @@ class flat_map
 
 	  private:
 		friend boost::stl_interfaces::access;
+		friend flat_map;
 		constexpr it_type &base_reference() noexcept { return it; }
 		constexpr it_type base_reference() const noexcept { return it; }
+		operator it_type() const {return base_reference(); }
 	}; // require random access.
 	class const_iterator
 	    : public boost::stl_interfaces::iterator_interface<const_iterator, const_iterator_tag, const value_type,
@@ -89,7 +91,7 @@ class flat_map
 	// algorithm specifcally for iterator of this type will no accept iterator of a content_t
 	{
 		using it_type = typename content_t::const_iterator;
-		typename content_t::const_iterator it;
+		it_type it;
 
 	  public:
 		explicit constexpr const_iterator(const typename content_t::iterator &in) : it(in) {}
@@ -108,8 +110,10 @@ class flat_map
 		// bool operator==( const const_iterator& in) {return it == in.it;}
 	  private:
 		friend boost::stl_interfaces::access;
+		friend flat_map;
 		constexpr it_type &base_reference() noexcept { return it; }
 		constexpr it_type base_reference() const noexcept { return it; }
+		operator it_type() const {return base_reference(); }
 	}; // require random access.
 	using reverse_iterator = std::reverse_iterator<iterator>;
 	using const_reverse_iterator = std::reverse_iterator<const_iterator>;
@@ -123,10 +127,10 @@ class flat_map
 	  public:
 		value_compare(Comp_less _c) : comp(std::move(_c)) {}
 		value_compare() : comp() {}
-		bool operator()(const value_type &a, const value_type &b) { return comp(a.first, b.first); }
-		bool operator()(const value_type &a, const key_type &b) { return comp(a.first, b); }
-		bool operator()(const key_type &a, const value_type &b) { return comp(a, b.first); }
-		bool operator()(const key_type &a, const key_type &b) { return comp(a, b); }
+		bool operator()(const value_type &a, const value_type &b) const { return comp(a.first, b.first); }
+		bool operator()(const value_type &a, const key_type &b) const { return comp(a.first, b); }
+		bool operator()(const key_type &a, const value_type &b) const { return comp(a, b.first); }
+		bool operator()(const key_type &a, const key_type &b) const { return comp(a, b); }
 	};
 	// constructors
 	// flat_map() : comp(), content(){};
@@ -191,7 +195,7 @@ class flat_map
 	flat_map &operator=(const flat_map &other)
 	{
 		content = other.content;
-		comp = other.compu;
+		comp = other.comp;
 		return *this;
 	}
 	flat_map &operator=(flat_map &&other) noexcept
@@ -200,6 +204,14 @@ class flat_map
 		comp = std::move(other.comp);
 		return *this;
 	}
+	/**
+	 * @brief set the content of the flat_map to that of the arguement. Does not sort if input isn't already sorted.
+	 * 
+	 * TODO: add a call to sort?
+	 * 
+	 * @param ilist 
+	 * @return flat_map& 
+	 */
 	flat_map &operator=(std::initializer_list<value_type> ilist)
 	{
 		content.resize(0);
@@ -254,7 +266,7 @@ class flat_map
 		auto it = std::lower_bound(begin(), end(), value.first, comp);
 		if (it->first != value.first)
 		{
-			it = content.insert(it, value);
+			it = iterator(content.insert(it.base_reference(), value));
 			success = true;
 		}
 		return std::make_pair(it, success);
@@ -265,7 +277,7 @@ class flat_map
 		auto it = std::lower_bound(begin(), end(), value.first, comp);
 		if (it->first != value.first)
 		{
-			it = content.insert(it, std::move(value));
+			it = iterator(content.insert(it.base_reference(), std::move(value)));
 			success = true;
 		}
 		return std::make_pair(it, success);
@@ -279,26 +291,26 @@ class flat_map
 	iterator insert(const_iterator hint, const value_type &value)
 	{
 		auto [first, last] = use_hint(hint, value.first);
-		iterator it = std::lower_bound(
-		    first, last, value,
-		    comp); // that's not a big saving if the hint is really good. except if the element is near the ends
-		if (it->first != value.first)
-		{
-			it = content.insert(it, value);
-		}
-		return it;
-	}
-	iterator insert(const_iterator hint, value_type &&value)
-	{
-		auto [first, last] = use_hint(hint, value.first);
-		iterator it = std::lower_bound(
+		auto it = std::lower_bound(
 		    first, last, value,
 		    comp); // that's not a big saving if the hint is really good. except if the element is near the ends
 		if (it == end() or it->first != value.first)
 		{
-			it = content.insert(it, std::move(value));
+			return iterator(content.insert(it.base_reference(), value));
 		}
-		return it;
+		return erase(it,it); //convert the const_iterator in an iterator
+	}
+	iterator insert(const_iterator hint, value_type &value)
+	{
+		auto [first, last] = use_hint(hint, value.first);
+		auto it = std::lower_bound(
+		    first, last, value,
+		    comp); // that's not a big saving if the hint is really good. except if the element is near the ends
+		if (it == end() or it->first != value.first)
+		{
+			return iterator(content.insert(it.base_reference(), std::move(value)));
+		}
+		return erase(it,it);
 	}
 	template <class... P, class = std::enable_if_t<std::is_constructible_v<value_type, P&&...>>>
 	iterator insert(const_iterator hint, P&& ... value)
@@ -316,7 +328,7 @@ class flat_map
 	void insert(InputIt first, InputIt last, Collision &&collision)
 	{
 		static_assert(!std::is_convertible_v<InputIt, const_iterator>, "Don't try to bypass the enable if");
-		content.insert(content.end(), first, last);
+		content.insert(content.end(), const_iterator(first).base_reference(),const_iterator(last).base_reference());
 		sort();
 		auto l = filter_unique(
 		    content.begin(), content.end(),
@@ -548,9 +560,9 @@ class flat_map
 		return std::make_pair(it, success);
 	}
 
-	iterator erase(const_iterator pos) { return iterator(content.erase(pos)); }
-	iterator erase(iterator pos) { return iterator(content.erase(pos)); }
-	void erase(const_iterator first, const_iterator last) { content.erase(first, last); }
+	iterator erase(const_iterator pos) { return iterator(content.erase(pos.base_reference())); }
+	iterator erase(iterator pos) { return iterator(content.erase(pos.base_reference())); }
+	iterator erase(const_iterator first, const_iterator last) { return iterator(content.erase(first.base_reference(), last.base_reference())); }
 	size_type erase(const key_type &k)
 	{
 		auto it = std::lower_bound(begin(), end(), k, comp);
@@ -717,16 +729,16 @@ class flat_map
 	// 	{
 	// 	}
 	// }
-	std::pair<const_iterator, const_iterator> use_hint(const_iterator hint, key_type &key) const
+	std::pair<const_iterator, const_iterator> use_hint(const_iterator hint,const key_type &key) const
 	{
-		const_iterator first = comp(*hint, key) ? hint : begin();
-		const_iterator last = comp(key, *hint) ? end() : hint + 1;
+		const_iterator first = comp(*hint, key) ? hint : cbegin();
+		const_iterator last = comp(key, *hint) ? cend() : hint + 1;
 		return std::make_pair(first, last);
 	}
-	std::pair<iterator, iterator> use_hint(const_iterator hint, key_type &key)
+	std::pair<iterator, iterator> use_hint(iterator hint,const key_type &key)
 	{
-		iterator first = comp(*hint, key) ? iterator(const_cast<value_type *>(hint.base())) : begin();
-		iterator last = comp(key, *hint) ? iterator(const_cast<value_type *>(hint.base() + 1)) : end();
+		iterator first = comp(*hint, key) ? hint : begin();
+		iterator last = comp(key, *hint) ? hint + 1 : end();
 		return std::make_pair(first, last);
 	}
 	typename content_t::iterator filter_unique(typename content_t::iterator first, typename content_t::iterator last)

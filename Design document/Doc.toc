@@ -1,7 +1,0 @@
-\contentsline {chapter}{\numberline {1}Tensor Networks, in general}{7}{chapter.1}% 
-\contentsline {section}{\numberline {1.1}torch::Tensor for Tensor Network}{7}{section.1.1}% 
-\contentsline {chapter}{\numberline {2}Conserved quantities (quantum numbers)}{9}{chapter.2}% 
-\contentsline {section}{\numberline {2.1}Abelian vs non-Abelian}{9}{section.2.1}% 
-\contentsline {section}{\numberline {2.2}Design of the conserved quantities}{9}{section.2.2}% 
-\contentsline {subsection}{\numberline {2.2.1}Design outline for non-Abelian symmetries}{9}{subsection.2.2.1}% 
-\contentsline {chapter}{\numberline {3}Practicalities: project structure}{11}{chapter.3}% 

@@ -44,27 +44,27 @@ class block_qtt_view;
  * exemple with a rank 2 tensor (matrix) of the inner structure
  * of this type:
  * \verbatim
- *             S0,0 │ S0,1 │ S0,2 │ S0,3
- *            ╔═════╪══════╪══════╪═════╗
- *            ║     │      │      │     ║
- *        S1,0║(0,0)│ (0,1)│ (0,2)│(0,3)║
- *            ║     │      │      │     ║
- *           ─╫─────┼──────┼──────┼─────╢
- *            ║     │      │      │     ║
- *            ║     │      │      │     ║
- *        S1,1║(1,0)│ (1,1)│ (1,2)│(1,3)║
- *            ║     │      │      │     ║
- *            ║     │      │      │     ║
- *            ║     │      │      │     ║
- *           ─╫─────┼──────┼──────┼─────╢
- *            ║     │      │      │     ║
- *            ║     │      │      │     ║
- *        S1,2║(2,0)│ (2,1)│ (2,2)│(2,3)║
- *            ║     │      │      │     ║
- *            ║     │      │      │     ║
- *            ║     │      │      │     ║
- *            ╚═════╧══════╧══════╧═════╝
- *
+              S0,0 │ S0,1 │ S0,2 │ S0,3
+             ╔═════╪══════╪══════╪═════╗
+             ║     │      │      │     ║
+         S1,0║(0,0)│ (0,1)│ (0,2)│(0,3)║
+             ║     │      │      │     ║
+            ─╫─────┼──────┼──────┼─────╢
+             ║     │      │      │     ║
+             ║     │      │      │     ║
+         S1,1║(1,0)│ (1,1)│ (1,2)│(1,3)║
+             ║     │      │      │     ║
+             ║     │      │      │     ║
+             ║     │      │      │     ║
+            ─╫─────┼──────┼──────┼─────╢
+             ║     │      │      │     ║
+             ║     │      │      │     ║
+         S1,2║(2,0)│ (2,1)│ (2,2)│(2,3)║
+             ║     │      │      │     ║
+             ║     │      │      │     ║
+             ║     │      │      │     ║
+             ╚═════╧══════╧══════╧═════╝
+
  * \endverbatim
  * In the preceding exemple, the rows are separated in 4 sections, and the columns in 3 sections.
  * This make up to 12 blocks, that we label by section.
@@ -170,14 +170,175 @@ class btensor
 	    size_t index) const;
 	std::tuple<size_t, any_quantity_cref> section_size_cqtt(size_t dim, size_t section) const;
 	// block accessor
-	torch::Tensor &block_at(const index_list &); // throws if the block isn't present.
-	torch::Tensor &block(const index_list &);    // create the block if it isn't present and allowed
+	/**
+	 * @brief access the block at the block index given in argument.
+	 *
+	 * Throws a std::out_of_range if the block isn't allocated or allowed.
+	 *
+	 * @return torch::Tensor&
+	 */
+	torch::Tensor &block_at(const index_list &);
+	/**
+	 * @brief access the block at the index given in argument. Allocate space for the block if necessary.
+	 *
+	 * Throws a std::bad_argument if the block isn't allowed by the conservation law.
+	 *
+	 * @return torch::Tensor&
+	 */
+	torch::Tensor &block(const index_list &); // create the block if it isn't present and allowed
+	/**
+	 * @brief obtain a view on the conserved quantities of each indices of a block with the block index given in
+	 * argument
+	 *
+	 * the conserved quantity for any block can be accessed that way, whether non-zero values are allowed or not.
+	 *
+	 * @param block_index index of the block
+	 * @return const_block_qtt_view
+	 */
 	const_block_qtt_view block_quantities(index_list block_index) const;
+	/**
+	 * @brief obtain a view on the size of the block.
+	 *
+	 * The size of any block can be accessed in this manner, whether non-zero values are allowed or not.
+	 *
+	 * @param block_index
+	 * @return const_block_size_view
+	 */
 	const_block_size_view block_sizes(index_list block_index) const;
+	/**
+	 * @brief Return the rank of the tensor
+	 *
+	 * @return size_t
+	 */
 	size_t dim() const { return rank; }
+	/**
+	 * @brief return the number of sections in a given dimension
+	 *
+	 * @param dim
+	 * @return size_t
+	 */
 	size_t section_number(size_t dim) const { return sections_by_dim[dim]; }
-	const auto & section_numbers() const { return sections_by_dim; }
+	/**
+	 * @brief return the number of section for all the dimensions, in order.
+	 *
+	 * @return const auto&
+	 */
+	const auto &section_numbers() const { return sections_by_dim; }
 	// block_qtt_view block_quantities(index_list block_index);
+
+	/**
+	 * @brief create an empty tensor from selected dimensions of this. Minimum necessary set of feature for tensor
+	 * network reshape.
+	 *
+	 * Basic version of index, it can only discard whole dimensions.
+	 *
+	 * @param dims List of dimensions, put -1 to keep the dimension, specify the index to keep otherwise.
+	 * @return btensor
+	 */
+	btensor shape_from(std::initializer_list<int64_t> dims) const;
+	/**
+	 * @brief Create a view object on this tensor. Minimum necessary set of feature for tensor network reshape.
+	 *
+	 * Basic version of index, it can only discard whole dimensions.
+	 *
+	 * @param dims List of dimensions, put -1 to keep the dimension, specify the index to keep otherwise.
+	 * @return btensor&
+	 */
+	btensor basic_create_view(std::initializer_list<int64_t> dims);
+	/**
+	 * @brief compute the shape of the tensor product of this with the other tensor. store the shape information in an empty btensor
+	 * 
+	 * If you want to actually proceed to the tensor product, use tensordot with no contracted
+	 * 
+	 * @param other 
+	 * @return btensor 
+	 */
+	btensor tensor_product_shape(const btensor & other) const;
+
+	/**
+	 * @brief create a view on the block tensor.
+	 *
+	 * The view on the btensor is itself a btensor. The underlying non-zero blocks are shared, new blocks cannot be
+	 * added to the original tensor this way.
+	 *
+	 * @param indices torch's index class, allow for slices, ellipsis, boolean, tensors, and simple index.
+	 * @return btensor view on the original tensor
+	 */
+	btensor index(torch::ArrayRef<torch::indexing::TensorIndex> indices) const;
+	/**
+	 * @brief create a view on the block tensor.
+	 *
+	 * The view on the btensor is itself a btensor. The underlying non-zero blocks are shared, new blocks cannot be
+	 * added to the original tensor this way.
+	 *
+	 * @param indices  list of torch's index class, allow for slices, ellipsis, and index.
+	 * @return btensor view on the original tensor
+	 */
+	btensor index(std::initializer_list<torch::indexing::TensorIndex> indices) const;
+	/**
+	 * @brief Elements insertion operator, for basic torch tensor
+	 *
+	 * The input tensor is sliced into blocks. elements of the input tensors disallowed by the conservation law are
+	 * silently droped.
+	 *
+	 * @param indices  list of torch's index class, allow for slices, ellipsis, and simple index.
+	 * @param rhs tensor of values to insert, it's shape must match the view described by the indices
+	 * @return btensor& reference to this
+	 */
+	btensor &index_put_(torch::ArrayRef<torch::indexing::TensorIndex> indices, const torch::Tensor &rhs);
+	/**
+	 * @brief Elements insertion operator, for block tensor
+	 *
+	 * The input tensor block structure must match the view's block structure
+	 *
+	 * @param indices  list of torch's index class, allow for slices, ellipsis, and simple index.
+	 * @param rhs tensor of values to insert, it's shape must match the view described by the indices
+	 * @return btensor& reference to this
+	 */
+	btensor &index_put_(torch::ArrayRef<torch::indexing::TensorIndex> indices, const btensor &rhs);
+	/**
+	 * @brief Elements insertion operator, for scalars
+	 *
+	 * If the index describes multiple elements, all the element that respect the conservation law are set to the
+	 * supplied value.
+	 *
+	 * @param indices list of torch's index class, allow for slices, ellipsis, and simple index.
+	 * @param rhs tensor of values to insert, it's shape must match the view described by the indices
+	 * @return btensor& reference to this
+	 */
+	btensor &index_put_(torch::ArrayRef<torch::indexing::TensorIndex> indices, const Scalar &v);
+	/**
+	 * @brief Elements insertion operator, for basic torch tensor
+	 *
+	 * The input tensor is sliced into blocks. elements of the input tensors disallowed by the conservation law are
+	 * silently droped.
+	 *
+	 * @param indices  list of torch's index class, allow for slices, ellipsis, and simple index.
+	 * @param rhs tensor of values to insert, it's shape must match the view described by the indices
+	 * @return btensor& reference to this
+	 */
+	btensor &index_put_(std::initializer_list<torch::indexing::TensorIndex> indices, const torch::Tensor &rhs);
+	/**
+	 * @brief Elements insertion operator, for block tensor
+	 *
+	 * The input tensor block structure must match the view's block structure
+	 *
+	 * @param indices  list of torch's index class, allow for slices, ellipsis, and simple index.
+	 * @param rhs tensor of values to insert, it's shape must match the view described by the indices
+	 * @return btensor& reference to this
+	 */
+	btensor &index_put_(std::initializer_list<torch::indexing::TensorIndex> indices, const btensor &rhs);
+	/**
+	 * @brief Elements insertion operator, for scalars
+	 *
+	 * If the index describes multiple elements, all the element that respect the conservation law are set to the
+	 * supplied value.
+	 *
+	 * @param indices  list of torch's index class, allow for slices, ellipsis, and simple index.
+	 * @param rhs tensor of values to insert, it's shape must match the view described by the indices
+	 * @return btensor& reference to this
+	 */
+	btensor &index_put_(std::initializer_list<torch::indexing::TensorIndex> indices, const Scalar &v);
 
 	// iterator
 	block_list_t::const_iterator begin() const { return blocks.begin(); }
@@ -193,9 +354,26 @@ class btensor
 	block_list_t::const_reverse_iterator crbegin() const { return blocks.crbegin(); }
 	block_list_t::const_reverse_iterator crend() const { return blocks.crend(); }
 
+	/**
+	 * @brief Convert the block tensor to a regular torch tensor
+	 *
+	 * @return torch::Tensor
+	 */
 	torch::Tensor to_dense() const;
-	// properties check
+	/**
+	 * @brief Check that the tensor is correct.
+	 *
+	 * No forbidden element allocated, torch tensor sizes matches their sectors sizes, etc.
+	 *
+	 * return a string explaining violations.
+	 *
+	 * @return std::string
+	 */
 	static std::string check_tensor(const btensor &);
+	/**
+	 * @brief throw an error in any situation where check_tensor return a non-empty string
+	 *
+	 */
 	static void throw_bad_tensor(const btensor &);
 	// Algebra !!Attention!! most of this stuff isn't implemented.
 	btensor add(const btensor &other, Scalar alpha = 1) const;
@@ -252,24 +430,41 @@ class btensor
 	 * @brief reshape the tensor into the shape of the supplied tensor.
 	 *
 	 * The supplied tensor must have conserved quantities compatible with this.
-	 * Therefore: - the conservation rules must match.
-	 *            - the conserved quantities of the blocks of this must factorize into the conserved quanity of the
+	 * Therefore, the conserved quantities of the blocks of this must factorize into the conserved quantity of the
 	 * matching block of the arguement. Can reshape into a tensor of greater rank.
+	 *
+	 * When overwrite_c_vals is true, the selection rule will be overwritten with the one of the input tensor.
+	 * The non-zero blocks of this must satisfy the selection rule of the proposed output shape.
+	 *
+	 * @tparam overwrite_c_vals when true, the conserved quantities on the index and the selection rules are
+	 overwritten. The compatibility requirement are not quite the same.
 	 * @param other Tensor with the target shape.
 	 * @return btensor Reshaped tensor
 	 */
-	btensor reshape(const btensor &other) const;
+	template <bool overwrite_c_vals = false>
+	btensor reshape_as(const btensor &other) const;
 	/**
-	 * @brief reshape the btensor into a btensor of a lower rank
+	 * @brief Reshape the btensor into a btensor of a lower rank
 	 *
-	 * redirect to reshape(torch::IntArrayRef), because GCC can't resolve the overload table in some cases without this
-	 * helper. clang and MSVC are fine without this.
+	 * This function is significantly different from torch's equivalent, both in the required input and the resulting
+	 * tensor. The reshaping is done once on the block structure and once on the block content. Consequently, the
+	 * content is permuted relative to the same reshape done on a regular tensor.
 	 *
-	 * @param a list for reshape(torch::IntArrayRef)
+	 * @param index_group each integer mark the first element of the next bundle of index to group
+	 * for exemple: [3,4,5] would group index 0,1,2 into a single new index, leave 3 and 4 as they are, and
+	 * group 5..rank-1 together
 	 * @return btensor reshaped tensor
 	 */
 	btensor reshape(std::initializer_list<int64_t> a) { return reshape(torch::IntArrayRef(a)); }
-	btensor reshape_as(torch::IntArrayRef shape) const;
+	/**
+	 * @brief exchange the order of two indices.
+	 *
+	 * Simplify to a matrix transpose for tensors of rank 2.
+	 *
+	 * @param dim0
+	 * @param dim1
+	 * @return btensor
+	 */
 	btensor transpose(int64_t dim0, int64_t dim1) const;
 	btensor transpose(torch::Dimname dim0, torch::Dimname dim1) const;
 	btensor &transpose_(int64_t dim0, int64_t dim1);
@@ -291,7 +486,15 @@ class btensor
 
   private:
 	size_t rank;
+	/**
+	 * @brief number of section for each of the dimensions of the tensor
+	 * 
+	 */
 	index_list sections_by_dim;
+	/**
+	 * @brief packed list of the size of each section along all dimensions.
+	 * 
+	 */
 	index_list sections_sizes; // for non-empty slices, this is strictly redundent: the information could be found by
 	                           // inspecting the blocks
 	// truncation should remove any and all empty slices, but user-written tensor could have empty slices.
@@ -403,7 +606,32 @@ class btensor
 	{
 		return new_block_list_apply_to_all_blocks([](auto &) {}, std::forward<F>(f), std::forward<Args>(args)...);
 	}
+
 };
+
+/**
+ * @brief Construct an empty block tensor from the supplied btensors.
+ *
+ * The output structure is the same as that of the tensor product of the supplied tensors.
+ *
+ * @param btens_list list of block tensors
+ * @return btensor
+ */
+inline btensor empty_tensor_from(std::initializer_list<btensor> btens_list)
+{
+	// now what's missing is a way to make view on btensors. For that i will almost definitly need to reproduce the
+	// equivalent part of pytorch. I had hoped to make that at a much later point, but it needed now. This function will
+	// be very useful to implement the tensor (kronecker) product
+
+	auto out = *btens_list.begin();
+	auto tens_it = btens_list.begin();
+	++tens_it;
+	for (; tens_it != btens_list.end();++tens_it)
+	{
+		out = out.tensor_product_shape(*tens_it);
+	}
+	return out;
+}
 
 size_t get_refcount(const torch::Tensor &tens);
 
@@ -534,9 +762,9 @@ qtt_TEST_CASE("btensor")
 {
 	using cqt = conserved::C<5>; // don't put negative number in the constructor and expect sensible results.
 	using index = btensor::index_list;
-	any_quantity flux(cqt(0));
+	any_quantity selection_rule(cqt(0)); // DMRJulia flux
 
-	btensor A({{{2, cqt(0)}, {3, cqt(1)}}, {{2, cqt(0)}, {3, cqt(1).inverse()}}}, flux);
+	btensor A({{{2, cqt(0)}, {3, cqt(1)}}, {{2, cqt(0)}, {3, cqt(1).inverse()}}}, selection_rule);
 	qtt_CHECK(A.end() - A.begin() == 0);
 	auto A00 = torch::rand({2, 2});
 	auto A11 = torch::rand({3, 3});
@@ -572,10 +800,18 @@ qtt_TEST_CASE("btensor")
 		qtt_CHECK(torch::allclose(C.block_at({1, 0, 0}), C100));
 		qtt_CHECK(torch::allclose(C.block_at({1, 1, 1}), C111));
 	}
+	qtt_SUBCASE("Tensorproduct from tensordot")
+	{
+		btensor C;
+		qtt_CHECK_NOTHROW(C = A.tensordot(A, {}, {}));
+		qtt_CHECK( C.dim() == A.dim()*2);
+		fmt::print("{}\n",A);
+		fmt::print("{}\n",C);
+	}
 	qtt_SUBCASE("addition")
 	{
-		btensor AA00({{{2, cqt(0)}, {3, cqt(1)}}, {{2, cqt(0)}, {3, cqt(1).inverse()}}}, flux);
-		btensor AA11({{{2, cqt(0)}, {3, cqt(1)}}, {{2, cqt(0)}, {3, cqt(1).inverse()}}}, flux);
+		btensor AA00({{{2, cqt(0)}, {3, cqt(1)}}, {{2, cqt(0)}, {3, cqt(1).inverse()}}}, selection_rule);
+		btensor AA11({{{2, cqt(0)}, {3, cqt(1)}}, {{2, cqt(0)}, {3, cqt(1).inverse()}}}, selection_rule);
 		AA00.block({0, 0}) = A00;
 		AA11.block({1, 1}) = A11;
 		AA00.add_(AA11);
@@ -622,8 +858,8 @@ qtt_TEST_CASE("btensor")
 		qtt_CHECK_NOTHROW(B.block_at({3})); // on-diagonal block of A
 		qtt_CHECK_THROWS(B.block_at({1}));  // off-diagonal block of A, empty
 		qtt_CHECK_THROWS(B.block_at({2}));  // off-diagonal block of A, empty
-		qtt_CHECK((*B.block_quantities({0}).begin()) == any_quantity(flux));
-		qtt_CHECK((*B.block_quantities({3}).begin()) == any_quantity(flux));
+		qtt_CHECK((*B.block_quantities({0}).begin()) == any_quantity(selection_rule));
+		qtt_CHECK((*B.block_quantities({3}).begin()) == any_quantity(selection_rule));
 		qtt_CHECK((*B.block_quantities({1}).begin()) == any_quantity(cqt(4))); // This is the correct value indeed.
 		qtt_CHECK((*B.block_quantities({2}).begin()) == any_quantity(cqt(1)));
 		qtt_CHECK((*B.block_sizes({0}).begin()) == 4);

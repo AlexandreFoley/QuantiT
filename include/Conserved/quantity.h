@@ -34,7 +34,7 @@ namespace conserved
 /**
  * @brief C_N, the cyclic group with N elements. The conserved quantities
  * associated with discrete rotationnal symmetry are element of this familly of groups.
- * 
+ *
  * Oftentime called Z_N in the literature.
  * This would create a name clash with the infinite group Z.
  *
@@ -44,64 +44,67 @@ namespace conserved
 template <uint16_t mod>
 class C
 {
-public:
+  public:
 	static constexpr uint16_t N = mod;
 
-private:
+  private:
 	static_assert(N > 0, "only value greater than zero make sense, only "
 	                     "greater than 1 are useful.");
 	uint16_t val;
 
-public:
-	constexpr static bool is_Abelian = true; //Make sure that your group is actually Abelian. I can't think of a way to check this property in finite time using the compiler.
+  public:
+	constexpr static bool is_Abelian = true; // Make sure that your group is actually Abelian. I can't think of a way to
+	                                         // check this property in finite time using the compiler.
 
-	//TODO: add a constructor that accept and treats signed integers. currently, negative number are accepted and won't map to inv(abs(i)) like we would expect based on Z's behavior.
-	//Note: simply using signed integer is not really an option: we would have a degenerate reprentation: -n == N-n. This would complicate comparison.
-	constexpr C(uint16_t _val) // constexpr value contructor, necessary for one of the checks for any_quantity
-	    noexcept : val(_val)
+	// Can't have this one with the signed integer case because of interference from implicit conversions of fundamental
+	// types explicit constexpr C(uint16_t _val) // constexpr value contructor, necessary for one of the checks for
+	// any_quantity
+	//     noexcept
+	//     : val(_val)
+	// {
+	// 	val %= N; // only usage of modulo. that thing is expensive.
+	// 	          // this can be bad, if the input is greater than N,
+	// 	          // it is unclear that the user realize what they're doing.
+	// 	          // Perhaps they made a mistake, but the code will happily keep
+	// 	          // going.
+	// }
+	/**
+	 * @brief constructor using singed integers
+	 *
+	 * allow construction using minus sign as the inverse operation.
+	 *
+	 */
+	constexpr C(int16_t _val) noexcept : val(-((_val < 0) * 2 - 1) * _val)
 	{
-		val %= N; // only usage of modulo. that thing is expensive.
-		          // this can be bad, if the input is greater than N,
-		          // it is unclear that the user realize what they're doing.
-		          // Perhaps they made a mistake, but the code will happily keep
-		          // going.
+		val %= N; // idem as the unsigned integer constructor
 	}
-	constexpr C() : val(0) {} //default to the neutral element.
+	constexpr C() : val(0) {} // default to the neutral element.
 
-	void swap(C& other) noexcept
+	void swap(C &other) noexcept
 	{
 		using std::swap;
 		swap(other.val, val);
 	}
-	constexpr operator uint16_t() noexcept
+	constexpr operator uint16_t() noexcept { return val; }
+	constexpr C &operator+=(C other) noexcept { return op(other); }
+	// this function is what is actually used by the group compositor.
+	constexpr C &op(C other) noexcept { return op(other, true); }
+
+	constexpr C &op(C other, bool cond) noexcept
 	{
-		return val;
-	}
-	constexpr C& operator+=(C other) noexcept
-	{
-		val += other.val;
+		val += cond * other.val;
 		val -= (val >= N) * N;
 		return *this;
 	}
-	// this function is what is actually used by the group compositor.
-	constexpr C& op(C other) noexcept
-	{
-		return (*this) += other;
-	}
-	constexpr C& operator*=(C other) noexcept // in group theory we typically talk of a
+
+	constexpr C &operator*=(C other) noexcept // in group theory we typically talk of a
 	                                          // product operator.
 	{
 		return (*this) += other;
 	}
-	constexpr friend C operator+(C lhs, C rhs) noexcept
-	{
-		return lhs += rhs;
-	}
-	friend constexpr C operator*(C lhs, C rhs) noexcept
-	{
-		return lhs *= rhs;
-	}
-	constexpr C& inverse_() noexcept
+	constexpr friend C operator+(C lhs, C rhs) noexcept { return lhs += rhs; }
+	friend constexpr C operator*(C lhs, C rhs) noexcept { return lhs *= rhs; }
+	constexpr C &inverse_() noexcept
 	{
 		val = N - val;
 		return *this;
@@ -112,16 +115,10 @@ public:
 		return out.inverse_();
 	}
 
-	constexpr bool operator==(C other) const noexcept
-	{
-		return val == other.val;
-	}
-	constexpr bool operator!=(C other) const noexcept
-	{
-		return val != other.val;
-	}
+	constexpr bool operator==(C other) const noexcept { return val == other.val; }
+	constexpr bool operator!=(C other) const noexcept { return val != other.val; }
 
-	friend std::ostream& operator<<(std::ostream& out, const C& c)
+	friend std::ostream &operator<<(std::ostream &out, const C &c)
 	{
 		out << fmt::format("grp::C<{}>({})", C::N, c.val);
 		return out;
@@ -141,73 +138,61 @@ class Z
 {
 	int16_t val;
 
-public:
-	constexpr static bool is_Abelian = true; //Tag that the conserved quantity emerge from an Abelian group.
-	//conserved quantities that emerge from non-abelian symmetries are currently not supported.
-	//This tag MUST be set to true for the conserved quantitie class to be accepted.
+  public:
+	constexpr static bool is_Abelian = true; // Tag that the conserved quantity emerge from an Abelian group.
+	// conserved quantities that emerge from non-abelian symmetries are currently not supported.
+	// This tag MUST be set to true for the conserved quantitie class to be accepted.
 	constexpr Z(int16_t _val) // constexpr value contructor, necessary for one of the checks for any_quantity
-	    noexcept : val(_val)
+	    noexcept
+	    : val(_val)
 	{
 	}
 	constexpr Z() : val(0) {} // constexpr value contructor, necessary for one of the checks for any_quantity
-	constexpr operator uint16_t() noexcept
-	{
-		return val;
-	}
-	void swap(Z& other) noexcept
+	constexpr operator int16_t() noexcept { return val; }
+	void swap(Z &other) noexcept
 	{
 		using std::swap;
 		swap(other.val, val);
 	}
-	constexpr Z& operator+=(Z other) noexcept
-	{
-		val += other.val;
-		return *this;
-	}
-	constexpr Z& operator*=(Z other) noexcept // in group theory we typically talk of a
+	constexpr Z &operator+=(Z other) noexcept { return op(other); }
+	constexpr Z &operator*=(Z other) noexcept // in group theory we typically talk of a
 	                                          // product operator.
 	{
 		return (*this) += other;
 	}
-	friend constexpr Z operator+(Z lhs, Z rhs) noexcept
-	{
-		return lhs += rhs;
-	}
-	friend constexpr Z operator*(Z lhs, Z rhs) noexcept
-	{
-		return lhs *= rhs;
-	}
+	friend constexpr Z operator+(Z lhs, Z rhs) noexcept { return lhs += rhs; }
+	friend constexpr Z operator*(Z lhs, Z rhs) noexcept { return lhs *= rhs; }
 	// Z& op( other) is the function used by any_quantity.
-	constexpr Z& op(Z other) { return (*this) += other; }
-	constexpr Z& inverse_() noexcept
+	constexpr Z &op(Z other) noexcept { return op(other, true); }
+	constexpr Z &op(Z other, bool cond) noexcept
+	{
+
+		val += cond * other.val;
+		return *this;
+	}
+	constexpr Z &inverse_() noexcept
 	{
 		val = -val;
 		return *this;
 	}
-	constexpr Z inverse() const noexcept //must be constexpr, allow compiler to verify a necessary property
+	constexpr Z inverse() const noexcept // must be constexpr, allow compiler to verify a necessary property
 	{
 		Z out(*this);
 		return out.inverse_();
 	}
-	constexpr bool operator==(Z other) const //must be constexpr, allow compiler to verify a necessary property
+	constexpr bool operator==(Z other) const // must be constexpr, allow compiler to verify a necessary property
 	{
 		return val == other.val;
 	}
-	constexpr bool operator!=(Z other) const
-	{
-		return val != other.val;
-	}
+	constexpr bool operator!=(Z other) const { return val != other.val; }
 
-	friend std::ostream& operator<<(std::ostream& out, const Z& c);
+	friend std::ostream &operator<<(std::ostream &out, const Z &c);
 	friend struct fmt::formatter<quantt::conserved::Z>;
 };
 
-inline void swap(Z& lhs, Z& rhs) noexcept
-{
-	lhs.swap(rhs);
-}
+inline void swap(Z &lhs, Z &rhs) noexcept { lhs.swap(rhs); }
 template <uint16_t N>
-void swap(C<N>& lhs, C<N>& rhs) noexcept
+void swap(C<N> &lhs, C<N> &rhs) noexcept
 {
 	lhs.swap(rhs);
 }
@@ -224,43 +209,42 @@ static_assert(is_conserved_quantt_v<C<5>>, "C<5> isn't a group?! something is ve
 qtt_TEST_CASE("simple conserved")
 {
 	using namespace conserved;
-	C<2> c2_1(1);
-	C<2> c2_0(0);
-	C<2> c2_11 = c2_1 * c2_1;
-	qtt_CHECK(c2_0 == c2_11);
+	qtt_SUBCASE("Cyclical conserved values")
+	{
+		C<2> c2_1(1);
+		C<2> c2_0(0);
+		C<2> c2_11 = c2_1 * c2_1;
+		qtt_CHECK(c2_0 == c2_11);
 
-	C<5> c5_3(3);
-	C<5> c5_2(2);
-	qtt_CHECK(c5_3 != c5_2);
-	qtt_CHECK(
-	    c5_3.inverse() * c5_3 ==
-	    C<5>(
-	        0)); // the product with one's own inverse give the trivial element.
-	qtt_CHECK(c5_3.inverse() == c5_2);
-	qtt_CHECK(c5_2.inverse() == c5_3);
-	qtt_CHECK(c5_2.inverse().inverse() ==
-	          c5_2); // inverse twice gives back the original value
-	qtt_CHECK(C<5>(c5_2).inverse_().inverse_() ==
-	          c5_2); // inverse in place twice gives back the original value
-	qtt_CHECK(c5_2.op(c5_2) == C<5>(4));
+		C<5> c5_3(3);
+		C<5> c5_2(2);
+		qtt_CHECK(c5_3 != c5_2);
+		qtt_CHECK(c5_3.inverse() * c5_3 == C<5>(0)); // the product with one's own inverse give the trivial element.
+		qtt_CHECK(c5_3.inverse() == c5_2);
+		qtt_CHECK(c5_2.inverse() == c5_3);
+		qtt_CHECK(c5_2.inverse().inverse() == c5_2);         // inverse twice gives back the original value
+		qtt_CHECK(C<5>(c5_2).inverse_().inverse_() == c5_2); // inverse in place twice gives back the original value
+		qtt_CHECK(c5_2.op(c5_2) == C<5>(4));
+		qtt_CHECK(c5_2.op(c5_2, false) == C<5>(4));
+	}
+	qtt_SUBCASE("signed integer conserved values")
+	{
+		Z Z_1(1);
+		Z Z_2(2);
+		Z Z_11 = Z_1 * Z_1;
+		qtt_CHECK(Z_2 == Z_11);
 
-	Z Z_1(1);
-	Z Z_2(2);
-	Z Z_11 = Z_1 * Z_1;
-	qtt_CHECK(Z_2 == Z_11);
-
-	Z Z_3(3);
-	Z Z_m3(-3);
-	qtt_CHECK(Z_3 != Z_m3);
-	qtt_CHECK(Z_3.inverse() * Z_3 ==
-	          Z(0)); // the product with one's own inverse give the trivial element.
-	qtt_CHECK(Z_3.inverse() == Z_m3);
-	qtt_CHECK(Z_m3.inverse() == Z_3);
-	qtt_CHECK(Z_m3.inverse().inverse() ==
-	          Z_m3); // inverse twice gives back the original value
-	qtt_CHECK(Z(Z_m3).inverse_().inverse_() ==
-	          Z_m3); // inverse in place twice gives back the original value
-	qtt_CHECK(Z_3.op(Z_3) == Z(6));
+		Z Z_3(3);
+		Z Z_m3(-3);
+		qtt_CHECK(Z_3 != Z_m3);
+		qtt_CHECK(Z_3.inverse() * Z_3 == Z(0)); // the product with one's own inverse give the trivial element.
+		qtt_CHECK(Z_3.inverse() == Z_m3);
+		qtt_CHECK(Z_m3.inverse() == Z_3);
+		qtt_CHECK(Z_m3.inverse().inverse() == Z_m3);      // inverse twice gives back the original value
+		qtt_CHECK(Z(Z_m3).inverse_().inverse_() == Z_m3); // inverse in place twice gives back the original value
+		qtt_CHECK(Z_3.op(Z_3) == Z(6));
+		qtt_CHECK(Z_3.op(Z_3,false) == Z(6));
+	}
 }
 
 } // namespace quantt
@@ -268,46 +252,52 @@ qtt_TEST_CASE("simple conserved")
 template <uint16_t N>
 struct fmt::formatter<quantt::conserved::C<N>>
 {
-	constexpr auto parse(format_parse_context& ctx)
+	constexpr auto parse(format_parse_context &ctx)
 	{
 		auto it = ctx.begin(), end = ctx.end();
-		if(it){
-		if (it != end and *it != '}')
-			throw format_error("invalid format, no formatting option for quantt::quantity");
-		if (*it != '}')
-			throw format_error("invalid format,closing brace missing");
-}
+		if (it)
+		{
+			if (it != end and *it != '}')
+				throw format_error("invalid format, no formatting option for quantt::quantity");
+			if (*it != '}')
+				throw format_error("invalid format,closing brace missing");
+		}
 		// Return an iterator past the end of the parsed range:
 		return it;
 	}
 
 	template <class FormatContext>
-	auto format(const quantt::conserved::C<N>& z, FormatContext& ctx)
+	auto format(const quantt::conserved::C<N> &z, FormatContext &ctx)
 	{
 
-		return format_to(ctx.out(), "C<{}>({})", N, z.val); //right now qt.format_to is only define for fmt::format_context. Should work for any output stream.
+		return format_to(
+		    ctx.out(), "C<{}>({})", N,
+		    z.val); // right now qt.format_to is only define for fmt::format_context. Should work for any output stream.
 	}
 };
 template <>
 struct fmt::formatter<quantt::conserved::Z>
 {
-	constexpr auto parse(format_parse_context& ctx)
+	constexpr auto parse(format_parse_context &ctx)
 	{
 		auto it = ctx.begin(), end = ctx.end();
-		if (it){
-		if (it != end and *it != '}')
-			throw format_error("invalid format, no formatting option for quantt::conserved::Z");
-		if (*it != '}')
-			throw format_error("invalid format,closing brace missing");
-}
+		if (it)
+		{
+			if (it != end and *it != '}')
+				throw format_error("invalid format, no formatting option for quantt::conserved::Z");
+			if (*it != '}')
+				throw format_error("invalid format,closing brace missing");
+		}
 		// Return an iterator past the end of the parsed range:
 		return it;
 	}
 
 	template <class FormatContext>
-	auto format(const quantt::conserved::Z& z, FormatContext& ctx)
+	auto format(const quantt::conserved::Z &z, FormatContext &ctx)
 	{
-		return format_to(ctx.out(), "Z({})", z.val); //right now qt.format_to is only define for fmt::format_context. Should work for any output stream.
+		return format_to(
+		    ctx.out(), "Z({})",
+		    z.val); // right now qt.format_to is only define for fmt::format_context. Should work for any output stream.
 	}
 };
 #endif /* EF30AFAC_8403_46CD_A139_264F626DA567 */
