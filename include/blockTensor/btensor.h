@@ -617,7 +617,7 @@ class btensor
  * @param btens_list list of block tensors
  * @return btensor
  */
-inline btensor empty_tensor_from(std::initializer_list<btensor> btens_list)
+inline btensor shape_from(std::initializer_list<btensor> btens_list)
 {
 	// now what's missing is a way to make view on btensors. For that i will almost definitly need to reproduce the
 	// equivalent part of pytorch. I had hoped to make that at a much later point, but it needed now. This function will
@@ -631,6 +631,20 @@ inline btensor empty_tensor_from(std::initializer_list<btensor> btens_list)
 		out = out.tensor_product_shape(*tens_it);
 	}
 	return out;
+}
+/**
+ * @brief  Construct an empty block tensor from the supplied btensors.
+ *
+ * The output structure is the same as that of the tensor product of the supplied tensors.
+ * 
+ * @tparam Args btensors type
+ * @param args btensors value
+ * @return btensor 
+ */
+template<class... Args>
+inline btensor shape_from(Args... args)
+{
+	return shape_from({args...});
 }
 
 size_t get_refcount(const torch::Tensor &tens);
