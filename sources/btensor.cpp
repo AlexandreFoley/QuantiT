@@ -454,10 +454,13 @@ btensor btensor::shape_from(std::initializer_list<int64_t> dims) const
 	{
 		if (a == -1)
 		{
-			auto secsize_beg = in_secdim_it;
+			auto secsize_beg = in_secsizes_it;
 			auto c_val_beg = in_c_vals_it;
-			std::copy(secsize_beg, (in_secsizes_it += *(in_secdim_it)), out_secsize_it);
-			std::copy(c_val_beg, (in_c_vals_it += *(in_secdim_it)), out_c_vals_it);
+			in_c_vals_it += *in_secdim_it;
+			in_secsizes_it += *in_secdim_it;
+			std::copy(secsize_beg, in_secsizes_it, out_secsize_it);
+			fmt::print("{}",*out_c_vals_it);
+			std::copy(c_val_beg, in_c_vals_it, out_c_vals_it);
 			out_secsize_it += *(in_secdim_it);
 			out_c_vals_it += *(in_secdim_it);
 			assert(*out_secdim_it == *in_secdim_it);
@@ -1199,9 +1202,9 @@ bool compatible_c_vals(const btensor &lhs, const btensor &rhs)
 	do
 	{
 		auto lhs_c_vals = lhs.block_quantities(lhs_index);
-		auto rhs_c_vals = lhs.block_quantities(rhs_index);
-		auto lhs_f = std::accumulate(++lhs_c_vals.begin(), lhs_c_vals.end(), *lhs_c_vals.begin(), std::multiplies());
-		auto rhs_f = std::accumulate(++rhs_c_vals.begin(), rhs_c_vals.end(), *rhs_c_vals.begin(), std::multiplies());
+		auto rhs_c_vals = rhs.block_quantities(rhs_index);
+		auto lhs_f = std::accumulate(lhs_c_vals.begin(), lhs_c_vals.end(), lhs.selection_rule->neutral(), std::multiplies());
+		auto rhs_f = std::accumulate(rhs_c_vals.begin(), rhs_c_vals.end(), rhs.selection_rule->neutral(), std::multiplies());
 		out &= lhs_f == rhs_f;
 		increment(lhs_index, lhs.section_numbers(), lhs.dim());
 		increment(rhs_index, rhs.section_numbers(), rhs.dim());
@@ -1220,9 +1223,9 @@ bool compatible_block_size(const btensor &lhs, const btensor &rhs)
 	do
 	{
 		auto lhs_vals = lhs.block_sizes(lhs_index);
-		auto rhs_vals = lhs.block_sizes(rhs_index);
-		auto lhs_f = std::accumulate(++lhs_vals.begin(), lhs_vals.end(), *lhs_vals.begin(), std::multiplies());
-		auto rhs_f = std::accumulate(++rhs_vals.begin(), rhs_vals.end(), *rhs_vals.begin(), std::multiplies());
+		auto rhs_vals = rhs.block_sizes(rhs_index);
+		auto lhs_f = std::accumulate(lhs_vals.begin(), lhs_vals.end(), 1, std::multiplies());
+		auto rhs_f = std::accumulate(rhs_vals.begin(), rhs_vals.end(), 1, std::multiplies());
 		out &= lhs_f == rhs_f;
 		increment(lhs_index, lhs.section_numbers(), lhs.dim());
 		increment(rhs_index, rhs.section_numbers(), rhs.dim());
@@ -1282,7 +1285,7 @@ btensor btensor::reshape_as(const btensor &other) const
 		    fmt::format("incompatible sections layouts {} and {}", sections_by_dim, other.sections_by_dim));
 	// each of those possible block have the same associated flux. (product of all the conserved quantity associated
 	// with the block)
-	any_quantity sel_rul;
+	any_quantity sel_rul(selection_rule->neutral());
 	if constexpr (not overwrite_c_vals)
 	{
 		if (not compatible_c_vals(*this, other))
@@ -1293,7 +1296,7 @@ btensor btensor::reshape_as(const btensor &other) const
 	}
 	else
 	{
-		sel_rul = other.selection_rule.value;
+		sel_rul = other.selection_rule.value.get().clone();
 	}
 	// each of the possible block have the same total number of elements.
 	if (not compatible_block_size(*this, other))
@@ -1328,6 +1331,121 @@ btensor btensor::reshape_as(const btensor &other) const
 // with those explicit instantiation, having the template definition visible should be unnecessary. TODO: am i right?
 template btensor btensor::reshape_as<false>(const btensor &other) const; // explicit instantiation
 template btensor btensor::reshape_as<true>(const btensor &other) const;  // explicit instantiation
+
+
+/**
+ * @brief split the block tensor by their conserved values
+ * 
+ * All of the blocks of each of the tensor given in output have the same conserved value for each dimensions.
+ * The sum of the output tensors equals the input tensor.
+ * 
+ * Consider only the last 2 dimensions when determining the blocks. This is so batched linear algebra benefit from the block structure too.
+ * For tensor networks need, reshape to a rank 2 tensor first.
+ * 
+ * @param tensor 
+ * @return std::vector<btensor> 
+ */
+std::vector<btensor> split_by_cvals(btensor& tensor)
+{
+	//identify sets of blocks with the same c_vals on every index
+	
+	//create a vector of triples containing the relevent c_vals, the bloc index, and the tensor.
+
+	//sort the vector using lexicographical order on the c_vals, and bloc index (c_vals are major, or stable sort with only the c_vals).
+
+	//the vector now contains the tensors in order of c_vals. count the number of distinct c_vals pair, this is the size of the output (single pass)
+	// find the edges for first c_vals, create a btensor with those bloc_index,tensor pairs, emplace in output vector.
+	return std::vector<btensor>();
+}
+/**
+ * @brief make a full torch::tensor from a btensor
+ * 
+ * @param tensor 
+ * @return torch::Tensor 
+ */
+torch::Tensor to_dense(btensor& tensor)
+{
+	return tensor.to_dense();
+}
+/**
+ * @brief make a full torch tensor from a btensor, removes lines and columns of zeros in the last 2 dimensions
+ * 
+ * @param tensor 
+ * @return torch::Tensor 
+ */
+torch::Tensor compact_dense(btensor& tensor)
+{
+	// create the list of <tensorIndex, bloc_position> pairs for all the sections involved.
+	// concatenate the blocs according to their bloc position. 
+	//return the tensor and the list.
+}
+/**
+ * @brief split a full tensor into a block tensor with the specified shape
+ * 
+ * regions of the input tensor that are not allowed by the conservation rules are ignored.
+ * 
+ * @param tensor 
+ * @param shape 
+ * @return btensor 
+ */
+btensor split(torch::Tensor& tensor, btensor& shape,std::vector<std::pair<torch::indexing::TensorIndex,btensor::index_list>>)
+{
+	//check that the sizes are compatible.
+
+	//create a block_list with all allowed element assigned.
+
+	//assign a view on the tensor for each block
+
+	//return!
+}
+/**
+ * @brief Create a btensor from the torch tensor supplied and the shape supplied in arguement
+ * 
+ * The position specification is going to be more complicated than merely a shape.
+ * 
+ * 
+ * @param tensor 
+ * @param shape 
+ * @return btensor 
+ */
+btensor reverse_compact_dense(torch::Tensor& tensor, btensor& shape) //missing argument: tensor to block specification.
+{
+	/*
+	 * for SVD, the U blocs have the row of of their bloc and the column given by their ordering relative to other blocs
+	            the V blocs have to column of their blocs and to row corresponding to the ordering relative to the other blocs.
+	 */
+
+}
+/**
+ * @brief batched singular value decompisation
+ * 
+ * @param tensor 
+ * @return std::tuple<btensor,btensor,btensor> 
+ */
+std::tuple<btensor,btensor,btensor> svd(const btensor& tensor)
+{
+	//extract independant btensors
+	
+	//loop over the independant btensor
+		// convert to regular tensors
+		// svd
+		// split blocks out of U,D and V
+		// accumulate said blocks in output btensors.
+
+	// return output tuple
+}
+
+std::tuple<btensor,btensor,btensor> svd(const btensor& tensor, size_t split)
+{
+	//reshape according to split
+
+	//call batched SVD
+
+	//undo reshape
+
+	//return tuple
+
+}
 
 // btensor btensor::sub(const btensor &other, Scalar alpha) const
 // {

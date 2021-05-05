@@ -246,14 +246,15 @@ class btensor
 	 */
 	btensor basic_create_view(std::initializer_list<int64_t> dims);
 	/**
-	 * @brief compute the shape of the tensor product of this with the other tensor. store the shape information in an empty btensor
-	 * 
+	 * @brief compute the shape of the tensor product of this with the other tensor. store the shape information in an
+	 * empty btensor
+	 *
 	 * If you want to actually proceed to the tensor product, use tensordot with no contracted
-	 * 
-	 * @param other 
-	 * @return btensor 
+	 *
+	 * @param other
+	 * @return btensor
 	 */
-	btensor tensor_product_shape(const btensor & other) const;
+	btensor tensor_product_shape(const btensor &other) const;
 
 	/**
 	 * @brief create a view on the block tensor.
@@ -443,6 +444,18 @@ class btensor
 	 */
 	template <bool overwrite_c_vals = false>
 	btensor reshape_as(const btensor &other) const;
+	std::tuple<btensor, btensor, btensor> svd(const btensor &tensor, size_t split);
+	std::tuple<btensor, btensor, btensor> svd(const btensor &tensor);
+	std::tuple<btensor, btensor, btensor> svd(const btensor &A, size_t split, torch::Scalar tol, size_t min_size,
+	                                          size_t max_size, torch::Scalar pow = 2);
+	std::tuple<torch::Tensor, torch::Tensor, torch::Tensor> svd(btensor &A, size_t split, torch::Scalar tol,
+	                                                            torch::Scalar pow = 2);
+	std::tuple<torch::Tensor, torch::Tensor, torch::Tensor> svd(btensor &A, size_t split);
+	inline std::tuple<torch::Tensor, torch::Tensor, torch::Tensor> svd(btensor &A, int split)
+	{
+		return svd(A, size_t(split));
+	}
+
 	/**
 	 * @brief Reshape the btensor into a btensor of a lower rank
 	 *
@@ -488,12 +501,12 @@ class btensor
 	size_t rank;
 	/**
 	 * @brief number of section for each of the dimensions of the tensor
-	 * 
+	 *
 	 */
 	index_list sections_by_dim;
 	/**
 	 * @brief packed list of the size of each section along all dimensions.
-	 * 
+	 *
 	 */
 	index_list sections_sizes; // for non-empty slices, this is strictly redundent: the information could be found by
 	                           // inspecting the blocks
@@ -606,7 +619,6 @@ class btensor
 	{
 		return new_block_list_apply_to_all_blocks([](auto &) {}, std::forward<F>(f), std::forward<Args>(args)...);
 	}
-
 };
 
 /**
@@ -622,11 +634,10 @@ inline btensor shape_from(std::initializer_list<btensor> btens_list)
 	// now what's missing is a way to make view on btensors. For that i will almost definitly need to reproduce the
 	// equivalent part of pytorch. I had hoped to make that at a much later point, but it needed now. This function will
 	// be very useful to implement the tensor (kronecker) product
-
 	auto out = *btens_list.begin();
 	auto tens_it = btens_list.begin();
 	++tens_it;
-	for (; tens_it != btens_list.end();++tens_it)
+	for (; tens_it != btens_list.end(); ++tens_it)
 	{
 		out = out.tensor_product_shape(*tens_it);
 	}
@@ -636,12 +647,12 @@ inline btensor shape_from(std::initializer_list<btensor> btens_list)
  * @brief  Construct an empty block tensor from the supplied btensors.
  *
  * The output structure is the same as that of the tensor product of the supplied tensors.
- * 
+ *
  * @tparam Args btensors type
  * @param args btensors value
- * @return btensor 
+ * @return btensor
  */
-template<class... Args>
+template <class... Args>
 inline btensor shape_from(Args... args)
 {
 	return shape_from({args...});
@@ -771,6 +782,54 @@ struct btensor::const_block_prop_view : btensor::block_prop_view<const_iterator>
 	{
 	}
 };
+/**
+ * @brief tensor contraction, or tensor dot product.
+ *
+ * @param left the left tensor
+ * @param right the right tensor
+ * @param dims_left dimensions to contract on the left tensor
+ * @param dims_right dimensions to contract on the right tensor
+ * @return btensor tensor resulting from the contraction
+ */
+btensor tensordot(const btensor &left, const btensor &right, torch::IntArrayRef dims_left,
+                  torch::IntArrayRef dims_right)
+{
+	return left.tensordot(right, dims_left, dims_right);
+}
+/**
+ * @brief generalized tensor dot product, adds the result of the contraction to a copy of a specified tensor
+ *
+ * @param add tensor into which the dot product is added
+ * @param mul1 right tensor in the contraction
+ * @param mul2 left tensor in the contraction
+ * @param dims1 dimensions of mul1 to contract
+ * @param dims2 dimension of mul2 to contract
+ * @param beta scalar factor to apply to the result of the contraction
+ * @param alpha scalar factor to apply to add
+ * @return btensor
+ */
+btensor tensorgdot(const btensor &add, const btensor &mul1, const btensor &mul2, torch::IntArrayRef dims1,
+                   torch::IntArrayRef dims2, btensor::Scalar beta = 1, btensor::Scalar alpha = 1)
+{
+	return add.tensorgdot(mul1, mul2, dims1, dims2, beta, alpha);
+}
+/**
+ * @brief in-place generalized tensor dot product, adds the result of the contraction to a specified tensor
+ *
+ * @param add tensor into which the dot product is added
+ * @param mul1 right tensor in the contraction
+ * @param mul2 left tensor in the contraction
+ * @param dims1 dimensions of mul1 to contract
+ * @param dims2 dimension of mul2 to contract
+ * @param beta scalar factor to apply to the result of the contraction
+ * @param alpha scalar factor to apply to add
+ * @return btensor reference to the modified added to tensor
+ */
+btensor &tensorgdot_(btensor &add, const btensor &mul1, const btensor &mul2, torch::IntArrayRef dims1,
+                     torch::IntArrayRef dims2, btensor::Scalar beta = 1, btensor::Scalar alpha = 1)
+{
+	return add.tensorgdot_(mul1, mul2, dims1, dims2, beta, alpha);
+}
 
 qtt_TEST_CASE("btensor")
 {
@@ -818,9 +877,13 @@ qtt_TEST_CASE("btensor")
 	{
 		btensor C;
 		qtt_CHECK_NOTHROW(C = A.tensordot(A, {}, {}));
-		qtt_CHECK( C.dim() == A.dim()*2);
-		fmt::print("{}\n",A);
-		fmt::print("{}\n",C);
+		qtt_CHECK(C.dim() == A.dim() * 2);
+		qtt_CHECK(C.block_at({0, 0, 0, 0}).equal(torch::tensordot(A00, A00, {}, {})));
+		qtt_CHECK(C.block_at({0, 0, 1, 1}).equal(torch::tensordot(A00, A11, {}, {})));
+		qtt_CHECK(C.block_at({1, 1, 0, 0}).equal(torch::tensordot(A11, A00, {}, {})));
+		qtt_CHECK(C.block_at({1, 1, 1, 1}).equal(torch::tensordot(A11, A11, {}, {})));
+		// fmt::print("{}\n", A);
+		// fmt::print("{}\n", C);
 	}
 	qtt_SUBCASE("addition")
 	{
@@ -867,7 +930,7 @@ qtt_TEST_CASE("btensor")
 	}
 	qtt_SUBCASE("Reshape")
 	{
-		auto B = A.reshape({});
+		auto B = A.reshape({});             // reshape into a vector.
 		qtt_CHECK_NOTHROW(B.block_at({0})); // on diagonnal block of A
 		qtt_CHECK_NOTHROW(B.block_at({3})); // on-diagonal block of A
 		qtt_CHECK_THROWS(B.block_at({1}));  // off-diagonal block of A, empty
@@ -882,6 +945,23 @@ qtt_TEST_CASE("btensor")
 		qtt_CHECK((*B.block_sizes({2}).begin()) == 6);
 		qtt_CHECK((B.block_at({0}).sizes()) == std::vector<int64_t>{4});
 		qtt_CHECK((B.block_at({3}).sizes()) == std::vector<int64_t>{9});
+		auto C = B.reshape_as(A); // reshape it back to its' original shape.
+		qtt_REQUIRE_NOTHROW(btensor::throw_bad_tensor(C));
+		qtt_CHECK(C.end() - C.begin() == 2);
+		qtt_CHECK_NOTHROW(C.block_at({0, 0}));
+		qtt_CHECK_NOTHROW(C.block_at({1, 1}));
+		qtt_CHECK_THROWS_AS(C.block_at({1, 0}), std::out_of_range);  // there's no block here.
+		qtt_CHECK_THROWS_AS(C.block({1, 0}), std::invalid_argument); // and we can't create one.
+		qtt_CHECK(C.block_at({0, 0}).equal(A.block_at({0, 0})));
+		qtt_CHECK(C.block_at({1, 1}).equal(A.block_at({1, 1})));
+		qtt_CHECK(btensor::check_tensor(C) == "");
+	}
+	qtt_SUBCASE("Shape building tools")
+	{
+		btensor B;
+		btensor C;
+		qtt_CHECK_NOTHROW(B = A.shape_from({-1, 0}));
+		qtt_CHECK_NOTHROW(C = shape_from(A, B));
 	}
 }
 

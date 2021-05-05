@@ -369,7 +369,7 @@ class quantity_vector final : public vquantity_vector, public std::vector<S, All
 		quantity_vector out(size());
 		size_t p = 0;
 		for (; permute_begin != permute_end;
-		     ++permute_begin) // to properly break this up would while reusing the s value would require a coroutine.
+		     ++permute_begin) // to properly break this up would while reusing the s value would require a coroutine. or lazy algorithm (i.e. range)
 		{
 			auto rep = repetition[*permute_begin];
 			auto s = std::reduce(repetition.begin(), repetition.begin() + *permute_begin, 0);
@@ -422,8 +422,8 @@ class quantity_vector final : public vquantity_vector, public std::vector<S, All
 		if (in.vt() != &ar)
 			throw std::bad_cast();
 		const_iterator out;
-		//this silly fidling is only ok with random access iterator
-		auto _diff =  out.base() - static_cast<const S *>(in.base());
+		// this silly fidling is only ok with random access iterator
+		auto _diff = out.base() - static_cast<const S *>(in.base());
 		return out -= _diff;
 	}
 	static reverse_iterator to_S_iterator(std::reverse_iterator<vquantity_vector::iterator> in)
@@ -433,17 +433,18 @@ class quantity_vector final : public vquantity_vector, public std::vector<S, All
 	}
 	static const_reverse_iterator to_S_iterator(std::reverse_iterator<vquantity_vector::const_iterator> in)
 	{
-		return const_reverse_iterator(
-		    to_S_iterator(in.base())); 
-			// base() of reverse_iterator<base_iterator> is of type base_iterator
+		return const_reverse_iterator(to_S_iterator(in.base()));
+		// base() of reverse_iterator<base_iterator> is of type base_iterator
 	}
 	static iterator to_S_iterator(vquantity_vector::iterator in)
 	{
 		if (in.vt() != &ar)
+		{
 			throw std::bad_cast();
+		}
 		iterator out;
-		//this silly fidling is only ok with random access iterator
-		auto _diff =  out.base() - static_cast<S *>(in.base());
+		// this silly fidling is only ok with random access iterator
+		auto _diff = out.base() - static_cast<S *>(in.base());
 		return out -= _diff;
 	}
 

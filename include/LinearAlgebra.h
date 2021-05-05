@@ -73,20 +73,20 @@ std::tuple<torch::Tensor,torch::Tensor> truncate(std::tuple<torch::Tensor,torch:
  * can additionnaly truncate the output tensors, if tol != 0. Consult truncate for mor details.
  * output U,D,V such that A = U*diag(D)*V^T
  */
-std::tuple<torch::Tensor,torch::Tensor,torch::Tensor> svd(torch::Tensor A, size_t split,torch::Scalar tol,size_t min_size,size_t max_size, torch::Scalar pow = 2);
-std::tuple<torch::Tensor,torch::Tensor,torch::Tensor> svd(torch::Tensor A, size_t split,torch::Scalar tol, torch::Scalar pow = 2);
-std::tuple<torch::Tensor,torch::Tensor,torch::Tensor> svd(torch::Tensor A, size_t split);
-inline std::tuple<torch::Tensor,torch::Tensor,torch::Tensor> svd(torch::Tensor A, int split){return quantt::svd(A,size_t(split) );}
+std::tuple<torch::Tensor,torch::Tensor,torch::Tensor> svd(torch::Tensor& A, size_t split,torch::Scalar tol,size_t min_size,size_t max_size, torch::Scalar pow = 2);
+std::tuple<torch::Tensor,torch::Tensor,torch::Tensor> svd(torch::Tensor& A, size_t split,torch::Scalar tol, torch::Scalar pow = 2);
+std::tuple<torch::Tensor,torch::Tensor,torch::Tensor> svd(torch::Tensor& A, size_t split);
+inline std::tuple<torch::Tensor,torch::Tensor,torch::Tensor> svd(torch::Tensor &A, int split){return quantt::svd(A,size_t(split) );}
 
-std::tuple<torch::Tensor,torch::Tensor> eig(torch::Tensor A, size_t split);
-inline std::tuple<torch::Tensor,torch::Tensor> eig(torch::Tensor A, int split){return quantt::eig(A,size_t(split) );}
-std::tuple<torch::Tensor,torch::Tensor> eig(torch::Tensor A, size_t split,torch::Scalar tol, torch::Scalar pow = 1);
-std::tuple<torch::Tensor,torch::Tensor> eig(torch::Tensor A, size_t split,torch::Scalar tol,size_t min_size,size_t max_size, torch::Scalar pow = 1);
+std::tuple<torch::Tensor,torch::Tensor> eig(torch::Tensor &A, size_t split);
+inline std::tuple<torch::Tensor,torch::Tensor> eig(torch::Tensor &A, int split){return quantt::eig(A,size_t(split) );}
+std::tuple<torch::Tensor,torch::Tensor> eig(torch::Tensor &A, size_t split,torch::Scalar tol, torch::Scalar pow = 1);
+std::tuple<torch::Tensor,torch::Tensor> eig(torch::Tensor &A, size_t split,torch::Scalar tol,size_t min_size,size_t max_size, torch::Scalar pow = 1);
 
-std::tuple<torch::Tensor,torch::Tensor> symeig(torch::Tensor A, size_t split);
-inline std::tuple<torch::Tensor,torch::Tensor> symeig(torch::Tensor A, int split){return quantt::symeig(A,size_t(split) );}
-std::tuple<torch::Tensor,torch::Tensor> symeig(torch::Tensor A, size_t split,torch::Scalar tol, torch::Scalar pow = 1);
-std::tuple<torch::Tensor,torch::Tensor> symeig(torch::Tensor A, size_t split,torch::Scalar tol, size_t min_size,size_t max_size,torch::Scalar pow = 1);
+std::tuple<torch::Tensor,torch::Tensor> symeig(torch::Tensor &A, size_t split);
+inline std::tuple<torch::Tensor,torch::Tensor> symeig(torch::Tensor &A, int split){return quantt::symeig(A,size_t(split) );}
+std::tuple<torch::Tensor,torch::Tensor> symeig(torch::Tensor &A, size_t split,torch::Scalar tol, torch::Scalar pow = 1);
+std::tuple<torch::Tensor,torch::Tensor> symeig(torch::Tensor &A, size_t split,torch::Scalar tol, size_t min_size,size_t max_size,torch::Scalar pow = 1);
 
 qtt_TEST_CASE("Linear Algebra for Tensor network")
 {

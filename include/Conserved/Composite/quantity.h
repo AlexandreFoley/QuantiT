@@ -342,11 +342,14 @@ inline any_quantity operator+(any_quantity_cref lhs, any_quantity_cref rhs)
 inline any_quantity_ref any_quantity::operator=(any_quantity_cref other)
 {
 	impl = other.get().clone(); //allocate a new thing or copy the value? allocating a new thing allow changing the underlying type
+	//allocate a new thing, without easily changing the underlying type, we cannot have a default initialization for any_quantity.
+	// this make for wonky and fiddly code in many situation.
+	//The only other valid option is to test the type and take a decision.
 	return *this;
 }
 inline any_quantity_ref any_quantity::operator=(any_quantity_ref other)
 {
-	return operator=(any_quantity(other));
+	return operator=(any_quantity_cref(other));
 }
 inline any_quantity_ref any_quantity::operator+=(any_quantity_cref other)
 {
@@ -376,6 +379,7 @@ inline any_quantity_ref::operator any_quantity_cref() const
 }
 inline any_quantity_ref& any_quantity_ref::operator=(any_quantity_cref other)
 {
+	auto a = get()*other.get();
 	get() = other.get();
 	return *this;
 }
