@@ -13,6 +13,7 @@
 
 #ifndef A0DBDDD7_5F5B_48D3_A287_E11E64C8B84C
 #define A0DBDDD7_5F5B_48D3_A287_E11E64C8B84C
+#include <type_traits>
 #include <utility>
 // with c++20, we can use unique_type = decltype([]{}), to get a completly unique type, even if all the other
 // template argument are identical. Doing that mean that every time the template is explicitly written, a new type is
@@ -38,6 +39,9 @@ template <class content, class owner, class cref_type = const content &, class u
 	property() = default;
 	property(cref_type val)
 	    : value(val) {} // private constructor, allows owning class to construct without check if wanted.
+	template<class... Args,class E = std::enable_if_t<std::is_constructible_v<content, Args...>> >
+	property(Args... args):value(std::forward<Args>(args)...) {}
+
 	property(content &&val)
 	    : value(std::move(val)) {} // private constructor, allows owning class to construct without check if wanted.
 	// basically, the only thing to do with this for non-friend is to look at or copy the content.

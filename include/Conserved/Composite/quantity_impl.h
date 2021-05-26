@@ -85,6 +85,8 @@ class vquantity
 	virtual vquantity &operator=(const vquantity &) = 0;
 	virtual bool operator==(const vquantity &) const = 0;
 	virtual bool operator!=(const vquantity &) const = 0;
+	virtual bool operator<(const vquantity &) const = 0;
+	virtual bool operator>(const vquantity &) const = 0;
 	virtual bool same_type(const vquantity &other) const = 0;
 	virtual void swap(vquantity &) = 0;
 	virtual auto format_to(fmt::format_context &ctx) const -> decltype(ctx.out()) = 0;
@@ -134,6 +136,10 @@ class quantity final : public vquantity
 	bool operator!=(const quantity &other) const;
 	bool operator!=(const vquantity &other) const override;
 	bool same_type(const vquantity &other) const override;
+	bool operator<(const vquantity &) const override;
+	bool operator<(const quantity &other) const;
+	bool operator>(const vquantity &) const override;
+	bool operator>(const quantity &other) const;
 	void swap(vquantity &other) override;
 
 	std::unique_ptr<vquantity_vector> make_vector(size_t cnt) const override;
@@ -273,6 +279,27 @@ template <class... T>
 bool quantity<T...>::operator!=(const vquantity &other) const
 {
 	return operator!=(dynamic_cast<const quantity<T...> &>(other));
+}
+template <class... T>
+bool quantity<T...>::operator<(const quantity<T...> &other) const
+{
+	return val < other.val;
+}
+template <class... T>
+bool quantity<T...>::operator<(const vquantity &other) const
+{
+	return operator<(dynamic_cast<const quantity<T...> &>(other));
+}
+
+template <class... T>
+bool quantity<T...>::operator>(const quantity<T...> &other) const
+{
+	return val > other.val;
+}
+template <class... T>
+bool quantity<T...>::operator>(const vquantity &other) const
+{
+	return operator>(dynamic_cast<const quantity<T...> &>(other));
 }
 template <class... T>
 void quantity<T...>::swap(quantity<T...> &other)

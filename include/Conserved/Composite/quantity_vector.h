@@ -14,8 +14,8 @@
 #ifndef D34E37A6_732F_4F45_9171_6B931CC1F812
 #define D34E37A6_732F_4F45_9171_6B931CC1F812
 
-#include "Conserved/Composite/quantity_vector_impl.h"
 #include "Conserved/Composite/quantity.h"
+#include "Conserved/Composite/quantity_vector_impl.h"
 #include "Conserved/quantity.h"
 #include <vector>
 

@@ -73,10 +73,18 @@ class C
 	 *
 	 * allow construction using minus sign as the inverse operation.
 	 *
+	 * 
 	 */
-	constexpr C(int16_t _val) noexcept : val(-((_val < 0) * 2 - 1) * _val)
+	constexpr C(int16_t _val) noexcept : val( (_val < 0)*N + (_val%N) )
 	{
-		val %= N; // idem as the unsigned integer constructor
+	/*
+	 * A quick explanation of the init line for val:
+	 * The modulo operation on signed integers preserve the sign of the value, and give the same absolute value for both possible input sign.
+	 * To get the correct (positive) value, the inverse of the absolute of the input, we must first take the modulo of the negative number to bring
+	 * it in range ]-N,N[. Then if it is negative, we add N to bring it in the range [0,N[, and assign to the unsigned storage of this type.
+	 * After this initial assigment business, no modulo operation are ever needed.
+	 */
+
 	}
 	constexpr C() : val(0) {} // default to the neutral element.
 
@@ -116,6 +124,8 @@ class C
 	}
 
 	constexpr bool operator==(C other) const noexcept { return val == other.val; }
+	constexpr bool operator<(C other) const noexcept { return val < other.val; }
+	constexpr bool operator>(C other) const noexcept { return val > other.val; }
 	constexpr bool operator!=(C other) const noexcept { return val != other.val; }
 
 	friend std::ostream &operator<<(std::ostream &out, const C &c)
@@ -185,7 +195,8 @@ class Z
 		return val == other.val;
 	}
 	constexpr bool operator!=(Z other) const { return val != other.val; }
-
+	constexpr bool operator<(Z other) const {return val < other.val;}
+	constexpr bool operator>(Z other) const {return val > other.val;}
 	friend std::ostream &operator<<(std::ostream &out, const Z &c);
 	friend struct fmt::formatter<quantt::conserved::Z>;
 };

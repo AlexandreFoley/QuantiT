@@ -26,3 +26,4 @@
 #include "models.h"
 #include "operators.h"
 #include "tensorgdot.h"
+#include "blockTensor/LinearAlgebra.h"

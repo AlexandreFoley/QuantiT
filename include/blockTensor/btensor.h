@@ -23,9 +23,15 @@
 #include "property.h"
 #include "torch_formatter.h"
 #include <algorithm>
+#include <cstdint>
 #include <exception>
+#include <stdexcept>
+#include <torch/csrc/utils/variadic.h>
 #include <torch/torch.h>
+#include <type_traits>
 #include <vector>
+
+#include "doctest/doctest_proxy.h"
 
 namespace quantt
 {
@@ -92,17 +98,25 @@ class btensor
 	btensor(init_list_t dir_block_size_cqtt, any_quantity_cref selection_rule);
 	btensor(init_list_t dir_block_size_cqtt, any_quantity_cref selection_rule, size_t num_blocks);
 
+	/**
+	 * @brief Construct a new btensor object from a subset of the raw structure. use carefully.
+	 * 
+	 * @param _sections_by_dim 
+	 * @param _c_vals 
+	 * @param _section_sizes 
+	 * @param _sel_rule 
+	 */
 	btensor(index_list _sections_by_dim, any_quantity_vector _c_vals, index_list _section_sizes,
 	        any_quantity _sel_rule);
 	btensor(const btensor &other)
 	    : selection_rule((other.selection_rule.value)), rank(other.rank), sections_by_dim((other.sections_by_dim)),
-	      sections_sizes((other.sections_sizes)), blocks((other.blocks)), c_vals((other.c_vals))
+	      sections_sizes((other.sections_sizes)), blocks_list((other.blocks_list)), c_vals((other.c_vals))
 	{
 	}
 	btensor(btensor &&other)
 	    : selection_rule(std::move(other.selection_rule.value)), rank(other.rank),
 	      sections_by_dim(std::move(other.sections_by_dim)), sections_sizes(std::move(other.sections_sizes)),
-	      blocks(std::move(other.blocks)), c_vals(std::move(other.c_vals))
+	      blocks_list(std::move(other.blocks_list)), c_vals(std::move(other.c_vals))
 	{
 	}
 	btensor &operator=(btensor other)
@@ -186,6 +200,14 @@ class btensor
 	 * @return torch::Tensor&
 	 */
 	torch::Tensor &block(const index_list &); // create the block if it isn't present and allowed
+
+	/**
+	 * @brief const reference to the raw block list.
+	 *
+	 * @return const block_list_t&
+	 */
+	const block_list_t &blocks() const;
+
 	/**
 	 * @brief obtain a view on the conserved quantities of each indices of a block with the block index given in
 	 * argument
@@ -235,7 +257,7 @@ class btensor
 	 * @param dims List of dimensions, put -1 to keep the dimension, specify the index to keep otherwise.
 	 * @return btensor
 	 */
-	btensor shape_from(std::initializer_list<int64_t> dims) const;
+	btensor shape_from(const std::vector<int64_t> &dims) const;
 	/**
 	 * @brief Create a view object on this tensor. Minimum necessary set of feature for tensor network reshape.
 	 *
@@ -244,7 +266,13 @@ class btensor
 	 * @param dims List of dimensions, put -1 to keep the dimension, specify the index to keep otherwise.
 	 * @return btensor&
 	 */
-	btensor basic_create_view(std::initializer_list<int64_t> dims);
+	btensor basic_create_view(const std::vector<int64_t> &dims);
+	/**
+	 * @brief make all the the conserved value and the conservation rule the neutral element of the group. works only on empty tensors.
+	 * 
+	 * @return btensor& 
+	 */
+	btensor& neutral_shape();
 	/**
 	 * @brief compute the shape of the tensor product of this with the other tensor. store the shape information in an
 	 * empty btensor
@@ -342,18 +370,18 @@ class btensor
 	btensor &index_put_(std::initializer_list<torch::indexing::TensorIndex> indices, const Scalar &v);
 
 	// iterator
-	block_list_t::const_iterator begin() const { return blocks.begin(); }
-	block_list_t::const_iterator end() const { return blocks.end(); }
-	block_list_t::const_iterator cbegin() const { return blocks.cbegin(); }
-	block_list_t::const_iterator cend() const { return blocks.cend(); }
-	block_list_t::iterator begin() { return blocks.begin(); }
-	block_list_t::iterator end() { return blocks.end(); }
-	block_list_t::reverse_iterator rbegin() { return blocks.rbegin(); }
-	block_list_t::reverse_iterator rend() { return blocks.rend(); }
-	block_list_t::const_reverse_iterator rbegin() const { return blocks.rbegin(); }
-	block_list_t::const_reverse_iterator rend() const { return blocks.rend(); }
-	block_list_t::const_reverse_iterator crbegin() const { return blocks.crbegin(); }
-	block_list_t::const_reverse_iterator crend() const { return blocks.crend(); }
+	block_list_t::const_iterator begin() const { return blocks_list.begin(); }
+	block_list_t::const_iterator end() const { return blocks_list.end(); }
+	block_list_t::const_iterator cbegin() const { return blocks_list.cbegin(); }
+	block_list_t::const_iterator cend() const { return blocks_list.cend(); }
+	block_list_t::iterator begin() { return blocks_list.begin(); }
+	block_list_t::iterator end() { return blocks_list.end(); }
+	block_list_t::reverse_iterator rbegin() { return blocks_list.rbegin(); }
+	block_list_t::reverse_iterator rend() { return blocks_list.rend(); }
+	block_list_t::const_reverse_iterator rbegin() const { return blocks_list.rbegin(); }
+	block_list_t::const_reverse_iterator rend() const { return blocks_list.rend(); }
+	block_list_t::const_reverse_iterator crbegin() const { return blocks_list.crbegin(); }
+	block_list_t::const_reverse_iterator crend() const { return blocks_list.crend(); }
 
 	/**
 	 * @brief Convert the block tensor to a regular torch tensor
@@ -497,6 +525,39 @@ class btensor
 	btensor &tensorgdot_(const btensor &mul1, const btensor &mul2, torch::IntArrayRef dims1, torch::IntArrayRef dims2,
 	                     Scalar beta = 1, Scalar alpha = 1);
 
+	/**
+	 * @brief Shifts the conserved quantities of one dimension of the tensor, applies the opposite shift to the
+	 * conservation rule.
+	 *
+	 * @param shift shift to apply
+	 * @param dim dimension to which the shift is applied
+	 */
+	btensor& cval_shift(any_quantity_cref shift, int64_t dim);
+	/**
+	 * @brief Shifts the conserved quantities of one dimension of the tensor without regards for the conservation laws.
+	 *
+	 * Can only be applied to empty tensors.
+	 *
+	 * @param shift shift to apply
+	 * @param dim dimension to which the shift is applied
+	 */
+	 btensor& non_conserving_cval_shift(any_quantity_cref shift, int64_t dim);
+
+	/**
+	 * @brief Modify the selection rule by the value of shift. Can only be done on empty tensors .
+	 * 
+	 * @param shift 
+	 * @return btensor& 
+	 */
+	btensor& shift_selection_rule(any_quantity_cref shift);
+
+	/**
+	 * @brief Reserve space in the block list
+	 * 
+	 * @param N number of blocks for which to reserve space
+	 */
+	void reserve_space(size_t N);
+
   private:
 	size_t rank;
 	/**
@@ -511,11 +572,26 @@ class btensor
 	index_list sections_sizes; // for non-empty slices, this is strictly redundent: the information could be found by
 	                           // inspecting the blocks
 	// truncation should remove any and all empty slices, but user-written tensor could have empty slices.
-	block_list_t blocks; //
+	block_list_t blocks_list; //
 	any_quantity_vector
 	    c_vals; // dmrjulia equiv: QnumSum in the QTensor class. This structure doesn't need the full list (QnumMat)
 	friend struct fmt::formatter<quantt::btensor>;
 
+	/**
+	 * @brief private, mutable version of the public function. With some const cast they can share implementation.
+	 * 
+	 * @param index 
+	 * @return std::tuple<any_quantity_vector::iterator, any_quantity_vector::iterator> 
+	 */
+	std::tuple<any_quantity_vector::iterator, any_quantity_vector::iterator> section_conserved_qtt_range(
+	    size_t index);
+	/**
+	 * @brief common part of conserving and non conserving shift.
+	 *
+	 * @param shift
+	 * @param dim
+	 */
+	void shift_impl(any_quantity_cref shift, int64_t dim);
 	/**
 	 * @brief apply a function to all torch tensors contained in this
 	 *
@@ -529,7 +605,7 @@ class btensor
 	template <class A, class F, class... Args>
 	void apply_to_all_blocks(A &&a, F &&f, Args &&...args)
 	{
-		for (auto &b : blocks)
+		for (auto &b : blocks_list)
 		{
 			a(std::get<0>(b));
 			std::invoke(std::forward<F>(f), std::get<1>(b), std::forward<Args>(args)...);
@@ -561,7 +637,7 @@ class btensor
 	template <class A, class F, class... Args>
 	void force_inplace_apply_to_all_blocks(A &&a, F &&f, Args &&...args)
 	{
-		for (auto &b : blocks)
+		for (auto &b : blocks_list)
 		{
 			a(std::get<0>(b));
 			std::get<1>(b) = std::invoke(std::forward<F>(f), std::get<1>(b), std::forward<Args>(args)...);
@@ -596,8 +672,8 @@ class btensor
 	block_list_t new_block_list_apply_to_all_blocks(A &&a, F &&f, Args &&...args) const
 	{
 		block_list_t new_blocks;
-		new_blocks.reserve(blocks.size());
-		for (auto &b : blocks)
+		new_blocks.reserve(blocks_list.size());
+		for (auto &b : blocks_list)
 		{
 			new_blocks.insert(new_blocks.end(), std::get<0>(b),
 			                  std::invoke(std::forward<F>(f), std::get<1>(b), std::forward<Args>(args)...));
@@ -652,11 +728,14 @@ inline btensor shape_from(std::initializer_list<btensor> btens_list)
  * @param args btensors value
  * @return btensor
  */
-template <class... Args>
+template <class... Args, class Enabled = std::enable_if_t<std::conjunction_v<std::is_same<Args, btensor>...>>>
 inline btensor shape_from(Args... args)
 {
+	static_assert(std::conjunction_v<std::is_same<Args, btensor>...>,
+	              "All the arguments must be btensor to get into this function, don't try to side-step the enable if.");
 	return shape_from({args...});
 }
+
 
 size_t get_refcount(const torch::Tensor &tens);
 
@@ -731,13 +810,13 @@ struct btensor::const_block_prop_iter : btensor::block_prop_iter<const_value_ite
 		block_prop_iter<const_value_iter>::operator--();
 		return *this;
 	}
-	const_block_prop_iter &operator++(int)
+	const_block_prop_iter operator++(int)
 	{
 		auto out = *this;
 		block_prop_iter<const_value_iter>::operator++();
 		return out;
 	}
-	const_block_prop_iter &operator--(int)
+	const_block_prop_iter operator--(int)
 	{
 		auto out = *this;
 		block_prop_iter<const_value_iter>::operator--();
@@ -791,8 +870,8 @@ struct btensor::const_block_prop_view : btensor::block_prop_view<const_iterator>
  * @param dims_right dimensions to contract on the right tensor
  * @return btensor tensor resulting from the contraction
  */
-btensor tensordot(const btensor &left, const btensor &right, torch::IntArrayRef dims_left,
-                  torch::IntArrayRef dims_right)
+inline btensor tensordot(const btensor &left, const btensor &right, torch::IntArrayRef dims_left,
+                         torch::IntArrayRef dims_right)
 {
 	return left.tensordot(right, dims_left, dims_right);
 }
@@ -808,8 +887,8 @@ btensor tensordot(const btensor &left, const btensor &right, torch::IntArrayRef 
  * @param alpha scalar factor to apply to add
  * @return btensor
  */
-btensor tensorgdot(const btensor &add, const btensor &mul1, const btensor &mul2, torch::IntArrayRef dims1,
-                   torch::IntArrayRef dims2, btensor::Scalar beta = 1, btensor::Scalar alpha = 1)
+inline btensor tensorgdot(const btensor &add, const btensor &mul1, const btensor &mul2, torch::IntArrayRef dims1,
+                          torch::IntArrayRef dims2, btensor::Scalar beta = 1, btensor::Scalar alpha = 1)
 {
 	return add.tensorgdot(mul1, mul2, dims1, dims2, beta, alpha);
 }
@@ -825,8 +904,8 @@ btensor tensorgdot(const btensor &add, const btensor &mul1, const btensor &mul2,
  * @param alpha scalar factor to apply to add
  * @return btensor reference to the modified added to tensor
  */
-btensor &tensorgdot_(btensor &add, const btensor &mul1, const btensor &mul2, torch::IntArrayRef dims1,
-                     torch::IntArrayRef dims2, btensor::Scalar beta = 1, btensor::Scalar alpha = 1)
+inline btensor &tensorgdot_(btensor &add, const btensor &mul1, const btensor &mul2, torch::IntArrayRef dims1,
+                            torch::IntArrayRef dims2, btensor::Scalar beta = 1, btensor::Scalar alpha = 1)
 {
 	return add.tensorgdot_(mul1, mul2, dims1, dims2, beta, alpha);
 }
@@ -955,6 +1034,22 @@ qtt_TEST_CASE("btensor")
 		qtt_CHECK(C.block_at({0, 0}).equal(A.block_at({0, 0})));
 		qtt_CHECK(C.block_at({1, 1}).equal(A.block_at({1, 1})));
 		qtt_CHECK(btensor::check_tensor(C) == "");
+		{
+			btensor A({{{2, cqt(0)}, {3, cqt(1)}},
+			           {{1, cqt(1)}, {2, cqt(0)}, {3, cqt(-1)}, {1, cqt(1)}},
+			           {{3, cqt(0)}, {2, cqt(-2)}, {2, cqt(-1)}}},
+			          selection_rule);
+			A.block({0, 0, 2}) = torch::rand({2, 1, 2});
+			A.block({0, 1, 0}) = torch::rand({2, 2, 3});
+			A.block({0, 3, 2}) = torch::rand({2, 1, 2});
+			A.block({1, 0, 1}) = torch::rand({3, 1, 2});
+			A.block({1, 1, 2}) = torch::rand({3, 2, 2});
+			A.block({1, 2, 0}) = torch::rand({3, 3, 3});
+			A.block({1, 3, 1}) = torch::rand({3, 1, 2});
+			qtt_CHECK_NOTHROW(btensor::throw_bad_tensor(A));
+			btensor B;
+			qtt_CHECK_NOTHROW(B = A.reshape({1}));
+		}
 	}
 	qtt_SUBCASE("Shape building tools")
 	{
@@ -992,7 +1087,7 @@ struct fmt::formatter<quantt::btensor>
 		constexpr auto btensor_fmt_blocks = "block at {}\n {}\n";
 		auto out = format_to(ctx.out(), btensor_fmt_string, t.rank, t.selection_rule, t.sections_by_dim,
 		                     t.sections_sizes, t.c_vals);
-		for (const auto &b : t.blocks)
+		for (const auto &b : t.blocks_list)
 		{
 			out = format_to(out, btensor_fmt_blocks, b.first, b.second);
 		}
