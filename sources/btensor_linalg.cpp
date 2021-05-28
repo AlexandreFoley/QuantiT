@@ -49,10 +49,10 @@ btensor::block_list_t reorder_by_cvals(const btensor &tensor)
 	std::stable_sort(out.begin(), out.end(),
 	                 [r = tensor.dim(), row_qtt = row_start, col_qtt = col_start](auto &&a, auto &&b)
 	                 {
-		                 const auto row_a_qtt = row_qtt[a.first[r - 2]];
-		                 const auto row_b_qtt = row_qtt[b.first[r - 2]];
-		                 const auto col_a_qtt = col_qtt[a.first[r - 1]];
-		                 const auto col_b_qtt = col_qtt[b.first[r - 1]];
+		                 const auto& row_a_qtt = row_qtt[a.first[r - 2]];
+		                 const auto& row_b_qtt = row_qtt[b.first[r - 2]];
+		                 const auto& col_a_qtt = col_qtt[a.first[r - 1]];
+		                 const auto& col_b_qtt = col_qtt[b.first[r - 1]];
 
 		                 bool out = row_a_qtt < row_b_qtt;
 		                 out |= (row_a_qtt == row_b_qtt) and (col_a_qtt < col_b_qtt);

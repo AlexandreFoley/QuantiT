@@ -10,7 +10,8 @@
  * Copyright (c) 2020 Alexandre Foley
  * All rights reserved
  */
-#include "Conserved/Composite/quantity.h"
+#include "Conserved/Composite/cquantity.h"
+#include "Conserved/Composite/quantity_vector.h"
 #include "Conserved/quantity.h"
 #include <fmt/core.h>
 #include <fmt/format.h>

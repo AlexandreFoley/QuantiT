@@ -31,8 +31,10 @@ namespace quantt
 {
 // doing away with those reference like class won't be easy. First attempt was a failure.
 // TODO: Do away with those reference class. They proving ever more troublesome.
-class any_quantity_ref;
-class any_quantity_cref;
+// class any_quantity_ref;
+// class any_quantity_cref;
+using any_quantity_cref = const vquantity &;
+using any_quantity_ref = vquantity &;
 class any_quantity;
 /**
  * @brief wrapper for the polymorphic composite groups from vquantity.h that provide value semantics
@@ -43,8 +45,8 @@ class any_quantity final
 {
 	std::unique_ptr<vquantity> impl;
 
-	friend any_quantity_ref;
-	friend any_quantity_cref;
+	// friend any_quantity_ref;
+	// friend any_quantity_cref;
 
   public:
 	any_quantity(const vquantity &other) : impl(other.clone()) {}
@@ -64,9 +66,9 @@ class any_quantity final
 	template <class... Groups,
 	          class = std::enable_if_t< // instantiate this template only if the following condition are satisfied:
 	              !std::disjunction_v<std::is_same<Groups, any_quantity_cref>..., // refuse any reference type
-	                                     std::is_same<Groups, any_quantity_ref>...,  // refuse any ref type
-	                                     std::is_same<Groups,  any_quantity>...>      // no recursion.
-	              and conserved::all_group_v<Groups...> > > // all element satisfy the constraint of an abelian group
+	                                  std::is_same<Groups, any_quantity_ref>...,  // refuse any ref type
+	                                  std::is_same<Groups, any_quantity>...>      // no recursion.
+	              and conserved::all_group_v<Groups...>>> // all element satisfy the constraint of an abelian group
 	any_quantity(Groups... grps) : impl(std::make_unique<quantity<Groups...>>(grps...))
 	{
 		static_assert(conserved::all_group_v<Groups...> and
@@ -82,8 +84,8 @@ class any_quantity final
 	 */
 	any_quantity(); // default to a group that contain only the neutral element. avoid having an unitialized unique_ptr.
 	any_quantity(const any_quantity &other) : impl(other.impl->clone()) {}
-	any_quantity(any_quantity_cref other); // explicit to avoid accidental copies and ambiguous overloads
-	any_quantity(any_quantity_ref other);  // explicit to avoid accidental copies and ambiguous overloads
+	// any_quantity(any_quantity_cref other); // explicit to avoid accidental copies and ambiguous overloads
+	// any_quantity(any_quantity_ref other);  // explicit to avoid accidental copies and ambiguous overloads
 	any_quantity(any_quantity &&) = default;
 
 	vquantity &get();
@@ -172,7 +174,7 @@ class any_quantity final
 	 * @return true : same group element
 	 * @return false : different group element
 	 */
-	friend bool operator==(any_quantity_cref lhs, any_quantity_cref rhs);
+	// friend bool operator==(any_quantity_cref lhs, any_quantity_cref rhs);
 	/**
 	 * @brief different comparison operator
 	 *
@@ -181,91 +183,9 @@ class any_quantity final
 	 * @return true : different group element
 	 * @return false : same group element
 	 */
-	friend bool operator!=(any_quantity_cref lhs, any_quantity_cref rhs);
+	// friend bool operator!=(any_quantity_cref lhs, any_quantity_cref rhs);
 };
-/**
- * @brief Constant reference type for any_quantity.
- *
- * Implements only the const method of any_quantity. consult any_quantity for methods documentation
- *
- * Made to facilitate element by element manipulation within a specialize
- * container for vquantity.
- */
-class any_quantity_cref
-{
-	const vquantity *ref;
-	friend any_quantity_ref;
-	friend any_quantity;
-
-  public:
-	any_quantity_cref() = delete;
-	any_quantity_cref(const vquantity &other) : ref(&other) {}
-	any_quantity_cref(const any_quantity_cref &other) : ref(other.ref) {}
-	any_quantity_cref(const vquantity *other) : ref(other) {}
-
-	any_quantity neutral() const;
-	const vquantity &get() const;
-	any_quantity inverse() const;
-
-	operator const vquantity &() const { return get(); }
-};
-/**
- * @brief Reference type for any_quantity.
- *
- * Implements all the method of any_quantity. consult any_quantity for methods documentation
- *
- * Made to facilitate element by element manipulation within a specialize
- * container for vquantity.
- */
-class any_quantity_ref final
-{
-	vquantity *ref;
-	friend any_quantity_cref;
-	friend any_quantity;
-
-  public:
-	any_quantity_ref() = delete;
-	any_quantity_ref(const any_quantity_ref &) = delete; // for clarity: you can't do that one. would cast away the
-	                                                     // const character.
-	any_quantity_ref(any_quantity_ref &other) : ref(other.ref) {}
-	any_quantity_ref(vquantity &other) : ref(&other) {}
-	any_quantity_ref(vquantity *other) : ref(other) {}
-	operator any_quantity_cref() const;
-	any_quantity_ref &operator=(any_quantity_cref other);
-	any_quantity_ref &operator=(const any_quantity &other);
-
-	any_quantity neutral() const;
-	const vquantity &get() const;
-	vquantity &get();
-
-	any_quantity_ref &operator*=(any_quantity_cref other);
-	any_quantity_ref &operator+=(any_quantity_cref other);
-	any_quantity_ref &op(any_quantity_cref other, bool cond);
-	any_quantity_ref &op(any_quantity_cref other);
-	any_quantity_ref &inverse_();
-	any_quantity inverse() const;
-	void swap(any_quantity_ref other);
-
-	operator const vquantity &() const { return get(); }
-	operator vquantity &() { return get(); }
-};
-
-// method definitions in no particular order...
-inline const vquantity &any_quantity_cref::get() const { return *ref; }
-inline any_quantity any_quantity_cref::inverse() const { return any_quantity(*this).inverse_(); }
-inline any_quantity_ref &any_quantity_ref::inverse_()
-{
-	get().inverse_();
-	return *this;
-}
-inline any_quantity any_quantity_ref::inverse() const { return any_quantity(ref->clone()).inverse_(); }
 inline any_quantity any_quantity::neutral() const { return any_quantity(impl->neutral()); }
-inline any_quantity any_quantity_ref::neutral() const { return any_quantity(get().neutral()); }
-inline any_quantity any_quantity_cref::neutral() const { return any_quantity(get().neutral()); }
-
-inline void any_quantity_ref::swap(any_quantity_ref other) { ref->swap(other.get()); }
-inline any_quantity::any_quantity(any_quantity_cref other) : impl(other.get().clone()) {}
-inline any_quantity::any_quantity(any_quantity_ref other) : impl(other.get().clone()) {}
 
 inline void any_quantity::swap(any_quantity &other) noexcept
 {
@@ -289,36 +209,27 @@ inline any_quantity_ref any_quantity::operator=(const any_quantity &other)
 	*impl = *other.impl;
 	return *this;
 }
-inline void any_quantity::swap(any_quantity_ref other) { impl->swap(other.get()); }
+inline void any_quantity::swap(any_quantity_ref other) { impl->swap(other); }
 inline void swap(any_quantity &lhs, any_quantity &rhs) { lhs.swap(rhs); }
 inline void swap(any_quantity_ref lhs, any_quantity_ref rhs) { lhs.swap(rhs); }
 inline any_quantity::operator any_quantity_cref() const { return any_quantity_cref(*impl.get()); }
 inline any_quantity::operator any_quantity_ref() { return any_quantity_ref(*impl.get()); }
 inline any_quantity_ref any_quantity::operator*=(any_quantity_cref other)
 {
-	impl->op(other.get());
+	impl->op(other);
 	return *this;
 }
 inline any_quantity operator*(any_quantity_cref lhs, any_quantity_cref rhs) { return any_quantity(lhs) *= rhs; }
 inline any_quantity_ref any_quantity::op(any_quantity_cref other, bool cond)
 {
-	impl->op(other.get(), cond);
+	impl->op(other, cond);
 	return *this;
 }
-// any_quantity operator*(any_quantity_cref lhs, any_quantity&& rhs)
-// {
-// 	lhs.get().op_to(*rhs.impl);
-// 	return rhs;
-// }
 inline any_quantity operator+(any_quantity_cref lhs, any_quantity_cref rhs) { return lhs * rhs; }
-// any_quantity operator+(any_quantity_cref lhs, any_quantity&& rhs)
-// {
-// 	return lhs * rhs;
-// }
 inline any_quantity_ref any_quantity::operator=(any_quantity_cref other)
 {
-	impl = other.get().clone(); // allocate a new thing or copy the value? allocating a new thing allow changing the
-	                            // underlying type
+	impl = other.clone(); // allocate a new thing or copy the value? allocating a new thing allow changing the
+	                      // underlying type
 	// allocate a new thing, without easily changing the underlying type, we cannot have a default initialization for
 	// any_quantity.
 	// this make for wonky and fiddly code in many situation.
@@ -328,38 +239,49 @@ inline any_quantity_ref any_quantity::operator=(any_quantity_cref other)
 inline any_quantity_ref any_quantity::operator=(any_quantity_ref other) { return operator=(any_quantity_cref(other)); }
 inline any_quantity_ref any_quantity::operator+=(any_quantity_cref other) { return (*this) *= other; }
 
-inline bool operator!=(any_quantity_cref left, any_quantity_cref right) { return left.get() != (right.get()); }
-inline bool operator==(const any_quantity_cref left, const any_quantity_cref right)
+// inline bool operator!=(any_quantity_cref left, any_quantity_cref right) { return left.operator!=(right); }
+// inline bool operator==(any_quantity_cref left, any_quantity_cref right) { return left.operator==(right); }
+
+/**
+ * @brief out of place inverse on a reference. return a new any_quantity object containing the inverse of this.
+ *
+ *
+ * @return any_quantity
+ */
+inline any_quantity vquantity::inverse() const
 {
-	return left.get() == (right.get());
+	// Need to be defined here because any_quantity isn't defined in quanitity_impl.h.
+	return clone()->inverse_();
+}
+inline any_quantity vquantity::neutral() const
+{
+	return make_neutral();
 }
 
-inline const vquantity &any_quantity_ref::get() const { return *ref; }
-inline vquantity &any_quantity_ref::get() { return *ref; }
-inline any_quantity_ref::operator any_quantity_cref() const { return any_quantity_cref(*ref); }
-inline any_quantity_ref& any_quantity_ref::operator=(any_quantity_cref other)
-{
-	// auto a = get() * other.get();
-	// fmt::print("operator= of any_quantity_ref is very unreliable");
-	ref->operator=(other.get());
-	return *this;
-}
-inline any_quantity_ref &any_quantity_ref::operator=(const any_quantity &other)
-{
-	*ref = other.get();
-	return *this;
-}
-inline any_quantity_ref &any_quantity_ref::operator*=(const any_quantity_cref other)
-{
-	get().op(other.get());
-	return *this;
-}
+// inline const vquantity &any_quantity_ref::get() const { return *ref; }
+// inline vquantity &any_quantity_ref::get() { return *ref; }
+// inline any_quantity_ref::operator any_quantity_cref() const { return any_quantity_cref(*ref); }
+// inline any_quantity_ref& any_quantity_ref::operator=(any_quantity_cref other)
+// {
+// auto a = get() * other.get();
+// fmt::print("operator= of any_quantity_ref is very unreliable");
+// ref->operator=(other.get());
+// return *this;
+// }
+// inline any_quantity_ref &any_quantity_ref::operator=(const any_quantity &other)
+// {
+// 	*ref = other.get();
+// 	return *this;
+// }
+// inline any_quantity_ref &any_quantity_ref::operator*=(const any_quantity_cref other)
+// {
+// 	get().op(other.get());
+// 	return *this;
+// }
 
-inline any_quantity_ref &any_quantity_ref::operator+=(const any_quantity_cref other) { return (*this) *= other; }
+// inline any_quantity_ref &any_quantity_ref::operator+=(const any_quantity_cref other) { return (*this) *= other; }
 inline vquantity &any_quantity::get() { return *impl; }
 inline const vquantity &any_quantity::get() const { return *impl; }
-inline bool operator<(any_quantity_cref left, any_quantity_cref right) { return left.get().operator<(right); }
-inline bool operator>(any_quantity_cref left, any_quantity_cref right) { return left.get().operator>(left); }
 
 qtt_TEST_CASE("composite conserved")
 {
@@ -473,16 +395,14 @@ qtt_TEST_CASE("composite conserved")
 
 } // namespace quantt
 
-#include "quantity_vector.h"
-
 template <>
 struct fmt::formatter<quantt::any_quantity_cref> : fmt::formatter<quantt::vquantity>
 {
 	template <class FormatContext>
-	auto format(const quantt::any_quantity_cref &qt, FormatContext &ctx)
+	auto format(quantt::any_quantity_cref &qt, FormatContext &ctx)
 	{
 		return fmt::formatter<quantt::vquantity>::format(
-		    qt.get(),
+		    qt,
 		    ctx); // right now qt.format_to is only define for fmt::format_context. Should work for any output stream.
 	}
 };
@@ -493,6 +413,7 @@ struct fmt::formatter<quantt::any_quantity_ref> : public fmt::formatter<quantt::
 template <>
 struct fmt::formatter<quantt::any_quantity> : public fmt::formatter<quantt::any_quantity_cref>
 {
+	//exploits implicit conversion to get the job done.
 };
 
 #endif /* D56E4C12_98E1_4C9E_B0C4_5B35A5A3CD17 */

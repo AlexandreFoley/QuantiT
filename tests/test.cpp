@@ -15,7 +15,7 @@
 // with the preceding define, doctest autogenerate a main() function that run
 // the test found in the sources included.
 
-#include "Conserved/Composite/quantity.h"
+#include "Conserved/Composite/cquantity.h"
 #include "Conserved/Composite/quantity_vector.h"
 #include "LinearAlgebra.h"
 #include "MPT.h"

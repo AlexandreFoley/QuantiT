@@ -10,6 +10,7 @@ build/
 *.toc
 *.out
 *.fdb_latexmk
+.cache*
 Documentation/html/*
 Documentation/latex/*
 Documentation/xml/*

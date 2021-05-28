@@ -14,7 +14,7 @@
 #ifndef BBF1F73E_87CC_4C69_9CCC_5D2526535A4F
 #define BBF1F73E_87CC_4C69_9CCC_5D2526535A4F
 
-#include "Conserved/Composite/quantity.h"
+#include "Conserved/Composite/cquantity.h"
 #include "boost/stl_interfaces/iterator_interface.hpp"
 #include <numeric>
 namespace quantt
@@ -61,7 +61,7 @@ struct const_cgroup_iterator
 	constexpr const_cgroup_iterator(const vquantity *_it, const virt_ptr_aritmetic *_ar) : it(_it), ar(_ar) {}
 	using base_type = boost::stl_interfaces::iterator_interface<const_cgroup_iterator, std::random_access_iterator_tag,
 	                                                            any_quantity, any_quantity_cref, const vquantity *>;
-	any_quantity_cref operator*() { return any_quantity_cref(it); }
+	any_quantity_cref operator*() { return *it; }
 	const vquantity* operator->() const {return it; }
 	base_type::difference_type operator-(const_cgroup_iterator rhs) { return ar->ptr_diff(it, rhs.it); }
 	const_cgroup_iterator &operator+=(base_type::difference_type n)

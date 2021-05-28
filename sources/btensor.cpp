@@ -85,7 +85,7 @@ std::tuple<size_t, any_quantity_cref> btensor::section_size_cqtt(size_t index, s
 	throw_on_bad_arg_blocks(index, block, rank, sections_sizes[index]);
 #endif
 	auto ori = std::reduce(sections_by_dim.begin(), sections_by_dim.begin() + index, 0);
-	return std::make_tuple(sections_sizes[ori + block], c_vals[ori + block]);
+	return std::tuple<size_t,any_quantity_cref>(sections_sizes[ori + block], any_quantity_cref(c_vals[ori + block]));
 }
 std::tuple<btensor::index_list::const_iterator, btensor::index_list::const_iterator> btensor::section_sizes(
     size_t dim) const
@@ -374,7 +374,7 @@ std::string btensor::check_tensor(const btensor &T)
 					M += fmt::format(
 					    "block index {} {}th element is greater than the number of section along that dimension ({})\n",
 					    ind, i, T.sections_by_dim[i]);
-				auto qt = T.section_conserved_qtt(i, ind[i]);
+				const auto& qt = T.section_conserved_qtt(i, ind[i]);
 				sel_test += qt;
 				cq += fmt::format("index {}: ", i) + fmt::format("{}\n", qt);
 			}
@@ -590,7 +590,7 @@ btensor btensor::basic_create_view(const std::vector<int64_t>& dims)
 btensor& btensor::neutral_shape() {
 	if (blocks_list.size() != 0) throw std::logic_error("Neutral shape can only function correctly on an empty tensor.");
 	selection_rule.value = selection_rule->neutral();
-	for (auto cval:c_vals)
+	for (auto& cval:c_vals)
 	{
 		cval = cval.neutral();
 	}
