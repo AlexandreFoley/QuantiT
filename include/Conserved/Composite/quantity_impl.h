@@ -110,7 +110,7 @@ class quantity final : public vquantity
 	quantity(const quantity &) = default;
 	quantity(quantity &&) = default;
 	~quantity() override{};
-	quantity &operator=(quantity other) noexcept;
+	quantity &operator=(const quantity& other) noexcept;
 
 	quantity operator*(const quantity &);
 	quantity operator*(quantity &&);
@@ -197,10 +197,9 @@ quantity<Qts...> quantity<Qts...>::operator+=(const quantity<Qts...> &other)
 	return *this *= other;
 }
 template <class... T>
-quantity<T...> &quantity<T...>::operator=(quantity other) noexcept
+quantity<T...> &quantity<T...>::operator=(const quantity& other) noexcept
 {
-	using std::swap;
-	swap(val, other.val);
+	val = other.val;
 	return *this;
 }
 
@@ -258,7 +257,7 @@ quantity<T...> &quantity<T...>::inverse_()
 template <class... T>
 vquantity &quantity<T...>::operator=(const vquantity &other)
 {
-	return (*this) = dynamic_cast<const quantity<T...> &>(other);
+	return this->operator=(dynamic_cast<const quantity<T...> &>(other));
 }
 template <class... T>
 bool quantity<T...>::operator==(const quantity<T...> &other) const

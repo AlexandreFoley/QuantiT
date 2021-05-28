@@ -110,9 +110,11 @@ btensor::section_sizes_cqtts(size_t dim) const
 
 void btensor::block_increment(btensor::index_list &block_index) const
 { // function to increment a block index
+	#ifndef NDEBUG
 	if (block_index.size() != rank)
 		throw std::invalid_argument(fmt::format(
 		    "block index invalid for this tensor: it has rank {} instead of expected {}", block_index.size(), rank));
+	#endif
 	bool cond_add = true;
 	for (size_t i = 0; i < rank; ++i) // reverse the loop to have right-major incrementation.
 	{
@@ -327,6 +329,7 @@ torch::Tensor &btensor::block_at(const index_list &block_index) { return blocks_
 torch::Tensor &btensor::block(const index_list &block_index) // create the block if it is allowed, otherwise, return a
                                                              // freestanding sparrse tensor of zeros.
 {
+	if (block_index.size() != rank) std::invalid_argument(fmt::format("block index is size {}, but size {} expected",block_index.size(),rank));
 	if (!block_conservation_rule_test(block_index))
 	{
 		throw std::invalid_argument(fmt::format("block index {} not allowed by selection rule", block_index));
@@ -466,7 +469,7 @@ btensor btensor::shape_from(const std::vector<int64_t>& dims) const
 		    not is_slice); // when el_index is negative, block_ind should be 0 and !is_slice false, which is always ok.
 		++i;
 	}
-	out_sections_by_dim.resize(rank);
+	out_sections_by_dim.resize(out_rank);
 	// at this point we have the outgoing number of section per dimensions and a few other things.
 	auto S_Total = std::reduce(out_sections_by_dim.begin() + 1, out_sections_by_dim.end(), out_sections_by_dim[0]);
 	index_list out_sections_sizes(S_Total);
@@ -500,7 +503,7 @@ btensor btensor::shape_from(const std::vector<int64_t>& dims) const
 		}
 		++in_secdim_it;
 	}
-	return btensor(rank, block_list_t(), std::move(out_sections_by_dim), std::move(out_sections_sizes),
+	return btensor(out_rank, block_list_t(), std::move(out_sections_by_dim), std::move(out_sections_sizes),
 	               std::move(out_c_vals), std::move(out_sel_rule));
 }
 
@@ -713,7 +716,7 @@ btensor btensor::permute(torch::IntArrayRef permutation) const
 btensor &btensor::permute_(torch::IntArrayRef permutation)
 {
 	auto new_val = permute(permutation);
-	swap(new_val); // TODO: temporary. a better implementation will come.
+	swap(new_val); // TODO: temporary. a better implementation will come. Or will it?
 	return *this;
 }
 

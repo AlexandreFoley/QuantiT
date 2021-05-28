@@ -30,6 +30,7 @@
 namespace quantt
 {
 // doing away with those reference like class won't be easy. First attempt was a failure.
+// TODO: Do away with those reference class. They proving ever more troublesome.
 class any_quantity_ref;
 class any_quantity_cref;
 class any_quantity;
@@ -231,7 +232,7 @@ class any_quantity_ref final
 	any_quantity_ref(vquantity *other) : ref(other) {}
 	operator any_quantity_cref() const;
 	any_quantity_ref &operator=(any_quantity_cref other);
-	any_quantity_ref operator=(const any_quantity &other);
+	any_quantity_ref &operator=(const any_quantity &other);
 
 	any_quantity neutral() const;
 	const vquantity &get() const;
@@ -336,13 +337,14 @@ inline bool operator==(const any_quantity_cref left, const any_quantity_cref rig
 inline const vquantity &any_quantity_ref::get() const { return *ref; }
 inline vquantity &any_quantity_ref::get() { return *ref; }
 inline any_quantity_ref::operator any_quantity_cref() const { return any_quantity_cref(*ref); }
-inline any_quantity_ref &any_quantity_ref::operator=(any_quantity_cref other)
+inline any_quantity_ref& any_quantity_ref::operator=(any_quantity_cref other)
 {
-	auto a = get() * other.get();
-	get() = other.get();
+	// auto a = get() * other.get();
+	// fmt::print("operator= of any_quantity_ref is very unreliable");
+	ref->operator=(other.get());
 	return *this;
 }
-inline any_quantity_ref any_quantity_ref::operator=(const any_quantity &other)
+inline any_quantity_ref &any_quantity_ref::operator=(const any_quantity &other)
 {
 	*ref = other.get();
 	return *this;

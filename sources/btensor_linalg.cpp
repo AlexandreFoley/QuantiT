@@ -226,7 +226,7 @@ compact_dense(const btensor &tensor)
 		{
 
 			*out_it = compact_dense_single(it1, it2); // each call are independent, can be parallelized
-
+			++out_it;
 			it1 = it2;
 		}
 	}
@@ -270,7 +270,12 @@ std::tuple<btensor::index_list, std::array<TensInd, 3>> build_index_slice(const 
 } // namespace LA_helpers
 using namespace LA_helpers;
 
-std::tuple<btensor, btensor, btensor> svd(const btensor &tensor, bool some, bool compute_uv)
+std::string qformat(any_quantity_cref qt)
+{
+	return fmt::format("{}",qt);
+}
+
+std::tuple<btensor, btensor, btensor> svd(const btensor &tensor, const bool some,const bool compute_uv)
 {
 	// extract independant btensors
 	std::vector<std::tuple<torch::Tensor, btensor::index_list, std::vector<std::tuple<int, torch::indexing::Slice>>,
@@ -278,7 +283,7 @@ std::tuple<btensor, btensor, btensor> svd(const btensor &tensor, bool some, bool
 	    tensors_n_indices = LA_helpers::compact_dense(tensor);
 	// compute the size and conserved values of the diagonnal matrix, most likely to be the same code for the eigenvalue
 	// problem.
-	auto d_blocks = tensors_n_indices.size();
+	auto d_blocks = tensors_n_indices.size(); //that's not quite right. the number of independent part is not the number of sector in the diagonnal
 	any_quantity_vector right_D_cvals(d_blocks, tensor.selection_rule->neutral());
 	any_quantity_vector left_D_cvals(d_blocks, tensor.selection_rule->neutral());
 	std::vector<int64_t> D_block_sizes(tensors_n_indices.size());
@@ -289,11 +294,22 @@ std::tuple<btensor, btensor, btensor> svd(const btensor &tensor, bool some, bool
 	size_t V_blocks = 0;
 	for (auto &[basictensor, other_indices, rows, cols] : tensors_n_indices)
 	{
-		*D_rcval_it = tensor.section_conserved_qtt( // clangd spuriously tags an error on the call to
+		D_rcval_it->operator=(tensor.section_conserved_qtt( // clangd spuriously tags an error on the call to
 		    tensor.dim() - 1,                       // section_conserved_qtt... it's ok,
-		    std::get<0>(cols[0]));                  // SFINAE and there's a non template overload that is an exact match
-		*D_lcval_it = tensor.section_conserved_qtt(tensor.dim() - 1, std::get<0>(cols[0]));
+		    std::get<0>(cols[0])));                  // SFINAE and there's a non template overload that is an exact match
+		D_lcval_it->operator=(*D_rcval_it);
 		D_lcval_it->inverse_();
+		// fmt::print("{} {}\n",*D_lcval_it,*D_rcval_it);
+		// fmt::print("other indices {}\n", other_indices);
+		
+		// for (auto& row:rows)
+		// {
+		// fmt::print("input row {}\n", std::get<0>(row));
+		// }
+		// for (auto& col:cols)
+		// {
+		// fmt::print("input row {}\n", std::get<0>(row));
+		// }
 		U_blocks += rows.size();
 		V_blocks += cols.size();
 		if (some)
@@ -310,21 +326,27 @@ std::tuple<btensor, btensor, btensor> svd(const btensor &tensor, bool some, bool
 		++D_lcval_it;
 		++D_bsize_it;
 	}
-	std::vector<int64_t> d_shape(tensor.dim() - 1, -1);
+	std::vector<int64_t> d_shape(tensor.dim(), -1);
 	*(d_shape.end() - 2) = *(d_shape.end() - 1) = 0;
-	btensor leftD_shape({static_cast<long>(d_blocks)}, right_D_cvals, D_block_sizes,
+	btensor leftD_shape({static_cast<long>(d_blocks)}, left_D_cvals, D_block_sizes,
 	                    tensor.selection_rule->neutral());
 	btensor rightD_shape({static_cast<long>(d_blocks)}, right_D_cvals, D_block_sizes,
 	                     tensor.selection_rule->neutral());
 	auto d = shape_from(tensor.shape_from(d_shape), rightD_shape).neutral_shape();
-	std::vector<int64_t> to_U_shape(tensor.dim() - 1, -1);
+	// fmt::print("d \n {}\n",d);
+	std::vector<int64_t> to_U_shape(tensor.dim(), -1);
 	to_U_shape.back() = 0;
 	btensor U = shape_from(
 	    tensor.shape_from(to_U_shape).shift_selection_rule(tensor.section_conserved_qtt(tensor.dim() - 1, 0).inverse()),
 	    rightD_shape);
-	std::vector<int64_t> to_V_shape(tensor.dim() - 1, -1);
-	*(to_V_shape.end() - 2) = 0;
-	btensor V = shape_from(tensor.shape_from(to_V_shape).neutral_shape(), leftD_shape);
+	// fmt::print("right_D_shape: \n {}\nU: \n{}",rightD_shape,U);
+	std::vector<int64_t> to_V_others(tensor.dim(), -1);
+	*(to_V_others.end() - 2) = to_V_others.back() =  0;
+	std::vector<int64_t> to_V_left(tensor.dim(), 0);
+	to_V_left.back() = -1;
+	btensor V = shape_from(tensor.shape_from(to_V_others).neutral_shape(),tensor.shape_from(to_V_left),leftD_shape);
+	V.shift_selection_rule(V.selection_rule->inverse());
+	// fmt::print("V: \n {}\n",V);
 	int b_i = 0;
 	//preallocate the blocks, with index, so that the SVD calls can be parallelized.
 	U.reserve_space(U_blocks);
@@ -345,9 +367,10 @@ std::tuple<btensor, btensor, btensor> svd(const btensor &tensor, bool some, bool
 			V.block(block_ind) = torch::Tensor();
 		}
 		auto [block_ind, slice] = LA_helpers::build_index_slice(other_indices, extra_block_slice, extra_block_slice);
-		d.block(block_ind) = torch::Tensor();
+		d.block(btensor::index_list( block_ind.begin(),block_ind.end()-1) ) = torch::Tensor();
 		++b_i;
 	}
+	b_i=0;
 	for (auto &[basictensor, other_indices, rows, cols] : tensors_n_indices)
 	{
 		auto [bU, bD, bV] = torch::svd(basictensor, some, compute_uv);
@@ -363,7 +386,7 @@ std::tuple<btensor, btensor, btensor> svd(const btensor &tensor, bool some, bool
 			V.block(block_ind) = bU.index(slice);
 		}
 		auto [block_ind, slice] = LA_helpers::build_index_slice(other_indices, extra_block_slice, extra_block_slice);
-		d.block(block_ind) = bD;
+		d.block(btensor::index_list( block_ind.begin(),block_ind.end()-1) ) = bD;
 		++b_i;
 	}
 

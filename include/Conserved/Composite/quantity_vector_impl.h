@@ -62,6 +62,7 @@ struct const_cgroup_iterator
 	using base_type = boost::stl_interfaces::iterator_interface<const_cgroup_iterator, std::random_access_iterator_tag,
 	                                                            any_quantity, any_quantity_cref, const vquantity *>;
 	any_quantity_cref operator*() { return any_quantity_cref(it); }
+	const vquantity* operator->() const {return it; }
 	base_type::difference_type operator-(const_cgroup_iterator rhs) { return ar->ptr_diff(it, rhs.it); }
 	const_cgroup_iterator &operator+=(base_type::difference_type n)
 	{
@@ -89,7 +90,8 @@ struct cgroup_iterator
 	using base_type =
 	    typename boost::stl_interfaces::iterator_interface<cgroup_iterator, std::random_access_iterator_tag,
 	                                                       any_quantity, any_quantity_ref, vquantity *, std::ptrdiff_t>;
-	any_quantity_ref operator*() const { return any_quantity_ref(it); }
+	any_quantity_ref operator*() const { return *it; }
+	vquantity* operator->() const {return it; }
 	base_type::difference_type operator-(cgroup_iterator rhs) { return ar->ptr_diff(it, rhs.it); }
 	cgroup_iterator &operator+=(base_type::difference_type n)
 	{

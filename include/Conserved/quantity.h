@@ -114,7 +114,7 @@ class C
 	friend constexpr C operator*(C lhs, C rhs) noexcept { return lhs *= rhs; }
 	constexpr C &inverse_() noexcept
 	{
-		val = N - val;
+		val = bool(val)*(N - val);
 		return *this;
 	}
 	constexpr C inverse() const noexcept
