@@ -149,9 +149,13 @@ class any_quantity final
 	 * @return any_quantity a new any_quantity object.
 	 */
 	friend any_quantity operator*(any_quantity_cref lhs, any_quantity_cref rhs);
-	// friend any_quantity operator*(any_quantity_cref lhs, any_quantity&& rhs);
 	friend any_quantity operator+(any_quantity_cref lhs, any_quantity_cref rhs);
-	// friend any_quantity operator+(any_quantity_cref lhs, any_quantity&& rhs);
+	friend any_quantity operator*(any_quantity_cref lhs, any_quantity&& rhs);
+	friend any_quantity operator+(any_quantity_cref lhs, any_quantity&& rhs);
+	friend any_quantity operator*(any_quantity&& lhs, any_quantity_cref rhs);
+	friend any_quantity operator+(any_quantity&& lhs, any_quantity_cref rhs);
+	friend any_quantity operator*(any_quantity&& lhs, any_quantity&& rhs);
+	friend any_quantity operator+(any_quantity&& lhs, any_quantity&& rhs);
 
 	/**
 	 * @brief in place inverse
@@ -258,30 +262,37 @@ inline any_quantity vquantity::neutral() const
 	return make_neutral();
 }
 
-// inline const vquantity &any_quantity_ref::get() const { return *ref; }
-// inline vquantity &any_quantity_ref::get() { return *ref; }
-// inline any_quantity_ref::operator any_quantity_cref() const { return any_quantity_cref(*ref); }
-// inline any_quantity_ref& any_quantity_ref::operator=(any_quantity_cref other)
-// {
-// auto a = get() * other.get();
-// fmt::print("operator= of any_quantity_ref is very unreliable");
-// ref->operator=(other.get());
-// return *this;
-// }
-// inline any_quantity_ref &any_quantity_ref::operator=(const any_quantity &other)
-// {
-// 	*ref = other.get();
-// 	return *this;
-// }
-// inline any_quantity_ref &any_quantity_ref::operator*=(const any_quantity_cref other)
-// {
-// 	get().op(other.get());
-// 	return *this;
-// }
-
-// inline any_quantity_ref &any_quantity_ref::operator+=(const any_quantity_cref other) { return (*this) *= other; }
 inline vquantity &any_quantity::get() { return *impl; }
 inline const vquantity &any_quantity::get() const { return *impl; }
+
+inline any_quantity operator*(any_quantity_cref lhs, any_quantity&& rhs)
+{
+	lhs.op_to(rhs);
+	return std::move(rhs);
+}
+inline any_quantity operator+(any_quantity_cref lhs, any_quantity&& rhs)
+{
+	lhs.op_to(rhs);
+	return std::move(rhs);
+}
+inline any_quantity operator*(any_quantity&& lhs, any_quantity_cref rhs)
+{
+	lhs*= rhs;
+	return std::move(lhs);
+}
+inline any_quantity operator+(any_quantity&& lhs, any_quantity_cref rhs)
+{
+	lhs += rhs;
+	return std::move(lhs);
+}
+inline any_quantity operator*(any_quantity&& lhs, any_quantity&& rhs)
+{
+	return std::move(lhs)*rhs.get();
+}
+inline any_quantity operator+(any_quantity&& lhs, any_quantity&& rhs)
+{
+	return std::move(lhs)+rhs.get();
+}
 
 qtt_TEST_CASE("composite conserved")
 {
