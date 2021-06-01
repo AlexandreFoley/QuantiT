@@ -14,7 +14,7 @@
 #ifndef D49FFA60_85C4_431A_BA62_9B1D30D67E86
 #define D49FFA60_85C4_431A_BA62_9B1D30D67E86
 
-#include "Conserved/Composite/quantity.h"
+#include "Conserved/Composite/cquantity.h"
 #include "Conserved/Composite/quantity_vector.h"
 #include "Conserved/quantity.h"
 #include "blockTensor/flat_map.h"

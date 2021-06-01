@@ -14,7 +14,6 @@
 #ifndef D34E37A6_732F_4F45_9171_6B931CC1F812
 #define D34E37A6_732F_4F45_9171_6B931CC1F812
 
-#include "Conserved/Composite/quantity.h"
 #include "Conserved/Composite/quantity_vector_impl.h"
 #include "Conserved/quantity.h"
 #include <vector>
@@ -45,7 +44,7 @@ public:
 	any_quantity_vector() = default;
 	any_quantity_vector(const any_quantity_vector& other) : ptr(other.ptr->clone()) {}
 	any_quantity_vector(any_quantity_vector&& other) : ptr(std::move(other.ptr)) {}
-	any_quantity_vector(size_t cnt, any_quantity_cref val) : ptr(val.get().make_vector(cnt)) {}
+	any_quantity_vector(size_t cnt, any_quantity_cref val) : ptr(val.make_vector(cnt)) {}
 	/**
 	 * @brief Construct a new any_quantity vector object from an initializer list of any_quantity
 	 * @param list all the any_quantity must have the same concrete type, or an exception will be raised
@@ -67,23 +66,6 @@ public:
 	any_quantity_vector(quantity_vector<Conc_cgroup, Allocator>&& other) : ptr(std::make_unique<quantity_vector<Conc_cgroup, Allocator>>())
 	{
 		*ptr = std::move(other);
-	}
-
-	any_quantity_vector(std::initializer_list<any_quantity_cref> list) : ptr(list.begin()->get().make_vector(0))
-	{
-		ptr->reserve(list.end() - list.begin());
-		for (const_reference a : list)
-		{
-			push_back(a);
-		}
-	}
-	any_quantity_vector(std::initializer_list<any_quantity_ref> list) : ptr(list.begin()->get().make_vector(0))
-	{
-		ptr->reserve(list.end() - list.begin());
-		for (const_reference a : list)
-		{
-			push_back(a);
-		}
 	}
 
 	any_quantity_vector& operator=(any_quantity_vector other)
@@ -174,11 +156,11 @@ public:
 	}
 	iterator insert(const_iterator pos, const_reference Val)
 	{
-		return ptr->insert(pos, Val.get());
+		return ptr->insert(pos, Val);
 	}
 	iterator insert(const_iterator pos, size_t count, const_reference Val)
 	{
-		return ptr->insert(pos, count, Val.get());
+		return ptr->insert(pos, count, Val);
 	}
 	iterator insert(const_iterator pos, const_iterator first, const_iterator last)
 	{
@@ -198,7 +180,7 @@ public:
 	}
 	void push_back(const_reference value)
 	{
-		ptr->push_back(value.get());
+		ptr->push_back(value);
 	}
 	void pop_back()
 	{
@@ -210,7 +192,7 @@ public:
 	}
 	void resize(size_t count, const_reference val)
 	{
-		ptr->resize(count, val.get());
+		ptr->resize(count, val);
 	}
 	void swap(any_quantity_vector& other)
 	{
@@ -364,8 +346,8 @@ qtt_TEST_CASE("polymorphic any_quantity container with value semantic")
 	qtt_REQUIRE(t2.size() > 0);
 	qtt_SUBCASE("Access operator[]")
 	{
-		auto a = t1[0]; //makes a reference
-		auto b = t2[0]; //makes a reference
+		auto& a = t1[0]; //makes a reference
+		auto& b = t2[0]; //makes a reference
 		//if you want a copy, you have to be specific about the return type.
 		// any_quantity c = t1[1]; //make a copy of the value.
 		qtt_CHECK(std::is_same_v<decltype(a), any_quantity_ref>);
@@ -375,8 +357,8 @@ qtt_TEST_CASE("polymorphic any_quantity container with value semantic")
 	{
 		qtt_REQUIRE_NOTHROW(t1.at(0));
 		qtt_REQUIRE_NOTHROW(t2.at(0));
-		auto a = t1.at(0); //makes a reference
-		auto b = t2.at(0); //makes a reference
+		auto& a = t1.at(0); //makes a reference
+		auto& b = t2.at(0); //makes a reference
 		qtt_CHECK(std::is_same_v<decltype(a), any_quantity_ref>);
 		qtt_CHECK(std::is_same_v<decltype(b), any_quantity_cref>);
 		qtt_CHECK_THROWS_AS(t2.at(t2.size()), std::out_of_range);
@@ -384,12 +366,12 @@ qtt_TEST_CASE("polymorphic any_quantity container with value semantic")
 	}
 	qtt_SUBCASE("front and back and data")
 	{
-		auto f1 = t1.front(); //makes a reference
-		auto b1 = t1.back();  //makes a reference
-		auto f2 = t2.front(); //makes a reference
-		auto b2 = t2.back();  //makes a reference
-		auto d1 = t1.data();  //makes a reference
-		auto d2 = t2.data();  //makes a reference
+		auto& f1 = t1.front(); //makes a reference
+		auto& b1 = t1.back();  //makes a reference
+		auto& f2 = t2.front(); //makes a reference
+		auto& b2 = t2.back();  //makes a reference
+		auto d1 = t1.data();  //pointer
+		auto d2 = t2.data();  //pointer
 		qtt_CHECK(std::is_same_v<decltype(f1), any_quantity_ref>);
 		qtt_CHECK(std::is_same_v<decltype(b1), any_quantity_ref>);
 		qtt_CHECK(std::is_same_v<decltype(f2), any_quantity_cref>);

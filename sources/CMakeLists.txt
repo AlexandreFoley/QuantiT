@@ -13,7 +13,7 @@ set(HEADER_LIST "${INC_DIR}/MPT.h" "${INC_DIR}/LinearAlgebra.h" "${INC_DIR}/dime
                 "${BST_DIR}/stl_interfaces/config.hpp" "${BST_DIR}/stl_interfaces/fwd.hpp"
                 "${BST_DIR}/stl_interfaces/iterator_interface.hpp" "${BST_DIR}/stl_interfaces/view_interface.hpp"
                 "${BST_DIR}/stl_interfaces/sequence_container_interface.hpp" "${GRP_DIR}/Composite/quantity_vector.h"
-                "${GRP_DIR}/Composite/quantity_impl.h" "${GRP_DIR}/Composite/quantity.h" "${GRP_DIR}/Composite/quantity_vector_impl.h"
+                "${GRP_DIR}/Composite/quantity_impl.h" "${GRP_DIR}/Composite/cquantity.h" "${GRP_DIR}/Composite/quantity_vector_impl.h"
                 "${GRP_DIR}/quantity.h" "${GRP_DIR}/quantity_utils.h" "${BTEN_DIR}/btensor.h" "${BTEN_DIR}/flat_map.h"
                 "${INC_DIR}/tensorgdot.h" "${BTEN_DIR}/LinearAlgebra.h")
 

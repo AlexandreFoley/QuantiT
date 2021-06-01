@@ -49,10 +49,10 @@ btensor::block_list_t reorder_by_cvals(const btensor &tensor)
 	std::stable_sort(out.begin(), out.end(),
 	                 [r = tensor.dim(), row_qtt = row_start, col_qtt = col_start](auto &&a, auto &&b)
 	                 {
-		                 const auto row_a_qtt = row_qtt[a.first[r - 2]];
-		                 const auto row_b_qtt = row_qtt[b.first[r - 2]];
-		                 const auto col_a_qtt = col_qtt[a.first[r - 1]];
-		                 const auto col_b_qtt = col_qtt[b.first[r - 1]];
+		                 const auto& row_a_qtt = row_qtt[a.first[r - 2]];
+		                 const auto& row_b_qtt = row_qtt[b.first[r - 2]];
+		                 const auto& col_a_qtt = col_qtt[a.first[r - 1]];
+		                 const auto& col_b_qtt = col_qtt[b.first[r - 1]];
 
 		                 bool out = row_a_qtt < row_b_qtt;
 		                 out |= (row_a_qtt == row_b_qtt) and (col_a_qtt < col_b_qtt);
@@ -294,11 +294,10 @@ std::tuple<btensor, btensor, btensor> svd(const btensor &tensor, const bool some
 	size_t V_blocks = 0;
 	for (auto &[basictensor, other_indices, rows, cols] : tensors_n_indices)
 	{
-		D_rcval_it->operator=(tensor.section_conserved_qtt( // clangd spuriously tags an error on the call to
-		    tensor.dim() - 1,                       // section_conserved_qtt... it's ok,
-		    std::get<0>(cols[0])));                  // SFINAE and there's a non template overload that is an exact match
-		D_lcval_it->operator=(*D_rcval_it);
-		D_lcval_it->inverse_();
+		*D_rcval_it=(tensor.section_conserved_qtt( 
+		    tensor.dim() - 1,                       
+		    std::get<0>(cols[0])));                  
+		*D_lcval_it = D_rcval_it->inverse();
 		// fmt::print("{} {}\n",*D_lcval_it,*D_rcval_it);
 		// fmt::print("other indices {}\n", other_indices);
 		

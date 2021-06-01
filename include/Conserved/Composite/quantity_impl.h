@@ -18,6 +18,7 @@
 #include "templateMeta.h"
 #include <fmt/format.h>
 #include <fmt/ranges.h>
+#include <ios>
 #include <memory>
 #include <type_traits>
 #include <vector>
@@ -32,6 +33,7 @@ namespace quantt
 struct cgroup_iterator;
 struct const_cgroup_iterator;
 class vquantity_vector;
+class any_quantity;
 
 /**
  * @brief interface type for the implementation of a any_quantity
@@ -71,7 +73,7 @@ class vquantity
 	 * @return vquantity& : reference to the current object.
 	 */
 	virtual vquantity &inverse_() = 0;
-
+	any_quantity inverse() const;
 	virtual std::unique_ptr<vquantity> clone() const = 0;
 	virtual std::unique_ptr<vquantity_vector> make_vector(size_t cnt) const = 0;
 
@@ -80,18 +82,36 @@ class vquantity
 	 *
 	 * @return std::unique_ptr<vquantity> : the neutral element
 	 */
-	virtual std::unique_ptr<vquantity> neutral() const = 0;
-
+	virtual std::unique_ptr<vquantity> make_neutral() const = 0;
+	any_quantity neutral() const;
 	virtual vquantity &operator=(const vquantity &) = 0;
-	virtual bool operator==(const vquantity &) const = 0;
-	virtual bool operator!=(const vquantity &) const = 0;
-	virtual bool operator<(const vquantity &) const = 0;
-	virtual bool operator>(const vquantity &) const = 0;
+	virtual vquantity &operator*=(const vquantity &) = 0;
+	virtual vquantity &operator+=(const vquantity &) = 0;
+	virtual bool is_equal(const vquantity &) const = 0;
+	virtual bool is_different(const vquantity &) const = 0;
+	virtual bool is_lesser(const vquantity &) const = 0;
+	virtual bool is_greater(const vquantity &) const = 0;
 	virtual bool same_type(const vquantity &other) const = 0;
 	virtual void swap(vquantity &) = 0;
 	virtual auto format_to(fmt::format_context &ctx) const -> decltype(ctx.out()) = 0;
 	virtual ~vquantity() {}
 };
+inline bool operator==(const vquantity& left, const vquantity& right)
+{
+	return left.is_equal(right);
+}
+inline bool operator!=(const vquantity& left, const vquantity& right)
+{
+	return left.is_different(right);
+}
+inline bool operator<(const vquantity& left, const vquantity& right)
+{
+	return left.is_lesser(right);
+}
+inline bool operator>(const vquantity& left, const vquantity& right)
+{
+	return left.is_greater(right);
+}
 
 /**
  * @brief template implementation of the concrete composite group types.
@@ -118,10 +138,12 @@ class quantity final : public vquantity
 	quantity operator+(const quantity &);
 	quantity operator+(quantity &&);
 	quantity operator+=(const quantity &);
+	vquantity &operator*=(const vquantity &) override;
+	vquantity &operator+=(const vquantity &) override;
 	void swap(quantity &other);
 
 	std::unique_ptr<vquantity> clone() const override;
-	std::unique_ptr<vquantity> neutral() const override;
+	std::unique_ptr<vquantity> make_neutral() const override;
 
 	quantity &op(const quantity &other);
 	vquantity &op(const vquantity &other) override;
@@ -132,13 +154,13 @@ class quantity final : public vquantity
 	quantity &inverse_() override;
 	vquantity &operator=(const vquantity &other) override;
 	bool operator==(const quantity &other) const;
-	bool operator==(const vquantity &other) const override;
+	bool is_equal(const vquantity &other) const override;
 	bool operator!=(const quantity &other) const;
-	bool operator!=(const vquantity &other) const override;
+	bool is_different(const vquantity &other) const override;
 	bool same_type(const vquantity &other) const override;
-	bool operator<(const vquantity &) const override;
+	bool is_lesser(const vquantity &) const override;
 	bool operator<(const quantity &other) const;
-	bool operator>(const vquantity &) const override;
+	bool is_greater(const vquantity &) const override;
 	bool operator>(const quantity &other) const;
 	void swap(vquantity &other) override;
 
@@ -228,7 +250,7 @@ vquantity &quantity<T...>::op(const vquantity &other)
 }
 
 template <class... T>
-std::unique_ptr<vquantity> quantity<T...>::neutral() const
+std::unique_ptr<vquantity> quantity<T...>::make_neutral() const
 {
 	return std::make_unique<quantity<T...>>();
 }
@@ -265,7 +287,7 @@ bool quantity<T...>::operator==(const quantity<T...> &other) const
 	return val == other.val;
 }
 template <class... T>
-bool quantity<T...>::operator==(const vquantity &other) const
+bool quantity<T...>::is_equal(const vquantity &other) const
 {
 	return operator==(dynamic_cast<const quantity<T...> &>(other));
 }
@@ -275,7 +297,7 @@ bool quantity<T...>::operator!=(const quantity<T...> &other) const
 	return val != other.val;
 }
 template <class... T>
-bool quantity<T...>::operator!=(const vquantity &other) const
+bool quantity<T...>::is_different(const vquantity &other) const
 {
 	return operator!=(dynamic_cast<const quantity<T...> &>(other));
 }
@@ -285,7 +307,7 @@ bool quantity<T...>::operator<(const quantity<T...> &other) const
 	return val < other.val;
 }
 template <class... T>
-bool quantity<T...>::operator<(const vquantity &other) const
+bool quantity<T...>::is_lesser(const vquantity &other) const
 {
 	return operator<(dynamic_cast<const quantity<T...> &>(other));
 }
@@ -296,7 +318,7 @@ bool quantity<T...>::operator>(const quantity<T...> &other) const
 	return val > other.val;
 }
 template <class... T>
-bool quantity<T...>::operator>(const vquantity &other) const
+bool quantity<T...>::is_greater(const vquantity &other) const
 {
 	return operator>(dynamic_cast<const quantity<T...> &>(other));
 }
@@ -320,6 +342,17 @@ template <class... S>
 struct is_conc_cgroup_impl<quantity<S...>> : public conserved::all_conserved_quantt<S...>
 {
 };
+
+template <class... Groups>
+inline vquantity &quantity<Groups...>::operator*=(const vquantity & other) {
+	return op(other);
+}
+
+template <class... Groups>
+inline vquantity &quantity<Groups...>::operator+=(const vquantity & other) {
+	return op(other);
+}
+
 
 } // namespace quantt
 

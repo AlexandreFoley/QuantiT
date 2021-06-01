@@ -14,9 +14,11 @@
 #ifndef D241DFD2_9200_4C66_8225_2C3BBD27EDE4
 #define D241DFD2_9200_4C66_8225_2C3BBD27EDE4
 #include "templateMeta.h"
+#include <type_traits>
 #include <utility>
 namespace quantt
 {
+    class vquantity;
 namespace conserved
 {
 
@@ -89,6 +91,13 @@ struct constexprequal_test<subject, std::enable_if_t<is_detected_v<comparatorequ
 
 	constexpr static bool call() { return do_call(0); }
 };
+template<>
+struct constexprequal_test<quantt::vquantity>
+{
+
+	constexpr static bool call() { return std::false_type(); }
+};
+
 template <class T>
 using has_constexpr_equal_outclass = std::bool_constant<constexprequal_test<T>::call()>;
 template <class T>
