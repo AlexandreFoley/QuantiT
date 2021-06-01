@@ -150,12 +150,12 @@ class any_quantity final
 	 */
 	friend any_quantity operator*(any_quantity_cref lhs, any_quantity_cref rhs);
 	friend any_quantity operator+(any_quantity_cref lhs, any_quantity_cref rhs);
-	friend any_quantity operator*(any_quantity_cref lhs, any_quantity&& rhs);
-	friend any_quantity operator+(any_quantity_cref lhs, any_quantity&& rhs);
-	friend any_quantity operator*(any_quantity&& lhs, any_quantity_cref rhs);
-	friend any_quantity operator+(any_quantity&& lhs, any_quantity_cref rhs);
-	friend any_quantity operator*(any_quantity&& lhs, any_quantity&& rhs);
-	friend any_quantity operator+(any_quantity&& lhs, any_quantity&& rhs);
+	friend any_quantity operator*(any_quantity_cref lhs, any_quantity &&rhs);
+	friend any_quantity operator+(any_quantity_cref lhs, any_quantity &&rhs);
+	friend any_quantity operator*(any_quantity &&lhs, any_quantity_cref rhs);
+	friend any_quantity operator+(any_quantity &&lhs, any_quantity_cref rhs);
+	friend any_quantity operator*(any_quantity &&lhs, any_quantity &&rhs);
+	friend any_quantity operator+(any_quantity &&lhs, any_quantity &&rhs);
 
 	/**
 	 * @brief in place inverse
@@ -168,8 +168,8 @@ class any_quantity final
 	 *
 	 * @return any_quantity
 	 */
-	any_quantity inverse() const;
-
+	any_quantity inverse() const &;
+	any_quantity inverse() &&;
 	/**
 	 * @brief equality comparison operator
 	 *
@@ -207,7 +207,12 @@ inline any_quantity_ref any_quantity::inverse_()
 	impl->inverse_();
 	return *this;
 }
-inline any_quantity any_quantity::inverse() const { return any_quantity(*this).inverse_(); }
+inline any_quantity any_quantity::inverse() const & { return any_quantity(*this).inverse_(); }
+inline any_quantity any_quantity::inverse() &&
+{
+	inverse_();
+	return std::move(*this);
+}
 inline any_quantity_ref any_quantity::operator=(const any_quantity &other)
 {
 	*impl = *other.impl;
@@ -257,42 +262,33 @@ inline any_quantity vquantity::inverse() const
 	// Need to be defined here because any_quantity isn't defined in quanitity_impl.h.
 	return clone()->inverse_();
 }
-inline any_quantity vquantity::neutral() const
-{
-	return make_neutral();
-}
+inline any_quantity vquantity::neutral() const { return make_neutral(); }
 
 inline vquantity &any_quantity::get() { return *impl; }
 inline const vquantity &any_quantity::get() const { return *impl; }
 
-inline any_quantity operator*(any_quantity_cref lhs, any_quantity&& rhs)
+inline any_quantity operator*(any_quantity_cref lhs, any_quantity &&rhs)
 {
 	lhs.op_to(rhs);
 	return std::move(rhs);
 }
-inline any_quantity operator+(any_quantity_cref lhs, any_quantity&& rhs)
+inline any_quantity operator+(any_quantity_cref lhs, any_quantity &&rhs)
 {
 	lhs.op_to(rhs);
 	return std::move(rhs);
 }
-inline any_quantity operator*(any_quantity&& lhs, any_quantity_cref rhs)
+inline any_quantity operator*(any_quantity &&lhs, any_quantity_cref rhs)
 {
-	lhs*= rhs;
+	lhs *= rhs;
 	return std::move(lhs);
 }
-inline any_quantity operator+(any_quantity&& lhs, any_quantity_cref rhs)
+inline any_quantity operator+(any_quantity &&lhs, any_quantity_cref rhs)
 {
 	lhs += rhs;
 	return std::move(lhs);
 }
-inline any_quantity operator*(any_quantity&& lhs, any_quantity&& rhs)
-{
-	return std::move(lhs)*rhs.get();
-}
-inline any_quantity operator+(any_quantity&& lhs, any_quantity&& rhs)
-{
-	return std::move(lhs)+rhs.get();
-}
+inline any_quantity operator*(any_quantity &&lhs, any_quantity &&rhs) { return std::move(lhs) * rhs.get(); }
+inline any_quantity operator+(any_quantity &&lhs, any_quantity &&rhs) { return std::move(lhs) + rhs.get(); }
 
 qtt_TEST_CASE("composite conserved")
 {
@@ -424,7 +420,7 @@ struct fmt::formatter<quantt::any_quantity_ref> : public fmt::formatter<quantt::
 template <>
 struct fmt::formatter<quantt::any_quantity> : public fmt::formatter<quantt::any_quantity_cref>
 {
-	//exploits implicit conversion to get the job done.
+	// exploits implicit conversion to get the job done.
 };
 
 #endif /* D56E4C12_98E1_4C9E_B0C4_5B35A5A3CD17 */
