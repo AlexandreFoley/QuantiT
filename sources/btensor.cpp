@@ -7,28 +7,27 @@
  * Copyright (c) 2020 Alexandre Foley
  * All rights reserved
  */
-#include <stdexcept>
-#define DOCTEST_CONFIG_NO_EXCEPTIONS_BUT_WITH_ALL_ASSERTS
 #include "blockTensor/btensor.h"
 #include "tensorgdot.h"
 #include <ATen/ATen.h>
 #include <ATen/WrapDimUtilsMulti.h>
+#include <ATen/core/TensorBody.h>
 #include <algorithm>
+#include <cstdint>
 #include <exception>
 #include <execution>
+#include <functional>
+#include <iterator>
 #include <numeric>
-#include <torch/torch.h>
+#include <stdexcept>
 #include <string>
+#include <torch/torch.h>
+#include <tuple>
+#include <vector>
 
-#ifndef NDEBUG	
+#ifndef NDEBUG
 #include <fmt/core.h>
 #include <iostream>
-using std::cout;
-template<class... args>
-void use_print(args... Args)
-{
-	fmt::print(Args...);
-}
 #endif
 
 namespace quantt
@@ -69,8 +68,8 @@ std::tuple<any_quantity_vector::const_iterator, any_quantity_vector::const_itera
 	auto ori = std::reduce(sections_by_dim.begin(), sections_by_dim.begin() + index, 0);
 	return std::make_tuple(c_vals.begin() + ori, c_vals.begin() + ori + sections_by_dim[index]);
 }
-std::tuple<any_quantity_vector::iterator, any_quantity_vector::iterator> btensor::
-    section_conserved_qtt_range(size_t index) 
+std::tuple<any_quantity_vector::iterator, any_quantity_vector::iterator> btensor::section_conserved_qtt_range(
+    size_t index)
 {
 	if (index >= rank)
 		throw std::invalid_argument(
@@ -85,7 +84,7 @@ std::tuple<size_t, any_quantity_cref> btensor::section_size_cqtt(size_t index, s
 	throw_on_bad_arg_blocks(index, block, rank, sections_sizes[index]);
 #endif
 	auto ori = std::reduce(sections_by_dim.begin(), sections_by_dim.begin() + index, 0);
-	return std::tuple<size_t,any_quantity_cref>(sections_sizes[ori + block], any_quantity_cref(c_vals[ori + block]));
+	return std::tuple<size_t, any_quantity_cref>(sections_sizes[ori + block], any_quantity_cref(c_vals[ori + block]));
 }
 std::tuple<btensor::index_list::const_iterator, btensor::index_list::const_iterator> btensor::section_sizes(
     size_t dim) const
@@ -110,11 +109,11 @@ btensor::section_sizes_cqtts(size_t dim) const
 
 void btensor::block_increment(btensor::index_list &block_index) const
 { // function to increment a block index
-	#ifndef NDEBUG
+#ifndef NDEBUG
 	if (block_index.size() != rank)
 		throw std::invalid_argument(fmt::format(
 		    "block index invalid for this tensor: it has rank {} instead of expected {}", block_index.size(), rank));
-	#endif
+#endif
 	bool cond_add = true;
 	for (size_t i = 0; i < rank; ++i) // reverse the loop to have right-major incrementation.
 	{
@@ -215,9 +214,8 @@ size_t tensor_list_size_guess(const btensor::init_list_t &list, any_quantity_cre
 	size_t block_num = std::reduce(sections_by_dims.begin(), sections_by_dims.end(), 1,
 	                               [](auto &&a, auto &&b) { return a * b; }); // total number of blocks zero or not.
 	btensor::index_list block_index(rank, 0);
-	auto increment = [&sections_by_dims, &rank](btensor::index_list &block_index) {
-		increment_index_left(block_index, sections_by_dims, rank);
-	};
+	auto increment = [&sections_by_dims, &rank](btensor::index_list &block_index)
+	{ increment_index_left(block_index, sections_by_dims, rank); };
 	for (size_t i = 0; i < block_num; ++i)
 	{
 		any_quantity qt = sel_rul.neutral();
@@ -329,7 +327,8 @@ torch::Tensor &btensor::block_at(const index_list &block_index) { return blocks_
 torch::Tensor &btensor::block(const index_list &block_index) // create the block if it is allowed, otherwise, return a
                                                              // freestanding sparrse tensor of zeros.
 {
-	if (block_index.size() != rank) std::invalid_argument(fmt::format("block index is size {}, but size {} expected",block_index.size(),rank));
+	if (block_index.size() != rank)
+		std::invalid_argument(fmt::format("block index is size {}, but size {} expected", block_index.size(), rank));
 	if (!block_conservation_rule_test(block_index))
 	{
 		throw std::invalid_argument(fmt::format("block index {} not allowed by selection rule", block_index));
@@ -374,7 +373,7 @@ std::string btensor::check_tensor(const btensor &T)
 					M += fmt::format(
 					    "block index {} {}th element is greater than the number of section along that dimension ({})\n",
 					    ind, i, T.sections_by_dim[i]);
-				const auto& qt = T.section_conserved_qtt(i, ind[i]);
+				const auto &qt = T.section_conserved_qtt(i, ind[i]);
 				sel_test += qt;
 				cq += fmt::format("index {}: ", i) + fmt::format("{}\n", qt);
 			}
@@ -430,7 +429,7 @@ btensor::const_block_size_view btensor::block_sizes(index_list block_index) cons
  * @return btensor
  */
 
-btensor btensor::shape_from(const std::vector<int64_t>& dims) const
+btensor btensor::shape_from(const std::vector<int64_t> &dims) const
 {
 	// The selection rule is modified by the product of the non contracted indices.
 	// all of the block can receive the same .index() call
@@ -515,7 +514,7 @@ btensor btensor::shape_from(const std::vector<int64_t>& dims) const
  * @param dims List of dimensions, put -1 to keep the dimension, specify the index to keep otherwise.
  * @return btensor&
  */
-btensor btensor::basic_create_view(const std::vector<int64_t>& dims)
+btensor btensor::basic_create_view(const std::vector<int64_t> &dims)
 {
 	auto out_tensor = shape_from(dims);
 	// out_tensor has all the correct information regarding the resulting block structure.
@@ -560,7 +559,8 @@ btensor btensor::basic_create_view(const std::vector<int64_t>& dims)
 	out_tensor.blocks_list.reserve(blocks.size());
 	// function like object to filter out the block to reject, and identify the block index for the output tensor while
 	// we're at it
-	auto filter = [rank = out_tensor.rank](auto &&index_in, auto &&filter) {
+	auto filter = [rank = out_tensor.rank](auto &&index_in, auto &&filter)
+	{
 		index_list out_index(rank);
 		bool keep = true;
 		auto out_it = out_index.begin();
@@ -587,10 +587,12 @@ btensor btensor::basic_create_view(const std::vector<int64_t>& dims)
 	return out_tensor;
 }
 
-btensor& btensor::neutral_shape() {
-	if (blocks_list.size() != 0) throw std::logic_error("Neutral shape can only function correctly on an empty tensor.");
+btensor &btensor::neutral_shape()
+{
+	if (blocks_list.size() != 0)
+		throw std::logic_error("Neutral shape can only function correctly on an empty tensor.");
 	selection_rule.value = selection_rule->neutral();
-	for (auto& cval:c_vals)
+	for (auto &cval : c_vals)
 	{
 		cval = cval.neutral();
 	}
@@ -675,15 +677,493 @@ void btensor::swap(btensor &other)
 	swap(sections_by_dim, other.sections_by_dim);
 	swap(sections_sizes, other.sections_sizes);
 }
-btensor btensor::permute(torch::IntArrayRef permutation) const
+btensor &btensor::mul_(Scalar other)
+{
+	apply_to_all_blocks([](auto &&tensor, auto &&other_val) { tensor.mul_(other_val); }, other);
+	return *this;
+}
+btensor btensor::mul(Scalar other) const
+{
+	// auto out = btensor(*this);
+	// out.apply_to_all_blocks([](torch::Tensor &tensor, auto &&other_val) { tensor.mul(other_val); }, other);
+	// return out;
+	return btensor(*this, new_block_list_apply_to_all_blocks([](const torch::Tensor &tensor, auto &&other_val)
+	                                                         { return tensor.mul(other_val); },
+	                                                         other));
+}
+
+struct mul_helpers
+{
+	static auto shape_compute(bool this_is_large, size_t smaller_rank, size_t larger_rank,
+	                          const btensor &smaller_tensor, const btensor &larger_tensor)
+	{
+		std::vector<uint8_t> comp_mask(smaller_rank, 0);
+		auto new_sections_by_dim = larger_tensor.sections_by_dim;
+		{
+			auto smaller_sec = smaller_tensor.sections_by_dim.end();
+			auto larger_sec = larger_tensor.sections_by_dim.end();
+			auto it = comp_mask.end();
+			size_t n = 1;
+			// detect all the dimensions to broadcast
+			do
+			{
+				--it;
+				--smaller_sec;
+				--larger_sec;
+
+				*it = (((*smaller_sec == 1) and (smaller_tensor.section_size(0, smaller_rank - n) == 1)) +
+				       2 * ((*larger_sec == 1) and (larger_tensor.section_size(0, larger_rank - n) == 1)));
+				if (*it)
+					new_sections_by_dim[larger_rank - n] = std::max(*smaller_sec, *larger_sec);
+				constexpr auto message = "The section size of tensor a ({}) must match the section size "
+				                         "of tensor b ({}) at non-singleton dimension {}";
+				if (not(*it) and *smaller_sec != *larger_sec)
+				{
+					if (this_is_large)
+					{
+						throw std::invalid_argument(fmt::format(message, *larger_sec, *smaller_sec, larger_rank - n));
+					}
+					else
+					{
+						throw std::invalid_argument(fmt::format(message, *smaller_sec, *larger_sec, smaller_rank - n));
+					}
+				}
+				++n;
+			} while (it != comp_mask.begin());
+		}
+		// Compute the new cval and section sizes and sizes here.
+		auto Nsections = std::reduce(new_sections_by_dim.begin(), new_sections_by_dim.end(), 0);
+		btensor::index_list new_sections_sizes(Nsections);
+		any_quantity_vector new_cvals(Nsections, larger_tensor.selection_rule->neutral());
+		{
+			auto new_cvals_it = new_cvals.end();
+			auto new_sections_sizes_it = new_sections_sizes.end();
+			auto smaller_sec = smaller_tensor.sections_by_dim.end();
+			auto larger_sec = larger_tensor.sections_by_dim.end();
+			auto it = comp_mask.end();
+			btensor::index_list::const_iterator section_start, section_end;
+			any_quantity_vector::const_iterator cval_start, cval_end, short_cval_start, short_cval_end;
+			size_t n = 1;
+			do
+			{
+				--it;
+				--larger_sec;
+				--smaller_sec;
+				if (*larger_sec > *smaller_sec) // one of them is one, or they're equal.
+				{
+					std::tie(section_start, section_end, cval_start, cval_end) =
+					    larger_tensor.section_sizes_cqtts(larger_rank - n);
+					std::tie(short_cval_start, short_cval_end) =
+					    smaller_tensor.section_conserved_qtt_range(smaller_rank - n);
+				}
+				else
+				{
+					std::tie(section_start, section_end, cval_start, cval_end) =
+					    smaller_tensor.section_sizes_cqtts(smaller_rank - n);
+					std::tie(short_cval_start, short_cval_end) =
+					    larger_tensor.section_conserved_qtt_range(larger_rank - n);
+				}
+				std::copy_backward(section_start, section_end, new_sections_sizes_it);
+				auto N = std::distance(section_start, section_end);
+				new_sections_sizes_it -= N;
+				--short_cval_end;
+				do
+				{
+					--new_cvals_it;
+					--cval_end;
+					--N;
+					*new_cvals_it = (*cval_end) * (*short_cval_end);
+					short_cval_end -= (short_cval_end != short_cval_start);
+				} while (N > 0);
+				++n;
+			} while (n <= smaller_rank);
+			std::copy_backward(larger_tensor.c_vals.begin(), larger_tensor.c_vals.end() - n, new_cvals_it);
+			std::copy_backward(larger_tensor.sections_sizes.begin(), larger_tensor.sections_sizes.end() - n,
+			                   new_sections_sizes_it);
+		}
+		any_quantity out_selr = larger_tensor.selection_rule->get() * smaller_tensor.selection_rule->get();
+		return std::make_tuple(comp_mask, new_sections_by_dim, new_sections_sizes, new_cvals, out_selr);
+	}
+	static auto match_index(size_t smaller_rank, const std::vector<uint8_t> comp_mask, const btensor::index_list &a,
+	                        const btensor::index_list &b) -> bool
+	{
+		bool out = true;
+		auto a_it = a.end();
+		auto b_it = b.end();
+		size_t i = 1;
+		auto mask_it = comp_mask.end();
+		do
+		{
+			{
+				--a_it;
+				--b_it;
+				--mask_it;
+				out &= *mask_it or (*a_it == *b_it);
+				++i;
+			}
+		} while (i <= smaller_rank);
+		return out;
+	};
+
+	static auto out_index(size_t smaller_rank, const btensor::index_list &large, const btensor::index_list &small)
+	    -> btensor::index_list
+	{
+		// assumes the index are a match.
+		auto out = large;
+		auto out_it = out.end();
+		auto large_it = large.end();
+		auto small_it = small.end();
+		do
+		{
+			--out_it;
+			--large_it;
+			--small_it;
+			*out_it = std::max(*large_it, *small_it);
+		} while (small_it != small.begin());
+		return out;
+	};
+	static auto check_bmm_compatibility(const btensor &a, const btensor &b)
+	{
+		// first N dimensions must be the same.
+		// last 2 must be matrix compatible
+		bool good = a.rank == b.rank;
+		if (not good)
+			throw std::invalid_argument(fmt::format("incompatible ranks"));
+		{ // check for compatible number of section in batch dimensions
+			auto a_sbd = a.sections_by_dim.begin();
+			auto b_sbd = b.sections_by_dim.begin();
+			for (size_t i = 0; a_sbd != a.sections_by_dim.end() - 2; ++a_sbd, ++b_sbd, ++i)
+			{
+				if (*a_sbd != *b_sbd)
+					throw std::invalid_argument(
+					    fmt::format("input tensors have different number of section ({} and {}) in batch dimension {}",
+					                *a_sbd, *b_sbd, i));
+			}
+		}
+		{ // check for compatible section sizes in batch dimensions
+			auto [a_start, a_end] = a.section_sizes(a.rank - 3);
+			auto [b_start, b_end] = b.section_sizes(b.rank - 3);
+			a_start = a.sections_sizes.begin();
+			b_start = b.sections_sizes.begin();
+			for (size_t i = 0; a_start != a_end; ++a_start, ++b_start, ++i)
+			{
+				if (*a_start != *b_start)
+				{
+					auto sbd_it = a.sections_by_dim.begin();
+					size_t dim = 0;
+					while (sbd_it != a.sections_by_dim.end() and *sbd_it > i)
+					{
+						++dim;
+						i -= *sbd_it;
+						++sbd_it;
+					}
+					throw std::invalid_argument(fmt::format(
+					    "input tensors have different section sizes ({} and {}) in batch dimension {} section {}",
+					    *a_start, *b_start, dim, i));
+				}
+			}
+		}
+		{ // check for compatible matrix dimensions. section number, size and cvals
+			if (a.sections_by_dim[a.rank - 1] != b.sections_by_dim[a.rank - 2])
+				throw std::invalid_argument("input tensors have incompatible section numbers on the matrix dimensions");
+
+			{
+				auto [a_start, a_end] = a.section_sizes(a.rank - 1);
+				auto [b_start, b_end] = b.section_sizes(a.rank - 2);
+				for (size_t i = 0; a_start != a_end; ++a_start, ++b_start, ++i)
+				{
+					if (*a_start != *b_start)
+						throw std::invalid_argument(
+						    fmt::format("input tensors matrix section {} have incompatible sizes ({} and {})", i,
+						                *a_start, *b_start));
+				}
+			}
+			auto [a_start, a_end] = a.section_conserved_qtt_range(a.rank - 1);
+			auto [b_start, b_end] = b.section_conserved_qtt_range(a.rank - 2);
+
+			auto neutral = a_start->neutral();
+			for (size_t i = 0; a_start != a_end; ++a_start, ++b_start, ++i)
+			{
+				if ((*a_start) * (*b_start) != neutral)
+					throw std::invalid_argument(fmt::format(
+					    "input tensors matrix section {} have incompatible conserved quantities ({} and {})", i,
+					    *a_start, *b_start));
+			}
+		}
+	}
+};
+
+btensor &btensor::mul_(const btensor &other)
+{
+	// broadcasting, multiplies the dimensions from last to first.
+	// size one dimensions are treated as "scalar", meaning it is multiplied with every elements of that dimensions. As
+	// far as conserved value are concerned, this correspond to a cval shift. for a block tensor a size one dimensions
+	// as one section of size one.
+
+	// The larger and smaller identification buisiness can be mostly illiminated: the output MUST be the larger one in
+	// rank for the inplace case. This is a bit of a silly decision on torch's part, since it allow reallocation if the
+	// tensor has a large enough rank.
+
+	const auto &smaller_rank = std::min(rank, other.rank);
+	const auto &larger_rank = std::max(rank, other.rank);
+	const btensor &larger_tensor = rank == larger_rank ? *this : other;
+	const btensor &smaller_tensor = other.rank == smaller_rank ? other : *this;
+	bool this_is_large = rank == larger_rank;
+	auto [comp_mask, new_sections_by_dim, new_sections_sizes, new_cvals, out_selr] =
+	    mul_helpers::shape_compute(this_is_large, smaller_rank, larger_rank, smaller_tensor, larger_tensor);
+
+	block_list_t out_blocks;
+	if (std::any_of(comp_mask.begin(), comp_mask.end(), [](auto &&a) { return bool(a); }))
+	{
+		out_blocks.reserve(blocks_list.size() * other.blocks_list.size()); // lazy upper bound.
+	}
+	else
+	{
+		out_blocks.reserve(std::min(blocks_list.size(), other.blocks_list.size())); // tight upper bound.
+	}
+	// if there are no broadcast dimensions, the number of output block is smaller or equal to the smaller of the
+	// two block_list. if all index are broadcast with the other tensor (e.g. sizes [x,1,y]*[1,z,1]), then the
+	// number of blocks will be the product. This is case is basically a tensor product.
+
+	// two indices are a match if all the values are identical, but 0 matches anything if it's the only possible
+	// value of that dimension. we only consider a number of value equal to the smaller of the two indices, and
+	// start the comparison from the last. We accomplish this by applying a mask to the two indices during the
+	// comparison. If mul_ is not used, this breaks the shared state between this and copies of this. The only way
+	// to restore exactly the same behavior as torch would be to store the block list and other properties in a shared
+	// structure.
+
+	bool can_do_inplace =
+	    std::none_of(comp_mask.begin(), comp_mask.end(),
+	                 [this_is_large](auto &&x)
+	                 {
+		                 bool out = (x >> this_is_large) & 1; // whether the current dimensions is 1 in this.
+		                 out ^= ((x >> !this_is_large) & 1) &&
+		                        out; // exclusive or with the value in the other if it's currently true.
+		                 return out;
+	                 });
+
+	// when there are no broadcast, there's no need for nested loop, we can increment the two iterator in lockstep
+	// When there are broadcast, there's a more complicated, shorter loop. But it probably trigger many more rollback
+	// from the branch prediction. This one will almost never match, in which case there's nothing to do. When there's a
+	// rollback, it's because there is some work. should be pretty good.
+	for (auto other_it = other.blocks_list.begin(); other_it != other.blocks_list.end(); ++other_it)
+	{
+		for (auto this_it = blocks_list.begin(); this_it != blocks_list.end(); ++this_it)
+		{
+			auto &this_index = std::get<0>(*this_it);
+			auto &other_index = std::get<0>(*other_it);
+			auto &this_tensor = std::get<1>(*this_it);
+			auto &other_tensor = std::get<1>(*other_it);
+			// to get the correct output, we can only do the actual inplace mul_ at the block level only when there's a
+			// single output block associated with the input block.
+			// at best, we could try to do it inplace for the last call.
+			// There's a single output when only this tensor has no size 1 dimensions, or the size 1 dimension are
+			// matched with a size 1 in other.
+			if (mul_helpers::match_index(smaller_rank, comp_mask, this_index, other_index))
+			{
+				if (can_do_inplace)
+					out_blocks.emplace(out_blocks.end(), mul_helpers::out_index(smaller_rank, this_index, other_index),
+					                   this_tensor.mul_(other_tensor));
+				else
+					out_blocks.emplace(out_blocks.end(), mul_helpers::out_index(smaller_rank, this_index, other_index),
+					                   this_tensor.mul(other_tensor));
+			}
+		}
+	}
+	// stuff the new data in this.
+	blocks_list = std::move(out_blocks);
+	c_vals = std::move(new_cvals);
+	sections_sizes = std::move(new_sections_sizes);
+	sections_by_dim = std::move(new_sections_by_dim);
+	rank = larger_rank;
+	selection_rule.value = std::move(out_selr);
+
+	return *this; // btensor(larger_rank, out_blocks, new_sections_by_dim, new_sections_sizes, new_cvals, out_selr);
+}
+btensor btensor::bmm(const btensor &mat) const
+{
+	// TODO: finish this function!
+	// in details: batch_equal, batch_lesser and out_index to implement.
+	// The loop is not proper for parallisation preallocation of output container necessary, and some
+	// form syncronization based on output index necessary.
+	// The need for syncronisation can be eliminated by reordering the block of mat such that all the output that have
+	// the same index are done in loop order.
+	mul_helpers::check_bmm_compatibility(*this, mat);
+	auto batch_shape_inds = std::vector<int64_t>(dim(), -1);
+	batch_shape_inds.back() = 0;
+	*(batch_shape_inds.end() - 2) = 0;
+	auto this_inds = std::vector<int64_t>(mat.dim(), 0);
+	*(this_inds.end() - 2) = -1;
+	auto mat_inds = std::vector<int64_t>(mat.dim(), 0);
+	mat_inds.back() = -1;
+	auto [comp_mask, new_sections_by_dim, new_sections_sizes, new_cvals, out_selr] = mul_helpers::shape_compute(
+	    false, rank - 2, rank - 2, this->shape_from(batch_shape_inds), mat.shape_from(batch_shape_inds));
+	btensor batch_shape(new_sections_by_dim, new_cvals, new_sections_sizes, selection_rule->neutral());
+	auto out = quantt::shape_from(
+	    batch_shape, this->shape_from(this_inds),
+	    mat.shape_from(mat_inds)); // ambiguity because of the in-class context lifted by the quantt namespace;
+
+	auto mat_blocks = mat.blocks_list;
+	// sort mat in an order ideal for parallelism.
+	// stable sort internally work out of place if it can, so it has extra space complexity relative to quicksort
+	// quicksort can be used with a more complicated comparator.
+	std::sort(mat_blocks.begin(), mat_blocks.end(),
+	          [](const index_list &a, const index_list &b)
+	          {
+		          // standard loop for lexicographical comparison
+		          for (auto [first1, first2] = std::tuple(a.begin(), b.begin());
+		               (first1 != a.end() - 2) && (first2 != b.end() - 2); ++first1, ++first2)
+		          {
+			          if (*first1 < *first2)
+				          return true;
+			          if (*first2 < *first1)
+				          return false;
+		          }
+		          // swap the order of the last two element of the index.
+		          if (*(a.end() - 1) < *(b.end() - 1))
+			          return true;
+		          if (*(b.end() - 1) < *(a.end() - 1))
+			          return false;
+		          if (*(a.end() - 2) < *(b.end() - 2))
+			          return true;
+		          if (*(b.end() - 2) < *(a.end() - 2))
+			          return false;
+		          return false; // they're equal if we get here. can't happen really.
+	          });
+
+	out.selection_rule.value = this->selection_rule.value * mat.selection_rule.value;
+	auto batch_equal = [](const index_list &a, const index_list &b) -> bool
+	{
+		for (auto [it_a, it_b] = std::tuple(a.begin(), b.begin()); it_a != a.end() - 2; ++it_a, ++it_b)
+		{
+			if (*it_a != *it_b)
+				return false;
+		}
+		return true;
+	};
+	auto batch_lesser = [](const index_list &a, const index_list &b) -> bool
+	{ return std::lexicographical_compare(a.begin(), a.end() - 2, b.begin(), b.end() - 2); };
+	auto out_index = [](block_list_t::const_iterator it1, block_list_t::const_iterator it2) -> btensor::index_list
+	{
+		auto &l1 = std::get<0>(*it1);
+		auto &l2 = std::get<0>(*it2);
+		index_list out(l1.size());
+		std::copy(l1.begin(), l1.end() - 1, out.begin());
+		out.back() = l2.back();
+		return index_list();
+	};
+	auto matrix_match = [](const index_list &a, const index_list &b) { return a.back() == *(b.end() - 2); };
+	auto out_index_unchanged = [](const index_list &out_index, const index_list &fast_changing)
+	{ return out_index.back() == fast_changing.back(); };
+	auto this_it = begin();
+	auto mat_it = mat_blocks.begin();
+	auto this_region_start = this_it; // begining of a "region" of index with the same batch indices for this.
+	auto mat_region_start = mat_it;   // idem but for mat.
+	while (this_it != end())
+	{
+		auto ind = out_index(this_it, mat_it);
+		// mat_it and this_it are ordered such that all the combination that create the same output index are next to
+		// each other. this while loop can be parallelized without syncronization for the output, if we add a
+		// preparatory step on the output.
+		while (batch_equal(std::get<0>(*this_it), std::get<0>(*mat_it)) and
+		       out_index_unchanged(ind, std::get<0>(*mat_it)))
+		{
+			if (matrix_match(std::get<0>(*this_it), std::get<0>(*mat_it)))
+			{
+				auto A = std::get<1>(*this_it);
+				auto B = std::get<1>(*mat_it);
+				out.block(ind).addmm_(A, B);
+			}
+			++mat_it;
+		}
+
+		++this_it;
+		if (batch_equal(std::get<0>(*this_it), std::get<0>(*this_region_start)))
+		{ // we have not yet changed the batch index. so we scan this batch index of mat again.
+			mat_it = mat_region_start;
+		}
+		else
+		{
+			// increment the smaller of the two batch index until we get a match
+			while (not batch_equal(std::get<0>(*this_it), std::get<0>(*mat_it)))
+			{
+				bool inc_this = batch_lesser(std::get<0>(*this_it), std::get<0>(*mat_it));
+				this_it += inc_this;
+				mat_it += !inc_this;
+			}
+			this_region_start = this_it;
+			mat_region_start = mat_it;
+		}
+	}
+	return out;
+}
+btensor btensor::mul(const btensor &other) const
+{
+	// broadcasting, multiplies the dimensions from last to first.
+	// size one dimensions are treated as "scalar", meaning it is multiplied with every elements of that dimensions. As
+	// far as conserved value are concerned, this correspond to a cval shift. for a block tensor a size one dimensions
+	// as one section of size one.
+	// TODO: breakout the output shape and cval computing part. will be reused for mul_
+	const auto &smaller_rank = std::min(rank, other.rank);
+	const auto &larger_rank = std::max(rank, other.rank);
+	const btensor &larger_tensor = rank == larger_rank ? *this : other;
+	const btensor &smaller_tensor = other.rank == smaller_rank ? other : *this;
+	bool this_is_large = rank == larger_rank;
+	auto [comp_mask, new_sections_by_dim, new_sections_sizes, new_cvals, out_selr] =
+	    mul_helpers::shape_compute(this_is_large, smaller_rank, larger_rank, smaller_tensor, larger_tensor);
+
+	block_list_t out_blocks;
+	if (std::any_of(comp_mask.begin(), comp_mask.end(), [](auto &&a) { return bool(a); }))
+	{
+		out_blocks.reserve(blocks_list.size() * other.blocks_list.size()); // lazy upper bound.
+	}
+	else
+	{
+		out_blocks.reserve(std::min(blocks_list.size(), other.blocks_list.size())); // tight upper bound.
+	}
+	// if there are no broadcast dimensions, the number of output block is smaller or equal to the smaller of the
+	// two block_list. if all index are broadcast with the other tensor (e.g. sizes [x,1,y]*[1,z,1]), then the
+	// number of blocks will be the product. This is case is basically a tensor product.
+
+	// two indices are a match if all the values are identical, but 0 matches anything if it's the only possible
+	// value of that dimension. we only consider a number of value equal to the smaller of the two indices, and
+	// start the comparison from the last. We accomplish this by applying a mask to the two indices during the
+	// comparison.
+
+	// when there are no broadcast, there's no need for nested loop, we can increment the two iterator in lockstep
+	// When there are broadcast, there's a more complicated, shorter loop. But it probably trigger many more rollback
+	// from the branch prediction. This one will almost never match, in which case there's nothing to do. When there's a
+	// rollback, it's because there is some work. should be pretty good.
+	for (auto other_it = other.blocks_list.begin(); other_it != other.blocks_list.end(); ++other_it)
+	{
+		for (auto this_it = blocks_list.begin(); this_it != blocks_list.end(); ++this_it)
+		{
+			auto &this_index = std::get<0>(*this_it);
+			auto &other_index = std::get<0>(*other_it);
+			auto &this_tensor = std::get<1>(*this_it);
+			auto &other_tensor = std::get<1>(*other_it);
+			if (mul_helpers::match_index(smaller_rank, comp_mask, this_index, other_index))
+				out_blocks.emplace(out_blocks.end(), mul_helpers::out_index(smaller_rank, this_index, other_index),
+				                   this_tensor.mul(other_tensor));
+		}
+	}
+	return btensor(larger_rank, out_blocks, new_sections_by_dim, new_sections_sizes, new_cvals, out_selr);
+}
+btensor btensor::permute(torch::IntArrayRef in_permutation) const
 {
 	block_list_t::content_t out_block_list; // unordered.
 	out_block_list.reserve(blocks_list.size());
 	index_list out_section_by_dim;
+	assert(in_permutation.size() == rank);
+	std::vector<int64_t> permutation(rank);
+	// turn it into a positive indexed permutation.
+	std::transform(in_permutation.begin(), in_permutation.end(), permutation.begin(),
+	               [rank = this->rank](auto &&x) { return rank * (x < 0) + x; });
 	// permute the tensors and their position in the block matrix
 	for (auto &block : blocks_list)
 	{
-		auto permute_index = [rank = this->rank](auto permutation, auto &index) {
+		auto permute_index = [rank = this->rank](auto permutation, auto &index)
+		{
 			btensor::index_list out(rank);
 			for (int i = 0; i < rank; ++i)
 			{
@@ -694,7 +1174,7 @@ btensor btensor::permute(torch::IntArrayRef permutation) const
 		out_block_list.emplace_back(permute_index(permutation, std::get<0>(block)),
 		                            std::get<1>(block).permute(permutation));
 	}
-	any_quantity_vector out_c_vals = c_vals.permute(permutation.begin(), permutation.end(), sections_by_dim);
+	any_quantity_vector out_c_vals = c_vals.permute(&*permutation.begin(), &*permutation.end(), sections_by_dim);
 	index_list out_section_sizes(sections_sizes.size());
 	{
 		size_t p = 0;
@@ -788,11 +1268,35 @@ btensor btensor::tensor_product_shape(const btensor &other) const
 	return btensor(out_section_by_dim, out_cvals, out_section_sizes, std::move(out_sel_rule));
 }
 
+btensor btensor::transpose(int64_t dim0, int64_t dim1) const
+{
+	// convert to a permutation? That's the simplest option for me.
+	dim0 = rank * (dim0 < 0) + dim0;
+	dim1 = rank * (dim1 < 0) + dim1;
+	std::vector<int64_t> permutation(rank);
+	std::iota(permutation.begin(), permutation.end(), 0);
+	permutation[dim0] = dim1;
+	permutation[dim1] = dim0;
+	return permute(permutation);
+}
+btensor &btensor::transpose_(int64_t dim0, int64_t dim1)
+{
+	// convert to a permutation? That's the simplest option for me.
+	dim0 = rank * (dim0 < 0) + dim0;
+	dim1 = rank * (dim1 < 0) + dim1;
+	std::vector<int64_t> permutation(rank);
+	std::iota(permutation.begin(), permutation.end(), 0);
+	permutation[dim0] = dim1;
+	permutation[dim1] = dim0;
+	return permute_(permutation);
+}
+
 btensor btensor::tensordot(const btensor &other, torch::IntArrayRef dim_self, torch::IntArrayRef dims_other) const
 {
 	const auto dim_l = dim_self.size();
 	// first check that everything matches, and compute the output properties, at the block level.
-	auto [t1, t2, out_btens] = [&]() {
+	auto [t1, t2, out_btens] = [&]()
+	{
 		auto [p1, p2, out_section_by_dim] = compute_tdot_shape(*this, other, dim_self, dims_other);
 		auto l = std::reduce(out_section_by_dim.begin(), out_section_by_dim.end(), 0);
 		auto out_sel_rule = selection_rule.value + other.selection_rule.value;
@@ -805,13 +1309,14 @@ btensor btensor::tensordot(const btensor &other, torch::IntArrayRef dim_self, to
 		auto _t2 = permute_bl(other.blocks_list, p2_prime, p2);
 		btensor out(out_section_by_dim, out_cvals, out_section_sizes, std::move(out_sel_rule));
 		return std::make_tuple(std::move(_t1), std::move(_t2), std::move(out));
-	}(); // a lambda that capture everything that we call immediatly. leave us with a somewhat clean namespace in the
-	     // scope.
+	}(); // a lambda that capture everything that we call immediatly. leave us with a somewhat clean namespace in
+	     // the scope.
 
 	// fmt::print("out_btens section sizes {}\n", out_btens.sections_sizes);
 	// fmt::print("input section sizes {}\n", other.sections_sizes);
 
-	auto next_index = [dim_l](const auto &iterator) {
+	auto next_index = [dim_l](const auto &iterator)
+	{
 		auto next = std::get<0>(*iterator);
 		// in the tensor product case, dim_l is 0. we need slightly different behavior for next_index in that case.
 		// perhaps a significant refactoring could get rid of those two comparisons.
@@ -824,7 +1329,8 @@ btensor btensor::tensordot(const btensor &other, torch::IntArrayRef dim_self, to
 		auto this_curr_col_start = t1.begin();
 		auto less = t1.value_comp();
 		std::vector<int64_t> out_block_index(out_btens.rank);
-		auto row_less = [dim_l](const auto &this_block, const auto &other_block) {
+		auto row_less = [dim_l](const auto &this_block, const auto &other_block)
+		{
 			auto this_it = this_block.end() - dim_l;
 			auto other_it = other_block.end() - dim_l;
 			bool result = dim_l != 0; // always return false when dim_l is 0.
@@ -834,7 +1340,8 @@ btensor btensor::tensordot(const btensor &other, torch::IntArrayRef dim_self, to
 			}
 			return result;
 		};
-		auto find_next_match = [](auto a_beg, const auto &a_end, auto b_beg, const auto &b_end, auto &&row_less) {
+		auto find_next_match = [](auto a_beg, const auto &a_end, auto b_beg, const auto &b_end, auto &&row_less)
+		{
 			// if we have a match both of the following boolean are false
 			bool a_smaller_b = true;
 			bool b_smaller_a = true;
@@ -872,8 +1379,8 @@ btensor btensor::tensordot(const btensor &other, torch::IntArrayRef dim_self, to
 				    find_next_match(this_curr_block, this_col_end, other_curr_block, other_col_end, row_less);
 				if (this_curr_block != this_col_end and other_curr_block != other_col_end)
 				{
-					// compute the block index for this combination of columns of the block tensor, could be done only
-					// if a match is found.
+					// compute the block index for this combination of columns of the block tensor, could be done
+					// only if a match is found.
 					std::copy(std::get<0>(*this_curr_block).begin(), std::get<0>(*this_curr_block).end() - dim_l,
 					          out_block_index.begin());
 					std::copy_backward(std::get<0>(*other_curr_block).begin(),
@@ -904,33 +1411,35 @@ btensor btensor::tensordot(const btensor &other, torch::IntArrayRef dim_self, to
 	return out_btens;
 }
 
-btensor& btensor::cval_shift(any_quantity_cref shift, int64_t dim) {
-	shift_impl(shift,dim);
+btensor &btensor::cval_shift(any_quantity_cref shift, int64_t dim)
+{
+	shift_impl(shift, dim);
 	selection_rule.value *= shift.inverse();
 	return *this;
 }
 
-btensor& btensor::non_conserving_cval_shift(any_quantity_cref shift, int64_t dim)
+btensor &btensor::non_conserving_cval_shift(any_quantity_cref shift, int64_t dim)
 {
-	if (blocks_list.size() != 0) throw std::logic_error("This transformation can only be applied to empty btensors");
-	shift_impl(shift,dim);
+	if (blocks_list.size() != 0)
+		throw std::logic_error("This transformation can only be applied to empty btensors");
+	shift_impl(shift, dim);
 	return *this;
 }
 
-btensor& btensor::shift_selection_rule(any_quantity_cref shift) {
-	if (blocks_list.size() != 0) throw std::logic_error("This transformation can only be applied to empty btensors");
+btensor &btensor::shift_selection_rule(any_quantity_cref shift)
+{
+	if (blocks_list.size() != 0)
+		throw std::logic_error("This transformation can only be applied to empty btensors");
 	selection_rule.value *= shift;
 	return *this;
 }
 
-void btensor::reserve_space(size_t N) {
-	blocks_list.reserve(N);
-}
+void btensor::reserve_space(size_t N) { blocks_list.reserve(N); }
 
-void btensor::shift_impl(any_quantity_cref shift, int64_t dim) 
+void btensor::shift_impl(any_quantity_cref shift, int64_t dim)
 {
 	auto [c_vals_it, c_vals_end] = section_conserved_qtt_range(dim);
-	for(; c_vals_it != c_vals_end;++c_vals_it)
+	for (; c_vals_it != c_vals_end; ++c_vals_it)
 	{
 		*c_vals_it *= shift;
 	}
@@ -959,14 +1468,14 @@ template <class stolen_type, class Victim, size_t tag = 0>
 struct Thieving_tag
 {
 	typedef stolen_type Victim::*type;
-#if defined(__GNUC__) and not defined(__clang__) //clang doesn't understand this, and defines __GNUC__
+#if defined(__GNUC__) and not defined(__clang__) // clang doesn't understand this, and defines __GNUC__
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wnon-template-friend" // yeah i know the next function ain't a template.
-#endif 
+#endif
 	friend type get(Thieving_tag);
 #if defined(__GNUC__) and not defined(__clang__)
 #pragma GCC diagnostic pop
-#endif 
+#endif
 };
 using refcount_theft = Thieving_tag<std::atomic<size_t>, c10::intrusive_ptr_target, 0>;
 using weakcount_theft = Thieving_tag<std::atomic<size_t>, c10::intrusive_ptr_target, 1>;
@@ -1029,9 +1538,8 @@ btensor btensor::add(const btensor &other, Scalar alpha) const
 	out.blocks_list.merge(
 	    other.blocks_list,
 	    // collision : do an addition in place
-	    [&alpha](torch::Tensor &a, const torch::Tensor &b) {
-		    a.add_(b, alpha);
-	    }, // no collision, multiply with the constant and make an independent copy
+	    [&alpha](torch::Tensor &a, const torch::Tensor &b)
+	    { a.add_(b, alpha); }, // no collision, multiply with the constant and make an independent copy
 	    [&alpha](torch::Tensor &x) { x = x.mul(alpha); });
 	return out;
 }
@@ -1044,12 +1552,13 @@ btensor btensor::add(btensor &&other, Scalar alpha) const
 	add_tensor_check(*this, other); // perform compatibility check before the actual operations.
 	auto out = *this;
 	out.blocks_list.merge(
-	    other.blocks_list, // must not use the move merge, no way to get the nocollision case to behave correctly with
-	                       // that variant. torch::tensor do shallow copy by default anyway, so it doesn't change the
-	                       // cost of the operations. collision
+	    other.blocks_list, // must not use the move merge, no way to get the nocollision case to behave correctly
+	                       // with that variant. torch::tensor do shallow copy by default anyway, so it doesn't
+	                       // change the cost of the operations. collision
 	    [&alpha](torch::Tensor &a, const torch::Tensor &b) { a.add_(b, alpha); },
 	    // no collision
-	    [&alpha](torch::Tensor &x) {
+	    [&alpha](torch::Tensor &x)
+	    {
 		    if (get_refcount(x) > 2) // greater than 2 because we've just made a temp copy for this algorithm
 		    {
 			    x = x.mul(alpha);
@@ -1068,10 +1577,10 @@ btensor btensor::add(btensor &&other, Scalar alpha) const
  */
 btensor &btensor::add_(const btensor &other, Scalar alpha)
 {
-	// doesn't have quite the same behavior as torch::add_: this one will create partially shared state in btensors that
-	// are copy of this if the addition create a new block to the block list. the only work around i can think of is to
-	// implement the state sharing logic at the level of the btensor as well. That's quite a bit of work and won't be
-	// done right away.
+	// doesn't have quite the same behavior as torch::add_: this one will create partially shared state in btensors
+	// that are copy of this if the addition create a new block to the block list. the only work around i can think
+	// of is to implement the state sharing logic at the level of the btensor as well. That's quite a bit of work
+	// and won't be done right away.
 	add_tensor_check(*this, other); // perform compatibility check before the actual operations.
 	// std::for_each(b_blocks.begin(), b_blocks.end(), [](auto &x) { std::get<1>(x) = std::get<1>(x).clone(); });
 	this->blocks_list.merge(
@@ -1089,7 +1598,8 @@ btensor &btensor::add_(btensor &&other, Scalar alpha)
 	// std::for_each(b_blocks.begin(), b_blocks.end(), [](auto &x) { std::get<1>(x) = std::get<1>(x).clone(); });
 	this->blocks_list.merge(
 	    b_blocks, [&alpha](torch::Tensor &a, const torch::Tensor &b) { a.add_(b, alpha); },
-	    [&alpha](torch::Tensor &x) {
+	    [&alpha](torch::Tensor &x)
+	    {
 		    if (get_refcount(x) > 2) // greater than 2 because we've just made a temp copy for this algorithm
 		    {
 			    x = x.mul(alpha);
@@ -1110,18 +1620,17 @@ btensor &btensor::add_(btensor &&other, Scalar alpha)
  */
 namespace reshape_helpers
 {
-
 btensor::index_list reshape_sections_by_dim(torch::IntArrayRef index_groups, size_t new_rank,
                                             btensor::index_list sections_by_dim)
 {
 	btensor::index_list out_sections_by_dims(new_rank);
-	std::transform(index_groups.begin(), index_groups.end() - 1, index_groups.begin() + 1, out_sections_by_dims.begin(),
-	               [&sections_by_dim](auto &&a, auto &&b) {
-		               return std::reduce(sections_by_dim.begin() + a, sections_by_dim.begin() + b, 1,
-		                                  std::multiplies());
-	               });
+	std::transform(
+	    index_groups.begin(), index_groups.end() - 1, index_groups.begin() + 1, out_sections_by_dims.begin(),
+	    [&sections_by_dim](auto &&a, auto &&b)
+	    { return std::reduce(sections_by_dim.begin() + a, sections_by_dim.begin() + b, 1, std::multiplies()); });
 	// those list are not very long, might not be worth it to use a parallel execution.
-	// std::transform(std::execution::par, index_groups.begin(), index_groups.end() - 1, index_groups.begin() + 1,
+	// std::transform(std::execution::par, index_groups.begin(), index_groups.end() - 1, index_groups.begin() +
+	// 1,
 	//                out_sections_by_dims.begin(), [&sections_by_dim](auto &&a, auto &&b) {
 	// 	               return std::reduce(std::execution::par, sections_by_dim.begin() + a,
 	// 	                                  sections_by_dim.begin() + b,1,std::multiplies());
@@ -1130,13 +1639,13 @@ btensor::index_list reshape_sections_by_dim(torch::IntArrayRef index_groups, siz
 }
 /**
  * @brief multiplies the block property of the grouped indices.
- * 
- * @param index_groups 
- * @param block_values 
- * @param val 
- * @param out_size 
- * @param in_sections_by_dims 
- * @param addresses 
+ *
+ * @param index_groups
+ * @param block_values
+ * @param val
+ * @param out_size
+ * @param in_sections_by_dims
+ * @param addresses
  * @return T Block Property for the reduced rank tensor.
  */
 template <class T, class Init>
@@ -1144,9 +1653,8 @@ T reshape_block_prop(torch::IntArrayRef index_groups, const T &block_values, con
                      const btensor::index_list &in_sections_by_dims, const btensor::index_list addresses)
 {
 	auto out = T(out_size, val);
-	auto increment = [](btensor::index_list &index, torch::IntArrayRef max_index, size_t rank) {
-		increment_index_right(index, max_index, rank);
-	};
+	auto increment = [](btensor::index_list &index, torch::IntArrayRef max_index, size_t rank)
+	{ increment_index_right(index, max_index, rank); };
 
 	auto out_it = out.begin();
 	for (auto index_start = index_groups.begin(); index_start != index_groups.end() - 1; ++index_start)
@@ -1157,12 +1665,12 @@ T reshape_block_prop(torch::IntArrayRef index_groups, const T &block_values, con
 		auto size_j = torch::ArrayRef(in_sections_by_dims.data() + *index_start, rank);
 		// fmt::print("sizes {}\n", size_j);
 		do
-		{	
+		{
 			// fmt::print("	j {}\n",j);
 			for (size_t i = 0; i < rank; ++i)
-			{	
+			{
 				// fmt::print("		value {}\n", block_values[addresses[i+*index_start] + j[i]]);
-				(*out_it) *= block_values[addresses[i+*index_start] + j[i]];
+				(*out_it) *= block_values[addresses[i + *index_start] + j[i]];
 				// fmt::print("		accumulator {}\n", *out_it);
 			}
 			increment(j, size_j, rank);
@@ -1174,8 +1682,8 @@ T reshape_block_prop(torch::IntArrayRef index_groups, const T &block_values, con
 }
 /**
  * @brief
- * Note: this whole buisiness of computing the new block index could be avoided if we used the vectorized index always
- * for ordering. Drawback: permute then becomes much harder.
+ * Note: this whole buisiness of computing the new block index could be avoided if we used the vectorized index
+ * always for ordering. Drawback: permute then becomes much harder.
  * @param index_groups
  * @param block_index
  * @param out_rank
@@ -1188,7 +1696,8 @@ btensor::index_list reshape_block_index(torch::IntArrayRef index_groups, const b
 
 	btensor::index_list out(out_rank); // would be much simpler if i could zip shifts and block_index.
 	std::transform(index_groups.rbegin() + 1, index_groups.rend(), index_groups.rbegin(), out.rbegin(),
-	               [&](auto &&a, auto &&b) {
+	               [&](auto &&a, auto &&b)
+	               {
 		               int64_t out = 0;
 		               int64_t S = 1;
 		               auto index_start = block_index.begin() + a;
@@ -1227,16 +1736,18 @@ btensor::index_list new_block_shape(torch::IntArrayRef index_groups, btensor::co
 	// implementation if i updgrade the block_size_view to random access.
 	// std::transform(index_groups.begin(), index_groups.end() - 1, index_groups.begin() + 1, out.begin(),
 	//                [&block_sizes](auto &&a, auto &&b) {
-	// 	               return std::reduce(block_sizes.begin() + a, block_sizes.begin() + b, 1, std::multiplies());
+	// 	               return std::reduce(block_sizes.begin() + a, block_sizes.begin() + b, 1,
+	// std::multiplies());
 	//                });
 	return out;
 }
 /**
  * @brief compute the new block index of a block
- * Note: this whole buisiness of computing the new block index could be avoided if we used the vectorized index always
- * for ordering. Drawback: permute then becomes much harder. consequence: functions that access a block would first
- * compute the vectorized index. time cost perhaps O(rank), we have to factor in the cost of the search with the
- * index_list instead of a single integer to be sure... The performance consideration are likely to be irrelevent.
+ * Note: this whole buisiness of computing the new block index could be avoided if we used the vectorized index
+ * always for ordering. Drawback: permute then becomes much harder. consequence: functions that access a block
+ * would first compute the vectorized index. time cost perhaps O(rank), we have to factor in the cost of the
+ * search with the index_list instead of a single integer to be sure... The performance consideration are likely
+ * to be irrelevent.
  * @param in_block_index old block index
  * @param out_rank output rank (lenght of out_block_index)
  * @param out_sections_by_dim number of section along each dimension of the output
@@ -1248,7 +1759,8 @@ btensor::index_list reshape_block_index(btensor::index_list in_block_index, size
                                         btensor::index_list out_sections_by_dim, btensor::index_list sections_by_dim)
 {
 	// i can't think of a more clever algorithm than this right now.
-	auto flatten = [](auto &&index, auto &&sizes) {
+	auto flatten = [](auto &&index, auto &&sizes)
+	{
 		size_t out = 0;
 		size_t s = 1;
 		auto size_it = sizes.begin();
@@ -1262,7 +1774,8 @@ btensor::index_list reshape_block_index(btensor::index_list in_block_index, size
 		}
 		return out;
 	};
-	auto unflatten = [out_rank](size_t flat, auto &&sizes) {
+	auto unflatten = [out_rank](size_t flat, auto &&sizes)
+	{
 		auto out = btensor::index_list(out_rank);
 		auto out_it = out.begin();
 		auto size_it = sizes.begin();
@@ -1292,9 +1805,8 @@ bool compatible_c_vals(const btensor &lhs, const btensor &rhs)
 	bool out = true;
 	auto lhs_index = btensor::index_list(lhs.dim(), 0);
 	auto rhs_index = btensor::index_list(rhs.dim(), 0);
-	auto increment = [](btensor::index_list &index, torch::IntArrayRef max_index, size_t rank) {
-		increment_index_right(index, max_index, rank);
-	};
+	auto increment = [](btensor::index_list &index, torch::IntArrayRef max_index, size_t rank)
+	{ increment_index_right(index, max_index, rank); };
 	do
 	{
 		auto lhs_c_vals = lhs.block_quantities(lhs_index);
@@ -1315,9 +1827,8 @@ bool compatible_block_size(const btensor &lhs, const btensor &rhs)
 	bool out = true;
 	auto lhs_index = btensor::index_list(lhs.dim(), 0);
 	auto rhs_index = btensor::index_list(rhs.dim(), 0);
-	auto increment = [](btensor::index_list &index, torch::IntArrayRef max_index, size_t rank) {
-		increment_index_right(index, max_index, rank);
-	};
+	auto increment = [](btensor::index_list &index, torch::IntArrayRef max_index, size_t rank)
+	{ increment_index_right(index, max_index, rank); };
 	do
 	{
 		auto lhs_vals = lhs.block_sizes(lhs_index);
@@ -1335,16 +1846,16 @@ btensor btensor::reshape(torch::IntArrayRef index_groups) const
 {
 	using namespace reshape_helpers;
 	size_t out_rank = index_groups.size() + 1;
-	// make the information about the grouping explicit. The begining of the first group and the end of the last is not
-	// explicitly present in the input supplied (it's always 0 and the rank respectivily)
+	// make the information about the grouping explicit. The begining of the first group and the end of the last is
+	// not explicitly present in the input supplied (it's always 0 and the rank respectivily)
 	std::vector<int64_t> m_index_group(out_rank + 1);
 	m_index_group[0] = 0;
 	m_index_group.back() = rank;
 	std::copy(index_groups.begin(), index_groups.end(), m_index_group.begin() + 1);
-	// adresses contains the offset for section quantities for each dimensions of the tensor. perhaps i should refactor
-	// such that this quantity is a class property.
-	// wouldn't be too hard. require modification to the constructor to initialize this, and modification to the view
-	// subclasses to make use of this. Would upgrade them from bidirectionnal to random access.
+	// adresses contains the offset for section quantities for each dimensions of the tensor. perhaps i should
+	// refactor such that this quantity is a class property. wouldn't be too hard. require modification to the
+	// constructor to initialize this, and modification to the view subclasses to make use of this. Would upgrade
+	// them from bidirectionnal to random access.
 	auto addresses = btensor::index_list(sections_by_dim.size(), 0);
 	std::partial_sum(sections_by_dim.begin(), sections_by_dim.end() - 1, addresses.begin() + 1);
 
@@ -1388,9 +1899,9 @@ btensor btensor::reshape_as(const btensor &other) const
 	if constexpr (not overwrite_c_vals)
 	{
 		if (not compatible_c_vals(*this, other))
-			throw std::invalid_argument("incompatible conserved quantities"); // hard to offer a more detailed human
-			                                                                  // readable diagnostic, without
-			                                                                  // having the throw in the test loop.
+			throw std::invalid_argument(
+			    "incompatible conserved quantities"); // hard to offer a more detailed human readable diagnostic,
+			                                          // without having the throw in the test loop.
 		sel_rul = this->selection_rule.value;
 	}
 	else
@@ -1417,6 +1928,7 @@ btensor btensor::reshape_as(const btensor &other) const
 				    "block at {} in orginal btensor not allowed by the new selection rule", std::get<0>(*block_it)));
 			}
 		}
+
 		auto new_shape_view = other.block_sizes(new_block_index);
 		std::vector<int64_t> new_shape(new_shape_view.begin(), new_shape_view.end());
 		auto reshaped_block = std::get<1>(*block_it).reshape(new_shape);
@@ -1492,11 +2004,11 @@ const btensor::block_list_t &btensor::blocks() const { return blocks_list; }
 // }
 // btensor &btensor::sub_(const btensor &other, Scalar alpha)
 // {
-// 	// doesn't have quite the same behavior as torch::add_: this one will create partially shared state in btensors that
-// are copy of this if the addition create a new block to the block list.
-// 	// the only work around i can think of is to implement the state sharing logic at the level of the btensor as well.
-// That's quite a bit of work and won't be done right away. 	add_tensor_check(*this, other); //perform compatibility
-// check before the actual operations.
+// 	// doesn't have quite the same behavior as torch::add_: this one will create partially shared state in btensors
+// that are copy of this if the addition create a new block to the block list.
+// 	// the only work around i can think of is to implement the state sharing logic at the level of the btensor as
+// well. That's quite a bit of work and won't be done right away. 	add_tensor_check(*this, other); //perform
+// compatibility check before the actual operations.
 // 	// std::for_each(b_blocks.begin(), b_blocks.end(), [](auto &x) { std::get<1>(x) = std::get<1>(x).clone(); });
 // 	this->blocks.merge(
 // 		other.blocks,
@@ -1509,8 +2021,8 @@ const btensor::block_list_t &btensor::blocks() const { return blocks_list; }
 // 	add_tensor_check(*this, other); //perform compatibility check before the actual operations.
 // 	auto out = *this;
 // 	out.blocks.merge(
-// 		other.blocks, //must not use the move merge, no way to get the nocollision case to behave correctly with that
-// variant. torch::tensor do shallow copy by default anyway, so it doesn't change the cost of the operations.
+// 		other.blocks, //must not use the move merge, no way to get the nocollision case to behave correctly with
+// that variant. torch::tensor do shallow copy by default anyway, so it doesn't change the cost of the operations.
 // 					  //collision
 // 		[&alpha](torch::Tensor &a, const torch::Tensor &b) { a.sub_(b, alpha); },
 // 		//no collision

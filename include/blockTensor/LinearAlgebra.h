@@ -43,10 +43,11 @@ namespace quantt
  * The matrix mulitplication of the diagonnal matrix \f$D \f$, represented by its list of elements \f$d\f$, with \f$U\f$
  or \f$V\f$ can be done like so:
  * \f$[
-     \sum_x U_{ijx}.D_{ixk} = U_{ijk}d_{ijk}
+     \sum_x U_{ijx}.D_{ixk} = U_{ijk}d_{ik}
  * \f]
- * btensor::mul and btensor::mul_ accomplish this.
- *
+ * btensor::mul and btensor::mul_ accomplish this. Because of the way torch broadcasting works, we must insert a size one index between i and k in d.
+ * So the correct multiplication is accomplished by U.mul(d.reshape(d,btensor({{1,d.conservation_rule->neutral()}},d.conservation_rule->neutral())).transpose(-2,-1))
+ * V can be substituted to U without further modifications.
  * @param tensor the tensor to decompose
  * @return std::tuple<btensor,btensor,btensor> U, d and V
  */
