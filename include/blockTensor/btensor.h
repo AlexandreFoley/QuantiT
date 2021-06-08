@@ -22,6 +22,7 @@
 #include "boost/stl_interfaces/view_interface.hpp"
 #include "property.h"
 #include "torch_formatter.h"
+#include <ATen/Functions.h>
 #include <algorithm>
 #include <cstdint>
 #include <exception>
@@ -100,11 +101,11 @@ class btensor
 
 	/**
 	 * @brief Construct a new btensor object from a subset of the raw structure. use carefully.
-	 * 
-	 * @param _sections_by_dim 
-	 * @param _c_vals 
-	 * @param _section_sizes 
-	 * @param _sel_rule 
+	 *
+	 * @param _sections_by_dim
+	 * @param _c_vals
+	 * @param _section_sizes
+	 * @param _sel_rule
 	 */
 	btensor(index_list _sections_by_dim, any_quantity_vector _c_vals, index_list _section_sizes,
 	        any_quantity _sel_rule);
@@ -268,11 +269,12 @@ class btensor
 	 */
 	btensor basic_create_view(const std::vector<int64_t> &dims);
 	/**
-	 * @brief make all the the conserved value and the conservation rule the neutral element of the group. works only on empty tensors.
-	 * 
-	 * @return btensor& 
+	 * @brief make all the the conserved value and the conservation rule the neutral element of the group. works only on
+	 * empty tensors.
+	 *
+	 * @return btensor&
 	 */
-	btensor& neutral_shape();
+	btensor &neutral_shape();
 	/**
 	 * @brief compute the shape of the tensor product of this with the other tensor. store the shape information in an
 	 * empty btensor
@@ -415,23 +417,40 @@ class btensor
 	btensor &operator-=(btensor &&other) { return add_(std::move(other), -1); }
 	btensor addmv(const btensor &mat, const btensor &vec, Scalar beta = 1, Scalar alpha = 1) const;
 	btensor &addmv(const btensor &mat, const btensor &vec, Scalar beta = 1);
+	// addmm do fused matrix multiply-add on the last two dimensions, with broadcasting on the other dimensions
 	btensor addmm(const btensor &mat, const btensor &mat2, Scalar beta = 1, Scalar alpha = 1) const;
 	btensor &addmm_(const btensor &mat, const btensor &mat2, Scalar beta = 1, Scalar alpha = 1);
+	// addbmm function do fused matrix multiply-add, with a reduction on the first tensor index. See baddbmm if reduction is not desired
 	btensor addbmm(const btensor &mat, const btensor &mat2, Scalar beta = 1, Scalar alpha = 1) const;
 	btensor &addbmm_(const btensor &mat, const btensor &mat2, Scalar beta = 1, Scalar alpha = 1);
 	btensor &addcdiv_(const btensor &tensor1, const btensor &tensor2, Scalar beta = 1);
 	btensor addcdiv(const btensor &tensor1, const btensor &tensor2, Scalar beta = 1);
 	btensor &addcmul_(const btensor &tensor1, const btensor &tensor2, Scalar beta = 1);
 	btensor addcmul(const btensor &tensor1, const btensor &tensor2, Scalar beta = 1);
+	// baddbmm is the batched fused mutiply add.
 	btensor baddbmm(const btensor &bathc1, const btensor &batch2, Scalar beta = 1, Scalar alpha = 1) const;
 	btensor &baddbmm_(const btensor &bathc1, const btensor &batch2, Scalar beta = 1, Scalar alpha = 1);
+	// batched matrix-multiply, no broadcast
 	btensor bmm(const btensor &mat) const;
 	btensor dot(const btensor &other) const;
 	btensor vdot(const btensor &other) const;
 	btensor kron(const btensor &other) const;
+	//broadcasting matmul (batched)
 	btensor matmul(const btensor &other) const;
+	// matmul no broadcast
 	btensor mm(const btensor &other) const;
 	btensor mul(const btensor &other) const;
+	/**
+	 * @brief in-place element wise product, with broadcasting on size 1 dimensions.
+	 *
+	 * Will throw an error if the rank of this is smaller than the would be output.
+	 * I suspect this is a bug in torch. There's no reason not to adapt the rank of the tensor,
+	 * from a storage perspective this isn't different from increasing the size of one dimenion, which this function can
+	 * do.
+	 *
+	 * @param other
+	 * @return btensor&
+	 */
 	btensor &mul_(const btensor &other);
 	btensor mul(Scalar other) const;
 	btensor &mul_(Scalar other);
@@ -507,7 +526,7 @@ class btensor
 	 * @return btensor
 	 */
 	btensor transpose(int64_t dim0, int64_t dim1) const;
-	btensor transpose(torch::Dimname dim0, torch::Dimname dim1) const;
+	// btensor transpose(torch::Dimname dim0, torch::Dimname dim1) const;
 	btensor &transpose_(int64_t dim0, int64_t dim1);
 	btensor sub(const btensor &other, Scalar alpha = 1) const { return sub(other, -alpha); }
 	btensor &sub_(const btensor &other, Scalar alpha = 1) { return sub_(other, -alpha); }
@@ -532,7 +551,7 @@ class btensor
 	 * @param shift shift to apply
 	 * @param dim dimension to which the shift is applied
 	 */
-	btensor& cval_shift(any_quantity_cref shift, int64_t dim);
+	btensor &cval_shift(any_quantity_cref shift, int64_t dim);
 	/**
 	 * @brief Shifts the conserved quantities of one dimension of the tensor without regards for the conservation laws.
 	 *
@@ -541,19 +560,19 @@ class btensor
 	 * @param shift shift to apply
 	 * @param dim dimension to which the shift is applied
 	 */
-	 btensor& non_conserving_cval_shift(any_quantity_cref shift, int64_t dim);
+	btensor &non_conserving_cval_shift(any_quantity_cref shift, int64_t dim);
 
 	/**
 	 * @brief Modify the selection rule by the value of shift. Can only be done on empty tensors .
-	 * 
-	 * @param shift 
-	 * @return btensor& 
+	 *
+	 * @param shift
+	 * @return btensor&
 	 */
-	btensor& shift_selection_rule(any_quantity_cref shift);
+	btensor &shift_selection_rule(any_quantity_cref shift);
 
 	/**
 	 * @brief Reserve space in the block list
-	 * 
+	 *
 	 * @param N number of blocks for which to reserve space
 	 */
 	void reserve_space(size_t N);
@@ -576,15 +595,25 @@ class btensor
 	any_quantity_vector
 	    c_vals; // dmrjulia equiv: QnumSum in the QTensor class. This structure doesn't need the full list (QnumMat)
 	friend struct fmt::formatter<quantt::btensor>;
+	friend class mul_helpers;
 
 	/**
-	 * @brief private, mutable version of the public function. With some const cast they can share implementation.
-	 * 
-	 * @param index 
-	 * @return std::tuple<any_quantity_vector::iterator, any_quantity_vector::iterator> 
+	 * @brief Construct a new btensor object, copy the shape another btensor, uses the supplied block list
+	 *
+	 * @param block_list
 	 */
-	std::tuple<any_quantity_vector::iterator, any_quantity_vector::iterator> section_conserved_qtt_range(
-	    size_t index);
+	btensor(const btensor &shape, block_list_t &&block_list)
+	    : selection_rule(shape.selection_rule.value), rank(shape.rank), sections_by_dim(shape.sections_by_dim),
+	      sections_sizes(shape.sections_sizes), blocks_list(std::move(block_list)), c_vals(shape.c_vals)
+	{
+	}
+	/**
+	 * @brief private, mutable version of the public function. With some const cast they can share implementation.
+	 *
+	 * @param index
+	 * @return std::tuple<any_quantity_vector::iterator, any_quantity_vector::iterator>
+	 */
+	std::tuple<any_quantity_vector::iterator, any_quantity_vector::iterator> section_conserved_qtt_range(size_t index);
 	/**
 	 * @brief common part of conserving and non conserving shift.
 	 *
@@ -603,7 +632,7 @@ class btensor
 	 * @param args argument to pass to f
 	 */
 	template <class A, class F, class... Args>
-	void apply_to_all_blocks(A &&a, F &&f, Args &&...args)
+	void apply_to_all_blocks_mod_index(A &&a, F &&f, Args &&...args)
 	{
 		for (auto &b : blocks_list)
 		{
@@ -622,7 +651,7 @@ class btensor
 	template <class F, class... Args>
 	void apply_to_all_blocks(F &&f, Args &&...args)
 	{
-		apply_to_all_blocks([](auto &x) {}, std::forward<F>(f), std::forward<Args>(args)...);
+		apply_to_all_blocks_mod_index([](auto &x) {}, std::forward<F>(f), std::forward<Args>(args)...);
 	}
 	/**
 	 * @brief apply a function to all torch tensors contained in this
@@ -635,7 +664,7 @@ class btensor
 	 * @param args argument to pass to f
 	 */
 	template <class A, class F, class... Args>
-	void force_inplace_apply_to_all_blocks(A &&a, F &&f, Args &&...args)
+	void force_inplace_apply_to_all_blocks_mod_index(A &&a, F &&f, Args &&...args)
 	{
 		for (auto &b : blocks_list)
 		{
@@ -654,7 +683,7 @@ class btensor
 	template <class F, class... Args>
 	void force_inplace_apply_to_all_blocks(F &&f, Args &&...args)
 	{
-		force_inplace_apply_to_all_blocks([](auto &) {}, std::forward<F>(f), std::forward<Args>(args)...);
+		force_inplace_apply_to_all_blocks_mod_index([](auto &) {}, std::forward<F>(f), std::forward<Args>(args)...);
 	}
 
 	/**
@@ -669,13 +698,13 @@ class btensor
 	 * @return block_list_t block_list containing the transformed tensors
 	 */
 	template <class A, class F, class... Args>
-	block_list_t new_block_list_apply_to_all_blocks(A &&a, F &&f, Args &&...args) const
+	block_list_t new_block_list_apply_to_all_blocks_mod_index(A &&a, F &&f, Args &&...args) const
 	{
 		block_list_t new_blocks;
 		new_blocks.reserve(blocks_list.size());
 		for (auto &b : blocks_list)
 		{
-			new_blocks.insert(new_blocks.end(), std::get<0>(b),
+			new_blocks.emplace(new_blocks.end(), std::get<0>(b),
 			                  std::invoke(std::forward<F>(f), std::get<1>(b), std::forward<Args>(args)...));
 			a(std::get<0>(*(new_blocks.end() - 1)));
 		}
@@ -693,7 +722,7 @@ class btensor
 	template <class F, class... Args>
 	block_list_t new_block_list_apply_to_all_blocks(F &&f, Args &&...args) const
 	{
-		return new_block_list_apply_to_all_blocks([](auto &) {}, std::forward<F>(f), std::forward<Args>(args)...);
+		return new_block_list_apply_to_all_blocks_mod_index([](auto &) {}, std::forward<F>(f), std::forward<Args>(args)...);
 	}
 };
 
@@ -735,7 +764,6 @@ inline btensor shape_from(Args... args)
 	              "All the arguments must be btensor to get into this function, don't try to side-step the enable if.");
 	return shape_from({args...});
 }
-
 
 size_t get_refcount(const torch::Tensor &tens);
 
@@ -1057,6 +1085,44 @@ qtt_TEST_CASE("btensor")
 		btensor C;
 		qtt_CHECK_NOTHROW(B = A.shape_from({-1, 0}));
 		qtt_CHECK_NOTHROW(C = shape_from(A, B));
+	}
+	qtt_SUBCASE("elementwise multiplication with broadcasting")
+	{
+
+		btensor B({{{2, cqt(0)}, {3, cqt(0)}}}, selection_rule);
+		auto B0 = torch::rand({2});
+		auto B1 = torch::rand({3});
+		B.block({0}) = B0;
+		B.block({1}) = B1;
+		fmt::print("B: {}\n", B);
+		fmt::print("A: {}\n", A);
+		auto C = A.mul(B);
+		qtt_CHECK(torch::allclose(C.block({0, 0}), A00.mul(B0)));
+		qtt_CHECK(torch::allclose(C.block({1, 1}), A11.mul(B1)));
+		// fmt::print("correct C? \n {}\n",C);
+		fmt::print("1 A00 \n{}\n", A00);
+		fmt::print("1 A00 \n{}\n", A11);
+		C = A.mul(2); // create an independant copy Does it?
+		fmt::print("2 A00 \n{}\n", A00);
+		fmt::print("2 A00 \n{}\n", A11);
+		C = C.mul(0.5); // create an independant copy Does it?
+		qtt_CHECK(torch::allclose(C.block({0, 0}), A.block({0, 0})));
+		qtt_CHECK(torch::allclose(C.block({1, 1}), A.block({1, 1})));
+		fmt::print("3 A00 \n{}\n", A00);
+		fmt::print("3 A00 \n{}\n", A11);
+		C.mul_(B); // This modifies the content of A00 and A11... &@?%!@#$%
+		fmt::print("4 A00 \n{}\n", A00);
+		fmt::print("4 A00 \n{}\n", A11);
+		qtt_CHECK(torch::allclose(C.block({0, 0}), A00.mul(B0))); // The numerical result commutes.
+		qtt_CHECK(
+		    torch::allclose(C.block({1, 1}), A11.mul(B1))); // it's the details of the allocation that depends on order
+		// fmt::print("A00 \n{}\n",A00);
+		// fmt::print("A00 \n{}\n",A11);
+		// The multiplication will **actually** be in-place if and only if there is no broadcasting happenening in the
+		// *this tensor, and that it is of a larger rank than the other. fmt::print("C: {}\n",C); fmt::print("C00
+		// expect: \n{}\n",A00.mul(B0));// those values are wrong, and what is in C is actually correct.. wtf?
+		// fmt::print("C11 expect:\n{}\n",A11.mul(B1));
+		qtt_CHECK_THROWS(B.mul_(A)); // failure on pytorch side.
 	}
 }
 

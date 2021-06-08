@@ -23,6 +23,7 @@
 #include <functional>
 #include <iterator>
 #include <numeric>
+#include <utility>
 #include <vector>
 
 namespace quantt
@@ -282,13 +283,13 @@ class flat_map
 		}
 		return std::make_pair(it, success);
 	}
-	template <class... P, class = std::enable_if_t<std::is_constructible_v<value_type, P&&...>>>
-	std::pair<iterator, bool> insert(P&&... value)
+	template <class P, class = std::enable_if_t<std::is_constructible_v<value_type, P&&>>>
+	std::pair<iterator, bool> insert(P&& value)
 	{
-		static_assert(std::is_constructible_v<value_type, P &&...>, "Don't try to bypass the enable if");
-		return insert(value_type(std::forward<P>(value)...));
+		static_assert(std::is_constructible_v<value_type, P &&>, "Don't try to bypass the enable if");
+		return insert(value_type(std::forward<P>(value)));
 	}
-	iterator insert(const_iterator hint, const value_type &value)
+	iterator insert(const_iterator hint, const value_type& value)
 	{
 		auto [first, last] = use_hint(hint, value.first);
 		auto it = std::lower_bound(
@@ -296,11 +297,11 @@ class flat_map
 		    comp); // that's not a big saving if the hint is really good. except if the element is near the ends
 		if (it == end() or it->first != value.first)
 		{
-			return iterator(content.insert(it.base_reference(), value));
+			return iterator(content.insert(it.base_reference(), value ));
 		}
 		return erase(it,it); //convert the const_iterator in an iterator
 	}
-	iterator insert(const_iterator hint, value_type &value)
+	iterator insert(const_iterator hint, value_type &&value)
 	{
 		auto [first, last] = use_hint(hint, value.first);
 		auto it = std::lower_bound(
@@ -312,11 +313,11 @@ class flat_map
 		}
 		return erase(it,it);
 	}
-	template <class... P, class = std::enable_if_t<std::is_constructible_v<value_type, P&&...>>>
-	iterator insert(const_iterator hint, P&& ... value)
+	template <class P, class = std::enable_if_t<std::is_constructible_v<value_type, P&&> >>
+	iterator insert(const_iterator hint, P&&  value)
 	{
-		static_assert(std::is_constructible_v<value_type, P&&...>, "Don't try to bypass the enable if");
-		return insert(hint, value_type(std::forward<P>(value)...));
+		static_assert(std::is_constructible_v<value_type, P&&>, "Don't try to bypass the enable if");
+		return insert(hint, value_type(std::forward<P>(value)));
 	}
 	template <class InputIt>
 	void insert(InputIt first, InputIt last)
@@ -485,9 +486,9 @@ class flat_map
 		value_type val(std::forward<Args>(args)...);
 		bool success = false;
 		auto it = std::lower_bound(begin(), end(), val, comp);
-		if (comp(val, *it))
+		if (it  == end() or comp(val, *it))
 		{
-			it = content.emplace(it, std::move(val));
+			it = content.emplace(it.it, std::move(val));
 			success = true;
 		}
 		return std::make_pair(it, success);
@@ -498,15 +499,21 @@ class flat_map
 		value_type val(std::forward<Args>(args)...);
 		bool success = false;
 		auto [first, last] = use_hint(hint, val.first);
-		iterator it = std::lower_bound(
+		iterator it;
+		hint = std::lower_bound(
 		    first, last, val,
-		    comp); // that's not a big saving if the hint is really good. except if the element is near the ends
-		if (comp(val, *it))
+		    comp); // that's not a big saving if the hint is really good. except if the element is near the ends. So far, at the end is the typical case.
+		if (hint == cend() or comp(val, *hint))
 		{
-			it = content.emplace(it, std::move(val));
+			it.it = content.emplace(hint.it, std::move(val));
 			success = true;
 		}
 		return std::make_pair(it, success);
+	}
+	template <class... Args>
+	std::pair<iterator, bool> emplace(iterator hint, Args &&... args)
+	{
+		return emplace(const_iterator(hint), std::forward<Args>(args)...);
 	}
 
 	template <class... Args>
@@ -731,12 +738,19 @@ class flat_map
 	// }
 	std::pair<const_iterator, const_iterator> use_hint(const_iterator hint,const key_type &key) const
 	{
+		
+		if (size() == 0) return std::make_pair(cbegin(),cend()); //empty case.
+		bool is_end = hint == cend();
+		hint = hint - 1*is_end;// avoid dereferencing the end iterator, which isn't a valid value. It an acceptable hint.
 		const_iterator first = comp(*hint, key) ? hint : cbegin();
 		const_iterator last = comp(key, *hint) ? cend() : hint + 1;
 		return std::make_pair(first, last);
 	}
 	std::pair<iterator, iterator> use_hint(iterator hint,const key_type &key)
 	{
+		if (size() == 0) return std::make_pair(begin(),end()); //empty case.
+		bool is_end = hint == end();
+		hint = hint - is_end;// avoid dereferencing the end iterator, which isn't a valid value. It an acceptable hint.
 		iterator first = comp(*hint, key) ? hint : begin();
 		iterator last = comp(key, *hint) ? hint + 1 : end();
 		return std::make_pair(first, last);

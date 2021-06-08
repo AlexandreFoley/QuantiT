@@ -13,6 +13,7 @@
 
 #ifndef D241DFD2_9200_4C66_8225_2C3BBD27EDE4
 #define D241DFD2_9200_4C66_8225_2C3BBD27EDE4
+#include "blockTensor/flat_map.h"
 #include "templateMeta.h"
 #include <type_traits>
 #include <utility>
@@ -97,7 +98,6 @@ struct constexprequal_test<quantt::vquantity>
 
 	constexpr static bool call() { return std::false_type(); }
 };
-
 template <class T>
 using has_constexpr_equal_outclass = std::bool_constant<constexprequal_test<T>::call()>;
 template <class T>
@@ -138,16 +138,20 @@ struct is_Abelian<T, std::enable_if_t<is_detected_v<abelian_present, T>>> : std:
 };
 // the following compile time template constant is true iff the template
 // parameter satisfy the constraint for a group that will work with any_quantity
-template <class T>
-using is_conversed_quantt =
-    and_<default_to_neutral<T>, has_op<T>, has_inverse_<T>,
-         has_comparatorequal<T>, has_comparatornotequal<T>, is_Abelian<T>>;
+
+template<class T>
+struct is_conserved_quantt : and_<default_to_neutral<T>, has_op<T>, has_inverse_<T>,
+         has_comparatorequal<T>, has_comparatornotequal<T>, is_Abelian<T>>
+{};
+
+template<class... Args>
+struct is_conserved_quantt<quantt::flat_map<Args...> >: std::false_type {};
 
 template <class T>
-constexpr bool is_conserved_quantt_v = is_conversed_quantt<T>::value;
+constexpr bool is_conserved_quantt_v = is_conserved_quantt<T>::value;
 
 template <class... T>
-using all_conserved_quantt = and_<is_conversed_quantt<T>...>;
+using all_conserved_quantt = and_<is_conserved_quantt<T>...>;
 template <class... T>
 constexpr bool all_group_v = all_conserved_quantt<T...>::value;
 
