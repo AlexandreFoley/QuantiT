@@ -37,6 +37,10 @@
 namespace quantt
 {
 class block_qtt_view;
+enum class btensor_size
+{
+	max
+};
 /**
  * @brief btensor is a type meant to represent block sparse tensor with conservation laws.
  * The conservation law determines which block can or cannot be non-nul.
@@ -420,7 +424,8 @@ class btensor
 	// addmm do fused matrix multiply-add on the last two dimensions, with broadcasting on the other dimensions
 	btensor addmm(const btensor &mat, const btensor &mat2, Scalar beta = 1, Scalar alpha = 1) const;
 	btensor &addmm_(const btensor &mat, const btensor &mat2, Scalar beta = 1, Scalar alpha = 1);
-	// addbmm function do fused matrix multiply-add, with a reduction on the first tensor index. See baddbmm if reduction is not desired
+	// addbmm function do fused matrix multiply-add, with a reduction on the first tensor index. See baddbmm if
+	// reduction is not desired
 	btensor addbmm(const btensor &mat, const btensor &mat2, Scalar beta = 1, Scalar alpha = 1) const;
 	btensor &addbmm_(const btensor &mat, const btensor &mat2, Scalar beta = 1, Scalar alpha = 1);
 	btensor &addcdiv_(const btensor &tensor1, const btensor &tensor2, Scalar beta = 1);
@@ -435,7 +440,7 @@ class btensor
 	btensor dot(const btensor &other) const;
 	btensor vdot(const btensor &other) const;
 	btensor kron(const btensor &other) const;
-	//broadcasting matmul (batched)
+	// broadcasting matmul (batched)
 	btensor matmul(const btensor &other) const;
 	// matmul no broadcast
 	btensor mm(const btensor &other) const;
@@ -576,6 +581,7 @@ class btensor
 	 * @param N number of blocks for which to reserve space
 	 */
 	void reserve_space(size_t N);
+	void reserve_space(btensor_size);
 
   private:
 	size_t rank;
@@ -705,7 +711,7 @@ class btensor
 		for (auto &b : blocks_list)
 		{
 			new_blocks.emplace(new_blocks.end(), std::get<0>(b),
-			                  std::invoke(std::forward<F>(f), std::get<1>(b), std::forward<Args>(args)...));
+			                   std::invoke(std::forward<F>(f), std::get<1>(b), std::forward<Args>(args)...));
 			a(std::get<0>(*(new_blocks.end() - 1)));
 		}
 		return new_blocks;
@@ -722,7 +728,8 @@ class btensor
 	template <class F, class... Args>
 	block_list_t new_block_list_apply_to_all_blocks(F &&f, Args &&...args) const
 	{
-		return new_block_list_apply_to_all_blocks_mod_index([](auto &) {}, std::forward<F>(f), std::forward<Args>(args)...);
+		return new_block_list_apply_to_all_blocks_mod_index([](auto &) {}, std::forward<F>(f),
+		                                                    std::forward<Args>(args)...);
 	}
 };
 
@@ -1094,35 +1101,83 @@ qtt_TEST_CASE("btensor")
 		auto B1 = torch::rand({3});
 		B.block({0}) = B0;
 		B.block({1}) = B1;
-		fmt::print("B: {}\n", B);
-		fmt::print("A: {}\n", A);
 		auto C = A.mul(B);
 		qtt_CHECK(torch::allclose(C.block({0, 0}), A00.mul(B0)));
 		qtt_CHECK(torch::allclose(C.block({1, 1}), A11.mul(B1)));
-		// fmt::print("correct C? \n {}\n",C);
-		fmt::print("1 A00 \n{}\n", A00);
-		fmt::print("1 A00 \n{}\n", A11);
-		C = A.mul(2); // create an independant copy Does it?
-		fmt::print("2 A00 \n{}\n", A00);
-		fmt::print("2 A00 \n{}\n", A11);
-		C = C.mul(0.5); // create an independant copy Does it?
+		C = A.mul(1); // create an independant copy?
 		qtt_CHECK(torch::allclose(C.block({0, 0}), A.block({0, 0})));
 		qtt_CHECK(torch::allclose(C.block({1, 1}), A.block({1, 1})));
-		fmt::print("3 A00 \n{}\n", A00);
-		fmt::print("3 A00 \n{}\n", A11);
-		C.mul_(B); // This modifies the content of A00 and A11... &@?%!@#$%
-		fmt::print("4 A00 \n{}\n", A00);
-		fmt::print("4 A00 \n{}\n", A11);
+		C.mul_(B);
 		qtt_CHECK(torch::allclose(C.block({0, 0}), A00.mul(B0))); // The numerical result commutes.
 		qtt_CHECK(
 		    torch::allclose(C.block({1, 1}), A11.mul(B1))); // it's the details of the allocation that depends on order
-		// fmt::print("A00 \n{}\n",A00);
-		// fmt::print("A00 \n{}\n",A11);
-		// The multiplication will **actually** be in-place if and only if there is no broadcasting happenening in the
-		// *this tensor, and that it is of a larger rank than the other. fmt::print("C: {}\n",C); fmt::print("C00
-		// expect: \n{}\n",A00.mul(B0));// those values are wrong, and what is in C is actually correct.. wtf?
-		// fmt::print("C11 expect:\n{}\n",A11.mul(B1));
-		qtt_CHECK_THROWS(B.mul_(A)); // failure on pytorch side.
+		qtt_WARN_THROWS(B.mul_(A));                         // failure on pytorch side.
+	}
+	qtt_SUBCASE("batched matrix multiply")
+	{
+		// B and C are compatible
+		btensor B({{{3, cqt(1)}, {4, cqt(2)}, {1, cqt(0)}},
+		           {{2, cqt(-1)}, {4, cqt(1)}},
+		           {{4, cqt(-3)}, {4, cqt(-2)}, {2, cqt(0)}}},
+		          any_quantity(cqt(0)));
+		btensor C({{{3, cqt(1)}, {4, cqt(2)}, {1, cqt(0)}},
+		           {{4, cqt(-3).inverse()}, {4, cqt(-2).inverse()}, {2, cqt(0)}},
+		           {{2, cqt(0)}, {2, cqt(-3)}, {2, cqt(-2)}}},
+		          any_quantity(cqt(1)));
+		auto B002 = torch::rand({3, 2, 2});
+		auto B011 = torch::rand({3, 4, 4});
+		B.block({0, 0, 2}) = B002;
+		B.block({0, 1, 1}) = B011;
+		auto C020 = torch::rand({3, 2, 2});
+		auto C001 = torch::rand({3, 4, 2});
+		auto C012 = torch::rand({3, 4, 2});
+		auto C111 = torch::rand({4, 4, 2});
+		auto C202 = torch::rand({1, 4, 2});
+		C.block({0, 2, 0}) = C020;
+		C.block({0, 0, 1}) = C001;
+		C.block({0, 1, 2}) = C012;
+		C.block({1, 1, 1}) = C111;
+		C.block({2, 0, 2}) = C202;
+		btensor BC;
+		qtt_REQUIRE_NOTHROW(BC = B.bmm(C));
+		// D, E, F, G are incompatible with B
+		// incompatible batch section number
+		btensor D({{{4, cqt(2)}, {1, cqt(0)}}, {{4, cqt(-3)}, {4, cqt(-2)}, {2, cqt(0)}}, {{2, cqt(0)}, {2, cqt(1)}}},
+		          any_quantity(cqt(-1)));
+		qtt_CHECK_THROWS(B.bmm(D));
+		// incompatible batch sizes
+		btensor G({{{7, cqt(1)}, {4, cqt(2)}, {1, cqt(0)}},
+		           {{4, cqt(-3)}, {4, cqt(-2)}, {2, cqt(0)}},
+		           {{2, cqt(0)}, {2, cqt(1)}}},
+		          any_quantity(cqt(-1)));
+		qtt_CHECK_THROWS(B.bmm(G));
+		// incompatible conserved quantities
+		btensor E({{{3, cqt(1)}, {4, cqt(2)}, {1, cqt(0)}},
+		           {{4, cqt(-3)}, {4, cqt(-5)}, {2, cqt(0)}},
+		           {{2, cqt(0)}, {2, cqt(1)}}},
+		          any_quantity(cqt(-1)));
+		qtt_CHECK_THROWS(B.bmm(E));
+		// incompatible matrix sizes
+		btensor F({{{3, cqt(1)}, {4, cqt(2)}, {1, cqt(0)}},
+		           {{4, cqt(-3)}, {6, cqt(-2)}, {2, cqt(0)}},
+		           {{2, cqt(0)}, {2, cqt(1)}}},
+		          any_quantity(cqt(-1)));
+		qtt_CHECK_THROWS(B.bmm(F));
+		// All the (no)throw check are fine.
+		// remains to test the correctness of BC.
+		{//number of block and their indices.
+			size_t n = 0;
+			for (auto &a : BC)
+			{
+				auto &ind = std::get<0>(a);
+				bool ok = ind == std::vector<int64_t>{0, 0, 0} or ind == std::vector<int64_t>{0, 1, 2};
+				qtt_REQUIRE(ok);
+				++n;
+			}
+			qtt_REQUIRE(n==2);
+		}
+		qtt_CHECK(torch::allclose(BC.block_at({0,0,0}), B002.matmul(C020)));
+		qtt_CHECK(torch::allclose(BC.block_at({0,1,2}), B011.matmul(C012)));
 	}
 }
 

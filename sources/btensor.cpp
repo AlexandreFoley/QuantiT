@@ -331,7 +331,8 @@ torch::Tensor &btensor::block(const index_list &block_index) // create the block
 		std::invalid_argument(fmt::format("block index is size {}, but size {} expected", block_index.size(), rank));
 	if (!block_conservation_rule_test(block_index))
 	{
-		throw std::invalid_argument(fmt::format("block index {} not allowed by selection rule", block_index));
+		throw std::invalid_argument(fmt::format("block index {} not allowed by selection rule. {} != {}", block_index,
+		                                        fmt::join(block_quantities(block_index), "*"), selection_rule.value));
 	}
 	return blocks_list[block_index];
 }
@@ -777,9 +778,12 @@ struct mul_helpers
 				} while (N > 0);
 				++n;
 			} while (n <= smaller_rank);
-			std::copy_backward(larger_tensor.c_vals.begin(), larger_tensor.c_vals.end() - n, new_cvals_it);
-			std::copy_backward(larger_tensor.sections_sizes.begin(), larger_tensor.sections_sizes.end() - n,
-			                   new_sections_sizes_it);
+			if (smaller_rank != larger_rank)
+			{
+				std::copy_backward(larger_tensor.c_vals.begin(), larger_tensor.c_vals.end() - n, new_cvals_it);
+				std::copy_backward(larger_tensor.sections_sizes.begin(), larger_tensor.sections_sizes.end() - n,
+				                   new_sections_sizes_it);
+			}
 		}
 		any_quantity out_selr = larger_tensor.selection_rule->get() * smaller_tensor.selection_rule->get();
 		return std::make_tuple(comp_mask, new_sections_by_dim, new_sections_sizes, new_cvals, out_selr);
@@ -828,7 +832,9 @@ struct mul_helpers
 		// last 2 must be matrix compatible
 		bool good = a.rank == b.rank;
 		if (not good)
-			throw std::invalid_argument(fmt::format("incompatible ranks"));
+			throw std::invalid_argument(fmt::format("incompatible ranks {} and {}", a.rank, b.rank));
+		if (a.rank < 2)
+			throw std::invalid_argument("rank of tensors must be greater or equal to 2");
 		{ // check for compatible number of section in batch dimensions
 			auto a_sbd = a.sections_by_dim.begin();
 			auto b_sbd = b.sections_by_dim.begin();
@@ -983,9 +989,7 @@ btensor &btensor::mul_(const btensor &other)
 btensor btensor::bmm(const btensor &mat) const
 {
 	// TODO: finish this function!
-	// in details: batch_equal, batch_lesser and out_index to implement.
-	// The loop is not proper for parallisation preallocation of output container necessary, and some
-	// form syncronization based on output index necessary.
+	// The loop is not proper for parallisation preallocation of output container necessary.
 	// The need for syncronisation can be eliminated by reordering the block of mat such that all the output that have
 	// the same index are done in loop order.
 	mul_helpers::check_bmm_compatibility(*this, mat);
@@ -1003,13 +1007,15 @@ btensor btensor::bmm(const btensor &mat) const
 	    batch_shape, this->shape_from(this_inds),
 	    mat.shape_from(mat_inds)); // ambiguity because of the in-class context lifted by the quantt namespace;
 
-	auto mat_blocks = mat.blocks_list;
+	block_list_t::content_t mat_blocks(mat.blocks_list.begin(),mat.blocks_list.end());
 	// sort mat in an order ideal for parallelism.
 	// stable sort internally work out of place if it can, so it has extra space complexity relative to quicksort
 	// quicksort can be used with a more complicated comparator.
 	std::sort(mat_blocks.begin(), mat_blocks.end(),
-	          [](const index_list &a, const index_list &b)
+	          [](auto &&a_pair, auto &&b_pair)
 	          {
+		          const auto &a = std::get<0>(a_pair);
+		          const auto &b = std::get<0>(b_pair);
 		          // standard loop for lexicographical comparison
 		          for (auto [first1, first2] = std::tuple(a.begin(), b.begin());
 		               (first1 != a.end() - 2) && (first2 != b.end() - 2); ++first1, ++first2)
@@ -1043,56 +1049,88 @@ btensor btensor::bmm(const btensor &mat) const
 	};
 	auto batch_lesser = [](const index_list &a, const index_list &b) -> bool
 	{ return std::lexicographical_compare(a.begin(), a.end() - 2, b.begin(), b.end() - 2); };
-	auto out_index = [](block_list_t::const_iterator it1, block_list_t::const_iterator it2) -> btensor::index_list
+	auto out_index = [](block_list_t::const_iterator it1, block_list_t::content_t::const_iterator it2) -> btensor::index_list
 	{
 		auto &l1 = std::get<0>(*it1);
 		auto &l2 = std::get<0>(*it2);
 		index_list out(l1.size());
 		std::copy(l1.begin(), l1.end() - 1, out.begin());
 		out.back() = l2.back();
-		return index_list();
+		return out;
 	};
 	auto matrix_match = [](const index_list &a, const index_list &b) { return a.back() == *(b.end() - 2); };
 	auto out_index_unchanged = [](const index_list &out_index, const index_list &fast_changing)
 	{ return out_index.back() == fast_changing.back(); };
 	auto this_it = begin();
 	auto mat_it = mat_blocks.begin();
-	auto this_region_start = this_it; // begining of a "region" of index with the same batch indices for this.
-	auto mat_region_start = mat_it;   // idem but for mat.
-	while (this_it != end())
+	auto this_region_start = this_it;     // begining of a "region" of index with the same batch indices for this.
+	auto mat_region_start = mat_it;       // idem but for mat.
+	out.reserve_space(btensor_size::max); // we reserve the maximum size for the conservation rule, instead of counting
+	                                      // the number of output tensors.
+	while (this_it != end() and mat_it != mat_blocks.end())
 	{
 		auto ind = out_index(this_it, mat_it);
 		// mat_it and this_it are ordered such that all the combination that create the same output index are next to
 		// each other. this while loop can be parallelized without syncronization for the output, if we add a
 		// preparatory step on the output.
-		while (batch_equal(std::get<0>(*this_it), std::get<0>(*mat_it)) and
-		       out_index_unchanged(ind, std::get<0>(*mat_it)))
+		// The loop is in an order such that the result newest tensor is place at the end of the list.
+		// Since enough room has been reserved, no pointer invalidation or reordering happens!
+		int64_t reduced;
+		std::vector<int64_t> ind_shape;
+		if (batch_equal(std::get<0>(*this_it), std::get<0>(*mat_it)) and
+		    matrix_match(std::get<0>(*this_it), std::get<0>(*mat_it)))
 		{
-			if (matrix_match(std::get<0>(*this_it), std::get<0>(*mat_it)))
+			auto block_sizes = out.block_sizes(ind);
+			ind_shape = std::vector<int64_t>(block_sizes.begin(), block_sizes.end());
+			reduced = std::reduce(ind_shape.begin(), ind_shape.end() - 2, 1, std::multiplies());
+			std::array<int64_t, 3> ind_shape2 = {reduced, *(ind_shape.end() - 2), *(ind_shape.end() - 1)};
+			out.block(ind) = torch::zeros(ind_shape2, this->blocks_list.begin()->second.options());
+		} // because of the precaution taken, this loop can be sent be treated as a parallel task.
+		{
+			while (mat_it != mat_blocks.end() and batch_equal(std::get<0>(*this_it), std::get<0>(*mat_it)) and
+			       out_index_unchanged(ind, std::get<0>(*mat_it)))
 			{
-				auto A = std::get<1>(*this_it);
-				auto B = std::get<1>(*mat_it);
-				out.block(ind).addmm_(A, B);
+				if (matrix_match(std::get<0>(*this_it), std::get<0>(*mat_it)))
+				{
+					auto AA = std::get<1>(*this_it);
+					auto BA = std::get<1>(*mat_it);
+					// work around limitation of baddbmm to rank 3 tensor...
+					// reshape the tensor to whatever rank it is to rank 3.
+					// Need to make sure rank 1 tensor are rejected and rank 2 tensor treated correctly.
+					auto A_shape = AA.sizes();
+					std::array<int64_t, 3> A_shape2 = {reduced, *(A_shape.end() - 2), *(A_shape.end() - 1)};
+					auto B_shape = BA.sizes();
+					std::array<int64_t, 3> B_shape2 = {reduced, *(B_shape.end() - 2), *(B_shape.end() - 1)};
+
+					auto A = AA.reshape(A_shape2);
+					auto B = BA.reshape(B_shape2);
+
+					out.block_at(ind).baddbmm_(A, B);
+				}
+				++mat_it;
 			}
-			++mat_it;
+			out.block_at(ind) = out.block_at(ind).reshape(ind_shape);
 		}
 
 		++this_it;
-		if (batch_equal(std::get<0>(*this_it), std::get<0>(*this_region_start)))
-		{ // we have not yet changed the batch index. so we scan this batch index of mat again.
-			mat_it = mat_region_start;
-		}
-		else
+		if (this_it != end())
 		{
-			// increment the smaller of the two batch index until we get a match
-			while (not batch_equal(std::get<0>(*this_it), std::get<0>(*mat_it)))
-			{
-				bool inc_this = batch_lesser(std::get<0>(*this_it), std::get<0>(*mat_it));
-				this_it += inc_this;
-				mat_it += !inc_this;
+			if (batch_equal(std::get<0>(*this_it), std::get<0>(*this_region_start)))
+			{ // we have not yet changed the batch index. so we scan this batch index of mat again.
+				mat_it = mat_region_start; // this rewinding becomes unnecessary in the parallelized case. I should refactor such that it is unnecessary in the serial case too.
 			}
-			this_region_start = this_it;
-			mat_region_start = mat_it;
+			else
+			{
+				// increment the smaller of the two batch index until we get a match
+				while (mat_it != mat_blocks.end() and not batch_equal(std::get<0>(*this_it), std::get<0>(*mat_it)))
+				{
+					bool inc_this = batch_lesser(std::get<0>(*this_it), std::get<0>(*mat_it));
+					this_it += inc_this;
+					mat_it += !inc_this;
+				}
+				this_region_start = this_it;
+				mat_region_start = mat_it;
+			}
 		}
 	}
 	return out;
@@ -1435,6 +1473,8 @@ btensor &btensor::shift_selection_rule(any_quantity_cref shift)
 }
 
 void btensor::reserve_space(size_t N) { blocks_list.reserve(N); }
+
+void btensor::reserve_space(btensor_size) { reserve_space(btensor_compute_max_size(*this)); }
 
 void btensor::shift_impl(any_quantity_cref shift, int64_t dim)
 {

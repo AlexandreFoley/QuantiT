@@ -27,12 +27,9 @@ if(Doxygen_FOUND)
                        COMMENT "Generating Doxygen documentatino")
 
     add_custom_target(Doxygen DEPENDS ${DOXYGEN_INDEX_FILE} DEPENDS ${QUANTIT_PUBLIC_HEADERS})
-
-
     find_package(Sphinx)
-
-    execute_process(COMMAND python3 -c "import breathe" RESULT_VARIABLE breathe_RETURN OUTPUT_QUIET ERROR_QUIET)
-    execute_process(COMMAND python3 -c "import sphinx_rtd_theme" RESULT_VARIABLE sphinx_rtd_theme_RETURN OUTPUT_QUIET ERROR_QUIET)
+    execute_process(COMMAND /usr/bin/env python3 -c "import breathe; exit(0)" RESULT_VARIABLE breathe_RETURN OUTPUT_QUIET ERROR_QUIET)
+    execute_process(COMMAND /usr/bin/env python3 -c "import sphinx_rtd_theme;exit(0)" RESULT_VARIABLE sphinx_rtd_theme_RETURN OUTPUT_QUIET ERROR_QUIET)
     if(Sphinx_FOUND AND breathe_RETURN EQUAL 0 AND sphinx_rtd_theme_RETURN EQUAL 0) #Damn cmake is shit.
         set(SPHINX_SOURCE ${CMAKE_CURRENT_SOURCE_DIR})
         set(SPHINX_BUILD ${CMAKE_CURRENT_BINARY_DIR}/sphinx)

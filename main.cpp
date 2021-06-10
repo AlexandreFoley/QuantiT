@@ -60,6 +60,10 @@ int main()
 
 	auto D = C.reshape({4});
 
+	auto F = torch::rand({2});
+
+	F.mul_(C);// F is not large enough for the output. Error or reallocation? Error!
+
 	fmt::print("{}\n",D);
 
 	return 0;
