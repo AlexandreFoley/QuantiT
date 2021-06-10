@@ -1139,7 +1139,6 @@ qtt_TEST_CASE("btensor")
 		C.block({1, 1, 1}) = C111;
 		C.block({2, 0, 2}) = C202;
 		btensor BC;
-		qtt_REQUIRE_NOTHROW(BC = B.bmm(C));
 		// D, E, F, G are incompatible with B
 		// incompatible batch section number
 		btensor D({{{4, cqt(2)}, {1, cqt(0)}}, {{4, cqt(-3)}, {4, cqt(-2)}, {2, cqt(0)}}, {{2, cqt(0)}, {2, cqt(1)}}},
@@ -1163,6 +1162,7 @@ qtt_TEST_CASE("btensor")
 		           {{2, cqt(0)}, {2, cqt(1)}}},
 		          any_quantity(cqt(-1)));
 		qtt_CHECK_THROWS(B.bmm(F));
+		qtt_REQUIRE_NOTHROW(BC = B.bmm(C));
 		// All the (no)throw check are fine.
 		// remains to test the correctness of BC.
 		{//number of block and their indices.
