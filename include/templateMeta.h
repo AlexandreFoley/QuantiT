@@ -148,7 +148,7 @@ constexpr decltype(auto) for_each(Tuple1 &&T1, F &&f)
 template <class Tuple1, class Tuple2, class F>
 constexpr decltype(auto) for_each2(Tuple1 &&T1, Tuple2 &&T2, F &&f)
 {
-	std::apply(
+	return std::apply(
 	    [&](auto &&... t1) { // std::apply require gcc7 or more recent
 		    return std::apply(
 		        [&T1, &T2, &f, &t1...](auto &&... t2) {

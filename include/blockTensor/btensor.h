@@ -550,6 +550,24 @@ class btensor
 	                     Scalar beta = 1, Scalar alpha = 1);
 
 	/**
+	 * @brief create a new tensor with its section rule and all its conserved quantities inversed.
+	 * 
+	 * Conserved quantities must be inversed when doing the hermitian conjugation of an operator.
+	 *
+	 * Caution: The blocks of the new tensors are shallow copies of the original.
+	 *
+	 * @return btensor 
+	 */
+	btensor inverse_cvals() const;
+	/**
+	 * @brief inverse the selection rule and all the conserved quantities of this btensor.
+	 *
+	 * Conserved quantities must be inversed when doing the hermitian conjugation of an operator.
+	 * 
+	 * @return btensor& 
+	 */
+	btensor& inverse_cvals_();
+	/**
 	 * @brief Shifts the conserved quantities of one dimension of the tensor, applies the opposite shift to the
 	 * conservation rule.
 	 *
@@ -1116,7 +1134,7 @@ qtt_TEST_CASE("btensor")
 	qtt_SUBCASE("batched matrix multiply")
 	{
 		// B and C are compatible
-		btensor B({{{3, cqt(1)}, {4, cqt(2)}, {1, cqt(0)}},
+		btensor B({{{3, cqt(1)}, {4, cqt(4)}, {1, cqt(3)}},
 		           {{2, cqt(-1)}, {4, cqt(1)}},
 		           {{4, cqt(-3)}, {4, cqt(-2)}, {2, cqt(0)}}},
 		          any_quantity(cqt(0)));

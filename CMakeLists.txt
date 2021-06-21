@@ -18,9 +18,8 @@ endif()
 find_package(Torch REQUIRED)
 find_package(fmt 7 REQUIRED)
 
-link_libraries( ${TORCH_LIBRARIES} fmt::fmt-header-only)
+link_libraries( ${TORCH_LIBRARIES} fmt::fmt-header-only )
 
-add_compile_options("-ftemplate-backtrace-limit=0")
 
 set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
 

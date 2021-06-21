@@ -2,6 +2,7 @@
 #include "blockTensor/LinearAlgebra.h"
 #include <ATen/TensorIndexing.h>
 #include <cstdint>
+#include <iterator>
 #include <stdexcept>
 #include <tuple>
 
@@ -22,7 +23,7 @@ namespace LA_helpers
  * @param tensor
  * @return std::vector<btensor::block_list_t>
  */
-btensor::block_list_t reorder_by_cvals(const btensor &tensor)
+btensor::block_list_t::content_t reorder_by_cvals(const btensor &tensor)
 {
 	// identify sets of blocks with the same c_vals on every index
 	auto [row_start, row_end] = tensor.section_conserved_qtt_range(tensor.dim() - 2);
@@ -45,7 +46,7 @@ btensor::block_list_t reorder_by_cvals(const btensor &tensor)
 	// 	return perm;
 
 	// };
-	auto out = flat_map(tensor.blocks());
+	auto out = btensor::block_list_t::content_t(tensor.begin(),tensor.end());
 	std::stable_sort(out.begin(), out.end(),
 	                 [r = tensor.dim(), row_qtt = row_start, col_qtt = col_start](auto &&a, auto &&b)
 	                 {
@@ -74,7 +75,7 @@ btensor::block_list_t reorder_by_cvals(const btensor &tensor)
  */
 std::tuple<torch::Tensor, btensor::index_list, std::vector<std::tuple<int, torch::indexing::Slice>>,
            std::vector<std::tuple<int, torch::indexing::Slice>>>
-compact_dense_single(btensor::block_list_t::iterator start, btensor::block_list_t::iterator end)
+compact_dense_single(btensor::block_list_t::content_t::const_iterator start, btensor::block_list_t::content_t::const_iterator end)
 { // So here, we know for a fact that all the blocks in the span [start,end) belong to the same matrix for the purpose
   // of the linear algebra routine.
 	// One sort of optimisation that we might have missed is if something like [0 A;B 0] or [A 0; 0 B] happens. A priori
@@ -156,23 +157,25 @@ compact_dense_single(btensor::block_list_t::iterator start, btensor::block_list_
  * @return size_t
  */
 template <class Func1, class Func2>
-size_t compact_tensor_count(btensor::block_list_t &tensor, bool rank_greater_than_2, size_t rank, Func1 &&equal_index,
+size_t compact_tensor_count(btensor::block_list_t::content_t &tensor, bool rank_greater_than_2, size_t rank, Func1 &&equal_index,
                             Func2 &&equal_cval)
 {
 	size_t out = 0;
 	// if (rank_greater_than_2)
 	// {
 	auto it1 = tensor.begin();
-	auto it2 = tensor.begin() + 1;
-	for (; it2 != tensor.end(); ++it1, ++it2)
+	auto it2 = tensor.begin() + (it1 != tensor.end());
+	while(it2 != tensor.end())
 	{
-		out += !(equal_index(it1->first, it2->first) and equal_cval(it1->first, it2->first));
+		auto ind1 = it1->first;
+		auto ind2 = it2->first;
+		bool eq_ind = equal_index(it1->first, it2->first);
+		bool eq_cval = equal_cval(it1->first, it2->first);
+		out += !(eq_ind and eq_cval);
+		++it1;
+		++it2;
 	}
-	// }
-	// else
-	// {
-	// 	out  = std::min(tensor.section_number(tensor.dim()-2),tensor.section_number(tensor.dim()-1));
-	// }
+	out += it1!=it2;
 	return out;
 }
 /**
@@ -190,7 +193,7 @@ compact_dense(const btensor &tensor)
 	                           std::vector<std::tuple<int, torch::indexing::Slice>>>>;
 	auto rank = tensor.dim();
 	bool rank_greater_than_2 = rank > 2;
-	btensor::block_list_t block_list = reorder_by_cvals(tensor);
+	btensor::block_list_t::content_t block_list = reorder_by_cvals(tensor);
 	auto equal_index = [rank](const btensor::index_list &index_a, const btensor::index_list &index_b)
 	{
 		bool lout = true;
@@ -218,17 +221,21 @@ compact_dense(const btensor &tensor)
 	out_type out_tensors(compact_tensor_count(block_list, rank_greater_than_2, rank, equal_index, equal_c_vals));
 	// create the list of <tensorIndex, bloc_position> pairs for all the sections involved.
 	auto it1 = block_list.begin();
-	auto it2 = block_list.begin() + 1;
+	auto it2 = block_list.begin()+1;
 	auto out_it = out_tensors.begin();
-	for (; it2 != block_list.end(); ++it2)
+	auto block_list_l = std::distance(it1,block_list.end());
+	auto out_l = std::distance(out_it,out_tensors.end());
+	// for (; it2 != block_list.end(); ++it2)//skips the last set of blocks.
+	while(it1 != block_list.end())
 	{
-		if (not(equal_index(it1->first, it2->first) and equal_c_vals(it1->first, it2->first)))
+		if (it2 == block_list.end() or not(equal_index(it1->first, it2->first) and equal_c_vals(it1->first, it2->first)))
 		{
-
+			bool out_at_end = out_it == out_tensors.end();
 			*out_it = compact_dense_single(it1, it2); // each call are independent, can be parallelized
 			++out_it;
 			it1 = it2;
 		}
+		++it2;
 	}
 	// concatenate the blocs according to their bloc position.
 	// return the tensor and the list.
@@ -283,7 +290,7 @@ std::tuple<btensor, btensor, btensor> svd(const btensor &tensor, const bool some
 	    tensors_n_indices = LA_helpers::compact_dense(tensor);
 	// compute the size and conserved values of the diagonnal matrix, most likely to be the same code for the eigenvalue
 	// problem.
-	auto d_blocks = tensors_n_indices.size(); //that's not quite right. the number of independent part is not the number of sector in the diagonnal
+	auto d_blocks = tensors_n_indices.size(); 
 	any_quantity_vector right_D_cvals(d_blocks, tensor.selection_rule->neutral());
 	any_quantity_vector left_D_cvals(d_blocks, tensor.selection_rule->neutral());
 	std::vector<int64_t> D_block_sizes(tensors_n_indices.size());
@@ -382,7 +389,7 @@ std::tuple<btensor, btensor, btensor> svd(const btensor &tensor, const bool some
 		for (auto &col : cols)
 		{
 			auto [block_ind, slice] = LA_helpers::build_index_slice(other_indices, col, extra_block_slice);
-			V.block(block_ind) = bU.index(slice);
+			V.block(block_ind) = bV.index(slice);
 		}
 		auto [block_ind, slice] = LA_helpers::build_index_slice(other_indices, extra_block_slice, extra_block_slice);
 		d.block(btensor::index_list( block_ind.begin(),block_ind.end()-1) ) = bD;

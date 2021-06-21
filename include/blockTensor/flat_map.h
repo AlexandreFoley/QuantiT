@@ -78,7 +78,8 @@ class flat_map
 		constexpr value_type *base() { return it.base(); }
 		// reference operator*() const {return *it;}
 		// bool operator==( const iterator& in) {return it == in.it;}
-
+		operator it_type(){return it;}
+		operator typename content_t::const_iterator(){return it;}
 	  private:
 		friend boost::stl_interfaces::access;
 		friend flat_map;
@@ -109,6 +110,7 @@ class flat_map
 		constexpr const value_type *base() { return it.base(); }
 		// const_reference operator*() const {return *it;}
 		// bool operator==( const const_iterator& in) {return it == in.it;}
+		operator it_type(){return it;}
 	  private:
 		friend boost::stl_interfaces::access;
 		friend flat_map;

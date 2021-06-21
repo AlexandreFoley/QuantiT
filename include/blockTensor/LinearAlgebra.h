@@ -45,10 +45,21 @@ namespace quantt
  * \f$[
      \sum_x U_{ijx}.D_{ixk} = U_{ijk}d_{ik}
  * \f]
- * btensor::mul and btensor::mul_ accomplish this. Because of the way torch broadcasting works, we must insert a size one index between i and k in d.
- * So the correct multiplication is accomplished by U.mul(d.reshape(d,btensor({{1,d.conservation_rule->neutral()}},d.conservation_rule->neutral())).transpose(-2,-1))
- * V can be substituted to U without further modifications.
+ * btensor::mul and btensor::mul_ accomplish this. Because of the way torch broadcasting works, we must insert a size
+ one index between i and k in d.
+ * So the correct multiplication is accomplished by
+ \code{.cpp}
+	auto tensor = btensor();//put some arguements in here specifying a shape.
+	// ... assign values into the blocks of the tensor.
+	auto [U,d,V] = svd(tensor);
+ 	auto d_r = d.reshape_as(shape_from(d, btensor({{{1, d.selection_rule->neutral()}}}, d.selection_rule->neutral())))
+	               .transpose_(-1, -2);
+	auto Vt = V.transpose(-1, -2);
+	auto A = U.mul(d_r).bmm(Vt) //This should be equal to tensor to numerical accuracy
+ \endcode
  * @param tensor the tensor to decompose
+ * @param some wether to compute the thin (true) or full svd (false), true by default. Warning, full is currently untested. And the full is mostly pointless as the extra singular vectors are random, and the singular values zero.
+ * @param compute_UV whether to compute the singular vectors, true by default. If false, U and V are empty tensors.
  * @return std::tuple<btensor,btensor,btensor> U, d and V
  */
 std::tuple<btensor, btensor, btensor> svd(const btensor &tensor, bool some = true, bool compute_uv = true);
@@ -68,7 +79,7 @@ namespace LA_helpers
  * @param tensor
  * @return std::vector<btensor::block_list_t>
  */
-btensor::block_list_t reorder_by_cvals(const btensor &tensor);
+btensor::block_list_t::content_t reorder_by_cvals(const btensor &tensor);
 
 /**
  * @brief compactify a range of blocks into a single dense torch::tensor
@@ -78,12 +89,12 @@ btensor::block_list_t reorder_by_cvals(const btensor &tensor);
  * @param start
  * @param end
  * @return
- * std::tuple<torch::Tensor,std::vector<std::tuple<int,torch::indexing::Slice>>,std::vector<std::tuple<int,torch::indexing::Slice>>
- * >
+ * std::tuple<torch::Tensor,std::vector<std::tuple<int,torch::indexing::Slice>>,std::vector<std::tuple<int,torch::indexing::Slice>>>
  */
 std::tuple<torch::Tensor, btensor::index_list, std::vector<std::tuple<int, torch::indexing::Slice>>,
            std::vector<std::tuple<int, torch::indexing::Slice>>>
-compact_dense_single(btensor::block_list_t::iterator start, btensor::block_list_t::iterator end);
+compact_dense_single(typename btensor::block_list_t::content_t::const_iterator start,
+                     typename btensor::block_list_t::content_t::const_iterator end);
 
 using Slice = torch::indexing::Slice;
 using TensInd = torch::indexing::TensorIndex;
@@ -93,7 +104,7 @@ std::tuple<btensor::index_list, std::array<TensInd, 3>> build_index_slice(const 
 
 } // namespace LA_helpers
 
-inline std::ostream& operator<<(std::ostream& out, any_quantity_cref qt )
+inline std::ostream &operator<<(std::ostream &out, any_quantity_cref qt)
 {
 	out << fmt::format("{}", qt);
 	return out;
@@ -119,8 +130,8 @@ qtt_TEST_CASE("btensor Linear algebra")
 	A.block({1, 1, 2}) = torch::rand({3, 2, 2});
 	A.block({1, 2, 0}) = torch::rand({3, 3, 3});
 	A.block({1, 3, 1}) = torch::rand({3, 1, 2});
-	qtt_CHECK_NOTHROW(btensor::throw_bad_tensor(A));
-	auto [U,d,V] = svd(A);
+	qtt_REQUIRE_NOTHROW(btensor::throw_bad_tensor(A));
+	auto [U, d, V] = svd(A);
 #ifndef NDEBUG
 	// those helpers are not in the header when not in debug mode.
 	qtt_SUBCASE("btensor linear algebra helpers")
@@ -187,6 +198,69 @@ qtt_TEST_CASE("btensor Linear algebra")
 		}
 	}
 #endif // NDEBUG
+	// fmt::print("V {}\n",V);
+	qtt_CHECK_NOTHROW(btensor::throw_bad_tensor(U));
+	qtt_CHECK_NOTHROW(btensor::throw_bad_tensor(d));
+	qtt_REQUIRE_NOTHROW(btensor::throw_bad_tensor(V));
+	auto d_r = d.reshape_as(shape_from(d, btensor({{{1, d.selection_rule->neutral()}}}, d.selection_rule->neutral())))
+	               .transpose_(-1, -2);
+	auto Vt = V.transpose(-1, -2);
+	auto AA = U.mul(d_r).bmm(Vt);
+	// fmt::print("U {}\n",U);
+	// fmt::print("V {}\n",V);
+	auto it_AA = AA.begin();
+	auto it_A = A.begin();
+	qtt_REQUIRE(std::distance(it_AA, AA.end()) == std::distance(it_A, A.end()));
+	for (; it_AA != AA.end(); ++it_AA, ++it_A)
+	{
+		auto &AA_ind = std::get<0>(*it_AA);
+		auto &A_ind = std::get<0>(*it_A);
+		auto &AA_tens = std::get<1>(*it_AA);
+		auto &A_tens = std::get<1>(*it_A);
+		qtt_CHECK(AA_ind == A_ind);
+		qtt_CHECK(torch::allclose(AA_tens, A_tens));
+	}
+	auto Ut = U.transpose(-2, -1).inverse_cvals_();
+	// fmt::print("Ut {}\n",Ut );
+	// fmt::print("U {}\n", U);
+	V.inverse_cvals_();
+	auto ID_u = U.bmm(Ut); //ATTN! In general, Ut.bmm(Ut) != identity
+	auto ID_v = Vt.bmm(V); //ATTN! In general, V.bmm(Vt) != Identity
+	// fmt::print("ID_U {}", ID_u);
+	for (auto &block : ID_u)
+	{
+		auto &ind = std::get<0>(block);
+		auto &tens = std::get<1>(block);
+		if (ind[ind.size() - 1] == ind[ind.size() - 2])
+		{
+			qtt_CHECK(tens.sizes()[tens.dim() - 1] == tens.sizes()[tens.dim() - 2]);
+			auto id = torch::eye(tens.sizes()[tens.dim() - 1]);
+			qtt_CHECK(torch::allclose(id, tens));
+		}
+		else {
+			auto zer = torch::zeros({tens.sizes()[tens.dim()-2],tens.sizes()[tens.dim()-1]});
+			qtt_CHECK(torch::allclose(zer, tens));
+		}
+	}
+	// fmt::print("ID_V \n{}\n\n",ID_v);
+	// fmt::print("Vt \n{}\n\n",Vt);
+	// fmt::print("V \n{}\n\n",V);
+	for (auto &block : ID_v)
+	{
+		auto &ind = std::get<0>(block);
+		auto &tens = std::get<1>(block);
+		if (ind[ind.size() - 1] == ind[ind.size() - 2])
+		{
+			qtt_CHECK(tens.sizes()[tens.dim() - 1] == tens.sizes()[tens.dim() - 2]);
+			auto id = torch::eye(tens.sizes()[tens.dim() - 1]);
+			qtt_CHECK(torch::allclose(id, tens));
+		}
+		else {
+			auto zer = torch::zeros({tens.sizes()[tens.dim()-2],tens.sizes()[tens.dim()-1]});
+			qtt_CHECK(torch::allclose(zer, tens));
+		}
+	}
+
 }
 
 } // namespace quantt
