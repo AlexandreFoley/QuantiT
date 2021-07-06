@@ -235,9 +235,9 @@ class btensor
 	/**
 	 * @brief Return the rank of the tensor
 	 *
-	 * @return size_t
+	 * @return int64_t
 	 */
-	size_t dim() const { return rank; }
+	int64_t dim() const { return rank; }
 	/**
 	 * @brief return the number of sections in a given dimension
 	 *
@@ -496,17 +496,6 @@ class btensor
 	 */
 	template <bool overwrite_c_vals = false>
 	btensor reshape_as(const btensor &other) const;
-	std::tuple<btensor, btensor, btensor> svd(const btensor &tensor, size_t split);
-	std::tuple<btensor, btensor, btensor> svd(const btensor &tensor);
-	std::tuple<btensor, btensor, btensor> svd(const btensor &A, size_t split, torch::Scalar tol, size_t min_size,
-	                                          size_t max_size, torch::Scalar pow = 2);
-	std::tuple<torch::Tensor, torch::Tensor, torch::Tensor> svd(btensor &A, size_t split, torch::Scalar tol,
-	                                                            torch::Scalar pow = 2);
-	std::tuple<torch::Tensor, torch::Tensor, torch::Tensor> svd(btensor &A, size_t split);
-	inline std::tuple<torch::Tensor, torch::Tensor, torch::Tensor> svd(btensor &A, int split)
-	{
-		return svd(A, size_t(split));
-	}
 
 	/**
 	 * @brief Reshape the btensor into a btensor of a lower rank
@@ -548,25 +537,34 @@ class btensor
 	                   Scalar beta = 1, Scalar alpha = 1) const;
 	btensor &tensorgdot_(const btensor &mul1, const btensor &mul2, torch::IntArrayRef dims1, torch::IntArrayRef dims2,
 	                     Scalar beta = 1, Scalar alpha = 1);
+	/**
+	 * @brief return the complex conjugate of this tensor
+	 *
+	 * For non complex type, the output is identical to the input.
+	 * The conserved quantities are unaffected.
+	 *
+	 * @return btensor
+	 */
+	btensor conj() const;
 
 	/**
 	 * @brief create a new tensor with its section rule and all its conserved quantities inversed.
-	 * 
+	 *
 	 * Conserved quantities must be inversed when doing the hermitian conjugation of an operator.
 	 *
 	 * Caution: The blocks of the new tensors are shallow copies of the original.
 	 *
-	 * @return btensor 
+	 * @return btensor
 	 */
 	btensor inverse_cvals() const;
 	/**
 	 * @brief inverse the selection rule and all the conserved quantities of this btensor.
 	 *
 	 * Conserved quantities must be inversed when doing the hermitian conjugation of an operator.
-	 * 
-	 * @return btensor& 
+	 *
+	 * @return btensor&
 	 */
-	btensor& inverse_cvals_();
+	btensor &inverse_cvals_();
 	/**
 	 * @brief Shifts the conserved quantities of one dimension of the tensor, applies the opposite shift to the
 	 * conservation rule.
@@ -600,6 +598,18 @@ class btensor
 	 */
 	void reserve_space(size_t N);
 	void reserve_space(btensor_size);
+
+	/**
+	 * @brief Set the selection rule of the block tensor
+	 *
+	 * Only works on empty btensor.
+	 *
+	 * @param value
+	 * @return btensor&
+	 */
+	btensor &set_selection_rule(any_quantity_cref value);
+	friend std::tuple<btensor, btensor, btensor> truncate(std::tuple<btensor, btensor, btensor> &&U_d_V, size_t max,
+	                                                      size_t min, btensor::Scalar tol, btensor::Scalar pow);
 
   private:
 	size_t rank;
@@ -1061,7 +1071,7 @@ qtt_TEST_CASE("btensor")
 		qtt_CHECK(get_refcount(AA00.block_at({1, 1})) == 1);
 	}
 	qtt_SUBCASE("Reshape")
-	{
+	{	
 		auto B = A.reshape({});             // reshape into a vector.
 		qtt_CHECK_NOTHROW(B.block_at({0})); // on diagonnal block of A
 		qtt_CHECK_NOTHROW(B.block_at({3})); // on-diagonal block of A
@@ -1110,6 +1120,55 @@ qtt_TEST_CASE("btensor")
 		btensor C;
 		qtt_CHECK_NOTHROW(B = A.shape_from({-1, 0}));
 		qtt_CHECK_NOTHROW(C = shape_from(A, B));
+		int split = 1;
+		A = btensor({{{2, cqt(0)}, {3, cqt(1)}},
+		             {{1, cqt(1)}, {2, cqt(0)}, {3, cqt(-1)}, {1, cqt(1)}},
+		             {{3, cqt(0)}, {2, cqt(-2)}, {2, cqt(-1)}}},
+		            selection_rule);
+		A.block({0, 0, 2}) = torch::rand({2, 1, 2});
+		A.block({0, 1, 0}) = torch::rand({2, 2, 3});
+		A.block({0, 3, 2}) = torch::rand({2, 1, 2});
+		A.block({1, 0, 1}) = torch::rand({3, 1, 2});
+		A.block({1, 1, 2}) = torch::rand({3, 2, 2});
+		A.block({1, 2, 0}) = torch::rand({3, 3, 3});
+		A.block({1, 3, 1}) = torch::rand({3, 1, 2});
+		btensor rV({{{3, cqt(1)},
+		             {2, cqt(4)},
+		             {2, cqt(0)},
+		             {6, cqt(0)},
+		             {4, cqt(3)},
+		             {4, cqt(4)},
+		             {9, cqt(4)},
+		             {6, cqt(2)},
+		             {6, cqt(3)},
+		             {3, cqt(1)},
+		             {2, cqt(4)},
+		             {2, cqt(0)}},
+		            {{2, cqt(0)}, {3, cqt(1)}}},
+		           selection_rule);
+		rV.block({2, 0}) = torch::rand({2, 2});
+		rV.block({3, 0}) = torch::rand({6, 2});
+		rV.block({11, 0}) = torch::rand({2, 2});
+		rV.block({1, 1}) = torch::rand({2, 3});
+		rV.block({5, 1}) = torch::rand({4, 3});
+		rV.block({6, 1}) = torch::rand({9, 3});
+		rV.block({10, 1}) = torch::rand({2, 3});
+		qtt_REQUIRE(btensor::check_tensor(A) == "");
+		qtt_REQUIRE(btensor::check_tensor(rV) == "");
+
+		std::vector<int64_t> V_shape(A.dim(), -1);
+		{
+			size_t i = 0;
+			for (; i < split; ++i)
+			{
+				V_shape[i] = 0;
+			}
+		}
+		auto V_left_part = A.shape_from(V_shape);
+		auto V_right_part = rV.shape_from({0, -1});
+		// fmt::print("V_left_part \n{}\n\n", V_left_part);
+		// fmt::print("V_right_part \n{}\n\n", V_right_part);
+		qtt_REQUIRE_NOTHROW(rV.reshape_as(shape_from(V_left_part, V_right_part)));
 	}
 	qtt_SUBCASE("elementwise multiplication with broadcasting")
 	{
@@ -1183,7 +1242,7 @@ qtt_TEST_CASE("btensor")
 		qtt_REQUIRE_NOTHROW(BC = B.bmm(C));
 		// All the (no)throw check are fine.
 		// remains to test the correctness of BC.
-		{//number of block and their indices.
+		{ // number of block and their indices.
 			size_t n = 0;
 			for (auto &a : BC)
 			{
@@ -1192,10 +1251,10 @@ qtt_TEST_CASE("btensor")
 				qtt_REQUIRE(ok);
 				++n;
 			}
-			qtt_REQUIRE(n==2);
+			qtt_REQUIRE(n == 2);
 		}
-		qtt_CHECK(torch::allclose(BC.block_at({0,0,0}), B002.matmul(C020)));
-		qtt_CHECK(torch::allclose(BC.block_at({0,1,2}), B011.matmul(C012)));
+		qtt_CHECK(torch::allclose(BC.block_at({0, 0, 0}), B002.matmul(C020)));
+		qtt_CHECK(torch::allclose(BC.block_at({0, 1, 2}), B011.matmul(C012)));
 	}
 }
 

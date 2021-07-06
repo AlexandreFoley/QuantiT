@@ -20,11 +20,19 @@
 
 namespace quantt
 {
-/**
- *
- * @return std::tuple<btensor,btensor,btensor> U,D,V the matrices of the singular value decomposition
- */
 
+/**
+ * @brief A bool type with no implicit conversion from arithmetic types.
+ * 
+ * to avoid abiguous overloads between the batch svd and the tensors svd
+ * 
+ */
+struct BOOL
+{
+	bool val;
+	BOOL(bool _val) noexcept :val(_val) {}
+	operator bool() const noexcept {return val;}
+};
 /**
  * @brief Compute the batched singular value decomposition on the input btensor: \f$ I = U.D.V^\dagger \f$.
  * Only non-nul elements (the diagonnal) of the diagonnal matrix are returned.
@@ -49,20 +57,95 @@ namespace quantt
  one index between i and k in d.
  * So the correct multiplication is accomplished by
  \code{.cpp}
-	auto tensor = btensor();//put some arguements in here specifying a shape.
-	// ... assign values into the blocks of the tensor.
-	auto [U,d,V] = svd(tensor);
- 	auto d_r = d.reshape_as(shape_from(d, btensor({{{1, d.selection_rule->neutral()}}}, d.selection_rule->neutral())))
-	               .transpose_(-1, -2);
-	auto Vt = V.transpose(-1, -2);
-	auto A = U.mul(d_r).bmm(Vt) //This should be equal to tensor to numerical accuracy
+    auto tensor = btensor();//put some arguements in here specifying a shape.
+    // ... assign values into the blocks of the tensor.
+    auto [U,d,V] = svd(tensor);
+    auto d_r = d.reshape_as(shape_from(d, btensor({{{1, d.selection_rule->neutral()}}}, d.selection_rule->neutral())))
+                   .transpose_(-1, -2);
+    auto Vt = V.transpose(-1, -2);
+    auto A = U.mul(d_r).bmm(Vt) //This should be equal to tensor to numerical accuracy
  \endcode
  * @param tensor the tensor to decompose
- * @param some wether to compute the thin (true) or full svd (false), true by default. Warning, full is currently untested. And the full is mostly pointless as the extra singular vectors are random, and the singular values zero.
+ * @param some wether to compute the thin (true) or full svd (false), true by default. Warning, full is currently
+ untested. And the full is mostly pointless as the extra singular vectors are random, and the singular values zero.
  * @param compute_UV whether to compute the singular vectors, true by default. If false, U and V are empty tensors.
  * @return std::tuple<btensor,btensor,btensor> U, d and V
  */
-std::tuple<btensor, btensor, btensor> svd(const btensor &tensor, bool some = true, bool compute_uv = true);
+std::tuple<btensor, btensor, btensor> svd(const btensor &tensor, BOOL some = true, BOOL compute_uv = true);
+
+/**
+ * @brief svd for tensor network methods, treat the tensor as a matrix, with the index before the split indices treated
+ * as the row of the matrix and the split indice and the ones after and the column indices.
+ *
+ * The original tensor can be reconstructed by tensordot(U.mul(d), V.conj(), {U.dim() - 1}, {V.dim()-1})
+ *
+ * @param tensor tensor to decompose
+ * @param split seperation between row and columns, among the dimensions of the tensor. rows are [0,split[ and columns
+ * are [split,last]
+ * @return std::tuple<btensor,btensor,btensor> U, d and V
+ */
+std::tuple<btensor, btensor, btensor> svd(const btensor &tensor, size_t split);
+/**
+ * @brief overload for implicit conversion disambiguation, see svd(const btensor&, size_t)
+ *
+ */
+inline std::tuple<btensor, btensor, btensor> svd(const btensor &tensor, int split){
+	return svd(tensor,static_cast<size_t>(split));
+}
+
+/**
+ * @brief truncating svd for tensor network methods, treats the tensor as a matrix, with the index before the split
+ * treated as the row of the matrix and the indices at and after the split as the column indices.
+ *
+ * If the number of singular values kept is smaller than max_size an approximation of the original tensor can be
+ * reconstructed by tensordot(U.mul(d),V.conj(),{U.dims()-1},{0}) with an error smaller than tol.
+ *
+ * At least min_size singular values are kept.
+ *
+ * @param A tensor to decompose
+ * @param split index that split the row indices from the column indices
+ * @param tol error on the trace of the singular value to the pow that is tolerated
+ * @param min_size minimum number of singular value kept
+ * @param max_size maximum number of singular value kept
+ * @param pow power used in the computation of the truncation error. When optimizing the energy of a MPS, 2 is the right
+ * choice.
+ * @return std::tuple<btensor,btensor,btensor> U,d,V
+ */
+std::tuple<btensor, btensor, btensor> svd(const btensor &A, size_t split, btensor::Scalar tol, size_t min_size,
+                                          size_t max_size, btensor::Scalar pow = 2);
+/**
+ * @brief overload for implicit conversion disambiguation, see svd(cont
+ * btensor&,size_t,btensor::Scalar,size_t,size_t,btensor::Scalar)
+ */
+inline std::tuple<btensor, btensor, btensor> svd(const btensor &A, int split, btensor::Scalar tol, size_t min_size,
+                                          size_t max_size, btensor::Scalar pow = 2)
+{
+	return svd(A, static_cast<size_t>(split), tol, min_size, max_size, pow);
+}
+/**
+ * @brief truncating svd for tensor network methods, treats the tensor as a matrix, with the index before the split
+ * treated as the row of the matrix and the indices at and after the split as the column indices.
+ *
+ * An approximation of the original tensor can be reconstructed by tensordot(U.mul(d),V.conj(),{U.dims()-1},{0}) with an
+ * error smaller than tol.
+ *
+ * At least one singular value is kept.
+ *
+ * @param A tensor to decompose
+ * @param split index that split the row indices from the column indices
+ * @param tol error on the trace of the singular value to the pow that is tolerated
+ * @param pow power used in the computation of the truncation error. When optimizing the energy of a MPS, 2 is the right
+ * choice.
+ * @return std::tuple<btensor,btensor,btensor> U,d,V
+ */
+std::tuple<btensor, btensor, btensor> svd(const btensor &A, size_t split, btensor::Scalar tol, btensor::Scalar pow = 2);
+/**
+ * @brief overload for implicit conversion disambiguation, see svd(cont btensor&,size_t,btensor::Scalar,btensor::Scalar)
+ */
+inline std::tuple<btensor, btensor, btensor> svd(const btensor &A, int split, btensor::Scalar tol, btensor::Scalar pow = 2)
+{
+	return svd(A,static_cast<size_t>(split),tol,pow);
+}
 
 #ifndef NDEBUG
 namespace LA_helpers
@@ -114,153 +197,301 @@ std::string qformat(any_quantity_cref qt);
 
 #endif // NDEBUG
 
+std::tuple<btensor, btensor, btensor> truncate(btensor &&U, btensor &&d, btensor &&V, size_t max, size_t min,
+                                               btensor::Scalar tol, btensor::Scalar pow);
+
 qtt_TEST_CASE("btensor Linear algebra")
 {
-	using cqt = conserved::C<5>;
-	using index = btensor::index_list;
-	any_quantity selection_rule(cqt(0)); // DMRJulia flux
-	btensor A({{{2, cqt(0)}, {3, cqt(1)}},
-	           {{1, cqt(1)}, {2, cqt(0)}, {3, cqt(-1)}, {1, cqt(1)}},
-	           {{3, cqt(0)}, {2, cqt(-2)}, {2, cqt(-1)}}},
-	          selection_rule);
-	A.block({0, 0, 2}) = torch::rand({2, 1, 2});
-	A.block({0, 1, 0}) = torch::rand({2, 2, 3});
-	A.block({0, 3, 2}) = torch::rand({2, 1, 2});
-	A.block({1, 0, 1}) = torch::rand({3, 1, 2});
-	A.block({1, 1, 2}) = torch::rand({3, 2, 2});
-	A.block({1, 2, 0}) = torch::rand({3, 3, 3});
-	A.block({1, 3, 1}) = torch::rand({3, 1, 2});
-	qtt_REQUIRE_NOTHROW(btensor::throw_bad_tensor(A));
-	auto [U, d, V] = svd(A);
+	qtt_SUBCASE("decompositions")
+	{
+		using cqt = conserved::C<5>;
+		using index = btensor::index_list;
+		any_quantity selection_rule(cqt(0)); // DMRJulia flux
+		btensor A({{{2, cqt(0)}, {3, cqt(1)}},
+		           {{1, cqt(1)}, {2, cqt(0)}, {3, cqt(-1)}, {1, cqt(1)}},
+		           {{3, cqt(0)}, {2, cqt(-2)}, {2, cqt(-1)}}},
+		          selection_rule);
+		A.block({0, 0, 2}) = torch::rand({2, 1, 2});
+		A.block({0, 1, 0}) = torch::rand({2, 2, 3});
+		A.block({0, 3, 2}) = torch::rand({2, 1, 2});
+		A.block({1, 0, 1}) = torch::rand({3, 1, 2});
+		A.block({1, 1, 2}) = torch::rand({3, 2, 2});
+		A.block({1, 2, 0}) = torch::rand({3, 3, 3});
+		A.block({1, 3, 1}) = torch::rand({3, 1, 2});
+		qtt_REQUIRE_NOTHROW(btensor::throw_bad_tensor(A));
+		auto [U, d, V] = svd(A);
 #ifndef NDEBUG
-	// those helpers are not in the header when not in debug mode.
-	qtt_SUBCASE("btensor linear algebra helpers")
-	{
+		// those helpers are not in the header when not in debug mode.
+		qtt_SUBCASE("btensor linear algebra helpers")
 		{
-			auto reordered_block = LA_helpers::reorder_by_cvals(A);
-			std::vector<btensor::index_list> exp_blocks = {{0, 1, 0}, {1, 1, 2}, {1, 0, 1}, {1, 3, 1},
-			                                               {0, 0, 2}, {0, 3, 2}, {1, 2, 0}};
-			qtt_CHECK(exp_blocks.size() == reordered_block.size());
-			for (auto [block, expec] = std::make_tuple(reordered_block.begin(), exp_blocks.begin());
-			     block != reordered_block.end(); ++block, ++expec)
 			{
-				// auto cvals_view = A.block_quantities(std::get<0>(*block));
-				// fmt::print( "cvals: {}\n",fmt::join(cvals_view.begin(),cvals_view.end(),","));
-				// fmt::print("block index: {}\n", std::get<0>(*block));
-				qtt_CHECK(std::get<0>(*block) == *expec);
-			}
-			// reordered_block[2:4] is a set of block with the same c_vals on the last two indices, and with the same
-			// block indices for all but the last two dims.
-			auto [compact_tensor, other_indices, row_block_slices, col_block_slices] =
-			    LA_helpers::compact_dense_single(reordered_block.begin() + 2, reordered_block.begin() + 4);
-			qtt_REQUIRE(other_indices.size() == 1);
-			for (const auto &rb_slices : row_block_slices)
-			{
-				for (const auto &cb_slices : col_block_slices)
+				auto reordered_block = LA_helpers::reorder_by_cvals(A);
+				std::vector<btensor::index_list> exp_blocks = {{0, 1, 0}, {1, 1, 2}, {1, 0, 1}, {1, 3, 1},
+				                                               {0, 0, 2}, {0, 3, 2}, {1, 2, 0}};
+				qtt_CHECK(exp_blocks.size() == reordered_block.size());
+				for (auto [block, expec] = std::make_tuple(reordered_block.begin(), exp_blocks.begin());
+				     block != reordered_block.end(); ++block, ++expec)
 				{
-					auto [block_ind, slice] = LA_helpers::build_index_slice(other_indices, rb_slices, cb_slices);
-					// we have rebuilt the block index in block_ind. It would be good to have a function to do that.
-					qtt_CHECK(torch::equal(A.block(block_ind), compact_tensor.index(slice)));
-					// then we verify that the blocks from the original tensor can be obtained from the stored slincing
-					// of the compacted tensor
+					// auto cvals_view = A.block_quantities(std::get<0>(*block));
+					// fmt::print( "cvals: {}\n",fmt::join(cvals_view.begin(),cvals_view.end(),","));
+					// fmt::print("block index: {}\n", std::get<0>(*block));
+					qtt_CHECK(std::get<0>(*block) == *expec);
+				}
+				// reordered_block[2:4] is a set of block with the same c_vals on the last two indices, and with the
+				// same block indices for all but the last two dims.
+				auto [compact_tensor, other_indices, row_block_slices, col_block_slices] =
+				    LA_helpers::compact_dense_single(reordered_block.begin() + 2, reordered_block.begin() + 4);
+				qtt_REQUIRE(other_indices.size() == 1);
+				for (const auto &rb_slices : row_block_slices)
+				{
+					for (const auto &cb_slices : col_block_slices)
+					{
+						auto [block_ind, slice] = LA_helpers::build_index_slice(other_indices, rb_slices, cb_slices);
+						// we have rebuilt the block index in block_ind. It would be good to have a function to do that.
+						qtt_CHECK(torch::equal(A.block(block_ind), compact_tensor.index(slice)));
+						// then we verify that the blocks from the original tensor can be obtained from the stored
+						// slincing of the compacted tensor
+					}
+				}
+			}
+			{
+				btensor B;
+				qtt_REQUIRE_NOTHROW(B = A.reshape({1})); // joins dimensions 2 and 1
+				// fmt::print("tensor {}\n",B);
+				auto reordered_block = LA_helpers::reorder_by_cvals(B);
+				std::vector<btensor::index_list> exp_blocks = {{0, 2}, {0, 3}, {0, 11}, {1, 1},
+				                                               {1, 5}, {1, 6}, {1, 10}};
+				qtt_CHECK(exp_blocks.size() == reordered_block.size());
+				for (auto [block, expec] = std::make_tuple(reordered_block.begin(), exp_blocks.begin());
+				     block != reordered_block.end(); ++block, ++expec)
+				{
+					// auto cvals_view = B.block_quantities(std::get<0>(*block));
+					// fmt::print( "cvals: {}\n",fmt::join(cvals_view.begin(),cvals_view.end(),","));
+					// fmt::print("block index: {}\n", std::get<0>(*block));
+					qtt_CHECK(std::get<0>(*block) == *expec);
+				}
+				auto [compact_tensor, other_indices, row_block_slices, col_block_slices] =
+				    LA_helpers::compact_dense_single(reordered_block.begin(), reordered_block.begin() + 3);
+				qtt_REQUIRE(other_indices.size() == 0);
+				for (const auto &rb_slices : row_block_slices)
+				{
+					for (const auto &cb_slices : col_block_slices)
+					{
+						auto [block_ind, slice] = LA_helpers::build_index_slice(other_indices, rb_slices, cb_slices);
+						// fmt::print("block {}, cval {}\n",block_ind,B.block_quantities(block_ind));
+						qtt_CHECK(torch::equal(B.block(block_ind), compact_tensor.index(slice)));
+						// then we verify that the blocks from the original tensor can be obtained from the stored
+						// slincing of the compacted tensor
+					}
 				}
 			}
 		}
-		{
-			btensor B;
-			qtt_REQUIRE_NOTHROW(B = A.reshape({1})); // joins dimensions 2 and 1
-			// fmt::print("tensor {}\n",B);
-			auto reordered_block = LA_helpers::reorder_by_cvals(B);
-			std::vector<btensor::index_list> exp_blocks = {{0, 2}, {0, 3}, {0, 11}, {1, 1}, {1, 5}, {1, 6}, {1, 10}};
-			qtt_CHECK(exp_blocks.size() == reordered_block.size());
-			for (auto [block, expec] = std::make_tuple(reordered_block.begin(), exp_blocks.begin());
-			     block != reordered_block.end(); ++block, ++expec)
-			{
-				// auto cvals_view = B.block_quantities(std::get<0>(*block));
-				// fmt::print( "cvals: {}\n",fmt::join(cvals_view.begin(),cvals_view.end(),","));
-				// fmt::print("block index: {}\n", std::get<0>(*block));
-				qtt_CHECK(std::get<0>(*block) == *expec);
-			}
-			auto [compact_tensor, other_indices, row_block_slices, col_block_slices] =
-			    LA_helpers::compact_dense_single(reordered_block.begin(), reordered_block.begin() + 3);
-			qtt_REQUIRE(other_indices.size() == 0);
-			for (const auto &rb_slices : row_block_slices)
-			{
-				for (const auto &cb_slices : col_block_slices)
-				{
-					auto [block_ind, slice] = LA_helpers::build_index_slice(other_indices, rb_slices, cb_slices);
-					// fmt::print("block {}, cval {}\n",block_ind,B.block_quantities(block_ind));
-					qtt_CHECK(torch::equal(B.block(block_ind), compact_tensor.index(slice)));
-					// then we verify that the blocks from the original tensor can be obtained from the stored slincing
-					// of the compacted tensor
-				}
-			}
-		}
-	}
 #endif // NDEBUG
-	// fmt::print("V {}\n",V);
-	qtt_CHECK_NOTHROW(btensor::throw_bad_tensor(U));
-	qtt_CHECK_NOTHROW(btensor::throw_bad_tensor(d));
-	qtt_REQUIRE_NOTHROW(btensor::throw_bad_tensor(V));
-	auto d_r = d.reshape_as(shape_from(d, btensor({{{1, d.selection_rule->neutral()}}}, d.selection_rule->neutral())))
-	               .transpose_(-1, -2);
-	auto Vt = V.transpose(-1, -2);
-	auto AA = U.mul(d_r).bmm(Vt);
-	// fmt::print("U {}\n",U);
-	// fmt::print("V {}\n",V);
-	auto it_AA = AA.begin();
-	auto it_A = A.begin();
-	qtt_REQUIRE(std::distance(it_AA, AA.end()) == std::distance(it_A, A.end()));
-	for (; it_AA != AA.end(); ++it_AA, ++it_A)
-	{
-		auto &AA_ind = std::get<0>(*it_AA);
-		auto &A_ind = std::get<0>(*it_A);
-		auto &AA_tens = std::get<1>(*it_AA);
-		auto &A_tens = std::get<1>(*it_A);
-		qtt_CHECK(AA_ind == A_ind);
-		qtt_CHECK(torch::allclose(AA_tens, A_tens));
-	}
-	auto Ut = U.transpose(-2, -1).inverse_cvals_();
-	// fmt::print("Ut {}\n",Ut );
-	// fmt::print("U {}\n", U);
-	V.inverse_cvals_();
-	auto ID_u = U.bmm(Ut); //ATTN! In general, Ut.bmm(Ut) != identity
-	auto ID_v = Vt.bmm(V); //ATTN! In general, V.bmm(Vt) != Identity
-	// fmt::print("ID_U {}", ID_u);
-	for (auto &block : ID_u)
-	{
-		auto &ind = std::get<0>(block);
-		auto &tens = std::get<1>(block);
-		if (ind[ind.size() - 1] == ind[ind.size() - 2])
+       // fmt::print("V {}\n",V);
+		qtt_CHECK_NOTHROW(btensor::throw_bad_tensor(U));
+		qtt_CHECK_NOTHROW(btensor::throw_bad_tensor(d));
+		qtt_REQUIRE_NOTHROW(btensor::throw_bad_tensor(V));
+		auto d_r =
+		    d.reshape_as(shape_from(d, btensor({{{1, d.selection_rule->neutral()}}}, d.selection_rule->neutral())))
+		        .transpose_(-1, -2);
+		auto Vt = V.transpose(-1, -2);
+		auto AA = U.mul(d_r).bmm(Vt);
+		// fmt::print("U {}\n",U);
+		// fmt::print("V {}\n",V);
+		auto it_AA = AA.begin();
+		auto it_A = A.begin();
+		qtt_REQUIRE(std::distance(it_AA, AA.end()) == std::distance(it_A, A.end()));
+		for (; it_AA != AA.end(); ++it_AA, ++it_A)
 		{
-			qtt_CHECK(tens.sizes()[tens.dim() - 1] == tens.sizes()[tens.dim() - 2]);
-			auto id = torch::eye(tens.sizes()[tens.dim() - 1]);
-			qtt_CHECK(torch::allclose(id, tens));
+			auto &AA_ind = std::get<0>(*it_AA);
+			auto &A_ind = std::get<0>(*it_A);
+			auto &AA_tens = std::get<1>(*it_AA);
+			auto &A_tens = std::get<1>(*it_A);
+			qtt_CHECK(AA_ind == A_ind);
+			qtt_CHECK(torch::allclose(AA_tens, A_tens));
 		}
-		else {
-			auto zer = torch::zeros({tens.sizes()[tens.dim()-2],tens.sizes()[tens.dim()-1]});
-			qtt_CHECK(torch::allclose(zer, tens));
-		}
-	}
-	// fmt::print("ID_V \n{}\n\n",ID_v);
-	// fmt::print("Vt \n{}\n\n",Vt);
-	// fmt::print("V \n{}\n\n",V);
-	for (auto &block : ID_v)
-	{
-		auto &ind = std::get<0>(block);
-		auto &tens = std::get<1>(block);
-		if (ind[ind.size() - 1] == ind[ind.size() - 2])
+		auto Ut = U.transpose(-2, -1).inverse_cvals_();
+		// fmt::print("Ut {}\n",Ut );
+		// fmt::print("U {}\n", U);
+		V.inverse_cvals_();
+		auto ID_u = U.bmm(Ut); // ATTN! In general, Ut.bmm(Ut) != identity
+		auto ID_v = Vt.bmm(V); // ATTN! In general, V.bmm(Vt) != Identity
+		// fmt::print("ID_U {}", ID_u);
+		for (auto &block : ID_u)
 		{
-			qtt_CHECK(tens.sizes()[tens.dim() - 1] == tens.sizes()[tens.dim() - 2]);
-			auto id = torch::eye(tens.sizes()[tens.dim() - 1]);
-			qtt_CHECK(torch::allclose(id, tens));
+			auto &ind = std::get<0>(block);
+			auto &tens = std::get<1>(block);
+			if (ind[ind.size() - 1] == ind[ind.size() - 2])
+			{
+				qtt_CHECK(tens.sizes()[tens.dim() - 1] == tens.sizes()[tens.dim() - 2]);
+				auto id = torch::eye(tens.sizes()[tens.dim() - 1]);
+				qtt_CHECK(torch::allclose(id, tens));
+			}
+			else
+			{
+				auto zer = torch::zeros({tens.sizes()[tens.dim() - 2], tens.sizes()[tens.dim() - 1]});
+				qtt_CHECK(torch::allclose(zer, tens));
+			}
 		}
-		else {
-			auto zer = torch::zeros({tens.sizes()[tens.dim()-2],tens.sizes()[tens.dim()-1]});
-			qtt_CHECK(torch::allclose(zer, tens));
+		// fmt::print("ID_V \n{}\n\n",ID_v);
+		// fmt::print("Vt \n{}\n\n",Vt);
+		// fmt::print("V \n{}\n\n",V);
+		for (auto &block : ID_v)
+		{
+			auto &ind = std::get<0>(block);
+			auto &tens = std::get<1>(block);
+			if (ind[ind.size() - 1] == ind[ind.size() - 2])
+			{
+				qtt_CHECK(tens.sizes()[tens.dim() - 1] == tens.sizes()[tens.dim() - 2]);
+				auto id = torch::eye(tens.sizes()[tens.dim() - 1]);
+				qtt_CHECK(torch::allclose(id, tens));
+			}
+			else
+			{
+				auto zer = torch::zeros({tens.sizes()[tens.dim() - 2], tens.sizes()[tens.dim() - 1]});
+				qtt_CHECK(torch::allclose(zer, tens));
+			}
 		}
 	}
-
+	qtt_SUBCASE("tensor decomposition")
+	{
+		using cqt = conserved::C<5>;
+		using index = btensor::index_list;
+		double tole = 1e-5;
+		any_quantity selection_rule(cqt(0)); // DMRJulia flux
+		btensor A({{{2, cqt(0)}, {3, cqt(1)}},
+		           {{1, cqt(1)}, {2, cqt(0)}, {3, cqt(-1)}, {1, cqt(1)}},
+		           {{3, cqt(0)}, {2, cqt(-2)}, {2, cqt(-1)}}},
+		          selection_rule);
+		A.block({0, 0, 2}) =  tole * torch::rand({2, 1, 2});
+		A.block({0, 1, 0}) = tole * torch::rand({2, 2, 3});
+		A.block({0, 3, 2}) = 0.1 * tole * torch::rand({2, 1, 2});
+		A.block({1, 0, 1}) =  tole * torch::rand({3, 1, 2});
+		A.block({1, 1, 2}) = tole * torch::rand({3, 2, 2});
+		A.block({1, 2, 0}) = 0.1 * tole * torch::rand({3, 3, 3});
+		A.block({1, 3, 1}) =  tole * torch::rand({3, 1, 2});
+		// fmt::print("A \n{}\n\n",A);
+		qtt_REQUIRE_NOTHROW(btensor::throw_bad_tensor(A));
+		qtt_SUBCASE("tensor singular decomposition")
+		{
+			btensor U, d, V;
+			qtt_REQUIRE_NOTHROW(std::tie(U, d, V) = svd(A, 1));
+			// fmt::print("U \n{}\n\n",U);
+			// fmt::print("d \n{}\n\n",d);
+			// fmt::print("V \n{}\n\n",V);
+			auto Ud = U.mul(d);
+			// fmt::print("Ud \n{}\n\n",Ud);
+			auto AA = tensordot(U.mul(d), V.conj(), {U.dim() - 1}, {V.dim()-1});
+			// fmt::print("AA \n{}\n\n",AA);
+			auto AA_it = AA.begin();
+			auto A_it = A.begin();
+			qtt_REQUIRE(std::distance(AA_it, AA.end()) == std::distance(A_it, A.end()));
+			while (AA_it != AA.end())
+			{
+				auto AA_ind = std::get<0>(*AA_it);
+				auto A_ind = std::get<0>(*A_it);
+				auto AA_tens = std::get<1>(*AA_it);
+				auto A_tens = std::get<1>(*A_it);
+				qtt_CHECK(AA_ind == A_ind);
+				qtt_CHECK(torch::allclose(AA_tens, A_tens));
+				++AA_it;
+				++A_it;
+			}
+		}
+		qtt_SUBCASE("truncating tensor singular decomposition")
+		{
+			btensor U, d, V;
+			qtt_REQUIRE_NOTHROW(std::tie(U, d, V) = svd(A, 1,tole));
+			// fmt::print("U \n{}\n\n",U);
+			// fmt::print("d \n{}\n\n",d);
+			// fmt::print("V \n{}\n\n",V);
+			auto AA = tensordot(U.mul(d), V.conj(), {U.dim() - 1}, {V.dim()-1});
+			// fmt::print("AA \n{}\n\n",AA);
+			auto AA_it = AA.begin();
+			auto A_it = A.begin();
+			qtt_REQUIRE(std::distance(AA_it, AA.end()) <= std::distance(A_it, A.end()));
+			while (AA_it != AA.end())
+			{
+				auto AA_ind = std::get<0>(*AA_it);
+				auto A_ind = std::get<0>(*A_it);
+				auto AA_tens = std::get<1>(*AA_it);
+				auto A_tens = std::get<1>(*A_it);
+				if (AA_ind == A_ind)
+				{
+					qtt_CHECK(torch::all(torch::less(torch::abs(A_tens-AA_tens),tole)).item().to<bool>());
+					// if (not torch::all(torch::less(torch::abs(A_tens-AA_tens),tol)).item().to<bool>())
+					// {
+					// 	fmt::print("reduction check failed: ind {}\n",A_ind);
+					// 	fmt::print("absolute difference \n{}\n\n",torch::abs(A_tens-AA_tens));
+					// }
+					// qtt_CHECK(torch::allclose(AA_tens, A_tens, tol, tol));
+					++AA_it;
+					++A_it;
+				}
+				else
+				{
+					//if a block from A is literally not present in AA, then that block must be all zeros to the tol.
+					qtt_CHECK(torch::all(torch::less(torch::abs(A_tens),tole)).item().to<bool>());
+					// if (not torch::all(torch::less(torch::abs(A_tens),tol)).item().to<bool>())
+					// {
+					// 	fmt::print("block removed check failed: ind {}\n",A_ind);
+					// 	fmt::print("a_tens \n{}\n\n",A_tens);
+					// }
+					// qtt_CHECK(torch::allclose(A_tens,torch::zeros_like(A_tens),tol,tol));
+					bool AAlessA = AA_ind <A_ind;
+					AA_it += AAlessA;
+					A_it += !AAlessA;
+				}
+			}
+		}
+		qtt_SUBCASE("truncating smaller tensor singular decomposition")
+		{
+			btensor U, d, V;
+			A.mul_(0.3);
+			qtt_REQUIRE_NOTHROW(std::tie(U, d, V) = svd(A, 1,tole));
+			// fmt::print("U \n{}\n\n",U);
+			// fmt::print("d \n{}\n\n",d);
+			// fmt::print("V \n{}\n\n",V);
+			auto AA = tensordot(U.mul(d), V.conj(), {U.dim() - 1}, {V.dim()-1});
+			// fmt::print("AA \n{}\n\n",AA);
+			auto AA_it = AA.begin();
+			auto A_it = A.begin();
+			qtt_REQUIRE(std::distance(AA_it, AA.end()) <= std::distance(A_it, A.end()));
+			while (AA_it != AA.end())
+			{
+				auto AA_ind = std::get<0>(*AA_it);
+				auto A_ind = std::get<0>(*A_it);
+				auto AA_tens = std::get<1>(*AA_it);
+				auto A_tens = std::get<1>(*A_it);
+				if (AA_ind == A_ind)
+				{
+					qtt_CHECK(torch::all(torch::less(torch::abs(A_tens-AA_tens),tole)).item().to<bool>());
+					// if (not torch::all(torch::less(torch::abs(A_tens-AA_tens),tol)).item().to<bool>())
+					// {
+					// 	fmt::print("reduction check failed: ind {}\n",A_ind);
+					// 	fmt::print("absolute difference \n{}\n\n",torch::abs(A_tens-AA_tens));
+					// }
+					// qtt_CHECK(torch::allclose(AA_tens, A_tens, tol, tol));
+					++AA_it;
+					++A_it;
+				}
+				else
+				{
+					//if a block from A is literally not present in AA, then that block must be all zeros to the tol.
+					qtt_CHECK(torch::all(torch::less(torch::abs(A_tens),tole)).item().to<bool>());
+					// if (not torch::all(torch::less(torch::abs(A_tens),tol)).item().to<bool>())
+					// {
+					// 	fmt::print("block removed check failed: ind {}\n",A_ind);
+					// 	fmt::print("a_tens \n{}\n\n",A_tens);
+					// }
+					// qtt_CHECK(torch::allclose(A_tens,torch::zeros_like(A_tens),tol,tol));
+					bool AAlessA = AA_ind <A_ind;
+					AA_it += AAlessA;
+					A_it += !AAlessA;
+				}
+			}
+		}
+	}
 }
 
 } // namespace quantt

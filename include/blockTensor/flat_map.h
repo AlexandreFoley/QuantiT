@@ -260,6 +260,7 @@ class flat_map
 	size_type capacity() const { return content.capacity(); }
 	size_type max_size() const { return content.max_size(); }
 	void reserve(size_type new_cap) { content.reserve(new_cap); }
+	void resize(size_type new_size) { content.resize(new_size); }
 	void shrink_to_fit() { content.shrink_to_fit(); }
 	// modifiers
 	void clear() { content.clear(); }

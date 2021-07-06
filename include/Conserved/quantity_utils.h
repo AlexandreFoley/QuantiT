@@ -140,8 +140,8 @@ struct is_Abelian<T, std::enable_if_t<is_detected_v<abelian_present, T>>> : std:
 // parameter satisfy the constraint for a group that will work with any_quantity
 
 template<class T>
-struct is_conserved_quantt : and_<default_to_neutral<T>, has_op<T>, has_inverse_<T>,
-         has_comparatorequal<T>, has_comparatornotequal<T>, is_Abelian<T>>
+struct is_conserved_quantt : and_<is_Abelian<T>, default_to_neutral<T>, has_op<T>, has_inverse_<T>,
+         has_comparatorequal<T>, has_comparatornotequal<T>>
 {};
 
 template<class... Args>

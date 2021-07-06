@@ -1,11 +1,14 @@
 
+#include "LinearAlgebra.h"
 #include "blockTensor/LinearAlgebra.h"
 #include <ATen/TensorIndexing.h>
+#include <c10/core/ScalarType.h>
+#include <c10/util/ArrayRef.h>
 #include <cstdint>
 #include <iterator>
+#include <numeric>
 #include <stdexcept>
 #include <tuple>
-
 namespace quantt
 {
 
@@ -46,14 +49,14 @@ btensor::block_list_t::content_t reorder_by_cvals(const btensor &tensor)
 	// 	return perm;
 
 	// };
-	auto out = btensor::block_list_t::content_t(tensor.begin(),tensor.end());
+	auto out = btensor::block_list_t::content_t(tensor.begin(), tensor.end());
 	std::stable_sort(out.begin(), out.end(),
 	                 [r = tensor.dim(), row_qtt = row_start, col_qtt = col_start](auto &&a, auto &&b)
 	                 {
-		                 const auto& row_a_qtt = row_qtt[a.first[r - 2]];
-		                 const auto& row_b_qtt = row_qtt[b.first[r - 2]];
-		                 const auto& col_a_qtt = col_qtt[a.first[r - 1]];
-		                 const auto& col_b_qtt = col_qtt[b.first[r - 1]];
+		                 const auto &row_a_qtt = row_qtt[a.first[r - 2]];
+		                 const auto &row_b_qtt = row_qtt[b.first[r - 2]];
+		                 const auto &col_a_qtt = col_qtt[a.first[r - 1]];
+		                 const auto &col_b_qtt = col_qtt[b.first[r - 1]];
 
 		                 bool out = row_a_qtt < row_b_qtt;
 		                 out |= (row_a_qtt == row_b_qtt) and (col_a_qtt < col_b_qtt);
@@ -75,7 +78,8 @@ btensor::block_list_t::content_t reorder_by_cvals(const btensor &tensor)
  */
 std::tuple<torch::Tensor, btensor::index_list, std::vector<std::tuple<int, torch::indexing::Slice>>,
            std::vector<std::tuple<int, torch::indexing::Slice>>>
-compact_dense_single(btensor::block_list_t::content_t::const_iterator start, btensor::block_list_t::content_t::const_iterator end)
+compact_dense_single(btensor::block_list_t::content_t::const_iterator start,
+                     btensor::block_list_t::content_t::const_iterator end)
 { // So here, we know for a fact that all the blocks in the span [start,end) belong to the same matrix for the purpose
   // of the linear algebra routine.
 	// One sort of optimisation that we might have missed is if something like [0 A;B 0] or [A 0; 0 B] happens. A priori
@@ -157,15 +161,15 @@ compact_dense_single(btensor::block_list_t::content_t::const_iterator start, bte
  * @return size_t
  */
 template <class Func1, class Func2>
-size_t compact_tensor_count(btensor::block_list_t::content_t &tensor, bool rank_greater_than_2, size_t rank, Func1 &&equal_index,
-                            Func2 &&equal_cval)
+size_t compact_tensor_count(btensor::block_list_t::content_t &tensor, bool rank_greater_than_2, size_t rank,
+                            Func1 &&equal_index, Func2 &&equal_cval)
 {
 	size_t out = 0;
 	// if (rank_greater_than_2)
 	// {
 	auto it1 = tensor.begin();
 	auto it2 = tensor.begin() + (it1 != tensor.end());
-	while(it2 != tensor.end())
+	while (it2 != tensor.end())
 	{
 		auto ind1 = it1->first;
 		auto ind2 = it2->first;
@@ -175,7 +179,7 @@ size_t compact_tensor_count(btensor::block_list_t::content_t &tensor, bool rank_
 		++it1;
 		++it2;
 	}
-	out += it1!=it2;
+	out += it1 != it2;
 	return out;
 }
 /**
@@ -221,14 +225,15 @@ compact_dense(const btensor &tensor)
 	out_type out_tensors(compact_tensor_count(block_list, rank_greater_than_2, rank, equal_index, equal_c_vals));
 	// create the list of <tensorIndex, bloc_position> pairs for all the sections involved.
 	auto it1 = block_list.begin();
-	auto it2 = block_list.begin()+1;
+	auto it2 = block_list.begin() + 1;
 	auto out_it = out_tensors.begin();
-	auto block_list_l = std::distance(it1,block_list.end());
-	auto out_l = std::distance(out_it,out_tensors.end());
+	auto block_list_l = std::distance(it1, block_list.end());
+	auto out_l = std::distance(out_it, out_tensors.end());
 	// for (; it2 != block_list.end(); ++it2)//skips the last set of blocks.
-	while(it1 != block_list.end())
+	while (it1 != block_list.end())
 	{
-		if (it2 == block_list.end() or not(equal_index(it1->first, it2->first) and equal_c_vals(it1->first, it2->first)))
+		if (it2 == block_list.end() or
+		    not(equal_index(it1->first, it2->first) and equal_c_vals(it1->first, it2->first)))
 		{
 			bool out_at_end = out_it == out_tensors.end();
 			*out_it = compact_dense_single(it1, it2); // each call are independent, can be parallelized
@@ -277,12 +282,9 @@ std::tuple<btensor::index_list, std::array<TensInd, 3>> build_index_slice(const 
 } // namespace LA_helpers
 using namespace LA_helpers;
 
-std::string qformat(any_quantity_cref qt)
-{
-	return fmt::format("{}",qt);
-}
+std::string qformat(any_quantity_cref qt) { return fmt::format("{}", qt); }
 
-std::tuple<btensor, btensor, btensor> svd(const btensor &tensor, const bool some,const bool compute_uv)
+std::tuple<btensor, btensor, btensor> svd(const btensor &tensor, const BOOL some, const BOOL compute_uv)
 {
 	// extract independant btensors
 	std::vector<std::tuple<torch::Tensor, btensor::index_list, std::vector<std::tuple<int, torch::indexing::Slice>>,
@@ -290,7 +292,7 @@ std::tuple<btensor, btensor, btensor> svd(const btensor &tensor, const bool some
 	    tensors_n_indices = LA_helpers::compact_dense(tensor);
 	// compute the size and conserved values of the diagonnal matrix, most likely to be the same code for the eigenvalue
 	// problem.
-	auto d_blocks = tensors_n_indices.size(); 
+	auto d_blocks = tensors_n_indices.size();
 	any_quantity_vector right_D_cvals(d_blocks, tensor.selection_rule->neutral());
 	any_quantity_vector left_D_cvals(d_blocks, tensor.selection_rule->neutral());
 	std::vector<int64_t> D_block_sizes(tensors_n_indices.size());
@@ -301,13 +303,11 @@ std::tuple<btensor, btensor, btensor> svd(const btensor &tensor, const bool some
 	size_t V_blocks = 0;
 	for (auto &[basictensor, other_indices, rows, cols] : tensors_n_indices)
 	{
-		*D_rcval_it=(tensor.section_conserved_qtt( 
-		    tensor.dim() - 1,                       
-		    std::get<0>(cols[0])));                  
+		*D_rcval_it = (tensor.section_conserved_qtt(tensor.dim() - 1, std::get<0>(cols[0])));
 		*D_lcval_it = D_rcval_it->inverse();
 		// fmt::print("{} {}\n",*D_lcval_it,*D_rcval_it);
 		// fmt::print("other indices {}\n", other_indices);
-		
+
 		// for (auto& row:rows)
 		// {
 		// fmt::print("input row {}\n", std::get<0>(row));
@@ -334,10 +334,8 @@ std::tuple<btensor, btensor, btensor> svd(const btensor &tensor, const bool some
 	}
 	std::vector<int64_t> d_shape(tensor.dim(), -1);
 	*(d_shape.end() - 2) = *(d_shape.end() - 1) = 0;
-	btensor leftD_shape({static_cast<long>(d_blocks)}, left_D_cvals, D_block_sizes,
-	                    tensor.selection_rule->neutral());
-	btensor rightD_shape({static_cast<long>(d_blocks)}, right_D_cvals, D_block_sizes,
-	                     tensor.selection_rule->neutral());
+	btensor leftD_shape({static_cast<long>(d_blocks)}, left_D_cvals, D_block_sizes, tensor.selection_rule->neutral());
+	btensor rightD_shape({static_cast<long>(d_blocks)}, right_D_cvals, D_block_sizes, tensor.selection_rule->neutral());
 	auto d = shape_from(tensor.shape_from(d_shape), rightD_shape).neutral_shape();
 	// fmt::print("d \n {}\n",d);
 	std::vector<int64_t> to_U_shape(tensor.dim(), -1);
@@ -347,20 +345,21 @@ std::tuple<btensor, btensor, btensor> svd(const btensor &tensor, const bool some
 	    rightD_shape);
 	// fmt::print("right_D_shape: \n {}\nU: \n{}",rightD_shape,U);
 	std::vector<int64_t> to_V_others(tensor.dim(), -1);
-	*(to_V_others.end() - 2) = to_V_others.back() =  0;
+	*(to_V_others.end() - 2) = to_V_others.back() = 0;
 	std::vector<int64_t> to_V_left(tensor.dim(), 0);
 	to_V_left.back() = -1;
-	btensor V = shape_from(tensor.shape_from(to_V_others).neutral_shape(),tensor.shape_from(to_V_left),leftD_shape);
+	btensor V = shape_from(tensor.shape_from(to_V_others).neutral_shape(), tensor.shape_from(to_V_left), leftD_shape);
 	V.shift_selection_rule(V.selection_rule->inverse());
 	// fmt::print("V: \n {}\n",V);
 	int b_i = 0;
-	//preallocate the blocks, with index, so that the SVD calls can be parallelized.
+	// preallocate the blocks, with index, so that the SVD calls can be parallelized.
 	U.reserve_space(U_blocks);
 	V.reserve_space(V_blocks);
 	d.reserve_space(d_blocks);
 	// Independent steps if the block list have preallocated blocks
 	for (auto &[basictensor, other_indices, rows, cols] : tensors_n_indices)
-	{//The two inner loops are independent from one another. Their respective steps are also independent if the btensor's block_list already has a block there.
+	{ // The two inner loops are independent from one another. Their respective steps are also independent if the
+	  // btensor's block_list already has a block there.
 		auto extra_block_slice = std::make_tuple(b_i, torch::indexing::Slice());
 		for (auto &row : rows)
 		{
@@ -373,10 +372,10 @@ std::tuple<btensor, btensor, btensor> svd(const btensor &tensor, const bool some
 			V.block(block_ind) = torch::Tensor();
 		}
 		auto [block_ind, slice] = LA_helpers::build_index_slice(other_indices, extra_block_slice, extra_block_slice);
-		d.block(btensor::index_list( block_ind.begin(),block_ind.end()-1) ) = torch::Tensor();
+		d.block(btensor::index_list(block_ind.begin(), block_ind.end() - 1)) = torch::Tensor();
 		++b_i;
 	}
-	b_i=0;
+	b_i = 0;
 	for (auto &[basictensor, other_indices, rows, cols] : tensors_n_indices)
 	{
 		auto [bU, bD, bV] = torch::svd(basictensor, some, compute_uv);
@@ -392,22 +391,246 @@ std::tuple<btensor, btensor, btensor> svd(const btensor &tensor, const bool some
 			V.block(block_ind) = bV.index(slice);
 		}
 		auto [block_ind, slice] = LA_helpers::build_index_slice(other_indices, extra_block_slice, extra_block_slice);
-		d.block(btensor::index_list( block_ind.begin(),block_ind.end()-1) ) = bD;
+		d.block(btensor::index_list(block_ind.begin(), block_ind.end() - 1)) = bD;
 		++b_i;
 	}
 
 	// return output tuple
-	return std::make_tuple(U,d,V);
+	return std::make_tuple(U, d, V);
 }
 std::tuple<btensor, btensor, btensor> svd(const btensor &tensor, size_t split)
 {
 	// reshape according to split
-
+	auto rtensor = tensor.reshape({static_cast<int64_t>(split)});
 	// call batched SVD
-
+	auto [rU, d, rV] = svd(rtensor);
 	// undo reshape
-
+	std::vector<int64_t> U_shape(tensor.dim(), -1);
+	std::vector<int64_t> V_shape(tensor.dim(), -1);
+	{
+		size_t i = 0;
+		for (; i < split; ++i)
+		{
+			V_shape[i] = 0;
+		}
+		for (; i < tensor.dim(); ++i)
+		{
+			U_shape[i] = 0;
+		}
+	}
+	// fmt::print("rV \n{}\n\n",rV);
+	// fmt::print("V shape \n{}\n\n",V_shape);
+	// fmt::print("tensor \n{}\n\n",tensor);
+	auto U = rU.reshape_as(shape_from(tensor.shape_from(U_shape), rU.shape_from({0, -1})));
+	auto V_left_part = tensor.shape_from(V_shape);
+	auto V_right_part = rV.shape_from({0,-1});
+	// fmt::print("V_left_part \n{}\n\n", V_left_part);
+	// fmt::print("V_right_part \n{}\n\n", V_right_part);
+	auto V = rV.reshape_as(shape_from(tensor.shape_from(V_shape), rV.shape_from({0, -1})));
 	// return tuple
-	return std::make_tuple(btensor(), btensor(), btensor());
+	return std::make_tuple(U, d, V);
 }
+
+/**
+ * @brief Search for the first index with a value not greater than val in a desccending ordered list of value. For
+ * pytorch.
+ *
+ * Currently a linear search, a branchless binary search might be better.
+ *
+ * @tparam TorchAccessor
+ * @tparam Value
+ * @param acc
+ * @param val
+ * @return int64_t
+ */
+template <class TorchAccessor, class Value>
+int64_t lower_bound_impl2(TorchAccessor &acc, Value &val)
+{
+	int64_t i = 0;
+	for (; i < acc.size(0); ++i)
+	{
+		if (!(acc[i] > val))
+			break;
+	}
+	return i;
+}
+
+template <torch::ScalarType Scal_type, torch::DeviceType Dev_type>
+int64_t lower_bound_impl(torch::Tensor &tens, const torch::Scalar &val)
+{
+	assert(tens.dim() == 1);
+	using stype = decltype(c10::impl::ScalarTypeToCPPType<Scal_type>::t);
+	auto valA = val.to<stype>();
+	if constexpr (Dev_type == torch::kCPU)
+	{
+		// auto tensA = tens.accessor<double,1>();
+		auto tensA = tens.accessor<stype, 1>();
+		// torch accessor don't supply iterators... piece of crap.
+		return lower_bound_impl2(tensA, valA);
+	}
+	else if constexpr (Dev_type == torch::kCUDA)
+	{
+		// the 32 means we're limited to 32bits addressable size. that's a lot, but we could go beyond using
+		// packed_accessor64
+
+		auto tensA = tens.packed_accessor32<stype, 1>();
+		return lower_bound_impl2(tensA, valA);
+	}
+	static_assert(Dev_type == torch::kCUDA or Dev_type == torch::kCPU, "unsupported device type for this function.");
+}
+
+// macro for usage with lower_bound_dev
+// create a case for a scalar type supported by pytorch.
+// Theres a macro in torch that turn this into a case for each of the supported type
+#define SWITCH_CASE_TORCHDTYPE(CPPTYPE, c10ScalarType)                                                                 \
+	case c10::ScalarType::c10ScalarType:                                                                               \
+		return lower_bound_impl<c10::ScalarType::c10ScalarType, Dev_type>(tens, scal);                             \
+		break;
+/**
+ * @brief dispatch lower_bound_impl based on the scalar type in tens
+ */
+template <torch::DeviceType Dev_type>
+int64_t lower_bound_dev(torch::Tensor &tens, const torch::Scalar &scal)
+{
+
+	switch (torch::typeMetaToScalarType(tens.dtype()))
+	{
+		AT_FORALL_SCALAR_TYPES(SWITCH_CASE_TORCHDTYPE)
+	default:
+		throw std::invalid_argument(
+		    fmt::format("unsupported element type {} of tensors for lowerbound, complex numbers are unsupported.",
+		                tens.dtype().name()));
+		break;
+	}
+}
+
+int64_t lower_bound(torch::Tensor &tens, const torch::Scalar &scal)
+{
+	if (tens.device() == torch::kCUDA)
+		return lower_bound_dev<torch::kCUDA>(tens, scal);
+	else if (tens.device() == torch::kCPU)
+		return lower_bound_dev<torch::kCPU>(tens, scal);
+	throw std::logic_error(fmt::format("unsupported backend {} for quantt::lower_bound(torch::Tensor&,torch::Scalar&>",
+	                                   c10::DeviceTypeName(tens.device().type())));
+}
+/**
+ * @brief truncation for the tensor network SVD
+ *
+ * @param U Left unitary matrix
+ * @param d Singular values
+ * @param V Right unitary matrix
+ * @param max maximum dimension
+ * @param min minimum dimension
+ * @param tol tolerance on induced error, max takes precedence
+ * @param pow power of the value to use in the error computation
+ * @return std::tuple<btensor,btensor,btensor>
+ */
+std::tuple<btensor, btensor, btensor> truncate(std::tuple<btensor, btensor, btensor> &&U_d_V, size_t max, size_t min,
+                                               btensor::Scalar tol, btensor::Scalar pow )
+{
+	auto &[U, d, V] = U_d_V;
+	// d is a vector of singular values
+	assert(d.dim() == 1);
+	// prepare a list containing all the singular value
+	auto L = std::accumulate(d.begin(), d.end(), 0, [](auto &&a, auto &&b) { return a + std::get<1>(b).sizes()[0]; });
+	auto vd = torch::zeros(
+	    {L}, torch::device(torch::kCPU).dtype(torch::kDouble)); // always done on the CPU with double precicion
+	size_t n = 0;
+	for (const auto &block : d)
+	{
+		auto &tens = std::get<1>(block);
+		auto l = tens.sizes()[0];
+		vd.index_put_({torch::indexing::Slice(n, n+l)}, tens);//bug here.
+		n += l;
+	}
+	vd = std::get<0>(
+	    vd.sort(-1, true)); // sort the last (only) dimension in descending order //no inplace sort in torch...
+	// vd is now sorted in ascending order.
+	auto smallest_value = vd.index({torch::indexing::Ellipsis, compute_last_index(vd, tol, pow, min, max)});
+	smallest_value -= 1e-12; // Better chance to preserve degenerate multiplets that way.
+	// for each block trio, we can remove all the values smaller than the one in smallest_value
+	// without inducing an error larger than the tol.
+	auto d_it = d.end();
+	std::vector<btensor::index_list> to_remove;
+	to_remove.reserve(std::distance(d.begin(), d.end()));
+	auto remove_unit_blocks = [](auto &unitary, const auto &d_ind)
+	{
+		auto U_src = unitary.begin();
+		auto U_dest = unitary.begin();
+		while (U_dest != unitary.end())
+		{
+			auto &src_ind = std::get<0>(*U_src);
+			auto &dest_ind = std::get<0>(*U_dest);
+			U_dest += (dest_ind.back() == d_ind.back());
+			if (U_dest != U_src and U_dest != unitary.end())
+			{
+				swap(*U_dest, *U_src);
+			}
+			U_dest += U_dest != unitary.end(); //stop incrementing if we reached the end
+			++U_src;
+		}
+		unitary.blocks_list.resize(
+		    unitary.blocks_list.size() -
+		    std::distance(U_src, U_dest)); // the unwanted blocks are pushed to the end, resizing down destroy them.
+	};
+	auto trunc_unit_block = [](auto &U, const auto &d_ind, const auto last_index)
+	{
+		using namespace torch::indexing;
+		auto U_it = U.begin();
+		while (U_it != U.end())
+		{
+			auto &U_ind = std::get<0>(*U_it);
+			auto &Ub = std::get<1>(*U_it);
+			if (U_ind.back() == d_ind.back())
+				Ub = Ub.index({Ellipsis, Slice(0, last_index)});
+			++U_it;
+		}
+	};
+	while (d_it != d.begin())
+	{
+		--d_it;
+		auto &d_ind = std::get<0>(*d_it);
+		auto &db = std::get<1>(*d_it);
+		using namespace torch::indexing;
+
+		auto last_index = lower_bound(db, smallest_value.item());
+		if (last_index == 0)
+		{ // remove the whole block...
+			// i think, out of laziness and lack of advantages to the converse, i will only erase the blocks without
+			// changing the shape of the blocktensor. This mean the resulting tensor will have extra structure, with no
+			// elements in there.
+			// this will not result in an accumulation of empty sections, because empty section in a tensor do not
+			// induce an empty section in the singular values tensor
+			// Correctly evaluating the bond dimension of a MPS becomes a bit more involved. But the induced extra
+			// structure should disapear as DMRG nears convergence
+			remove_unit_blocks(U, d_ind);
+			remove_unit_blocks(V, d_ind);
+			d.blocks_list.erase(d_it);
+		}
+		else
+		{ // truncate d
+			db = db.index({Slice(0, last_index)});
+			// adjust the section sizes
+			d.sections_sizes[d_ind.back()] = last_index ;
+			V.sections_sizes[V.sections_sizes.size() - (d.sections_sizes.size() - d_ind.back())] = last_index ;
+			U.sections_sizes[U.sections_sizes.size() - (d.sections_sizes.size() - d_ind.back())] = last_index ;
+			// truncate all the blocks in U on the section matching with the current d block.
+			trunc_unit_block(U, d_ind, last_index);
+			trunc_unit_block(V, d_ind, last_index);
+		}
+	}
+	return std::make_tuple(std::move(U), std::move(d), std::move(V));
+}
+
+std::tuple<btensor,btensor,btensor> svd(const btensor& A, size_t split,btensor::Scalar tol,size_t min_size,size_t max_size, btensor::Scalar pow )
+{
+	return truncate(svd(A,split),max_size,min_size,tol,pow);
+}
+std::tuple<btensor,btensor,btensor> svd(const btensor& A, size_t split,btensor::Scalar tol, btensor::Scalar pow )
+{
+	size_t min_size = 1;
+	size_t max_size = std::numeric_limits<size_t>::max();
+	return svd(A,split,tol,min_size,max_size,pow);
+}
+
 } // namespace quantt

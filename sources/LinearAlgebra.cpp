@@ -18,18 +18,55 @@
 namespace quantt
 {
 
-auto compute_last_index(torch::Tensor d,torch::Scalar tol,torch::Scalar pow,size_t min_size, size_t max_size)
+
+
+int64_t compute_first_index_ascending(torch::Tensor d, torch::Scalar tol, torch::Scalar pow, size_t min_size,
+                                    size_t max_size)
+{
+
+	// make no asumption regarding the batched nature of the tensors.
+	// not trying to optimize based on underlying type of the tensors. might be necessary, but will require significant
+	// efforts.
+	using namespace torch::indexing;
+	auto Last_dim_size = d.sizes()[d.sizes().size() - 1];
+	// auto last_index = Last_dim_size-1;
+	int64_t first_index = 0;
+	auto trunc_val = d.index({Ellipsis, static_cast<int64_t>(first_index)}).abs().pow_(pow);
+	auto min_index = Last_dim_size - min_size;
+	auto max_index = Last_dim_size - max_size;
+	while (first_index <= min_index)
+	{
+		if (  (trunc_val > tol).any().item().to<bool>() and first_index >= max_index)
+			break;
+		++first_index;
+		trunc_val += d.index({Ellipsis, static_cast<int64_t>(first_index)}).abs().pow_(pow);
+	}
+	return first_index;
+}
+/**
+ * @brief  compute the last index in a list of singular value such that the error on the trace of the singular value to the pow power smaller than tol.
+ * So one can keep [0,last_index].
+ * 
+ * @param d 
+ * @param tol 
+ * @param pow 
+ * @param min_size 
+ * @param max_size 
+ * @return int64_t 
+ */
+int64_t compute_last_index(torch::Tensor d,torch::Scalar tol,torch::Scalar pow,size_t min_size, size_t max_size)
 {
 
 	//make no asumption regarding the batched nature of the tensors.
 	// not trying to optimize based on underlying type of the tensors. might be necessary, but will require significant efforts.
 	using namespace torch::indexing;
 	auto Last_dim_size = d.sizes()[d.sizes().size()-1];
-	auto last_index = Last_dim_size-1;
+	auto toln = torch::pow(torch::ones({})*tol,pow);
+	int64_t last_index = Last_dim_size-1;
 	auto trunc_val = d.index({Ellipsis,last_index}).abs().pow(pow);// will have to test to make sure we're not doing the abs and pow in place in d
 	while (last_index >= min_size)
 	{
-		if (  (trunc_val > tol).any().item().to<double>() and last_index < max_size)
+		if (  (  trunc_val > toln).any().item().to<bool>() and last_index < max_size)
 			break;
 		--last_index;
 		trunc_val += d.index({Ellipsis,last_index}).abs().pow(pow);//Again, abs and pow must not be in place...

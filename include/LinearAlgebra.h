@@ -14,6 +14,7 @@
 #ifndef C5116C03_2050_4F3F_8DCF_C1C103E0B22A
 #define C5116C03_2050_4F3F_8DCF_C1C103E0B22A
 
+#include <cstdint>
 #include <torch/torch.h>
 
 #include <fmt/core.h>
@@ -30,6 +31,33 @@
 namespace quantt
 {
 
+/**
+ * @brief compute the first kept index such that the sum of of the rejected value to the pow are smaller than tol in an ascending ordered list of values.
+ * 
+ * 
+ * 
+ * @param d torch tensor ordered by values
+ * @param tol tolerence on the error induced by the truncation
+ * @param pow power to use in the computation of the truncation error
+ * @param min_size minimum size of the output
+ * @param max_size maximum size of the output
+ * @return size_t 
+ */
+int64_t compute_first_index_ascending(torch::Tensor d,torch::Scalar tol,torch::Scalar pow,size_t min_size, size_t max_size);
+
+/**
+ * @brief compute the last kept index such that the sum of of the rejected value to the pow are smaller than tol in a descending ordered list of values.
+ * 
+ * 
+ * 
+ * @param d torch tensor ordered by values
+ * @param tol tolerence on the error induced by the truncation
+ * @param pow power to use in the computation of the truncation error
+ * @param min_size minimum size of the output
+ * @param max_size maximum size of the output
+ * @return size_t 
+ */
+int64_t compute_last_index(torch::Tensor d,torch::Scalar tol,torch::Scalar pow,size_t min_size, size_t max_size);
 //TODO: add possibility of pre-allocated output, and the possibility not to compute the eigen/singular vectors.
  
 /**
