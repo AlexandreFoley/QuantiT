@@ -23,15 +23,15 @@ namespace quantt
 
 /**
  * @brief A bool type with no implicit conversion from arithmetic types.
- * 
+ *
  * to avoid abiguous overloads between the batch svd and the tensors svd
- * 
+ *
  */
 struct BOOL
 {
 	bool val;
-	BOOL(bool _val) noexcept :val(_val) {}
-	operator bool() const noexcept {return val;}
+	BOOL(bool _val) noexcept : val(_val) {}
+	operator bool() const noexcept { return val; }
 };
 /**
  * @brief Compute the batched singular value decomposition on the input btensor: \f$ I = U.D.V^\dagger \f$.
@@ -89,8 +89,9 @@ std::tuple<btensor, btensor, btensor> svd(const btensor &tensor, size_t split);
  * @brief overload for implicit conversion disambiguation, see svd(const btensor&, size_t)
  *
  */
-inline std::tuple<btensor, btensor, btensor> svd(const btensor &tensor, int split){
-	return svd(tensor,static_cast<size_t>(split));
+inline std::tuple<btensor, btensor, btensor> svd(const btensor &tensor, int split)
+{
+	return svd(tensor, static_cast<size_t>(split));
 }
 
 /**
@@ -118,7 +119,7 @@ std::tuple<btensor, btensor, btensor> svd(const btensor &A, size_t split, btenso
  * btensor&,size_t,btensor::Scalar,size_t,size_t,btensor::Scalar)
  */
 inline std::tuple<btensor, btensor, btensor> svd(const btensor &A, int split, btensor::Scalar tol, size_t min_size,
-                                          size_t max_size, btensor::Scalar pow = 2)
+                                                 size_t max_size, btensor::Scalar pow = 2)
 {
 	return svd(A, static_cast<size_t>(split), tol, min_size, max_size, pow);
 }
@@ -142,10 +143,53 @@ std::tuple<btensor, btensor, btensor> svd(const btensor &A, size_t split, btenso
 /**
  * @brief overload for implicit conversion disambiguation, see svd(cont btensor&,size_t,btensor::Scalar,btensor::Scalar)
  */
-inline std::tuple<btensor, btensor, btensor> svd(const btensor &A, int split, btensor::Scalar tol, btensor::Scalar pow = 2)
+inline std::tuple<btensor, btensor, btensor> svd(const btensor &A, int split, btensor::Scalar tol,
+                                                 btensor::Scalar pow = 2)
 {
-	return svd(A,static_cast<size_t>(split),tol,pow);
+	return svd(A, static_cast<size_t>(split), tol, pow);
 }
+/**
+ * @brief compute the batched eigenvalue decomposition.
+ *
+ * @param tensor to solve the eigenvalue problem for
+ * @param eigenvectors weither to compute the eigenvectors as well
+ * @param upper weither to use only the upper part or only the lower part for the algorithm.
+ * @return std::tuple<btensor, btensor> e,S
+ */
+std::tuple<btensor, btensor> symeig(const btensor &tensor, BOOL eigenvectors = false, BOOL upper = true);
+/**
+ * @brief tensor eigenvalue decomposition
+ *
+ * @param tensor tensor to decompose
+ * @param split index that split the row indices from the column indices
+ * @return std::tuple<btensor, btensor> e,S
+ */
+std::tuple<btensor, btensor> symeig(const btensor &tensor, size_t split);
+/**
+ * @brief truncating tensor eigenvalue decomposition
+ *
+ * @param A  tensor to decompose
+ * @param split index that split the row indices from the column indices
+ * @param tol tolerence on error induced by truncation
+ * @param min_size minimum number of eigenvalue kept supersede tol
+ * @param max_size maximum number of eigenvalue kept, supersede tol
+ * @param pow power used when computing the induced error \f$ sum(e_t^{pow})<tol^{pow}\f$ where \f$e_t\f$ is a rejected
+ * eigenvalues.
+ * @return std::tuple<btensor, btensor>
+ */
+std::tuple<btensor, btensor> symeig(const btensor &A, size_t split, btensor::Scalar tol, size_t min_size,
+                                    size_t max_size, btensor::Scalar pow = 1);
+/**
+ * @brief truncating tensor eigenvalue decomposition
+ *
+ * @param A tensor to decompose
+ * @param split index that split the row indices from the column indices
+ * @param tol tolerence on error induced by truncation
+ * @param pow power used when computing the induced error \f$ sum(e_t^{pow})<tol^{pow}\f$ where \f$e_t\f$ is a rejected
+ * eigenvalues.
+ * @return std::tuple<btensor, btensor>
+ */
+std::tuple<btensor, btensor> symeig(const btensor &A, size_t split, btensor::Scalar tol, btensor::Scalar pow = 1);
 
 #ifndef NDEBUG
 namespace LA_helpers
@@ -294,7 +338,7 @@ qtt_TEST_CASE("btensor Linear algebra")
 		auto d_r =
 		    d.reshape_as(shape_from(d, btensor({{{1, d.selection_rule->neutral()}}}, d.selection_rule->neutral())))
 		        .transpose_(-1, -2);
-		auto Vt = V.transpose(-1, -2);
+		auto Vt = V.transpose(-1, -2).conj();
 		auto AA = U.mul(d_r).bmm(Vt);
 		// fmt::print("U {}\n",U);
 		// fmt::print("V {}\n",V);
@@ -310,10 +354,9 @@ qtt_TEST_CASE("btensor Linear algebra")
 			qtt_CHECK(AA_ind == A_ind);
 			qtt_CHECK(torch::allclose(AA_tens, A_tens));
 		}
-		auto Ut = U.transpose(-2, -1).inverse_cvals_();
+		auto Ut = U.transpose(-2, -1).conj();
 		// fmt::print("Ut {}\n",Ut );
 		// fmt::print("U {}\n", U);
-		V.inverse_cvals_();
 		auto ID_u = U.bmm(Ut); // ATTN! In general, Ut.bmm(Ut) != identity
 		auto ID_v = Vt.bmm(V); // ATTN! In general, V.bmm(Vt) != Identity
 		// fmt::print("ID_U {}", ID_u);
@@ -363,13 +406,13 @@ qtt_TEST_CASE("btensor Linear algebra")
 		           {{1, cqt(1)}, {2, cqt(0)}, {3, cqt(-1)}, {1, cqt(1)}},
 		           {{3, cqt(0)}, {2, cqt(-2)}, {2, cqt(-1)}}},
 		          selection_rule);
-		A.block({0, 0, 2}) =  tole * torch::rand({2, 1, 2});
+		A.block({0, 0, 2}) = tole * torch::rand({2, 1, 2});
 		A.block({0, 1, 0}) = tole * torch::rand({2, 2, 3});
 		A.block({0, 3, 2}) = 0.1 * tole * torch::rand({2, 1, 2});
-		A.block({1, 0, 1}) =  tole * torch::rand({3, 1, 2});
+		A.block({1, 0, 1}) = tole * torch::rand({3, 1, 2});
 		A.block({1, 1, 2}) = tole * torch::rand({3, 2, 2});
 		A.block({1, 2, 0}) = 0.1 * tole * torch::rand({3, 3, 3});
-		A.block({1, 3, 1}) =  tole * torch::rand({3, 1, 2});
+		A.block({1, 3, 1}) = tole * torch::rand({3, 1, 2});
 		// fmt::print("A \n{}\n\n",A);
 		qtt_REQUIRE_NOTHROW(btensor::throw_bad_tensor(A));
 		qtt_SUBCASE("tensor singular decomposition")
@@ -381,7 +424,7 @@ qtt_TEST_CASE("btensor Linear algebra")
 			// fmt::print("V \n{}\n\n",V);
 			auto Ud = U.mul(d);
 			// fmt::print("Ud \n{}\n\n",Ud);
-			auto AA = tensordot(U.mul(d), V.conj(), {U.dim() - 1}, {V.dim()-1});
+			auto AA = tensordot(Ud, V.conj(), {U.dim() - 1}, {V.dim() - 1});
 			// fmt::print("AA \n{}\n\n",AA);
 			auto AA_it = AA.begin();
 			auto A_it = A.begin();
@@ -401,11 +444,11 @@ qtt_TEST_CASE("btensor Linear algebra")
 		qtt_SUBCASE("truncating tensor singular decomposition")
 		{
 			btensor U, d, V;
-			qtt_REQUIRE_NOTHROW(std::tie(U, d, V) = svd(A, 1,tole));
+			qtt_REQUIRE_NOTHROW(std::tie(U, d, V) = svd(A, 1, tole));
 			// fmt::print("U \n{}\n\n",U);
 			// fmt::print("d \n{}\n\n",d);
 			// fmt::print("V \n{}\n\n",V);
-			auto AA = tensordot(U.mul(d), V.conj(), {U.dim() - 1}, {V.dim()-1});
+			auto AA = tensordot(U.mul(d), V.conj(), {U.dim() - 1}, {V.dim() - 1});
 			// fmt::print("AA \n{}\n\n",AA);
 			auto AA_it = AA.begin();
 			auto A_it = A.begin();
@@ -418,7 +461,7 @@ qtt_TEST_CASE("btensor Linear algebra")
 				auto A_tens = std::get<1>(*A_it);
 				if (AA_ind == A_ind)
 				{
-					qtt_CHECK(torch::all(torch::less(torch::abs(A_tens-AA_tens),tole)).item().to<bool>());
+					qtt_CHECK(torch::all(torch::less(torch::abs(A_tens - AA_tens), tole)).item().to<bool>());
 					// if (not torch::all(torch::less(torch::abs(A_tens-AA_tens),tol)).item().to<bool>())
 					// {
 					// 	fmt::print("reduction check failed: ind {}\n",A_ind);
@@ -430,15 +473,15 @@ qtt_TEST_CASE("btensor Linear algebra")
 				}
 				else
 				{
-					//if a block from A is literally not present in AA, then that block must be all zeros to the tol.
-					qtt_CHECK(torch::all(torch::less(torch::abs(A_tens),tole)).item().to<bool>());
+					// if a block from A is literally not present in AA, then that block must be all zeros to the tol.
+					qtt_CHECK(torch::all(torch::less(torch::abs(A_tens), tole)).item().to<bool>());
 					// if (not torch::all(torch::less(torch::abs(A_tens),tol)).item().to<bool>())
 					// {
 					// 	fmt::print("block removed check failed: ind {}\n",A_ind);
 					// 	fmt::print("a_tens \n{}\n\n",A_tens);
 					// }
 					// qtt_CHECK(torch::allclose(A_tens,torch::zeros_like(A_tens),tol,tol));
-					bool AAlessA = AA_ind <A_ind;
+					bool AAlessA = AA_ind < A_ind;
 					AA_it += AAlessA;
 					A_it += !AAlessA;
 				}
@@ -448,11 +491,11 @@ qtt_TEST_CASE("btensor Linear algebra")
 		{
 			btensor U, d, V;
 			A.mul_(0.3);
-			qtt_REQUIRE_NOTHROW(std::tie(U, d, V) = svd(A, 1,tole));
+			qtt_REQUIRE_NOTHROW(std::tie(U, d, V) = svd(A, 1, tole));
 			// fmt::print("U \n{}\n\n",U);
 			// fmt::print("d \n{}\n\n",d);
 			// fmt::print("V \n{}\n\n",V);
-			auto AA = tensordot(U.mul(d), V.conj(), {U.dim() - 1}, {V.dim()-1});
+			auto AA = tensordot(U.mul(d), V.conj(), {U.dim() - 1}, {V.dim() - 1});
 			// fmt::print("AA \n{}\n\n",AA);
 			auto AA_it = AA.begin();
 			auto A_it = A.begin();
@@ -465,7 +508,7 @@ qtt_TEST_CASE("btensor Linear algebra")
 				auto A_tens = std::get<1>(*A_it);
 				if (AA_ind == A_ind)
 				{
-					qtt_CHECK(torch::all(torch::less(torch::abs(A_tens-AA_tens),tole)).item().to<bool>());
+					qtt_CHECK(torch::all(torch::less(torch::abs(A_tens - AA_tens), tole)).item().to<bool>());
 					// if (not torch::all(torch::less(torch::abs(A_tens-AA_tens),tol)).item().to<bool>())
 					// {
 					// 	fmt::print("reduction check failed: ind {}\n",A_ind);
@@ -477,15 +520,15 @@ qtt_TEST_CASE("btensor Linear algebra")
 				}
 				else
 				{
-					//if a block from A is literally not present in AA, then that block must be all zeros to the tol.
-					qtt_CHECK(torch::all(torch::less(torch::abs(A_tens),tole)).item().to<bool>());
+					// if a block from A is literally not present in AA, then that block must be all zeros to the tol.
+					qtt_CHECK(torch::all(torch::less(torch::abs(A_tens), tole)).item().to<bool>());
 					// if (not torch::all(torch::less(torch::abs(A_tens),tol)).item().to<bool>())
 					// {
 					// 	fmt::print("block removed check failed: ind {}\n",A_ind);
 					// 	fmt::print("a_tens \n{}\n\n",A_tens);
 					// }
 					// qtt_CHECK(torch::allclose(A_tens,torch::zeros_like(A_tens),tol,tol));
-					bool AAlessA = AA_ind <A_ind;
+					bool AAlessA = AA_ind < A_ind;
 					AA_it += AAlessA;
 					A_it += !AAlessA;
 				}

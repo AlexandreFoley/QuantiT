@@ -190,7 +190,32 @@ class any_quantity final
 	// friend bool operator!=(any_quantity_cref lhs, any_quantity_cref rhs);
 };
 inline any_quantity any_quantity::neutral() const { return any_quantity(impl->neutral()); }
-
+/**
+ * @brief compute the squared "distance" between two conserved quantities. 
+ * 
+ * This is the euclidian distance, treating each individual conserved quantities within as a distinct vector coordinate.
+ * 
+ * @param a 
+ * @param b 
+ * @return int64_t squared distance
+ */
+inline int64_t distance2(any_quantity_cref a, any_quantity_cref b)
+{
+	return a.distance2(b);
+}
+/**
+ * @brief compute the "distance" between two conserved quantities. 
+ * 
+ * This is the euclidian distance, treating each individual conserved quantities within as a distinct vector coordinate.
+ * 
+ * @param a 
+ * @param b 
+ * @return int64_t squared distance
+ */
+inline double distance(any_quantity_cref a, any_quantity_cref b)
+{
+	return a.distance(b);
+}
 inline void any_quantity::swap(any_quantity &other) noexcept
 {
 	using std::swap;

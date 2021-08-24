@@ -96,7 +96,7 @@ qtt_TEST_CASE("solving the heisenberg model")
 		auto E0 = quantt::dmrg(hamil, state, options,logger);
 		auto end = std::chrono::steady_clock::now();
 		std::chrono::duration<double> elapsed_seconds = end - start;
-		fmt::print(print_string, size, E0.to<double>() / size, elapsed_seconds.count());
+		fmt::print(print_string, size, E0.item().to<double>() / size, elapsed_seconds.count());
 		fmt::print("Obtained in {} iterations. Bond dimension at middle of MPS: {}.\n",logger.it_num,logger.middle_bond_dim);
 	};
 	qtt_SUBCASE("2 sites AFM")
@@ -157,7 +157,7 @@ qtt_TEST_CASE("solving the heisenberg model")
 		auto end = std::chrono::steady_clock::now();
 		std::chrono::duration<double> elapsed_seconds = end - start;
 		std::string print_string = "julia Itensor comparison: {} sites AFM heisenberg Energy per sites {:.15}. obtained in {} seconds\n";
-		fmt::print(print_string, size, E0.to<double>() / size, elapsed_seconds.count());
+		fmt::print(print_string, size, E0.item().to<double>() / size, elapsed_seconds.count());
 		fmt::print("Obtained in {} iterations. Bond dimension at middle of MPS: {}.\n",logger.it_num,logger.middle_bond_dim);
 		fmt::print("time in seconds for each sweeps: {}\n",logger.time_list);
 		fmt::print("bond dimension after each sweeps: {}\n",logger.bond_list);
@@ -189,7 +189,7 @@ qtt_TEST_CASE("solving the heisenberg model")
 		auto end = std::chrono::steady_clock::now();
 		std::chrono::duration<double> elapsed_seconds = end - start;
 		std::string print_string = "DMRjulia comparison: {} sites AFM heisenberg Energy per sites {:.15}. obtained in {} seconds\n";
-		fmt::print(print_string, size, E0.to<double>() / size, elapsed_seconds.count());
+		fmt::print(print_string, size, E0.item().to<double>() / size, elapsed_seconds.count());
 		fmt::print("Obtained in {} iterations. Bond dimension at middle of MPS: {}.\n",logger.it_num,logger.middle_bond_dim);
 		fmt::print("time in seconds for each sweeps: {}\n",logger.time_list);
 		fmt::print("bond dimension after each sweeps: {}\n",logger.bond_list);

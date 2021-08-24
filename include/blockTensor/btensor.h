@@ -90,6 +90,7 @@ class btensor
 	using index_list = std::vector<int64_t>;
 	using block_list_t = flat_map<index_list, torch::Tensor>;
 	using init_list_t = std::initializer_list<std::initializer_list<std::tuple<size_t, any_quantity>>>;
+
 	using Scalar = torch::Scalar;
 	property<any_quantity, btensor, any_quantity_cref> selection_rule; // dmrjulia equiv: the flux.
 	/**
@@ -100,8 +101,9 @@ class btensor
 	 * section for that dimension of the tensor
 	 * @param selection_rule determine which blocks are allowed to be non-zero.
 	 */
-	btensor(init_list_t dir_block_size_cqtt, any_quantity_cref selection_rule);
-	btensor(init_list_t dir_block_size_cqtt, any_quantity_cref selection_rule, size_t num_blocks);
+	btensor(init_list_t dir_block_size_cqtt, any_quantity_cref selection_rule, c10::TensorOptions opt = {});
+	btensor(init_list_t dir_block_size_cqtt, any_quantity_cref selection_rule, size_t num_blocks,
+	        c10::TensorOptions opt = {});
 
 	/**
 	 * @brief Construct a new btensor object from a subset of the raw structure. use carefully.
@@ -111,17 +113,19 @@ class btensor
 	 * @param _section_sizes
 	 * @param _sel_rule
 	 */
-	btensor(index_list _sections_by_dim, any_quantity_vector _c_vals, index_list _section_sizes,
-	        any_quantity _sel_rule);
+	btensor(index_list _sections_by_dim, any_quantity_vector _c_vals, index_list _section_sizes, any_quantity _sel_rule,
+	        c10::TensorOptions opt = {});
 	btensor(const btensor &other)
 	    : selection_rule((other.selection_rule.value)), rank(other.rank), sections_by_dim((other.sections_by_dim)),
-	      sections_sizes((other.sections_sizes)), blocks_list((other.blocks_list)), c_vals((other.c_vals))
+	      sections_sizes((other.sections_sizes)), blocks_list((other.blocks_list)), c_vals((other.c_vals)),
+	      _options(other._options)
 	{
 	}
 	btensor(btensor &&other)
 	    : selection_rule(std::move(other.selection_rule.value)), rank(other.rank),
 	      sections_by_dim(std::move(other.sections_by_dim)), sections_sizes(std::move(other.sections_sizes)),
-	      blocks_list(std::move(other.blocks_list)), c_vals(std::move(other.c_vals))
+	      blocks_list(std::move(other.blocks_list)), c_vals(std::move(other.c_vals)),
+	      _options(std::move(other._options))
 	{
 	}
 	btensor &operator=(btensor other)
@@ -143,8 +147,20 @@ class btensor
 	 * block must equal this value for a block to be allowed to differ from zero.
 	 */
 	btensor(size_t _rank, block_list_t _blocks, index_list _sections_by_dims, index_list _sections_sizes,
-	        any_quantity_vector _c_vals, any_quantity _sel_rule);
+	        any_quantity_vector _c_vals, any_quantity _sel_rule, c10::TensorOptions opt = {});
 
+	/**
+	 * @brief return the list of the sizes along each dimensions of the tensor
+	 *
+	 * @return std::vector<int64_t>
+	 */
+	std::vector<int64_t> sizes() const;
+	/**
+	 * @brief if the tensor contain a single element, return a scalar object.
+	 *
+	 * @return btensor::Scalar
+	 */
+	btensor::Scalar item() const;
 	/**
 	 * @brief increment a block index for this tensor
 	 *
@@ -253,6 +269,8 @@ class btensor
 	const auto &section_numbers() const { return sections_by_dim; }
 	// block_qtt_view block_quantities(index_list block_index);
 
+	const auto &get_cvals() const { return c_vals; }
+
 	/**
 	 * @brief create an empty tensor from selected dimensions of this. Minimum necessary set of feature for tensor
 	 * network reshape.
@@ -278,7 +296,13 @@ class btensor
 	 *
 	 * @return btensor&
 	 */
-	btensor &neutral_shape();
+	btensor neutral_shape() const;
+	/**
+
+	 * @param other
+	 * @return btensor
+	 */
+	btensor &neutral_shape_();
 	/**
 	 * @brief compute the shape of the tensor product of this with the other tensor. store the shape information in an
 	 * empty btensor
@@ -444,7 +468,34 @@ class btensor
 	btensor matmul(const btensor &other) const;
 	// matmul no broadcast
 	btensor mm(const btensor &other) const;
-	btensor mul(const btensor &other) const;
+
+	btensor sqrt() const;
+	btensor &sqrt_();
+	btensor abs() const;
+	btensor &abs_();
+	btensor pow(btensor::Scalar exponent) const;
+	btensor &pow_(btensor::Scalar exponent);
+	btensor pow(const btensor &exponent) const;
+	btensor &pow_(const btensor &exponent);
+	btensor ge(btensor::Scalar other) const;
+	btensor ge(const btensor &other) const;
+	btensor le(btensor::Scalar other) const;
+	btensor le(const btensor &other) const;
+	btensor less(const btensor &other) const;
+	btensor less(btensor::Scalar other) const;
+	btensor greater(const btensor &other) const;
+	btensor greater(btensor::Scalar other) const;
+
+	btensor div(btensor::Scalar) const;
+	btensor &div_(btensor::Scalar);
+	btensor div(const btensor &other) const;
+	btensor &div_(const btensor &other);
+
+	btensor &operator*=(btensor::Scalar val) { return mul_(val); }
+	btensor &operator*=(const btensor &other) { return mul_(other); }
+	btensor &operator/=(btensor::Scalar val) { return div_(val); }
+	btensor &operator/=(const btensor &other) { return div_(other); }
+
 	/**
 	 * @brief in-place element wise product, with broadcasting on size 1 dimensions.
 	 *
@@ -453,10 +504,11 @@ class btensor
 	 * from a storage perspective this isn't different from increasing the size of one dimenion, which this function can
 	 * do.
 	 *
-	 * @param other
+	 * @param odther
 	 * @return btensor&
 	 */
 	btensor &mul_(const btensor &other);
+	btensor mul(const btensor &other) const;
 	btensor mul(Scalar other) const;
 	btensor &mul_(Scalar other);
 	btensor multiply(const btensor &other) const;
@@ -538,6 +590,21 @@ class btensor
 	btensor &tensorgdot_(const btensor &mul1, const btensor &mul2, torch::IntArrayRef dims1, torch::IntArrayRef dims2,
 	                     Scalar beta = 1, Scalar alpha = 1);
 	/**
+	 * @brief return the complex conjugate of this tensor and inverse the conserved quantities
+	 *
+	 * For non complex type, the only the conserved quantities are modified.
+	 * Those two operation are grouped together because in the context of tensor networks for quantum mechanics.
+	 * the adjoint operation conjugate the values and inverse the conserved quantities.
+	 * The adjoint also transpose the opterator or state, but the effect of the transposition of a network on its
+	 * constituant tensor depends storngly on the structure of the network and must be done on a case by case basis.
+	 *
+	 * grouping those two operation together is necessary to bring the textual difference in an implementation of an
+	 * algorithm for torch::Tensor and quantt::btensor
+	 *
+	 * @return btensor
+	 */
+	btensor conj() const;
+	/**
 	 * @brief return the complex conjugate of this tensor
 	 *
 	 * For non complex type, the output is identical to the input.
@@ -545,7 +612,7 @@ class btensor
 	 *
 	 * @return btensor
 	 */
-	btensor conj() const;
+	btensor conj_only() const;
 
 	/**
 	 * @brief create a new tensor with its section rule and all its conserved quantities inversed.
@@ -572,7 +639,15 @@ class btensor
 	 * @param shift shift to apply
 	 * @param dim dimension to which the shift is applied
 	 */
-	btensor &cval_shift(any_quantity_cref shift, int64_t dim);
+	btensor cval_shift(any_quantity_cref shift, int64_t dim) const;
+	/**
+	 * @brief Shifts the conserved quantities of one dimension of the tensor, applies the opposite shift to the
+	 * conservation rule.
+	 *
+	 * @param shift shift to apply
+	 * @param dim dimension to which the shift is applied
+	 */
+	btensor &cval_shift_(any_quantity_cref shift, int64_t dim);
 	/**
 	 * @brief Shifts the conserved quantities of one dimension of the tensor without regards for the conservation laws.
 	 *
@@ -581,23 +656,22 @@ class btensor
 	 * @param shift shift to apply
 	 * @param dim dimension to which the shift is applied
 	 */
-	btensor &non_conserving_cval_shift(any_quantity_cref shift, int64_t dim);
-
+	btensor &non_conserving_cval_shift_(any_quantity_cref shift, int64_t dim);
 	/**
 	 * @brief Modify the selection rule by the value of shift. Can only be done on empty tensors .
 	 *
 	 * @param shift
 	 * @return btensor&
 	 */
-	btensor &shift_selection_rule(any_quantity_cref shift);
+	btensor &shift_selection_rule_(any_quantity_cref shift);
 
 	/**
 	 * @brief Reserve space in the block list
 	 *
 	 * @param N number of blocks for which to reserve space
 	 */
-	void reserve_space(size_t N);
-	void reserve_space(btensor_size);
+	void reserve_space_(size_t N);
+	void reserve_space_(btensor_size);
 
 	/**
 	 * @brief Set the selection rule of the block tensor
@@ -607,9 +681,77 @@ class btensor
 	 * @param value
 	 * @return btensor&
 	 */
-	btensor &set_selection_rule(any_quantity_cref value);
-	friend std::tuple<btensor, btensor, btensor> truncate(std::tuple<btensor, btensor, btensor> &&U_d_V, size_t max,
-	                                                      size_t min, btensor::Scalar tol, btensor::Scalar pow);
+	btensor &set_selection_rule_(any_quantity_cref value);
+	template <class... BTENS>
+	friend std::tuple<btensor, std::tuple<BTENS...>> truncate_impl(btensor &&d, std::tuple<BTENS...> &&unitaries,
+	                                                               size_t max, size_t min, btensor::Scalar tol,
+	                                                               btensor::Scalar pow);
+
+	btensor to(const torch::TensorOptions &options = {}, bool non_blocking = false, bool copy = false,
+	           c10::optional<c10::MemoryFormat> memory_format = c10::nullopt) const
+	{ // those function can't really exist outside the derived class if empty_copy is private, which it is for MPT, MPS
+	  // and MPO.
+		btensor::block_list_t out_list =
+		    new_block_list_apply_to_all_blocks([&options, non_blocking, copy, memory_format](const auto &atensor)
+		                                       { return atensor.to(options, non_blocking, copy, memory_format); });
+		auto out = btensor(*this, std::move(out_list));
+		out._options = out.begin()->second.options();
+		return out;
+	}
+	btensor to(torch::Device device, torch::ScalarType dtype, bool non_blocking = false, bool copy = false,
+	           c10::optional<c10::MemoryFormat> memory_format = c10::nullopt) const
+	{
+		btensor::block_list_t out_list = new_block_list_apply_to_all_blocks(
+		    [device, dtype, non_blocking, copy, memory_format](const auto &atensor)
+		    { return atensor.to(device, dtype, non_blocking, copy, memory_format); });
+		auto out = btensor(*this, std::move(out_list));
+		out._options = out.begin()->second.options();
+		return out;
+	}
+	btensor to(torch::ScalarType dtype, bool non_blocking = false, bool copy = false,
+	           c10::optional<c10::MemoryFormat> memory_format = c10::nullopt) const
+	{
+		btensor::block_list_t out_list =
+		    new_block_list_apply_to_all_blocks([dtype, non_blocking, copy, memory_format](const auto &atensor)
+		                                       { return atensor.to(dtype, non_blocking, copy, memory_format); });
+		auto out = btensor(*this, std::move(out_list));
+		out._options = out.begin()->second.options();
+		return out;
+	}
+	btensor to(caffe2::TypeMeta type_meta, bool non_blocking = false, bool copy = false,
+	           c10::optional<c10::MemoryFormat> memory_format = c10::nullopt) const
+	{
+		btensor::block_list_t out_list =
+		    new_block_list_apply_to_all_blocks([type_meta, non_blocking, copy, memory_format](const auto &atensor)
+		                                       { return atensor.to(type_meta, non_blocking, copy, memory_format); });
+		auto out = btensor(*this, std::move(out_list));
+		out._options = out.begin()->second.options();
+		return out;
+	}
+	btensor to(const torch::Tensor &other, bool non_blocking = false, bool copy = false,
+	           c10::optional<c10::MemoryFormat> memory_format = c10::nullopt) const
+	{
+		btensor::block_list_t out_list =
+		    new_block_list_apply_to_all_blocks([&other, non_blocking, copy, memory_format](const auto &atensor)
+		                                       { return atensor.to(other, non_blocking, copy, memory_format); });
+		auto out = btensor(*this, std::move(out_list));
+		out._options = out.begin()->second.options();
+		return out;
+	}
+	c10::TensorOptions options() const { return _options; }
+	friend inline btensor sparse_zeros_like(const btensor &tens, c10::TensorOptions opt);
+	template <bool Throws = false>
+	static bool check_product_compat(const btensor &in1, const btensor &in2, torch::IntArrayRef dims1,
+	                                 torch::IntArrayRef dims2) noexcept(!Throws);
+	/**
+	 * @brief compute the slices associated with a block in a full tensor with the same shape.
+	 *
+	 * @param tensor
+	 * @param block
+	 * @return std::vector<torch::indexing::TensorIndex>
+	 */
+	static std::vector<torch::indexing::TensorIndex> full_slice(const btensor &tensor,
+	                                                            const btensor::index_list &block);
 
   private:
 	size_t rank;
@@ -628,17 +770,21 @@ class btensor
 	block_list_t blocks_list; //
 	any_quantity_vector
 	    c_vals; // dmrjulia equiv: QnumSum in the QTensor class. This structure doesn't need the full list (QnumMat)
+	c10::TensorOptions _options;
 	friend struct fmt::formatter<quantt::btensor>;
 	friend class mul_helpers;
 
 	/**
 	 * @brief Construct a new btensor object, copy the shape another btensor, uses the supplied block list
 	 *
+	 * non-default options specified in argument overwrite the tensor options stored in the shape for the resulting
+	 * btensor.
 	 * @param block_list
 	 */
-	btensor(const btensor &shape, block_list_t &&block_list)
+	btensor(const btensor &shape, block_list_t &&block_list, c10::TensorOptions opt = {})
 	    : selection_rule(shape.selection_rule.value), rank(shape.rank), sections_by_dim(shape.sections_by_dim),
-	      sections_sizes(shape.sections_sizes), blocks_list(std::move(block_list)), c_vals(shape.c_vals)
+	      sections_sizes(shape.sections_sizes), blocks_list(std::move(block_list)), c_vals(shape.c_vals),
+	      _options(shape._options.merge_in(opt))
 	{
 	}
 	/**
@@ -759,6 +905,10 @@ class btensor
 		return new_block_list_apply_to_all_blocks_mod_index([](auto &) {}, std::forward<F>(f),
 		                                                    std::forward<Args>(args)...);
 	}
+	template <class F, bool promote = true>
+	btensor broadcast_operation(const btensor &other, F &&f) const;
+	template <class F, class F_>
+	btensor &broadcast_operation_(const btensor &other, F &&f, F_ &&f_);
 };
 
 /**
@@ -783,22 +933,69 @@ inline btensor shape_from(std::initializer_list<btensor> btens_list)
 	}
 	return out;
 }
+#if __cplusplus <= 201703L
+
+template <class A>
+using remove_cvref_t = std::remove_cv_t<std::remove_reference_t<A>>;
+#else
+template <class A>
+using remove_cvref_t = std::remove_cvref_t<A>;
+#endif
+
 /**
- * @brief  Construct an empty block tensor from the supplied btensors.
+ * @brief create a shape (empty btensor) from the input tensor and the list of index.
  *
- * The output structure is the same as that of the tensor product of the supplied tensors.
+ * In the list of index, dimensions can be kept as they are by specifying -1, otherwise only the element with the
+ * specified index value are kept along that dimensions, reducing the output tensor's rank.
+ * The quantum number of the reduced index modifies the selection rule of the resulting shape.
+ * Since this function result in an empty btensor, the selection rule of the tensor can be modified freely after the it
+ * is created but before elements are put into it.
  *
- * @tparam Args btensors type
- * @param args btensors value
+ * @param tens
+ * @param inds
  * @return btensor
  */
-template <class... Args, class Enabled = std::enable_if_t<std::conjunction_v<std::is_same<Args, btensor>...>>>
-inline btensor shape_from(Args... args)
+inline btensor shape_from(const btensor &tens, const std::vector<int64_t> &inds) { return tens.shape_from(inds); }
+
+struct torch_shape
 {
-	static_assert(std::conjunction_v<std::is_same<Args, btensor>...>,
-	              "All the arguments must be btensor to get into this function, don't try to side-step the enable if.");
+	std::vector<int64_t> sizes;
+	torch::TensorOptions opt;
+
+	torch_shape(const torch::Tensor &tens) : sizes(tens.sizes().begin(), tens.sizes().end()), opt(tens.options()) {}
+	torch_shape(std::vector<int64_t> _sizes, torch::TensorOptions _opt) : sizes(std::move(_sizes)), opt(std::move(_opt))
+	{
+	}
+	operator torch::Tensor() const { return torch::empty(sizes, opt); }
+	torch_shape neutral_shape() { return *this; }
+	torch_shape &neutral_shape_() { return *this; }
+	torch_shape &inverse_cvals() { return *this; }
+	torch_shape inverse_cvals_() { return *this; }
+};
+torch_shape shape_from(std::initializer_list<torch_shape> shapes);
+/**
+ * @brief  Construct an empty block tensor or torch_shape from the supplied shapes.
+ *
+ * if all the input are btensors, the output an empty btensors.
+ * if all the input are torch_shape, the output is a torch_shape object.
+ * The output shape is the same as that of the tensor product of the supplied tensors.
+ *
+ * @tparam Args btensors or torch_shape type
+ * @param args shapes
+ * @return shape
+ */
+template <class... Args,
+          class Enabled = std::enable_if_t<std::conjunction_v<std::is_same<remove_cvref_t<Args>, torch_shape>...> or
+                                           std::conjunction_v<std::is_same<remove_cvref_t<Args>, btensor>...>>>
+inline auto shape_from(const Args &...args)
+{
+	static_assert(std::conjunction_v<std::is_same<Args, torch_shape>...> or
+	                  std::conjunction_v<std::is_same<remove_cvref_t<Args>, btensor>...>,
+	              "All the arguments must be either torch_shape or btensor to get into this function, don't try to "
+	              "side-step the enable if.");
 	return shape_from({args...});
 }
+torch_shape shape_from(const torch_shape &shape, const std::vector<int64_t> inds);
 
 size_t get_refcount(const torch::Tensor &tens);
 
@@ -973,6 +1170,179 @@ inline btensor &tensorgdot_(btensor &add, const btensor &mul1, const btensor &mu
 	return add.tensorgdot_(mul1, mul2, dims1, dims2, beta, alpha);
 }
 
+inline btensor sparse_zeros_like(const btensor &tens, c10::TensorOptions opt = {})
+{
+	auto out = shape_from({tens});
+	out._options = out._options.merge_in(opt);
+	return out;
+}
+inline btensor sparse_zeros(btensor::init_list_t shape_spec, any_quantity selection_rule, c10::TensorOptions opt = {})
+{
+	return btensor(std::move(shape_spec), std::move(selection_rule), opt);
+}
+btensor zeros(btensor::init_list_t shape_spec, any_quantity selection_rule, c10::TensorOptions opt = {});
+btensor zeros_like(const btensor &tens, c10::TensorOptions opt = {});
+btensor ones(btensor::init_list_t shape_spec, any_quantity selection_rule, c10::TensorOptions opt = {});
+btensor ones_like(const btensor &tens, c10::TensorOptions opt = {});
+btensor empty(btensor::init_list_t shape_spec, any_quantity selection_rule, c10::TensorOptions opt = {});
+btensor empty_like(const btensor &tens, c10::TensorOptions opt = {});
+btensor rand(btensor::init_list_t shape_spec, any_quantity selection_rule, c10::TensorOptions opt = {});
+btensor rand_like(const btensor &tens, c10::TensorOptions opt = {});
+btensor full(btensor::init_list_t shape_spec, any_quantity selection_rule, btensor::Scalar fill_value,
+             c10::TensorOptions opt = {});
+btensor full_like(const btensor &tens, btensor::Scalar fill_value, c10::TensorOptions opt = {});
+btensor randint(int64_t low, int64_t high, btensor::init_list_t shape_spec, any_quantity selection_rule,
+                c10::TensorOptions opt = {});
+btensor randint_like(int64_t low, int64_t high, const btensor &tens, c10::TensorOptions opt = {});
+inline btensor randint(int64_t high, btensor::init_list_t shape_spec, any_quantity selection_rule,
+                       c10::TensorOptions opt = {})
+{
+	return randint(0, high, shape_spec, selection_rule, opt);
+}
+inline btensor randint_like(int64_t high, const btensor &tens, c10::TensorOptions opt = {})
+{
+	return randint_like(0, high, tens, opt);
+}
+btensor randn(btensor::init_list_t shape_spec, any_quantity selection_rule, c10::TensorOptions opt = {});
+btensor randn_like(const btensor &tens, c10::TensorOptions opt = {});
+
+btensor from_basic_tensor(btensor::init_list_t shape_spec, any_quantity selection_rul, const torch::Tensor &values,
+                          c10::TensorOptions = {});
+btensor from_basic_tensor_like(const btensor &shape, const torch::Tensor &values, c10::TensorOptions = {});
+
+inline torch::Tensor zeros_like(const torch_shape &shape, c10::TensorOptions opt = {})
+{
+	return torch::zeros(shape.sizes, shape.opt.merge_in(opt));
+}
+inline torch::Tensor ones_like(const torch_shape &shape, c10::TensorOptions opt = {})
+{
+	return torch::ones(shape.sizes, shape.opt.merge_in(opt));
+}
+inline torch::Tensor empty_like(const torch_shape &shape, c10::TensorOptions opt = {})
+{
+	return torch::empty(shape.sizes, shape.opt.merge_in(opt));
+}
+inline torch::Tensor rand_like(const torch_shape &shape, c10::TensorOptions opt = {})
+{
+	return torch::rand(shape.sizes, shape.opt.merge_in(opt));
+}
+inline torch::Tensor full_like(const torch_shape &shape, btensor::Scalar fill, c10::TensorOptions opt = {})
+{
+	return torch::full(shape.sizes, fill, shape.opt.merge_in(opt));
+}
+inline torch::Tensor randint_like(int64_t low, int64_t high, const torch_shape &shape, c10::TensorOptions opt = {})
+{
+	return torch::randint(low, high, shape.sizes, shape.opt.merge_in(opt));
+}
+inline torch::Tensor randint_like(int64_t high, const torch_shape &shape, c10::TensorOptions opt = {})
+{
+	return torch::randint(0, high, shape.sizes, shape.opt.merge_in(opt));
+}
+inline torch::Tensor randn_like(const torch_shape &shape, c10::TensorOptions opt = {})
+{
+	return torch::randn(shape.sizes, shape.opt.merge_in(opt));
+}
+
+inline btensor operator+(const btensor &A, const btensor &B) { return A.add(B); }
+inline btensor operator-(const btensor &A, const btensor &B) { return A.sub(B); }
+inline btensor operator-(const btensor &A) { return A.mul(-1); }
+inline btensor operator*(const btensor &A, const btensor &B) { return A.mul(B); }
+inline btensor operator*(const btensor &A, const btensor::Scalar &B) { return A.mul(B); }
+inline btensor operator*(const btensor::Scalar &B, const btensor &A) { return A.mul(B); }
+inline btensor operator/(const btensor &A, const btensor &B) { return A.div(B); }
+inline btensor operator/(const btensor &A, const btensor::Scalar &B) { return A.div(B); }
+
+inline btensor sqrt(const btensor &A) { return A.sqrt(); }
+inline btensor &sqrt_(btensor &A) { return A.sqrt_(); }
+inline btensor pow(const btensor &A, btensor::Scalar p) { return A.pow(p); }
+inline btensor pow(const btensor &A, const btensor &p) { return A.pow(p); }
+inline btensor &pow_(btensor &A, btensor::Scalar p) { return A.pow_(p); }
+inline btensor &pow_(btensor &A, const btensor &p) { return A.pow_(p); }
+
+inline btensor ge(const btensor &A, btensor::Scalar other) { return A.ge(other); }
+inline btensor ge(const btensor &A, const btensor &other) { return A.ge(other); }
+inline btensor le(const btensor &A, btensor::Scalar other) { return A.le(other); }
+inline btensor le(const btensor &A, const btensor &other) { return A.le(other); }
+inline btensor less(const btensor &A, const btensor &other) { return A.less(other); }
+inline btensor less(const btensor &A, btensor::Scalar other) { return A.less(other); }
+inline btensor greater(const btensor &A, const btensor &other) { return A.greater(other); }
+inline btensor greater(const btensor &A, btensor::Scalar other) { return A.greater(other); }
+
+inline btensor greater(btensor::Scalar other, const btensor &A) { return A.less(other); }
+inline btensor less(btensor::Scalar other, const btensor &A) { return A.greater(other); }
+inline btensor le(btensor::Scalar other, const btensor &A) { return A.ge(other); }
+inline btensor ge(btensor::Scalar other, const btensor &A) { return A.le(other); }
+
+using torch::pow;
+using torch::sqrt;
+using torch::tensordot;
+
+/**
+ * @brief create a new tensor with its section rule and all its conserved quantities inversed.
+ *
+ * Conserved quantities must be inversed when doing the hermitian conjugation of an operator.
+ *
+ * Caution: The blocks of the new tensors are shallow copies of the original.
+ *
+ * @return btensor
+ */
+inline btensor inverse_cvals(const btensor &tens) { return tens.inverse_cvals(); }
+inline btensor inverse_cvals(btensor &&tens) { return std::move(tens.inverse_cvals_()); }
+inline torch::Tensor inverse_cvals(const torch::Tensor &tens) { return tens; }
+inline torch::Tensor inverse_cvals(torch::Tensor &&tens) { return std::move(tens); }
+/**
+ * @brief inverse the selection rule and all the conserved quantities of this btensor.
+ *
+ * Conserved quantities must be inversed when doing the hermitian conjugation of an operator.
+ *
+ * @return btensor&
+ */
+inline btensor &inverse_cvals_(btensor &tens) { return tens.inverse_cvals_(); }
+inline torch::Tensor &inverse_cvals_(torch::Tensor &tens) { return tens; }
+/**
+ * @brief Shifts the conserved quantities of one dimension of the tensor, applies the opposite shift to the
+ * conservation rule.
+ *
+ * @param shift shift to apply
+ * @param dim dimension to which the shift is applied
+ */
+inline btensor &cval_shift_(btensor &tens, any_quantity_cref shift, int64_t dim)
+{
+	return tens.cval_shift_(shift, dim);
+}
+/**
+ * @brief Shifts the conserved quantities of one dimension of the tensor without regards for the conservation laws.
+ *
+ * Can only be applied to empty tensors.
+ *
+ * @param shift shift to apply
+ * @param dim dimension to which the shift is applied
+ */
+inline btensor &non_conserving_cval_shift_(btensor &tens, any_quantity_cref shift, int64_t dim)
+{
+	return tens.non_conserving_cval_shift_(shift, dim);
+}
+
+/**
+ * @brief Modify the selection rule by the value of shift. Can only be done on empty tensors .
+ *
+ * @param shift
+ * @return btensor&
+ */
+inline btensor &shift_selection_rule_(btensor &tens, any_quantity_cref shift)
+{
+	return tens.shift_selection_rule_(shift);
+}
+inline void print(const btensor &x) { fmt::print("{}\n\n", x); }
+/**
+ * @brief Set the selection rule of the block tensor
+ *
+ * Only works on empty btensor.
+ *
+ * @param value
+ * @return btensor&
+ */
+inline btensor &set_selection_rule_(btensor &tens, any_quantity_cref value) { return tens.set_selection_rule_(value); }
 qtt_TEST_CASE("btensor")
 {
 	using cqt = conserved::C<5>; // don't put negative number in the constructor and expect sensible results.
@@ -1014,6 +1384,19 @@ qtt_TEST_CASE("btensor")
 		qtt_CHECK(torch::allclose(C.block_at({0, 1, 0}), C010));
 		qtt_CHECK(torch::allclose(C.block_at({1, 0, 0}), C100));
 		qtt_CHECK(torch::allclose(C.block_at({1, 1, 1}), C111));
+
+		btensor A_trace;
+		qtt_CHECK_NOTHROW(A_trace = tensordot(A, A.inverse_cvals(), {0, 1}, {0, 1}));
+		torch::allclose(A_trace.block_at({}),
+		                tensordot(A00, A00, {0, 1}, {0, 1}) + tensordot(A11, A11, {0, 1}, {0, 1}));
+	}
+	qtt_SUBCASE("rank 0 tensors")
+	{
+		auto x = zeros({}, selection_rule); // if this one work all the factories works. Their guts is shared.
+		auto empty_index_list = btensor::index_list{};
+		auto x_begin_first = x.begin()->first;
+		qtt_CHECK(x_begin_first == empty_index_list);
+		qtt_CHECK(torch::allclose(x.begin()->second, torch::zeros({})));
 	}
 	qtt_SUBCASE("Tensorproduct from tensordot")
 	{
@@ -1071,7 +1454,7 @@ qtt_TEST_CASE("btensor")
 		qtt_CHECK(get_refcount(AA00.block_at({1, 1})) == 1);
 	}
 	qtt_SUBCASE("Reshape")
-	{	
+	{
 		auto B = A.reshape({});             // reshape into a vector.
 		qtt_CHECK_NOTHROW(B.block_at({0})); // on diagonnal block of A
 		qtt_CHECK_NOTHROW(B.block_at({3})); // on-diagonal block of A
