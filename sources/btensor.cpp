@@ -497,7 +497,7 @@ btensor btensor::shape_from(const std::vector<int64_t> &dims) const
 		auto el_index = a;
 		int block_ind = std::distance(sec_sizes_beg, sec_sizes_end);
 		// compute the section associated with the element index
-		while (el_index > *sec_sizes_beg and sec_sizes_beg != sec_sizes_end)
+		while (sec_sizes_beg != sec_sizes_end and el_index >= *sec_sizes_beg)
 		{
 			el_index -= *sec_sizes_beg;
 			++sec_sizes_beg;
@@ -547,22 +547,33 @@ btensor btensor::shape_from(const std::vector<int64_t> &dims) const
 	               std::move(out_c_vals), std::move(out_sel_rule), _options);
 }
 
-/**
- * @brief Create a view object on this tensor. Minimum necessary set of feature for tensor network reshape.
- *
- * Basic version of index, it can only discard whole dimensions.
- *
- * @param dims List of dimensions, put -1 to keep the dimension, specify the index to keep otherwise.
- * @return btensor&
- */
-btensor btensor::basic_create_view(const std::vector<int64_t> &dims)
+btensor rank_preserving_shape(const std::vector<int64_t> block_indices, const btensor &was_this)
 {
-	auto out_tensor = shape_from(dims);
-	// out_tensor has all the correct information regarding the resulting block structure.
-	// what's left is to filter the block of this.
-	// Given the list of column that must be taken, we have to determine which of the block are in the view, then
-	// apply the correct torch::index. (the index value will not be the same as supplied)
-	std::vector<int64_t> blocks(dims.size());
+	btensor out({}, was_this.selection_rule->neutral(), was_this.options());
+	size_t r = 0;
+	auto shape_spec = std::vector<int64_t>(was_this.dim(), 0);
+	//build the shape one dimension at a time.
+	for (auto b_it = block_indices.begin(); b_it != block_indices.end(); ++b_it, ++r)
+	{
+		if (*b_it == -1)//slice case
+		{
+			shape_spec[r] = -1;
+			out = quantt::shape_from(out, was_this.shape_from(shape_spec));
+			shape_spec[r] = 0;
+		}
+		else//single element
+		{
+			out = quantt::shape_from(
+			    out, btensor({{{1, was_this.section_conserved_qtt(r, *b_it)}}}, was_this.selection_rule->neutral()));
+		}
+	}
+	out.set_selection_rule_(was_this.selection_rule);
+	return out;
+}
+
+std::tuple<std::vector<int64_t>,std::vector<torch::indexing::TensorIndex>> to_block_basis(const std::vector<int64_t> &dims,const btensor::index_list& sections_by_dim,const btensor::index_list& sections_sizes, int64_t rank)
+{
+	std::vector<int64_t> blocks(rank);
 	std::vector<torch::indexing::TensorIndex> element(dims.size(), torch::indexing::Slice());
 	auto blockit = blocks.begin();
 	auto elementit = element.begin();
@@ -579,12 +590,14 @@ btensor btensor::basic_create_view(const std::vector<int64_t> &dims)
 			auto sectionsize_beg = sections_sizeit;
 			sections_sizeit += *(section_dimit);
 			auto index = a;
-			while (a >= *sectionsize_beg and sectionsize_beg != sections_sizeit)
+			// TODO: rework this loop, the computation of the value of blockit should be simpler.
+			while (sectionsize_beg != sections_sizeit and a >= *sectionsize_beg)
 			{
 				index -= *sectionsize_beg;
 				++sectionsize_beg;
+				++(*blockit);
 			}
-			*blockit = *(sectionsize_beg - 1);
+			(*blockit) -= (*blockit) != 0; // the loop does one too many step for a correct blockit;
 			*elementit = index;
 		}
 		else
@@ -597,6 +610,25 @@ btensor btensor::basic_create_view(const std::vector<int64_t> &dims)
 		++elementit;
 		++section_dimit;
 	}
+	return std::make_tuple(std::move(blocks),std::move(element));
+}
+
+/**
+ * @brief Create a view object on this tensor. Minimum necessary set of feature for tensor network reshape.
+ *
+ * Basic version of index, it can only discard whole dimensions.
+ *
+ * @param dims List of dimensions, put -1 to keep the dimension, specify the index to keep otherwise.
+ * @return btensor&
+ */
+btensor btensor::basic_create_view(const std::vector<int64_t> &dims, bool preserve_rank)
+{
+	auto out_tensor = shape_from(dims);
+	// out_tensor has all the correct information regarding the resulting block structure.
+	// what's left is to filter the block of this.
+	// Given the list of column that must be taken, we have to determine which of the block are in the view, then
+	// apply the correct torch::index. (the index value will not be the same as supplied)
+	auto [blocks,element] = to_block_basis(dims,sections_by_dim, sections_sizes, dim());
 	out_tensor.blocks_list.reserve(blocks.size());
 	// function like object to filter out the block to reject, and identify the block index for the output tensor while
 	// we're at it
@@ -625,7 +657,45 @@ btensor btensor::basic_create_view(const std::vector<int64_t> &dims)
 			                              {out_index, std::get<1>(index_block).index(element)});
 		}
 	}
+	if (preserve_rank)
+	{
+		auto x = rank_preserving_shape(blocks, *this);
+		out_tensor = out_tensor.reshape_as(x);
+	}
 	return out_tensor;
+}
+btensor& btensor::basic_index_put_(const std::vector<int64_t> & dims, const btensor& value)
+{
+	btensor reduced_shape = shape_from(dims);
+	btensor::add_tensor_check(reduced_shape,value);
+	auto [blocks,element] = to_block_basis(dims,sections_by_dim, sections_sizes, dim());
+
+	auto output_index = [](const std::vector<int64_t>& this_index,const btensor::index_list& value_index )
+	{
+		auto out = this_index;
+		auto itv = value_index.begin();
+		for (auto ito = out.begin();ito != out.end();++ito)
+		{
+			bool isNegative1 = (*ito) == -1;
+			*ito = (*itv)*isNegative1 + (!isNegative1)*(*ito);
+			itv += isNegative1;
+		}
+		return out;
+	};
+	for (const auto& index_block:value)
+	{
+		const auto& index = std::get<0>(index_block);
+		const auto& block = std::get<1>(index_block);
+		auto out_ind = output_index(blocks,index);
+		if (! this->blocks_list.contains(out_ind))
+		{
+			auto size_view = this->block_sizes(out_ind);
+			std::vector<int64_t> size(size_view.begin(),size_view.end());//because torch factories don't accept iterator pairs.
+			this->blocks_list[out_ind] = torch::zeros(size,options());
+		}
+		blocks_list[out_ind].index_put_(element,block);
+	}
+	return *this;
 }
 
 btensor btensor::neutral_shape() const
@@ -1320,6 +1390,18 @@ btensor btensor::bmm(const btensor &mat) const
 		// mat_batch_start = mat_col_end;
 	}
 	return out;
+}
+
+btensor btensor::sum() const
+{
+	auto out = btensor({}, selection_rule.value);
+	auto list = new_block_list_apply_to_all_blocks([](const torch::Tensor &t) { return t.sum(); });
+	torch::Tensor out_val = torch::zeros({}, options());
+	for (auto &a : list)
+	{
+		out_val += std::get<1>(a);
+	}
+	return btensor(out, btensor::block_list_t({{{}, out_val}}));
 }
 
 btensor btensor::sqrt() const
@@ -2051,14 +2133,16 @@ btensor randn_like(const btensor &tens, c10::TensorOptions opt)
 std::vector<torch::indexing::TensorIndex> btensor::full_slice(const btensor &tensor, const btensor::index_list &block)
 {
 
-	std::vector<torch::indexing::TensorIndex> out(tensor.dim());
+	std::vector<torch::indexing::TensorIndex> out(tensor.dim(), torch::indexing::Slice());
 	for (size_t i = 0; i < tensor.dim(); ++i)
 	{
 		auto [ss_start, ss_end] = tensor.section_sizes(i);
-		if (block[i]  >= std::distance(ss_start,ss_end)) throw std::invalid_argument(fmt::format("the {}th block index ({}) exceed maximum allowed value ({}).",i,block[i],std::distance(ss_start,ss_end)));
+		if (block[i] >= std::distance(ss_start, ss_end))
+			throw std::invalid_argument(fmt::format("the {}th block index ({}) exceed maximum allowed value ({}).", i,
+			                                        block[i], std::distance(ss_start, ss_end)));
 		auto ori = std::reduce(ss_start, ss_start + block[i], 0);
-		out[i]  = torch::indexing::Slice(ori,ori+*(ss_start+block[i]+1));
-	} 
+		out[i] = torch::indexing::Slice(ori, ori + *(ss_start + block[i] + 1));
+	}
 	return out;
 }
 

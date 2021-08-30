@@ -16,6 +16,8 @@
 #include <fmt/core.h>
 #include <fmt/ranges.h>
 #include <random>
+#include "blockTensor/btensor.h"
+#include "blockTensor/LinearAlgebra.h"
 // TODO: remove all explicit torch:: can ADL be my friend here?
 namespace quantt
 {
@@ -45,10 +47,10 @@ void MPS::move_oc(int i)
 		// TODO: rewrite this to use quantt's SVD implementation. takes care of the reshaping
 		auto reshaped = curr_oc.reshape({dims[0], prod(1, dims.size())});
 		auto [u, d, v] = torch::svd(reshaped);
-		curr_oc = v.t().reshape(dims); // needs testing. svd documentation makes no mention of complex numbers case.
+		curr_oc = v.t().conj().reshape(dims); // needs testing. svd documentation makes no mention of complex numbers case.
 
 		// testing shows that v is only transposed in the complex number case as well.
-		auto ud = torch::matmul(u, torch::diag(d)); // TODO: use broadcasting mul instead.
+		auto ud = u.mul(d); 
 		next_oc = torch::tensordot(next_oc, ud, {2}, {0});
 		--oc;
 	}
@@ -64,8 +66,44 @@ void MPS::move_oc(int i)
 		auto [u, d, v] = torch::svd(reshaped);
 		curr_oc = u.reshape(dims);
 
-		auto dv = torch::tensordot(torch::diag(d), v, {1}, {1}); // use broadcasting mul instead.
+		auto dv = v.mul(d).t().conj(); 
 		next_oc = torch::tensordot(dv, next_oc, {1}, {0});
+
+		++oc;
+	}
+	// otherwise we're already there, do nothing.
+}
+void bMPS::move_oc(int i)
+{
+	if (not(i >= 0 and i < size()))
+		throw std::invalid_argument(" Proposed orthogonality center falls outside the MPS");
+
+	while (i < orthogonality_center)
+	{
+		// move right
+		auto &curr_oc = (*this)[orthogonality_center];
+		auto &next_oc = (*this)[orthogonality_center - 1];
+
+		auto [u, d, v] = quantt::svd(curr_oc,1);
+		curr_oc = v.conj().permute({2,0,1}); // needs testing. svd documentation makes no mention of complex numbers case.
+
+		// testing shows that v is only transposed in the complex number case as well.
+		auto ud = u.mul(d);
+		next_oc = tensordot(next_oc, ud, {2}, {0});
+		--oc;
+	}
+
+	while (i > orthogonality_center)
+	{
+		// move left
+		auto &curr_oc = (*this)[orthogonality_center];
+		auto &next_oc = (*this)[orthogonality_center + 1];
+		// TODO: use quantt's SVD implementation. takes care of the reshaping
+		auto [u, d, v] = svd(curr_oc,2);
+		curr_oc = u;
+
+		auto dv = v.mul(d).conj(); 
+		next_oc = tensordot(dv, next_oc, {0}, {0});
 
 		++oc;
 	}
@@ -270,9 +308,9 @@ void generate_random_string(std::vector<size_t>::iterator out, size_t L, T &&phy
 		Sum *= aa;
 	}
 	// fmt::print("random initial set of cvals: {}\n Resulting qnum {}\n", fmt::join(out, out + L, ","), Sum);
+	int64_t curr_dist = distance2(Sum, constraint);
 	for (size_t n = 0; n < N_pass; ++n)
 	{
-		int64_t curr_dist = distance2(Sum, constraint);
 		for (size_t i = 0; i < L; ++i)
 		{ // make adjustement to bring it closer to compliance
 			// should be compliant by the time we've done a single pass if all the phys_ind are identical.
@@ -377,26 +415,21 @@ bMPS random_bMPS_impl(size_t length, int64_t bond_dim, T &&phys_dim, any_quantit
 	bMPS out(length);
 	btensor left_side({{{1, sel_rule}}}, sel_rule);
 	btensor right_side;
-	fmt::print("---randomMPS----\n");
 	any_quantity_vector accumulate_in_out(bond_dim, constraint);
 	for (size_t i = 0; i < length; ++i)
 	{
 		any_quantity_cref local_sel_rule = i == 0 ? any_quantity_cref(constraint) : any_quantity_cref(sel_rule);
 		right_side = make_right_side(phys_inds, accumulate_in_out, local_sel_rule, phys_ind_cvals, i, bond_dim, length);
-		fmt::print("\tleft:\n{} \n\n center\n{}\n\n right\n {}\n\n",left_side,phys_dim(i),right_side);
 		out[i] = rand_like(shape_from(left_side, phys_dim(i), right_side), opt);
 		if (i == 0)
 			right_side.set_selection_rule_(sel_rule);
-		fmt::print("\tnew left side: {}\n\n", right_side );
 		right_side.inverse_cvals_();
-		fmt::print("\tnew left side: {}\n\n", right_side );
 		swap(right_side, left_side);
-		fmt::print("\tpost-swap new left side: {}\n\n", left_side );
 	}
 	return out;
 }
 
-MPS random_MPS(int64_t bond_dim, const MPO &hamil, torch::TensorOptions opt)
+MPS random_MPS(size_t bond_dim, const MPO &hamil, torch::TensorOptions opt)
 {
 	return random_MPS_impl(
 	    hamil.size(), bond_dim, [&hamil](size_t i) { return hamil[i].sizes()[3]; }, opt);
@@ -406,12 +439,12 @@ MPS random_MPS(size_t length, int64_t bond_dim, int64_t phys_dim, torch::TensorO
 	return random_MPS_impl(
 	    length, bond_dim, [phys_dim](size_t i) { return phys_dim; }, opt);
 }
-MPS random_MPS(int64_t bond_dim, std::vector<int64_t> phys_dims, torch::TensorOptions opt = {})
+MPS random_MPS(size_t bond_dim, std::vector<int64_t> phys_dims, torch::TensorOptions opt = {})
 {
 	return random_MPS_impl(
 	    phys_dims.size(), bond_dim, [&phys_dims](size_t i) { return phys_dims[i]; }, opt);
 }
-bMPS random_bMPS(int64_t bond_dim, const bMPO &hamil, any_quantity_cref quantum_number, torch::TensorOptions opt)
+bMPS random_bMPS(size_t bond_dim, const bMPO &hamil, any_quantity_cref quantum_number, torch::TensorOptions opt)
 {
 	auto S = hamil.size();
 	std::vector<btensor> x = [&hamil, S, &quantum_number]()
@@ -420,7 +453,7 @@ bMPS random_bMPS(int64_t bond_dim, const bMPO &hamil, any_quantity_cref quantum_
 		auto neutral = quantum_number.neutral();
 		for (size_t i = 0; i < S; ++i)
 		{
-			out[i] = shape_from(hamil[i].shape_from({0, 0, 0, -1})).set_selection_rule_(neutral);
+			out[i] = shape_from(hamil[i].shape_from({0, 0, 0, -1})).set_selection_rule_(neutral).inverse_cvals();
 		}
 		return out;
 	}();

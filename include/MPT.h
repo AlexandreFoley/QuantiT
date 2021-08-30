@@ -40,8 +40,8 @@ class bMPO;
 class bMPT;
 
 MPS random_MPS(size_t length, size_t bond_dim, size_t phys_dim, torch::TensorOptions opt = {});
-MPS random_MPS(int64_t bond_dim, const MPO &hamil, torch::TensorOptions opt = {});
-MPS random_MPS(int64_t bond_dim, const std::vector<int64_t> &phys_dims,
+MPS random_MPS(size_t bond_dim, const MPO &hamil, torch::TensorOptions opt = {});
+MPS random_MPS(size_t bond_dim, const std::vector<int64_t> &phys_dims,
                torch::TensorOptions opt = {}); // should be done as with a range of sort for the phys_dim, when the
                                                // standard c++20 is well supported.
 
@@ -198,7 +198,7 @@ class vector_lift
 	     c10::optional<c10::MemoryFormat> memory_format = c10::nullopt) const
 	{ // those function can't really exist outside the derived class if empty_copy is private, which it is for MPT, MPS
 	  // and MPO.
-		S out = empty_copy(static_cast<S const &>(*this));
+		S out = S::empty_copy(static_cast<S const &>(*this));
 		auto out_it = out.begin();
 		std::for_each(this->cbegin(), this->cend(),
 		              [&out_it, &options, non_blocking, copy, memory_format](const auto &atensor)
@@ -208,7 +208,7 @@ class vector_lift
 	S to(torch::Device device, torch::ScalarType dtype, bool non_blocking = false, bool copy = false,
 	     c10::optional<c10::MemoryFormat> memory_format = c10::nullopt) const
 	{
-		S out = empty_copy(static_cast<S const &>(*this));
+		S out = S::empty_copy(static_cast<S const &>(*this));
 		auto out_it = out.begin();
 		std::for_each(this->cbegin(), this->cend(),
 		              [&out_it, device, dtype, non_blocking, copy, memory_format](const auto &atensor)
@@ -218,7 +218,7 @@ class vector_lift
 	S to(torch::ScalarType dtype, bool non_blocking = false, bool copy = false,
 	     c10::optional<c10::MemoryFormat> memory_format = c10::nullopt) const
 	{
-		S out = empty_copy(static_cast<S const &>(*this));
+		S out = S::empty_copy(static_cast<S const &>(*this));
 		auto out_it = out.begin();
 		std::for_each(this->cbegin(), this->cend(),
 		              [&out_it, dtype, non_blocking, copy, memory_format](const auto &atensor)
@@ -228,7 +228,7 @@ class vector_lift
 	S to(caffe2::TypeMeta type_meta, bool non_blocking = false, bool copy = false,
 	     c10::optional<c10::MemoryFormat> memory_format = c10::nullopt) const
 	{
-		S out = empty_copy(static_cast<S const &>(*this));
+		S out = S::empty_copy(static_cast<S const &>(*this));
 		auto out_it = out.begin();
 		std::for_each(this->cbegin(), this->cend(),
 		              [&out_it, type_meta, non_blocking, copy, memory_format](const auto &atensor)
@@ -238,7 +238,7 @@ class vector_lift
 	S to(const tensor &other, bool non_blocking = false, bool copy = false,
 	     c10::optional<c10::MemoryFormat> memory_format = c10::nullopt) const
 	{
-		S out = empty_copy(static_cast<S const &>(*this));
+		S out = S::empty_copy(static_cast<S const &>(*this));
 		auto out_it = out.begin();
 		std::for_each(this->cbegin(), this->cend(),
 		              [&out_it, &other, non_blocking, copy, memory_format](const auto &atensor)
@@ -282,7 +282,6 @@ class MPT final : public vector_lift<MPT>
 		return *this;
 	}
 
-  private:
 	static MPT empty_copy(const MPT &in) { return MPT(in.size()); }
 };
 
@@ -376,9 +375,9 @@ class MPS final
 	friend torch::Tensor details::dmrg_impl(const MPO &hamiltonian, const MPT &twosites_hamil, MPS &in_out_state,
 	                                        const dmrg_options &options, env_holder &Env,
 	                                        dmrg_logger &logger); // allow dmrg to manipulate the oc.
+	static MPS empty_copy(const MPS &in) { return MPS(in.size(), in.oc); }
   private:
 	size_t &oc = orthogonality_center.value; // private direct access to the value variable.
-	static MPS empty_copy(const MPS &in) { return MPS(in.size(), in.oc); }
 };
 inline void swap(MPS &lhs, MPS &rhs) { lhs.swap(rhs); }
 
@@ -446,7 +445,6 @@ class MPO final : public vector_lift<MPO> // specialization for rank 4 tensors
 		return *this;
 	}
 
-  private:
 	static MPO empty_copy(const MPO &in) { return MPT(in.size()); }
 };
 inline void swap(MPO &lhs, MPO &rhs) noexcept { lhs.swap(rhs); }
@@ -470,7 +468,6 @@ class bMPT final : public vector_lift<bMPT, btensor>
 		return *this;
 	}
 
-  private:
 	static bMPT empty_copy(const bMPT &in) { return bMPT(in.size()); }
 };
 
@@ -564,9 +561,9 @@ class bMPS final : public vector_lift<bMPS, btensor> // specialization for rank 
 	friend btensor details::dmrg_impl(const bMPO &hamiltonian, const bMPT &two_sites_hamil, bMPS &in_out_state,
 	                                  const dmrg_options &options, benv_holder &Env,
 	                                  dmrg_logger &logger); // allow dmrg to manipulate the oc.
+	static bMPS empty_copy(const bMPS &in) { return bMPS(in.size(), in.oc); }
   private:
 	size_t &oc = orthogonality_center.value; // private direct access to the value variable.
-	static bMPS empty_copy(const bMPS &in) { return bMPS(in.size(), in.oc); }
 };
 inline void swap(bMPS &lhs, bMPS &rhs) { lhs.swap(rhs); }
 
@@ -634,7 +631,6 @@ class bMPO final : public vector_lift<bMPO, btensor> // specialization for rank 
 		return *this;
 	}
 
-  private:
 	static bMPO empty_copy(const bMPO &in) { return bMPT(in.size()); }
 };
 inline void swap(bMPO &lhs, bMPO &rhs) noexcept { lhs.swap(rhs); }
@@ -666,17 +662,17 @@ btensor contract(const bMPS &a, const bMPS &b, btensor left_edge, const btensor 
 btensor contract(const bMPS &a, const bMPS &b);
 
 inline bMPS random_MPS(size_t length, size_t bond_dim, const btensor &phys_dim_spec, any_quantity_cref q_num,
-                       torch::TensorOptions opt )
+                       torch::TensorOptions opt)
 {
 	return random_bMPS(length, bond_dim, phys_dim_spec, q_num, opt);
 }
-inline bMPS random_MPS(size_t bond_dim, const bMPO &Hamil, any_quantity_cref q_num, torch::TensorOptions opt )
+inline bMPS random_MPS(size_t bond_dim, const bMPO &Hamil, any_quantity_cref q_num, torch::TensorOptions opt)
 {
 
 	return random_bMPS(bond_dim, Hamil, q_num, opt);
 }
 inline bMPS random_MPS(size_t bond_dim, const std::vector<btensor> &phys_dim_spec, any_quantity_cref q_num,
-                       torch::TensorOptions opt )
+                       torch::TensorOptions opt)
 {
 
 	return random_bMPS(bond_dim, phys_dim_spec, q_num, opt);
@@ -777,23 +773,45 @@ qtt_TEST_CASE("MPO basic manipulation")
 		}
 	}
 }
-qtt_TEST_CASE("random_bMPS")
+qtt_TEST_CASE("btensor networks")
 {
-	qtt_SUBCASE("uniform physical index")
+	using cval = quantity<conserved::Z, conserved::Z>;
+	auto phys_ind = sparse_zeros({{{1, cval(0, 0)}, {1, cval(1, -1)}, {1, cval(1, 1)}, {1, cval(2, 0)}}},
+	                             cval(0, 0)); // physical index for electrons
+	auto inv_phys_ind = phys_ind.inverse_cvals();
+	qtt_SUBCASE("random MPS uniform physical index")
 	{
-		using cval = quantity<conserved::Z, conserved::Z>;
-		auto phys_ind = sparse_zeros({{{1, cval(0, 0)}, {1, cval(1, -1)}, {1, cval(1, 1)}, {1, cval(2, 0)}}},
-		                             cval(0, 0));        // physical index for electrons
-		// fmt::print("{}\n\n",phys_ind);
 		auto X = random_MPS(4, 4, phys_ind, cval(4, 0)); // random MPS with 4 electrons, and bond dimension of 4.
-		// fmt::print("finished product\n");
-		// size_t i = 0;
-		// for (const auto &a : X)
-		// {
-		// 	fmt::print("i:{} T:{}\n", i, a);
-		// 	++i;
-		// }
 		qtt_CHECK(X.check_ranks());
+	}
+	qtt_SUBCASE("bMPO")
+	{
+		btensor rside({{{1, cval(0, 0)},
+		                {1, cval(1, 1)},
+		                {1, cval(1, -1)},
+		                {1, cval(-1, -1)},
+		                {1, cval(-1, 1)},
+		                {1, cval(0, 0)}}},
+		              cval(0, 0));
+		auto lside = rside.inverse_cvals();
+		auto T_shape = shape_from(lside, phys_ind, rside, inv_phys_ind);
+		auto T = rand_like(T_shape);
+		bMPO H(4,T);
+		qtt_CHECK(H.check_ranks());
+		//adjusting edges to bond dimension 1
+		H[0] = H[0].basic_create_view({5,-1,-1,-1});
+		qtt_REQUIRE_NOTHROW(btensor::throw_bad_tensor(H[0]));
+		H[0] = H[0].reshape_as(shape_from(btensor({{{1,cval(0,0)}}},cval(0,0)),H[0]));
+		H[3] = H[3].basic_create_view({-1,-1,0,-1});
+		qtt_REQUIRE_NOTHROW(btensor::throw_bad_tensor(H[3]));
+		auto last_shape = shape_from(H[3].shape_from({-1,-1,0}).set_selection_rule_(H[3].selection_rule),btensor({{{1,cval(0,0)}}},cval(0,0)),H[3].shape_from({0,0,-1}).set_selection_rule_(cval(0,0)));
+		H[3] = H[3].reshape_as(last_shape);
+
+		qtt_SUBCASE("random MPS from MPO")
+		{
+			auto X = random_MPS(4, H, cval(4, 0)); // random MPS with 4 electrons, and bond dimension of 4.
+			qtt_CHECK(X.check_ranks());
+		}
 	}
 }
 qtt_TEST_CASE("contraction equivalence tests")
@@ -857,6 +875,8 @@ struct dependant_tensor_network<btensor>
 	using MPT_type = bMPT;
 	using MPO_type = bMPO;
 	using MPS_type = bMPS;
+	using env_type = benv_holder;
+	using base_tensor_type = btensor;
 };
 template <>
 struct dependant_tensor_network<torch::Tensor>
@@ -864,6 +884,8 @@ struct dependant_tensor_network<torch::Tensor>
 	using MPT_type = MPT;
 	using MPO_type = MPO;
 	using MPS_type = MPS;
+	using env_type = env_holder;
+	using base_tensor_type = torch::Tensor;
 };
 template <class S>
 struct dependant_tensor_network<S, std::enable_if_t<std::is_base_of_v<vector_lift<S, torch::Tensor>, S>>>

@@ -20,7 +20,7 @@
 #include "torch_formatter.h"
 #include <chrono>
 
-class dmrg_log_final final: public quantt::dmrg_logger
+class dmrg_log_final final: public quantt::dmrg_default_logger
 {
 	public:
 	size_t it_num;
@@ -28,16 +28,16 @@ class dmrg_log_final final: public quantt::dmrg_logger
 	
 
 	void log_step(size_t it) override {it_num = it;}
-	void log_energy(torch::Tensor) override {}
+	void log_energy(const torch::Tensor&) override {}
 	void log_bond_dims(const quantt::MPS& mps) override 
 	{
 		auto pos = mps.size()/2;
 		middle_bond_dim = std::max(mps[pos].sizes()[0],mps[pos].sizes()[2]);
 	}
-	void it_log_all(size_t, torch::Tensor,const quantt::MPS&) override {}
+	void it_log_all(size_t,const torch::Tensor&,const quantt::MPS&) override {}
 
 };
-class dmrg_log_sweeptime final: public quantt::dmrg_logger
+class dmrg_log_sweeptime final: public quantt::dmrg_default_logger
 {
 	public:
 	size_t it_num;
@@ -47,7 +47,7 @@ class dmrg_log_sweeptime final: public quantt::dmrg_logger
 	std::vector<size_t> bond_list;
 
 	void log_step(size_t it) override {it_num = it;}
-	void log_energy(torch::Tensor) override {}
+	void log_energy(const torch::Tensor&) override {}
 
 	void init(const quantt::dmrg_options& opt) override
 	{
@@ -62,7 +62,7 @@ class dmrg_log_sweeptime final: public quantt::dmrg_logger
 		auto pos = mps.size()/2;
 		middle_bond_dim = std::max(mps[pos].sizes()[0],mps[pos].sizes()[2]);
 	}
-	void it_log_all(size_t it, torch::Tensor E0,const quantt::MPS& mps) override 
+	void it_log_all(size_t it, const torch::Tensor& E0,const quantt::MPS& mps) override 
 	{
 		auto now = std::chrono::steady_clock::now();
 		std::chrono::duration<double> elapsed_seconds = now - then;

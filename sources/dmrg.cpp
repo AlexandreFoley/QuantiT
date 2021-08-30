@@ -13,6 +13,8 @@
 
 #include "dmrg.h"
 #include "LinearAlgebra.h"
+#include "blockTensor/LinearAlgebra.h"
+#include "blockTensor/btensor.h"
 #include "numeric.h"
 #include "torch_formatter.h"
 #include <fmt/core.h>
@@ -56,37 +58,67 @@ std::tuple<torch::Tensor, torch::Tensor> two_sites_update(const torch::Tensor &s
                                                           const torch::Tensor &Left_environment,
                                                           const torch::Tensor &Right_environment);
 
-torch::Tensor dmrg(const MPO &hamiltonian, MPS &in_out_state, const dmrg_options &options, dmrg_logger &logger)
+template <class MPO_t, class MPS_t>
+class dmrg_gradient_guard
 {
-	if (!options.pytorch_gradient)
+	MPO_t &hamil;
+	MPS_t &state;
+	bool guard_hamil;
+	bool guard_state;
+	torch::TensorOptions hamil_opt;
+	torch::TensorOptions state_opt;
+
+  public:
+	dmrg_gradient_guard(MPO_t &_hamil, MPS_t &_state, const dmrg_options &options)
+	    : hamil(_hamil), state(_state), guard_hamil(options.hamil_gradient), guard_state(options.state_gradient),hamil_opt(hamil[0].options()),state_opt(state[0].options())
 	{
-		torch::NoGradGuard Gradientdisabled; // Globally (but Thread local (that's a problem)) disable gradient
-		                                     // computation while this object exists.
-		auto Env = generate_env(hamiltonian, in_out_state);
-		auto TwositesH = compute_2sitesHamil(hamiltonian);
-		return details::dmrg_impl(hamiltonian, TwositesH, in_out_state, options, Env, logger);
-	} // Gradientdisabled gets destroyed here, gradient computation status is restore to what it was before.
-	else
-	{
-		auto Env = generate_env(hamiltonian, in_out_state);
-		auto TwositesH = compute_2sitesHamil(hamiltonian);
-		return details::dmrg_impl(hamiltonian, TwositesH, in_out_state, options, Env, logger);
+		hamil.to_(torch::TensorOptions().requires_grad(guard_hamil));
+		state.to_(torch::TensorOptions().requires_grad(guard_state));
 	}
+	~dmrg_gradient_guard()
+	{
+		hamil.to_(hamil_opt);
+		state.to_(state_opt);
+	}
+
+};
+
+btensor dmrg(bMPO &hamiltonian, bMPS &in_out_state, const dmrg_options &options, dmrg_logger &logger)
+{
+	dmrg_gradient_guard guard(hamiltonian, in_out_state, options);//set the tracing of hamil and state to whatever is specified in the option, then set it back to its original value at the end.
+	auto Env = generate_env(hamiltonian, in_out_state);
+	auto TwositesH = compute_2sitesHamil(hamiltonian);
+	return details::dmrg_impl(hamiltonian, TwositesH, in_out_state, options, Env, logger);
+}
+torch::Tensor dmrg(MPO &hamiltonian, MPS &in_out_state, const dmrg_options &options, dmrg_logger &logger)
+{
+	dmrg_gradient_guard guard(hamiltonian, in_out_state, options);
+	auto Env = generate_env(hamiltonian, in_out_state);
+	auto TwositesH = compute_2sitesHamil(hamiltonian);
+	return details::dmrg_impl(hamiltonian, TwositesH, in_out_state, options, Env, logger);
 }
 
-std::tuple<torch::Tensor, MPS> dmrg(const MPO &hamiltonian, const dmrg_options &options, dmrg_logger &logger)
+std::tuple<btensor, bMPS> dmrg(bMPO &hamiltonian, any_quantity_cref qnum, const dmrg_options &options,
+                               dmrg_logger &logger)
 {
-	using namespace torch::indexing;
+	auto length = hamiltonian.size();
+	auto out_mps = random_MPS(options.minimum_bond, hamiltonian, qnum);
+	auto E0 = dmrg(hamiltonian, out_mps, options,logger);
+	return std::make_tuple(E0, out_mps);
+}
+std::tuple<torch::Tensor, MPS> dmrg( MPO &hamiltonian, const dmrg_options &options, dmrg_logger &logger)
+{
 	auto length = hamiltonian.size();
 	auto out_mps = random_MPS(options.minimum_bond, hamiltonian);
-	auto E0 = dmrg(hamiltonian, out_mps, options);
+	auto E0 = dmrg(hamiltonian, out_mps, options,logger);
 	return std::make_tuple(E0, out_mps);
 }
 
-template <class T>
-auto sweep(MPS &state, T update, int step, size_t Nstep, size_t right_edge, size_t left_edge = 0)
+template <class T, class MPS_t>
+auto sweep(MPS_t &state, T update, int step, size_t Nstep, size_t right_edge, size_t left_edge = 0)
 {
-	torch::Tensor E0;
+	using tensor_t = typename dependant_tensor_network<MPS_t>::base_tensor_type;
+	tensor_t E0;
 	// fmt::print("sweep!\n");
 	for (size_t i = 0; i < Nstep; ++i)
 	{
@@ -99,25 +131,30 @@ auto sweep(MPS &state, T update, int step, size_t Nstep, size_t right_edge, size
 	return std::make_tuple(E0, step);
 }
 
+template <class MPO_t>
 struct dmrg_2sites_update
 {
-	const MPO &hamil;
-	const MPT &twosite_hamil;
+	const MPO_t &hamil;
+	using MPT_t = typename dependant_tensor_network<MPO_t>::MPT_type;
+	using MPS_t = typename dependant_tensor_network<MPO_t>::MPS_type;
+	using env_t = typename dependant_tensor_network<MPO_t>::env_type;
+	using tensor_t = typename dependant_tensor_network<MPO_t>::base_tensor_type;
+	const MPT_t &twosite_hamil;
 	size_t &oc;
-	env_holder &Env;
+	env_t &Env;
 	const dmrg_options &options;
 
-	dmrg_2sites_update(const MPO &_hamil, const MPT &_twosites_hamil, size_t &_oc, env_holder &_Env,
+	dmrg_2sites_update(const MPO_t &_hamil, const MPT_t &_twosites_hamil, size_t &_oc, env_t &_Env,
 	                   const dmrg_options &_options)
 	    : hamil(_hamil), twosite_hamil(_twosites_hamil), oc(_oc), Env(_Env), options(_options)
 	{
 	}
 
-	torch::Tensor operator()(MPS &state, int step)
+	tensor_t operator()(MPS_t &state, int step)
 	{
 		bool forward = step == 1;
-		torch::Tensor E0;
-		auto local_state = torch::tensordot(state[oc], state[oc + 1], {2}, {0});
+		tensor_t E0;
+		auto local_state = tensordot(state[oc], state[oc + 1], {2}, {0});
 		std::tie(E0, local_state) = two_sites_update(local_state, twosite_hamil[oc], Env[oc - 1], Env[oc + 2]);
 		auto [u, d, v] = quantt::svd(local_state, 2, options.cutoff, options.minimum_bond, options.maximum_bond);
 		d /= sqrt(sum(d.pow(2)));
@@ -125,13 +162,13 @@ struct dmrg_2sites_update
 		{
 			// the orthogonality center was at oc
 			state[oc] = u;
-			state[oc + 1] = torch::tensordot(torch::diag(d), v, {1}, {2});
+			state[oc + 1] = v.mul_(d).conj().permute({2, 0, 1});
 			Env[oc] = compute_left_env(hamil[oc], state[oc], Env[oc - 1]);
 		}
 		else
 		{
 			// the orthognality center was at oc+1
-			state[oc] = torch::tensordot(u, torch::diag(d), {2}, {0});
+			state[oc] = u.mul_(d);
 			state[oc + 1] = v.permute({2, 0, 1});
 			Env[oc + 1] = compute_right_env(hamil[oc + 1], state[oc + 1], Env[oc + 2]);
 		}
@@ -145,7 +182,54 @@ struct dmrg_2sites_update
 btensor details::dmrg_impl(const bMPO &hamiltonian, const bMPT &two_sites_hamil, bMPS &in_out_state,
                            const dmrg_options &options, benv_holder &Env, dmrg_logger &logger)
 {
-	btensor E0 = quantt::full({}, hamiltonian[0].selection_rule->neutral(), 100000.0, hamiltonian[0].options());
+	btensor E0 = quantt::full({}, hamiltonian[0].selection_rule->neutral(), 100000.0,
+	                          hamiltonian[0].options().merge_in(torch::kDouble));
+	auto sweep_dir = 1;
+	size_t init_pos = in_out_state.orthogonality_center;
+	auto N_step = two_sites_hamil.size() - 1 + (two_sites_hamil.size() == 1);
+	torch::Tensor E0_update;
+	int step = (in_out_state.orthogonality_center == 0) ? 1 : -1;
+	if (two_sites_hamil.size() == 1)
+		step = 0;
+	// fmt::print("step {}\n",step);
+	auto &oc = in_out_state.oc;
+	if (oc == in_out_state.size() - 1)
+		--oc;
+	dmrg_2sites_update update(hamiltonian, two_sites_hamil, oc, Env, options);
+	auto iteration = 0u;
+	logger.init(options);
+	for (iteration = 0u; iteration < options.maximum_iterations; ++iteration)
+	{
+		btensor E0_tens;
+		// fmt::print("\nSweep\n\n");
+		std::tie(E0_tens, step) =
+		    sweep(in_out_state, update, step, 2 * N_step, in_out_state.size() - 2); // sweep from the oc and back to it.
+		logger.it_log_all(iteration, E0_tens, in_out_state);
+		// E0_update = E0_tens;
+		// swap(E0, E0_update);
+		if (!(((E0 - E0_tens).abs() > options.convergence_criterion))
+		         .item()
+		         .toBool()) // looks weird? it's so it stop on nan (nan
+		                    // compare false with everything).
+		{
+			E0 = E0_tens;
+			break;
+		}
+		E0 = E0_tens;
+	}
+	if (oc != init_pos)
+	{
+		if (oc != init_pos - 1 and init_pos != in_out_state.size() - 1)
+			throw std::runtime_error(fmt::format(
+			    "the orthogonality center finished somewhere surprising! final oc: {}. original oc: {}", oc, init_pos));
+	}
+	if (oc != init_pos)
+		in_out_state.move_oc(init_pos);
+
+	logger.end_log_all(iteration, E0, in_out_state);
+
+	return E0;
+
 	return btensor();
 }
 /**
@@ -213,10 +297,10 @@ void generate_env_impl(const MPO_T &hamiltonian, const MPS_T &state, env_hold_T 
 
 	auto LS = shape_from(state.front(), {-1, 0, 0});
 	auto trivial_Ledge =
-	    ones_like(shape_from(LS, shape_from(hamiltonian.front(), {-1, 0, 0, 0}), LS.inverse_cvals()).neutral_shape());
+	    ones_like(shape_from(LS, shape_from(hamiltonian.front(), {-1, 0, 0, 0}), LS.inverse_cvals()).neutral_shape(),torch::TensorOptions().requires_grad(false));
 	auto RS = shape_from(state.back(), {0, 0, -1});
 	auto trivial_Redge =
-	    ones_like(shape_from(RS, shape_from(hamiltonian.back(), {0, 0, -1, 0}), RS.inverse_cvals()).neutral_shape());
+	    ones_like(shape_from(RS, shape_from(hamiltonian.back(), {0, 0, -1, 0}), RS.inverse_cvals()).neutral_shape(),torch::TensorOptions().requires_grad(false));
 
 	Env[-1] = trivial_Ledge;
 	Env[hamiltonian.size()] = trivial_Redge;

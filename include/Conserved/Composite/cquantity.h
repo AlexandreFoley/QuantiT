@@ -315,6 +315,7 @@ inline any_quantity operator+(any_quantity &&lhs, any_quantity_cref rhs)
 inline any_quantity operator*(any_quantity &&lhs, any_quantity &&rhs) { return std::move(lhs) * rhs.get(); }
 inline any_quantity operator+(any_quantity &&lhs, any_quantity &&rhs) { return std::move(lhs) + rhs.get(); }
 
+
 qtt_TEST_CASE("composite conserved")
 {
 	using namespace quantt;
@@ -447,5 +448,7 @@ struct fmt::formatter<quantt::any_quantity> : public fmt::formatter<quantt::any_
 {
 	// exploits implicit conversion to get the job done.
 };
+
+std::string to_string(quantt::any_quantity_cref cqtt);
 
 #endif /* D56E4C12_98E1_4C9E_B0C4_5B35A5A3CD17 */

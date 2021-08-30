@@ -31,7 +31,8 @@ struct dmrg_options
 	size_t maximum_bond;
 	size_t minimum_bond;
 	size_t maximum_iterations;
-	bool pytorch_gradient; // will default to off! I can't think of a situation where we might want to compute a
+	bool state_gradient; // will default to off! I can't think of a situation where we might want to compute a
+	bool hamil_gradient; // will default to off! I can't think of a situation where we might want to compute a
 	                       // gradient through DMRG, but who knows.
 
 	// default values for constructors.
@@ -46,18 +47,18 @@ struct dmrg_options
 
 	dmrg_options(double _cutoff, double _convergence_criterion)
 	    : cutoff(_cutoff), convergence_criterion(_convergence_criterion), maximum_bond(def_max_bond),
-	      minimum_bond(def_min_bond), maximum_iterations(def_max_it), pytorch_gradient(def_pytorch_gradient)
+	      minimum_bond(def_min_bond), maximum_iterations(def_max_it), state_gradient(def_pytorch_gradient), hamil_gradient(def_pytorch_gradient)
 	{
 	}
 	dmrg_options(size_t _max_bond, size_t _min_bond, size_t _max_iterations)
 	    : cutoff(def_cutoff), convergence_criterion(def_conv_crit), maximum_bond(_max_bond), minimum_bond(_min_bond),
-	      maximum_iterations(_max_iterations), pytorch_gradient(def_pytorch_gradient)
+	      maximum_iterations(_max_iterations), state_gradient(def_pytorch_gradient), hamil_gradient(def_pytorch_gradient)
 	{
 	}
 	dmrg_options(double _cutoff, double _convergence_criterion, size_t _max_bond, size_t _min_bond,
 	             size_t _max_iterations, bool _pytorch_gradient = def_pytorch_gradient)
 	    : cutoff(_cutoff), convergence_criterion(_convergence_criterion), maximum_bond(_max_bond),
-	      minimum_bond(_min_bond), maximum_iterations(_max_iterations), pytorch_gradient(_pytorch_gradient)
+	      minimum_bond(_min_bond), maximum_iterations(_max_iterations), state_gradient(_pytorch_gradient), hamil_gradient(def_pytorch_gradient)
 	{
 	}
 	dmrg_options() : dmrg_options(def_cutoff, def_conv_crit) {}
@@ -78,15 +79,25 @@ class dmrg_logger
 {
   public:
 	virtual void log_step(size_t) = 0;
-	virtual void log_energy(torch::Tensor) = 0;
+	virtual void log_energy(const torch::Tensor&) = 0;
+	virtual void log_energy(const btensor&) = 0;
 	virtual void log_bond_dims(const MPS &) = 0;
+	virtual void log_bond_dims(const bMPS &) = 0;
 
 	virtual void init(const dmrg_options &) {}
 
-	virtual void it_log_all(size_t step_num, torch::Tensor E, const MPS &state) { log_all(step_num, E, state); }
-	virtual void end_log_all(size_t step_num, torch::Tensor E, const MPS &state) { log_all(step_num, E, state); }
+	virtual void it_log_all(size_t step_num,const torch::Tensor& E, const MPS &state) { log_all(step_num, E, state); }
+	virtual void it_log_all(size_t step_num,const btensor& E, const bMPS &state) { log_all(step_num, E, state); }
+	virtual void end_log_all(size_t step_num, const torch::Tensor& E, const MPS &state) { log_all(step_num, E, state); }
+	virtual void end_log_all(size_t step_num, const btensor& E, const bMPS &state) { log_all(step_num, E, state); }
 
 	virtual void log_all(size_t step_num, torch::Tensor E, const MPS &state)
+	{
+		log_step(step_num);
+		log_energy(E);
+		log_bond_dims(state);
+	}
+	virtual void log_all(size_t step_num, btensor E, const bMPS &state)
 	{
 		log_step(step_num);
 		log_energy(E);
@@ -98,12 +109,14 @@ class dmrg_logger
 /**
  * A default logger that does nothing.
  */
-class dmrg_default_logger final : public dmrg_logger
+class dmrg_default_logger : public dmrg_logger
 {
   public:
 	void log_step(size_t) override {}
-	void log_energy(torch::Tensor) override {}
+	void log_energy(const torch::Tensor&) override {}
 	void log_bond_dims(const MPS &) override {}
+	void log_energy(const btensor&) override {}
+	void log_bond_dims(const bMPS &) override {}
 };
 namespace
 {
@@ -114,7 +127,9 @@ dmrg_default_logger dummy_logger;
  * Uses the supplied MPS in_out_state as a starting point, and store the optimized MPS there.
  * The associated energy is the return value.
  */
-torch::Tensor dmrg(const MPO &hamiltonian, MPS &in_out_state, const dmrg_options &options,
+torch::Tensor dmrg( MPO &hamiltonian, MPS &in_out_state, const dmrg_options &options,
+                   dmrg_logger &logger = dummy_logger);
+btensor dmrg( bMPO &hamiltonian, bMPS &in_out_state, const dmrg_options &options,
                    dmrg_logger &logger = dummy_logger);
 
 /**
@@ -122,7 +137,9 @@ torch::Tensor dmrg(const MPO &hamiltonian, MPS &in_out_state, const dmrg_options
  * uses a random starting MPS with minimum_bond bond dimension.
  * return the ground state energy and optimized MPS.
  */
-std::tuple<torch::Tensor, MPS> dmrg(const MPO &hamiltonian, const dmrg_options &options,
+std::tuple<torch::Tensor, MPS> dmrg( MPO &hamiltonian, const dmrg_options &options,
+                                    dmrg_logger &logger = dummy_logger);
+std::tuple<btensor, bMPS> dmrg( bMPO &hamiltonian, any_quantity_cref state_constraint , const dmrg_options &options,
                                     dmrg_logger &logger = dummy_logger);
 
 namespace details
@@ -147,7 +164,24 @@ std::tuple<torch::Tensor, torch::Tensor, torch::Tensor, torch::Tensor> one_step_
 std::tuple<btensor, btensor, btensor, btensor> one_step_lanczos(const btensor &state, const btensor &hamil,
                                                                 const btensor &Lenv, const btensor &Renv);
 } // namespace details
+qtt_TEST_CASE("btensor dmrg run test")
+{	
+	using cval = quantity<conserved::Z>;
+	auto T = quantt::rand({{{1,cval(1)},{1,cval(-1)}}, {{3,cval(1)},{2,cval(-1)}}, {{1,cval(1)},{1,cval(-1)}}, {{3,cval(1)},{2,cval(-1)}}},cval(0));
+	bMPO Hamil(5, T);
+	dmrg_options opt;
+	opt.maximum_iterations = 10;
+	{
+		using namespace torch::indexing;
+		Hamil[0] = Hamil[0].basic_create_view({0,-1,-1,-1},true);
+		Hamil[Hamil.size() - 1] = Hamil[Hamil.size() - 1].basic_create_view({-1,-1, 0,-1},true);
+	}
+	btensor E;
+	bMPS state;
+	// std::tie(E,state) = dmrg(Hamil,opt);
+	qtt_CHECK_NOTHROW(std::tie(E, state) = dmrg(Hamil, cval(1), opt));
 
+}
 qtt_TEST_CASE("dmrg run test")
 {
 	auto T = torch::rand({2, 5, 2, 5});

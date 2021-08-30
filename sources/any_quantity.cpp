@@ -30,3 +30,8 @@ template class quantt::quantity<C<2>, C<6>>; //parity and rotation of the hexago
 template class quantt::quantity<C<4>>;       //rotation of the square
 template class quantt::quantity<C<6>>;       //rotation of the hexagon
                                              // template class fmt::v6::formatter<quantt::conserved::C<2>>;
+
+std::string to_string(quantt::any_quantity_cref cqtt)
+{
+	return fmt::format("{}",cqtt);
+}

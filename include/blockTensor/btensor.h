@@ -289,13 +289,16 @@ class btensor
 	 * @param dims List of dimensions, put -1 to keep the dimension, specify the index to keep otherwise.
 	 * @return btensor&
 	 */
-	btensor basic_create_view(const std::vector<int64_t> &dims);
+	btensor basic_create_view(const std::vector<int64_t> &dims, bool preserve_rank = false);
 	/**
 	 * @brief make all the the conserved value and the conservation rule the neutral element of the group. works only on
 	 * empty tensors.
 	 *
 	 * @return btensor&
 	 */
+
+	btensor& basic_index_put_(const std::vector<int64_t> & dims, const btensor& value);
+
 	btensor neutral_shape() const;
 	/**
 
@@ -468,6 +471,7 @@ class btensor
 	btensor matmul(const btensor &other) const;
 	// matmul no broadcast
 	btensor mm(const btensor &other) const;
+	btensor sum() const;
 
 	btensor sqrt() const;
 	btensor &sqrt_();
@@ -1272,6 +1276,21 @@ inline btensor greater(btensor::Scalar other, const btensor &A) { return A.less(
 inline btensor less(btensor::Scalar other, const btensor &A) { return A.greater(other); }
 inline btensor le(btensor::Scalar other, const btensor &A) { return A.ge(other); }
 inline btensor ge(btensor::Scalar other, const btensor &A) { return A.le(other); }
+
+inline btensor operator>(const btensor& A, btensor::Scalar other){return greater(A,other);}
+inline btensor operator>(const btensor& A, const btensor& other){return greater(A,other);}
+inline btensor operator>(btensor::Scalar A, const btensor& other){return greater(A,other);}
+inline btensor operator<(const btensor& A, btensor::Scalar other){return less(A,other);}
+inline btensor operator<(const btensor& A, const btensor& other){return less(A,other);}
+inline btensor operator<(btensor::Scalar A, const btensor& other){return less(A,other);}
+inline btensor operator>=(const btensor& A, btensor::Scalar other){return ge(A,other);}
+inline btensor operator>=(const btensor& A, const btensor& other){return ge(A,other);}
+inline btensor operator>=(btensor::Scalar A, const btensor& other){return ge(A,other);}
+inline btensor operator<=(const btensor& A, btensor::Scalar other){return le(A,other);}
+inline btensor operator<=(const btensor& A, const btensor& other){return le(A,other);}
+inline btensor operator<=(btensor::Scalar A, const btensor& other){return le(A,other);}
+
+inline btensor sum(const btensor& t){return t.sum();}
 
 using torch::pow;
 using torch::sqrt;
