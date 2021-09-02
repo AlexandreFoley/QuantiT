@@ -167,15 +167,15 @@ std::tuple<btensor, btensor, btensor, btensor> one_step_lanczos(const btensor &s
 qtt_TEST_CASE("btensor dmrg run test")
 {	
 	using cval = quantity<conserved::Z>;
-	auto T = quantt::rand({{{1,cval(1)},{1,cval(-1)}}, {{3,cval(1)},{2,cval(-1)}}, {{1,cval(1)},{1,cval(-1)}}, {{3,cval(1)},{2,cval(-1)}}},cval(0));
+	auto T = quantt::rand({{{1,cval(1)},{1,cval(-1)}}, {{3,cval(-1)},{2,cval(1)}}, {{1,cval(-1)},{1,cval(1)}}, {{3,cval(1)},{2,cval(-1)}}},cval(0));
 	bMPO Hamil(5, T);
 	dmrg_options opt;
 	opt.maximum_iterations = 10;
 	{
-		using namespace torch::indexing;
 		Hamil[0] = Hamil[0].basic_create_view({0,-1,-1,-1},true);
 		Hamil[Hamil.size() - 1] = Hamil[Hamil.size() - 1].basic_create_view({-1,-1, 0,-1},true);
 	}
+	qtt_REQUIRE(Hamil.check_ranks());
 	btensor E;
 	bMPS state;
 	// std::tie(E,state) = dmrg(Hamil,opt);

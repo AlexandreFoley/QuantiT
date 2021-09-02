@@ -303,6 +303,7 @@ class MPS final
 	static bool check_one(const Tens &tens);
 	MPS() : vector_lift<MPS>(), orthogonality_center(0) {}
 	MPS(size_type size) : vector_lift<MPS>(size), orthogonality_center(0) {}
+	MPS(size_type size,size_t oc) : vector_lift<MPS>(size), orthogonality_center(oc) {}
 	MPS(const MPS &other) : vector_lift(other), orthogonality_center(other.orthogonality_center) {}
 	MPS(MPS &&other) noexcept : vector_lift(std::move(other)), orthogonality_center(other.orthogonality_center) {}
 	MPS(std::initializer_list<Tens> initl, size_t oc = 0) : vector_lift<MPS>(initl), orthogonality_center(oc)
@@ -445,7 +446,7 @@ class MPO final : public vector_lift<MPO> // specialization for rank 4 tensors
 		return *this;
 	}
 
-	static MPO empty_copy(const MPO &in) { return MPT(in.size()); }
+	static MPO empty_copy(const MPO &in) { return MPO(in.size()); }
 };
 inline void swap(MPO &lhs, MPO &rhs) noexcept { lhs.swap(rhs); }
 class bMPT final : public vector_lift<bMPT, btensor>
@@ -489,6 +490,7 @@ class bMPS final : public vector_lift<bMPS, btensor> // specialization for rank 
 	static bool check_one(const Tens &tens);
 	bMPS() : vector_lift<bMPS, btensor>(), orthogonality_center(0) {}
 	bMPS(size_type size) : vector_lift<bMPS, btensor>(size), orthogonality_center(0) {}
+	bMPS(size_type size,size_t oc) : vector_lift<bMPS, btensor>(size), orthogonality_center(std::min(oc,size-1)) {}
 	bMPS(const bMPS &other) : vector_lift(other), orthogonality_center(other.orthogonality_center) {}
 	bMPS(bMPS &&other) noexcept : vector_lift(std::move(other)), orthogonality_center(other.orthogonality_center) {}
 	bMPS(std::initializer_list<Tens> initl, size_t oc = 0) : vector_lift<bMPS, btensor>(initl), orthogonality_center(oc)
@@ -631,7 +633,7 @@ class bMPO final : public vector_lift<bMPO, btensor> // specialization for rank 
 		return *this;
 	}
 
-	static bMPO empty_copy(const bMPO &in) { return bMPT(in.size()); }
+	static bMPO empty_copy(const bMPO &in) { return bMPO(in.size()); }
 };
 inline void swap(bMPO &lhs, bMPO &rhs) noexcept { lhs.swap(rhs); }
 

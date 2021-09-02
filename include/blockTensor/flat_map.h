@@ -379,38 +379,47 @@ class flat_map
 			// part A: copy element in [first,last[ larger than *(look-1) at move_to_end.
 			{
 				auto la = std::lower_bound(first, last, *(look - 1), comp);
-				found_collision = la != last and !comp(*(look - 1), *la);
-				std::copy_backward(la + found_collision, last, move_to_end);
+				found_collision = la != last and !comp(*(look - 1), *la); // checked wether the lowest on the range to copy is colliding
+				std::copy_backward(la + found_collision, last, move_to_end); //we don't copy the colliding element
 				auto old_move_to_end = move_to_end;
-				move_to_end -= last - (la + found_collision);
+				auto move_shift = last - (la + found_collision);
+				move_to_end -= move_shift ;
 				std::for_each(move_to_end, old_move_to_end, [nocollision](auto &&x) { nocollision(std::get<1>(x)); });
+				if (found_collision)
+				{
+					--move_to_end;
+					--look;
+					if(move_to_end != look) *move_to_end = std::move( *(look));
+					collision(move_to_end->second,la->second);//can be called on a parallel thread, the tensor will not be touched again.
+				}
 				last = la;
 			} // pop la from the stack
 			// part B: move the elements in [begin,look[ that are greater than *(last-1) to move_to_end
 			if (last == first)
-				break; // we've copied everything, there's nothing to move.
+				break; // we've copied everything, there's nothing to move. //ignore collision on the first elements...
 			{
 				auto lb = std::lower_bound(begin(), look, *(last - 1), comp);
 				if (move_to_end != look)
 					std::move_backward(lb, look,
-					                   move_to_end); // we don't want to do anything here if move_to_end == look. plus
-					                                 // move_backward behavior is undefined in that case.
-				if (found_collision)
-					collision((move_to_end - 1)->second,
-					          last->second); // if we move the collision treatment here, we allow parallelism.
+					                   move_to_end); // we don't have to do anything here if move_to_end == look. plus
+					                                 // move_backward behavior is undefined in that case (depends on the implementation of the element's move).
+				// if (found_collision)
+				// 	collision((move_to_end - 1)->second,
+				// 	          last->second); // if we move the collision treatment here, we allow parallelism.
 				move_to_end -= look - lb;
 				look = lb;
 			} // pop lb from the stack
-			found_collision = !comp(*(last - 1), *move_to_end);
+			found_collision = last != first and !comp(*(last - 1), *move_to_end);
 			if (found_collision)
 				collision(move_to_end->second,
 				          (last - 1)->second); // if we move collision treatment here, to allow parallelism
 			last -= found_collision;
 		}
+		auto lastmfirst = last-first;
+		auto movembegin = move_to_end - begin();
 		assert(
-		    (last - first) == 0 or
-		    (move_to_end - begin()) ==
-		        (last - first)); // we've copied everything, or we still have some stuff to copy and the room necessary
+		    lastmfirst == 0 or
+		    movembegin == lastmfirst); // we've copied everything, or we still have some stuff to copy and the room necessary
 		std::copy_backward(first, last, move_to_end);
 		std::for_each(begin(), move_to_end, [nocollision](auto &&x) { nocollision(std::get<1>(x)); });
 	}

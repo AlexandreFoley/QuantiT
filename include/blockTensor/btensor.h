@@ -41,6 +41,11 @@ enum class btensor_size
 {
 	max
 };
+enum class reshape_mode
+{
+	dims_only,
+	overwrite_c_vals
+};
 /**
  * @brief btensor is a type meant to represent block sparse tensor with conservation laws.
  * The conservation law determines which block can or cannot be non-nul.
@@ -297,7 +302,7 @@ class btensor
 	 * @return btensor&
 	 */
 
-	btensor& basic_index_put_(const std::vector<int64_t> & dims, const btensor& value);
+	btensor &basic_index_put_(const std::vector<int64_t> &dims, const btensor &value);
 
 	btensor neutral_shape() const;
 	/**
@@ -545,12 +550,12 @@ class btensor
 	 * When overwrite_c_vals is true, the selection rule will be overwritten with the one of the input tensor.
 	 * The non-zero blocks of this must satisfy the selection rule of the proposed output shape.
 	 *
-	 * @tparam overwrite_c_vals when true, the conserved quantities on the index and the selection rules are
-	 overwritten. The compatibility requirement are not quite the same.
+	 * @tparam reshaping mode, modify the conserved quantities on the indices only by default, overwrite the selection
+	 * rule with reshape_mode::overwrite_cvals
 	 * @param other Tensor with the target shape.
 	 * @return btensor Reshaped tensor
 	 */
-	template <bool overwrite_c_vals = false>
+	template <reshape_mode mode = reshape_mode::dims_only>
 	btensor reshape_as(const btensor &other) const;
 
 	/**
@@ -578,10 +583,10 @@ class btensor
 	btensor transpose(int64_t dim0, int64_t dim1) const;
 	// btensor transpose(torch::Dimname dim0, torch::Dimname dim1) const;
 	btensor &transpose_(int64_t dim0, int64_t dim1);
-	btensor sub(const btensor &other, Scalar alpha = 1) const { return sub(other, -alpha); }
-	btensor &sub_(const btensor &other, Scalar alpha = 1) { return sub_(other, -alpha); }
-	btensor sub(btensor &&other, Scalar alpha = 1) const { return sub(std::move(other), -alpha); }
-	btensor &sub_(btensor &&other, Scalar alpha = 1) { return sub_(std::move(other), -alpha); }
+	btensor sub(const btensor &other, Scalar alpha = 1) const { return add(other, -alpha); }
+	btensor &sub_(const btensor &other, Scalar alpha = 1) { return add_(other, -alpha); }
+	btensor sub(btensor &&other, Scalar alpha = 1) const { return add(std::move(other), -alpha); }
+	btensor &sub_(btensor &&other, Scalar alpha = 1) { return add_(std::move(other), -alpha); }
 	btensor sub(Scalar other, Scalar alpha = 1) const;
 	btensor &sub_(Scalar other, Scalar alpha = 1);
 	btensor subtract(const btensor &other, Scalar alpha = 1) const { return sub(other, alpha); }
@@ -686,6 +691,12 @@ class btensor
 	 * @return btensor&
 	 */
 	btensor &set_selection_rule_(any_quantity_cref value);
+	btensor &neutral_selection_rule_() {return set_selection_rule_(selection_rule->neutral());}
+	btensor neutral_selection_rule() 
+	{
+		btensor out = *this;
+		return out.set_selection_rule_(selection_rule->neutral());
+	}
 	template <class... BTENS>
 	friend std::tuple<btensor, std::tuple<BTENS...>> truncate_impl(btensor &&d, std::tuple<BTENS...> &&unitaries,
 	                                                               size_t max, size_t min, btensor::Scalar tol,
@@ -975,7 +986,12 @@ struct torch_shape
 	torch_shape &neutral_shape_() { return *this; }
 	torch_shape &inverse_cvals() { return *this; }
 	torch_shape inverse_cvals_() { return *this; }
+	torch_shape neutral_selection_rule() {return *this;}
+	torch_shape &neutral_selection_rule_() {return *this;}
+	torch_shape &set_selection_rule_(any_quantity_cref ) {return *this;}
 };
+inline any_quantity get_section_cval(const torch_shape&, size_t,size_t){return quantity<conserved::C<1>>(0);}
+inline any_quantity_cref get_section_cval(const btensor& tens, size_t dim , size_t section){return tens.section_conserved_qtt(dim,section);}
 torch_shape shape_from(std::initializer_list<torch_shape> shapes);
 /**
  * @brief  Construct an empty block tensor or torch_shape from the supplied shapes.
@@ -1277,20 +1293,20 @@ inline btensor less(btensor::Scalar other, const btensor &A) { return A.greater(
 inline btensor le(btensor::Scalar other, const btensor &A) { return A.ge(other); }
 inline btensor ge(btensor::Scalar other, const btensor &A) { return A.le(other); }
 
-inline btensor operator>(const btensor& A, btensor::Scalar other){return greater(A,other);}
-inline btensor operator>(const btensor& A, const btensor& other){return greater(A,other);}
-inline btensor operator>(btensor::Scalar A, const btensor& other){return greater(A,other);}
-inline btensor operator<(const btensor& A, btensor::Scalar other){return less(A,other);}
-inline btensor operator<(const btensor& A, const btensor& other){return less(A,other);}
-inline btensor operator<(btensor::Scalar A, const btensor& other){return less(A,other);}
-inline btensor operator>=(const btensor& A, btensor::Scalar other){return ge(A,other);}
-inline btensor operator>=(const btensor& A, const btensor& other){return ge(A,other);}
-inline btensor operator>=(btensor::Scalar A, const btensor& other){return ge(A,other);}
-inline btensor operator<=(const btensor& A, btensor::Scalar other){return le(A,other);}
-inline btensor operator<=(const btensor& A, const btensor& other){return le(A,other);}
-inline btensor operator<=(btensor::Scalar A, const btensor& other){return le(A,other);}
+inline btensor operator>(const btensor &A, btensor::Scalar other) { return greater(A, other); }
+inline btensor operator>(const btensor &A, const btensor &other) { return greater(A, other); }
+inline btensor operator>(btensor::Scalar A, const btensor &other) { return greater(A, other); }
+inline btensor operator<(const btensor &A, btensor::Scalar other) { return less(A, other); }
+inline btensor operator<(const btensor &A, const btensor &other) { return less(A, other); }
+inline btensor operator<(btensor::Scalar A, const btensor &other) { return less(A, other); }
+inline btensor operator>=(const btensor &A, btensor::Scalar other) { return ge(A, other); }
+inline btensor operator>=(const btensor &A, const btensor &other) { return ge(A, other); }
+inline btensor operator>=(btensor::Scalar A, const btensor &other) { return ge(A, other); }
+inline btensor operator<=(const btensor &A, btensor::Scalar other) { return le(A, other); }
+inline btensor operator<=(const btensor &A, const btensor &other) { return le(A, other); }
+inline btensor operator<=(btensor::Scalar A, const btensor &other) { return le(A, other); }
 
-inline btensor sum(const btensor& t){return t.sum();}
+inline btensor sum(const btensor &t) { return t.sum(); }
 
 using torch::pow;
 using torch::sqrt;
@@ -1352,7 +1368,10 @@ inline btensor &shift_selection_rule_(btensor &tens, any_quantity_cref shift)
 {
 	return tens.shift_selection_rule_(shift);
 }
-inline void print(const btensor &x) { fmt::print("{}\n\n", x); }
+
+void print(const btensor &x);
+std::string to_string(const btensor &x);
+
 /**
  * @brief Set the selection rule of the block tensor
  *
@@ -1367,8 +1386,8 @@ qtt_TEST_CASE("btensor")
 	using cqt = conserved::C<5>; // don't put negative number in the constructor and expect sensible results.
 	using index = btensor::index_list;
 	any_quantity selection_rule(cqt(0)); // DMRJulia flux
-
 	btensor A({{{2, cqt(0)}, {3, cqt(1)}}, {{2, cqt(0)}, {3, cqt(1).inverse()}}}, selection_rule);
+	volatile auto x = to_string(A); // trying to force to_string into existance for debugging.
 	qtt_CHECK(A.end() - A.begin() == 0);
 	auto A00 = torch::rand({2, 2});
 	auto A11 = torch::rand({3, 3});
@@ -1471,6 +1490,16 @@ qtt_TEST_CASE("btensor")
 		qtt_CHECK(torch::allclose(A.block_at({0, 0}), AP00));
 		qtt_CHECK(torch::allclose(A.block_at({1, 1}), AP11));
 		qtt_CHECK(get_refcount(AA00.block_at({1, 1})) == 1);
+	}
+	qtt_SUBCASE("substraction")
+	{
+		btensor A = rand({},quantity(cqt(0)));
+		btensor B = rand({},quantity(cqt(0)));
+		auto C = A-B;
+		qtt_CHECK_NOTHROW(A.block_at({}));
+		qtt_CHECK_NOTHROW(B.block_at({}));
+		qtt_CHECK_NOTHROW(C.block_at({}));
+		qtt_CHECK(torch::allclose(C.block_at({}),A.block_at({})-B.block({})));
 	}
 	qtt_SUBCASE("Reshape")
 	{

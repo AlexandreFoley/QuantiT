@@ -103,6 +103,8 @@ std::tuple<btensor, bMPS> dmrg(bMPO &hamiltonian, any_quantity_cref qnum, const 
 {
 	auto length = hamiltonian.size();
 	auto out_mps = random_MPS(options.minimum_bond, hamiltonian, qnum);
+	// size_t counter=0;
+	// for(auto&a:out_mps){fmt::print("====== ===pos {}===========\n{}",counter++,a);}
 	auto E0 = dmrg(hamiltonian, out_mps, options,logger);
 	return std::make_tuple(E0, out_mps);
 }
@@ -169,7 +171,7 @@ struct dmrg_2sites_update
 		{
 			// the orthognality center was at oc+1
 			state[oc] = u.mul_(d);
-			state[oc + 1] = v.permute({2, 0, 1});
+			state[oc + 1] = v.conj().permute({2, 0, 1});
 			Env[oc + 1] = compute_right_env(hamil[oc + 1], state[oc + 1], Env[oc + 2]);
 		}
 		// fmt::print("full norm: \n{}\n",contract(sta6te,state));
@@ -295,15 +297,23 @@ void generate_env_impl(const MPO_T &hamiltonian, const MPS_T &state, env_hold_T 
 
 	Env.env = MPT_t(hamiltonian.size() + 2);
 
+	
 	auto LS = shape_from(state.front(), {-1, 0, 0});
+	auto Hamil_contrib =  shape_from(hamiltonian.front(), {-1, 0, 0, 0}).neutral_selection_rule();
+	Hamil_contrib = shape_from(Hamil_contrib,shape_from(Hamil_contrib,{0})).inverse_cvals();
+	//for the edge the selection rule should be whatever the conserved quantity
 	auto trivial_Ledge =
-	    ones_like(shape_from(LS, shape_from(hamiltonian.front(), {-1, 0, 0, 0}), LS.inverse_cvals()).neutral_shape(),torch::TensorOptions().requires_grad(false));
+	    ones_like(shape_from(LS, Hamil_contrib, LS.inverse_cvals()),torch::TensorOptions().requires_grad(false));
 	auto RS = shape_from(state.back(), {0, 0, -1});
+	Hamil_contrib = shape_from(hamiltonian.back(), {0, 0, -1, 0}).neutral_selection_rule();
+	Hamil_contrib = shape_from(Hamil_contrib,shape_from(Hamil_contrib,{0})).inverse_cvals();
 	auto trivial_Redge =
-	    ones_like(shape_from(RS, shape_from(hamiltonian.back(), {0, 0, -1, 0}), RS.inverse_cvals()).neutral_shape(),torch::TensorOptions().requires_grad(false));
+	    ones_like(shape_from(RS, Hamil_contrib, RS.inverse_cvals()),torch::TensorOptions().requires_grad(false));
 
 	Env[-1] = trivial_Ledge;
 	Env[hamiltonian.size()] = trivial_Redge;
+	// fmt::print("on the left: \n \t{}\n\n\t{}\n\n\t{}",Env[-1],hamiltonian[0],state[0]);
+	// fmt::print("on the right: \n \t{}\n\n\t{}\n\n\t{}",Env[hamiltonian.size()],hamiltonian[hamiltonian.size()-1],state[hamiltonian.size()-1]);
 	size_t i = 0;
 	while (i < state.orthogonality_center)
 	{
@@ -384,6 +394,10 @@ Tensor compute_right_env_impl(const Tensor &Hamil, const Tensor &MPS, const Tens
 	 * Left-right mirror to compute_left_env, with same index ordering (no mirroring) for Y and H.
 	 */
 	auto out = tensordot(right_env, MPS, {0}, {2});
+	// fmt::print("\n========Right env========\ntemp {}\n\n",out);
+	// fmt::print("input env {}\n\n",right_env);
+	// fmt::print("state {}\n\n",MPS);
+	// fmt::print("Hamil {}\n\n",Hamil);
 	out = tensordot(out, Hamil, {0, 3}, {2, 3});
 	out = tensordot(out, MPS.conj(), {3, 0}, {1, 2});
 	return out;
@@ -436,10 +450,14 @@ btensor details::hamil2site_times_state(const btensor &state, const btensor &ham
 template <class Tensor>
 std::tuple<Tensor, Tensor, Tensor> eig2x2Mat_impl(const Tensor &a0, const Tensor &a1, const Tensor &b)
 {
+	// fmt::print("input: {}\n{}\n{}\n",a0,a1,b);
 	auto crit = sqrt(pow(a0 - a1, 2) + 4 * (b.pow(2)));
+	// fmt::print("crit {}\n\n",crit);
 	auto E0 = (a0 + a1 - crit) / 2; // smallest eigenvalue. largest is (a0+a1 +crit)/2
-
+	// fmt::print("E0 {}\n\n",E0);
+	// fmt::print("test!\n E0-a1 {}\n\n -crit {} \n\n(E0-a1)/crit {}",E0-a1, -crit, (E0-a1)/crit); //E0-a1 somehow has the wrong sign.
 	auto o_coeff = sqrt((E0 - a1) / (-crit)); // from arxiv.org/pdf/1908.03795.pdf
+	// fmt::print("O {}\n\n",o_coeff);
 	auto n_coeff = -b * o_coeff / (a1 - E0);  // can't use o^2+n^2 = 1: loose important phase information that way.
 	return std::make_tuple(E0, o_coeff, n_coeff);
 }
@@ -462,9 +480,11 @@ std::tuple<Tensor, Tensor, Tensor, Tensor> one_step_lanczos_impl(const Tensor &s
 	// auto a0 = torch::real(torch::tensordot(psi_ip, state.conj(), {0, 1, 2, 3}, {0, 1, 2, 3}));//real doesn't work if
 	// the dtype isn't complex... hopefully will be solved on pytorch's end once the complex support is completed
 	auto a0 = (tensordot(psi_ip, state.conj(), {0, 1, 2, 3}, {0, 1, 2, 3}));
+	// fmt::print("a0 {}\n",a0);
+	// fmt::print("state {}\n",state);
 	psi_ip -= state * a0;
 	auto b = sqrt((tensordot(psi_ip, psi_ip.conj(), {0, 1, 2, 3}, {0, 1, 2, 3})));
-	const bool non_singular = [=]()
+	const bool non_singular = [&]()
 	{
 		btensor::Scalar X = ge(b.abs(), 1e-15).item();
 		return X.to<bool>();
@@ -494,10 +514,11 @@ std::tuple<Tensor, Tensor> two_sites_update_impl(const Tensor &state, const Tens
                                                  const Tensor &Renv)
 {
 	auto [psi_ip, a0, a1, b] = one_step_lanczos(state, hamil, Lenv, Renv);
+	// fmt::print("Psi_ip {}\n\na0 {}\n\n a1 {}\n\nb {}\n\n",psi_ip,a0,a1,b);
 	auto [E, o_coeff, n_coeff] = eig2x2Mat(a0, a1, b);
-	// fmt::print("ZIM\n E: {}\n O: {}\n N: {}\n",E,o_coeff,n_coeff);
-	// fmt::print("a0: {}\na1: {}\nb: {}\nZOOM\n",a0,a1,b);
+	// fmt::print("E: {}\n O: {}\n N: {}\n",E,o_coeff,n_coeff);
 	auto psi_update = o_coeff * state + n_coeff * psi_ip;
+	// fmt::print("psi_up {}\n\n",psi_update);
 	return std::make_tuple(E, psi_update);
 }
 /**

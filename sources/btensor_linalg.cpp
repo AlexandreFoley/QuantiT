@@ -383,6 +383,7 @@ std::tuple<btensor, btensor> symeig(const btensor &tensor, size_t split)
 std::tuple<btensor, btensor, btensor> svd(const btensor &tensor, const BOOL some, const BOOL compute_uv)
 {
 	// extract independant btensors
+	// fmt::print("========SVD input =======\n{}\n\n",tensor);
 	std::vector<std::tuple<torch::Tensor, btensor::index_list, std::vector<std::tuple<int, torch::indexing::Slice>>,
 	                       std::vector<std::tuple<int, torch::indexing::Slice>>>>
 	    tensors_n_indices = LA_helpers::compact_dense(tensor);
@@ -402,17 +403,6 @@ std::tuple<btensor, btensor, btensor> svd(const btensor &tensor, const BOOL some
 	{
 		*D_rcval_it = (tensor.section_conserved_qtt(tensor.dim() - 1, std::get<0>(cols[0])));
 		*D_lcval_it = D_rcval_it->inverse();
-		// fmt::print("{} {}\n",*D_lcval_it,*D_rcval_it);
-		// fmt::print("other indices {}\n", other_indices);
-
-		// for (auto& row:rows)
-		// {
-		// fmt::print("input row {}\n", std::get<0>(row));
-		// }
-		// for (auto& col:cols)
-		// {
-		// fmt::print("input row {}\n", std::get<0>(row));
-		// }
 		U_blocks += rows.size();
 		V_blocks += cols.size();
 		if (some)
@@ -482,6 +472,7 @@ std::tuple<btensor, btensor, btensor> svd(const btensor &tensor, const BOOL some
 	b_i = 0;
 	for (auto &[basictensor, other_indices, rows, cols] : tensors_n_indices)
 	{
+		// fmt::print("======basictensor=======\n {}\n\n", basictensor );
 		auto [bU, bD, bV] = torch::svd(basictensor, some, compute_uv);
 		auto extra_block_slice = std::make_tuple(b_i, torch::indexing::Slice());
 		for (auto &row : rows)

@@ -426,6 +426,9 @@ bMPS random_bMPS_impl(size_t length, int64_t bond_dim, T &&phys_dim, any_quantit
 		right_side.inverse_cvals_();
 		swap(right_side, left_side);
 	}
+	#ifndef NDEBUG
+	if (! out.check_ranks()) throw std::runtime_error("random MPS generator failed.");
+	#endif
 	return out;
 }
 
