@@ -83,7 +83,10 @@ class any_quantity final
 	 *
 	 */
 	any_quantity(); // default to a group that contain only the neutral element. avoid having an unitialized unique_ptr.
-	any_quantity(const any_quantity &other) : impl(other.impl->clone()) {}
+	any_quantity(const any_quantity &other) : impl(
+		other.impl?
+		 other.impl->clone():
+		  any_quantity(conserved::C<1>(0)).impl->clone() ) {}
 	// any_quantity(any_quantity_cref other); // explicit to avoid accidental copies and ambiguous overloads
 	// any_quantity(any_quantity_ref other);  // explicit to avoid accidental copies and ambiguous overloads
 	any_quantity(any_quantity &&) = default;

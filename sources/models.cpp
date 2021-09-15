@@ -28,14 +28,15 @@ MPO details::Heisenberg_impl(torch::Tensor J, size_t lenght)
 		type = torch::scalarTypeToTypeMeta(torch::kInt8);
 	auto local_tens = torch::zeros({5, 2, 5, 2}, type);
 	auto [sx, isy, sz, lo, id] = pauli();
+	auto hi = lo.t();
 	using namespace torch::indexing;
 	local_tens.index_put_({0, Slice(), 0, Slice()}, id);
-	local_tens.index_put_({1, Slice(), 0, Slice()}, sx);
-	local_tens.index_put_({2, Slice(), 0, Slice()}, -isy);
+	local_tens.index_put_({1, Slice(), 0, Slice()}, lo);
+	local_tens.index_put_({2, Slice(), 0, Slice()}, hi);
 	local_tens.index_put_({3, Slice(), 0, Slice()}, sz);
 	local_tens.index_put_({4, Slice(), 0, Slice()}, 0);
-	local_tens.index_put_({4, Slice(), 1, Slice()}, J * sx);
-	local_tens.index_put_({4, Slice(), 2, Slice()}, J * isy);
+	local_tens.index_put_({4, Slice(), 1, Slice()}, 2*J * hi);
+	local_tens.index_put_({4, Slice(), 2, Slice()}, 2*J * lo);
 	local_tens.index_put_({4, Slice(), 3, Slice()}, J * sz);
 	local_tens.index_put_({4, Slice(), 4, Slice()}, id);
 	local_tens.contiguous();
@@ -47,6 +48,23 @@ MPO details::Heisenberg_impl(torch::Tensor J, size_t lenght)
 MPO Heisenberg(torch::Tensor J, size_t lenght)
 {
 	return details::Heisenberg_impl(-J / 4.0, lenght);
+}
+bMPO Heisenberg(torch::Tensor J, size_t lenght,btensor local_shape)
+{
+	MPO tmp_hamil = Heisenberg(J,lenght);
+	bMPO out(lenght);
+	out.front() = from_basic_tensor_like(local_shape.basic_create_view({4,-1,-1,-1},true),tmp_hamil.front());
+	constexpr auto message = "the local shape is incompatible with the MPO at site {}.";
+	if (!torch::allclose(out.front().to_dense(),tmp_hamil.front())) throw std::invalid_argument(fmt::format(message,0));
+	size_t i =1;
+	for(; i<lenght-1;++i)
+	{
+		out[i] = from_basic_tensor_like(local_shape,tmp_hamil[i]);
+		if (!torch::allclose(out[i].to_dense(),tmp_hamil[i]))throw std::invalid_argument(fmt::format(message,i));
+	}
+	out.back() = from_basic_tensor_like(local_shape.basic_create_view({-1,-1,0,-1},true),tmp_hamil.back());
+	if (!torch::allclose(out.back().to_dense(),tmp_hamil.back())) throw std::invalid_argument(fmt::format(message,i));
+	return out;
 }
 
 MPO Hubbard(torch::Tensor U, torch::Tensor mu, size_t lenght)

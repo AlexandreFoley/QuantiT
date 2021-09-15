@@ -246,6 +246,20 @@ compact_dense(const btensor &tensor)
 	// return the tensor and the list.
 	return out_tensors;
 }
+using Slice = torch::indexing::Slice;
+using TensInd = torch::indexing::TensorIndex;
+std::tuple<btensor::index_list, std::array<TensInd, 3>> build_index_slice(const btensor::index_list &other_indices,
+                                                                          const std::tuple<int, Slice> &rb_slices,
+                                                                          const std::tuple<int, Slice> &cb_slices)
+{
+	auto rank = other_indices.size() + 2;
+	btensor::index_list block_ind(rank);
+	std::copy(other_indices.begin(), other_indices.end(), block_ind.begin());
+	block_ind[rank - 2] = std::get<0>(rb_slices);
+	block_ind[rank - 1] = std::get<0>(cb_slices);
+	return std::make_tuple(
+	    block_ind, std::array<TensInd, 3>{torch::indexing::Ellipsis, std::get<1>(rb_slices), std::get<1>(cb_slices)});
+}
 void reverse_compact_dense(torch::Tensor &tensor, btensor &out, btensor::index_list other_indices,
                            std::vector<std::tuple<int, torch::indexing::Slice>> rows,
                            std::vector<std::tuple<int, torch::indexing::Slice>> cols)
@@ -263,20 +277,6 @@ void reverse_compact_dense(torch::Tensor &tensor, btensor &out, btensor::index_l
 			out.block(block_index) = tensor.index(slices);
 		}
 	}
-}
-using Slice = torch::indexing::Slice;
-using TensInd = torch::indexing::TensorIndex;
-std::tuple<btensor::index_list, std::array<TensInd, 3>> build_index_slice(const btensor::index_list &other_indices,
-                                                                          const std::tuple<int, Slice> &rb_slices,
-                                                                          const std::tuple<int, Slice> &cb_slices)
-{
-	auto rank = other_indices.size() + 2;
-	btensor::index_list block_ind(rank);
-	std::copy(other_indices.begin(), other_indices.end(), block_ind.begin());
-	block_ind[rank - 2] = std::get<0>(rb_slices);
-	block_ind[rank - 1] = std::get<0>(cb_slices);
-	return std::make_tuple(
-	    block_ind, std::array<TensInd, 3>{torch::indexing::Ellipsis, std::get<1>(rb_slices), std::get<1>(cb_slices)});
 }
 
 } // namespace LA_helpers

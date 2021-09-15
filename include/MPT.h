@@ -115,6 +115,7 @@ class vector_lift
 	}
 	vector_lift(VTens &other) : tensors(other) {}
 	vector_lift(std::initializer_list<Tens> initl) : tensors(initl) {}
+	vector_lift(const_iterator begin, const_iterator end): tensors(begin,end) {}
 	virtual ~vector_lift() = default;
 
 	explicit operator S()
@@ -271,6 +272,8 @@ class MPT final : public vector_lift<MPT>
 	MPT(const MPT &other) : vector_lift<MPT>(other) {}
 	MPT(MPT &&other) noexcept : vector_lift<MPT>(std::move(other)) {}
 	MPT(std::initializer_list<Tens> initl) : vector_lift<MPT>(initl) {}
+	MPT(const_iterator begin, const_iterator end): vector_lift(begin,end) {}
+
 	virtual ~MPT() = default;
 
 	void swap(MPT &other) { vector_lift<MPT>::swap(other); }
@@ -344,6 +347,7 @@ class MPS final
 		if (oc >= size() and oc != 0)
 			throw std::invalid_argument("orthogonality center position greater than the number of defined tensors.");
 	}
+	MPS(const_iterator begin, const_iterator end): vector_lift(begin,end),orthogonality_center(0) {}
 
 	virtual ~MPS() = default;
 
@@ -430,6 +434,8 @@ class MPO final : public vector_lift<MPO> // specialization for rank 4 tensors
 			throw std::invalid_argument("Input MPT is an invalid MPO: one or more Tensors has rank differing from 4 "
 			                            "and/or a bond dimension mismatch with its neighbor (dims 0 and 2).");
 	}
+	MPO(const_iterator begin, const_iterator end): vector_lift<MPO>(begin,end) {}
+
 
 	virtual ~MPO() = default;
 
@@ -458,6 +464,8 @@ class bMPT final : public vector_lift<bMPT, btensor>
 	bMPT(const bMPT &other) : vector_lift(other) {}
 	bMPT(bMPT &&other) noexcept : vector_lift(std::move(other)) {}
 	bMPT(std::initializer_list<Tens> initl) : vector_lift<bMPT, btensor>(initl) {}
+	bMPT(const_iterator begin, const_iterator end): vector_lift(begin,end) {}
+
 	virtual ~bMPT() = default;
 
 	void swap(bMPT &other) { vector_lift<bMPT, btensor>::swap(other); }
@@ -531,6 +539,7 @@ class bMPS final : public vector_lift<bMPS, btensor> // specialization for rank 
 		if (oc >= size() and oc != 0)
 			throw std::invalid_argument("orthogonality center position greater than the number of defined tensors.");
 	}
+	bMPS(const_iterator begin, const_iterator end): vector_lift(begin,end) {}
 
 	virtual ~bMPS() = default;
 
@@ -617,6 +626,7 @@ class bMPO final : public vector_lift<bMPO, btensor> // specialization for rank 
 			throw std::invalid_argument("Input bMPT is an invalid bMPO: one or more Tensors has rank differing from 4 "
 			                            "and/or a bond dimension mismatch with its neighbor (dims 0 and 2).");
 	}
+	bMPO(const_iterator begin, const_iterator end): vector_lift(begin,end) {}
 
 	virtual ~bMPO() = default;
 

@@ -70,7 +70,8 @@ class dmrg_gradient_guard
 
   public:
 	dmrg_gradient_guard(MPO_t &_hamil, MPS_t &_state, const dmrg_options &options)
-	    : hamil(_hamil), state(_state), guard_hamil(options.hamil_gradient), guard_state(options.state_gradient),hamil_opt(hamil[0].options()),state_opt(state[0].options())
+	    : hamil(_hamil), state(_state), guard_hamil(options.hamil_gradient), guard_state(options.state_gradient),
+	      hamil_opt(hamil[0].options()), state_opt(state[0].options())
 	{
 		hamil.to_(torch::TensorOptions().requires_grad(guard_hamil));
 		state.to_(torch::TensorOptions().requires_grad(guard_state));
@@ -80,12 +81,13 @@ class dmrg_gradient_guard
 		hamil.to_(hamil_opt);
 		state.to_(state_opt);
 	}
-
 };
 
 btensor dmrg(bMPO &hamiltonian, bMPS &in_out_state, const dmrg_options &options, dmrg_logger &logger)
 {
-	dmrg_gradient_guard guard(hamiltonian, in_out_state, options);//set the tracing of hamil and state to whatever is specified in the option, then set it back to its original value at the end.
+	dmrg_gradient_guard guard(hamiltonian, in_out_state,
+	                          options); // set the tracing of hamil and state to whatever is specified in the option,
+	                                    // then set it back to its original value at the end.
 	auto Env = generate_env(hamiltonian, in_out_state);
 	auto TwositesH = compute_2sitesHamil(hamiltonian);
 	return details::dmrg_impl(hamiltonian, TwositesH, in_out_state, options, Env, logger);
@@ -105,14 +107,14 @@ std::tuple<btensor, bMPS> dmrg(bMPO &hamiltonian, any_quantity_cref qnum, const 
 	auto out_mps = random_MPS(options.minimum_bond, hamiltonian, qnum);
 	// size_t counter=0;
 	// for(auto&a:out_mps){fmt::print("====== ===pos {}===========\n{}",counter++,a);}
-	auto E0 = dmrg(hamiltonian, out_mps, options,logger);
+	auto E0 = dmrg(hamiltonian, out_mps, options, logger);
 	return std::make_tuple(E0, out_mps);
 }
-std::tuple<torch::Tensor, MPS> dmrg( MPO &hamiltonian, const dmrg_options &options, dmrg_logger &logger)
+std::tuple<torch::Tensor, MPS> dmrg(MPO &hamiltonian, const dmrg_options &options, dmrg_logger &logger)
 {
 	auto length = hamiltonian.size();
 	auto out_mps = random_MPS(options.minimum_bond, hamiltonian);
-	auto E0 = dmrg(hamiltonian, out_mps, options,logger);
+	auto E0 = dmrg(hamiltonian, out_mps, options, logger);
 	return std::make_tuple(E0, out_mps);
 }
 
@@ -126,7 +128,7 @@ auto sweep(MPS_t &state, T update, int step, size_t Nstep, size_t right_edge, si
 	{
 		E0 = update(state, step);
 		auto &oc = state.orthogonality_center;
-		// fmt::print("i {} oc {} step {} || E \n {}\n ",i,oc,step,E0);
+		fmt::print("i {} oc {} step {} || E {}\n ", i, oc, step, E0.item().toDouble());
 		step *= 1 - 2 * ((oc == left_edge) or (oc == right_edge)); // reverse the step direction if we're on the edge.
 	}
 	// fmt::print("\n");
@@ -156,22 +158,60 @@ struct dmrg_2sites_update
 	{
 		bool forward = step == 1;
 		tensor_t E0;
+		const auto unsqueezing_shape = [&]()
+		{
+			if constexpr (std::is_same_v<tensor_t, btensor>)
+			{
+				auto p = btensor({{{1, state[0].selection_rule->neutral()}}}, state[0].selection_rule->neutral(),state[0].options());
+				return shape_from(p, p);
+			}
+			else
+			{
+				torch_shape x;
+				x._sizes = {1, 1};
+				x.opt = state[0].options();
+				return x;
+			}
+		}();
+		// current clear problem: the orthogonality center doesn't contain the norm, or in other words, the
+		// alogirthm doesn't maintain the MPS's canonicity. applies for both torch tensor and btensor, but for some
+		// reason the problem gets corrected everytimes it occur with torch tensors. with the torch tensor the norm
+		// is either 1 or 2, with btensor it's all over the place fmt::print("a0 predict1 : {}\n", contract(state,
+		// state, hamil).item().toDouble()); fmt::print("a0 predict2 : {}\n", contract(state, state, hamil, Env[-1],
+		// Env[state.size()]).item().toDouble());
+		MPO_t tmpMPO(hamil.begin() + oc, hamil.begin() + oc + 2);
+		MPS_t tmpstate(state.begin() + oc, state.begin() + oc + 2);
+		auto a02 = contract(tmpstate, tmpstate, tmpMPO, Env[oc - 1], Env[oc + 2]);
+		// fmt::print("a0 predict from env: {}\n", a02.item().toDouble());
+
+		fmt::print("state norm: {}\n", contract(state, state).item().toDouble());
+		fmt::print("oc norm: {}\n", tensordot(state[oc], state[oc].conj(), {0, 1, 2}, {0, 1, 2}).item().toDouble());
 		auto local_state = tensordot(state[oc], state[oc + 1], {2}, {0});
+		fmt::print("local norm: {}\n",
+		           tensordot(local_state, local_state.conj(), {0, 1, 2, 3}, {0, 1, 2, 3}).item().toDouble());
 		std::tie(E0, local_state) = two_sites_update(local_state, twosite_hamil[oc], Env[oc - 1], Env[oc + 2]);
+		fmt::print("updated state norm: {}\n",
+		           tensordot(local_state, local_state.conj(), {0, 1, 2, 3}, {0, 1, 2, 3}).item().toDouble());
 		auto [u, d, v] = quantt::svd(local_state, 2, options.cutoff, options.minimum_bond, options.maximum_bond);
+		fmt::print("SVD sum square singular values: {}\n", sum(d.pow(2)).item().toDouble());
 		d /= sqrt(sum(d.pow(2)));
 		if (forward)
 		{
 			// the orthogonality center was at oc
 			state[oc] = u;
-			state[oc + 1] = v.mul_(d).conj().permute({2, 0, 1});
+			state[oc + 1] = (v.permute({2,0,1})).mul_(d).conj(); // this is the problem.
+			fmt::print("forward post SVD norm {}\n",
+			           tensordot(state[oc + 1], state[oc + 1].conj(), {0, 1, 2}, {0, 1, 2}).item().toDouble());
 			Env[oc] = compute_left_env(hamil[oc], state[oc], Env[oc - 1]);
 		}
 		else
 		{
+		auto d_r = d.reshape_as(shape_from(unsqueezing_shape,d));
 			// the orthognality center was at oc+1
-			state[oc] = u.mul_(d);
-			state[oc + 1] = v.conj().permute({2, 0, 1});
+			state[oc] = u.mul_(d_r); // this is the problem.
+			fmt::print("backward post SVD norm {}\n",
+			           tensordot(state[oc], state[oc].conj(), {0, 1, 2}, {0, 1, 2}).item().toDouble());
+			state[oc + 1] = (v.conj()).permute({2, 0, 1});
 			Env[oc + 1] = compute_right_env(hamil[oc + 1], state[oc + 1], Env[oc + 2]);
 		}
 		// fmt::print("full norm: \n{}\n",contract(sta6te,state));
@@ -189,14 +229,16 @@ btensor details::dmrg_impl(const bMPO &hamiltonian, const bMPT &two_sites_hamil,
 	auto sweep_dir = 1;
 	size_t init_pos = in_out_state.orthogonality_center;
 	auto N_step = two_sites_hamil.size() - 1 + (two_sites_hamil.size() == 1);
-	torch::Tensor E0_update;
 	int step = (in_out_state.orthogonality_center == 0) ? 1 : -1;
 	if (two_sites_hamil.size() == 1)
 		step = 0;
 	// fmt::print("step {}\n",step);
 	auto &oc = in_out_state.oc;
 	if (oc == in_out_state.size() - 1)
+	{
+		--init_pos;
 		--oc;
+	}
 	dmrg_2sites_update update(hamiltonian, two_sites_hamil, oc, Env, options);
 	auto iteration = 0u;
 	logger.init(options);
@@ -207,17 +249,26 @@ btensor details::dmrg_impl(const bMPO &hamiltonian, const bMPT &two_sites_hamil,
 		std::tie(E0_tens, step) =
 		    sweep(in_out_state, update, step, 2 * N_step, in_out_state.size() - 2); // sweep from the oc and back to it.
 		logger.it_log_all(iteration, E0_tens, in_out_state);
-		// E0_update = E0_tens;
-		// swap(E0, E0_update);
+		// DBG
+		int oc = in_out_state.orthogonality_center;
+		auto S2State = tensordot(in_out_state[oc], in_out_state[oc + 1], {2}, {0});
+		auto E0_env = hamil2site_times_state(S2State, two_sites_hamil[oc], Env[oc - 1], Env[oc + 2]);
+		E0_env = tensordot(E0_env, S2State.conj(), {0, 1, 2, 3}, {0, 1, 2, 3});
+		auto dbg_E0 = contract(in_out_state, in_out_state, hamiltonian).item().to<double>();
+		auto dbg_snorm = contract(in_out_state, in_out_state).item().to<double>();
+		fmt::print("{:-^40}\n E0 contract: {}\nE0 dmrg {}\nstate norm: {}\nenv E0{}\n", "", dbg_E0,
+		           E0_tens.item().to<double>(), dbg_snorm, E0_env.item().to<double>());
+		//\DBG
+		swap(E0, E0_tens);
 		if (!(((E0 - E0_tens).abs() > options.convergence_criterion))
 		         .item()
 		         .toBool()) // looks weird? it's so it stop on nan (nan
 		                    // compare false with everything).
 		{
-			E0 = E0_tens;
+			// E0 = E0_tens;
 			break;
 		}
-		E0 = E0_tens;
+		// E0 = E0_tens;
 	}
 	if (oc != init_pos)
 	{
@@ -251,19 +302,21 @@ torch::Tensor details::dmrg_impl(const MPO &hamiltonian, const MPT &twosites_ham
 	// fmt::print("step {}\n",step);
 	auto &oc = in_out_state.oc;
 	if (oc == in_out_state.size() - 1)
+	{
+		--init_pos;
 		--oc;
+	}
 	dmrg_2sites_update update(hamiltonian, twosites_hamil, oc, Env, options);
 	auto iteration = 0u;
 	logger.init(options);
 	for (iteration = 0u; iteration < options.maximum_iterations; ++iteration)
 	{
-		torch::Tensor E0_tens;
 		// fmt::print("\nSweep\n\n");
-		std::tie(E0_tens, step) =
+		std::tie(E0_update, step) =
 		    sweep(in_out_state, update, step, 2 * N_step, in_out_state.size() - 2); // sweep from the oc and back to it.
-		logger.it_log_all(iteration, E0_tens, in_out_state);
-		E0_update = E0_tens;
+		logger.it_log_all(iteration, E0_update, in_out_state);
 		std::swap(E0, E0_update);
+		fmt::print("{:-^40}\n", "");
 		if (!((abs(E0_update - E0) > options.convergence_criterion))
 		         .item()
 		         .to<bool>()) // looks weird? it's so it stop on nan (nan
@@ -285,6 +338,39 @@ torch::Tensor details::dmrg_impl(const MPO &hamiltonian, const MPT &twosites_ham
 
 	return E0;
 }
+template <class shape_t>
+auto edge_shape_prep_impl(const shape_t &tens, int64_t dim)
+{
+	auto tens_vec = std::vector<int64_t>(tens.dim(), 0);
+	tens_vec[dim] = -1;
+	auto Shape = shape_from(tens, tens_vec).neutral_selection_rule();
+	return shape_from(Shape, shape_from(Shape, {0})).inverse_cvals_();
+}
+btensor details::edge_shape_prep(const btensor &tens, int64_t dim) { return edge_shape_prep_impl(tens, dim); }
+torch_shape details::edge_shape_prep(const torch_shape &tens, int64_t dim) { return edge_shape_prep_impl(tens, dim); }
+
+template <class Tens>
+Tens trivial_edge_impl(const Tens &lower_state, const Tens &Hamil, const Tens &upper_state, int64_t index_low,
+                       int64_t index_op, int64_t index_up)
+{
+
+	auto US = edge_shape_prep(upper_state, index_up);
+	auto LS = edge_shape_prep(lower_state, index_low);
+	auto Hamil_contrib = edge_shape_prep(Hamil, index_op);
+	return ones_like(shape_from(LS, Hamil_contrib, US), torch::TensorOptions().requires_grad(false));
+}
+
+torch::Tensor details::trivial_edge(const torch::Tensor &lower_state, const torch::Tensor &Hamil,
+                                    const torch::Tensor &upper_state, int64_t index_low, int64_t index_op,
+                                    int64_t index_up)
+{
+	return trivial_edge_impl(lower_state, Hamil, upper_state, index_low, index_op, index_up);
+}
+btensor details::trivial_edge(const btensor &lower_state, const btensor &Hamil, const btensor &upper_state,
+                              int64_t index_low, int64_t index_op, int64_t index_up)
+{
+	return trivial_edge_impl(lower_state, Hamil, upper_state, index_low, index_op, index_up);
+}
 
 template <class MPO_T, class MPS_T, class env_hold_T>
 void generate_env_impl(const MPO_T &hamiltonian, const MPS_T &state, env_hold_T &Env)
@@ -297,23 +383,19 @@ void generate_env_impl(const MPO_T &hamiltonian, const MPS_T &state, env_hold_T 
 
 	Env.env = MPT_t(hamiltonian.size() + 2);
 
-	
-	auto LS = shape_from(state.front(), {-1, 0, 0});
-	auto Hamil_contrib =  shape_from(hamiltonian.front(), {-1, 0, 0, 0}).neutral_selection_rule();
-	Hamil_contrib = shape_from(Hamil_contrib,shape_from(Hamil_contrib,{0})).inverse_cvals();
-	//for the edge the selection rule should be whatever the conserved quantity
+	auto Lstate_shape = edge_shape_prep(state.front(), 0);
 	auto trivial_Ledge =
-	    ones_like(shape_from(LS, Hamil_contrib, LS.inverse_cvals()),torch::TensorOptions().requires_grad(false));
-	auto RS = shape_from(state.back(), {0, 0, -1});
-	Hamil_contrib = shape_from(hamiltonian.back(), {0, 0, -1, 0}).neutral_selection_rule();
-	Hamil_contrib = shape_from(Hamil_contrib,shape_from(Hamil_contrib,{0})).inverse_cvals();
+	    ones_like(shape_from(Lstate_shape, edge_shape_prep(hamiltonian.front(), 0), Lstate_shape.inverse_cvals()),
+	              torch::TensorOptions().requires_grad(false));
+	auto Rstate_shape = edge_shape_prep(state.back(), 2);
 	auto trivial_Redge =
-	    ones_like(shape_from(RS, Hamil_contrib, RS.inverse_cvals()),torch::TensorOptions().requires_grad(false));
-
+	    ones_like(shape_from(Rstate_shape, edge_shape_prep(hamiltonian.back(), 2), Rstate_shape.inverse_cvals()),
+	              torch::TensorOptions().requires_grad(false));
 	Env[-1] = trivial_Ledge;
 	Env[hamiltonian.size()] = trivial_Redge;
 	// fmt::print("on the left: \n \t{}\n\n\t{}\n\n\t{}",Env[-1],hamiltonian[0],state[0]);
-	// fmt::print("on the right: \n \t{}\n\n\t{}\n\n\t{}",Env[hamiltonian.size()],hamiltonian[hamiltonian.size()-1],state[hamiltonian.size()-1]);
+	// fmt::print("on the right: \n
+	// \t{}\n\n\t{}\n\n\t{}",Env[hamiltonian.size()],hamiltonian[hamiltonian.size()-1],state[hamiltonian.size()-1]);
 	size_t i = 0;
 	while (i < state.orthogonality_center)
 	{
@@ -451,14 +533,26 @@ template <class Tensor>
 std::tuple<Tensor, Tensor, Tensor> eig2x2Mat_impl(const Tensor &a0, const Tensor &a1, const Tensor &b)
 {
 	// fmt::print("input: {}\n{}\n{}\n",a0,a1,b);
-	auto crit = sqrt(pow(a0 - a1, 2) + 4 * (b.pow(2)));
+	auto crit = sqrt(pow(a0 - a1, 2) + 4 * (b.conj() * b));
 	// fmt::print("crit {}\n\n",crit);
 	auto E0 = (a0 + a1 - crit) / 2; // smallest eigenvalue. largest is (a0+a1 +crit)/2
+	// auto E1 = (a0 + a1 + crit) / 2; // smallest eigenvalue. largest is (a0+a1 +crit)/2
 	// fmt::print("E0 {}\n\n",E0);
-	// fmt::print("test!\n E0-a1 {}\n\n -crit {} \n\n(E0-a1)/crit {}",E0-a1, -crit, (E0-a1)/crit); //E0-a1 somehow has the wrong sign.
-	auto o_coeff = sqrt((E0 - a1) / (-crit)); // from arxiv.org/pdf/1908.03795.pdf
+	// fmt::print("test!\n E0-a1 {}\n\n -crit {} \n\n(E0-a1)/crit {}",E0-a1, -crit, (E0-a1)/crit); //E0-a1 somehow has
+	// the wrong sign.
+	auto delt = (E0 - a1);
+	auto o_coeff = sqrt(delt / (-crit)); // from arxiv.org/pdf/1908.03795.pdf
 	// fmt::print("O {}\n\n",o_coeff);
-	auto n_coeff = -b * o_coeff / (a1 - E0);  // can't use o^2+n^2 = 1: loose important phase information that way.
+	bool zero_o = (((o_coeff + E0) == E0).item()).toBool() or std::isnan(o_coeff.item().toDouble());
+	auto n_coeff = (b * o_coeff) / (delt); // can't use o^2+n^2 = 1: loose important phase information that way.
+	if (zero_o)
+	{
+		// o_coeff could be nan if crit is zero, this should only happen if the input is proportionnal to the identity
+		// if o_coeff is zero, the computed n_coeff will likely be nan, but must be one.
+		n_coeff = ones_like(n_coeff);
+		o_coeff = zeros_like(o_coeff);
+	}
+	// wackadoodle conditionnals in previous expression to have 1 instead of a nan when o_coeff is zeros.
 	return std::make_tuple(E0, o_coeff, n_coeff);
 }
 std::tuple<torch::Tensor, torch::Tensor, torch::Tensor> details::eig2x2Mat(const torch::Tensor &a0,
@@ -491,6 +585,7 @@ std::tuple<Tensor, Tensor, Tensor, Tensor> one_step_lanczos_impl(const Tensor &s
 	}();
 	if (non_singular)
 		psi_ip /= b;
+	// fmt::print("\t\tnon singular {}\n",non_singular);
 	auto a1 = (tensordot(psi_ip.conj(), quantt::details::hamil2site_times_state(psi_ip, hamil, Lenv, Renv),
 	                     {0, 1, 2, 3}, {0, 1, 2, 3}));
 	return std::make_tuple(psi_ip, a0, a1, b);
@@ -514,9 +609,13 @@ std::tuple<Tensor, Tensor> two_sites_update_impl(const Tensor &state, const Tens
                                                  const Tensor &Renv)
 {
 	auto [psi_ip, a0, a1, b] = one_step_lanczos(state, hamil, Lenv, Renv);
-	// fmt::print("Psi_ip {}\n\na0 {}\n\n a1 {}\n\nb {}\n\n",psi_ip,a0,a1,b);
+	fmt::print("STATE UPDATE\nnorm psi_ip {}\n",
+	           tensordot(psi_ip, psi_ip.conj(), {0, 1, 2, 3}, {0, 1, 2, 3}).item().toDouble());
+	// fmt::print("Psi_ip {}\n\na0 {}\n\n a1 {}\n\nb
+	// {}\n\n",psi_ip.item().toDouble(),a0.item().toDouble(),a1.item().toDouble(),b.item().toDouble());
+	fmt::print("\ta0 {} a1 {} b {}\n", a0.item().toDouble(), a1.item().toDouble(), b.item().toDouble());
 	auto [E, o_coeff, n_coeff] = eig2x2Mat(a0, a1, b);
-	// fmt::print("E: {}\n O: {}\n N: {}\n",E,o_coeff,n_coeff);
+	fmt::print("\tE: {} O: {} N: {}\n", E.item().toDouble(), o_coeff.item().toDouble(), n_coeff.item().toDouble());
 	auto psi_update = o_coeff * state + n_coeff * psi_ip;
 	// fmt::print("psi_up {}\n\n",psi_update);
 	return std::make_tuple(E, psi_update);

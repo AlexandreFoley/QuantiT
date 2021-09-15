@@ -14,3 +14,4 @@ build/
 Documentation/html/*
 Documentation/latex/*
 Documentation/xml/*
+extern/cuda/*

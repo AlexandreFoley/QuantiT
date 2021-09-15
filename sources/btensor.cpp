@@ -870,12 +870,28 @@ btensor btensor::ge(btensor::Scalar other) const
 	                   [](const torch::Tensor &tensor, auto &&other_val) { return tensor.ge(other_val); }, other),
 	               out_dtype);
 }
+btensor btensor::eq(btensor::Scalar other) const
+{
+	auto out_dtype = torch::kBool;
+	return btensor(*this,
+	               new_block_list_apply_to_all_blocks(
+	                   [](const torch::Tensor &tensor, auto &&other_val) { return tensor.eq(other_val); }, other),
+	               out_dtype);
+}
 btensor btensor::less(btensor::Scalar other) const
 {
 	auto out_dtype = torch::kBool;
 	return btensor(*this,
 	               new_block_list_apply_to_all_blocks(
 	                   [](const torch::Tensor &tensor, auto &&other_val) { return tensor.less(other_val); }, other),
+	               out_dtype);
+}
+btensor btensor::not_equal(btensor::Scalar other) const
+{
+	auto out_dtype = torch::kBool;
+	return btensor(*this,
+	               new_block_list_apply_to_all_blocks(
+	                   [](const torch::Tensor &tensor, auto &&other_val) { return tensor.not_equal(other_val); }, other),
 	               out_dtype);
 }
 btensor btensor::greater(btensor::Scalar other) const
@@ -1595,6 +1611,20 @@ btensor btensor::greater(const btensor &other) const
 	out._options = out._options.merge_in(torch::kBool);
 	return out;
 }
+btensor btensor::not_equal(const btensor &other) const
+{
+	// This should be a broadcasting operation? yes.
+	auto out = broadcast_operation(other, [](const torch::Tensor &A, const torch::Tensor &B) { return A.not_equal(B); });
+	out._options = out._options.merge_in(torch::kBool);
+	return out;
+}
+btensor btensor::eq(const btensor &other) const
+{
+	// This should be a broadcasting operation? yes.
+	auto out = broadcast_operation(other, [](const torch::Tensor &A, const torch::Tensor &B) { return A.eq(B); });
+	out._options = out._options.merge_in(torch::kBool);
+	return out;
+}
 btensor btensor::div(const btensor &other) const
 {
 	return broadcast_operation(other, [](const torch::Tensor &A, const torch::Tensor &B) { return A.div(B); });
@@ -1609,7 +1639,7 @@ btensor btensor::mul(const btensor &other) const
 }
 btensor btensor::permute(torch::IntArrayRef in_permutation) const
 {
-	fmt::print("========PERMUTATION========\ninput:\tthis{}\n\n\tperm{}\n", *this, in_permutation);
+	// fmt::print("========PERMUTATION========\ninput:\tthis{}\n\n\tperm{}\n", *this, in_permutation);
 	block_list_t::content_t out_block_list; // unordered.
 	out_block_list.reserve(blocks_list.size());
 	index_list out_section_by_dim(rank);
@@ -1652,7 +1682,7 @@ btensor btensor::permute(torch::IntArrayRef in_permutation) const
 			}
 		}
 	}
-	fmt::print("=>=>outbound blocks_list<=<=\n{}", fmt::join(out_block_list, "\n\n"));
+	// fmt::print("=>=>outbound blocks_list<=<=\n{}", fmt::join(out_block_list, "\n\n"));
 	return btensor(rank, block_list_t(std::move(out_block_list)), std::move(out_section_by_dim),
 	               std::move(out_section_sizes), std::move(out_c_vals), selection_rule.value, _options);
 }
@@ -1878,6 +1908,34 @@ btensor btensor::tensordot(const btensor &other, torch::IntArrayRef dim_self, to
 	}
 	return out_btens;
 }
+btensor& btensor::squeeze_(int64_t dim) {
+	if (section_number(dim) == 1 and section_size(dim,0) == 1)
+	{//do the squeeze
+		std::vector<int64_t> res(this->dim(),-1);
+		res[dim] = 0;
+		*this = reshape(res);
+	}
+	return *this;
+}
+btensor btensor::squeeze(int64_t dim) const {
+	btensor out = *this;
+	return out.squeeze_(dim);
+}
+btensor& btensor::squeeze_() {
+	std::vector<int64_t> res(this->dim(),-1);
+	for(size_t dim = 0; dim < this->dim();++dim)
+	{
+		res[dim] *=  !(section_number(dim) == 1 and section_size(dim,0) == 1) ;
+	}
+	*this = reshape_as(shape_from(res) );
+	return *this;
+}
+btensor btensor::squeeze() const
+{
+	btensor out = *this;
+	return out.squeeze_();
+}
+
 /**
  * @brief compute the complex conjugate of the tensor and inverse the conserved values.
  *
@@ -1950,6 +2008,12 @@ void btensor::shift_impl(any_quantity_cref shift, int64_t dim)
 	}
 }
 
+bool btensor::test_same_shape(const btensor &a, const btensor &b)
+{
+	if (!(a.c_vals == b.c_vals) or !(a.selection_rule == b.selection_rule) or !(a.sections_sizes == b.sections_sizes))
+		return false;
+	return true;
+}
 void btensor::add_tensor_check(const btensor &a, const btensor &b)
 {
 	if (!(a.c_vals == b.c_vals))
@@ -1995,14 +2059,14 @@ torch_shape shape_from(std::initializer_list<torch_shape> shapes)
 		opt = shapes.begin()->opt;
 	for (auto &shape : shapes)
 	{
-		rank += shape.sizes.size();
+		rank += shape._sizes.size();
 	}
 	std::vector<int64_t> sizes(rank);
 	auto it = sizes.begin();
 	for (auto &shape : shapes)
 	{
-		std::copy(shape.sizes.begin(), shape.sizes.end(), it);
-		it += std::distance(shape.sizes.begin(), shape.sizes.end());
+		std::copy(shape._sizes.begin(), shape._sizes.end(), it);
+		it += std::distance(shape._sizes.begin(), shape._sizes.end());
 	}
 	return torch_shape(std::move(sizes), std::move(opt));
 }
@@ -2015,7 +2079,7 @@ torch_shape shape_from(const torch_shape &shape, const std::vector<int64_t> inds
 	}
 	std::vector<int64_t> sizes(rank);
 	auto it = sizes.begin();
-	auto shape_it = shape.sizes.begin();
+	auto shape_it = shape._sizes.begin();
 	if (rank)
 	{
 		for (auto &ind : inds)
@@ -2172,14 +2236,31 @@ std::vector<torch::indexing::TensorIndex> btensor::full_slice(const btensor &ten
 {
 
 	std::vector<torch::indexing::TensorIndex> out(tensor.dim(), torch::indexing::Slice());
+	// fmt::print("full slice\n");
 	for (size_t i = 0; i < tensor.dim(); ++i)
 	{
 		auto [ss_start, ss_end] = tensor.section_sizes(i);
+		// fmt::print("dim {}, sizes {}\n",i,fmt::join(ss_start,ss_end,std::string(",") ));
 		if (block[i] >= std::distance(ss_start, ss_end))
 			throw std::invalid_argument(fmt::format("the {}th block index ({}) exceed maximum allowed value ({}).", i,
 			                                        block[i], std::distance(ss_start, ss_end)));
 		auto ori = std::reduce(ss_start, ss_start + block[i], 0);
-		out[i] = torch::indexing::Slice(ori, ori + *(ss_start + block[i] + 1));
+		auto slice_end =  ori + *(ss_start + block[i] );
+		// fmt::print("slice: {} {}\n\n",ori,slice_end);
+		out[i] = torch::indexing::Slice(ori,slice_end);
+	}
+	return out;
+}
+torch::Tensor btensor::to_dense() const
+{
+
+	auto out = torch::zeros(sizes(),options());
+	for(const auto& index_block:this->blocks_list)
+	{
+		auto& index = std::get<0>(index_block);
+		auto& tens = std::get<1>(index_block);
+		auto Slices = full_slice(*this,index);
+		out.index_put_(Slices,tens);
 	}
 	return out;
 }
@@ -2190,6 +2271,7 @@ void from_basic_impl(btensor &out, const torch::Tensor &values)
 		throw std::invalid_argument("input arguments have incompatible rank!");
 	out.reserve_space_(btensor_size::max);
 	auto index = btensor::index_list(out.dim());
+	// fmt::print("construction of btensor from full basic tensor\n==============\n");
 	do
 	{
 		if (out.block_conservation_rule_test(index))
@@ -2197,6 +2279,7 @@ void from_basic_impl(btensor &out, const torch::Tensor &values)
 			auto shape_view = out.block_sizes(index);
 			auto S = btensor::full_slice(out, index);
 			out.block(index) = values.index(torch::ArrayRef(S));
+			// fmt::print("\tindex {}\n\tSlice {}\n\t block {}\n================\n",index,S,out.block(index));
 		}
 		out.block_increment(index);
 	} while (any_truth(index));
@@ -2213,6 +2296,109 @@ btensor from_basic_tensor_like(const btensor &shape, const torch::Tensor &values
 	auto out = quantt::sparse_zeros_like(shape, opt);
 	from_basic_impl(out, values);
 	return out;
+}
+bool allclose(const btensor &a, const btensor &b, double rtol, double atol, bool equal_nan)
+{
+	if (!btensor::test_same_shape(a, b))
+		return false;
+	auto a_it = a.begin();
+	auto b_it = b.begin();
+	bool is_allclose = true;
+	while (a_it != a.end() and b_it != b.end() and is_allclose)
+	{
+		const auto &a_index = std::get<0>(*a_it);
+		const auto &b_index = std::get<0>(*b_it);
+		const auto &a_tens = std::get<1>(*a_it);
+		const auto &b_tens = std::get<1>(*b_it);
+		if (a_index < b_index)
+		{
+			is_allclose &= torch::allclose(a_tens, torch::zeros_like(a_tens), rtol, atol, equal_nan);
+			++a_it;
+		}
+		else if (a_index > b_index)
+		{
+			is_allclose &= torch::allclose(b_tens, torch::zeros_like(b_tens), rtol, atol, equal_nan);
+			++b_it;
+		}
+		else // equal index
+		{
+			is_allclose &= torch::allclose(a_tens, b_tens, rtol, atol, equal_nan);
+			++a_it;
+			++b_it;
+		}
+	}
+	// maybe one of the two has blocks of zeros packed at the end.
+	while (is_allclose and a_it != a.end())
+	{
+		const auto &a_tens = std::get<1>(*a_it);
+		const auto &a_index = std::get<0>(*a_it);
+		is_allclose &= torch::allclose(a_tens, torch::zeros_like(a_tens), rtol, atol, equal_nan);
+		++a_it;
+	}
+	while (is_allclose and b_it != b.end())
+	{
+		const auto &b_index = std::get<0>(*b_it);
+		const auto &b_tens = std::get<1>(*b_it);
+		is_allclose &= torch::allclose(b_tens, torch::zeros_like(b_tens), rtol, atol, equal_nan);
+		++b_it;
+	}
+	return is_allclose;
+}
+btensor squeeze(btensor tens, int64_t dim) { return tens.squeeze_(dim); }
+any_quantity find_selection_rule(const torch::Tensor &tens, const btensor &shape, btensor::Scalar cutoff)
+{
+	if (tens.dim() != 2)
+		throw std::invalid_argument("the input tensor must be rank 2");
+	if (shape.dim() != 2)
+		throw std::invalid_argument("the shape specifying btensor must be rank 2");
+	auto state = torch::zeros(tens.sizes()[tens.dim() - 1], tens.options());
+	auto quantitiesi = [&shape](size_t element_pos, size_t dim)
+	    -> const vquantity & { // return type must be specified, because return by value isn't an option here.
+		size_t block = 0;
+		auto [sect_size_beg, sect_size_end, sect_cqtt_beg, sec_cqtt_end] = shape.section_sizes_cqtts(dim);
+		while (sect_size_beg != sect_size_end and dim > *sect_size_beg)
+		{
+			dim -= *(sect_size_beg);
+			++sect_size_beg;
+			++sect_cqtt_beg;
+			++block;
+		}
+		// dereferencing the the vquantities iterator might fail... it has many time before for unknown reasons.
+		return *sect_cqtt_beg;
+		// in that case use:
+		// return shape.section_conserved_qtt(dim,block));
+	};
+	auto quantities1 = [&quantitiesi, &shape](size_t element_pos) -> const vquantity & {
+		return quantitiesi(element_pos, 0);
+	};
+	auto quantities2 = [&quantitiesi, &shape](size_t element_pos) -> const vquantity & {
+		return quantitiesi(element_pos, 1);
+	};
+	any_quantity out_sel_rule;
+	bool first_hit = true;
+	for (auto i = 0; i < state.sizes()[0]; ++i)
+	{
+		state.index_put_({i}, 1);
+
+		auto out_state = abs(tens.matmul(state)) > cutoff;
+		// out_state = out_state > cutoff; //so we can deal with floating points values
+		for (auto j = 0; j < out_state.sizes()[0]; ++j)
+		{
+			if (out_state.index({j}).item().to<bool>())
+			{
+				if (first_hit)
+				{ // first non-negligible element in the output, sets the selection rule, all other iteration are
+				  // testing for correctness.
+					first_hit = false;
+					out_sel_rule = quantities1(j) * quantities2(i);
+				}
+				else if (out_sel_rule != quantities1(j) * quantities2(i))
+					throw std::logic_error("input tensor doesn't have a well defined selection rule");
+			}
+		}
+		state.index_put_({i}, 0);
+	}
+	return out_sel_rule;
 }
 /**
  * @brief Get the weak reference count of the tensor.

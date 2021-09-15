@@ -18,6 +18,8 @@
 #include <random>
 #include "blockTensor/btensor.h"
 #include "blockTensor/LinearAlgebra.h"
+#include "LinearAlgebra.h"
+#include "dmrg.h"
 // TODO: remove all explicit torch:: can ADL be my friend here?
 namespace quantt
 {
@@ -45,14 +47,12 @@ void MPS::move_oc(int i)
 		dims = curr_oc.sizes();
 
 		// TODO: rewrite this to use quantt's SVD implementation. takes care of the reshaping
-		auto reshaped = curr_oc.reshape({dims[0], prod(1, dims.size())});
-		auto [u, d, v] = torch::svd(reshaped);
-		curr_oc = v.t().conj().reshape(dims); // needs testing. svd documentation makes no mention of complex numbers case.
-
-		// testing shows that v is only transposed in the complex number case as well.
+		// auto reshaped = curr_oc.reshape({dims[0], prod(1, dims.size())});
+		auto [u, d, v] = quantt::svd(curr_oc,1);
+		curr_oc = v.permute({2,0,1}).conj(); // needs testing. svd documentation makes no mention of complex numbers case.
 		auto ud = u.mul(d); 
 		next_oc = torch::tensordot(next_oc, ud, {2}, {0});
-		--oc;
+		--oc; 
 	}
 
 	while (i > orthogonality_center)
@@ -62,9 +62,9 @@ void MPS::move_oc(int i)
 		auto &next_oc = (*this)[orthogonality_center + 1];
 		dims = curr_oc.sizes();
 		// TODO: use quantt's SVD implementation. takes care of the reshaping
-		auto reshaped = curr_oc.reshape({prod(0, dims.size() - 1), dims[dims.size() - 1]});
-		auto [u, d, v] = torch::svd(reshaped);
-		curr_oc = u.reshape(dims);
+		// auto reshaped = curr_oc.reshape({prod(0, dims.size() - 1), dims[dims.size() - 1]});
+		auto [u, d, v] = quantt::svd(curr_oc,2);
+		curr_oc = u;
 
 		auto dv = v.mul(d).t().conj(); 
 		next_oc = torch::tensordot(dv, next_oc, {1}, {0});
@@ -190,7 +190,7 @@ btensor contract(const bMPS &a, const bMPS &b, const bMPO &obs, btensor left_edg
 	{
 		left_edge = tensordot(left_edge, a[i], {0}, {0});
 		left_edge = tensordot(left_edge, obs[i], {0, 2}, {0, 3});
-		left_edge = tensordot(left_edge, b[i], {0, 2}, {0, 1});
+		left_edge = tensordot(left_edge, b[i].conj(), {0, 2}, {0, 1});
 	}
 	return tensordot(left_edge, right_edge, {0, 1, 2}, {0, 1, 2});
 }
@@ -198,12 +198,8 @@ btensor contract(const bMPS &a, const bMPS &b, const bMPO &obs)
 {
 	// todo:: adapt to work with Btensors.
 	// need a btensor implementation of ones. must be a one_like thing.
-	auto left_edge = ones_like(
-	    shape_from(shape_from(a[0], {-1, 0, 0}), shape_from(obs[0], {-1, 0, 0, 0}), shape_from(b[0], {-1, 0, 0}))
-	        .neutral_shape_());
-	auto right_edge = ones_like(
-	    shape_from(shape_from(a[0], {0, 0, -1}), shape_from(obs[0], {0, 0, -1, 0}), shape_from(b[0], {0, 0, -1}))
-	        .neutral_shape_());
+	auto left_edge = ones_like(shape_from(details::edge_shape_prep(a.front(),0),details::edge_shape_prep(obs.front(),0),details::edge_shape_prep(b.front().inverse_cvals(),0)));
+	auto right_edge = ones_like(shape_from(details::edge_shape_prep(a.back(),2),details::edge_shape_prep(obs.back(),2),details::edge_shape_prep(b.back().inverse_cvals(),2)));
 	return contract(a, b, obs, std::move(left_edge), right_edge);
 }
 torch::Tensor contract(const MPS &a, const MPS &b, const MPO &obs, torch::Tensor left_edge,
@@ -214,7 +210,7 @@ torch::Tensor contract(const MPS &a, const MPS &b, const MPO &obs, torch::Tensor
 	{
 		left_edge = tensordot(left_edge, a[i], {0}, {0});
 		left_edge = tensordot(left_edge, obs[i], {0, 2}, {0, 3});
-		left_edge = tensordot(left_edge, b[i], {0, 2}, {0, 1});
+		left_edge = tensordot(left_edge, b[i].conj(), {0, 2}, {0, 1});
 	}
 	return tensordot(left_edge, right_edge, {0, 1, 2}, {0, 1, 2});
 }
@@ -255,16 +251,15 @@ btensor contract(const bMPS &a, const bMPS &b, btensor left_edge, const btensor 
 	for (size_t i = 0; i < a.size(); ++i)
 	{
 		left_edge = tensordot(left_edge, a[i], {0}, {0});
-		left_edge = tensordot(left_edge, inverse_cvals(b[i].conj()), {0, 1}, {0, 1});
+		left_edge = tensordot(left_edge, (b[i].conj()), {0, 1}, {0, 1});
 	}
 	return tensordot(left_edge, right_edge, {0, 1}, {0, 1});
 }
 btensor contract(const bMPS &a, const bMPS &b)
 {
-	auto E = shape_from(shape_from(a[0], {-1, 0, 0}), shape_from(inverse_cvals(b[0]), {-1, 0, 0})).neutral_shape_();
-	auto right_edge =
-	    shape_from(shape_from(a.back(), {0, 0, -1}), shape_from(inverse_cvals(b.back()), {0, 0, -1})).neutral_shape_();
-	return contract(a, b, E, right_edge);
+	auto left_edge = ones_like(shape_from(details::edge_shape_prep(a.front(),0),details::edge_shape_prep(b.front().inverse_cvals(),0)));
+	auto right_edge = ones_like(shape_from(details::edge_shape_prep(a.back(),2),details::edge_shape_prep(b.back().inverse_cvals(),2)));
+	return contract(a, b, left_edge, right_edge);
 }
 
 /**
@@ -426,6 +421,7 @@ bMPS random_bMPS_impl(size_t length, int64_t bond_dim, T &&phys_dim, any_quantit
 		right_side.inverse_cvals_();
 		swap(right_side, left_side);
 	}
+	out.back() =  out.back().basic_create_view({-1,-1,0},true);
 	#ifndef NDEBUG
 	if (! out.check_ranks()) throw std::runtime_error("random MPS generator failed.");
 	#endif

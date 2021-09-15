@@ -5,6 +5,7 @@
 set(COMPONENT_SRCS DMRG_heisenber_test.h) #make vs-code intellisence work with with fresh, unused, header files. HEADER_LIST is definied in sources/CMakeList.txt
 
 
+add_compile_options(-fno-omit-frame-pointer)
 
 add_executable(QuanTT_test test.cpp)
 add_executable(QuanTT_test_lvl2 test2.cpp)

@@ -120,7 +120,7 @@ struct or_<cond, conds...> : std::conditional_t<cond::value, std::true_type, or_
 template <class Tuple1, class F>
 constexpr decltype(auto) for_each(Tuple1 &&T1, F &&f)
 {
-	std::apply(
+	return std::apply(
 	    [&](auto &&... t1) {
 		    if constexpr (std::is_same_v<decltype(f(std::get<0>(T1))), void>)
 		    {                 // we return void..

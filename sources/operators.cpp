@@ -39,6 +39,23 @@ std::tuple<tens,tens,tens,tens> fermions()
 	return std::make_tuple(c_up,c_dn,F,id);
 }
 
+std::tuple<btensor,btensor,btensor,btensor> fermions(const btensor& shape) {
+	return for_each(fermions(),[&shape](const torch::Tensor& tens) -> btensor
+	{
+		btensor local_shape = shape;
+		return from_basic_tensor_like(local_shape.set_selection_rule_(find_selection_rule(tens,shape)),tens);
+	});
+}
+
+std::tuple<btensor,btensor,btensor> pauli(const btensor& shape) {
+	auto [Sx,iSy, Sz,lo,id] = pauli();
+	return for_each(std::make_tuple(Sz,lo,id),[shape](const torch::Tensor& tens) -> btensor
+	{
+		btensor local_shape = shape;
+		return from_basic_tensor_like(local_shape.set_selection_rule_(find_selection_rule(tens,shape)),tens);
+	});
+}
+
 std::tuple<tens,tens,tens,tens,tens> pauli()
 {
 	torch::Tensor Sx = torch::zeros({2,2},torch::kInt8);

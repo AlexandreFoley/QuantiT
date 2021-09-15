@@ -25,6 +25,7 @@ namespace quantt
 	 * Generate the hamiltonian for the Heisenberg model.
 	 */
 	MPO Heisenberg(torch::Tensor J,size_t lenght);
+	bMPO Heisenberg(torch::Tensor J, size_t lenght,btensor local_shape);
 	namespace details
 	{
 		MPO Heisenberg_impl(torch::Tensor J,size_t lenght);

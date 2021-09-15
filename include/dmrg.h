@@ -163,6 +163,12 @@ std::tuple<torch::Tensor, torch::Tensor, torch::Tensor, torch::Tensor> one_step_
                                                                                         const torch::Tensor &Renv);
 std::tuple<btensor, btensor, btensor, btensor> one_step_lanczos(const btensor &state, const btensor &hamil,
                                                                 const btensor &Lenv, const btensor &Renv);
+btensor edge_shape_prep(const btensor &tens,int64_t dim);
+torch_shape edge_shape_prep(const torch_shape &tens, int64_t dim);
+torch::Tensor trivial_edge(const torch::Tensor &lower_state, const torch::Tensor &Hamil, const torch::Tensor &upper_state,
+                              int64_t index_low, int64_t index_op, int64_t index_up);
+btensor trivial_edge(const btensor &lower_state, const btensor &Hamil, const btensor &upper_state, int64_t index_low,
+                     int64_t index_op, int64_t index_up);
 } // namespace details
 qtt_TEST_CASE("btensor dmrg run test")
 {	
@@ -180,7 +186,7 @@ qtt_TEST_CASE("btensor dmrg run test")
 	bMPS state;
 	// std::tie(E,state) = dmrg(Hamil,opt);
 	qtt_CHECK_NOTHROW(std::tie(E, state) = dmrg(Hamil, cval(1), opt));
-
+	// fmt::print("E {}\n\n",E);
 }
 qtt_TEST_CASE("dmrg run test")
 {
@@ -224,17 +230,101 @@ qtt_TEST_CASE("2x2 eigen value problem")
 	qtt_CHECK(torch::allclose(T_E0, E0));
 }
 
+qtt_TEST_CASE("Btensor two sites MPO")
+{
+	torch::set_default_dtype(torch::scalarTypeToTypeMeta(
+	    torch::kFloat64)); // otherwise the type promotion always goes to floats when promoting a tensor
+	using namespace torch::indexing;
+	using namespace details;
+	auto l_ising = torch::zeros({3, 2, 3, 2});
+	{
+		//only the Sz spin model can be written in MPO form with conservation laws.
+		auto acc = l_ising.accessor<double, 4>();
+		acc[1][0][0][0] = acc[2][0][1][0] = 1;
+		acc[1][1][0][1] = acc[2][1][1][1] = -1;
+		//Identities
+		acc[0][0][0][0] = acc[0][1][0][1] = 1;
+		acc[2][0][2][0] = acc[2][1][2][1] = 1;
+	}
+	using cval = quantity<conserved::Z>;
+	auto bl_ising = btensor({{{3,cval(0)}},{{1,cval(1)},{1,cval(-1)}},{{3,cval(0)}},{{1,cval(-1)},{1,cval(1)}}},cval(0));
+	bl_ising = from_basic_tensor_like(bl_ising,l_ising);
+	bMPO ising(2, bl_ising);
+	ising[0] = ising[0].basic_create_view({2, -1,-1,-1},true);//preserve the rank when creating the view
+	ising[1] = ising[1].basic_create_view({-1, -1, 0,-1},true);//preserve the rank when create the view.
+
+	auto two_s_ising = details::compute_2sitesHamil(ising);
+
+	bMPS rstate = random_bMPS(4,ising,cval(0));//edges have bond dimension 1. if you want a uniform bond dimenison, ask for a MPS longer than you need, and chop off the edges.
+
+	// fmt::print("Norm2 \n{}\n",contract(rstate,rstate));
+	// fmt::print("state\n{}\n{}\n",rstate[0].reshape({4}),rstate[1].reshape({4}));
+	rstate[0] = rstate[0] / sqrt(contract(rstate, rstate)); // normalize
+	// fmt::print("normed state\n{}\n{}\n",rstate[0].reshape({4}),rstate[1].reshape({4}));
+	auto norm = contract(rstate,rstate);
+	qtt_CHECK(allclose(norm, quantt::ones({},cval(0))));
+	// fmt::print("Norm2 \n{}\n",contract(rstate,rstate));
+	// fmt::print("MPS \n{}\n\n",squeeze(rstate[0])); 
+	// fmt::print("{}\n\n",squeeze(rstate[1]));
+	auto two_s_state = tensordot(rstate[0], rstate[1], {2}, {0});
+	// fmt::print("{}\n\n",two_s_state);
+	auto avg = tensordot(two_s_state, two_s_state.conj(), {0, 1, 2, 3}, {0, 1, 2, 3});
+	// fmt::print("avg {}\n\n",avg);
+	qtt_CHECK(allclose(avg,ones_like(avg) ));
+
+	auto H_av = contract(rstate, rstate, ising);
+	auto H_av_2s = squeeze(tensordot(two_s_state.conj(), tensordot(two_s_ising[0], two_s_state, {4, 5}, {1, 2}), {1, 2}, {1, 2}));
+	auto Lenv = trivial_edge(two_s_state,two_s_ising[0],two_s_state.inverse_cvals(),0,0,0);
+	auto Renv = trivial_edge(two_s_state,two_s_ising[0],two_s_state.inverse_cvals(),3,3,3);
+	auto H_av_upd = tensordot(
+	    two_s_state.conj(), quantt::details::hamil2site_times_state(two_s_state, two_s_ising[0], Lenv, Renv),
+	    {0, 1, 2, 3}, {0, 1, 2, 3});
+	// fmt::print("H_av {}\n\nH_av_2s {}\n\n H_av_upd {}\n\n",H_av,H_av_2s,H_av_upd);
+	qtt_CHECK(allclose(H_av, H_av_2s));
+	qtt_CHECK(allclose(H_av, H_av_upd));
+	// fmt::print("Correct value: \n{}\n",H_av);
+	// fmt::print("from two sites: \n{}\n",H_av_2s);
+	// fmt::print("from two sites update: \n{}\n",H_av_upd);
+	auto [Hpsi, a0, a1, b] = details::one_step_lanczos(two_s_state, two_s_ising[0], Lenv, Renv);
+	// fmt::print("Ising Hamil: {} \n\n", squeeze(two_s_ising[0]).reshape({2}) );
+	// fmt::print("state: {} \n\n", squeeze(two_s_state).reshape({}) );
+	// fmt::print("one step lanczos: \n{}\n",a0);
+	auto [E, o_coeff, n_coeff] = details::eig2x2Mat(a0, a1, b);
+	qtt_CHECK(allclose(o_coeff.pow(2) + n_coeff.pow(2), ones_like(o_coeff)));
+	auto psi_update = o_coeff * two_s_state + n_coeff * Hpsi;
+	auto test = tensordot(psi_update.conj(), psi_update, {0, 1, 2, 3}, {0, 1, 2, 3});
+	qtt_CHECK(allclose(test, ones_like(test)));
+	test = tensordot(two_s_state.conj(), two_s_state, {0, 1, 2, 3}, {0, 1, 2, 3});
+	qtt_CHECK(allclose(test, ones_like(test)));
+	test =tensordot(Hpsi, two_s_state.conj(), {0, 1, 2, 3}, {0, 1, 2, 3});
+	qtt_CHECK(allclose(test, zeros_like(test)));
+	test = tensordot(Hpsi.conj(), Hpsi, {0, 1, 2, 3}, {0, 1, 2, 3});
+	qtt_CHECK(allclose(test, zeros_like(test)));// the input random state is always an eigenstate (in a degenerate manifold), the model is that simple.
+	auto a1_test =
+	    tensordot(Hpsi.conj(), quantt::details::hamil2site_times_state(Hpsi, two_s_ising[0], Lenv, Renv),
+	                     {0, 1, 2, 3}, {0, 1, 2, 3});
+	qtt_CHECK(allclose(a1, a1_test));
+	// fmt::print("a1 \n{}\na1_test\n{}\n",a1,a1_test);
+	auto H_av_Pupd = tensordot(
+	    psi_update.conj(), quantt::details::hamil2site_times_state(psi_update, two_s_ising[0], Lenv, Renv),
+	    {0, 1, 2, 3}, {0, 1, 2, 3});
+	// fmt::print("actual update energie: \n{}\n", H_av_Pupd);
+	// fmt::print("predicted update energie: \n{}\n", E);
+}
 qtt_TEST_CASE("Two sites MPO")
 {
 	torch::set_default_dtype(torch::scalarTypeToTypeMeta(
 	    torch::kFloat64)); // otherwise the type promotion always goes to floats when promoting a tensor
 	using namespace torch::indexing;
+	//Sx *Sx version
 	auto l_ising = torch::zeros({3, 2, 3, 2});
 	{
 		auto acc = l_ising.accessor<double, 4>();
+		//Sx
 		acc[1][0][0][1] = acc[1][1][0][0] = 1;
 		acc[2][0][1][1] = acc[2][1][1][0] = 1;
 
+		//corner identities
 		acc[0][0][0][0] = acc[0][1][0][1] = 1;
 		acc[2][0][2][0] = acc[2][1][2][1] = 1;
 	}

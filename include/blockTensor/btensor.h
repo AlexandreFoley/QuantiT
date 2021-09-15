@@ -478,6 +478,8 @@ class btensor
 	btensor mm(const btensor &other) const;
 	btensor sum() const;
 
+	btensor t() const {return transpose(dim()-1,dim()-2);}
+	btensor& t_() {return transpose_(dim()-1,dim()-2);}
 	btensor sqrt() const;
 	btensor &sqrt_();
 	btensor abs() const;
@@ -494,6 +496,10 @@ class btensor
 	btensor less(btensor::Scalar other) const;
 	btensor greater(const btensor &other) const;
 	btensor greater(btensor::Scalar other) const;
+	btensor eq(btensor::Scalar other) const;
+	btensor eq(const btensor& other) const;
+	btensor not_equal(btensor::Scalar other) const;
+	btensor not_equal(const btensor &other) const;
 
 	btensor div(btensor::Scalar) const;
 	btensor &div_(btensor::Scalar);
@@ -598,6 +604,10 @@ class btensor
 	                   Scalar beta = 1, Scalar alpha = 1) const;
 	btensor &tensorgdot_(const btensor &mul1, const btensor &mul2, torch::IntArrayRef dims1, torch::IntArrayRef dims2,
 	                     Scalar beta = 1, Scalar alpha = 1);
+	btensor squeeze() const;
+	btensor squeeze(int64_t dim) const;
+	btensor& squeeze_(int64_t dim);
+	btensor& squeeze_();
 	/**
 	 * @brief return the complex conjugate of this tensor and inverse the conserved quantities
 	 *
@@ -767,6 +777,8 @@ class btensor
 	 */
 	static std::vector<torch::indexing::TensorIndex> full_slice(const btensor &tensor,
 	                                                            const btensor::index_list &block);
+
+	static bool test_same_shape(const btensor &a, const btensor &b);
 
   private:
 	size_t rank;
@@ -974,14 +986,16 @@ inline btensor shape_from(const btensor &tens, const std::vector<int64_t> &inds)
 
 struct torch_shape
 {
-	std::vector<int64_t> sizes;
+	std::vector<int64_t> _sizes;
 	torch::TensorOptions opt;
-
-	torch_shape(const torch::Tensor &tens) : sizes(tens.sizes().begin(), tens.sizes().end()), opt(tens.options()) {}
-	torch_shape(std::vector<int64_t> _sizes, torch::TensorOptions _opt) : sizes(std::move(_sizes)), opt(std::move(_opt))
+	torch_shape() = default;
+	torch_shape(const torch::Tensor &tens) : _sizes(tens.sizes().begin(), tens.sizes().end()), opt(tens.options()) {}
+	torch_shape(std::vector<int64_t> _sizes, torch::TensorOptions _opt) : _sizes(std::move(_sizes)), opt(std::move(_opt))
 	{
 	}
-	operator torch::Tensor() const { return torch::empty(sizes, opt); }
+	int64_t dim() const {return _sizes.size();}
+	torch::IntArrayRef sizes() const {return _sizes;}
+	operator torch::Tensor() const { return torch::empty(_sizes, opt); }
 	torch_shape neutral_shape() { return *this; }
 	torch_shape &neutral_shape_() { return *this; }
 	torch_shape &inverse_cvals() { return *this; }
@@ -1005,11 +1019,11 @@ torch_shape shape_from(std::initializer_list<torch_shape> shapes);
  * @return shape
  */
 template <class... Args,
-          class Enabled = std::enable_if_t<std::conjunction_v<std::is_same<remove_cvref_t<Args>, torch_shape>...> or
+          class Enabled = std::enable_if_t<std::conjunction_v<std::is_convertible<remove_cvref_t<Args>, torch_shape>...> or
                                            std::conjunction_v<std::is_same<remove_cvref_t<Args>, btensor>...>>>
 inline auto shape_from(const Args &...args)
 {
-	static_assert(std::conjunction_v<std::is_same<Args, torch_shape>...> or
+	static_assert(std::conjunction_v<std::is_convertible<Args, torch_shape>...> or
 	                  std::conjunction_v<std::is_same<remove_cvref_t<Args>, btensor>...>,
 	              "All the arguments must be either torch_shape or btensor to get into this function, don't try to "
 	              "side-step the enable if.");
@@ -1232,35 +1246,35 @@ btensor from_basic_tensor_like(const btensor &shape, const torch::Tensor &values
 
 inline torch::Tensor zeros_like(const torch_shape &shape, c10::TensorOptions opt = {})
 {
-	return torch::zeros(shape.sizes, shape.opt.merge_in(opt));
+	return torch::zeros(shape._sizes, shape.opt.merge_in(opt));
 }
 inline torch::Tensor ones_like(const torch_shape &shape, c10::TensorOptions opt = {})
 {
-	return torch::ones(shape.sizes, shape.opt.merge_in(opt));
+	return torch::ones(shape._sizes, shape.opt.merge_in(opt));
 }
 inline torch::Tensor empty_like(const torch_shape &shape, c10::TensorOptions opt = {})
 {
-	return torch::empty(shape.sizes, shape.opt.merge_in(opt));
+	return torch::empty(shape._sizes, shape.opt.merge_in(opt));
 }
 inline torch::Tensor rand_like(const torch_shape &shape, c10::TensorOptions opt = {})
 {
-	return torch::rand(shape.sizes, shape.opt.merge_in(opt));
+	return torch::rand(shape._sizes, shape.opt.merge_in(opt));
 }
 inline torch::Tensor full_like(const torch_shape &shape, btensor::Scalar fill, c10::TensorOptions opt = {})
 {
-	return torch::full(shape.sizes, fill, shape.opt.merge_in(opt));
+	return torch::full(shape._sizes, fill, shape.opt.merge_in(opt));
 }
 inline torch::Tensor randint_like(int64_t low, int64_t high, const torch_shape &shape, c10::TensorOptions opt = {})
 {
-	return torch::randint(low, high, shape.sizes, shape.opt.merge_in(opt));
+	return torch::randint(low, high, shape._sizes, shape.opt.merge_in(opt));
 }
 inline torch::Tensor randint_like(int64_t high, const torch_shape &shape, c10::TensorOptions opt = {})
 {
-	return torch::randint(0, high, shape.sizes, shape.opt.merge_in(opt));
+	return torch::randint(0, high, shape._sizes, shape.opt.merge_in(opt));
 }
 inline torch::Tensor randn_like(const torch_shape &shape, c10::TensorOptions opt = {})
 {
-	return torch::randn(shape.sizes, shape.opt.merge_in(opt));
+	return torch::randn(shape._sizes, shape.opt.merge_in(opt));
 }
 
 inline btensor operator+(const btensor &A, const btensor &B) { return A.add(B); }
@@ -1293,6 +1307,14 @@ inline btensor less(btensor::Scalar other, const btensor &A) { return A.greater(
 inline btensor le(btensor::Scalar other, const btensor &A) { return A.ge(other); }
 inline btensor ge(btensor::Scalar other, const btensor &A) { return A.le(other); }
 
+inline btensor eq(const btensor& A, const btensor &B) {return A.eq(B);}
+inline btensor eq(const btensor& A, btensor::Scalar B ) {return A.eq(B);}
+inline btensor eq(btensor::Scalar B,const btensor& A  ) {return A.eq(B);}
+inline btensor not_equal(const btensor& A, const btensor &B) {return A.not_equal(B);}
+inline btensor not_equal(const btensor& A, btensor::Scalar B ) {return A.not_equal(B);}
+inline btensor not_equal(btensor::Scalar B,const btensor& A  ) {return A.not_equal(B);}
+
+
 inline btensor operator>(const btensor &A, btensor::Scalar other) { return greater(A, other); }
 inline btensor operator>(const btensor &A, const btensor &other) { return greater(A, other); }
 inline btensor operator>(btensor::Scalar A, const btensor &other) { return greater(A, other); }
@@ -1305,6 +1327,14 @@ inline btensor operator>=(btensor::Scalar A, const btensor &other) { return ge(A
 inline btensor operator<=(const btensor &A, btensor::Scalar other) { return le(A, other); }
 inline btensor operator<=(const btensor &A, const btensor &other) { return le(A, other); }
 inline btensor operator<=(btensor::Scalar A, const btensor &other) { return le(A, other); }
+inline btensor operator==(const btensor &A, btensor::Scalar other) { return eq(A, other); }
+inline btensor operator==(const btensor &A, const btensor &other) { return eq(A, other); }
+inline btensor operator==(btensor::Scalar A, const btensor &other) { return eq(A, other); }
+inline btensor operator!=(const btensor &A, btensor::Scalar other) { return not_equal(A, other); }
+inline btensor operator!=(const btensor &A, const btensor &other) { return not_equal(A, other); }
+inline btensor operator!=(btensor::Scalar A, const btensor &other) { return not_equal(A, other); }
+
+bool allclose(const btensor& a, const btensor& b, double rtol = 1e-5, double atol = 1e-8, bool equal_nan=false);
 
 inline btensor sum(const btensor &t) { return t.sum(); }
 
@@ -1368,6 +1398,33 @@ inline btensor &shift_selection_rule_(btensor &tens, any_quantity_cref shift)
 {
 	return tens.shift_selection_rule_(shift);
 }
+
+inline btensor squeeze(const btensor& tens)
+{
+	return tens.squeeze();
+}
+inline btensor squeeze(const btensor& tens,int64_t dim){
+	return tens.squeeze(dim);
+}
+inline btensor& squeeze_(btensor& tens)
+{
+	return tens.squeeze_();
+}
+inline btensor& squeeze_( btensor& tens,int64_t dim){
+	return tens.squeeze_(dim);
+}
+
+/**
+ * @brief find the selection rule for rank 2 torch tensors
+ * 
+ * throws if no selection rule can be found
+ * 
+ * @param tens tensor.
+ * @param quantitities1 conserved quantities on the first index 
+ * @param quantitities2 conserved quantities on the second index
+ * @return any_quantity selection r
+ */
+any_quantity find_selection_rule(const torch::Tensor& tens,const btensor& shape,btensor::Scalar cutoff=0);
 
 void print(const btensor &x);
 std::string to_string(const btensor &x);
