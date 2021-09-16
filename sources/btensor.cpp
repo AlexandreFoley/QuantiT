@@ -890,8 +890,9 @@ btensor btensor::not_equal(btensor::Scalar other) const
 {
 	auto out_dtype = torch::kBool;
 	return btensor(*this,
-	               new_block_list_apply_to_all_blocks(
-	                   [](const torch::Tensor &tensor, auto &&other_val) { return tensor.not_equal(other_val); }, other),
+	               new_block_list_apply_to_all_blocks([](const torch::Tensor &tensor, auto &&other_val)
+	                                                  { return tensor.not_equal(other_val); },
+	                                                  other),
 	               out_dtype);
 }
 btensor btensor::greater(btensor::Scalar other) const
@@ -1614,7 +1615,8 @@ btensor btensor::greater(const btensor &other) const
 btensor btensor::not_equal(const btensor &other) const
 {
 	// This should be a broadcasting operation? yes.
-	auto out = broadcast_operation(other, [](const torch::Tensor &A, const torch::Tensor &B) { return A.not_equal(B); });
+	auto out =
+	    broadcast_operation(other, [](const torch::Tensor &A, const torch::Tensor &B) { return A.not_equal(B); });
 	out._options = out._options.merge_in(torch::kBool);
 	return out;
 }
@@ -1798,6 +1800,7 @@ btensor btensor::tensordot(const btensor &other, torch::IntArrayRef dim_self, to
 	btensor::block_list_t t1, t2;
 	std::tie(t1, t2, out_btens) = [&]()
 	{
+		auto out_scalar_type = promote_types(options().dtype(), other.options().dtype());
 		auto [p1, p2, out_section_by_dim] = compute_tdot_shape(*this, other, dim_self, dims_other);
 		auto l = std::reduce(out_section_by_dim.begin(), out_section_by_dim.end(), 0);
 		auto out_sel_rule = selection_rule.value + other.selection_rule.value;
@@ -1808,14 +1811,10 @@ btensor btensor::tensordot(const btensor &other, torch::IntArrayRef dim_self, to
 		std::copy_backward(p2.begin(), p2.begin() + dim_l, p2_prime.end());
 		std::copy(p2.begin() + dim_l, p2.end(), p2_prime.begin());
 		auto _t2 = permute_bl(other.blocks_list, p2_prime, p2);
-		btensor out(out_section_by_dim, out_cvals, out_section_sizes, std::move(out_sel_rule));
+		btensor out(out_section_by_dim, out_cvals, out_section_sizes, std::move(out_sel_rule),this->options().dtype(out_scalar_type));
 		return std::make_tuple(std::move(_t1), std::move(_t2), std::move(out));
 	}(); // a lambda that capture everything that we call immediatly. leave us with a somewhat clean namespace in
 	     // the scope.
-
-	// fmt::print("out_btens section sizes {}\n", out_btens.sections_sizes);
-	// fmt::print("input section sizes {}\n", other.sections_sizes);
-
 	auto next_index = [dim_l](const auto &iterator)
 	{
 		// compute the smallest possible block index that correspond to a different output index than the input
@@ -1831,44 +1830,55 @@ btensor btensor::tensordot(const btensor &other, torch::IntArrayRef dim_self, to
 		}
 		return next;
 	};
-	{ // launch the contractions.
-		auto this_curr_col_start = t1.begin();
-		auto less = t1.value_comp();
-		std::vector<int64_t> out_block_index(out_btens.rank);
-		auto find_next_match = [dim_l](auto a_beg, const auto &a_end, auto b_beg, const auto &b_end)
+	auto find_next_match = [dim_l](auto a_beg, const auto &a_end, auto b_beg, const auto &b_end)
+	{
+		// if we have a match both of the following boolean are false
+		bool a_smaller_b = true;
+		bool b_smaller_a = true;
+		while ((a_beg != a_end and b_beg != b_end) and (a_smaller_b or b_smaller_a))
 		{
-			// if we have a match both of the following boolean are false
-			bool a_smaller_b = true;
-			bool b_smaller_a = true;
-			while ((a_beg != a_end and b_beg != b_end) and (a_smaller_b or b_smaller_a))
-			{
-				auto &a_l = std::get<0>(*a_beg);
-				auto &b_l = std::get<0>(*b_beg);
-				// we could use the lexicographical three way comparison instead of those two calls.
-				a_smaller_b = std::lexicographical_compare(a_l.end() - dim_l, a_l.end(), b_l.end() - dim_l, b_l.end());
-				b_smaller_a = std::lexicographical_compare(b_l.end() - dim_l, b_l.end(), a_l.end() - dim_l, a_l.end());
-				a_beg += a_smaller_b; // increment only the smaller one.
-				b_beg += b_smaller_a;
-			}
-			if (a_beg == a_end or b_beg == b_end) // no match.
-			{
-				a_beg = a_end;
-				b_beg = b_end;
-			}
-			return std::make_tuple(a_beg, b_beg);
-		};
+			auto &a_l = std::get<0>(*a_beg);
+			auto &b_l = std::get<0>(*b_beg);
+			// we could use the lexicographical three way comparison instead of those two calls.
+			a_smaller_b = std::lexicographical_compare(a_l.end() - dim_l, a_l.end(), b_l.end() - dim_l, b_l.end());
+			b_smaller_a = std::lexicographical_compare(b_l.end() - dim_l, b_l.end(), a_l.end() - dim_l, a_l.end());
+			a_beg += a_smaller_b; // increment only the smaller one.
+			b_beg += b_smaller_a;
+		}
+		if (a_beg == a_end or b_beg == b_end) // no match.
+		{
+			a_beg = a_end;
+			b_beg = b_end;
+		}
+		return std::make_tuple(a_beg, b_beg);
+	};
+	auto cpt_output_block = [dim_l, r = out_btens.rank](auto this_current_block_iter, auto other_current_block_iter)
+	{
+		std::vector<int64_t> out_block_index(r);
+		std::copy(std::get<0>(*this_current_block_iter).begin(), std::get<0>(*this_current_block_iter).end() - dim_l,
+		          out_block_index.begin());
+		std::copy_backward(std::get<0>(*other_current_block_iter).begin(),
+		                   std::get<0>(*other_current_block_iter).end() - dim_l, out_block_index.end());
+		return out_block_index;
+	};
+
+	// fmt::print("out_btens section sizes {}\n", out_btens.sections_sizes);
+	// fmt::print("input section sizes {}\n", other.sections_sizes);
+
+	{ // launch the contractions.
+		auto this_col_start = t1.begin();
+		auto less = t1.value_comp();
 		//#pragma omp parallel
 		//#pragma omp single //we've got a threadpool, but only one thread is working for now.
-		while (this_curr_col_start != t1.end()) // loop over all the columns of this
+		while (this_col_start != t1.end()) // loop over all the columns of this, parallel tasks must synchronize at the end of this loop.
 		{
 			auto other_curr_block = t2.begin();
-			auto next_ind_this = next_index(this_curr_col_start);
-			auto this_col_end = std::lower_bound(this_curr_col_start, t1.end(), next_ind_this, less);
-			// auto this_col_end = std::lower_bound(this_curr_col_start, t1.end(), next_index(this_curr_col_start),
+			auto next_ind_this = next_index(this_col_start);
+			auto this_col_end = std::lower_bound(this_col_start, t1.end(), next_ind_this, less);
 			// less);
 			while (other_curr_block != t2.end()) // loop over all the columns of other
 			{
-				auto this_curr_block = this_curr_col_start;
+				auto this_curr_block = this_col_start;
 				auto next_index_curr = next_index(other_curr_block);
 				auto other_col_end = std::lower_bound(other_curr_block, t2.end(), next_index_curr, less);
 				// auto other_col_end = std::lower_bound(other_curr_block, t2.end(), next_index(other_curr_block),
@@ -1879,10 +1889,7 @@ btensor btensor::tensordot(const btensor &other, torch::IntArrayRef dim_self, to
 				    other_curr_block != other_col_end) // TODO: getting a false match, in dmrg environement prep.
 				{
 					// compute the block index for this combination of columns of the input block tensors
-					std::copy(std::get<0>(*this_curr_block).begin(), std::get<0>(*this_curr_block).end() - dim_l,
-					          out_block_index.begin());
-					std::copy_backward(std::get<0>(*other_curr_block).begin(),
-					                   std::get<0>(*other_curr_block).end() - dim_l, out_block_index.end());
+					auto out_block_index = cpt_output_block(this_curr_block, other_curr_block);
 
 					auto size_range = out_btens.block_sizes(out_block_index);
 					out_btens.block(out_block_index) =
@@ -1891,7 +1898,7 @@ btensor btensor::tensordot(const btensor &other, torch::IntArrayRef dim_self, to
 
 					// #pragma omp task private(this_curr_block) private(other_curr_block) private(out_block_index)
 					// private(this_col_end) private(other_col_end)
-					do // parallelizable scope. must make thread local copies of the iterator and block index.
+					do // this loop can be executed by a single independant thread.
 					{
 						quantt::tensorgdot_(out_btens.block_at(out_block_index), std::get<1>(*this_curr_block),
 						                    std::get<1>(*other_curr_block), dim_l);
@@ -1903,31 +1910,34 @@ btensor btensor::tensordot(const btensor &other, torch::IntArrayRef dim_self, to
 
 				other_curr_block = other_col_end;
 			}
-			this_curr_col_start = this_col_end;
+			this_col_start = this_col_end;
 		}
 	}
 	return out_btens;
 }
-btensor& btensor::squeeze_(int64_t dim) {
-	if (section_number(dim) == 1 and section_size(dim,0) == 1)
-	{//do the squeeze
-		std::vector<int64_t> res(this->dim(),-1);
+btensor &btensor::squeeze_(int64_t dim)
+{
+	if (section_number(dim) == 1 and section_size(dim, 0) == 1)
+	{ // do the squeeze
+		std::vector<int64_t> res(this->dim(), -1);
 		res[dim] = 0;
 		*this = reshape(res);
 	}
 	return *this;
 }
-btensor btensor::squeeze(int64_t dim) const {
+btensor btensor::squeeze(int64_t dim) const
+{
 	btensor out = *this;
 	return out.squeeze_(dim);
 }
-btensor& btensor::squeeze_() {
-	std::vector<int64_t> res(this->dim(),-1);
-	for(size_t dim = 0; dim < this->dim();++dim)
+btensor &btensor::squeeze_()
+{
+	std::vector<int64_t> res(this->dim(), -1);
+	for (size_t dim = 0; dim < this->dim(); ++dim)
 	{
-		res[dim] *=  !(section_number(dim) == 1 and section_size(dim,0) == 1) ;
+		res[dim] *= !(section_number(dim) == 1 and section_size(dim, 0) == 1);
 	}
-	*this = reshape_as(shape_from(res) );
+	*this = reshape_as(shape_from(res));
 	return *this;
 }
 btensor btensor::squeeze() const
@@ -2245,22 +2255,22 @@ std::vector<torch::indexing::TensorIndex> btensor::full_slice(const btensor &ten
 			throw std::invalid_argument(fmt::format("the {}th block index ({}) exceed maximum allowed value ({}).", i,
 			                                        block[i], std::distance(ss_start, ss_end)));
 		auto ori = std::reduce(ss_start, ss_start + block[i], 0);
-		auto slice_end =  ori + *(ss_start + block[i] );
+		auto slice_end = ori + *(ss_start + block[i]);
 		// fmt::print("slice: {} {}\n\n",ori,slice_end);
-		out[i] = torch::indexing::Slice(ori,slice_end);
+		out[i] = torch::indexing::Slice(ori, slice_end);
 	}
 	return out;
 }
 torch::Tensor btensor::to_dense() const
 {
 
-	auto out = torch::zeros(sizes(),options());
-	for(const auto& index_block:this->blocks_list)
+	auto out = torch::zeros(sizes(), options());
+	for (const auto &index_block : this->blocks_list)
 	{
-		auto& index = std::get<0>(index_block);
-		auto& tens = std::get<1>(index_block);
-		auto Slices = full_slice(*this,index);
-		out.index_put_(Slices,tens);
+		auto &index = std::get<0>(index_block);
+		auto &tens = std::get<1>(index_block);
+		auto Slices = full_slice(*this, index);
+		out.index_put_(Slices, tens);
 	}
 	return out;
 }
@@ -2435,6 +2445,7 @@ btensor btensor::add(const btensor &other, Scalar alpha) const
 	    [&alpha](torch::Tensor &a, const torch::Tensor &b)
 	    { a.add_(b, alpha); }, // no collision, multiply with the constant and make an independent copy
 	    [&alpha](torch::Tensor &x) { x = x.mul(alpha); });
+	out._options = std::get<1>(*out.begin()).options();
 	return out;
 }
 /*!
@@ -2462,6 +2473,7 @@ btensor btensor::add(btensor &&other, Scalar alpha) const
 			    x.mul_(alpha); // we are the only one with a handle to this tensor now, so we do it in place.
 		    }
 	    });
+	out._options = std::get<1>(*out.begin()).options();
 	return out;
 }
 /*!

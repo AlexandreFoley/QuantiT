@@ -213,11 +213,16 @@ qtt_TEST_CASE("Solving the heisenberg model")
 		// 	constexpr size_t size = 2;
 		// 	Heisen_afm_test(size);
 		// }
-		qtt_SUBCASE("3 sites AFM")
-		{
-			constexpr size_t size = 3;
-			Heisen_afm_test(size);
-		}
+		// qtt_SUBCASE("3 sites AFM")
+		// {
+		// 	constexpr size_t size = 3;
+		// 	Heisen_afm_test(size);
+		// }
+		// qtt_SUBCASE("4 sites AFM")
+		// {
+		// 	constexpr size_t size = 4;
+		// 	Heisen_afm_test(size);
+		// }
 		// qtt_SUBCASE("10 sites AFM")
 		// {
 		// 	constexpr size_t size = 10;

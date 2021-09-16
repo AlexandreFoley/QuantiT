@@ -1457,6 +1457,36 @@ qtt_TEST_CASE("btensor")
 	qtt_CHECK_THROWS_AS(A.block({1, 0}), std::invalid_argument); // and we can't create one.
 	qtt_CHECK(btensor::check_tensor(A) == "");
 	// fmt::print("{}", A);
+	qtt_SUBCASE("tensordot trace, index order independence")
+	{
+		auto X = rand_like(shape_from(A,A.permute({1,0})));
+		// fmt::print("{}\n\n",X);
+		auto XX = X.reshape({});
+		std::vector<int64_t> inds = {0,1,2,3};
+		double correct_trace = 0;
+		for(auto& x:X)
+		{
+			auto& T = std::get<1>(x);
+			correct_trace += tensordot(T,T.conj(),inds,inds).item().toDouble();
+		}
+		double trXX = tensordot(XX,XX.conj(),{0},{0}).item().toDouble();
+		double correct_trace2 = 0;
+		for(auto& x:XX)
+		{
+			auto& T = std::get<1>(x);
+			correct_trace2 += tensordot(T,T.conj(),{0},{0}).item().toDouble();
+		}
+		qtt_CHECK(trXX == doctest::Approx(correct_trace)); 
+		qtt_CHECK(correct_trace2 == doctest::Approx(correct_trace)); 
+		// fmt::print(" correct traces: {} {}\n",correct_trace2, correct_trace);
+		for(int i = 0; i<16; ++i)
+		{
+			auto tr2 = tensordot(X,X.conj(),inds,inds);
+			double trace2 = tr2.item().toDouble();
+			qtt_CHECK_MESSAGE(doctest::Approx(correct_trace) == trace2,fmt::format("index order: {}",inds));
+			std::next_permutation(inds.begin(),inds.end());
+		}
+	}
 	qtt_SUBCASE("tensor contraction")
 	{
 		btensor B({{{3, cqt(4)}, {2, cqt(0)}}, {{2, cqt(0)}, {3, cqt(1)}}, {{1, cqt(1)}, {3, cqt(0)}}},
