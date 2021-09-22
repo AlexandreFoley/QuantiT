@@ -21,6 +21,21 @@ endif(USE_EXTERN_TORCH)
 find_package(Torch REQUIRED)
 find_package(fmt 7 REQUIRED)
 
+option(EMIT_PROFILER "emit profiling info in the binary" FALSE)
+if(EMIT_PROFILER)
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pg")
+    SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pg")
+    SET(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -pg")
+    # SET(CMAKE_STATIC_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -pg")
+endif(EMIT_PROFILER)
+option(DISABLE_DOCTEST "disable the testing facility" FALSE)
+if(DISABLE_DOCTEST)
+    set(CMAKE_CXX_FLAGS "$CMAKE_CXX_FLAGS -DDOCTEST_CONFIG_DISABLE")
+endif(DISABLE_DOCTEST)
+
+# add_compile_options(-fsanitize=address)
+# add_link_options(-fsanitize=address)
+
 link_libraries( ${TORCH_LIBRARIES} fmt::fmt-header-only )
 
 

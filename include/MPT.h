@@ -18,6 +18,7 @@
 #include "property.h"
 #include <algorithm>
 #include <fmt/core.h>
+#include <random>
 #include <torch/torch.h>
 #include <type_traits>
 #include <vector>
@@ -46,15 +47,17 @@ MPS random_MPS(size_t bond_dim, const std::vector<int64_t> &phys_dims,
                                                // standard c++20 is well supported.
 
 bMPS random_bMPS(size_t length, size_t bond_dim, const btensor &phys_dim_spec, any_quantity_cref q_num,
-                 torch::TensorOptions opt = {});
-bMPS random_bMPS(size_t bond_dim, const bMPO &Hamil, any_quantity_cref q_num, torch::TensorOptions opt = {});
+                 unsigned int seed = (std::random_device())(), torch::TensorOptions opt = {});
+bMPS random_bMPS(size_t bond_dim, const bMPO &Hamil, any_quantity_cref q_num,
+                 unsigned int seed = (std::random_device())(), torch::TensorOptions opt = {});
 bMPS random_bMPS(size_t bond_dim, const std::vector<btensor> &phys_dim_spec, any_quantity_cref q_num,
-                 torch::TensorOptions opt = {});
+                 unsigned int seed = (std::random_device())(), torch::TensorOptions opt = {});
 bMPS random_MPS(size_t length, size_t bond_dim, const btensor &phys_dim_spec, any_quantity_cref q_num,
-                torch::TensorOptions opt = {});
-bMPS random_MPS(size_t bond_dim, const bMPO &Hamil, any_quantity_cref q_num, torch::TensorOptions opt = {});
+                unsigned int seed = (std::random_device())(), torch::TensorOptions opt = {});
+bMPS random_MPS(size_t bond_dim, const bMPO &Hamil, any_quantity_cref q_num,
+                unsigned int seed = (std::random_device())(), torch::TensorOptions opt = {});
 bMPS random_MPS(size_t bond_dim, const std::vector<btensor> &phys_dim_spec, any_quantity_cref q_num,
-                torch::TensorOptions opt = {});
+                unsigned int seed = (std::random_device())(), torch::TensorOptions opt = {});
 
 namespace details
 {
@@ -115,7 +118,7 @@ class vector_lift
 	}
 	vector_lift(VTens &other) : tensors(other) {}
 	vector_lift(std::initializer_list<Tens> initl) : tensors(initl) {}
-	vector_lift(const_iterator begin, const_iterator end): tensors(begin,end) {}
+	vector_lift(const_iterator begin, const_iterator end) : tensors(begin, end) {}
 	virtual ~vector_lift() = default;
 
 	explicit operator S()
@@ -272,7 +275,7 @@ class MPT final : public vector_lift<MPT>
 	MPT(const MPT &other) : vector_lift<MPT>(other) {}
 	MPT(MPT &&other) noexcept : vector_lift<MPT>(std::move(other)) {}
 	MPT(std::initializer_list<Tens> initl) : vector_lift<MPT>(initl) {}
-	MPT(const_iterator begin, const_iterator end): vector_lift(begin,end) {}
+	MPT(const_iterator begin, const_iterator end) : vector_lift(begin, end) {}
 
 	virtual ~MPT() = default;
 
@@ -306,7 +309,7 @@ class MPS final
 	static bool check_one(const Tens &tens);
 	MPS() : vector_lift<MPS>(), orthogonality_center(0) {}
 	MPS(size_type size) : vector_lift<MPS>(size), orthogonality_center(0) {}
-	MPS(size_type size,size_t oc) : vector_lift<MPS>(size), orthogonality_center(oc) {}
+	MPS(size_type size, size_t oc) : vector_lift<MPS>(size), orthogonality_center(oc) {}
 	MPS(const MPS &other) : vector_lift(other), orthogonality_center(other.orthogonality_center) {}
 	MPS(MPS &&other) noexcept : vector_lift(std::move(other)), orthogonality_center(other.orthogonality_center) {}
 	MPS(std::initializer_list<Tens> initl, size_t oc = 0) : vector_lift<MPS>(initl), orthogonality_center(oc)
@@ -347,7 +350,7 @@ class MPS final
 		if (oc >= size() and oc != 0)
 			throw std::invalid_argument("orthogonality center position greater than the number of defined tensors.");
 	}
-	MPS(const_iterator begin, const_iterator end): vector_lift(begin,end),orthogonality_center(0) {}
+	MPS(const_iterator begin, const_iterator end) : vector_lift(begin, end), orthogonality_center(0) {}
 
 	virtual ~MPS() = default;
 
@@ -381,6 +384,7 @@ class MPS final
 	                                        const dmrg_options &options, env_holder &Env,
 	                                        dmrg_logger &logger); // allow dmrg to manipulate the oc.
 	static MPS empty_copy(const MPS &in) { return MPS(in.size(), in.oc); }
+
   private:
 	size_t &oc = orthogonality_center.value; // private direct access to the value variable.
 };
@@ -434,8 +438,7 @@ class MPO final : public vector_lift<MPO> // specialization for rank 4 tensors
 			throw std::invalid_argument("Input MPT is an invalid MPO: one or more Tensors has rank differing from 4 "
 			                            "and/or a bond dimension mismatch with its neighbor (dims 0 and 2).");
 	}
-	MPO(const_iterator begin, const_iterator end): vector_lift<MPO>(begin,end) {}
-
+	MPO(const_iterator begin, const_iterator end) : vector_lift<MPO>(begin, end) {}
 
 	virtual ~MPO() = default;
 
@@ -464,7 +467,7 @@ class bMPT final : public vector_lift<bMPT, btensor>
 	bMPT(const bMPT &other) : vector_lift(other) {}
 	bMPT(bMPT &&other) noexcept : vector_lift(std::move(other)) {}
 	bMPT(std::initializer_list<Tens> initl) : vector_lift<bMPT, btensor>(initl) {}
-	bMPT(const_iterator begin, const_iterator end): vector_lift(begin,end) {}
+	bMPT(const_iterator begin, const_iterator end) : vector_lift(begin, end) {}
 
 	virtual ~bMPT() = default;
 
@@ -498,7 +501,7 @@ class bMPS final : public vector_lift<bMPS, btensor> // specialization for rank 
 	static bool check_one(const Tens &tens);
 	bMPS() : vector_lift<bMPS, btensor>(), orthogonality_center(0) {}
 	bMPS(size_type size) : vector_lift<bMPS, btensor>(size), orthogonality_center(0) {}
-	bMPS(size_type size,size_t oc) : vector_lift<bMPS, btensor>(size), orthogonality_center(std::min(oc,size-1)) {}
+	bMPS(size_type size, size_t oc) : vector_lift<bMPS, btensor>(size), orthogonality_center(std::min(oc, size - 1)) {}
 	bMPS(const bMPS &other) : vector_lift(other), orthogonality_center(other.orthogonality_center) {}
 	bMPS(bMPS &&other) noexcept : vector_lift(std::move(other)), orthogonality_center(other.orthogonality_center) {}
 	bMPS(std::initializer_list<Tens> initl, size_t oc = 0) : vector_lift<bMPS, btensor>(initl), orthogonality_center(oc)
@@ -539,7 +542,7 @@ class bMPS final : public vector_lift<bMPS, btensor> // specialization for rank 
 		if (oc >= size() and oc != 0)
 			throw std::invalid_argument("orthogonality center position greater than the number of defined tensors.");
 	}
-	bMPS(const_iterator begin, const_iterator end): vector_lift(begin,end) {}
+	bMPS(const_iterator begin, const_iterator end) : vector_lift(begin, end) {}
 
 	virtual ~bMPS() = default;
 
@@ -573,6 +576,7 @@ class bMPS final : public vector_lift<bMPS, btensor> // specialization for rank 
 	                                  const dmrg_options &options, benv_holder &Env,
 	                                  dmrg_logger &logger); // allow dmrg to manipulate the oc.
 	static bMPS empty_copy(const bMPS &in) { return bMPS(in.size(), in.oc); }
+
   private:
 	size_t &oc = orthogonality_center.value; // private direct access to the value variable.
 };
@@ -626,7 +630,7 @@ class bMPO final : public vector_lift<bMPO, btensor> // specialization for rank 
 			throw std::invalid_argument("Input bMPT is an invalid bMPO: one or more Tensors has rank differing from 4 "
 			                            "and/or a bond dimension mismatch with its neighbor (dims 0 and 2).");
 	}
-	bMPO(const_iterator begin, const_iterator end): vector_lift(begin,end) {}
+	bMPO(const_iterator begin, const_iterator end) : vector_lift(begin, end) {}
 
 	virtual ~bMPO() = default;
 
@@ -672,23 +676,6 @@ btensor contract(const bMPS &a, const bMPS &b, const bMPO &obs);
 btensor contract(const bMPS &a, const bMPS &b, const bMPO &obs, btensor left_edge, const btensor &right_edge);
 btensor contract(const bMPS &a, const bMPS &b, btensor left_edge, const btensor &right_edge);
 btensor contract(const bMPS &a, const bMPS &b);
-
-inline bMPS random_MPS(size_t length, size_t bond_dim, const btensor &phys_dim_spec, any_quantity_cref q_num,
-                       torch::TensorOptions opt)
-{
-	return random_bMPS(length, bond_dim, phys_dim_spec, q_num, opt);
-}
-inline bMPS random_MPS(size_t bond_dim, const bMPO &Hamil, any_quantity_cref q_num, torch::TensorOptions opt)
-{
-
-	return random_bMPS(bond_dim, Hamil, q_num, opt);
-}
-inline bMPS random_MPS(size_t bond_dim, const std::vector<btensor> &phys_dim_spec, any_quantity_cref q_num,
-                       torch::TensorOptions opt)
-{
-
-	return random_bMPS(bond_dim, phys_dim_spec, q_num, opt);
-}
 
 qtt_TEST_CASE("MPT manipulations")
 {
@@ -808,15 +795,17 @@ qtt_TEST_CASE("btensor networks")
 		auto lside = rside.inverse_cvals();
 		auto T_shape = shape_from(lside, phys_ind, rside, inv_phys_ind);
 		auto T = rand_like(T_shape);
-		bMPO H(4,T);
+		bMPO H(4, T);
 		qtt_CHECK(H.check_ranks());
-		//adjusting edges to bond dimension 1
-		H[0] = H[0].basic_create_view({5,-1,-1,-1});
+		// adjusting edges to bond dimension 1
+		H[0] = H[0].basic_create_view({5, -1, -1, -1});
 		qtt_REQUIRE_NOTHROW(btensor::throw_bad_tensor(H[0]));
-		H[0] = H[0].reshape_as(shape_from(btensor({{{1,cval(0,0)}}},cval(0,0)),H[0]));
-		H[3] = H[3].basic_create_view({-1,-1,0,-1});
+		H[0] = H[0].reshape_as(shape_from(btensor({{{1, cval(0, 0)}}}, cval(0, 0)), H[0]));
+		H[3] = H[3].basic_create_view({-1, -1, 0, -1});
 		qtt_REQUIRE_NOTHROW(btensor::throw_bad_tensor(H[3]));
-		auto last_shape = shape_from(H[3].shape_from({-1,-1,0}).set_selection_rule_(H[3].selection_rule),btensor({{{1,cval(0,0)}}},cval(0,0)),H[3].shape_from({0,0,-1}).set_selection_rule_(cval(0,0)));
+		auto last_shape = shape_from(H[3].shape_from({-1, -1, 0}).set_selection_rule_(H[3].selection_rule),
+		                             btensor({{{1, cval(0, 0)}}}, cval(0, 0)),
+		                             H[3].shape_from({0, 0, -1}).set_selection_rule_(cval(0, 0)));
 		H[3] = H[3].reshape_as(last_shape);
 
 		qtt_SUBCASE("random MPS from MPO")

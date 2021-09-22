@@ -112,7 +112,7 @@ qtt_TEST_CASE("Solving the heisenberg model")
 		auto Heisen_afm_test = [&](size_t size)
 		{
 			auto hamil = quantt::Heisenberg(torch::tensor(J), size, local_heisenberg_shape);
-			quantt::bMPS state = quantt::random_bMPS(4, hamil, cval(size % 2));
+			quantt::bMPS state = quantt::random_bMPS(4, hamil, cval(size % 2),0);
 			state[0] /= sqrt(contract(state,state));
 			state.move_oc(state.size()-1);
 			state.move_oc(0);
@@ -138,37 +138,37 @@ qtt_TEST_CASE("Solving the heisenberg model")
 			fmt::print("\nstate norm {}\n", contract(state, state).item().toDouble());
 			fmt::print("E {}\n\n", contract(state, state, hamil).item().toDouble());
 		};
-		// qtt_SUBCASE("2 sites AFM")
-		// {
-		// 	fmt::print("2 sites\n");
-		// 	constexpr size_t size = 2;
-		// 	Heisen_afm_test(size);
-		// }
+		qtt_SUBCASE("2 sites AFM")
+		{
+			fmt::print("2 sites\n");
+			constexpr size_t size = 2;
+			Heisen_afm_test(size);
+		}
 		qtt_SUBCASE("3 sites AFM")
 		{
 			fmt::print("3 sites\n");
 			constexpr size_t size = 3;
 			Heisen_afm_test(size);
 		}
-		// qtt_SUBCASE("4 sites AFM")
-		// {
-		// 	fmt::print("4 sites\n");
-		// 	constexpr size_t size = 4;
-		// 	Heisen_afm_test(size);
-		// }
-		// qtt_SUBCASE("10 sites AFM")
-		// {
-		// 	constexpr size_t size = 10;
-		// 	Heisen_afm_test(size);
-		// }
+		qtt_SUBCASE("4 sites AFM")
+		{
+			fmt::print("4 sites\n");
+			constexpr size_t size = 4;
+			Heisen_afm_test(size);
+		}
+		qtt_SUBCASE("10 sites AFM")
+		{
+			constexpr size_t size = 10;
+			Heisen_afm_test(size);
+		}
 		// qtt_SUBCASE("20 sites AFM")
 		// {
 		// 	Heisen_afm_test(20);
 		// }
-		// qtt_SUBCASE("50 sites AFM")
-		// {
-		// 	Heisen_afm_test(50);
-		// }
+		qtt_SUBCASE("50 sites AFM")
+		{
+			Heisen_afm_test(50);
+		}
 	}
 	qtt_SUBCASE("with torch tensors")
 	{
@@ -232,10 +232,10 @@ qtt_TEST_CASE("Solving the heisenberg model")
 		// {
 		// 	Heisen_afm_test(20);
 		// }
-		// qtt_SUBCASE("50 sites AFM")
-		// {
-		// 	Heisen_afm_test(50);
-		// }
+		qtt_SUBCASE("50 sites AFM")
+		{
+			Heisen_afm_test(50);
+		}
 		// qtt_SUBCASE("100 sites AFM")
 		// {
 		// 	Heisen_afm_test(100);

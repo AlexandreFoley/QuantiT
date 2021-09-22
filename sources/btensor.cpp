@@ -641,7 +641,7 @@ btensor btensor::basic_create_view(const std::vector<int64_t> &dims, bool preser
 		bool keep = true;
 		auto out_it = out_index.begin();
 		auto filter_it = filter.begin();
-		for (auto index_it = index_in.begin(); index_it != index_in.end() and keep; ++index_it, ++filter_it)
+		for (auto index_it = index_in.begin(); index_it != index_in.end() and out_it != out_index.end() and keep; ++index_it, ++filter_it)
 		{
 			*out_it = *index_it;
 			auto sliced = *filter_it == -1;
@@ -1697,7 +1697,7 @@ btensor &btensor::permute_(torch::IntArrayRef permutation)
 
 btensor::block_list_t permute_bl(const btensor::block_list_t &block_list, torch::IntArrayRef block_permutation,
                                  torch::IntArrayRef tensor_permutation)
-{
+{//profiler shows that too much time is spent here.
 	auto out = block_list;
 	if (out.begin() != out.end())
 	{
@@ -1705,7 +1705,7 @@ btensor::block_list_t permute_bl(const btensor::block_list_t &block_list, torch:
 		auto ind_l = tmp_index.size();
 		for (auto &block : out)
 		{
-			for (auto i = 0 * ind_l; i < ind_l; ++i)
+			for (decltype(ind_l) i = 0; i < ind_l; ++i)
 			{
 				tmp_index[i] = std::get<0>(block)[block_permutation[i]];
 			}
@@ -1822,11 +1822,11 @@ btensor btensor::tensordot(const btensor &other, torch::IntArrayRef dim_self, to
 		auto next = std::get<0>(*iterator);
 		if (next.begin() != next.end())
 		{
-			auto rank = std::distance(next.begin(), next.end());
-			auto x = std::max(0, static_cast<int>(rank) - static_cast<int>(dim_l) - 1);
-			++(*(next.begin() + x));
-			for (auto it = next.begin() + x + 1; it != next.end(); ++it)
-				*it = 0;
+			bool null_dim_l = dim_l == 0;
+			const auto rank = std::distance(next.begin(), next.end());
+			const auto x = static_cast<int>(rank) - static_cast<int>(dim_l) - null_dim_l;
+			constexpr auto max_value = (std::numeric_limits<std::remove_reference_t<decltype(*next.begin())>>::max());
+			(*(next.begin() + x)) = max_value*!null_dim_l + null_dim_l*(*(next.begin() + x)+1);
 		}
 		return next;
 	};
@@ -1869,38 +1869,39 @@ btensor btensor::tensordot(const btensor &other, torch::IntArrayRef dim_self, to
 		auto this_col_start = t1.begin();
 		auto less = t1.value_comp();
 		//#pragma omp parallel
-		//#pragma omp single //we've got a threadpool, but only one thread is working for now.
+		//#pragma omp single 
 		while (this_col_start != t1.end()) // loop over all the columns of this, parallel tasks must synchronize at the end of this loop.
 		{
 			auto other_curr_block = t2.begin();
-			auto next_ind_this = next_index(this_col_start);
-			auto this_col_end = std::lower_bound(this_col_start, t1.end(), next_ind_this, less);
-			// less);
+			auto this_col_end = std::lower_bound(this_col_start, t1.end(), next_index(this_col_start), less); //also the next column start if it's not the end.
 			while (other_curr_block != t2.end()) // loop over all the columns of other
 			{
 				auto this_curr_block = this_col_start;
-				auto next_index_curr = next_index(other_curr_block);
-				auto other_col_end = std::lower_bound(other_curr_block, t2.end(), next_index_curr, less);
-				// auto other_col_end = std::lower_bound(other_curr_block, t2.end(), next_index(other_curr_block),
-				// less);
+				auto other_col_end = std::lower_bound(other_curr_block, t2.end(), next_index(other_curr_block), less);
+				auto out_block_index = cpt_output_block(this_curr_block, other_curr_block);
+				// if (!out_btens.block_conservation_rule_test(out_block_index)) 
+				// {//skip to next if we don't satisfy the conservation rule: we know that there will be no match.
+				// 	other_curr_block = other_col_end;
+				// 	continue;
+				// }
 				std::tie(this_curr_block, other_curr_block) =
 				    find_next_match(this_curr_block, this_col_end, other_curr_block, other_col_end);
 				if (this_curr_block != this_col_end and
 				    other_curr_block != other_col_end) // TODO: getting a false match, in dmrg environement prep.
 				{
 					// compute the block index for this combination of columns of the input block tensors
-					auto out_block_index = cpt_output_block(this_curr_block, other_curr_block);
 
 					auto size_range = out_btens.block_sizes(out_block_index);
-					out_btens.block(out_block_index) =
+					auto& curr_block_tens = out_btens.blocks_list[out_block_index];//current block output.
+					curr_block_tens =
 					    torch::zeros(std::vector<int64_t>(size_range.begin(), size_range.end()),
 					                 std::get<1>(*other_curr_block).options()); // initialize the block.
 
 					// #pragma omp task private(this_curr_block) private(other_curr_block) private(out_block_index)
 					// private(this_col_end) private(other_col_end)
-					do // this loop can be executed by a single independant thread.
+					do // this loop can be executed by a single independant thread. further parallelism is possible at the cost of extra memory.
 					{
-						quantt::tensorgdot_(out_btens.block_at(out_block_index), std::get<1>(*this_curr_block),
+						quantt::tensorgdot_(curr_block_tens, std::get<1>(*this_curr_block),
 						                    std::get<1>(*other_curr_block), dim_l);
 						++this_curr_block; // break the match.
 						std::tie(this_curr_block, other_curr_block) =
@@ -2017,6 +2018,7 @@ void btensor::shift_impl(any_quantity_cref shift, int64_t dim)
 		*c_vals_it *= shift;
 	}
 }
+
 
 bool btensor::test_same_shape(const btensor &a, const btensor &b)
 {

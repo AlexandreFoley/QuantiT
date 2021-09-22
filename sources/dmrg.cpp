@@ -27,7 +27,7 @@ using namespace details;
 template <class... T>
 void print(T &&...X)
 { // So i can comment out a single line and disable all the debug printing within this class.
-  // fmt::print(std::forward<T>(X)...);
+//   fmt::print(std::forward<T>(X)...);
 }
 template <class X>
 struct env_holder_impl
@@ -187,46 +187,46 @@ struct dmrg_2sites_update
 		// Env[state.size()]).item().toDouble());
 		MPO_t tmpMPO(hamil.begin() + oc, hamil.begin() + oc + 2);
 		MPS_t tmpstate(state.begin() + oc, state.begin() + oc + 2);
-		auto a02 = contract(tmpstate, tmpstate, tmpMPO, Env[oc - 1], Env[oc + 2]);
+		// auto a02 = contract(tmpstate, tmpstate, tmpMPO, Env[oc - 1], Env[oc + 2]);
 		// fmt::print("a0 predict from env: {}\n", a02.item().toDouble());
 
-		print("{:-^40}\nstate norm: {}\n", "", contract(state, state).item().toDouble());
+		// print("{:-^40}\nstate norm: {}\n", "", contract(state, state).item().toDouble());
 		// The oc is at oc+forward?!? there's something i don't understand.
-		print("forward {}, oc {} norm: {}, ", forward, oc,
-		      tensordot(state[oc], state[oc].conj(), {0, 1, 2}, {0, 1, 2}).item().toDouble());
-		print("oc + 1 norm: {}\n",
-		      tensordot(state[oc + 1], state[oc + 1].conj(), {0, 1, 2}, {0, 1, 2}).item().toDouble());
+		// print("forward {}, oc {} norm: {}, ", forward, oc,
+		//       tensordot(state[oc], state[oc].conj(), {0, 1, 2}, {0, 1, 2}).item().toDouble());
+		// print("oc + 1 norm: {}\n",
+		//       tensordot(state[oc + 1], state[oc + 1].conj(), {0, 1, 2}, {0, 1, 2}).item().toDouble());
 		auto local_state = tensordot(state[oc], state[oc + 1], {2}, {0});
-		print("local norm: {}\n",
-		      tensordot(local_state, local_state.conj(), {0, 1, 2, 3}, {0, 1, 2, 3}).item().toDouble());
+		// print("local norm: {}\n",
+		//       tensordot(local_state, local_state.conj(), {0, 1, 2, 3}, {0, 1, 2, 3}).item().toDouble());
 		std::tie(E0, local_state) = two_sites_update(local_state, twosite_hamil[oc], Env[oc - 1], Env[oc + 2]);
-		print("updated state norm: {}\n",
-		      tensordot(local_state, local_state.conj(), {0, 1, 2, 3}, {0, 1, 2, 3}).item().toDouble());
+		// print("updated state norm: {}\n",
+		//       tensordot(local_state, local_state.conj(), {0, 1, 2, 3}, {0, 1, 2, 3}).item().toDouble());
 		auto [u, d, v] = quantt::svd(local_state, 2, options.cutoff, options.minimum_bond, options.maximum_bond);
-		print("SVD sum square singular values: {}\n", sum(d.pow(2)).item().toDouble());
+		// print("SVD sum square singular values: {}\n", sum(d.pow(2)).item().toDouble());
 		d /= sqrt(sum(d.pow(2)));
 		if (forward)
 		{
 			// the orthogonality center was at oc
 			state[oc] = u;
-			print("sum d2 {}, u norm {}, v norm {}\n", sum(d.pow(2)).item().toDouble(),
-			      tensordot(u.conj(), u, {0, 1, 2}, {0, 1, 2}).item().toDouble(),
-			      tensordot(v.conj(), v, {0, 1, 2}, {0, 1, 2}).item().toDouble());
+			// print("sum d2 {}, u norm {}, v norm {}\n", sum(d.pow(2)).item().toDouble(),
+			//       tensordot(u.conj(), u, {0, 1, 2}, {0, 1, 2}).item().toDouble(),
+			//       tensordot(v.conj(), v, {0, 1, 2}, {0, 1, 2}).item().toDouble());
 			state[oc + 1] = (v.mul_(d).conj()).permute({2, 0, 1});
-			print("forward post SVD norm {}\n",
-			      tensordot(state[oc + 1], state[oc + 1].conj(), {0, 1, 2}, {0, 1, 2}).item().toDouble());
+			// print("forward post SVD norm {}\n",
+			//       tensordot(state[oc + 1], state[oc + 1].conj(), {0, 1, 2}, {0, 1, 2}).item().toDouble());
 			Env[oc] = compute_left_env(hamil[oc], state[oc], Env[oc - 1]);
 		}
 		else
 		{
 			auto d_r = d.reshape_as(shape_from(unsqueezing_shape, d));
-			print("sum d2 {}, v norm {}, u norm {}\n", sum(d.pow(2)).item().toDouble(),
-			      tensordot(v.conj(), v, {0, 1, 2}, {0, 1, 2}).item().toDouble(),
-			      tensordot(u.conj(), u, {0, 1, 2}, {0, 1, 2}).item().toDouble());
+			// print("sum d2 {}, v norm {}, u norm {}\n", sum(d.pow(2)).item().toDouble(),
+			//       tensordot(v.conj(), v, {0, 1, 2}, {0, 1, 2}).item().toDouble(),
+			//       tensordot(u.conj(), u, {0, 1, 2}, {0, 1, 2}).item().toDouble());
 			// the orthognality center was at oc+1
 			state[oc] = u.mul_(d);
-			print("backward post SVD norm {}\n",
-			      tensordot(state[oc], state[oc].conj(), {0, 1, 2}, {0, 1, 2}).item().toDouble());
+			// print("backward post SVD norm {}\n",
+			//       tensordot(state[oc], state[oc].conj(), {0, 1, 2}, {0, 1, 2}).item().toDouble());
 			state[oc + 1] = (v.conj()).permute({2, 0, 1});
 			Env[oc + 1] = compute_right_env(hamil[oc + 1], state[oc + 1], Env[oc + 2]);
 		}

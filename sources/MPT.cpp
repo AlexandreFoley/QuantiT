@@ -391,9 +391,9 @@ btensor make_right_side(const std::vector<size_t> &ind, any_quantity_vector &acc
 
 template <class T>
 bMPS random_bMPS_impl(size_t length, int64_t bond_dim, T &&phys_dim, any_quantity_cref constraint, size_t string_N_pass,
-                      torch::TensorOptions opt = {})
+                      torch::TensorOptions opt,std::random_device::result_type seed )
 {
-	std::mt19937 gen((std::random_device())()); // Standard mersenne_twister_engine seeded with rd()
+	std::mt19937 gen(seed); // Standard mersenne_twister_engine seeded with rd()
 	std::vector<size_t> phys_inds(bond_dim * length);
 	static_assert(std::is_same_v<decltype(phys_dim(0)), btensor>,
 	              "the phys_dim function like object is invalid, it must return a rank-1 btensor for all index");
@@ -443,7 +443,7 @@ MPS random_MPS(size_t bond_dim, std::vector<int64_t> phys_dims, torch::TensorOpt
 	return random_MPS_impl(
 	    phys_dims.size(), bond_dim, [&phys_dims](size_t i) { return phys_dims[i]; }, opt);
 }
-bMPS random_bMPS(size_t bond_dim, const bMPO &hamil, any_quantity_cref quantum_number, torch::TensorOptions opt)
+bMPS random_bMPS(size_t bond_dim, const bMPO &hamil, any_quantity_cref quantum_number, std::random_device::result_type seed, torch::TensorOptions opt)
 {
 	auto S = hamil.size();
 	std::vector<btensor> x = [&hamil, S, &quantum_number]()
@@ -456,15 +456,15 @@ bMPS random_bMPS(size_t bond_dim, const bMPO &hamil, any_quantity_cref quantum_n
 		}
 		return out;
 	}();
-	return random_bMPS(bond_dim, x, quantum_number, opt);
+	return random_bMPS(bond_dim, x, quantum_number, seed, opt);
 }
-bMPS random_bMPS(size_t length, size_t bond_dim, const btensor &phys_dim_spec, any_quantity_cref q_num,
+bMPS random_bMPS(size_t length, size_t bond_dim, const btensor &phys_dim_spec, any_quantity_cref q_num, std::random_device::result_type seed,
                  torch::TensorOptions opt)
 {
 	return random_bMPS_impl(
-	    length, bond_dim, [&phys_dim_spec](size_t i) { return phys_dim_spec; }, q_num, 1, opt);
+	    length, bond_dim, [&phys_dim_spec](size_t i) { return phys_dim_spec; }, q_num, 1, opt,seed);
 }
-bMPS random_bMPS(size_t bond_dim, const std::vector<btensor> &phys_dim_spec, any_quantity_cref q_num,
+bMPS random_bMPS(size_t bond_dim, const std::vector<btensor> &phys_dim_spec, any_quantity_cref q_num, std::random_device::result_type seed,
                  torch::TensorOptions opt)
 {
 	auto S = phys_dim_spec.size();
@@ -495,7 +495,24 @@ bMPS random_bMPS(size_t bond_dim, const std::vector<btensor> &phys_dim_spec, any
 		}
 		return count;
 	}();
-	return random_bMPS_impl(S, bond_dim, phys_dim, q_num, N_pass, opt);
+	return random_bMPS_impl(S, bond_dim, phys_dim, q_num, N_pass, opt,seed);
 }
 
+
+bMPS random_MPS(size_t length, size_t bond_dim, const btensor &phys_dim_spec, any_quantity_cref q_num, unsigned int seed,
+                       torch::TensorOptions opt)
+{
+	return random_bMPS(length, bond_dim, phys_dim_spec, q_num,seed,  opt);
+}
+bMPS random_MPS(size_t bond_dim, const bMPO &Hamil, any_quantity_cref q_num,unsigned int seed, torch::TensorOptions opt)
+{
+
+	return random_bMPS(bond_dim, Hamil, q_num,seed, opt);
+}
+bMPS random_MPS(size_t bond_dim, const std::vector<btensor> &phys_dim_spec, any_quantity_cref q_num, unsigned int seed,
+                       torch::TensorOptions opt)
+{
+
+	return random_bMPS(bond_dim, phys_dim_spec, q_num,seed, opt);
+}
 } // namespace quantt

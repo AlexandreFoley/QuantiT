@@ -44,7 +44,7 @@ constexpr int64_t distance2_impl(T a, T b)
 template <class T>
 constexpr double distance_impl(T a, T b)
 {
-	return std::sqrt(distance2(a, b));
+	return std::sqrt(distance2_impl(a, b));
 }
 
 } // anonymous namespace
@@ -93,7 +93,7 @@ class C
 	 *
 	 *
 	 */
-	constexpr C(int16_t _val) noexcept : val((_val < 0) * N + (_val % N))
+	constexpr C(int16_t _val) noexcept : val(  (_val != -N)*(_val < 0) * N + (_val % N) )
 	{
 		/*
 		 * A quick explanation of the init line for val:
@@ -297,6 +297,8 @@ qtt_TEST_CASE("simple conserved")
 
 		Z Z_3(3);
 		Z Z_m3(-3);
+		auto x = distance2_impl(Z_3,Z_m3);
+		qtt_CHECK(x == 36);
 		qtt_CHECK(Z_3 != Z_m3);
 		qtt_CHECK(Z_3.inverse() * Z_3 == Z(0)); // the product with one's own inverse give the trivial element.
 		qtt_CHECK(Z_3.inverse() == Z_m3);

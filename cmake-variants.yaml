@@ -1,0 +1,49 @@
+buildType: 
+  default: debug
+  description: basic option set
+  choices:
+    debug:
+      short: Debug
+      long: Disable optimization - include debug information
+      buildType: Debug
+    release:
+      short: Release
+      long: Optimize for speed - exlude debug information
+      buildType: Release
+    minsizerel:
+      short: MinSizeRel
+      long: Optimize for smallest binary size - exlude debug information
+      buildType: MinSizeRel
+    relwithdebinfo:
+      short: RelWithDebInfo
+      long: Optimize for speed - include debug information
+      buildType: RelWithDebInfo
+
+profiling:
+  default: no
+  choices:
+    no:
+      short: No Profiler
+      long: exclude profiling information
+      settings:
+        EMIT_PROFILER: no
+    yes:
+      short: Profiler
+      long: include profiling information
+      settings:
+        EMIT_PROFILER: yes
+
+test_suite:
+  default: yes
+  choices:
+    yes:
+      short: test
+      long: compile the test suite
+      settings: 
+        DISABLE_DOCTEST: no
+    no:
+      short: notest
+      long: disable all testing macros
+      settings:
+        DISABLE_DOCTEST: yes
+
