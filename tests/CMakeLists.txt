@@ -6,18 +6,22 @@ set(COMPONENT_SRCS DMRG_heisenber_test.h) #make vs-code intellisence work with w
 
 
 add_compile_options(-fno-omit-frame-pointer)
-if(DISABLE_DOCTEST)
 
+if(EMIT_PROFILER)
     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pg")
     SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pg")
     SET(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -pg")
-	set(NANB_DIR "${PROJECT_SOURCE_DIR}/extern/nanobench")
+    # SET(CMAKE_STATIC_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -pg")
+endif(EMIT_PROFILER)
+	
+set(NANB_DIR "${PROJECT_SOURCE_DIR}/extern/nanobench")
 	add_executable(Benchmark benchmark.cpp)
 	target_include_directories(Benchmark PRIVATE "${NANB_DIR}")
 	target_compile_features(Benchmark PRIVATE cxx_std_17)
 	target_link_libraries(Benchmark PRIVATE QuanTT_lib)
 	add_test(NAME benchmark COMMAND Benchmark)
 
+if(DISABLE_DOCTEST)
 else()
 
 	add_executable(QuanTT_test test.cpp)
@@ -30,6 +34,6 @@ else()
 	target_link_libraries(QuanTT_test_lvl2 PRIVATE QuanTT_lib)
 
 	add_test(NAME test_QuanTT COMMAND QuanTT_test)
-	add_test(NAME test_lvl2_QuanTT COMMAND QuanTT_test_lvl2)
+	# add_test(NAME test_lvl2_QuanTT COMMAND QuanTT_test_lvl2) //that test takes too long to run, and require human monitoring to check correctness.
 endif(DISABLE_DOCTEST)
 

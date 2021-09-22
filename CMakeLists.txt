@@ -1,9 +1,16 @@
 cmake_minimum_required(VERSION 3.0 FATAL_ERROR)
 project(QuantiT LANGUAGES CXX)
 
+
+if(DEFINED ENV{CUDA_TOOLKIT_ROOT_DIR})
+    set(CUDA_TOOLKIT_ROOT_DIR "$ENV{CUDA_TOOLKIT_ROOT_DIR}")
+else()
+    message("the CUDA_TOOLKIT_ROOT_DIR environement variable isn't set, try setting it\n with the path to cuda if CMAKE or torch is having trouble finding cuda")
+endif()
+
+
 set(CMAKE_CXX_STANDARD 17)
 if(APPLE)
-
 endif(APPLE)
 find_package(Python3 COMPONENTS Interpreter Development)
 option(USE_EXTERN_TORCH "use the torch intallation located in the project extern folder" FALSE)
@@ -37,7 +44,6 @@ endif(DISABLE_DOCTEST)
 # add_link_options(-fsanitize=address)
 
 link_libraries( ${TORCH_LIBRARIES} fmt::fmt-header-only )
-
 
 set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
 

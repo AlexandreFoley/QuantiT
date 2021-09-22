@@ -8,15 +8,15 @@
  * All rights reserved
  */
 #define DOCTEST_CONFIG_IMPLEMENT
-#include "blockTensor/btensor.h"
-#include "dmrg.h"
+// #include "blockTensor/btensor.h"
+// #include "dmrg.h"
 #include "doctest/doctest_proxy.h"
 #include "include/torch_formatter.h"
-#include "models.h"
-#include "tensorgdot.h"
+// #include "models.h"
+// #include "tensorgdot.h"
 #include <fmt/core.h>
 #include <fmt/ostream.h>
-#include <map>
+// #include <map>
 #include <ostream>
 #include <torch/torch.h>
 
@@ -51,6 +51,8 @@ int main()
 
 	auto X = torch::range(0, 99, 1);
 	auto Y = X.reshape({10, 10});
+
+	tensordot(X,X,{0},{0});
 
 	fmt::print("{}\n", Y);
 	fmt::print("{}\n", Y.index({0, 1}));

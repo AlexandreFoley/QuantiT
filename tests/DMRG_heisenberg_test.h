@@ -95,10 +95,10 @@ class dmrg_log_sweeptime final : public quantt::dmrg_default_logger
 };
 qtt_TEST_CASE("Solving the heisenberg model")
 {
+	torch::InferenceMode Inference_guard;
+	torch::set_default_dtype(torch::scalarTypeToTypeMeta(torch::kFloat64));
 	qtt_SUBCASE("With Btensors")
 	{
-		torch::InferenceMode Inference_guard();
-		torch::set_default_dtype(torch::scalarTypeToTypeMeta(torch::kFloat64));
 		using cval = quantt::quantity<quantt::conserved::Z>;
 		quantt::btensor local_heisenberg_shape({{{1, cval(0)}, {1, cval(2)}, {1, cval(-2)}, {1, cval(0)}, {1, cval(0)}},
 		                                        {{1, cval(-1)}, {1, cval(1)}},
@@ -172,8 +172,6 @@ qtt_TEST_CASE("Solving the heisenberg model")
 	}
 	qtt_SUBCASE("with torch tensors")
 	{
-		torch::set_default_dtype(torch::scalarTypeToTypeMeta(torch::kFloat64));
-		torch::InferenceMode Inference_guard();
 		auto local_tens = torch::rand({4, 2, 4});
 		int J = -1.;
 		fmt::print("{:=^80}\n", "torch tensors");

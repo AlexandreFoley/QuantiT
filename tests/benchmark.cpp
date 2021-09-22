@@ -30,10 +30,10 @@ void DNO(T &&t)
 
 int main()
 {
-	torch::InferenceMode _GUARD();
+	torch::InferenceMode _GUARD;
 	using cval = quantt::quantity<quantt::conserved::Z>;
 	auto r = std::mt19937(std::random_device()());
-	auto size_generator = std::uniform_int_distribution(1, 40); // size generator
+	auto size_generator = std::uniform_int_distribution(10, 40); // size generator
 	auto cval_generator = std::uniform_int_distribution(-5, 5); // conserved value generator
 	auto sg = [&]() { return size_generator(r); };
 	auto cg = [&]() { return cval_generator(r); };
@@ -45,13 +45,17 @@ int main()
 	                              cval(0));
 	auto shapeC = quantt::shape_from(shapeA, shapeB).reshape({}).conj();
 	auto shapeX = shape_from(shapeA, shapeB, shapeC);
+	auto tX = torch::rand({200,200});
 	auto X = quantt::rand_like(shapeX);
 	auto Y = X.conj();
 
 	quantt::btensor Z;
-	 ankerl::nanobench::Bench().minEpochIterations(4000).run("tensordot",[&]()
-	{
-		DNO(Z = X.tensordot(Y, {0}, {0}));
-		DNO(Z.begin());
-	});
+	DNO(Z = X.tensordot(Y, {0}, {0}));
+	DNO(auto tZ = tX.tensordot(tX,{0},{0}));
+	// fmt::print("{}\n",Z.begin());
+	//  ankerl::nanobench::Bench().minEpochIterations(2000).run("tensordot",[&]()
+	// {
+		// DNO(Z = X.tensordot(Y, {0}, {0}));
+		// DNO(Z.begin());
+	// });
 }

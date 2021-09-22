@@ -61,7 +61,7 @@ struct const_cgroup_iterator
 	constexpr const_cgroup_iterator(const vquantity *_it, const virt_ptr_aritmetic *_ar) : it(_it), ar(_ar) {}
 	using base_type = boost::stl_interfaces::iterator_interface<const_cgroup_iterator, std::random_access_iterator_tag,
 	                                                            any_quantity, any_quantity_cref, const vquantity *>;
-	any_quantity_cref operator*() { return *it; }
+	any_quantity_cref operator*() const { return *it; }
 	const vquantity* operator->() const {return it; }
 	base_type::difference_type operator-(const_cgroup_iterator rhs) { return ar->ptr_diff(it, rhs.it); }
 	const_cgroup_iterator &operator+=(base_type::difference_type n)
@@ -99,7 +99,7 @@ struct cgroup_iterator
 		return *this;
 	}
 	vquantity *base() { return it; }
-	operator const_cgroup_iterator() { return const_cgroup_iterator(it, ar); }
+	operator const_cgroup_iterator() const { return const_cgroup_iterator(it, ar); }
 	const virt_ptr_aritmetic *vt() { return ar; }
 };
 
@@ -355,6 +355,7 @@ class quantity_vector final : public vquantity_vector, public std::vector<S, All
 	void pop_back() override { return base_vector::pop_back(); }
 	void resize(size_t count) override
 	{
+		fmt::print("resizing cval list!\n");
 		return base_vector::resize(count); // virtualize}
 	}
 	void resize(size_t count, const vquantity &val) override

@@ -1852,14 +1852,14 @@ btensor btensor::tensordot(const btensor &other, torch::IntArrayRef dim_self, to
 		}
 		return std::make_tuple(a_beg, b_beg);
 	};
-	auto cpt_output_block = [dim_l, r = out_btens.rank](auto this_current_block_iter, auto other_current_block_iter)
+	std::vector<int64_t> out_block_index(out_btens.rank);
+	std::vector<int64_t> size_vector(out_btens.rank);
+	auto cpt_output_block = [dim_l, &out_block_index](auto this_current_block_iter, auto other_current_block_iter)
 	{
-		std::vector<int64_t> out_block_index(r);
 		std::copy(std::get<0>(*this_current_block_iter).begin(), std::get<0>(*this_current_block_iter).end() - dim_l,
 		          out_block_index.begin());
 		std::copy_backward(std::get<0>(*other_current_block_iter).begin(),
 		                   std::get<0>(*other_current_block_iter).end() - dim_l, out_block_index.end());
-		return out_block_index;
 	};
 
 	// fmt::print("out_btens section sizes {}\n", out_btens.sections_sizes);
@@ -1878,7 +1878,7 @@ btensor btensor::tensordot(const btensor &other, torch::IntArrayRef dim_self, to
 			{
 				auto this_curr_block = this_col_start;
 				auto other_col_end = std::lower_bound(other_curr_block, t2.end(), next_index(other_curr_block), less);
-				auto out_block_index = cpt_output_block(this_curr_block, other_curr_block);
+				cpt_output_block(this_curr_block, other_curr_block);//side effect: update out_block_index
 				// if (!out_btens.block_conservation_rule_test(out_block_index)) 
 				// {//skip to next if we don't satisfy the conservation rule: we know that there will be no match.
 				// 	other_curr_block = other_col_end;
@@ -1892,9 +1892,10 @@ btensor btensor::tensordot(const btensor &other, torch::IntArrayRef dim_self, to
 					// compute the block index for this combination of columns of the input block tensors
 
 					auto size_range = out_btens.block_sizes(out_block_index);
+					std::copy(size_range.begin(),size_range.end(),size_vector.begin());
 					auto& curr_block_tens = out_btens.blocks_list[out_block_index];//current block output.
 					curr_block_tens =
-					    torch::zeros(std::vector<int64_t>(size_range.begin(), size_range.end()),
+					    torch::zeros(size_vector,
 					                 std::get<1>(*other_curr_block).options()); // initialize the block.
 
 					// #pragma omp task private(this_curr_block) private(other_curr_block) private(out_block_index)
