@@ -54,7 +54,7 @@ size_t btensor::section_size(size_t index, size_t block) const
 {
 #ifndef NDEBUG
 	throw_on_bad_arg_blocks(index, block, rank, sections_sizes[index]);
-	qtt_REQUIRE(index < sections_by_dim.size());
+	assert(index < sections_by_dim.size());
 #endif
 	auto ori = std::reduce(sections_by_dim.begin(), sections_by_dim.begin() + index, 0);
 	return sections_sizes[ori + block];
@@ -641,7 +641,8 @@ btensor btensor::basic_create_view(const std::vector<int64_t> &dims, bool preser
 		bool keep = true;
 		auto out_it = out_index.begin();
 		auto filter_it = filter.begin();
-		for (auto index_it = index_in.begin(); index_it != index_in.end() and out_it != out_index.end() and keep; ++index_it, ++filter_it)
+		for (auto index_it = index_in.begin(); index_it != index_in.end() and out_it != out_index.end() and keep;
+		     ++index_it, ++filter_it)
 		{
 			*out_it = *index_it;
 			auto sliced = *filter_it == -1;
@@ -1696,8 +1697,8 @@ btensor &btensor::permute_(torch::IntArrayRef permutation)
 }
 
 btensor::block_list_t permute_bl(const btensor::block_list_t &block_list, torch::IntArrayRef block_permutation,
-                                 torch::IntArrayRef tensor_permutation)
-{//profiler shows that too much time is spent here.
+                                 torch::IntArrayRef tensor_permutation, int64_t split)
+{
 	auto out = block_list;
 	if (out.begin() != out.end())
 	{
@@ -1710,7 +1711,38 @@ btensor::block_list_t permute_bl(const btensor::block_list_t &block_list, torch:
 				tmp_index[i] = std::get<0>(block)[block_permutation[i]];
 			}
 			tmp_index.swap(std::get<0>(block));
-			std::get<1>(block) = std::get<1>(block).permute(tensor_permutation);
+			auto &tens = std::get<1>(block);
+			tens = tens.permute(tensor_permutation).contiguous();
+			auto sizes = tens.sizes();
+			int64_t a = 1, b = 1;
+			size_t i = 0;
+			for (; i < split; ++i)
+			{
+				a *= sizes[i];
+			}
+			for (; i < sizes.size(); ++i)
+			{
+				b *= sizes[i];
+			}
+			tens = tens.view({a, b});
+			if ((a == 1 or b == 1) and tens.is_cpu() and !tens.is_sparse())
+			{ // enforce that the stride of size one dimensions is also one.
+				// in those case, the stride value is entirely meaningless, but whoever programmed torch::addmm_ forgot.
+				std::vector<int64_t> new_stride(tens.strides().begin(), tens.strides().end());
+				// fmt::print("restride! before: {} ", new_stride);
+				new_stride[0] = (a == 1) ? 1 : new_stride[0];
+				new_stride[1] = b == 1 ? 1 : new_stride[1];
+				// if (new_stride[0] == 0 or new_stride[1] == 0)
+				// {
+				// 	fmt::print("wtf?\n");
+				// }
+				// fmt::print("new_stride: {} ", new_stride);
+				tens.as_strided_(tens.sizes(), new_stride);
+				// fmt::print("after: {} \n", tens.strides());
+			}
+
+			// fmt::print("block : {}, stride: {}, sizes: {}", std::get<0>(block), std::get<1>(block).strides(),
+			//            std::get<1>(block).sizes());
 		}
 		out.sort();
 	}
@@ -1798,20 +1830,24 @@ btensor btensor::tensordot(const btensor &other, torch::IntArrayRef dim_self, to
 	// first check that everything matches, and compute the output properties, at the block level.
 	btensor out_btens;
 	btensor::block_list_t t1, t2;
+	// the blocks in t1 and t2 are reshaped into matrices.
 	std::tie(t1, t2, out_btens) = [&]()
 	{
 		auto out_scalar_type = promote_types(options().dtype(), other.options().dtype());
 		auto [p1, p2, out_section_by_dim] = compute_tdot_shape(*this, other, dim_self, dims_other);
 		auto l = std::reduce(out_section_by_dim.begin(), out_section_by_dim.end(), 0);
 		auto out_sel_rule = selection_rule.value + other.selection_rule.value;
-		auto _t1 = permute_bl(blocks_list, p1, p1);
+		// fmt::print("{:-^80}\n", "permute left tensor");
+		auto _t1 = permute_bl(blocks_list, p1, p1, rank - dim_l);
 		auto [out_cvals, out_section_sizes] = compute_tdot_cval_sectSize(*this, other, p1, p2, dim_l, l);
 		// swap the permutation for better ordering of the loops with the algorithm.
 		std::vector<int64_t> p2_prime(p2.size());
 		std::copy_backward(p2.begin(), p2.begin() + dim_l, p2_prime.end());
 		std::copy(p2.begin() + dim_l, p2.end(), p2_prime.begin());
-		auto _t2 = permute_bl(other.blocks_list, p2_prime, p2);
-		btensor out(out_section_by_dim, out_cvals, out_section_sizes, std::move(out_sel_rule),this->options().dtype(out_scalar_type));
+		// fmt::print("{:-^80}\n", "permute right tensor");
+		auto _t2 = permute_bl(other.blocks_list, p2_prime, p2, dim_l);
+		btensor out(out_section_by_dim, out_cvals, out_section_sizes, std::move(out_sel_rule),
+		            this->options().dtype(out_scalar_type));
 		return std::make_tuple(std::move(_t1), std::move(_t2), std::move(out));
 	}(); // a lambda that capture everything that we call immediatly. leave us with a somewhat clean namespace in
 	     // the scope.
@@ -1826,7 +1862,7 @@ btensor btensor::tensordot(const btensor &other, torch::IntArrayRef dim_self, to
 			const auto rank = std::distance(next.begin(), next.end());
 			const auto x = static_cast<int>(rank) - static_cast<int>(dim_l) - null_dim_l;
 			constexpr auto max_value = (std::numeric_limits<std::remove_reference_t<decltype(*next.begin())>>::max());
-			(*(next.begin() + x)) = max_value*!null_dim_l + null_dim_l*(*(next.begin() + x)+1);
+			(*(next.begin() + x)) = max_value * !null_dim_l + null_dim_l * (*(next.begin() + x) + 1);
 		}
 		return next;
 	};
@@ -1868,18 +1904,24 @@ btensor btensor::tensordot(const btensor &other, torch::IntArrayRef dim_self, to
 	{ // launch the contractions.
 		auto this_col_start = t1.begin();
 		auto less = t1.value_comp();
+		btensor::block_list_t::content_t out_list(std::max(btensor::btensor_compute_max_size(out_btens),1ul));// always make room for atleast one tensor. for scalar case.
+		auto out_list_it = out_list.begin();
 		//#pragma omp parallel
-		//#pragma omp single 
-		while (this_col_start != t1.end()) // loop over all the columns of this, parallel tasks must synchronize at the end of this loop.
+		//#pragma omp single
+		while (this_col_start != t1.end() and out_list_it != out_list.end())
+		// loop over all the columns of this, parallel tasks must synchronize at the end of this loop.
 		{
+			// assert(out_list_it != out_list.end());
 			auto other_curr_block = t2.begin();
-			auto this_col_end = std::lower_bound(this_col_start, t1.end(), next_index(this_col_start), less); //also the next column start if it's not the end.
-			while (other_curr_block != t2.end()) // loop over all the columns of other
+			auto this_col_end = std::lower_bound(this_col_start, t1.end(), next_index(this_col_start),
+			                                     less); // also the next column start if it's not the end.
+			while (other_curr_block != t2.end() and out_list_it != out_list.end())        // loop over all the columns of other
 			{
 				auto this_curr_block = this_col_start;
 				auto other_col_end = std::lower_bound(other_curr_block, t2.end(), next_index(other_curr_block), less);
-				cpt_output_block(this_curr_block, other_curr_block);//side effect: update out_block_index
-				// if (!out_btens.block_conservation_rule_test(out_block_index)) 
+				cpt_output_block(this_curr_block, other_curr_block); // side effect: update out_block_index
+				// if (!out_btens.block_conservation_rule_test(out_block_index))// not worth it with 50 site heisenber
+				// model dmrg
 				// {//skip to next if we don't satisfy the conservation rule: we know that there will be no match.
 				// 	other_curr_block = other_col_end;
 				// 	continue;
@@ -1892,28 +1934,42 @@ btensor btensor::tensordot(const btensor &other, torch::IntArrayRef dim_self, to
 					// compute the block index for this combination of columns of the input block tensors
 
 					auto size_range = out_btens.block_sizes(out_block_index);
-					std::copy(size_range.begin(),size_range.end(),size_vector.begin());
-					auto& curr_block_tens = out_btens.blocks_list[out_block_index];//current block output.
-					curr_block_tens =
-					    torch::zeros(size_vector,
-					                 std::get<1>(*other_curr_block).options()); // initialize the block.
+					std::copy(size_range.begin(), size_range.end(), size_vector.begin());
 
-					// #pragma omp task private(this_curr_block) private(other_curr_block) private(out_block_index)
-					// private(this_col_end) private(other_col_end)
-					do // this loop can be executed by a single independant thread. further parallelism is possible at the cost of extra memory.
-					{
-						quantt::tensorgdot_(curr_block_tens, std::get<1>(*this_curr_block),
-						                    std::get<1>(*other_curr_block), dim_l);
+					auto &curr_out = *out_list_it;
+					const int64_t a = *std::get<1>(*this_curr_block).sizes().begin();
+					const int64_t b = *(std::get<1>(*other_curr_block).sizes().begin() + 1);
+					++out_list_it;
+					// #pragma omp task firstprivate(this_curr_block) firstprivate(other_curr_block)
+					// firstprivate(curr_out) firstprivate(out_block_index) firstprivate(this_col_end)
+					// firstprivate(other_col_end) firstprivate(size_vector) firstprivate(a) firstprivate(b)
+					{ // this scope can be executed by a single independant thread. further parallelism is possible
+					  // at the cost of extra memory. Everything that is defined outside this scope should be
+					  // firstprivate() inside.
+						curr_out = std::make_pair(
+						    out_block_index, torch::mm(std::get<1>(*this_curr_block), std::get<1>(*other_curr_block)));
+						auto &curr_block_mat = std::get<1>(curr_out);
 						++this_curr_block; // break the match.
 						std::tie(this_curr_block, other_curr_block) =
 						    find_next_match(this_curr_block, this_col_end, other_curr_block, other_col_end);
-					} while (this_curr_block != this_col_end and other_curr_block != other_col_end);
+						while (this_curr_block != this_col_end and other_curr_block != other_col_end)
+						{
+
+							curr_block_mat.addmm_(std::get<1>(*this_curr_block), std::get<1>(*other_curr_block));
+							++this_curr_block; // break the match.
+							std::tie(this_curr_block, other_curr_block) =
+							    find_next_match(this_curr_block, this_col_end, other_curr_block, other_col_end);
+						}
+						curr_block_mat = curr_block_mat.view((size_vector));
+					}
 				}
 
 				other_curr_block = other_col_end;
 			}
 			this_col_start = this_col_end;
 		}
+		out_list.resize(std::distance(out_list.begin(),out_list_it));
+		out_btens.blocks_list = btensor::block_list_t(std::move(out_list));
 	}
 	return out_btens;
 }
@@ -2019,7 +2075,6 @@ void btensor::shift_impl(any_quantity_cref shift, int64_t dim)
 		*c_vals_it *= shift;
 	}
 }
-
 
 bool btensor::test_same_shape(const btensor &a, const btensor &b)
 {
@@ -2857,6 +2912,42 @@ template btensor btensor::reshape_as<reshape_mode::overwrite_c_vals>(
 template btensor btensor::reshape_as<reshape_mode::dims_only>(const btensor &other) const; // explicit instantiation
 
 const btensor::block_list_t &btensor::blocks() const { return blocks_list; }
+btensor btensor::isnan() const
+{
+	btensor out = sparse_zeros_like(*this, torch::TensorOptions().dtype(torch::kBool));
+	out.reserve_space_(this->blocks_list.size());
+	for (auto &ind_block : blocks_list)
+	{
+		auto &ind = std::get<0>(ind_block);
+		auto &block = std::get<1>(ind_block);
+		out.blocks_list[ind] = block.isnan();
+	}
+	return out;
+}
+torch::Tensor btensor::any() const
+{
+	auto it = this->begin();
+	auto out = std::get<1>(*it).any();
+	auto &out_acc = *(out.data_ptr<bool>());
+	while (it != this->end() and !out_acc)
+	{
+		out &= std::get<1>(*it).any();
+		++it;
+	}
+	return out;
+}
+bool btensor::anynan() const
+{
+	bool out = false;
+	for (auto &ind_block : this->blocks_list)
+	{
+		auto &tens = std::get<1>(ind_block);
+		out |= tens.isnan().any().item().to<bool>();
+		if (out)
+			break;
+	}
+	return out;
+}
 /**
  * @brief make a full torch::tensor from a btensor
  *

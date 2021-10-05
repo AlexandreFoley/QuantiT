@@ -608,6 +608,9 @@ class btensor
 	btensor squeeze(int64_t dim) const;
 	btensor& squeeze_(int64_t dim);
 	btensor& squeeze_();
+	btensor isnan() const;
+	torch::Tensor any() const;
+	bool anynan() const;
 	/**
 	 * @brief return the complex conjugate of this tensor and inverse the conserved quantities
 	 *

@@ -104,6 +104,9 @@ std::tuple<torch::Tensor,torch::Tensor> truncate(torch::Tensor e,torch::Tensor u
 
 std::tuple<torch::Tensor,torch::Tensor,torch::Tensor> svd(torch::Tensor A, size_t split)
 {
+	//debug
+	// if (A.isnan().any().item().to<bool>()) throw std::logic_error("nan found in input tensor");
+	//debug
 	auto A_dim = A.sizes();
 	auto left_dims = A_dim.slice(0,split);
 	auto right_dims = A_dim.slice(split,A_dim.size()-split);

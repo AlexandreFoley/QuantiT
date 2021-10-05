@@ -19,19 +19,19 @@ buildType:
       long: Optimize for speed - include debug information
       buildType: RelWithDebInfo
 
-profiling:
+torch:
   default: no
   choices:
-    no:
-      short: No Profiler
-      long: exclude profiling information
-      settings:
-        EMIT_PROFILER: no
     yes:
-      short: Profiler
-      long: include profiling information
+      short: libtorch
+      long: use libtorch located in extern/pytorch/torch
       settings:
-        EMIT_PROFILER: yes
+        USE_EXTERN_TORCH: true
+    no:
+      short: pytorch
+      long: use torch library found in the python install
+      settings:
+        USE_EXTERN_TORCH: false
 
 test_suite:
   default: yes
@@ -40,10 +40,18 @@ test_suite:
       short: test
       long: compile the test suite
       settings: 
-        DISABLE_DOCTEST: no
+        DISABLE_DOCTEST: false
+        EMIT_PROFILER: false
     no:
       short: notest
       long: disable all testing macros
       settings:
-        DISABLE_DOCTEST: yes
+        DISABLE_DOCTEST: true
+        EMIT_PROFILER: false
+    profiling:
+      short: Profiler
+      long: disbale test, enable profiler tooling
+      setting:
+        DISABLE_DOCTEST: true
+        EMIT_PROFILER: true
 

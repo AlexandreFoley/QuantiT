@@ -15,19 +15,21 @@ set(HEADER_LIST "${INC_DIR}/MPT.h" "${INC_DIR}/LinearAlgebra.h" "${INC_DIR}/dime
                 "${BST_DIR}/stl_interfaces/sequence_container_interface.hpp" "${GRP_DIR}/Composite/quantity_vector.h"
                 "${GRP_DIR}/Composite/quantity_impl.h" "${GRP_DIR}/Composite/cquantity.h" "${GRP_DIR}/Composite/quantity_vector_impl.h"
                 "${GRP_DIR}/quantity.h" "${GRP_DIR}/quantity_utils.h" "${BTEN_DIR}/btensor.h" "${BTEN_DIR}/flat_map.h"
-                "${INC_DIR}/tensorgdot.h" "${BTEN_DIR}/LinearAlgebra.h")
+                "${INC_DIR}/tensorgdot.h" "${BTEN_DIR}/LinearAlgebra.h" )
 
 set(SOURCE_LIST )
-if(EMIT_PROFILER)
-    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pg")
-    SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pg")
-    SET(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -pg")
-    # SET(CMAKE_STATIC_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -pg")
-endif(EMIT_PROFILER)
+# if(EMIT_PROFILER)
+#     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pg")
+#     SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pg")
+#     SET(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -pg")
+#     # SET(CMAKE_STATIC_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -pg")
+# endif(EMIT_PROFILER)
 
 # Make an automatic library - will be static or dynamic based on user setting
 add_library(QuanTT_lib MPT.cpp LinearAlgebra.cpp dimension_manip.cpp torch_formatter.cpp dmrg.cpp operators.cpp 
-            models.cpp any_quantity.cpp groups.cpp btensor.cpp tensorgdot.cpp btensor_linalg.cpp ${HEADER_LIST})
+            models.cpp any_quantity.cpp groups.cpp btensor.cpp tensorgdot.cpp btensor_linalg.cpp  ${HEADER_LIST})
+
+
 
 # We need this directory, and users of our library will need it too
 target_include_directories(QuanTT_lib PUBLIC ../extern/boost ../extern/doctest ../include)

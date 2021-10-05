@@ -416,6 +416,7 @@ bMPS random_bMPS_impl(size_t length, int64_t bond_dim, T &&phys_dim, any_quantit
 		any_quantity_cref local_sel_rule = i == 0 ? any_quantity_cref(constraint) : any_quantity_cref(sel_rule);
 		right_side = make_right_side(phys_inds, accumulate_in_out, local_sel_rule, phys_ind_cvals, i, bond_dim, length);
 		out[i] = rand_like(shape_from(left_side, phys_dim(i), right_side), opt);
+		out[i] /= sqrt((out[i]*out[i].conj()).sum());
 		if (i == 0)
 			right_side.set_selection_rule_(sel_rule);
 		right_side.inverse_cvals_();

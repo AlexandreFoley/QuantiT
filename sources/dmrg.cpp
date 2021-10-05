@@ -27,7 +27,7 @@ using namespace details;
 template <class... T>
 void print(T &&...X)
 { // So i can comment out a single line and disable all the debug printing within this class.
-//   fmt::print(std::forward<T>(X)...);
+  fmt::print(std::forward<T>(X)...);
 }
 template <class X>
 struct env_holder_impl
@@ -133,7 +133,7 @@ auto sweep(MPS_t &state, T update, int step, size_t Nstep, size_t right_edge, si
 	{
 		E0 = update(state, step);
 		auto &oc = state.orthogonality_center;
-		print("i {} oc {} step {} || E {}\n ", i, oc, step, E0.item().toDouble());
+		// print("i {} oc {} step {} || E {}\n ", i, oc, step, E0.item().toDouble());
 		step *= 1 - 2 * ((oc == left_edge) or (oc == right_edge)); // reverse the step direction if we're on the edge.
 	}
 	// fmt::print("\n");
@@ -266,14 +266,14 @@ btensor details::dmrg_impl(const bMPO &hamiltonian, const bMPT &two_sites_hamil,
 		    sweep(in_out_state, update, step, 2 * N_step, in_out_state.size() - 2); // sweep from the oc and back to it.
 		logger.it_log_all(iteration, E0_tens, in_out_state);
 		// DBG
-		int oc = in_out_state.orthogonality_center;
-		auto S2State = tensordot(in_out_state[oc], in_out_state[oc + 1], {2}, {0});
-		auto E0_env = hamil2site_times_state(S2State, two_sites_hamil[oc], Env[oc - 1], Env[oc + 2]);
-		E0_env = tensordot(E0_env, S2State.conj(), {0, 1, 2, 3}, {0, 1, 2, 3});
-		auto dbg_E0 = contract(in_out_state, in_out_state, hamiltonian).item().to<double>();
-		auto dbg_snorm = contract(in_out_state, in_out_state).item().to<double>();
-		print("{:-^40}\n E0 contract: {}\nE0 dmrg {}\nstate norm: {}\nenv E0{}\n", "", dbg_E0,
-		           E0_tens.item().to<double>(), dbg_snorm, E0_env.item().to<double>());
+		// int oc = in_out_state.orthogonality_center;
+		// auto S2State = tensordot(in_out_state[oc], in_out_state[oc + 1], {2}, {0});
+		// auto E0_env = hamil2site_times_state(S2State, two_sites_hamil[oc], Env[oc - 1], Env[oc + 2]);
+		// E0_env = tensordot(E0_env, S2State.conj(), {0, 1, 2, 3}, {0, 1, 2, 3});
+		// auto dbg_E0 = contract(in_out_state, in_out_state, hamiltonian).item().to<double>();
+		// auto dbg_snorm = contract(in_out_state, in_out_state).item().to<double>();
+		// print("{:-^40}\n E0 contract: {}\nE0 dmrg {}\nstate norm: {}\nenv E0{}\n", "", dbg_E0,
+		        //    E0_tens.item().to<double>(), dbg_snorm, E0_env.item().to<double>());
 		//\DBG
 		swap(E0, E0_tens);
 		if (!(((E0 - E0_tens).abs() > options.convergence_criterion))
@@ -307,6 +307,9 @@ btensor details::dmrg_impl(const bMPO &hamiltonian, const bMPT &two_sites_hamil,
 torch::Tensor details::dmrg_impl(const MPO &hamiltonian, const MPT &twosites_hamil, MPS &in_out_state,
                                  const dmrg_options &options, env_holder &Env, dmrg_logger &logger)
 {
+	//TODO check for non-zero input.
+	auto norm = contract(in_out_state,in_out_state).item().toDouble();
+	if (norm == 0 or norm < 1e-15) throw std::invalid_argument("initial state has zero norm!");//this test is less than ideal.
 	torch::Tensor E0 = torch::full({}, 100000.0, in_out_state[0].options().merge_in(torch::kDouble));
 	auto sweep_dir = 1;
 	size_t init_pos = in_out_state.orthogonality_center;
@@ -332,7 +335,7 @@ torch::Tensor details::dmrg_impl(const MPO &hamiltonian, const MPT &twosites_ham
 		    sweep(in_out_state, update, step, 2 * N_step, in_out_state.size() - 2); // sweep from the oc and back to it.
 		logger.it_log_all(iteration, E0_update, in_out_state);
 		std::swap(E0, E0_update);
-		print("{:-^40}\n", "");
+		// print("{:-^40}\n", "");
 		if (!((abs(E0_update - E0) > options.convergence_criterion))
 		         .item()
 		         .to<bool>()) // looks weird? it's so it stop on nan (nan
@@ -496,7 +499,18 @@ Tensor compute_right_env_impl(const Tensor &Hamil, const Tensor &MPS, const Tens
 	// fmt::print("input env {}\n\n",right_env);
 	// fmt::print("state {}\n\n",MPS);
 	// fmt::print("Hamil {}\n\n",Hamil);
+	try
+	{
+
 	out = tensordot(out, Hamil, {0, 3}, {2, 3});
+	}
+	catch(...)
+	{
+		fmt::print("{}",out);
+		print("{}",Hamil);
+		print("{}",MPS);
+		std::terminate();
+	}
 	out = tensordot(out, MPS.conj(), {3, 0}, {1, 2});
 	return out;
 }
@@ -568,6 +582,8 @@ std::tuple<Tensor, Tensor, Tensor> eig2x2Mat_impl(const Tensor &a0, const Tensor
 		n_coeff = ones_like(n_coeff);
 		o_coeff = zeros_like(o_coeff);
 	}
+	if (o_coeff.isnan().any().item().toBool()) throw std::logic_error("nan found in output tensor");
+	if (n_coeff.isnan().any().item().toBool()) throw std::logic_error("nan found in output tensor");
 	// wackadoodle conditionnals in previous expression to have 1 instead of a nan when o_coeff is zeros.
 	return std::make_tuple(E0, o_coeff, n_coeff);
 }
@@ -625,13 +641,13 @@ std::tuple<Tensor, Tensor> two_sites_update_impl(const Tensor &state, const Tens
                                                  const Tensor &Renv)
 {
 	auto [psi_ip, a0, a1, b] = one_step_lanczos(state, hamil, Lenv, Renv);
-	print("STATE UPDATE\nnorm psi_ip {}\n",
-	           tensordot(psi_ip, psi_ip.conj(), {0, 1, 2, 3}, {0, 1, 2, 3}).item().toDouble());
+	// print("STATE UPDATE\nnorm psi_ip {}\n",
+	        //    tensordot(psi_ip, psi_ip.conj(), {0, 1, 2, 3}, {0, 1, 2, 3}).item().toDouble());
 	// fmt::print("Psi_ip {}\n\na0 {}\n\n a1 {}\n\nb
 	// {}\n\n",psi_ip.item().toDouble(),a0.item().toDouble(),a1.item().toDouble(),b.item().toDouble());
-	print("\ta0 {} a1 {} b {}\n", a0.item().toDouble(), a1.item().toDouble(), b.item().toDouble());
+	// print("\ta0 {} a1 {} b {}\n", a0.item().toDouble(), a1.item().toDouble(), b.item().toDouble());
 	auto [E, o_coeff, n_coeff] = eig2x2Mat(a0, a1, b);
-	print("\tE: {} O: {} N: {}\n", E.item().toDouble(), o_coeff.item().toDouble(), n_coeff.item().toDouble());
+	// print("\tE: {} O: {} N: {}\n", E.item().toDouble(), o_coeff.item().toDouble(), n_coeff.item().toDouble());
 	auto psi_update = o_coeff * state + n_coeff * psi_ip;
 	// fmt::print("psi_up {}\n\n",psi_update);
 	return std::make_tuple(E, psi_update);

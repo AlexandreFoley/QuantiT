@@ -11,9 +11,16 @@
 #define DOCTEST_CONFIG_IMPLEMENT
 #define ANKERL_NANOBENCH_IMPLEMENT
 
+#include "DMRG_heisenberg_test.h"
 #include "blockTensor/btensor.h"
+#include "tensorgdot.h"
 #include "nanobench.h"
 #include <random>
+#include <torch/torch.h>
+#include <gperftools/profiler.h>
+// #include <chrono>
+// #include <fmt/core.h>
+// #include <fmt/chrono.h>
 
 template <class T>
 void DNO(T &&t)
@@ -25,37 +32,80 @@ void DNO(T &&t)
 // // use inside main()
 #define BENCHMARK(name, function) ankerl::nanobench::Bench().run(name, function)
 
-//TODO: performance test on the trivial group
-//TODO: performance test on a two dimensionnal latice? no easy way to generate that right away.
+// TODO: performance test on the trivial group
+// TODO: performance test on a two dimensionnal latice? no easy way to generate that right away.
 
 int main()
 {
+	torch::set_default_dtype(torch::scalarTypeToTypeMeta(torch::kFloat64));
 	torch::InferenceMode _GUARD;
-	using cval = quantt::quantity<quantt::conserved::Z>;
-	auto r = std::mt19937(std::random_device()());
-	auto size_generator = std::uniform_int_distribution(10, 40); // size generator
-	auto cval_generator = std::uniform_int_distribution(-5, 5); // conserved value generator
-	auto sg = [&]() { return size_generator(r); };
-	auto cg = [&]() { return cval_generator(r); };
-	auto shapeA = 
-	    quantt::btensor({{{sg(), cval(cg())}, {sg(), cval(cg())}, {sg(), cval(cg())}, {sg(), cval(cg())}}}, cval(0));
-	auto shapeB = quantt::btensor({{{1, cval(cg())},
-	                                {1, cval(cg())},
-	                                {1, cval(cg())}}},
-	                              cval(0));
-	auto shapeC = quantt::shape_from(shapeA, shapeB).reshape({}).conj();
-	auto shapeX = shape_from(shapeA, shapeB, shapeC);
-	auto tX = torch::rand({200,200});
-	auto X = quantt::rand_like(shapeX);
-	auto Y = X.conj();
+// {	using cval = quantt::quantity<quantt::conserved::Z>;
+// 	auto r = std::mt19937(std::random_device()());
+// 	auto size_generator = std::uniform_int_distribution(10, 40); // size generator
+// 	auto cval_generator = std::uniform_int_distribution(-5, 5);  // conserved value generator
+// 	auto sg = [&]() { return size_generator(r); };
+// 	auto cg = [&]() { return cval_generator(r); };
+// 	auto shapeA =
+// 	    quantt::btensor({{{sg(), cval(cg())}, {sg(), cval(cg())}, {sg(), cval(cg())}, {sg(), cval(cg())}}}, cval(0));
+// 	auto shapeB = quantt::btensor({{{1, cval(cg())}, {1, cval(cg())}, {1, cval(cg())}}}, cval(0));
+// 	auto shapeC = quantt::shape_from(shapeA, shapeB).reshape({}).conj();
+// 	auto shapeX = shape_from(shapeA, shapeB, shapeC);
+// 	auto tX = torch::rand({200, 200});
+// 	auto X = quantt::rand_like(shapeX);
+// 	auto Y = X.conj();
 
-	quantt::btensor Z;
-	DNO(Z = X.tensordot(Y, {0}, {0}));
-	DNO(auto tZ = tX.tensordot(tX,{0},{0}));
+	// quantt::btensor Z;}
+	// DNO(Z = X.tensordot(Y, {0}, {0}));
+	// auto tZ = torch::tensordot(tX,tX,{0},{0});
 	// fmt::print("{}\n",Z.begin());
-	//  ankerl::nanobench::Bench().minEpochIterations(2000).run("tensordot",[&]()
+	// ankerl::nanobench::Bench().minEpochIterations(1000).run("tensordot",
+	//                                                         [&]()
+	//                                                         {
+	// 	                                                        DNO(Z = X.tensordot(Y, {0}, {0}));
+	// 	                                                        DNO(&(*(Z.begin())));
+	//                                                         });
+	auto O=torch::zeros({1,1});
+	auto X=torch::rand({1,1});
+	auto Y=torch::rand({1,1});
+	auto oo = O.clone();
+	using namespace ankerl::nanobench;
+	Bench().minEpochIterations(5000).run("addmm single value",[&]()
+	{
+		// oo *= O;
+		DNO(oo.addmm_(X,Y));
+	});
+	Bench().minEpochIterations(5000).run("mult-add value",[&]()
+	{
+		// oo *= O;
+		DNO(oo.addcmul_(X,Y));
+	});
+	// ankerl::nanobench::Bench().minEpochIterations(1000).run("tensordot",[&]()
 	// {
-		// DNO(Z = X.tensordot(Y, {0}, {0}));
-		// DNO(Z.begin());
+	// 	DNO(O += torch::tensordot(X,Y,{2},{0}));//in principle, tensorgdot should be an optimization of this. I suspect it's currently slower.
+	// 	DNO(O*=0);//zeros it out
 	// });
+	// ankerl::nanobench::Bench().minEpochIterations(1000).run("tensorgdot",[&]()
+	// {
+	// 	DNO(quantt::tensorgdot(O,X,Y,{2},{0}));
+	// 	DNO(O*=0);//zeros it out
+	// });
+	#ifdef E_PROFILER
+	(ProfilerStop());
+	DNO(ProfilerStart("profile.out"));
+	#endif
+	
+	{
+		// Heisen_afm_test_bt(50);
+		// Heisen_afm_test_bt(50);
+		// Heisen_afm_test_bt(50);
+		Heisen_afm_test_tt(50);
+		Heisen_afm_test_tt(50);
+		Heisen_afm_test_tt(50);
+		// Heisen_afm_test_tt(50);
+		// Heisen_afm_test_tt(50);
+		// Heisen_afm_test_tt(50);
+	}
+	#ifdef E_PROFILER
+	(ProfilerStop());
+	#endif
 }

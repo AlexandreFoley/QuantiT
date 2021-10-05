@@ -8,15 +8,15 @@
  * All rights reserved
  */
 #define DOCTEST_CONFIG_IMPLEMENT
-// #include "blockTensor/btensor.h"
-// #include "dmrg.h"
+#include "blockTensor/btensor.h"
+#include "dmrg.h"
 #include "doctest/doctest_proxy.h"
 #include "include/torch_formatter.h"
-// #include "models.h"
-// #include "tensorgdot.h"
+#include "models.h"
+#include "tensorgdot.h"
 #include <fmt/core.h>
 #include <fmt/ostream.h>
-// #include <map>
+#include <map>
 #include <ostream>
 #include <torch/torch.h>
 
@@ -38,6 +38,7 @@ int main()
 	                                 // outside test context. not that i want to do that.
 
 	using namespace quantt;
+	using namespace torch::indexing;
 	fmt::print("C++ standard version in use {}\n", __cplusplus);
 	torch::set_default_dtype(torch::scalarTypeToTypeMeta(
 	    torch::kFloat64)); // otherwise the type promotion always goes to floats when promoting a tensor
@@ -49,29 +50,15 @@ int main()
 		cuda_device = torch::Device(torch::kCUDA); // set the cuda_device to the actual gpu if it would work
 	}
 
-	auto X = torch::range(0, 99, 1);
-	auto Y = X.reshape({10, 10});
+	auto X = torch::rand({5,10});
+	auto Y = torch::rand({10,5});
+	auto out = torch::zeros({5,5});
+	auto grad = out.grad();
 
-	tensordot(X,X,{0},{0});
 
-	fmt::print("{}\n", Y);
-	fmt::print("{}\n", Y.index({0, 1}));
+	out.backward(X);
 
-	auto C = torch::zeros({2, 2});
-	C.index_put_({0, 1}, 1);
-	C.index_put_({1, 0}, 2);
-	C.index_put_({1, 1}, 3);
-
-	fmt::print("{}\n", C);
-
-	auto D = C.reshape({4});
-
-	auto F = torch::rand({2});
-
-	X.mul(Y);
-
-	fmt::print("naked default options: {}\n\n", c10::TensorOptions());
-	fmt::print("option list from default option tensor: {}\n", X.options() );
-
+	fmt::print("{}\n",grad);
+	
 	return 0;
 }
