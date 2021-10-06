@@ -183,7 +183,7 @@ size_t compact_tensor_count(btensor::block_list_t::content_t &tensor, bool rank_
 	return out;
 }
 /**
- * @brief make a full torch tensor from a btensor, removes lines and columns of zeros in the last 2 dimensions
+ * @brief make a set of full torch tensor from a btensor, removes lines and columns of zeros in the last 2 dimensions
  *
  * @param tensor
  * @return torch::Tensor
@@ -208,7 +208,7 @@ compact_dense(const btensor &tensor)
 			{
 				lout &= *a_it == *b_it;
 				// if ( not lout) break; //might be faster not to break, this loop should be fairly short because of the
-				// exponential nature of the tensor with the lenght of this.
+				// exponential nature of the tensor with the lenght of this. //always flatten into matrices when it gets here, so it could be somewhat long.
 			}
 		}
 		return lout;

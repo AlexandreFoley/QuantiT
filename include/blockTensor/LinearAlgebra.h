@@ -191,7 +191,6 @@ std::tuple<btensor, btensor> symeig(const btensor &A, size_t split, btensor::Sca
  */
 std::tuple<btensor, btensor> symeig(const btensor &A, size_t split, btensor::Scalar tol, btensor::Scalar pow = 1);
 
-#ifndef NDEBUG
 namespace LA_helpers
 {
 /**
@@ -229,6 +228,9 @@ std::tuple<btensor::index_list, std::array<TensInd, 3>> build_index_slice(const 
                                                                           const std::tuple<int, Slice> &rb_slices,
                                                                           const std::tuple<int, Slice> &cb_slices);
 
+std::vector<std::tuple<torch::Tensor, btensor::index_list, std::vector<std::tuple<int, torch::indexing::Slice>>,
+                       std::vector<std::tuple<int, torch::indexing::Slice>>>>
+compact_dense(const btensor &tensor);
 } // namespace LA_helpers
 
 inline std::ostream &operator<<(std::ostream &out, any_quantity_cref qt)
@@ -238,8 +240,6 @@ inline std::ostream &operator<<(std::ostream &out, any_quantity_cref qt)
 }
 
 std::string qformat(any_quantity_cref qt);
-
-#endif // NDEBUG
 
 std::tuple<btensor, btensor, btensor> truncate(btensor &&U, btensor &&d, btensor &&V, size_t max, size_t min,
                                                btensor::Scalar tol, btensor::Scalar pow);
@@ -444,125 +444,126 @@ qtt_TEST_CASE("btensor Linear algebra")
 		qtt_SUBCASE("random tensor decomposition")
 		{
 			using cqt = conserved::C<2>;
-			btensor dummy = rand({},cqt(0));
-			btensor X = quantt::rand({{{2,cqt(-2)},{2,cqt(0)},{2,cqt(2)}},
-			{{1,cqt(1)},{1,cqt(-1)}},
-			{{1,cqt(1)},{1,cqt(-1)}},
-			{{2,cqt(2)},{2,cqt(0)},{2,cqt(-2)}}},cqt(0) );
-			auto [U,d,V] = svd(X,2);
-			qtt_CHECK(tensordot(U,U.conj(),{0,1,2},{0,1,2}).item().toDouble() == doctest::Approx(d.sizes()[0]));
-			qtt_CHECK(tensordot(V,V.conj(),{0,1,2},{0,1,2}).item().toDouble() == doctest::Approx(d.sizes()[0]));
-			qtt_CHECK(tensordot(U,U.conj(),{2,0,1},{2,0,1}).item().toDouble() == doctest::Approx(d.sizes()[0]));
-			qtt_CHECK(tensordot(V,V.conj(),{2,0,1},{2,0,1}).item().toDouble() == doctest::Approx(d.sizes()[0]));
+			btensor dummy = rand({}, cqt(0));
+			btensor X = quantt::rand({{{2, cqt(-2)}, {2, cqt(0)}, {2, cqt(2)}},
+			                          {{1, cqt(1)}, {1, cqt(-1)}},
+			                          {{1, cqt(1)}, {1, cqt(-1)}},
+			                          {{2, cqt(2)}, {2, cqt(0)}, {2, cqt(-2)}}},
+			                         cqt(0));
+			auto [U, d, V] = svd(X, 2);
+			qtt_CHECK(tensordot(U, U.conj(), {0, 1, 2}, {0, 1, 2}).item().toDouble() == doctest::Approx(d.sizes()[0]));
+			qtt_CHECK(tensordot(V, V.conj(), {0, 1, 2}, {0, 1, 2}).item().toDouble() == doctest::Approx(d.sizes()[0]));
+			qtt_CHECK(tensordot(U, U.conj(), {2, 0, 1}, {2, 0, 1}).item().toDouble() == doctest::Approx(d.sizes()[0]));
+			qtt_CHECK(tensordot(V, V.conj(), {2, 0, 1}, {2, 0, 1}).item().toDouble() == doctest::Approx(d.sizes()[0]));
 			// fmt::print("U shape {}\n\nV shape {}\n\n d {}\n\n",shape_from(U,dummy),shape_from(V,dummy),d);
 			auto U2 = U.reshape({2});
 			auto V2 = V.reshape({2});
 			// fmt::print("U {}\n\nV {}\n\n", tensordot(U2,U2.conj(), {1,0},{1,0}),tensordot(V2,V2.conj(),{1,0},{1,0}));
-			qtt_CHECK(allclose(tensordot(U.mul(d),V.conj(),{2},{2}),X ) );
-			auto XX = tensordot(U.mul(d),V.conj(),{2},{2});
-			fmt::print("X\n{}\n\n",shape_from(X,dummy));
-			fmt::print("reconstituded X\n{}\n\n",shape_from(XX,dummy));
-			fmt::print("U\n{}\n\n",shape_from(U,dummy));
-			fmt::print("d\n{}\n\n",shape_from(d,dummy));
-			fmt::print("V\n{}\n\n",shape_from(V,dummy));
+			qtt_CHECK(allclose(tensordot(U.mul(d), V.conj(), {2}, {2}), X));
+			auto XX = tensordot(U.mul(d), V.conj(), {2}, {2});
+			fmt::print("X\n{}\n\n", shape_from(X, dummy));
+			fmt::print("reconstituded X\n{}\n\n", shape_from(XX, dummy));
+			fmt::print("U\n{}\n\n", shape_from(U, dummy));
+			fmt::print("d\n{}\n\n", shape_from(d, dummy));
+			fmt::print("V\n{}\n\n", shape_from(V, dummy));
 		}
 		qtt_SUBCASE("truncating tensor singular decomposition")
 		{
-				btensor U, d, V;
-				qtt_REQUIRE_NOTHROW(std::tie(U, d, V) = svd(A, 1, tole));
-				// fmt::print("U \n{}\n\n",U);
-				// fmt::print("d \n{}\n\n",d);
-				// fmt::print("V \n{}\n\n",V);
-				auto AA = tensordot(U.mul(d), V.conj(), {U.dim() - 1}, {V.dim() - 1});
-				// fmt::print("AA \n{}\n\n",AA);
-				auto AA_it = AA.begin();
-				auto A_it = A.begin();
-				qtt_REQUIRE(std::distance(AA_it, AA.end()) <= std::distance(A_it, A.end()));
-				while (AA_it != AA.end())
+			btensor U, d, V;
+			qtt_REQUIRE_NOTHROW(std::tie(U, d, V) = svd(A, 1, tole));
+			// fmt::print("U \n{}\n\n",U);
+			// fmt::print("d \n{}\n\n",d);
+			// fmt::print("V \n{}\n\n",V);
+			auto AA = tensordot(U.mul(d), V.conj(), {U.dim() - 1}, {V.dim() - 1});
+			// fmt::print("AA \n{}\n\n",AA);
+			auto AA_it = AA.begin();
+			auto A_it = A.begin();
+			qtt_REQUIRE(std::distance(AA_it, AA.end()) <= std::distance(A_it, A.end()));
+			while (AA_it != AA.end())
+			{
+				auto AA_ind = std::get<0>(*AA_it);
+				auto A_ind = std::get<0>(*A_it);
+				auto AA_tens = std::get<1>(*AA_it);
+				auto A_tens = std::get<1>(*A_it);
+				if (AA_ind == A_ind)
 				{
-					auto AA_ind = std::get<0>(*AA_it);
-					auto A_ind = std::get<0>(*A_it);
-					auto AA_tens = std::get<1>(*AA_it);
-					auto A_tens = std::get<1>(*A_it);
-					if (AA_ind == A_ind)
-					{
-						qtt_CHECK(torch::all(torch::less(torch::abs(A_tens - AA_tens), tole)).item().to<bool>());
-						// if (not torch::all(torch::less(torch::abs(A_tens-AA_tens),tol)).item().to<bool>())
-						// {
-						// 	fmt::print("reduction check failed: ind {}\n",A_ind);
-						// 	fmt::print("absolute difference \n{}\n\n",torch::abs(A_tens-AA_tens));
-						// }
-						// qtt_CHECK(torch::allclose(AA_tens, A_tens, tol, tol));
-						++AA_it;
-						++A_it;
-					}
-					else
-					{
-						// if a block from A is literally not present in AA, then that block must be all zeros to the
-						// tol.
-						qtt_CHECK(torch::all(torch::less(torch::abs(A_tens), tole)).item().to<bool>());
-						// if (not torch::all(torch::less(torch::abs(A_tens),tol)).item().to<bool>())
-						// {
-						// 	fmt::print("block removed check failed: ind {}\n",A_ind);
-						// 	fmt::print("a_tens \n{}\n\n",A_tens);
-						// }
-						// qtt_CHECK(torch::allclose(A_tens,torch::zeros_like(A_tens),tol,tol));
-						bool AAlessA = AA_ind < A_ind;
-						AA_it += AAlessA;
-						A_it += !AAlessA;
-					}
+					qtt_CHECK(torch::all(torch::less(torch::abs(A_tens - AA_tens), tole)).item().to<bool>());
+					// if (not torch::all(torch::less(torch::abs(A_tens-AA_tens),tol)).item().to<bool>())
+					// {
+					// 	fmt::print("reduction check failed: ind {}\n",A_ind);
+					// 	fmt::print("absolute difference \n{}\n\n",torch::abs(A_tens-AA_tens));
+					// }
+					// qtt_CHECK(torch::allclose(AA_tens, A_tens, tol, tol));
+					++AA_it;
+					++A_it;
 				}
+				else
+				{
+					// if a block from A is literally not present in AA, then that block must be all zeros to the
+					// tol.
+					qtt_CHECK(torch::all(torch::less(torch::abs(A_tens), tole)).item().to<bool>());
+					// if (not torch::all(torch::less(torch::abs(A_tens),tol)).item().to<bool>())
+					// {
+					// 	fmt::print("block removed check failed: ind {}\n",A_ind);
+					// 	fmt::print("a_tens \n{}\n\n",A_tens);
+					// }
+					// qtt_CHECK(torch::allclose(A_tens,torch::zeros_like(A_tens),tol,tol));
+					bool AAlessA = AA_ind < A_ind;
+					AA_it += AAlessA;
+					A_it += !AAlessA;
+				}
+			}
 		}
 		qtt_SUBCASE("truncating smaller tensor singular decomposition")
 		{
-				btensor U, d, V;
-				A.mul_(0.3);
-				qtt_REQUIRE_NOTHROW(std::tie(U, d, V) = svd(A, 1, tole));
-				// fmt::print("U \n{}\n\n",U);
-				// fmt::print("d \n{}\n\n",d);
-				// fmt::print("V \n{}\n\n",V);
-				auto AA = tensordot(U.mul(d), V.conj(), {U.dim() - 1}, {V.dim() - 1});
-				// fmt::print("AA \n{}\n\n",AA);
-				auto AA_it = AA.begin();
-				auto A_it = A.begin();
-				qtt_REQUIRE(std::distance(AA_it, AA.end()) <= std::distance(A_it, A.end()));
-				while (AA_it != AA.end())
+			btensor U, d, V;
+			A.mul_(0.3);
+			qtt_REQUIRE_NOTHROW(std::tie(U, d, V) = svd(A, 1, tole));
+			// fmt::print("U \n{}\n\n",U);
+			// fmt::print("d \n{}\n\n",d);
+			// fmt::print("V \n{}\n\n",V);
+			auto AA = tensordot(U.mul(d), V.conj(), {U.dim() - 1}, {V.dim() - 1});
+			// fmt::print("AA \n{}\n\n",AA);
+			auto AA_it = AA.begin();
+			auto A_it = A.begin();
+			qtt_REQUIRE(std::distance(AA_it, AA.end()) <= std::distance(A_it, A.end()));
+			while (AA_it != AA.end())
+			{
+				auto AA_ind = std::get<0>(*AA_it);
+				auto A_ind = std::get<0>(*A_it);
+				auto AA_tens = std::get<1>(*AA_it);
+				auto A_tens = std::get<1>(*A_it);
+				if (AA_ind == A_ind)
 				{
-					auto AA_ind = std::get<0>(*AA_it);
-					auto A_ind = std::get<0>(*A_it);
-					auto AA_tens = std::get<1>(*AA_it);
-					auto A_tens = std::get<1>(*A_it);
-					if (AA_ind == A_ind)
-					{
-						qtt_CHECK(torch::all(torch::less(torch::abs(A_tens - AA_tens), tole)).item().to<bool>());
-						// if (not torch::all(torch::less(torch::abs(A_tens-AA_tens),tol)).item().to<bool>())
-						// {
-						// 	fmt::print("reduction check failed: ind {}\n",A_ind);
-						// 	fmt::print("absolute difference \n{}\n\n",torch::abs(A_tens-AA_tens));
-						// }
-						// qtt_CHECK(torch::allclose(AA_tens, A_tens, tol, tol));
-						++AA_it;
-						++A_it;
-					}
-					else
-					{
-						// if a block from A is literally not present in AA, then that block must be all zeros to the
-						// tol.
-						qtt_CHECK(torch::all(torch::less(torch::abs(A_tens), tole)).item().to<bool>());
-						// if (not torch::all(torch::less(torch::abs(A_tens),tol)).item().to<bool>())
-						// {
-						// 	fmt::print("block removed check failed: ind {}\n",A_ind);
-						// 	fmt::print("a_tens \n{}\n\n",A_tens);
-						// }
-						// qtt_CHECK(torch::allclose(A_tens,torch::zeros_like(A_tens),tol,tol));
-						bool AAlessA = AA_ind < A_ind;
-						AA_it += AAlessA;
-						A_it += !AAlessA;
-					}
+					qtt_CHECK(torch::all(torch::less(torch::abs(A_tens - AA_tens), tole)).item().to<bool>());
+					// if (not torch::all(torch::less(torch::abs(A_tens-AA_tens),tol)).item().to<bool>())
+					// {
+					// 	fmt::print("reduction check failed: ind {}\n",A_ind);
+					// 	fmt::print("absolute difference \n{}\n\n",torch::abs(A_tens-AA_tens));
+					// }
+					// qtt_CHECK(torch::allclose(AA_tens, A_tens, tol, tol));
+					++AA_it;
+					++A_it;
 				}
-		}
+				else
+				{
+					// if a block from A is literally not present in AA, then that block must be all zeros to the
+					// tol.
+					qtt_CHECK(torch::all(torch::less(torch::abs(A_tens), tole)).item().to<bool>());
+					// if (not torch::all(torch::less(torch::abs(A_tens),tol)).item().to<bool>())
+					// {
+					// 	fmt::print("block removed check failed: ind {}\n",A_ind);
+					// 	fmt::print("a_tens \n{}\n\n",A_tens);
+					// }
+					// qtt_CHECK(torch::allclose(A_tens,torch::zeros_like(A_tens),tol,tol));
+					bool AAlessA = AA_ind < A_ind;
+					AA_it += AAlessA;
+					A_it += !AAlessA;
+				}
+			}
 		}
 	}
+}
 
 } // namespace quantt
 

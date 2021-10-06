@@ -784,7 +784,7 @@ class btensor
 	static bool test_same_shape(const btensor &a, const btensor &b);
 
   private:
-	size_t rank;
+	int rank;
 	/**
 	 * @brief number of section for each of the dimensions of the tensor
 	 *
@@ -949,7 +949,7 @@ class btensor
  * @param btens_list list of block tensors
  * @return btensor
  */
-inline btensor shape_from(std::initializer_list<btensor> btens_list)
+inline btensor shape_from(const std::vector<btensor>& btens_list)
 {
 	// now what's missing is a way to make view on btensors. For that i will almost definitly need to reproduce the
 	// equivalent part of pytorch. I had hoped to make that at a much later point, but it needed now. This function will
@@ -962,6 +962,16 @@ inline btensor shape_from(std::initializer_list<btensor> btens_list)
 		out = out.tensor_product_shape(*tens_it);
 	}
 	return out;
+}
+/**
+ * @brief When in a context where the method btensor::shape_from is accessible without explicitly specifying the object, the compiler has trouble selecting the correct function.
+ * 
+ * @param btens_list 
+ * @return btensor 
+ */
+inline btensor disambiguated_shape_from(const std::vector<btensor>& btens_list)
+{
+	return shape_from(btens_list);
 }
 #if __cplusplus <= 201703L
 

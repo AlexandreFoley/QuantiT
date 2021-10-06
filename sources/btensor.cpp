@@ -8,6 +8,7 @@
  * All rights reserved
  */
 #include "blockTensor/btensor.h"
+#include "blockTensor/LinearAlgebra.h"
 #include "tensorgdot.h"
 #include <ATen/ATen.h>
 #include <ATen/WrapDimUtilsMulti.h>
@@ -405,7 +406,10 @@ std::string btensor::check_tensor(const btensor &T)
 	{
 		auto &ind = std::get<0>(a);
 		if (ind.size() != T.rank)
+		{
 			M += fmt::format("block index {} invalid: number of index differ from rank", std::get<0>(a));
+			return M;
+		}
 		any_quantity sel_test = T.selection_rule.value.neutral();
 		{
 			std::string cq = "";
@@ -1711,38 +1715,28 @@ btensor::block_list_t permute_bl(const btensor::block_list_t &block_list, torch:
 				tmp_index[i] = std::get<0>(block)[block_permutation[i]];
 			}
 			tmp_index.swap(std::get<0>(block));
-			auto &tens = std::get<1>(block);
-			tens = tens.permute(tensor_permutation).contiguous();
-			auto sizes = tens.sizes();
-			int64_t a = 1, b = 1;
-			size_t i = 0;
-			for (; i < split; ++i)
-			{
-				a *= sizes[i];
-			}
-			for (; i < sizes.size(); ++i)
-			{
-				b *= sizes[i];
-			}
-			tens = tens.view({a, b});
-			if ((a == 1 or b == 1) and tens.is_cpu() and !tens.is_sparse())
-			{ // enforce that the stride of size one dimensions is also one.
-				// in those case, the stride value is entirely meaningless, but whoever programmed torch::addmm_ forgot.
-				std::vector<int64_t> new_stride(tens.strides().begin(), tens.strides().end());
-				// fmt::print("restride! before: {} ", new_stride);
-				new_stride[0] = (a == 1) ? 1 : new_stride[0];
-				new_stride[1] = b == 1 ? 1 : new_stride[1];
-				// if (new_stride[0] == 0 or new_stride[1] == 0)
-				// {
-				// 	fmt::print("wtf?\n");
-				// }
-				// fmt::print("new_stride: {} ", new_stride);
-				tens.as_strided_(tens.sizes(), new_stride);
-				// fmt::print("after: {} \n", tens.strides());
-			}
-
-			// fmt::print("block : {}, stride: {}, sizes: {}", std::get<0>(block), std::get<1>(block).strides(),
-			//            std::get<1>(block).sizes());
+			// auto &tens = std::get<1>(block);
+			// tens = tens.permute(tensor_permutation).contiguous();
+			// auto sizes = tens.sizes();
+			// int64_t a = 1, b = 1;
+			// size_t i = 0;
+			// for (; i < split; ++i)
+			// {
+			// 	a *= sizes[i];
+			// }
+			// for (; i < sizes.size(); ++i)
+			// {
+			// 	b *= sizes[i];
+			// }
+			// tens = tens.view({a, b});
+			// if ((a == 1 or b == 1) and tens.is_cpu() and !tens.is_sparse())
+			// { // enforce that the stride of size one dimensions is also one.
+			// 	// in those case, the stride value is entirely meaningless, but whoever programmed torch::addmm_ forgot.
+			// 	std::vector<int64_t> new_stride(tens.strides().begin(), tens.strides().end());
+			// 	new_stride[0] = (a == 1) ? 1 : new_stride[0];
+			// 	new_stride[1] = b == 1 ? 1 : new_stride[1];
+			// 	tens.as_strided_(tens.sizes(), new_stride);
+			// }
 		}
 		out.sort();
 	}
@@ -1824,12 +1818,17 @@ btensor &btensor::transpose_(int64_t dim0, int64_t dim1)
 	return permute_(permutation);
 }
 
+namespace reshape_helpers
+{
+btensor::index_list reshape_block_index(btensor::index_list in_block_index, size_t out_rank,
+                                        btensor::index_list out_sections_by_dim, btensor::index_list sections_by_dim);
+}
 btensor btensor::tensordot(const btensor &other, torch::IntArrayRef dim_self, torch::IntArrayRef dims_other) const
 {
 	const auto dim_l = dim_self.size();
 	// first check that everything matches, and compute the output properties, at the block level.
 	btensor out_btens;
-	btensor::block_list_t t1, t2;
+	btensor t1, t2;
 	// the blocks in t1 and t2 are reshaped into matrices.
 	std::tie(t1, t2, out_btens) = [&]()
 	{
@@ -1837,140 +1836,167 @@ btensor btensor::tensordot(const btensor &other, torch::IntArrayRef dim_self, to
 		auto [p1, p2, out_section_by_dim] = compute_tdot_shape(*this, other, dim_self, dims_other);
 		auto l = std::reduce(out_section_by_dim.begin(), out_section_by_dim.end(), 0);
 		auto out_sel_rule = selection_rule.value + other.selection_rule.value;
-		// fmt::print("{:-^80}\n", "permute left tensor");
-		auto _t1 = permute_bl(blocks_list, p1, p1, rank - dim_l);
+		auto _t1 = permute(p1).reshape({static_cast<int64_t>(rank) - static_cast<int64_t>(dim_l)});
 		auto [out_cvals, out_section_sizes] = compute_tdot_cval_sectSize(*this, other, p1, p2, dim_l, l);
 		// swap the permutation for better ordering of the loops with the algorithm.
 		std::vector<int64_t> p2_prime(p2.size());
 		std::copy_backward(p2.begin(), p2.begin() + dim_l, p2_prime.end());
 		std::copy(p2.begin() + dim_l, p2.end(), p2_prime.begin());
 		// fmt::print("{:-^80}\n", "permute right tensor");
-		auto _t2 = permute_bl(other.blocks_list, p2_prime, p2, dim_l);
+		auto _t2 = other.permute(p2_prime).reshape({static_cast<int64_t>(
+		    other.dim() - dim_l)}); // we have to transpose the matrix before calling matrixmultiplication
 		btensor out(out_section_by_dim, out_cvals, out_section_sizes, std::move(out_sel_rule),
 		            this->options().dtype(out_scalar_type));
 		return std::make_tuple(std::move(_t1), std::move(_t2), std::move(out));
 	}(); // a lambda that capture everything that we call immediatly. leave us with a somewhat clean namespace in
 	     // the scope.
-	auto next_index = [dim_l](const auto &iterator)
+	auto out_mat_shape = disambiguated_shape_from({t1.shape_from({-1, 0}), t2.shape_from({ -1,0})});
+	auto t1_compact = LA_helpers::compact_dense(t1);
+	auto t2_compact = LA_helpers::compact_dense(t2);
+	// for(auto& x:t1_compact)
+	// {
+	// 	fmt::print("{}\n\n",std::get<0>(x));
+	// }
+	// for(auto& x:t2_compact)
+	// {
+	// 	fmt::print("{}\n\n",std::get<0>(x));
+	// }
+	btensor::block_list_t::content_t outlist(std::max(btensor_compute_max_size(out_btens), 1ul));
+	auto output_list_it = outlist.begin();
+	auto split_into_btensor_blocks = [&outlist, &out_btens, &out_mat_shape](decltype(output_list_it) it,
+	                                                                        const torch::Tensor &Tens, auto &&oit,
+	                                                                        auto &&rows, auto &&cols)
 	{
-		// compute the smallest possible block index that correspond to a different output index than the input
-		// The last dim_l dimension do not contribute to the output block index.
-		auto next = std::get<0>(*iterator);
-		if (next.begin() != next.end())
+		for (auto &row : rows)
 		{
-			bool null_dim_l = dim_l == 0;
-			const auto rank = std::distance(next.begin(), next.end());
-			const auto x = static_cast<int>(rank) - static_cast<int>(dim_l) - null_dim_l;
-			constexpr auto max_value = (std::numeric_limits<std::remove_reference_t<decltype(*next.begin())>>::max());
-			(*(next.begin() + x)) = max_value * !null_dim_l + null_dim_l * (*(next.begin() + x) + 1);
-		}
-		return next;
-	};
-	auto find_next_match = [dim_l](auto a_beg, const auto &a_end, auto b_beg, const auto &b_end)
-	{
-		// if we have a match both of the following boolean are false
-		bool a_smaller_b = true;
-		bool b_smaller_a = true;
-		while ((a_beg != a_end and b_beg != b_end) and (a_smaller_b or b_smaller_a))
-		{
-			auto &a_l = std::get<0>(*a_beg);
-			auto &b_l = std::get<0>(*b_beg);
-			// we could use the lexicographical three way comparison instead of those two calls.
-			a_smaller_b = std::lexicographical_compare(a_l.end() - dim_l, a_l.end(), b_l.end() - dim_l, b_l.end());
-			b_smaller_a = std::lexicographical_compare(b_l.end() - dim_l, b_l.end(), a_l.end() - dim_l, a_l.end());
-			a_beg += a_smaller_b; // increment only the smaller one.
-			b_beg += b_smaller_a;
-		}
-		if (a_beg == a_end or b_beg == b_end) // no match.
-		{
-			a_beg = a_end;
-			b_beg = b_end;
-		}
-		return std::make_tuple(a_beg, b_beg);
-	};
-	std::vector<int64_t> out_block_index(out_btens.rank);
-	std::vector<int64_t> size_vector(out_btens.rank);
-	auto cpt_output_block = [dim_l, &out_block_index](auto this_current_block_iter, auto other_current_block_iter)
-	{
-		std::copy(std::get<0>(*this_current_block_iter).begin(), std::get<0>(*this_current_block_iter).end() - dim_l,
-		          out_block_index.begin());
-		std::copy_backward(std::get<0>(*other_current_block_iter).begin(),
-		                   std::get<0>(*other_current_block_iter).end() - dim_l, out_block_index.end());
-	};
-
-	// fmt::print("out_btens section sizes {}\n", out_btens.sections_sizes);
-	// fmt::print("input section sizes {}\n", other.sections_sizes);
-
-	{ // launch the contractions.
-		auto this_col_start = t1.begin();
-		auto less = t1.value_comp();
-		btensor::block_list_t::content_t out_list(std::max(btensor::btensor_compute_max_size(out_btens),1ul));// always make room for atleast one tensor. for scalar case.
-		auto out_list_it = out_list.begin();
-		//#pragma omp parallel
-		//#pragma omp single
-		while (this_col_start != t1.end() and out_list_it != out_list.end())
-		// loop over all the columns of this, parallel tasks must synchronize at the end of this loop.
-		{
-			// assert(out_list_it != out_list.end());
-			auto other_curr_block = t2.begin();
-			auto this_col_end = std::lower_bound(this_col_start, t1.end(), next_index(this_col_start),
-			                                     less); // also the next column start if it's not the end.
-			while (other_curr_block != t2.end() and out_list_it != out_list.end())        // loop over all the columns of other
+			for (auto &col : cols)
 			{
-				auto this_curr_block = this_col_start;
-				auto other_col_end = std::lower_bound(other_curr_block, t2.end(), next_index(other_curr_block), less);
-				cpt_output_block(this_curr_block, other_curr_block); // side effect: update out_block_index
-				// if (!out_btens.block_conservation_rule_test(out_block_index))// not worth it with 50 site heisenber
-				// model dmrg
-				// {//skip to next if we don't satisfy the conservation rule: we know that there will be no match.
-				// 	other_curr_block = other_col_end;
-				// 	continue;
-				// }
-				std::tie(this_curr_block, other_curr_block) =
-				    find_next_match(this_curr_block, this_col_end, other_curr_block, other_col_end);
-				if (this_curr_block != this_col_end and
-				    other_curr_block != other_col_end) // TODO: getting a false match, in dmrg environement prep.
+				auto [mat_block_index, slices] = LA_helpers::build_index_slice(oit, row, col);
+				const auto block_index = reshape_helpers::reshape_block_index(
+				    mat_block_index, out_btens.rank, out_btens.sections_by_dim, out_mat_shape.sections_by_dim);
+				const auto out_shape_view = out_btens.block_sizes(block_index);
+				const std::vector<int64_t> out_shape(out_shape_view.begin(), out_shape_view.end());
+				const auto alt = reshape_helpers::reshape_block_index( {0,1}, out_btens.rank, out_btens.sections_by_dim, out_mat_shape.sections_by_dim);
+				if (index_list{0,1,0} == block_index and index_list{2,2,1} == out_shape and Tens.size(0)==3 and Tens.size(1)==9 ) 
 				{
-					// compute the block index for this combination of columns of the input block tensors
-
-					auto size_range = out_btens.block_sizes(out_block_index);
-					std::copy(size_range.begin(), size_range.end(), size_vector.begin());
-
-					auto &curr_out = *out_list_it;
-					const int64_t a = *std::get<1>(*this_curr_block).sizes().begin();
-					const int64_t b = *(std::get<1>(*other_curr_block).sizes().begin() + 1);
-					++out_list_it;
-					// #pragma omp task firstprivate(this_curr_block) firstprivate(other_curr_block)
-					// firstprivate(curr_out) firstprivate(out_block_index) firstprivate(this_col_end)
-					// firstprivate(other_col_end) firstprivate(size_vector) firstprivate(a) firstprivate(b)
-					{ // this scope can be executed by a single independant thread. further parallelism is possible
-					  // at the cost of extra memory. Everything that is defined outside this scope should be
-					  // firstprivate() inside.
-						curr_out = std::make_pair(
-						    out_block_index, torch::mm(std::get<1>(*this_curr_block), std::get<1>(*other_curr_block)));
-						auto &curr_block_mat = std::get<1>(curr_out);
-						++this_curr_block; // break the match.
-						std::tie(this_curr_block, other_curr_block) =
-						    find_next_match(this_curr_block, this_col_end, other_curr_block, other_col_end);
-						while (this_curr_block != this_col_end and other_curr_block != other_col_end)
-						{
-
-							curr_block_mat.addmm_(std::get<1>(*this_curr_block), std::get<1>(*other_curr_block));
-							++this_curr_block; // break the match.
-							std::tie(this_curr_block, other_curr_block) =
-							    find_next_match(this_curr_block, this_col_end, other_curr_block, other_col_end);
-						}
-						curr_block_mat = curr_block_mat.view((size_vector));
-					}
+					fmt::print("this is the current failure");
 				}
-
-				other_curr_block = other_col_end;
+				*it = std::make_pair(block_index, Tens.index(slices).view(out_shape));
+				++it;
 			}
-			this_col_start = this_col_end;
 		}
-		out_list.resize(std::distance(out_list.begin(),out_list_it));
-		out_btens.blocks_list = btensor::block_list_t(std::move(out_list));
+	};
+	if (std::get<0>(t2_compact[0]).dim() == 2)
+	{
+		for (auto &[t2_basetens, oi_t2, rows_t2, cols_t2] : t2_compact)
+		{
+			t2_basetens.transpose_(1, 0);
+		}
 	}
+	auto any_of = [](const auto &col_t1, const auto &col_t2)
+	{
+		bool out = false;
+		auto col_t1_it = col_t1.begin();
+		auto col_t2_it = col_t2.begin();
+		while (col_t2_it != col_t2.end() and col_t1_it != col_t1.end() and not out)
+		{
+			bool t2gt1 = std::get<0>(*col_t2_it) > std::get<0>(*col_t1_it);
+			bool t1gt2 = std::get<0>(*col_t1_it) > std::get<0>(*col_t2_it);
+			out = not(t2gt1 or t1gt2);
+			col_t1_it += t2gt1;
+			col_t2_it += t1gt2;
+		}
+		return out;
+	};
+	auto all_of = [](const auto &col_t1, const auto &col_t2)
+	{
+		bool out = col_t1.size() == col_t2.size();
+		auto col_t1_it = col_t1.begin();
+		auto col_t2_it = col_t2.begin();
+		while (col_t2_it != col_t2.end() and col_t1_it != col_t1.end() and out)
+		{
+			out = std::get<0>(*col_t1_it) == std::get<0>(*col_t2_it);
+			++col_t1_it;
+			++col_t2_it;
+		}
+		return out;
+	};
+	for (auto &[t1_basetens, oi_t1, rows_t1, cols_t1] : t1_compact)
+	{
+		for (auto &[t2_basetens, oi_t2, rows_t2, cols_t2] : t2_compact)
+		{
+			// output indices are set by rows_t1 and rows_t2.
+			// We have a match when any and all of the integers in cols_t1 and cols_t2 are the same. If one of the
+			// tensor is sparser than the conservation rule impose, we can have a mismatch.
+			if (any_of(cols_t1, cols_t2))
+			{
+				const auto Nblocks = rows_t1.size() * rows_t2.size();
+				fmt::print("sizes compact rc: t1 {} {}, t2 {} {}\n", rows_t1.size(), cols_t1.size(), rows_t2.size(),
+				           cols_t2.size());
+				fmt::print("NBLOCKS {}\n", Nblocks);
+				fmt::print("outsize {}\n", outlist.size());
+				assert(Nblocks <= std::distance(output_list_it, outlist.end()));
+				// task
+				{
+					auto size_1 = t1_basetens.sizes();
+					auto size_2 = t1_basetens.sizes();
+					torch::Tensor MM;
+					if (not all_of(cols_t1, cols_t2))
+					{
+						using namespace torch::indexing;
+						// we're in the fun case were one of the tensor is much sparser than the selection rule require.
+						// so we have to split the tensor according to the mismatch.
+						auto col_t1_it = cols_t1.begin();
+						auto col_t2_it = cols_t2.begin();
+						auto t1_m_s = col_t1_it;
+						auto t2_m_s = col_t2_it;
+						bool match_begin = false;
+						bool first_match = true;
+						while (col_t2_it != cols_t2.end() and col_t1_it != cols_t1.end())
+						{
+							bool t2gt1 = std::get<0>(*col_t2_it) > std::get<0>(*col_t1_it);
+							bool t1gt2 = std::get<0>(*col_t1_it) > std::get<0>(*col_t2_it);
+							if (!match_begin and not(t2gt1 or t1gt2))
+							{
+								t1_m_s = col_t1_it;
+								t2_m_s = col_t2_it;
+								match_begin = true;
+							}
+							if (match_begin and (t2gt1 or t1gt2))
+							{
+								using namespace torch::indexing;
+								Slice st1(std::get<1>(*t1_m_s).start(), std::get<1>(*(col_t1_it - 1)).stop());
+								Slice st2(std::get<1>(*t2_m_s).start(), std::get<1>(*(col_t2_it - 1)).stop());
+								if (first_match)
+								{
+									MM = t1_basetens.index({Slice(), st1}).mm(t2_basetens.index({st2, Slice()}));
+									first_match = false;
+								}
+								else
+								{
+									MM.addmm_(t1_basetens.index({Slice(), st1}), t2_basetens.index({st2, Slice()}));
+								}
+							}
+							col_t1_it += !t1gt2;
+							col_t2_it += !t2gt1;
+						}
+					}
+					else
+					{
+						MM = t1_basetens.mm(t2_basetens);
+					}
+					split_into_btensor_blocks(output_list_it, MM, oi_t1, rows_t1, rows_t2);
+				}
+				output_list_it += Nblocks;
+				if (output_list_it >= outlist.end())
+					break;
+			}
+			if (output_list_it >= outlist.end())
+				break;
+		}
+	}
+	outlist.resize(std::distance(outlist.begin(), output_list_it));
+	out_btens.blocks_list = std::move(outlist);
 	return out_btens;
 }
 btensor &btensor::squeeze_(int64_t dim)
@@ -2711,7 +2737,7 @@ btensor::index_list new_block_shape(torch::IntArrayRef index_groups, btensor::co
  * Note: this whole buisiness of computing the new block index could be avoided if we used the vectorized index
  * always for ordering. Drawback: permute then becomes much harder. consequence: functions that access a block
  * would first compute the vectorized index. time cost perhaps O(rank), we have to factor in the cost of the
- * search with the index_list instead of a single integer to be sure... The performance consideration are likely
+ * search with the index_list instead of a single integer to be sure... Th performance consideration are likely
  * to be irrelevent.
  * @param in_block_index old block index
  * @param out_rank output rank (lenght of out_block_index)

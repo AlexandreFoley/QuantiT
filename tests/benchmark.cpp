@@ -91,16 +91,20 @@ int main()
 	// });
 	#ifdef E_PROFILER
 	(ProfilerStop());
-	DNO(ProfilerStart("profile.out"));
+	ProfilerStart("btensor.out");
 	#endif
 	
 	{
+		Heisen_afm_test_bt(100);
 		// Heisen_afm_test_bt(50);
 		// Heisen_afm_test_bt(50);
-		// Heisen_afm_test_bt(50);
-		Heisen_afm_test_tt(50);
-		Heisen_afm_test_tt(50);
-		Heisen_afm_test_tt(50);
+	#ifdef E_PROFILER
+	(ProfilerStop());
+	ProfilerStart("torch.out");
+	#endif
+		// Heisen_afm_test_tt(50);
+		Heisen_afm_test_tt(100);
+		// Heisen_afm_test_tt(50);
 		// Heisen_afm_test_tt(50);
 		// Heisen_afm_test_tt(50);
 		// Heisen_afm_test_tt(50);
