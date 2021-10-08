@@ -132,7 +132,7 @@ std::tuple<torch::Tensor,torch::Tensor,torch::Tensor> svd(torch::Tensor A, size_
 }
 
 
-std::tuple<torch::Tensor,torch::Tensor> symeig(torch::Tensor A, size_t split)
+std::tuple<torch::Tensor,torch::Tensor> eigh(torch::Tensor A, size_t split)
 {
 	auto A_dim = A.sizes();
 	auto left_dims = A_dim.slice(0,split);
@@ -141,22 +141,22 @@ std::tuple<torch::Tensor,torch::Tensor> symeig(torch::Tensor A, size_t split)
 	auto r = prod(right_dims);
 	if (l != r) throw std::invalid_argument("The eigenvalue problem is undefined for rectangular matrices. Either you've input the wrong split, or you need svd");
 	auto rA = A.reshape({l,r});
-	auto [d,u] = rA.symeig(true);
+	auto [d,u] = torch::linalg::eigh(rA,"L");
 	auto bond_size =  d.sizes();
 	u = u.reshape(concat(left_dims , bond_size ) );
 	return std::make_tuple(d,u);	
 }
 
-std::tuple<torch::Tensor,torch::Tensor> symeig(torch::Tensor A, size_t split,torch::Scalar tol, torch::Scalar pow)
+std::tuple<torch::Tensor,torch::Tensor> eigh(torch::Tensor A, size_t split,torch::Scalar tol, torch::Scalar pow)
 {
 	size_t min_size = 1;
 	size_t max_size = std::numeric_limits<size_t>::max();
-	return symeig(A,split,tol,min_size,max_size,pow);
+	return eigh(A,split,tol,min_size,max_size,pow);
 }
 
-std::tuple<torch::Tensor,torch::Tensor> symeig(torch::Tensor A, size_t split,torch::Scalar tol,size_t min_size,size_t max_size, torch::Scalar pow)
+std::tuple<torch::Tensor,torch::Tensor> eigh(torch::Tensor A, size_t split,torch::Scalar tol,size_t min_size,size_t max_size, torch::Scalar pow)
 {
-	return truncate(quantt::symeig(A,split),tol,min_size,max_size,pow);
+	return truncate(quantt::eigh(A,split),tol,min_size,max_size,pow);
 }
 
 std::tuple<torch::Tensor,torch::Tensor> eig(torch::Tensor A, size_t split)

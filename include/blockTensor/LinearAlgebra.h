@@ -156,7 +156,7 @@ inline std::tuple<btensor, btensor, btensor> svd(const btensor &A, int split, bt
  * @param upper weither to use only the upper part or only the lower part for the algorithm.
  * @return std::tuple<btensor, btensor> e,S
  */
-std::tuple<btensor, btensor> symeig(const btensor &tensor, BOOL eigenvectors = false, BOOL upper = true);
+std::tuple<btensor, btensor> eigh(const btensor &tensor, BOOL upper = false);
 /**
  * @brief tensor eigenvalue decomposition
  *
@@ -164,7 +164,7 @@ std::tuple<btensor, btensor> symeig(const btensor &tensor, BOOL eigenvectors = f
  * @param split index that split the row indices from the column indices
  * @return std::tuple<btensor, btensor> e,S
  */
-std::tuple<btensor, btensor> symeig(const btensor &tensor, size_t split);
+std::tuple<btensor, btensor> eigh(const btensor &tensor, size_t split);
 /**
  * @brief truncating tensor eigenvalue decomposition
  *
@@ -177,7 +177,7 @@ std::tuple<btensor, btensor> symeig(const btensor &tensor, size_t split);
  * eigenvalues.
  * @return std::tuple<btensor, btensor>
  */
-std::tuple<btensor, btensor> symeig(const btensor &A, size_t split, btensor::Scalar tol, size_t min_size,
+std::tuple<btensor, btensor> eigh(const btensor &A, size_t split, btensor::Scalar tol, size_t min_size,
                                     size_t max_size, btensor::Scalar pow = 1);
 /**
  * @brief truncating tensor eigenvalue decomposition
@@ -189,7 +189,7 @@ std::tuple<btensor, btensor> symeig(const btensor &A, size_t split, btensor::Sca
  * eigenvalues.
  * @return std::tuple<btensor, btensor>
  */
-std::tuple<btensor, btensor> symeig(const btensor &A, size_t split, btensor::Scalar tol, btensor::Scalar pow = 1);
+std::tuple<btensor, btensor> eigh(const btensor &A, size_t split, btensor::Scalar tol, btensor::Scalar pow = 1);
 
 namespace LA_helpers
 {
@@ -460,12 +460,12 @@ qtt_TEST_CASE("btensor Linear algebra")
 			auto V2 = V.reshape({2});
 			// fmt::print("U {}\n\nV {}\n\n", tensordot(U2,U2.conj(), {1,0},{1,0}),tensordot(V2,V2.conj(),{1,0},{1,0}));
 			qtt_CHECK(allclose(tensordot(U.mul(d), V.conj(), {2}, {2}), X));
-			auto XX = tensordot(U.mul(d), V.conj(), {2}, {2});
-			fmt::print("X\n{}\n\n", shape_from(X, dummy));
-			fmt::print("reconstituded X\n{}\n\n", shape_from(XX, dummy));
-			fmt::print("U\n{}\n\n", shape_from(U, dummy));
-			fmt::print("d\n{}\n\n", shape_from(d, dummy));
-			fmt::print("V\n{}\n\n", shape_from(V, dummy));
+			// auto XX = tensordot(U.mul(d), V.conj(), {2}, {2});
+			// fmt::print("X\n{}\n\n", shape_from(X, dummy));
+			// fmt::print("reconstituded X\n{}\n\n", shape_from(XX, dummy));
+			// fmt::print("U\n{}\n\n", shape_from(U, dummy));
+			// fmt::print("d\n{}\n\n", shape_from(d, dummy));
+			// fmt::print("V\n{}\n\n", shape_from(V, dummy));
 		}
 		qtt_SUBCASE("truncating tensor singular decomposition")
 		{

@@ -111,10 +111,10 @@ inline std::tuple<torch::Tensor,torch::Tensor> eig(torch::Tensor A, int split){r
 std::tuple<torch::Tensor,torch::Tensor> eig(torch::Tensor A, size_t split,torch::Scalar tol, torch::Scalar pow = 1);
 std::tuple<torch::Tensor,torch::Tensor> eig(torch::Tensor A, size_t split,torch::Scalar tol,size_t min_size,size_t max_size, torch::Scalar pow = 1);
 
-std::tuple<torch::Tensor,torch::Tensor> symeig(torch::Tensor A, size_t split);
-inline std::tuple<torch::Tensor,torch::Tensor> symeig(torch::Tensor A, int split){return quantt::symeig(A,size_t(split) );}
-std::tuple<torch::Tensor,torch::Tensor> symeig(torch::Tensor A, size_t split,torch::Scalar tol, torch::Scalar pow = 1);
-std::tuple<torch::Tensor,torch::Tensor> symeig(torch::Tensor A, size_t split,torch::Scalar tol, size_t min_size,size_t max_size,torch::Scalar pow = 1);
+std::tuple<torch::Tensor,torch::Tensor> eigh(torch::Tensor A, size_t split);
+inline std::tuple<torch::Tensor,torch::Tensor> eigh(torch::Tensor A, int split){return quantt::eigh(A,size_t(split) );}
+std::tuple<torch::Tensor,torch::Tensor> eigh(torch::Tensor A, size_t split,torch::Scalar tol, torch::Scalar pow = 1);
+std::tuple<torch::Tensor,torch::Tensor> eigh(torch::Tensor A, size_t split,torch::Scalar tol, size_t min_size,size_t max_size,torch::Scalar pow = 1);
 
 qtt_TEST_CASE("Linear Algebra for Tensor network")
 {
@@ -136,9 +136,9 @@ qtt_TEST_CASE("Linear Algebra for Tensor network")
 
 	qtt_CHECK(torch::allclose(ru_o, u));
 
-	auto [e_o,s_o] = ra.symeig(true); 
+	auto [e_o,s_o] = torch::linalg::eigh(ra,"L"); 
 	auto rs_o = s_o.reshape(u_shape);
-	auto [e,s] = symeig(A,2);
+	auto [e,s] = eigh(A,2);
 
 	qtt_REQUIRE(s.sizes() == std::vector<int64_t>(u_shape));
 	// fmt::print("s {}\n",s);

@@ -184,7 +184,7 @@ size_t compact_tensor_count(btensor::block_list_t::content_t &tensor, bool rank_
 }
 /**
  * @brief make a set of full torch tensor from a btensor, removes lines and columns of zeros in the last 2 dimensions
- *
+ *	
  * @param tensor
  * @return torch::Tensor
  */
@@ -284,7 +284,7 @@ using namespace LA_helpers;
 
 std::string qformat(any_quantity_cref qt) { return fmt::format("{}", qt); }
 
-std::tuple<btensor, btensor> symeig(const btensor &tensor, BOOL eigenvectors, BOOL upper )
+std::tuple<btensor, btensor> eigh(const btensor &tensor, BOOL upper )
 {
 	// extract independant btensors
 	std::vector<std::tuple<torch::Tensor, btensor::index_list, std::vector<std::tuple<int, torch::indexing::Slice>>,
@@ -344,7 +344,7 @@ std::tuple<btensor, btensor> symeig(const btensor &tensor, BOOL eigenvectors, BO
 	b_i = 0;
 	for (auto &[basictensor, other_indices, rows, cols] : tensors_n_indices)
 	{
-		auto [bD, bU] = torch::symeig(basictensor, eigenvectors, upper);
+		auto [bD, bU] = torch::linalg::eigh(basictensor, upper? "U":"L");
 		auto extra_block_slice = std::make_tuple(b_i, torch::indexing::Slice());
 		for (auto &row : rows)
 		{
@@ -359,12 +359,12 @@ std::tuple<btensor, btensor> symeig(const btensor &tensor, BOOL eigenvectors, BO
 	// return output tuple
 	return std::make_tuple( d, U);
 }
-std::tuple<btensor, btensor> symeig(const btensor &tensor, size_t split)
+std::tuple<btensor, btensor> eigh(const btensor &tensor, size_t split)
 {
 	// reshape according to split
 	auto rtensor = tensor.reshape({static_cast<int64_t>(split)});
 	// call batched SVD
-	auto [d, rU] = symeig(rtensor,true);//we want the eigenvectors.
+	auto [d, rU] = eigh(rtensor,true);//we want the eigenvectors.
 	// undo reshape
 	std::vector<int64_t> U_shape(tensor.dim(), -1);
 	{
@@ -763,17 +763,17 @@ std::tuple<btensor, btensor, btensor> svd(const btensor &A, size_t split, btenso
 	size_t max_size = std::numeric_limits<size_t>::max();
 	return svd(A, split, tol, min_size, max_size, pow);
 }
-std::tuple<btensor,btensor> symeig(const btensor &A,size_t split,btensor::Scalar tol,size_t min_size,size_t max_size, btensor::Scalar pow)
+std::tuple<btensor,btensor> eigh(const btensor &A,size_t split,btensor::Scalar tol,size_t min_size,size_t max_size, btensor::Scalar pow)
 {
 	//TODO: truncating doesn't have the same meaning here as it does in SVD.
 	//The most meaningful thing we could do is truncate based on the value of exp(-\beta E)/Tr(exp(-\beta E)) where beta is an additionnal user parameter.
-	return truncate(symeig(A,split),max_size,min_size,tol,pow);
+	return truncate(eigh(A,split),max_size,min_size,tol,pow);
 }
-std::tuple<btensor, btensor> symeig(const btensor &A, size_t split, btensor::Scalar tol, btensor::Scalar pow)
+std::tuple<btensor, btensor> eigh(const btensor &A, size_t split, btensor::Scalar tol, btensor::Scalar pow)
 {
 	size_t min_size = 1;
 	size_t max_size = std::numeric_limits<size_t>::max();
-	return symeig(A, split, tol, min_size, max_size, pow);
+	return eigh(A, split, tol, min_size, max_size, pow);
 }
 
 

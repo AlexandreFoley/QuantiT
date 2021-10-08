@@ -1825,6 +1825,11 @@ btensor::index_list reshape_block_index(btensor::index_list in_block_index, size
 }
 btensor btensor::tensordot(const btensor &other, torch::IntArrayRef dim_self, torch::IntArrayRef dims_other) const
 {
+#ifndef NDEBUG
+	static int call_count = 0;
+	++call_count;
+
+#endif
 	const auto dim_l = dim_self.size();
 	// first check that everything matches, and compute the output properties, at the block level.
 	btensor out_btens;
@@ -1836,21 +1841,29 @@ btensor btensor::tensordot(const btensor &other, torch::IntArrayRef dim_self, to
 		auto [p1, p2, out_section_by_dim] = compute_tdot_shape(*this, other, dim_self, dims_other);
 		auto l = std::reduce(out_section_by_dim.begin(), out_section_by_dim.end(), 0);
 		auto out_sel_rule = selection_rule.value + other.selection_rule.value;
-		auto _t1 = permute(p1).reshape({static_cast<int64_t>(rank) - static_cast<int64_t>(dim_l)});
+		std::vector<int64_t> p1_prime(p1.size());
+		std::copy_backward(p1.begin(), p1.end() - dim_l, p1_prime.end());
+		std::copy(p1.end() - dim_l, p1.end(), p1_prime.begin());
+		// auto _t1 = permute(p1).reshape({static_cast<int64_t>(rank) - static_cast<int64_t>(dim_l)});
+		auto _t1 = permute(p1_prime).reshape({static_cast<int64_t>(dim_l)});
 		auto [out_cvals, out_section_sizes] = compute_tdot_cval_sectSize(*this, other, p1, p2, dim_l, l);
 		// swap the permutation for better ordering of the loops with the algorithm.
 		std::vector<int64_t> p2_prime(p2.size());
 		std::copy_backward(p2.begin(), p2.begin() + dim_l, p2_prime.end());
 		std::copy(p2.begin() + dim_l, p2.end(), p2_prime.begin());
 		// fmt::print("{:-^80}\n", "permute right tensor");
-		auto _t2 = other.permute(p2_prime).reshape({static_cast<int64_t>(
-		    other.dim() - dim_l)}); // we have to transpose the matrix before calling matrixmultiplication
+		// auto _t2 = other.permute(p2_prime).reshape({static_cast<int64_t>(other.dim() - dim_l)}); // we have to
+		// transpose the matrix before calling matrixmultiplication
+		auto _t2 = other.permute(p2).reshape(
+		    {static_cast<int64_t>(dim_l)}); // we have to transpose the matrix before calling matrixmultiplication
 		btensor out(out_section_by_dim, out_cvals, out_section_sizes, std::move(out_sel_rule),
 		            this->options().dtype(out_scalar_type));
 		return std::make_tuple(std::move(_t1), std::move(_t2), std::move(out));
 	}(); // a lambda that capture everything that we call immediatly. leave us with a somewhat clean namespace in
 	     // the scope.
-	auto out_mat_shape = disambiguated_shape_from({t1.shape_from({-1, 0}), t2.shape_from({ -1,0})});
+	// fmt::print("t1 {}\n\n", t1);
+	// fmt::print("t2 {}\n\n", t2);
+	auto out_mat_shape = disambiguated_shape_from({t1.shape_from({0, -1}), t2.shape_from({0, -1})});
 	auto t1_compact = LA_helpers::compact_dense(t1);
 	auto t2_compact = LA_helpers::compact_dense(t2);
 	// for(auto& x:t1_compact)
@@ -1876,22 +1889,20 @@ btensor btensor::tensordot(const btensor &other, torch::IntArrayRef dim_self, to
 				    mat_block_index, out_btens.rank, out_btens.sections_by_dim, out_mat_shape.sections_by_dim);
 				const auto out_shape_view = out_btens.block_sizes(block_index);
 				const std::vector<int64_t> out_shape(out_shape_view.begin(), out_shape_view.end());
-				const auto alt = reshape_helpers::reshape_block_index( {0,1}, out_btens.rank, out_btens.sections_by_dim, out_mat_shape.sections_by_dim);
-				if (index_list{0,1,0} == block_index and index_list{2,2,1} == out_shape and Tens.size(0)==3 and Tens.size(1)==9 ) 
-				{
-					fmt::print("this is the current failure");
-				}
+				const auto alt = reshape_helpers::reshape_block_index({0, 1}, out_btens.rank, out_btens.sections_by_dim,
+				                                                      out_mat_shape.sections_by_dim);
 				*it = std::make_pair(block_index, Tens.index(slices).view(out_shape));
 				++it;
 			}
 		}
 	};
-	if (std::get<0>(t2_compact[0]).dim() == 2)
+	// for (auto &[t2_basetens, oi_t2, rows_t2, cols_t2] : t2_compact)
+	// {
+	// 	t2_basetens.transpose_(1, 0);
+	// }
+	for (auto &[t1_basetens, oi_t1, rows_t1, cols_t1] : t1_compact)
 	{
-		for (auto &[t2_basetens, oi_t2, rows_t2, cols_t2] : t2_compact)
-		{
-			t2_basetens.transpose_(1, 0);
-		}
+		t1_basetens.transpose_(1, 0);
 	}
 	auto any_of = [](const auto &col_t1, const auto &col_t2)
 	{
@@ -1908,12 +1919,12 @@ btensor btensor::tensordot(const btensor &other, torch::IntArrayRef dim_self, to
 		}
 		return out;
 	};
-	auto all_of = [](const auto &col_t1, const auto &col_t2)
+	auto all_of = [](const auto &cont_t1, const auto &cont_t2)
 	{
-		bool out = col_t1.size() == col_t2.size();
-		auto col_t1_it = col_t1.begin();
-		auto col_t2_it = col_t2.begin();
-		while (col_t2_it != col_t2.end() and col_t1_it != col_t1.end() and out)
+		bool out = cont_t1.size() == cont_t2.size();
+		auto col_t1_it = cont_t1.begin();
+		auto col_t2_it = cont_t2.begin();
+		while (col_t2_it != cont_t2.end() and col_t1_it != cont_t1.end() and out)
 		{
 			out = std::get<0>(*col_t1_it) == std::get<0>(*col_t2_it);
 			++col_t1_it;
@@ -1921,6 +1932,7 @@ btensor btensor::tensordot(const btensor &other, torch::IntArrayRef dim_self, to
 		}
 		return out;
 	};
+	//those two loops can be tied together to reduce the number of iteration by about sqrt(lenght(t1)*length(t2))
 	for (auto &[t1_basetens, oi_t1, rows_t1, cols_t1] : t1_compact)
 	{
 		for (auto &[t2_basetens, oi_t2, rows_t2, cols_t2] : t2_compact)
@@ -1928,64 +1940,76 @@ btensor btensor::tensordot(const btensor &other, torch::IntArrayRef dim_self, to
 			// output indices are set by rows_t1 and rows_t2.
 			// We have a match when any and all of the integers in cols_t1 and cols_t2 are the same. If one of the
 			// tensor is sparser than the conservation rule impose, we can have a mismatch.
-			if (any_of(cols_t1, cols_t2))
+			if (any_of(rows_t1, rows_t2))//check if there is any hit at all? this could advance the iterators to the first match and leave them there.
 			{
-				const auto Nblocks = rows_t1.size() * rows_t2.size();
-				fmt::print("sizes compact rc: t1 {} {}, t2 {} {}\n", rows_t1.size(), cols_t1.size(), rows_t2.size(),
-				           cols_t2.size());
-				fmt::print("NBLOCKS {}\n", Nblocks);
-				fmt::print("outsize {}\n", outlist.size());
+				const auto Nblocks = cols_t1.size() * cols_t2.size(); 
+				// fmt::print("sizes compact rc: t1 {} {}, t2 {} {}\n", rows_t1.size(), cols_t1.size(), rows_t2.size(),
+				//            cols_t2.size());
+				// fmt::print("NBLOCKS {}\n", Nblocks);
+				// fmt::print("outsize {}\n", outlist.size());
 				assert(Nblocks <= std::distance(output_list_it, outlist.end()));
 				// task
 				{
 					auto size_1 = t1_basetens.sizes();
 					auto size_2 = t1_basetens.sizes();
 					torch::Tensor MM;
-					if (not all_of(cols_t1, cols_t2))
+					if (not all_of(rows_t1, rows_t2)) //this should take two begin,end pairs, instead, so we can ignore any number of non-matching element at the start.
 					{
 						using namespace torch::indexing;
 						// we're in the fun case were one of the tensor is much sparser than the selection rule require.
 						// so we have to split the tensor according to the mismatch.
-						auto col_t1_it = cols_t1.begin();
-						auto col_t2_it = cols_t2.begin();
-						auto t1_m_s = col_t1_it;
-						auto t2_m_s = col_t2_it;
+						auto row_t1_it = rows_t1.begin();
+						auto row_t2_it = rows_t2.begin();
+						auto t1_m_s = row_t1_it;
+						auto t2_m_s = row_t2_it;
 						bool match_begin = false;
 						bool first_match = true;
-						while (col_t2_it != cols_t2.end() and col_t1_it != cols_t1.end())
+						const auto do_add = [&](const auto &t1_basetens, const auto &t2_basetens)
 						{
-							bool t2gt1 = std::get<0>(*col_t2_it) > std::get<0>(*col_t1_it);
-							bool t1gt2 = std::get<0>(*col_t1_it) > std::get<0>(*col_t2_it);
+							using namespace torch::indexing;
+							Slice st1(std::get<1>(*t1_m_s).start(), std::get<1>(*(row_t1_it - 1)).stop());
+							Slice st2(std::get<1>(*t2_m_s).start(), std::get<1>(*(row_t2_it - 1)).stop());
+							if (first_match)
+							{
+								MM = t1_basetens.index({Slice(), st1}).mm(t2_basetens.index({st2, Slice()}));
+								first_match = false;
+							}
+							else
+							{
+								MM.addmm_(t1_basetens.index({Slice(), st1}), t2_basetens.index({st2, Slice()}));
+							}
+							match_begin = false;
+						};
+						while (row_t2_it != rows_t2.end() and row_t1_it != rows_t1.end())
+						{
+							bool t2gt1 = std::get<0>(*row_t2_it) > std::get<0>(*row_t1_it);
+							bool t1gt2 = std::get<0>(*row_t1_it) > std::get<0>(*row_t2_it);
 							if (!match_begin and not(t2gt1 or t1gt2))
 							{
-								t1_m_s = col_t1_it;
-								t2_m_s = col_t2_it;
+								t1_m_s = row_t1_it;
+								t2_m_s = row_t2_it;
 								match_begin = true;
 							}
 							if (match_begin and (t2gt1 or t1gt2))
 							{
-								using namespace torch::indexing;
-								Slice st1(std::get<1>(*t1_m_s).start(), std::get<1>(*(col_t1_it - 1)).stop());
-								Slice st2(std::get<1>(*t2_m_s).start(), std::get<1>(*(col_t2_it - 1)).stop());
-								if (first_match)
-								{
-									MM = t1_basetens.index({Slice(), st1}).mm(t2_basetens.index({st2, Slice()}));
-									first_match = false;
-								}
-								else
-								{
-									MM.addmm_(t1_basetens.index({Slice(), st1}), t2_basetens.index({st2, Slice()}));
-								}
+								do_add(t1_basetens, t2_basetens);
 							}
-							col_t1_it += !t1gt2;
-							col_t2_it += !t2gt1;
+							row_t1_it += !t1gt2;
+							row_t2_it += !t2gt1;
 						}
+						if (match_begin)
+							// if the while loop end with the match flag on, it means that we have an add to do still.
+							do_add(t1_basetens, t2_basetens);
+						// if (!MM.defined())
+						// 	fmt::print("MM: {}\n\n", MM);
 					}
 					else
 					{
 						MM = t1_basetens.mm(t2_basetens);
 					}
-					split_into_btensor_blocks(output_list_it, MM, oi_t1, rows_t1, rows_t2);
+					// if (!MM.defined())
+					// 	fmt::print("MM: {}\n\n", MM);
+					split_into_btensor_blocks(output_list_it, MM, oi_t1, cols_t1, cols_t2);
 				}
 				output_list_it += Nblocks;
 				if (output_list_it >= outlist.end())
