@@ -47,6 +47,24 @@ enum class reshape_mode
 	overwrite_c_vals
 };
 /**
+ * @brief if any of the element in the range convert to true, return true.
+ *
+ * @return true at least one element converts to true
+ * @return false no element convert to true
+ */
+template <class T>
+bool any_truth(const T &in)
+{
+	bool out = false;
+	for (auto &it : in)
+	{
+		out |= bool(it);
+		if (out)
+			break;
+	}
+	return out;
+}
+/**
  * @brief btensor is a type meant to represent block sparse tensor with conservation laws.
  * The conservation law determines which block can or cannot be non-nul.
  * Each block is itself a tensor of the same rank as the overall tensor.
@@ -783,6 +801,14 @@ class btensor
 
 	static bool test_same_shape(const btensor &a, const btensor &b);
 
+	/**
+	 * @brief split an index adressing an element within the full tensor into a block index, block-element index pair.
+	 * 
+	 * @param element_index 
+	 * @return std::tuple<index_list,index_list> 
+	 */
+	std::tuple<index_list,index_list> element_index_decompose(const index_list& element_index) const;
+
   private:
 	size_t rank;
 	/**
@@ -1243,9 +1269,9 @@ inline btensor randint_like(int64_t high, const btensor &tens, c10::TensorOption
 btensor randn(btensor::init_list_t shape_spec, any_quantity selection_rule, c10::TensorOptions opt = {});
 btensor randn_like(const btensor &tens, c10::TensorOptions opt = {});
 
-btensor from_basic_tensor(btensor::init_list_t shape_spec, any_quantity selection_rul, const torch::Tensor &values,
+btensor from_basic_tensor(btensor::init_list_t shape_spec, any_quantity selection_rul, const torch::Tensor &values, const torch::Scalar cutoff = 1e-16,
                           c10::TensorOptions = {});
-btensor from_basic_tensor_like(const btensor &shape, const torch::Tensor &values, c10::TensorOptions = {});
+btensor from_basic_tensor_like(const btensor &shape, const torch::Tensor &values, const torch::Scalar cutoff = 1e-16, c10::TensorOptions = {});
 
 inline torch::Tensor zeros_like(const torch_shape &shape, c10::TensorOptions opt = {})
 {
@@ -1429,6 +1455,8 @@ inline btensor& squeeze_( btensor& tens,int64_t dim){
  */
 any_quantity find_selection_rule(const torch::Tensor& tens,const btensor& shape,btensor::Scalar cutoff=0);
 
+void increment_index_right(btensor::index_list &index, torch::IntArrayRef sizes, size_t rank);
+void increment_index_left(btensor::index_list &index, torch::IntArrayRef max_index, size_t rank);
 void print(const btensor &x);
 std::string to_string(const btensor &x);
 

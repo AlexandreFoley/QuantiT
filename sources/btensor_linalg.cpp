@@ -1,6 +1,7 @@
 
 #include "LinearAlgebra.h"
 #include "blockTensor/LinearAlgebra.h"
+#include "torch_formatter.h"
 #include <ATen/TensorIndexing.h>
 #include <c10/core/ScalarType.h>
 #include <c10/util/ArrayRef.h>
@@ -284,7 +285,7 @@ using namespace LA_helpers;
 
 std::string qformat(any_quantity_cref qt) { return fmt::format("{}", qt); }
 
-std::tuple<btensor, btensor> symeig(const btensor &tensor, BOOL eigenvectors, BOOL upper )
+std::tuple<btensor, btensor> symeig(const btensor &tensor, BOOL eigenvectors, BOOL upper)
 {
 	// extract independant btensors
 	std::vector<std::tuple<torch::Tensor, btensor::index_list, std::vector<std::tuple<int, torch::indexing::Slice>>,
@@ -318,9 +319,9 @@ std::tuple<btensor, btensor> symeig(const btensor &tensor, BOOL eigenvectors, BO
 	// fmt::print("d \n {}\n",d);
 	std::vector<int64_t> to_U_shape(tensor.dim(), -1);
 	to_U_shape.back() = 0;
-	btensor U = shape_from(
-	    tensor.shape_from(to_U_shape).shift_selection_rule_(tensor.section_conserved_qtt(tensor.dim() - 1, 0).inverse()),
-	    rightD_shape);
+	btensor U = shape_from(tensor.shape_from(to_U_shape)
+	                           .shift_selection_rule_(tensor.section_conserved_qtt(tensor.dim() - 1, 0).inverse()),
+	                       rightD_shape);
 	// fmt::print("right_D_shape: \n {}\nU: \n{}",rightD_shape,U);
 	// fmt::print("V: \n {}\n",V);
 	int b_i = 0;
@@ -357,14 +358,14 @@ std::tuple<btensor, btensor> symeig(const btensor &tensor, BOOL eigenvectors, BO
 	}
 
 	// return output tuple
-	return std::make_tuple( d, U);
+	return std::make_tuple(d, U);
 }
 std::tuple<btensor, btensor> symeig(const btensor &tensor, size_t split)
 {
 	// reshape according to split
 	auto rtensor = tensor.reshape({static_cast<int64_t>(split)});
 	// call batched SVD
-	auto [d, rU] = symeig(rtensor,true);//we want the eigenvectors.
+	auto [d, rU] = symeig(rtensor, true); // we want the eigenvectors.
 	// undo reshape
 	std::vector<int64_t> U_shape(tensor.dim(), -1);
 	{
@@ -398,7 +399,7 @@ std::tuple<btensor, btensor, btensor> svd(const btensor &tensor, const BOOL some
 	auto D_bsize_it = D_block_sizes.begin();
 	size_t U_blocks = 0;
 	size_t V_blocks = 0;
-	//compute the room needed in the output structure.
+	// compute the room needed in the output structure.
 	for (auto &[basictensor, other_indices, rows, cols] : tensors_n_indices)
 	{
 		*D_rcval_it = (tensor.section_conserved_qtt(tensor.dim() - 1, std::get<0>(cols[0])));
@@ -423,25 +424,27 @@ std::tuple<btensor, btensor, btensor> svd(const btensor &tensor, const BOOL some
 	*(d_shape.end() - 2) = *(d_shape.end() - 1) = 0;
 	btensor leftD_shape({static_cast<long>(d_blocks)}, left_D_cvals, D_block_sizes, tensor.selection_rule->neutral());
 	btensor rightD_shape({static_cast<long>(d_blocks)}, right_D_cvals, D_block_sizes, tensor.selection_rule->neutral());
-	//small d is just the diagonnal of D, the diagonal matrix of singular values.
-	// because it is a vector, the correct operation to multiply it with the other matrices is a broadcasting elementwise multiplication.
-	// This operation must multiply together the conserved value. We adopt a convention where D always has the neutral selection rule
-	// therefor, all the conserved quantities of d must be the neutral element.
+	// small d is just the diagonnal of D, the diagonal matrix of singular values.
+	//  because it is a vector, the correct operation to multiply it with the other matrices is a broadcasting
+	//  elementwise multiplication. This operation must multiply together the conserved value. We adopt a convention
+	//  where D always has the neutral selection rule therefor, all the conserved quantities of d must be the neutral
+	//  element.
 	auto d = shape_from(tensor.shape_from(d_shape), rightD_shape).neutral_shape_();
 	// fmt::print("d \n {}\n",d);
 	std::vector<int64_t> to_U_shape(tensor.dim(), -1);
 	to_U_shape.back() = 0;
-	btensor U = shape_from(
-	    tensor.shape_from(to_U_shape).shift_selection_rule_(tensor.section_conserved_qtt(tensor.dim() - 1, 0).inverse()),
-	    rightD_shape);
+	btensor U = shape_from(tensor.shape_from(to_U_shape)
+	                           .shift_selection_rule_(tensor.section_conserved_qtt(tensor.dim() - 1, 0).inverse()),
+	                       rightD_shape);
 	// fmt::print("right_D_shape: \n {}\nU: \n{}",rightD_shape,U);
 	std::vector<int64_t> to_V_others(tensor.dim(), -1);
 	*(to_V_others.end() - 2) = to_V_others.back() = 0;
 	std::vector<int64_t> to_V_left(tensor.dim(), 0);
 	to_V_left.back() = -1;
-	//the broadcast part (first shape) is an element by element mulitplication, the conserved quantity are multiplied as well in sucha a situation
-	//Any decomposition of the conserved quantities of the input tensor on those would do, we choose the simplest, the input on U
-	// and all neutral element on d and V.
+	// the broadcast part (first shape) is an element by element mulitplication, the conserved quantity are multiplied
+	// as well in sucha a situation Any decomposition of the conserved quantities of the input tensor on those would do,
+	// we choose the simplest, the input on U
+	//  and all neutral element on d and V.
 	btensor V = shape_from(tensor.shape_from(to_V_others).neutral_shape_(), tensor.shape_from(to_V_left), leftD_shape);
 	V.set_selection_rule_(V.selection_rule->neutral());
 	// fmt::print("V: \n {}\n",V);
@@ -574,10 +577,41 @@ int64_t lower_bound_impl(torch::Tensor &tens, const torch::Scalar &val)
 	static_assert(Dev_type == torch::kCUDA or Dev_type == torch::kCPU, "unsupported device type for this function.");
 }
 
+
+#define SWITCH_CASE_TORCHDTYPE_NUMERIC_PROP(CPPTYPE, c10ScalarType, numeric_property)                                  \
+	case c10::ScalarType::c10ScalarType:                                                                               \
+		return torch::Scalar(                                                                                          \
+		    std::numeric_limits<                                                                                       \
+		        decltype(c10::impl::ScalarTypeToCPPType<c10::ScalarType::c10ScalarType>::t)>::numeric_property());     \
+		break;
+
+#define NUMERICAL_PROP_BODY(DTYPE, SUBSTITUTED_MACRO, numeric_property)                                                 \
+	switch (torch::typeMetaToScalarType(DTYPE))                                                                 \
+	{                                                                                                                  \
+		AT_FORALL_SCALAR_TYPES(SUBSTITUTED_MACRO)                                                                      \
+	default:                                                                                                           \
+		throw std::invalid_argument(                                                                                   \
+		    fmt::format("unsupported element type {} of tensors for {}, complex numbers are unsupported.",             \
+		                DTYPE.name(), #numeric_property));                                                      \
+		break;                                                                                                         \
+	}
+
+torch::Scalar epsilon(caffe2::TypeMeta dtype)
+{
+#define SUB_THIRD(CPPTYPE, C10ScalarType) SWITCH_CASE_TORCHDTYPE_NUMERIC_PROP(CPPTYPE, C10ScalarType, epsilon)
+	NUMERICAL_PROP_BODY(dtype,SUB_THIRD,epsilon)
+#undef SUB_THIRD
+}
+torch::Scalar epsilon(const torch::Tensor &tens)
+{
+#define SUB_THIRD(CPPTYPE, C10ScalarType) SWITCH_CASE_TORCHDTYPE_NUMERIC_PROP(CPPTYPE, C10ScalarType, epsilon)
+	NUMERICAL_PROP_BODY(tens.dtype(),SUB_THIRD,epsilon)
+#undef SUB_THIRD
+}
 // macro for usage with lower_bound_dev
 // create a case for a scalar type supported by pytorch.
 // Theres a macro in torch that turn this into a case for each of the supported type
-#define SWITCH_CASE_TORCHDTYPE(CPPTYPE, c10ScalarType)                                                                 \
+#define SWITCH_CASE_TORCHDTYPE_LOWERBOUND(CPPTYPE, c10ScalarType)                                                      \
 	case c10::ScalarType::c10ScalarType:                                                                               \
 		return lower_bound_impl<c10::ScalarType::c10ScalarType, Dev_type>(tens, scal);                                 \
 		break;
@@ -590,7 +624,7 @@ int64_t lower_bound_dev(torch::Tensor &tens, const torch::Scalar &scal)
 
 	switch (torch::typeMetaToScalarType(tens.dtype()))
 	{
-		AT_FORALL_SCALAR_TYPES(SWITCH_CASE_TORCHDTYPE)
+		AT_FORALL_SCALAR_TYPES(SWITCH_CASE_TORCHDTYPE_LOWERBOUND)
 	default:
 		throw std::invalid_argument(
 		    fmt::format("unsupported element type {} of tensors for lowerbound, complex numbers are unsupported.",
@@ -638,11 +672,13 @@ std::tuple<btensor, std::tuple<BTENS...>> truncate_impl(btensor &&d, std::tuple<
 		vd.index_put_({torch::indexing::Slice(n, n + l)}, tens); // bug here.
 		n += l;
 	}
+	// quantt::print(vd);
 	vd = std::get<0>(
 	    vd.sort(-1, true)); // sort the last (only) dimension in descending order //no inplace sort in torch...
 	// vd is now sorted in ascending order.
 	auto smallest_value = vd.index({torch::indexing::Ellipsis, compute_last_index(vd, tol, pow, min, max)});
-	smallest_value -= 1e-12; // Better chance to preserve degenerate multiplets that way.
+	smallest_value -= 2*smallest_value*epsilon(d.options().dtype()); // Better chance to preserve degenerate multiplets that way.
+	// fmt::print("epsilon {}\n",epsilon(smallest_value).toDouble());
 	// for each block trio, we can remove all the values smaller than the one in smallest_value
 	// without inducing an error larger than the tol.
 	auto d_it = d.end();
@@ -688,7 +724,8 @@ std::tuple<btensor, std::tuple<BTENS...>> truncate_impl(btensor &&d, std::tuple<
 		auto &d_ind = std::get<0>(*d_it);
 		auto &db = std::get<1>(*d_it);
 		using namespace torch::indexing;
-
+		// fmt::print("last_index! {}\n\n", db > smallest_value);
+		// fmt::print("last_index other order because of implicit casts!! {}\n\n",  smallest_value < db);
 		auto last_index = lower_bound(db, smallest_value.item());
 		if (last_index == 0)
 		{ // remove the whole block...
@@ -763,11 +800,13 @@ std::tuple<btensor, btensor, btensor> svd(const btensor &A, size_t split, btenso
 	size_t max_size = std::numeric_limits<size_t>::max();
 	return svd(A, split, tol, min_size, max_size, pow);
 }
-std::tuple<btensor,btensor> symeig(const btensor &A,size_t split,btensor::Scalar tol,size_t min_size,size_t max_size, btensor::Scalar pow)
+std::tuple<btensor, btensor> symeig(const btensor &A, size_t split, btensor::Scalar tol, size_t min_size,
+                                    size_t max_size, btensor::Scalar pow)
 {
-	//TODO: truncating doesn't have the same meaning here as it does in SVD.
-	//The most meaningful thing we could do is truncate based on the value of exp(-\beta E)/Tr(exp(-\beta E)) where beta is an additionnal user parameter.
-	return truncate(symeig(A,split),max_size,min_size,tol,pow);
+	// TODO: truncating doesn't have the same meaning here as it does in SVD.
+	// The most meaningful thing we could do is truncate based on the value of exp(-\beta E)/Tr(exp(-\beta E)) where
+	// beta is an additionnal user parameter.
+	return truncate(symeig(A, split), max_size, min_size, tol, pow);
 }
 std::tuple<btensor, btensor> symeig(const btensor &A, size_t split, btensor::Scalar tol, btensor::Scalar pow)
 {
@@ -775,6 +814,5 @@ std::tuple<btensor, btensor> symeig(const btensor &A, size_t split, btensor::Sca
 	size_t max_size = std::numeric_limits<size_t>::max();
 	return symeig(A, split, tol, min_size, max_size, pow);
 }
-
 
 } // namespace quantt

@@ -193,24 +193,6 @@ void increment_index_left(btensor::index_list &index, torch::IntArrayRef max_ind
 		cond_add &= !cond_reset;
 	}
 }
-/**
- * @brief if any of the element in the range convert to true, return true.
- *
- * @return true at least one element converts to true
- * @return false no element convert to true
- */
-template <class T>
-bool any_truth(const T &in)
-{
-	bool out = false;
-	for (auto &it : in)
-	{
-		out |= bool(it);
-		if (out)
-			break;
-	}
-	return out;
-}
 size_t tensor_list_size_guess(const btensor::init_list_t &list, any_quantity_cref sel_rul, size_t rank,
                               const btensor::index_list &sections_by_dims)
 {
@@ -1696,6 +1678,39 @@ btensor &btensor::permute_(torch::IntArrayRef permutation)
 	return *this;
 }
 
+// auto module_perm_reshape = torch::jit::compile(R"JIT(
+// def reshape_perm(tens, perm, split):
+// 	# type: (Tensor, List[int], int) -> Tensor
+// 	tens = tens.permute(perm)
+// 	sizes = tens.size()
+// 	a = 1
+// 	b = 1
+// 	for s in sizes[:split]:
+// 		a*=s
+// 	for s in sizes[split:]:
+// 		b*=s
+// 	tens = tens.reshape([a,b])
+// 	if ((a == 1 or b == 1) and not tens.is_cuda and not tens.is_sparse):
+// 		new_stride = [tens.stride(0),tens.stride(1)]
+// 		if (a == 1): new_stride[0] = 1
+// 		if (b == 1): new_stride[1] = 1
+// 		tens.as_strided_(tens.size(), new_stride)
+// 	return tens
+// )JIT");
+
+// bool optimize_module()
+// {
+// 	module_perm_reshape->set_optimized(true);
+// 	return module_perm_reshape->is_optimized();
+// }
+
+// torch::Tensor permute_reshape(const torch::Tensor& tens, torch::IntArrayRef perm, int64_t split)
+// {
+// 	static std::once_flag fl;
+// 	std::call_once(fl,optimize_module);
+// 	return module_perm_reshape->run_method("reshape_perm",tens,perm,split).toTensor();
+// }
+
 btensor::block_list_t permute_bl(const btensor::block_list_t &block_list, torch::IntArrayRef block_permutation,
                                  torch::IntArrayRef tensor_permutation, int64_t split)
 {
@@ -1712,7 +1727,7 @@ btensor::block_list_t permute_bl(const btensor::block_list_t &block_list, torch:
 			}
 			tmp_index.swap(std::get<0>(block));
 			auto &tens = std::get<1>(block);
-			tens = tens.permute(tensor_permutation).contiguous();
+			tens = tens.permute(tensor_permutation);
 			auto sizes = tens.sizes();
 			int64_t a = 1, b = 1;
 			size_t i = 0;
@@ -1724,7 +1739,7 @@ btensor::block_list_t permute_bl(const btensor::block_list_t &block_list, torch:
 			{
 				b *= sizes[i];
 			}
-			tens = tens.view({a, b});
+			tens = tens.reshape({a, b});
 			if ((a == 1 or b == 1) and tens.is_cpu() and !tens.is_sparse())
 			{ // enforce that the stride of size one dimensions is also one.
 				// in those case, the stride value is entirely meaningless, but whoever programmed torch::addmm_ forgot.
@@ -1904,7 +1919,9 @@ btensor btensor::tensordot(const btensor &other, torch::IntArrayRef dim_self, to
 	{ // launch the contractions.
 		auto this_col_start = t1.begin();
 		auto less = t1.value_comp();
-		btensor::block_list_t::content_t out_list(std::max(btensor::btensor_compute_max_size(out_btens),1ul));// always make room for atleast one tensor. for scalar case.
+		btensor::block_list_t::content_t out_list(std::max(
+		    std::reduce(out_btens.sections_by_dim.begin(), out_btens.sections_by_dim.end(), 1ul, std::multiplies()),
+		    1ul)); // always make room for atleast one tensor. for scalar case.
 		auto out_list_it = out_list.begin();
 		//#pragma omp parallel
 		//#pragma omp single
@@ -1915,7 +1932,7 @@ btensor btensor::tensordot(const btensor &other, torch::IntArrayRef dim_self, to
 			auto other_curr_block = t2.begin();
 			auto this_col_end = std::lower_bound(this_col_start, t1.end(), next_index(this_col_start),
 			                                     less); // also the next column start if it's not the end.
-			while (other_curr_block != t2.end() and out_list_it != out_list.end())        // loop over all the columns of other
+			while (other_curr_block != t2.end() and out_list_it != out_list.end()) // loop over all the columns of other
 			{
 				auto this_curr_block = this_col_start;
 				auto other_col_end = std::lower_bound(other_curr_block, t2.end(), next_index(other_curr_block), less);
@@ -1946,9 +1963,8 @@ btensor btensor::tensordot(const btensor &other, torch::IntArrayRef dim_self, to
 					{ // this scope can be executed by a single independant thread. further parallelism is possible
 					  // at the cost of extra memory. Everything that is defined outside this scope should be
 					  // firstprivate() inside.
-						curr_out = std::make_pair(
-						    out_block_index, torch::mm(std::get<1>(*this_curr_block), std::get<1>(*other_curr_block)));
-						auto &curr_block_mat = std::get<1>(curr_out);
+
+						auto curr_block_mat = torch::mm(std::get<1>(*this_curr_block), std::get<1>(*other_curr_block));
 						++this_curr_block; // break the match.
 						std::tie(this_curr_block, other_curr_block) =
 						    find_next_match(this_curr_block, this_col_end, other_curr_block, other_col_end);
@@ -1960,7 +1976,7 @@ btensor btensor::tensordot(const btensor &other, torch::IntArrayRef dim_self, to
 							std::tie(this_curr_block, other_curr_block) =
 							    find_next_match(this_curr_block, this_col_end, other_curr_block, other_col_end);
 						}
-						curr_block_mat = curr_block_mat.view((size_vector));
+						curr_out = std::make_pair(out_block_index, curr_block_mat.view(size_vector));
 					}
 				}
 
@@ -1968,7 +1984,7 @@ btensor btensor::tensordot(const btensor &other, torch::IntArrayRef dim_self, to
 			}
 			this_col_start = this_col_end;
 		}
-		out_list.resize(std::distance(out_list.begin(),out_list_it));
+		out_list.resize(std::distance(out_list.begin(), out_list_it));
 		out_btens.blocks_list = btensor::block_list_t(std::move(out_list));
 	}
 	return out_btens;
@@ -2333,7 +2349,7 @@ torch::Tensor btensor::to_dense() const
 	return out;
 }
 
-void from_basic_impl(btensor &out, const torch::Tensor &values)
+void from_basic_impl(btensor &out, const torch::Tensor &values,const torch::Scalar cutoff)
 {
 	if (out.dim() != values.dim())
 		throw std::invalid_argument("input arguments have incompatible rank!");
@@ -2346,23 +2362,25 @@ void from_basic_impl(btensor &out, const torch::Tensor &values)
 		{
 			auto shape_view = out.block_sizes(index);
 			auto S = btensor::full_slice(out, index);
-			out.block(index) = values.index(torch::ArrayRef(S));
+			auto block =  values.index(torch::ArrayRef(S));
+			if ( (torch::linalg::vector_norm(block.flatten(),2,{},false,{})>cutoff).item().to<bool>() ) //only insert the block if it's a significative quantity.
+			out.block(index) = block;
 			// fmt::print("\tindex {}\n\tSlice {}\n\t block {}\n================\n",index,S,out.block(index));
 		}
 		out.block_increment(index);
 	} while (any_truth(index));
 }
-btensor from_basic_tensor(btensor::init_list_t shape_spec, any_quantity selection_rul, const torch::Tensor &values,
+btensor from_basic_tensor(btensor::init_list_t shape_spec, any_quantity selection_rul, const torch::Tensor &values, const torch::Scalar cutoff,
                           c10::TensorOptions opt)
 {
 	auto shape = quantt::sparse_zeros(shape_spec, selection_rul, opt);
-	from_basic_impl(shape, values);
+	from_basic_impl(shape, values,cutoff);
 	return shape;
 }
-btensor from_basic_tensor_like(const btensor &shape, const torch::Tensor &values, c10::TensorOptions opt)
+btensor from_basic_tensor_like(const btensor &shape, const torch::Tensor &values, const torch::Scalar cutoff, c10::TensorOptions opt)
 {
 	auto out = quantt::sparse_zeros_like(shape, opt);
-	from_basic_impl(out, values);
+	from_basic_impl(out, values,cutoff);
 	return out;
 }
 bool allclose(const btensor &a, const btensor &b, double rtol, double atol, bool equal_nan)
@@ -2947,6 +2965,36 @@ bool btensor::anynan() const
 			break;
 	}
 	return out;
+}
+/**
+ * @brief split an index adressing an element within the full tensor into a block index, block-element index pair.
+ * 
+ * @param element_index 
+ * @return std::tuple<index_list,index_list> 
+ */
+std::tuple<btensor::index_list,btensor::index_list> btensor::element_index_decompose(const index_list& element_index) const
+{
+	auto full_size = sizes();
+	index_list blockind(rank);
+	index_list subelind(rank);
+	auto section_size_it = sections_sizes.begin();
+	for(int dim=0; dim<rank;++dim)
+	{
+		assert(element_index[dim] < full_size[dim]);
+		auto section_end = section_size_it + sections_by_dim[dim];
+		int64_t ind = element_index[dim];
+		int64_t block_ind = 0;
+		while(section_size_it != section_end and ind >= *section_size_it)
+		{
+			ind -= *section_size_it;
+			++section_size_it;
+			++block_ind;
+		}
+	blockind[dim] = block_ind;
+	subelind[dim] = ind;
+	section_size_it = section_end;
+	}
+	return std::make_tuple(blockind,subelind);
 }
 /**
  * @brief make a full torch::tensor from a btensor

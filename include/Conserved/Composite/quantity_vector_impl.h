@@ -355,7 +355,7 @@ class quantity_vector final : public vquantity_vector, public std::vector<S, All
 	void pop_back() override { return base_vector::pop_back(); }
 	void resize(size_t count) override
 	{
-		fmt::print("resizing cval list!\n");
+		// fmt::print("resizing cval list!\n");
 		return base_vector::resize(count); // virtualize}
 	}
 	void resize(size_t count, const vquantity &val) override

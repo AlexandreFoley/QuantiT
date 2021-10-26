@@ -648,6 +648,7 @@ class bMPO final : public vector_lift<bMPO, btensor> // specialization for rank 
 	}
 
 	static bMPO empty_copy(const bMPO &in) { return bMPO(in.size()); }
+	void coalesce(btensor::Scalar cutoff=0);
 };
 inline void swap(bMPO &lhs, bMPO &rhs) noexcept { lhs.swap(rhs); }
 

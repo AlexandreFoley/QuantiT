@@ -53,16 +53,16 @@ bMPO Heisenberg(torch::Tensor J, size_t lenght,btensor local_shape)
 {
 	MPO tmp_hamil = Heisenberg(J,lenght);
 	bMPO out(lenght);
-	out.front() = from_basic_tensor_like(local_shape.basic_create_view({4,-1,-1,-1},true),tmp_hamil.front());
+	out.front() = from_basic_tensor_like(local_shape.basic_create_view({4,-1,-1,-1},true),tmp_hamil.front(),1e-4);
 	constexpr auto message = "the local shape is incompatible with the MPO at site {}.";
 	if (!torch::allclose(out.front().to_dense(),tmp_hamil.front())) throw std::invalid_argument(fmt::format(message,0));
 	size_t i =1;
 	for(; i<lenght-1;++i)
 	{
-		out[i] = from_basic_tensor_like(local_shape,tmp_hamil[i]);
+		out[i] = from_basic_tensor_like(local_shape,tmp_hamil[i],1e-4);
 		if (!torch::allclose(out[i].to_dense(),tmp_hamil[i]))throw std::invalid_argument(fmt::format(message,i));
 	}
-	out.back() = from_basic_tensor_like(local_shape.basic_create_view({-1,-1,0,-1},true),tmp_hamil.back());
+	out.back() = from_basic_tensor_like(local_shape.basic_create_view({-1,-1,0,-1},true),tmp_hamil.back(),1e-4);
 	if (!torch::allclose(out.back().to_dense(),tmp_hamil.back())) throw std::invalid_argument(fmt::format(message,i));
 	return out;
 }

@@ -142,6 +142,20 @@ bool MPO::check_one(const Tens &tens)
 
 bool bMPO::check_one(const Tens &tens) { return tens.dim() == 4 and Tens::check_product_compat(tens, tens, {0}, {2}); }
 
+void bMPO::coalesce(btensor::Scalar cutoff) {
+	auto it = begin();
+	auto next_it = it+1;
+	for(; next_it != end();++it,++next_it)
+	{
+		auto tens = it->permute({0,1,3,2});
+		auto& next = *next_it;
+		auto [U,d,V] = svd(tens,3,cutoff);
+		U.mul_(d);
+		next = tensordot(V.conj(),next,{0},{0});
+		*it = U.permute({0,1,3,2});
+	}
+}
+
 bool MPO::check_ranks() const
 {
 	auto prev_bond = operator[](0).sizes()[0];

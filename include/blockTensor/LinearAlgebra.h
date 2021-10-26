@@ -460,11 +460,11 @@ qtt_TEST_CASE("btensor Linear algebra")
 			// fmt::print("U {}\n\nV {}\n\n", tensordot(U2,U2.conj(), {1,0},{1,0}),tensordot(V2,V2.conj(),{1,0},{1,0}));
 			qtt_CHECK(allclose(tensordot(U.mul(d),V.conj(),{2},{2}),X ) );
 			auto XX = tensordot(U.mul(d),V.conj(),{2},{2});
-			fmt::print("X\n{}\n\n",shape_from(X,dummy));
-			fmt::print("reconstituded X\n{}\n\n",shape_from(XX,dummy));
-			fmt::print("U\n{}\n\n",shape_from(U,dummy));
-			fmt::print("d\n{}\n\n",shape_from(d,dummy));
-			fmt::print("V\n{}\n\n",shape_from(V,dummy));
+			// fmt::print("X\n{}\n\n",shape_from(X,dummy));
+			// fmt::print("reconstituded X\n{}\n\n",shape_from(XX,dummy));
+			// fmt::print("U\n{}\n\n",shape_from(U,dummy));
+			// fmt::print("d\n{}\n\n",shape_from(d,dummy));
+			// fmt::print("V\n{}\n\n",shape_from(V,dummy));
 		}
 		qtt_SUBCASE("truncating tensor singular decomposition")
 		{

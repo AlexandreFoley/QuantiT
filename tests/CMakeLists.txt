@@ -12,7 +12,11 @@ set(COMPONENT_SRCS DMRG_heisenber_test.h) #make vs-code intellisence work with w
 #     SET(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -pg")
 #     # SET(CMAKE_STATIC_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -pg")
 # endif(EMIT_PROFILER)
-	
+
+add_executable(heisenberg2D 2Dheisenberg.cpp )
+target_compile_features(heisenberg2D PRIVATE cxx_std_20)
+target_link_libraries(heisenberg2D PRIVATE QuanTT_lib)
+
 set(NANB_DIR "${PROJECT_SOURCE_DIR}/extern/nanobench")
 	add_executable(Benchmark benchmark.cpp)
 	target_include_directories(Benchmark PRIVATE "${NANB_DIR}")

@@ -26,7 +26,7 @@ using namespace details;
 
 template <class... T>
 void print(T &&...X)
-{ // So i can comment out a single line and disable all the debug printing within this class.
+{ // So i can comment out a single line and disable all the debug printing within this class. had a runtime cost still. for some reason the arguement still got evaluated.
   fmt::print(std::forward<T>(X)...);
 }
 template <class X>
@@ -499,18 +499,18 @@ Tensor compute_right_env_impl(const Tensor &Hamil, const Tensor &MPS, const Tens
 	// fmt::print("input env {}\n\n",right_env);
 	// fmt::print("state {}\n\n",MPS);
 	// fmt::print("Hamil {}\n\n",Hamil);
-	try
-	{
+	// try
+	// {
 
 	out = tensordot(out, Hamil, {0, 3}, {2, 3});
-	}
-	catch(...)
-	{
-		fmt::print("{}",out);
-		print("{}",Hamil);
-		print("{}",MPS);
-		std::terminate();
-	}
+	// }
+	// catch(...)
+	// {
+	// 	fmt::print("{}",out);
+	// 	print("{}",Hamil);
+	// 	print("{}",MPS);
+	// 	std::terminate();
+	// }
 	out = tensordot(out, MPS.conj(), {3, 0}, {1, 2});
 	return out;
 }

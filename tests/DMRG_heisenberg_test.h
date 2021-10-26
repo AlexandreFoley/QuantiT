@@ -106,6 +106,7 @@ auto Heisen_afm_test_bt(size_t size)
 	std::string print_string = "{} sites AFM heisenberg Energy per sites {:.15}. obtained in {} seconds\n";
 	dmrg_log_final logger;
 	auto hamil = quantt::Heisenberg(torch::tensor(J), size, local_heisenberg_shape);
+	hamil.coalesce();
 	quantt::bMPS state = quantt::random_bMPS(4, hamil, cval(size % 2), 0);
 	state[0] /= sqrt(contract(state, state));
 	state.move_oc(state.size() - 1);
