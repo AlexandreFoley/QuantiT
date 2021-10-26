@@ -317,7 +317,7 @@ int main()
 		auto E0 = quantt::dmrg(bheis, state, dmrg_opt);
 		auto end = std::chrono::steady_clock::now();
 		std::chrono::duration<double> elapsed_seconds = end - start;
-		fmt::print("btensor 4x8 heisenberg cylinder E0 {}, time {}", E0.item().toDouble(), elapsed_seconds);
+		fmt::print("btensor 4x8 heisenberg cylinder E0 {}, time {}", E0.item().toDouble(), elapsed_seconds.count());
 	}
 	{
 		auto size = 32;
@@ -337,5 +337,6 @@ int main()
 		auto E0 = quantt::dmrg(heis, state, dmrg_opt);
 		auto end = std::chrono::steady_clock::now();
 		std::chrono::duration<double> elapsed_seconds = end - start;
+		fmt::print("torch tensor 4x8 heisenberg cylinder E0 {}, time {}", E0.item().toDouble(), elapsed_seconds.count());
 	}
 }
