@@ -281,6 +281,8 @@ quantt::btensor guess_btensor(const torch::Tensor &tens, const quantt::btensor &
 
 int main()
 {
+	torch::InferenceMode Inference_guard;
+	torch::set_default_dtype(torch::scalarTypeToTypeMeta(torch::kFloat64));
 	doctest::Context doctest_context;
 	doctest_context.addFilter("test-case-exclude",
 	                          "**"); // don't run the tests. with this qtt_CHECKS, qtt_REQUIRES, etc. should work
@@ -311,6 +313,8 @@ int main()
 	}
 	bheis.coalesce();
 	quantt::dmrg_options dmrg_opt;
+	dmrg_opt.maximum_bond = 500;
+	dmrg_opt.maximum_iterations=200;
 	{
 		quantt::bMPS state = quantt::random_bMPS(4, bheis, any_quantity(cval(0)), 0);
 		auto start = std::chrono::steady_clock::now();
