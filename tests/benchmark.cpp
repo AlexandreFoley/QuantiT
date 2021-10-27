@@ -39,6 +39,12 @@
 
 int main()
 {
+	doctest::Context doctest_context;
+	doctest_context.addFilter("test-case-exclude",
+	                          "**"); // don't run the tests. with this qtt_CHECKS, qtt_REQUIRES, etc. should work
+	                                 // outside test context. not that i want to do that.
+
+	torch::set_num_threads(1);
 	torch::set_default_dtype(torch::scalarTypeToTypeMeta(torch::kFloat64));
 	torch::InferenceMode _GUARD;
 	// {	using cval = quantt::quantity<quantt::conserved::Z>;
@@ -65,46 +71,44 @@ int main()
 	// 	                                                        DNO(Z = X.tensordot(Y, {0}, {0}));
 	// 	                                                        DNO(&(*(Z.begin())));
 	//                                                         });
-	auto O = torch::zeros({1, 1});
-	auto X = torch::rand({1, 1});
-	auto Y = torch::rand({1, 1});
-	auto oo = O.clone();
-	using namespace ankerl::nanobench;
-	Bench().minEpochIterations(5000).run("addmm single value",
-	                                     [&]()
-	                                     {
-		                                     // oo *= O;
-		                                     DNO(oo.addmm_(X, Y));
-	                                     });
-	Bench().minEpochIterations(5000).run("mult-add value",
-	                                     [&]()
-	                                     {
-		                                     // oo *= O;
-		                                     DNO(oo.addcmul_(X, Y));
-	                                     });
-// ankerl::nanobench::Bench().minEpochIterations(1000).run("tensordot",[&]()
-// {
-// 	DNO(O += torch::tensordot(X,Y,{2},{0}));//in principle, tensorgdot should be an optimization of this. I suspect it's
-// currently slower. 	DNO(O*=0);//zeros it out
-// });
-// ankerl::nanobench::Bench().minEpochIterations(1000).run("tensorgdot",[&]()
-// {
-// 	DNO(quantt::tensorgdot(O,X,Y,{2},{0}));
-// 	DNO(O*=0);//zeros it out
-// });
-#ifdef E_PROFILER
+	// auto O=torch::zeros({1,1});
+	// auto X=torch::rand({1,1});
+	// auto Y=torch::rand({1,1});
+	// auto oo = O.clone();
+	// using namespace ankerl::nanobench;
+	// Bench().minEpochIterations(5000).run("addmm single value",[&]()
+	// {
+	// 	// oo *= O;
+	// 	DNO(oo.addmm_(X,Y));
+	// });
+	// Bench().minEpochIterations(5000).run("mult-add value",[&]()
+	// {
+	// 	// oo *= O;
+	// 	DNO(oo.addcmul_(X,Y));
+	// });
+	// ankerl::nanobench::Bench().minEpochIterations(1000).run("tensordot",[&]()
+	// {
+	// 	DNO(O += torch::tensordot(X,Y,{2},{0}));//in principle, tensorgdot should be an optimization of this. I suspect it's currently slower.
+	// 	DNO(O*=0);//zeros it out
+	// });
+	// ankerl::nanobench::Bench().minEpochIterations(1000).run("tensorgdot",[&]()
+	// {
+	// 	DNO(quantt::tensorgdot(O,X,Y,{2},{0}));
+	// 	DNO(O*=0);//zeros it out
+	// });
+	#ifdef E_PROFILER
 	(ProfilerStop());
-	ProfilerStart("btensor.out");
-#endif
-
+	(ProfilerStart("btensor.out"));
+	#endif
+	
 	{
 		Heisen_afm_test_bt(50);
 		Heisen_afm_test_bt(50);
 		Heisen_afm_test_bt(50);
-#ifdef E_PROFILER
-		(ProfilerStop());
-		ProfilerStart("torch.out");
-#endif
+	#ifdef E_PROFILER
+	(ProfilerStop());
+	(ProfilerStart("torch.out"));
+	#endif
 		Heisen_afm_test_tt(50);
 		Heisen_afm_test_tt(50);
 		Heisen_afm_test_tt(50);

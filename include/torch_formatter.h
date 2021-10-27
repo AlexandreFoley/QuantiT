@@ -18,8 +18,10 @@
 #include <fmt/ostream.h>
 #include <fmt/format.h>
 #include <charconv>
-
-
+namespace quantt
+{
+	void print(const torch::Tensor& X);
+}
 /**
  * @brief fmt::formatter for torch::Tensor
  * 

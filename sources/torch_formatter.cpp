@@ -13,3 +13,10 @@
 
 // nothing in here... the parser of the tensor formatter could be move in here, but that would not lead to significant reduction of dependency
 // most of them stem from the format function which is a template
+
+#include "torch_formatter.h"
+
+void quantt::print(const torch::Tensor& X)
+{
+	fmt::print("{}\n\n", X);
+}
