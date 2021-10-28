@@ -281,6 +281,7 @@ quantt::btensor guess_btensor(const torch::Tensor &tens, const quantt::btensor &
 
 int main()
 {
+	torch::set_num_threads(2);
 	torch::InferenceMode Inference_guard;
 	torch::set_default_dtype(torch::scalarTypeToTypeMeta(torch::kFloat64));
 	doctest::Context doctest_context;
@@ -321,7 +322,7 @@ int main()
 		auto E0 = quantt::dmrg(bheis, state, dmrg_opt);
 		auto end = std::chrono::steady_clock::now();
 		std::chrono::duration<double> elapsed_seconds = end - start;
-		fmt::print("btensor 4x8 heisenberg cylinder E0 {}, time {}", E0.item().toDouble(), elapsed_seconds.count());
+		fmt::print("btensor 4x8 heisenberg cylinder E0 {}, time {}\n", E0.item().toDouble(), elapsed_seconds.count());
 	}
 	{
 		auto size = 32;
@@ -341,6 +342,6 @@ int main()
 		auto E0 = quantt::dmrg(heis, state, dmrg_opt);
 		auto end = std::chrono::steady_clock::now();
 		std::chrono::duration<double> elapsed_seconds = end - start;
-		fmt::print("torch tensor 4x8 heisenberg cylinder E0 {}, time {}", E0.item().toDouble(), elapsed_seconds.count());
+		fmt::print("torch tensor 4x8 heisenberg cylinder E0 {}, time {}\n", E0.item().toDouble(), elapsed_seconds.count());
 	}
 }
