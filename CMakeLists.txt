@@ -1,11 +1,23 @@
 cmake_minimum_required(VERSION 3.0 FATAL_ERROR)
 project(QuantiT LANGUAGES CXX)
 
+if(DEFINED ENV{EBROOTGENTOO})# we're on a compute canada supercomputer
 
-if(DEFINED ENV{CUDA_TOOLKIT_ROOT_DIR})
-    set(CUDA_TOOLKIT_ROOT_DIR "$ENV{CUDA_TOOLKIT_ROOT_DIR}")
+    MESSAGE("computecanada detected")
+    SET(CMAKE_SKIP_INSTALL_RPATH ON)
+    SET(CMAKE_SYSTEM_PREFIX_PATH "$ENV{EBROOTGENTOO}")
+    SET(PYTHON_EXECUTABLE "$ENV{EBROOTPYTHON}/bin/python")
+    SET(CUDA_TOOLKIT_ROOT_DIR "$ENV{EBROOTCUDA}")
+    SET(CUDA_ROOT "${CUDA_TOOLKIT_ROOT_DIR}")
+    SET(CUDNN_ROOT "$ENV{EBROOTCUDNN}")
+    SET(CUDNN_LIBRARY_PATH "${CUDNN_ROOT}/lib64")
+    SET(CUDNN_INCLUDE_PATH "${CUDNN_ROOT}/include")
 else()
-    message("the CUDA_TOOLKIT_ROOT_DIR environement variable isn't set, try setting it\n with the path to cuda if CMAKE or torch is having trouble finding cuda")
+    if(DEFINED ENV{CUDA_TOOLKIT_ROOT_DIR})
+        set(CUDA_TOOLKIT_ROOT_DIR "$ENV{CUDA_TOOLKIT_ROOT_DIR}")
+    else()
+        message("the CUDA_TOOLKIT_ROOT_DIR environement variable isn't set, try setting it\n with the path to cuda if CMAKE or torch is having trouble finding cuda")
+    endif()
 endif()
 
 set(CMAKE_CXX_STANDARD 17)

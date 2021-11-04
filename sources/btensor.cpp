@@ -15,7 +15,6 @@
 #include <algorithm>
 #include <cstdint>
 #include <exception>
-#include <execution>
 #include <functional>
 #include <iterator>
 #include <numeric>
