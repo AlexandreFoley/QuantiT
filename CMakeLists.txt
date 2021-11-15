@@ -22,8 +22,13 @@ endif()
 
 set(CMAKE_CXX_STANDARD 17)
 if(APPLE)
+
 endif(APPLE)
+
+set(Python3_FIND_UNVERSIONED_NAMES "FIRST") #why does cmake not take whatever $python is on the command line by default?!
 find_package(Python3 COMPONENTS Interpreter Development)
+find_package(pybind11)
+
 option(USE_EXTERN_TORCH "use the torch intallation located in the project extern folder" FALSE)
 MESSAGE("USE EXTERNAL TORCH: ${USE_EXTERN_TORCH}")
 if (USE_EXTERN_TORCH)
@@ -62,11 +67,6 @@ if( ASAN )
  add_link_options(-fsanitize=address)
 endif(ASAN)
 
-# MESSAGE("------Link flags------")
-#     MESSAGE("${CMAKE_EXE_LINKER_FLAGS}")
-#     MESSAGE("${EMIT_PROFILER} ${GOOGLE_PROFILER_FOUND}")
-# MESSAGE("------0000000000------")
-
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${TORCH_CXX_FLAGS}")
 link_libraries( ${TORCH_LIBRARIES} fmt::fmt-header-only )
 MESSAGE("TORCH CXX LIBS: ${TORCH_CXX_FLAGS} ")
@@ -81,9 +81,10 @@ endif()
 
 add_subdirectory(sources)
 add_subdirectory(Documentation)
+add_subdirectory(python_binding)
 
 add_executable(QuanTT_dev main.cpp )
-target_link_libraries(QuanTT_dev PRIVATE QuanTT_lib )
+target_link_libraries(QuanTT_dev PRIVATE QuanTT_lib)
 target_compile_features(QuanTT_dev PRIVATE cxx_std_17)
 
 set(COMPONENT_SRCS ${HEADER_LIST}) #make vs-code intellisence work with with fresh, unused, header files. HEADER_LIST is definied in sources/CMakeList.txt

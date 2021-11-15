@@ -15,109 +15,16 @@
 #define E8650E72_8C05_4D74_98C7_61F4FD428B39
 
 #include "MPT.h"
+#include "dmrg_logger.h"
+#include "dmrg_options.h"
 #include <cmath>
 #include <limits>
 #include <torch/torch.h>
-
 #include "doctest/doctest_proxy.h"
 
 namespace quantt
 {
 
-struct dmrg_options
-{
-	double cutoff;
-	double convergence_criterion;
-	size_t maximum_bond;
-	size_t minimum_bond;
-	size_t maximum_iterations;
-	bool state_gradient; // will default to off! I can't think of a situation where we might want to compute a
-	bool hamil_gradient; // will default to off! I can't think of a situation where we might want to compute a
-	                       // gradient through DMRG, but who knows.
-
-	// default values for constructors.
-	// if a constructor doesn't require user input for some member, it use the values found in the following definition.
-	constexpr static double def_cutoff = 1e-6;
-	constexpr static double def_conv_crit = 1e-5;
-	constexpr static size_t def_max_bond = std::numeric_limits<size_t>::max(); // a rather large number.
-	constexpr static size_t def_min_bond =
-	    4; // I have found that dmrg behave better if we prevent bond dimension from going too low.
-	constexpr static size_t def_max_it = 1000;
-	constexpr static bool def_pytorch_gradient = false;
-
-	dmrg_options(double _cutoff, double _convergence_criterion)
-	    : cutoff(_cutoff), convergence_criterion(_convergence_criterion), maximum_bond(def_max_bond),
-	      minimum_bond(def_min_bond), maximum_iterations(def_max_it), state_gradient(def_pytorch_gradient), hamil_gradient(def_pytorch_gradient)
-	{
-	}
-	dmrg_options(size_t _max_bond, size_t _min_bond, size_t _max_iterations)
-	    : cutoff(def_cutoff), convergence_criterion(def_conv_crit), maximum_bond(_max_bond), minimum_bond(_min_bond),
-	      maximum_iterations(_max_iterations), state_gradient(def_pytorch_gradient), hamil_gradient(def_pytorch_gradient)
-	{
-	}
-	dmrg_options(double _cutoff, double _convergence_criterion, size_t _max_bond, size_t _min_bond,
-	             size_t _max_iterations, bool _pytorch_gradient = def_pytorch_gradient)
-	    : cutoff(_cutoff), convergence_criterion(_convergence_criterion), maximum_bond(_max_bond),
-	      minimum_bond(_min_bond), maximum_iterations(_max_iterations), state_gradient(_pytorch_gradient), hamil_gradient(def_pytorch_gradient)
-	{
-	}
-	dmrg_options() : dmrg_options(def_cutoff, def_conv_crit) {}
-	dmrg_options(const dmrg_options &) = default;
-	dmrg_options(dmrg_options &&) = default;
-
-	dmrg_options &operator=(const dmrg_options &) = default;
-	dmrg_options &operator=(dmrg_options &&) = default;
-};
-/**
- * Pure virtual base class for logging the state of dmrg.
- * This logger is meant to do macro scale logging: as such it isn't perfomance critical and we can afford the virtual
- * calls. dmrg call init before the first sweep, it_log_all at every iterations and call end_log_all once when the state
- * is converged. the last call to it_log_all receive the same arguments as end_log_all (it's not useful to have both
- * function do something if it_log_all does something at every iterations).
- */
-class dmrg_logger
-{
-  public:
-	virtual void log_step(size_t) = 0;
-	virtual void log_energy(const torch::Tensor&) = 0;
-	virtual void log_energy(const btensor&) = 0;
-	virtual void log_bond_dims(const MPS &) = 0;
-	virtual void log_bond_dims(const bMPS &) = 0;
-
-	virtual void init(const dmrg_options &) {}
-
-	virtual void it_log_all(size_t step_num,const torch::Tensor& E, const MPS &state) { log_all(step_num, E, state); }
-	virtual void it_log_all(size_t step_num,const btensor& E, const bMPS &state) { log_all(step_num, E, state); }
-	virtual void end_log_all(size_t step_num, const torch::Tensor& E, const MPS &state) { log_all(step_num, E, state); }
-	virtual void end_log_all(size_t step_num, const btensor& E, const bMPS &state) { log_all(step_num, E, state); }
-
-	virtual void log_all(size_t step_num, torch::Tensor E, const MPS &state)
-	{
-		log_step(step_num);
-		log_energy(E);
-		log_bond_dims(state);
-	}
-	virtual void log_all(size_t step_num, btensor E, const bMPS &state)
-	{
-		log_step(step_num);
-		log_energy(E);
-		log_bond_dims(state);
-	}
-
-	virtual ~dmrg_logger() {}
-};
-/**
- * A default logger that does nothing.
- */
-class dmrg_default_logger : public dmrg_logger
-{
-  public:
-	void log_step(size_t) override {}
-	void log_energy(const torch::Tensor&) override {}
-	void log_bond_dims(const MPS &) override {}
-	void log_energy(const btensor&) override {}
-	void log_bond_dims(const bMPS &) override {}
-};
 namespace
 {
 dmrg_default_logger dummy_logger;

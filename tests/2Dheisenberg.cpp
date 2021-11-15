@@ -314,19 +314,24 @@ int main()
 	}
 	bheis.coalesce();
 	quantt::dmrg_options dmrg_opt;
-	dmrg_opt.maximum_bond = 500;
-	dmrg_opt.maximum_iterations=200;
+	dmrg_opt.maximum_bond = 1000;
+	dmrg_opt.maximum_iterations = 50;
 	{
+		quantt::dmrg_log_simple logger;
 		quantt::bMPS state = quantt::random_bMPS(4, bheis, any_quantity(cval(0)), 0);
 		auto start = std::chrono::steady_clock::now();
-		auto E0 = quantt::dmrg(bheis, state, dmrg_opt);
+		auto E0 = quantt::dmrg(bheis, state, dmrg_opt,logger);
 		auto end = std::chrono::steady_clock::now();
 		std::chrono::duration<double> elapsed_seconds = end - start;
 		fmt::print("btensor 4x8 heisenberg cylinder E0 {}, time {}\n", E0.item().toDouble(), elapsed_seconds.count());
+		fmt::print("Obtained in {} iterations. Bond dimension at middle of MPS: {}.\n", logger.it_num,
+		           logger.middle_bond_dim);
 	}
 	{
 		auto size = 32;
 		auto local_tens = torch::rand({4, 2, 4});
+		std::string print_string = "{} sites AFM heisenberg Energy per sites {:.15}. obtained in {} seconds\n";
+		quantt::dmrg_log_simple logger;
 		quantt::MPS state(size, local_tens);
 		{
 			using namespace torch::indexing;
@@ -339,9 +344,12 @@ int main()
 		state.move_oc(0);
 		state[0] /= sqrt(tensordot(state[0], state[0].conj(), {0, 1, 2}, {0, 1, 2}));
 		auto start = std::chrono::steady_clock::now();
-		auto E0 = quantt::dmrg(heis, state, dmrg_opt);
+		auto E0 = quantt::dmrg(heis, state, dmrg_opt,logger);
 		auto end = std::chrono::steady_clock::now();
 		std::chrono::duration<double> elapsed_seconds = end - start;
-		fmt::print("torch tensor 4x8 heisenberg cylinder E0 {}, time {}\n", E0.item().toDouble(), elapsed_seconds.count());
+		fmt::print("torch tensor 4x8 heisenberg cylinder E0 {}, time {}\n", E0.item().toDouble(),
+		           elapsed_seconds.count());
+		fmt::print("Obtained in {} iterations. Bond dimension at middle of MPS: {}.\n", logger.it_num,
+		           logger.middle_bond_dim);
 	}
 }

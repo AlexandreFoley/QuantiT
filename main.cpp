@@ -29,7 +29,6 @@ void print_MPS_dims(const quantt::MPS &mps)
 	}
 	fmt::print("\n");
 }
-
 int main()
 {
 	doctest::Context doctest_context;
@@ -54,9 +53,8 @@ int main()
 	auto Y = torch::rand({10,5});
 	auto out = torch::zeros({5,5});
 	auto grad = out.grad();
-
-
 	out.backward(X);
+
 
 	fmt::print("{}\n",grad);
 	

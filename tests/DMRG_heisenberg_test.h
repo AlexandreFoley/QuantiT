@@ -20,79 +20,6 @@
 #include "torch_formatter.h"
 #include <chrono>
 
-class dmrg_log_final final : public quantt::dmrg_default_logger
-{
-  public:
-	size_t it_num;
-	size_t middle_bond_dim;
-
-	void log_step(size_t it) override { it_num = it; }
-	void log_energy(const torch::Tensor &) override {}
-	void log_bond_dims(const quantt::bMPS &mps) override
-	{
-		auto pos = mps.size() / 2;
-		middle_bond_dim = std::max(mps[pos].sizes()[0], mps[pos].sizes()[2]);
-	}
-	void log_bond_dims(const quantt::MPS &mps) override
-	{
-		auto pos = mps.size() / 2;
-		middle_bond_dim = std::max(mps[pos].sizes()[0], mps[pos].sizes()[2]);
-	}
-	void it_log_all(size_t, const torch::Tensor &, const quantt::MPS &) override {}
-};
-class dmrg_log_sweeptime final : public quantt::dmrg_default_logger
-{
-  public:
-	size_t it_num;
-	size_t middle_bond_dim;
-	std::chrono::steady_clock::time_point then;
-	std::vector<double> time_list;
-	std::vector<size_t> bond_list;
-
-	void log_step(size_t it) override { it_num = it; }
-	void log_energy(const torch::Tensor &) override {}
-	void log_energy(const quantt::btensor &) override {}
-
-	void init(const quantt::dmrg_options &opt) override
-	{
-		then = std::chrono::steady_clock::now();
-		time_list = std::vector<double>(opt.maximum_iterations);
-		bond_list = std::vector<size_t>(opt.maximum_iterations);
-	}
-
-	void log_bond_dims(const quantt::MPS &mps) override
-	{
-		auto pos = mps.size() / 2;
-		middle_bond_dim = std::max(mps[pos].sizes()[0], mps[pos].sizes()[2]);
-	}
-	void log_bond_dims(const quantt::bMPS &mps) override
-	{
-		auto pos = mps.size() / 2;
-		middle_bond_dim = std::max(mps[pos].sizes()[0], mps[pos].sizes()[2]);
-	}
-	void it_log_all(size_t it, const quantt::btensor &E0, const quantt::bMPS &mps) override
-	{
-		auto now = std::chrono::steady_clock::now();
-		std::chrono::duration<double> elapsed_seconds = now - then;
-		then = now;
-		log_bond_dims(mps);
-		bond_list[it] = middle_bond_dim;
-		time_list[it] = elapsed_seconds.count();
-		log_step(it);
-		log_energy(E0);
-	}
-	void it_log_all(size_t it, const torch::Tensor &E0, const quantt::MPS &mps) override
-	{
-		auto now = std::chrono::steady_clock::now();
-		std::chrono::duration<double> elapsed_seconds = now - then;
-		then = now;
-		log_bond_dims(mps);
-		bond_list[it] = middle_bond_dim;
-		time_list[it] = elapsed_seconds.count();
-		log_step(it);
-		log_energy(E0);
-	}
-};
 auto Heisen_afm_test_bt(size_t size)
 {
 	using cval = quantt::quantity<quantt::conserved::Z>;
@@ -104,7 +31,7 @@ auto Heisen_afm_test_bt(size_t size)
 	int J = -1.;
 	fmt::print("{:=^80}\n", "Btensors");
 	std::string print_string = "{} sites AFM heisenberg Energy per sites {:.15}. obtained in {} seconds\n";
-	dmrg_log_final logger;
+	quantt::dmrg_log_simple logger;
 	auto hamil = quantt::Heisenberg(torch::tensor(J), size, local_heisenberg_shape);
 	hamil.coalesce();
 	quantt::bMPS state = quantt::random_bMPS(4, hamil, cval(size % 2), 0);
@@ -141,7 +68,7 @@ auto Heisen_afm_test_tt(size_t size)
 	int J = -1.;
 	fmt::print("{:=^80}\n", "torch tensors");
 	std::string print_string = "{} sites AFM heisenberg Energy per sites {:.15}. obtained in {} seconds\n";
-	dmrg_log_final logger;
+	quantt::dmrg_log_simple logger;
 	auto hamil = quantt::Heisenberg(torch::tensor(J), size);
 	quantt::MPS state(size, local_tens);
 	{
