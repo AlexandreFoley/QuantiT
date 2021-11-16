@@ -22,9 +22,14 @@ endif()
 
 set(CMAKE_CXX_STANDARD 17)
 if(APPLE)
-
+    set(PROFILE_NO_AS_NEEDED "-Wl,-lprofiler") 
+else()
+    set(PROFILE_NO_AS_NEEDED "-Wl,--no-as-needed,-lprofiler,--as-needed") 
 endif(APPLE)
-
+MESSAGE("RUNNING PWD")
+execute_process( COMMAND pwd COMMAND_ECHO STDOUT )
+MESSAGE("DONE RUNNING PWD")
+set(CMAKE_FIND_FRAMEWORK NEVER)
 set(Python3_FIND_UNVERSIONED_NAMES "FIRST") #why does cmake not take whatever $python is on the command line by default?!
 find_package(Python3 COMPONENTS Interpreter Development)
 find_package(pybind11)
@@ -53,9 +58,9 @@ endif()
 
 option(EMIT_PROFILER "emit profiling info in the binary" TRUE)
 if(EMIT_PROFILER AND GOOGLE_PROFILER_FOUND)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wl,--no-as-needed,-lprofiler,--as-needed")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${PROFILE_NO_AS_NEEDED}")
     add_compile_options(-fno-omit-frame-pointer)
-    SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--no-as-needed,-lprofiler,--as-needed")
+    SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${PROFILE_NO_AS_NEEDED}")
 endif(EMIT_PROFILER AND GOOGLE_PROFILER_FOUND)
 option(DISABLE_DOCTEST "disable the testing facility" FALSE)
 if(DISABLE_DOCTEST)

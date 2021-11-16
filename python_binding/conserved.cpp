@@ -16,14 +16,14 @@ namespace py = pybind11;
 
 
 template<class X>
-using to_int_16t = int16_t 
+using to_int_16t = int16_t; 
 
 
-template<class... QTT> pywrap_quanttquantity(py::module &m, std::string name)
+template<class... QTT> void pywrap_quanttquantity(py::module &m, std::string name)
 {
 	using this_type = quantt::quantity<QTT...>;
-	py::class_<quantt::quantity<QTT...>(m, name,py::is_final()) 
-	.def(py::init<to_int_16t<QTT>...>())// initialize from as many int16_t as the template has arguements.
+	py::class_< this_type >(m, name.c_str() ,py::is_final()) 
+	.def(py::init< to_int_16t<QTT>... >())// initialize from as many int16_t as the template has arguements.
 	.def(py::self * py::self)
 	.def(py::self *= py::self)
 	.def("__repr__", [](const this_type& val){return fmt::format("{}",val);})
@@ -35,7 +35,7 @@ template<class... QTT> pywrap_quanttquantity(py::module &m, std::string name)
 	.def(py::self > py::self);
 }
 
-using namespace quantt::conserved
+using namespace quantt::conserved;
 void init_conserved_qtt(py::module &m)
 {
 	auto conserved_sub = m.def_submodule("conserved");
@@ -74,10 +74,10 @@ void init_conserved_qtt(py::module &m)
 	.def(py::self * py::self)
 	.def(py::self *= py::self)
 	.def("__repr__", [](const quantt::any_quantity& val){return fmt::format("{}",val);})
-	.def("inv",&quantt::any_quantity::inverse)
+	.def("inv",[](const quantt::any_quantity& self){return self.inverse();})
 	.def("inv_",&quantt::any_quantity::inverse_)
 	.def(py::self == py::self)
 	.def(py::self != py::self)
 	.def(py::self < py::self)
-	.def(py::self > py::self)
+	.def(py::self > py::self);
 }
