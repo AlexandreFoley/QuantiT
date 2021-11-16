@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.0 FATAL_ERROR)
 project(QuantiT LANGUAGES CXX)
 
+set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
+
 if(DEFINED ENV{EBROOTGENTOO})# we're on a compute canada supercomputer
 
     MESSAGE("computecanada detected")
@@ -26,11 +28,9 @@ if(APPLE)
 else()
     set(PROFILE_NO_AS_NEEDED "-Wl,--no-as-needed,-lprofiler,--as-needed") 
 endif(APPLE)
-MESSAGE("RUNNING PWD")
-execute_process( COMMAND pwd COMMAND_ECHO STDOUT )
-MESSAGE("DONE RUNNING PWD")
-set(CMAKE_FIND_FRAMEWORK NEVER)
-set(Python3_FIND_UNVERSIONED_NAMES "FIRST") #why does cmake not take whatever $python is on the command line by default?!
+
+
+set(Python3_FIND_UNVERSIONED_NAMES "FIRST") 
 find_package(Python3 COMPONENTS Interpreter Development)
 find_package(pybind11)
 
@@ -75,7 +75,6 @@ endif(ASAN)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${TORCH_CXX_FLAGS}")
 link_libraries( ${TORCH_LIBRARIES} fmt::fmt-header-only )
 MESSAGE("TORCH CXX LIBS: ${TORCH_CXX_FLAGS} ")
-set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
 
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
     include(CTest)

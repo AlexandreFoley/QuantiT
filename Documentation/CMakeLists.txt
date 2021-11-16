@@ -24,7 +24,7 @@ if(Doxygen_FOUND)
                        DEPENDS ${QUANTIT_PUBLIC_HEADERS}
                        COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYFILE_OUT}
                        MAIN_DEPENDENCY ${DOXYFILE_OUT} ${DOXYFILE_IN}
-                       COMMENT "Generating Doxygen documentatino")
+                       COMMENT "Generating Doxygen documentation")
 
     add_custom_target(Doxygen DEPENDS ${DOXYGEN_INDEX_FILE} DEPENDS ${QUANTIT_PUBLIC_HEADERS})
     find_package(Sphinx)
