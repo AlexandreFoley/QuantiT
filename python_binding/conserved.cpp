@@ -13,64 +13,38 @@
 namespace py = pybind11;
 
 #include "Conserved/Composite/cquantity.h"
+#include "Conserved/Composite/quantity_vector.h"
 
 
 template<class X>
 using to_int_16t = int16_t; 
 
 
-template<class... QTT> void pywrap_quanttquantity(py::module &m, std::string name)
-{
-	using this_type = quantt::quantity<QTT...>;
-	py::class_< this_type >(m, name.c_str() ,py::is_final()) 
-	.def(py::init< to_int_16t<QTT>... >())// initialize from as many int16_t as the template has arguements.
-	.def(py::self * py::self)
-	.def(py::self *= py::self)
-	.def("__repr__", [](const this_type& val){return fmt::format("{}",val);})
-	.def("inv",&this_type::inverse)
-	.def("inv_",&this_type::inverse_)
-	.def(py::self == py::self)
-	.def(py::self != py::self)
-	.def(py::self < py::self)
-	.def(py::self > py::self);
-}
+// template<class... QTT> void pywrap_quanttquantity(py::module &m, std::string name)
+// {
+// 	using this_type = quantt::quantity<QTT...>;
+// 	py::class_< this_type >(m, name.c_str() ,py::is_final()) 
+// 	.def(py::init< to_int_16t<QTT>... >())// initialize from as many int16_t as the template has arguements.
+// 	.def(py::self * py::self)
+// 	.def(py::self *= py::self)
+// 	.def("__repr__", [](const this_type& val){return fmt::format("{}",val);})
+// 	.def("inv",&this_type::inverse)
+// 	.def("inv_",&this_type::inverse_)
+// 	.def(py::self == py::self)
+// 	.def(py::self != py::self)
+// 	.def(py::self < py::self)
+// 	.def(py::self > py::self);
+// }
 
 using namespace quantt::conserved;
 void init_conserved_qtt(py::module &m)
 {
 	auto conserved_sub = m.def_submodule("conserved");
 
-	pywrap_quanttquantity<Z>(conserved_sub,"Z");
-	pywrap_quanttquantity<Z,Z>(conserved_sub,"ZZ");
-	pywrap_quanttquantity<Z,Z,C<2> >(conserved_sub,"ZZC2");
-	pywrap_quanttquantity<Z,Z,C<3> >(conserved_sub,"ZZC3");
-	pywrap_quanttquantity<Z,Z,C<4> >(conserved_sub,"ZZC4");
-	pywrap_quanttquantity<Z,Z,C<6> >(conserved_sub,"ZZC6");
-	pywrap_quanttquantity<C<2> >(conserved_sub,"C2");
-	pywrap_quanttquantity<C<3> >(conserved_sub,"C3");
-	pywrap_quanttquantity<C<4> >(conserved_sub,"C4");
-	pywrap_quanttquantity<C<6> >(conserved_sub,"C6");
-	pywrap_quanttquantity<C<2>,C<2> >(conserved_sub,"C2C2");
-	pywrap_quanttquantity<C<2>,C<3> >(conserved_sub,"C2C3");
-	pywrap_quanttquantity<C<2>,C<4> >(conserved_sub,"C2C4");
-	pywrap_quanttquantity<C<2>,C<6> >(conserved_sub,"C2C6");
+	//I might instead create factory function for any_quantity that initialize with these instead of exposing them as python types.
 
 	py::class_<quantt::any_quantity>(conserved_sub,"quantity",py::is_final())
 	.def(py::init<>())
-	.def(py::init([](const quantt::quantity<Z>& x) {return quantt::any_quantity(x);}))
-	.def(py::init([](const quantt::quantity<Z,Z>& x) {return quantt::any_quantity(x);}))
-	.def(py::init([](const quantt::quantity<Z,Z,C<2> >& x) {return quantt::any_quantity(x);}))
-	.def(py::init([](const quantt::quantity<Z,Z,C<3> >& x) {return quantt::any_quantity(x);}))
-	.def(py::init([](const quantt::quantity<Z,Z,C<4> >& x) {return quantt::any_quantity(x);}))
-	.def(py::init([](const quantt::quantity<Z,Z,C<6> >& x) {return quantt::any_quantity(x);}))
-	.def(py::init([](const quantt::quantity<C<2>,C<2> >& x) {return quantt::any_quantity(x);}))
-	.def(py::init([](const quantt::quantity<C<2>,C<3> >& x) {return quantt::any_quantity(x);}))
-	.def(py::init([](const quantt::quantity<C<2>,C<4> >& x) {return quantt::any_quantity(x);}))
-	.def(py::init([](const quantt::quantity<C<2>,C<6> >& x) {return quantt::any_quantity(x);}))
-	.def(py::init([](const quantt::quantity<C<2> >& x) {return quantt::any_quantity(x);}))
-	.def(py::init([](const quantt::quantity<C<3> >& x) {return quantt::any_quantity(x);}))
-	.def(py::init([](const quantt::quantity<C<4> >& x) {return quantt::any_quantity(x);}))
-	.def(py::init([](const quantt::quantity<C<6> >& x) {return quantt::any_quantity(x);}))
 	.def(py::self * py::self)
 	.def(py::self *= py::self)
 	.def("__repr__", [](const quantt::any_quantity& val){return fmt::format("{}",val);})
@@ -80,4 +54,28 @@ void init_conserved_qtt(py::module &m)
 	.def(py::self != py::self)
 	.def(py::self < py::self)
 	.def(py::self > py::self);
+
+	conserved_sub.def("Z", [](int x){return quantt::any_quantity(Z(x));});
+	conserved_sub.def("ZC2", [](int x,int z){return quantt::any_quantity(Z(x),C<2>(z));});
+	conserved_sub.def("ZC3", [](int x,int z){return quantt::any_quantity(Z(x),C<3>(z));});
+	conserved_sub.def("ZC4", [](int x,int z){return quantt::any_quantity(Z(x),C<4>(z));});
+	conserved_sub.def("ZC5", [](int x,int z){return quantt::any_quantity(Z(x),C<5>(z));});
+	conserved_sub.def("ZC6", [](int x,int z){return quantt::any_quantity(Z(x),C<6>(z));});
+	conserved_sub.def("ZZ", [](int x,int y){return quantt::any_quantity(Z(x),Z(y));});
+	conserved_sub.def("ZZC2", [](int x,int y,int z){return quantt::any_quantity(Z(x),Z(y),C<2>(z));});
+	conserved_sub.def("ZZC3", [](int x,int y,int z){return quantt::any_quantity(Z(x),Z(y),C<3>(z));});
+	conserved_sub.def("ZZC4", [](int x,int y,int z){return quantt::any_quantity(Z(x),Z(y),C<4>(z));});
+	conserved_sub.def("ZZC5", [](int x,int y,int z){return quantt::any_quantity(Z(x),Z(y),C<5>(z));});
+	conserved_sub.def("ZZC6", [](int x,int y,int z){return quantt::any_quantity(Z(x),Z(y),C<6>(z));});
+	conserved_sub.def("C2C2", [](int x,int z){return quantt::any_quantity(C<2>(x),C<2>(z));});
+	conserved_sub.def("C2C3", [](int x,int z){return quantt::any_quantity(C<2>(x),C<3>(z));});
+	conserved_sub.def("C2C4", [](int x,int z){return quantt::any_quantity(C<2>(x),C<4>(z));});
+	conserved_sub.def("C2C5", [](int x,int z){return quantt::any_quantity(C<2>(x),C<5>(z));});
+	conserved_sub.def("C2C6", [](int x,int z){return quantt::any_quantity(C<2>(x),C<6>(z));});
+	conserved_sub.def("C2", [](int z){return quantt::any_quantity(C<2>(z));});
+	conserved_sub.def("C3", [](int z){return quantt::any_quantity(C<3>(z));});
+	conserved_sub.def("C4", [](int z){return quantt::any_quantity(C<4>(z));});
+	conserved_sub.def("C5", [](int z){return quantt::any_quantity(C<5>(z));});
+	conserved_sub.def("C6", [](int z){return quantt::any_quantity(C<6>(z));});
+
 }

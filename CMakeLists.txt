@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.0 FATAL_ERROR)
 project(QuantiT LANGUAGES CXX)
 
 set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 if(DEFINED ENV{EBROOTGENTOO})# we're on a compute canada supercomputer
 
@@ -90,7 +91,6 @@ add_subdirectory(python_binding)
 add_executable(QuanTT_dev main.cpp )
 target_link_libraries(QuanTT_dev PRIVATE QuanTT_lib)
 target_compile_features(QuanTT_dev PRIVATE cxx_std_17)
-
 set(COMPONENT_SRCS ${HEADER_LIST}) #make vs-code intellisence work with with fresh, unused, header files. HEADER_LIST is definied in sources/CMakeList.txt
 
 if (MSVC)

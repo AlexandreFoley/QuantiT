@@ -17,7 +17,7 @@
 int main(int argc, char **argv)
 {
 	doctest::Context context;
-
+	at::init_num_threads();
 	// custom
 	context.addFilter("test-case", "*heisenberg*");
 

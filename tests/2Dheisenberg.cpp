@@ -282,6 +282,7 @@ quantt::btensor guess_btensor(const torch::Tensor &tens, const quantt::btensor &
 int main()
 {
 	torch::set_num_threads(2);
+	at::init_num_threads();
 	torch::InferenceMode Inference_guard;
 	torch::set_default_dtype(torch::scalarTypeToTypeMeta(torch::kFloat64));
 	doctest::Context doctest_context;

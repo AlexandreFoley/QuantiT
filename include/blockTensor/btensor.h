@@ -113,6 +113,7 @@ class btensor
 	using index_list = std::vector<int64_t>;
 	using block_list_t = flat_map<index_list, torch::Tensor>;
 	using init_list_t = std::initializer_list<std::initializer_list<std::tuple<size_t, any_quantity>>>;
+	using vec_list_t = std::vector<std::vector<std::tuple<size_t, any_quantity>>>;
 
 	using Scalar = torch::Scalar;
 	property<any_quantity, btensor, any_quantity_cref> selection_rule; // dmrjulia equiv: the flux.
@@ -124,10 +125,10 @@ class btensor
 	 * section for that dimension of the tensor
 	 * @param selection_rule determine which blocks are allowed to be non-zero.
 	 */
-	btensor(init_list_t dir_block_size_cqtt, any_quantity_cref selection_rule, c10::TensorOptions opt = {});
-	btensor(init_list_t dir_block_size_cqtt, any_quantity_cref selection_rule, size_t num_blocks,
+	btensor(const vec_list_t & dir_block_size_cqtt, any_quantity_cref selection_rule, c10::TensorOptions opt = {});
+	btensor(const vec_list_t & dir_block_size_cqtt, any_quantity_cref selection_rule, size_t num_blocks,
 	        c10::TensorOptions opt = {});
-
+	// btensor(vec_list_t, any_quantity,c10::TensorOptions opt = {}); //for python
 	/**
 	 * @brief Construct a new btensor object from a subset of the raw structure. use carefully.
 	 *
@@ -261,7 +262,7 @@ class btensor
 	 * @param block_index index of the block
 	 * @return const_block_qtt_view
 	 */
-	const_block_qtt_view block_quantities(index_list block_index) const;
+	const_block_qtt_view block_quantities(const index_list& block_index) const;
 	/**
 	 * @brief obtain a view on the size of the block.
 	 *
@@ -270,7 +271,7 @@ class btensor
 	 * @param block_index
 	 * @return const_block_size_view
 	 */
-	const_block_size_view block_sizes(index_list block_index) const;
+	const_block_size_view block_sizes(const index_list& block_index) const;
 	/**
 	 * @brief Return the rank of the tensor
 	 *
@@ -356,7 +357,7 @@ class btensor
 	 * The view on the btensor is itself a btensor. The underlying non-zero blocks are shared, new blocks cannot be
 	 * added to the original tensor this way.
 	 *
-	 * @param indices  list of torch's index class, allow for slices, ellipsis, and index.
+	 * @param indicesa list of torch's index class, allow for slices, ellipsis, and index.
 	 * @return btensor view on the original tensor
 	 */
 	btensor index(std::initializer_list<torch::indexing::TensorIndex> indices) const;
@@ -1249,25 +1250,25 @@ inline btensor sparse_zeros_like(const btensor &tens, c10::TensorOptions opt = {
 	out._options = out._options.merge_in(opt);
 	return out;
 }
-inline btensor sparse_zeros(btensor::init_list_t shape_spec, any_quantity selection_rule, c10::TensorOptions opt = {})
+inline btensor sparse_zeros(const btensor::vec_list_t & shape_spec, any_quantity selection_rule, c10::TensorOptions opt = {})
 {
 	return btensor(std::move(shape_spec), std::move(selection_rule), opt);
 }
-btensor zeros(btensor::init_list_t shape_spec, any_quantity selection_rule, c10::TensorOptions opt = {});
+btensor zeros(const btensor::vec_list_t & shape_spec, any_quantity selection_rule, c10::TensorOptions opt = {});
 btensor zeros_like(const btensor &tens, c10::TensorOptions opt = {});
-btensor ones(btensor::init_list_t shape_spec, any_quantity selection_rule, c10::TensorOptions opt = {});
+btensor ones(const btensor::vec_list_t & shape_spec, any_quantity selection_rule, c10::TensorOptions opt = {});
 btensor ones_like(const btensor &tens, c10::TensorOptions opt = {});
-btensor empty(btensor::init_list_t shape_spec, any_quantity selection_rule, c10::TensorOptions opt = {});
+btensor empty(const btensor::vec_list_t & shape_spec, any_quantity selection_rule, c10::TensorOptions opt = {});
 btensor empty_like(const btensor &tens, c10::TensorOptions opt = {});
-btensor rand(btensor::init_list_t shape_spec, any_quantity selection_rule, c10::TensorOptions opt = {});
+btensor rand(const btensor::vec_list_t & shape_spec, any_quantity selection_rule, c10::TensorOptions opt = {});
 btensor rand_like(const btensor &tens, c10::TensorOptions opt = {});
-btensor full(btensor::init_list_t shape_spec, any_quantity selection_rule, btensor::Scalar fill_value,
+btensor full(const btensor::vec_list_t & shape_spec, any_quantity selection_rule, btensor::Scalar fill_value,
              c10::TensorOptions opt = {});
 btensor full_like(const btensor &tens, btensor::Scalar fill_value, c10::TensorOptions opt = {});
-btensor randint(int64_t low, int64_t high, btensor::init_list_t shape_spec, any_quantity selection_rule,
+btensor randint(int64_t low, int64_t high, const btensor::vec_list_t & shape_spec, any_quantity selection_rule,
                 c10::TensorOptions opt = {});
 btensor randint_like(int64_t low, int64_t high, const btensor &tens, c10::TensorOptions opt = {});
-inline btensor randint(int64_t high, btensor::init_list_t shape_spec, any_quantity selection_rule,
+inline btensor randint(int64_t high, const btensor::vec_list_t & shape_spec, any_quantity selection_rule,
                        c10::TensorOptions opt = {})
 {
 	return randint(0, high, shape_spec, selection_rule, opt);
@@ -1276,10 +1277,10 @@ inline btensor randint_like(int64_t high, const btensor &tens, c10::TensorOption
 {
 	return randint_like(0, high, tens, opt);
 }
-btensor randn(btensor::init_list_t shape_spec, any_quantity selection_rule, c10::TensorOptions opt = {});
+btensor randn(const btensor::vec_list_t & shape_spec, any_quantity selection_rule, c10::TensorOptions opt = {});
 btensor randn_like(const btensor &tens, c10::TensorOptions opt = {});
 
-btensor from_basic_tensor(btensor::init_list_t shape_spec, any_quantity selection_rul, const torch::Tensor &values, const torch::Scalar cutoff = 1e-16,
+btensor from_basic_tensor(const btensor::vec_list_t & shape_spec, any_quantity selection_rul, const torch::Tensor &values, const torch::Scalar cutoff = 1e-16,
                           c10::TensorOptions = {});
 btensor from_basic_tensor_like(const btensor &shape, const torch::Tensor &values, const torch::Scalar cutoff = 1e-16, c10::TensorOptions = {});
 

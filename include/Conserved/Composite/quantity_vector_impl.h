@@ -427,10 +427,7 @@ class quantity_vector final : public vquantity_vector, public std::vector<S, All
 		const_iterator out;
 		// this silly fidling is only ok with random access iterator
 		auto _diff = out.base() - static_cast<const S *>(in.base());
-		#pragma GCC diagnostic push
-		#pragma GCC diagnostic ignored "-Wreturn-stack-address" //disable warning. we're not actually returning a stack adress, the diagnostic is wrong.
 		return out -= _diff;
-		#pragma GCC diagnostic pop
 	}
 	static reverse_iterator to_S_iterator(std::reverse_iterator<vquantity_vector::iterator> in)
 	{

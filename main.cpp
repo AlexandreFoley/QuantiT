@@ -38,6 +38,7 @@ int main()
 
 	using namespace quantt;
 	using namespace torch::indexing;
+	at::init_num_threads();
 	fmt::print("C++ standard version in use {}\n", __cplusplus);
 	torch::set_default_dtype(torch::scalarTypeToTypeMeta(
 	    torch::kFloat64)); // otherwise the type promotion always goes to floats when promoting a tensor

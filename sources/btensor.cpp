@@ -192,7 +192,7 @@ void increment_index_left(btensor::index_list &index, torch::IntArrayRef max_ind
 		cond_add &= !cond_reset;
 	}
 }
-size_t tensor_list_size_guess(const btensor::init_list_t &list, any_quantity_cref sel_rul, size_t rank,
+size_t tensor_list_size_guess(const btensor::vec_list_t &list, any_quantity_cref sel_rul, size_t rank,
                               const btensor::index_list &sections_by_dims)
 {
 	constexpr size_t max_guess = 50;
@@ -222,7 +222,7 @@ size_t tensor_list_size_guess(const btensor::init_list_t &list, any_quantity_cre
 	}
 	return guess;
 }
-btensor::index_list block_shapes_from_struct_list(const btensor::init_list_t &list, size_t rank)
+btensor::index_list block_shapes_from_struct_list(const btensor::vec_list_t &list, size_t rank)
 {
 	btensor::index_list sections_by_dims(rank);
 	for (size_t i = 0; i < rank; ++i) // computed the number of section along each dims, will get it from the btensor
@@ -232,7 +232,7 @@ btensor::index_list block_shapes_from_struct_list(const btensor::init_list_t &li
 	}
 	return sections_by_dims;
 }
-btensor::index_list block_sizes_from_struct_list(const btensor::init_list_t &list, btensor::index_list sections_by_dim)
+btensor::index_list block_sizes_from_struct_list(const btensor::vec_list_t &list, btensor::index_list sections_by_dim)
 {
 	btensor::index_list section_sizes(std::reduce(sections_by_dim.begin(), sections_by_dim.end(), 0));
 	size_t i = 0;
@@ -246,7 +246,7 @@ btensor::index_list block_sizes_from_struct_list(const btensor::init_list_t &lis
 	}
 	return section_sizes;
 }
-any_quantity_vector c_vals_from_struct_list(const btensor::init_list_t &list, size_t size, any_quantity_cref sel_rul)
+any_quantity_vector c_vals_from_struct_list(const btensor::vec_list_t &list, size_t size, any_quantity_cref sel_rul)
 {
 	any_quantity_vector c_vals(size, sel_rul.neutral());
 	size_t i = 0;
@@ -293,7 +293,7 @@ btensor::Scalar btensor::item() const
 	else
 		throw std::logic_error("Only simgle block and single element tensors can be converted to scalar");
 }
-btensor::btensor(btensor::init_list_t dir_block_size_cqtt, any_quantity_cref selection_rule, c10::TensorOptions opt)
+btensor::btensor(const btensor::vec_list_t & dir_block_size_cqtt, any_quantity_cref selection_rule, c10::TensorOptions opt)
     : selection_rule(selection_rule), rank(dir_block_size_cqtt.size()),
       sections_by_dim(block_shapes_from_struct_list(dir_block_size_cqtt, rank)),
       sections_sizes(block_sizes_from_struct_list(dir_block_size_cqtt, sections_by_dim)),
@@ -309,7 +309,7 @@ btensor::btensor(btensor::init_list_t dir_block_size_cqtt, any_quantity_cref sel
 	_options = torch::empty({}, _options).options(); // freeze the options parameter to whatever the current global
 	                                                 // default is. There's probably a better way.
 }
-btensor::btensor(btensor::init_list_t dir_block_size_cqtt, any_quantity_cref selection_rule, size_t num_blocks,
+btensor::btensor(const btensor::vec_list_t & dir_block_size_cqtt, any_quantity_cref selection_rule, size_t num_blocks,
                  c10::TensorOptions opt)
     : selection_rule(std::move(selection_rule)), rank(dir_block_size_cqtt.size()),
       sections_by_dim(block_shapes_from_struct_list(dir_block_size_cqtt, rank)),
@@ -429,7 +429,7 @@ std::string btensor::check_tensor(const btensor &T)
 	return M;
 }
 
-btensor::const_block_qtt_view btensor::block_quantities(index_list block_index) const
+btensor::const_block_qtt_view btensor::block_quantities(const index_list& block_index) const
 {
 	return const_block_qtt_view(c_vals.cbegin(), c_vals.cend(), sections_by_dim, std::move(block_index));
 }
@@ -437,7 +437,7 @@ btensor::const_block_qtt_view btensor::block_quantities(index_list block_index) 
 // {
 // 	return block_qtt_view(c_vals.begin(), c_vals.end(), sections_by_dim, std::move(block_index));
 // }
-btensor::const_block_size_view btensor::block_sizes(index_list block_index) const
+btensor::const_block_size_view btensor::block_sizes(const index_list& block_index) const
 {
 	auto a = sections_sizes.begin();
 	return const_block_size_view(sections_sizes.begin(), sections_sizes.end(), sections_by_dim, std::move(block_index));
@@ -2223,7 +2223,7 @@ void factory_wrap(btensor &out, Factory &&factory)
 	} while (any_truth(index));
 }
 
-btensor zeros(btensor::init_list_t shape_spec, any_quantity selection_rule, c10::TensorOptions opt)
+btensor zeros(const btensor::vec_list_t & shape_spec, any_quantity selection_rule, c10::TensorOptions opt)
 {
 	auto out = quantt::sparse_zeros(shape_spec, std::move(selection_rule), opt);
 	factory_wrap(out, [](torch::IntArrayRef size, c10::TensorOptions options) { return torch::zeros(size, options); });
@@ -2236,7 +2236,7 @@ btensor zeros_like(const btensor &tens, c10::TensorOptions opt)
 	return out;
 }
 
-btensor ones(btensor::init_list_t shape_spec, any_quantity selection_rule, c10::TensorOptions opt)
+btensor ones(const btensor::vec_list_t & shape_spec, any_quantity selection_rule, c10::TensorOptions opt)
 {
 	auto out = quantt::sparse_zeros(shape_spec, std::move(selection_rule), opt);
 	factory_wrap(out, [](torch::IntArrayRef size, c10::TensorOptions options) { return torch::ones(size, options); });
@@ -2248,7 +2248,7 @@ btensor ones_like(const btensor &tens, c10::TensorOptions opt)
 	factory_wrap(out, [](torch::IntArrayRef size, c10::TensorOptions options) { return torch::ones(size, options); });
 	return out;
 }
-btensor empty(btensor::init_list_t shape_spec, any_quantity selection_rule, c10::TensorOptions opt)
+btensor empty(const btensor::vec_list_t & shape_spec, any_quantity selection_rule, c10::TensorOptions opt)
 {
 	auto out = quantt::sparse_zeros(shape_spec, selection_rule, opt);
 	factory_wrap(out, [](torch::IntArrayRef size, c10::TensorOptions options) { return torch::empty(size, options); });
@@ -2260,7 +2260,7 @@ btensor empty_like(const btensor &tens, c10::TensorOptions opt)
 	factory_wrap(out, [](torch::IntArrayRef size, c10::TensorOptions options) { return torch::empty(size, options); });
 	return out;
 }
-btensor rand(btensor::init_list_t shape_spec, any_quantity selection_rule, c10::TensorOptions opt)
+btensor rand(const btensor::vec_list_t & shape_spec, any_quantity selection_rule, c10::TensorOptions opt)
 {
 	auto out = quantt::sparse_zeros(shape_spec, selection_rule, opt);
 	factory_wrap(out, [](torch::IntArrayRef size, c10::TensorOptions options) { return torch::rand(size, options); });
@@ -2272,7 +2272,7 @@ btensor rand_like(const btensor &tens, c10::TensorOptions opt)
 	factory_wrap(out, [](torch::IntArrayRef size, c10::TensorOptions options) { return torch::rand(size, options); });
 	return out;
 }
-btensor full(btensor::init_list_t shape_spec, any_quantity selection_rule, btensor::Scalar fill_value,
+btensor full(const btensor::vec_list_t & shape_spec, any_quantity selection_rule, btensor::Scalar fill_value,
              c10::TensorOptions opt)
 {
 	auto out = quantt::sparse_zeros(shape_spec, selection_rule, opt);
@@ -2287,7 +2287,7 @@ btensor full_like(const btensor &tens, btensor::Scalar fill_value, c10::TensorOp
 	             { return torch::full(size, fill_value, options); });
 	return out;
 }
-btensor randint(int64_t low, int64_t high, btensor::init_list_t shape_spec, any_quantity selection_rule,
+btensor randint(int64_t low, int64_t high, const btensor::vec_list_t & shape_spec, any_quantity selection_rule,
                 c10::TensorOptions opt)
 {
 	auto out = quantt::sparse_zeros(shape_spec, selection_rule, opt);
@@ -2302,7 +2302,7 @@ btensor randint_like(int64_t low, int64_t high, const btensor &tens, c10::Tensor
 	             { return torch::randint(low, high, size, options); });
 	return out;
 }
-btensor randn(btensor::init_list_t shape_spec, any_quantity selection_rule, c10::TensorOptions opt)
+btensor randn(const btensor::vec_list_t & shape_spec, any_quantity selection_rule, c10::TensorOptions opt)
 {
 	auto out = quantt::sparse_zeros(shape_spec, selection_rule, opt);
 	factory_wrap(out, [](torch::IntArrayRef size, c10::TensorOptions options) { return torch::randn(size, options); });
@@ -2369,7 +2369,7 @@ void from_basic_impl(btensor &out, const torch::Tensor &values,const torch::Scal
 		out.block_increment(index);
 	} while (any_truth(index));
 }
-btensor from_basic_tensor(btensor::init_list_t shape_spec, any_quantity selection_rul, const torch::Tensor &values, const torch::Scalar cutoff,
+btensor from_basic_tensor(const btensor::vec_list_t & shape_spec, any_quantity selection_rul, const torch::Tensor &values, const torch::Scalar cutoff,
                           c10::TensorOptions opt)
 {
 	auto shape = quantt::sparse_zeros(shape_spec, selection_rul, opt);
