@@ -1267,7 +1267,13 @@ btensor full(const btensor::vec_list_t & shape_spec, any_quantity selection_rule
 btensor full_like(const btensor &tens, btensor::Scalar fill_value, c10::TensorOptions opt = {});
 btensor randint(int64_t low, int64_t high, const btensor::vec_list_t & shape_spec, any_quantity selection_rule,
                 c10::TensorOptions opt = {});
+inline btensor randint(const btensor::vec_list_t & shape_spec,  any_quantity selection_rule,int64_t low, int64_t high,
+                c10::TensorOptions opt = {}){return randint(low,high,shape_spec,selection_rule,opt);}
 btensor randint_like(int64_t low, int64_t high, const btensor &tens, c10::TensorOptions opt = {});
+inline btensor randint_like(const btensor& shape,int64_t low, int64_t high, c10::TensorOptions opt = {})
+{
+	return randint_like(low,high,shape,opt);
+}
 inline btensor randint(int64_t high, const btensor::vec_list_t & shape_spec, any_quantity selection_rule,
                        c10::TensorOptions opt = {})
 {
@@ -1277,10 +1283,20 @@ inline btensor randint_like(int64_t high, const btensor &tens, c10::TensorOption
 {
 	return randint_like(0, high, tens, opt);
 }
+
+inline btensor randint_like(const btensor &tens,int64_t high, c10::TensorOptions opt = {})
+{
+	return randint_like(high, tens, opt);
+}
+inline btensor randint( const btensor::vec_list_t & shape_spec, any_quantity selection_rule,int64_t high, 
+                       c10::TensorOptions opt = {})
+{
+	return randint( high, shape_spec, selection_rule, opt);
+}
 btensor randn(const btensor::vec_list_t & shape_spec, any_quantity selection_rule, c10::TensorOptions opt = {});
 btensor randn_like(const btensor &tens, c10::TensorOptions opt = {});
 
-btensor from_basic_tensor(const btensor::vec_list_t & shape_spec, any_quantity selection_rul, const torch::Tensor &values, const torch::Scalar cutoff = 1e-16,
+btensor from_basic_tensor(const btensor::vec_list_t & shape_spec, any_quantity selection_rule, const torch::Tensor &values, const torch::Scalar cutoff = 1e-16,
                           c10::TensorOptions = {});
 btensor from_basic_tensor_like(const btensor &shape, const torch::Tensor &values, const torch::Scalar cutoff = 1e-16, c10::TensorOptions = {});
 
