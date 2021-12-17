@@ -17,6 +17,36 @@
 #include "Conserved/Composite/cquantity.h"
 #include "boost/stl_interfaces/iterator_interface.hpp"
 #include <numeric>
+#include <vector>
+
+#ifdef QTT_APPLE
+namespace quantt
+{
+namespace 
+{
+	class DUMMY
+	{};
+
+}
+
+}
+namespace std
+{
+	template<>
+	class vector<quantt::DUMMY,std::allocator<quantt::DUMMY> >
+	{
+	public:
+		//This is pure trickery to do forbiden operation on iterators. all template of vector are declared friend to all iterator used by any vector in __wrap_iterator on the mac. hopefully this is portable.
+		//This is way more open than it strictly need to be and clearly an implementation detail.
+		// it is entirely possible that some implementation of vector's iterator are not as wide open to (template) abuse.
+		template<class U,class T,class pointer_type>
+		static U convert_iterator(const T& t)
+		{
+			return U(static_cast<pointer_type>(t.base()));
+		}
+	};
+}
+#endif
 namespace quantt
 {
 
@@ -209,6 +239,7 @@ class vquantity_vector
 	const_reverse_iterator rbegin() const { return (crbegin()); }
 	const_reverse_iterator rend() const { return (crend()); }
 };
+
 
 template <class S, class Allocator = std::allocator<S>, class = std::enable_if_t<std::is_base_of_v<vquantity, S>>>
 class quantity_vector final : public vquantity_vector, public std::vector<S, Allocator>
@@ -424,10 +455,14 @@ class quantity_vector final : public vquantity_vector, public std::vector<S, All
 	{
 		if (in.vt() != &ar)
 			throw std::bad_cast();
+		#ifdef QTT_APPLE
+		return std::vector<DUMMY>::convert_iterator<const_iterator,vquantity_vector::const_iterator,const S *>(in);
+		#else
 		const_iterator out;
-		// this silly fidling is only ok with random access iterator
+		// this silly fidling is only ok with random access iterators. we don't know what the operator +- do in general otherwise
 		auto _diff = out.base() - static_cast<const S *>(in.base());
 		return out -= _diff;
+		#endif
 	}
 	static reverse_iterator to_S_iterator(std::reverse_iterator<vquantity_vector::iterator> in)
 	{
@@ -445,10 +480,14 @@ class quantity_vector final : public vquantity_vector, public std::vector<S, All
 		{
 			throw std::bad_cast();
 		}
+		#ifdef QTT_APPLE
+		return std::vector<DUMMY>::convert_iterator<iterator,vquantity_vector::iterator,S *>(in);
+		#else
 		iterator out;
 		// this silly fidling is only ok with random access iterator
 		auto _diff = out.base() - static_cast<S *>(in.base());
 		return out -= _diff;
+		#endif
 	}
 
 	std::unique_ptr<vquantity_vector> clone() const override { return std::make_unique<quantity_vector>(*this); }
