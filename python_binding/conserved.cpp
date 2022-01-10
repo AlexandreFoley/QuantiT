@@ -15,27 +15,6 @@ namespace py = pybind11;
 #include "Conserved/Composite/cquantity.h"
 #include "Conserved/Composite/quantity_vector.h"
 
-
-template<class X>
-using to_int_16t = int16_t; 
-
-
-// template<class... QTT> void pywrap_quanttquantity(py::module &m, std::string name)
-// {
-// 	using this_type = quantt::quantity<QTT...>;
-// 	py::class_< this_type >(m, name.c_str() ,py::is_final()) 
-// 	.def(py::init< to_int_16t<QTT>... >())// initialize from as many int16_t as the template has arguements.
-// 	.def(py::self * py::self)
-// 	.def(py::self *= py::self)
-// 	.def("__repr__", [](const this_type& val){return fmt::format("{}",val);})
-// 	.def("inv",&this_type::inverse)
-// 	.def("inv_",&this_type::inverse_)
-// 	.def(py::self == py::self)
-// 	.def(py::self != py::self)
-// 	.def(py::self < py::self)
-// 	.def(py::self > py::self);
-// }
-
 using namespace quantt::conserved;
 void init_conserved_qtt(py::module &m)
 {
