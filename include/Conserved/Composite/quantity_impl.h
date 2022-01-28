@@ -74,6 +74,8 @@ class vquantity
 	 */
 	virtual vquantity &inverse_() = 0;
 	any_quantity inverse() const;
+	any_quantity inv() const;
+	vquantity &inv_() { return inverse_(); }
 	virtual std::unique_ptr<vquantity> clone() const = 0;
 	virtual std::unique_ptr<vquantity_vector> make_vector(size_t cnt) const = 0;
 
@@ -226,27 +228,23 @@ template <class... T>
 int64_t quantity<T...>::distance2(const quantity<T...> &other) const
 {
 	int64_t out = 0;
-	for_each2(val, other.val,
-	          [& out  ](auto &&vl, auto &&ovl)
-	          {
-		          out += vl.distance2(ovl);
-	          });
+	for_each2(val, other.val, [&out](auto &&vl, auto &&ovl) { out += vl.distance2(ovl); });
 	return out;
 }
 template <class... T>
-int64_t quantity<T...>::distance2(const vquantity& other)const
+int64_t quantity<T...>::distance2(const vquantity &other) const
 {
-	return distance2(dynamic_cast<const quantity<T...>&>(other));
+	return distance2(dynamic_cast<const quantity<T...> &>(other));
 }
-template<class... T>
-double quantity<T...>::distance(const quantity<T...> & other) const
+template <class... T>
+double quantity<T...>::distance(const quantity<T...> &other) const
 {
 	return std::sqrt(distance2(other));
 }
 template <class... T>
-double quantity<T...>::distance(const vquantity& other)const
+double quantity<T...>::distance(const vquantity &other) const
 {
-	return distance(dynamic_cast<const quantity<T...>&>(other));
+	return distance(dynamic_cast<const quantity<T...> &>(other));
 }
 template <class... T>
 quantity<T...> &quantity<T...>::op(const quantity<T...> &other)

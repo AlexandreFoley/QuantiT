@@ -67,6 +67,20 @@ any_quantity_cref btensor::section_conserved_qtt(size_t index, size_t block) con
 	auto ori = std::reduce(sections_by_dim.begin(), sections_by_dim.begin() + index, 0);
 	return c_vals[ori + block];
 }
+any_quantity_cref btensor::element_conserved_qtt(size_t dim, size_t element) const {
+	auto dim_size = sizes()[dim];
+	if (element >= dim_size) throw std::invalid_argument(fmt::format("There are only {} elements along dimension {}. You requested element {}",dim_size,dim,element));
+	auto section_num = section_number(dim);
+	auto [it_qt,end_qt] = section_conserved_qtt_range(dim);
+	auto [it_size,end_s] = section_sizes(dim);
+	while(it_qt!=end_qt)
+	{
+		if (element >= *it_size) element -=*it_size;
+		else return *it_qt;
+		++it_qt;
+		++it_size;
+	}
+}
 std::tuple<any_quantity_vector::const_iterator, any_quantity_vector::const_iterator> btensor::
     section_conserved_qtt_range(size_t index) const
 {
@@ -440,7 +454,7 @@ btensor::const_block_qtt_view btensor::block_quantities(const index_list &block_
 // }
 btensor::const_block_size_view btensor::block_sizes(const index_list &block_index) const
 {
-	auto a = sections_sizes.begin();
+	// auto a = sections_sizes.begin();
 	return const_block_size_view(sections_sizes.begin(), sections_sizes.end(), sections_by_dim, std::move(block_index));
 }
 /**

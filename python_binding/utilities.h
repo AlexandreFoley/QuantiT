@@ -7,9 +7,50 @@
 #include <torch/extension.h>
 #include <torch/csrc/MemoryFormat.h>
 
+#include "blockTensor/btensor.h"
+
 namespace utils
 {
 
+// Nasty shenanigans 
+// This evil trickery allow us to modify and read private values. We must NEVER modify it.
+namespace Evil
+{
+template <typename Tag, typename Tag::type M>
+struct Rob
+{
+	friend typename Tag::type get(Tag) { return M; }
+};
+template <class stolen_type, class Victim, size_t tag = 0>
+struct Thieving_tag
+{
+	typedef stolen_type Victim::*type;
+#if defined(__GNUC__) and not defined(__clang__) // clang doesn't understand this, and defines __GNUC__
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wnon-template-friend" // yeah i know the next function ain't a template.
+#endif
+	friend type get(Thieving_tag);
+#if defined(__GNUC__) and not defined(__clang__)
+#pragma GCC diagnostic pop
+#endif
+};
+// usage exemple
+// using refcount_theft = Thieving_tag<std::atomic<size_t>, c10::intrusive_ptr_target, 0>;
+// using weakcount_theft = Thieving_tag<std::atomic<size_t>, c10::intrusive_ptr_target, 1>;
+// template struct Rob<refcount_theft, &c10::intrusive_ptr_target::refcount_>;
+// template struct Rob<weakcount_theft, &c10::intrusive_ptr_target::weakcount_>;
+// size_t get_refcount(const torch::Tensor &tens)
+// {
+// 	using namespace Evil;
+// 	auto refcounted_ptr_1 = tens.unsafeGetTensorImpl();
+// 	auto refcount_1 = ((*refcounted_ptr_1).*get(refcount_theft())).load(); // this is an atomic load
+// 	// auto weakcount_1 = ((*refcounted_ptr_1).*get(weakcount_theft())).load();
+// 	// auto refcounted_ptr_2 = tens.unsafeGetTensorImpl();
+// 	// auto weakcount_2 = ((*refcounted_ptr_2).*get(weakcount_theft())).load();
+// 	// fmt::print("weakcount {} {}\n", weakcount_1, weakcount_2);
+// 	return refcount_1;
+// }
+} // namespace Evil
 namespace function_sig_fiddling
 {
 // Taken from pybind11::detail, Because i have no trust that this isn't an implementation *detail* of pybind.
@@ -50,11 +91,12 @@ using function_signature_t =
 template <class T>
 struct Cast_Scalars
 {
+	template<class X>
+	using remove_cvref_t = std::remove_reference_t<std::remove_cv_t<X>>;
 	using out_type = T;
 	using in_type = T;
-	using sT = quantt::remove_cvref_t<T>;
+	using sT = remove_cvref_t<T>;
 	static sT &cast(sT &t) { return t; }
-	static const sT &cast(const sT &t) { return t; }
 	static sT &&cast(sT &&t) { return std::move(t); }
 };
 
@@ -105,6 +147,10 @@ auto wrap_impl(F &&f, Ret (*)(Args...))
 	// The second argument MUST be the function signature associated with the function or function-like object f
 	// we apply the type transformation defined by cast scalar to the return and arguements.
 	// It the identity for any type that is not c10::Scalar.
+	if constexpr (std::is_same_v<void,Ret>)
+		return [f](typename Cast_Scalars<Args>::out_type... args)
+	{ return f(Cast_Scalars<Args>::cast(args)...); };	
+	else
 	return [f](typename Cast_Scalars<Args>::out_type... args)
 	{ return Cast_Scalars<Ret>::cast(f(Cast_Scalars<Args>::cast(args)...)); };
 }
@@ -127,7 +173,7 @@ auto wrap_scalar(F &&f)
 }
 
 template <class... Args>
-struct binder
+struct TOPT_binder
 {
 	template <class ARGS>
 	static c10::TensorOptions generate_option(const quantt::btensor &opt_ten, ARGS &&...)
@@ -135,7 +181,9 @@ struct binder
 		return opt_ten.options();
 	}
 	static c10::TensorOptions generate_option(const quantt::btensor &opt_ten) { return opt_ten.options(); }
-	static auto bind(quantt::btensor (*f)(Args..., c10::TensorOptions))
+	
+	template<class Ret =quantt::btensor>
+	static auto bind(Ret (*f)(Args..., c10::TensorOptions))
 	{
 		using FirstEntityType = std::tuple_element_t<0, std::tuple<Args...>>;
 
@@ -162,6 +210,43 @@ struct binder
 				return f(args..., opt);
 			};
 		}
+	}
+	template<class F>
+	static auto bind_fl(F&& f)
+	{
+		return TOPT_binder::bind_fl_impl(f,(function_sig_fiddling::function_signature_t<F> *)nullptr);
+	}
+
+	private:
+	template<class F, class Ret> 
+	static auto bind_fl_impl(F&& f,Ret(*)(Args...,c10::TensorOptions))
+	{
+		using FirstEntityType = std::tuple_element_t<0, std::tuple<Args...>>;
+
+		if constexpr (std::is_same_v<quantt::remove_cvref_t<FirstEntityType>, quantt::btensor>)
+		{
+			return [f](Args... args, torch::optional<torch::ScalarType> dt, torch::optional<torch::Device> dev,
+			           torch::optional<bool> req_grad, torch::optional<bool> pin_memory)
+			{
+				auto opt = generate_option(std::forward<Args>(args)...)
+				               .dtype(dt)
+				               .device(dev)
+				               .requires_grad(req_grad)
+				               .pinned_memory(pin_memory);
+				return f(args..., opt);
+			};
+		}
+		else
+		{
+			return [f](Args... args, torch::optional<torch::ScalarType> dt, torch::optional<torch::Device> dev,
+			           torch::optional<bool> req_grad, torch::optional<bool> pin_memory)
+			{
+				auto opt =
+				    torch::TensorOptions().dtype(dt).device(dev).requires_grad(req_grad).pinned_memory(pin_memory);
+				return f(args..., opt);
+			};
+		}
+
 	}
 };
 

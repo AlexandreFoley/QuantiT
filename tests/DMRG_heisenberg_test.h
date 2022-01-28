@@ -23,10 +23,7 @@
 auto Heisen_afm_test_bt(size_t size)
 {
 	using cval = quantt::quantity<quantt::conserved::Z>;
-	quantt::btensor local_heisenberg_shape({{{1, cval(0)}, {1, cval(2)}, {1, cval(-2)}, {1, cval(0)}, {1, cval(0)}},
-	                                        {{1, cval(-1)}, {1, cval(1)}},
-	                                        {{1, cval(0)}, {1, cval(-2)}, {1, cval(2)}, {1, cval(0)}, {1, cval(0)}},
-	                                        {{1, cval(1)}, {1, cval(-1)}}},
+	quantt::btensor local_heisenberg_shape({{{1, cval(1)}, {1, cval(-1)}}},
 	                                       cval(0));
 	int J = -1.;
 	fmt::print("{:=^80}\n", "Btensors");

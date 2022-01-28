@@ -140,9 +140,16 @@ bool MPO::check_one(const Tens &tens)
 	return (sizes.size() == 4 and sizes[0] == sizes[2]);
 }
 
-bool bMPO::check_one(const Tens &tens) { return tens.dim() == 4 and Tens::check_product_compat(tens, tens, {0}, {2}); }
+bool bMPS::check_one(const Tens &tens) {
+		// check correctness on fill candidate
+	 return tens.dim() == 3 and Tens::check_product_compat(tens, tens, {0}, {2});
+	  }
+bool bMPO::check_one(const Tens &tens) {
+		// check correctness on fill candidate
+	 return tens.dim() == 4 and Tens::check_product_compat(tens, tens, {0}, {2});
+	  }
 
-void bMPO::coalesce(btensor::Scalar cutoff) {
+bMPO& bMPO::coalesce(btensor::Scalar cutoff) {
 	auto it = begin();
 	auto next_it = it+1;
 	for(; next_it != end();++it,++next_it)
@@ -154,6 +161,7 @@ void bMPO::coalesce(btensor::Scalar cutoff) {
 		next = tensordot(V.conj(),next,{0},{0});
 		*it = U.permute({0,1,3,2});
 	}
+	return *this;
 }
 
 bool MPO::check_ranks() const
@@ -354,12 +362,13 @@ void generate_random_string(std::vector<size_t>::iterator out, size_t L, T &&phy
 	// error we failed!
 }
 template <class T>
-MPS random_MPS_impl(size_t length, int64_t bond_dim, T phys_dim, torch::TensorOptions opt)
+MPS random_MPS_impl(size_t length, size_t bond_dim, T phys_dim, torch::TensorOptions opt)
 {
 	MPS out(length);
 	for (auto i = 0u; i < length; ++i)
 	{
-		out[i] = torch::rand({bond_dim, phys_dim(i), bond_dim}, opt);
+		auto bd = static_cast<int64_t>(bond_dim);
+		out[i] = torch::rand({bd, static_cast<int64_t>(phys_dim(i)), bd}, opt);
 	}
 	using namespace torch::indexing;
 	out[0] = out[0].index({Slice(0, 1), Ellipsis});                   // chop off the extra bond on the edges of the MPS
@@ -448,12 +457,12 @@ MPS random_MPS(size_t bond_dim, const MPO &hamil, torch::TensorOptions opt)
 	return random_MPS_impl(
 	    hamil.size(), bond_dim, [&hamil](size_t i) { return hamil[i].sizes()[3]; }, opt);
 }
-MPS random_MPS(size_t length, int64_t bond_dim, int64_t phys_dim, torch::TensorOptions opt = {})
+MPS random_MPS(size_t length, size_t bond_dim, size_t phys_dim, torch::TensorOptions opt)
 {
 	return random_MPS_impl(
 	    length, bond_dim, [phys_dim](size_t i) { return phys_dim; }, opt);
 }
-MPS random_MPS(size_t bond_dim, std::vector<int64_t> phys_dims, torch::TensorOptions opt = {})
+MPS random_MPS(size_t bond_dim, const std::vector<int64_t>& phys_dims, torch::TensorOptions opt )
 {
 	return random_MPS_impl(
 	    phys_dims.size(), bond_dim, [&phys_dims](size_t i) { return phys_dims[i]; }, opt);

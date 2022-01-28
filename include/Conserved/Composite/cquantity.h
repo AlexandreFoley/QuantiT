@@ -285,13 +285,10 @@ inline any_quantity_ref any_quantity::operator+=(any_quantity_cref other) { retu
  *
  * @return any_quantity
  */
-inline any_quantity vquantity::inverse() const
-{
-	// Need to be defined here because any_quantity isn't defined in quanitity_impl.h.
-	return clone()->inverse_();
-}
-inline any_quantity vquantity::neutral() const { return make_neutral(); }
 
+inline any_quantity vquantity::inverse() const { return clone()->inverse_(); }
+inline any_quantity vquantity::inv() const { return inverse(); }
+inline any_quantity vquantity::neutral() const { return make_neutral(); }
 inline vquantity &any_quantity::get() { return *impl; }
 inline const vquantity &any_quantity::get() const { return *impl; }
 

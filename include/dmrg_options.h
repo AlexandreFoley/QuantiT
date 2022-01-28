@@ -44,9 +44,9 @@ struct dmrg_options
 	{
 	}
 	dmrg_options(double _cutoff, double _convergence_criterion, size_t _max_bond, size_t _min_bond,
-	             size_t _max_iterations, bool _pytorch_gradient = def_pytorch_gradient)
+	             size_t _max_iterations, bool _state_gradient = def_pytorch_gradient,bool _hamil_gradient = def_pytorch_gradient)
 	    : cutoff(_cutoff), convergence_criterion(_convergence_criterion), maximum_bond(_max_bond),
-	      minimum_bond(_min_bond), maximum_iterations(_max_iterations), state_gradient(_pytorch_gradient), hamil_gradient(def_pytorch_gradient)
+	      minimum_bond(_min_bond), maximum_iterations(_max_iterations), state_gradient(_state_gradient), hamil_gradient(_hamil_gradient)
 	{
 	}
 	dmrg_options() : dmrg_options(def_cutoff, def_conv_crit) {}

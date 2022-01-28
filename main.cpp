@@ -50,14 +50,33 @@ int main()
 		cuda_device = torch::Device(torch::kCUDA); // set the cuda_device to the actual gpu if it would work
 	}
 
-	auto X = torch::rand({5,10});
-	auto Y = torch::rand({10,5});
-	auto out = torch::zeros({5,5});
-	auto grad = out.grad();
-	out.backward(X);
+	auto X = torch::rand({5,10},torch::requires_grad());
+	// auto Y = torch::rand({10,5}, torch::requires_grad());
+	auto Y = X * 2;
+	auto out = Y.mean();
+	fmt::print("{}\n\n",out);
+	out.backward();
+	auto grad = X.grad();
 
 
-	fmt::print("{}\n",grad);
+	fmt::print("{}\n",grad); // all 50 elements should be 2/50 = 0.04
+
+	using cval = quantt::quantity<quantt::conserved::Z,quantt::conserved::Z>;
+	auto FermionShape = quantt::btensor({{{1,cval(0,0)},{1,cval(1,1)},{1,cval(1,-1)},{1,cval(2,0)}}},cval(0,0));
+
+	fmt::print("{}\n\n",FermionShape);
+	for(int i=0;i<4;++i)
+	{
+		for(auto& x:FermionShape.block_quantities({i}))
+		{
+			fmt::print("{} ",x);
+		}
+		for(auto& x:FermionShape.block_sizes({i}))
+		{
+			fmt::print("{} ",x);
+		}
+		fmt::print("\n\n");
+	}
 	
 	return 0;
 }

@@ -10,8 +10,8 @@
 #ifndef INCLUDE_DMRG_LOGGER_H
 #define INCLUDE_DMRG_LOGGER_H
 
-#include "blockTensor/btensor.h"
 #include "MPT.h"
+#include "blockTensor/btensor.h"
 #include "dmrg_options.h"
 #include <torch/torch.h>
 
@@ -28,25 +28,25 @@ class dmrg_logger
 {
   public:
 	virtual void log_step(size_t) = 0;
-	virtual void log_energy(const torch::Tensor&) = 0;
-	virtual void log_energy(const btensor&) = 0;
+	virtual void log_energy(const torch::Tensor &) = 0;
+	virtual void log_energy(const btensor &) = 0;
 	virtual void log_bond_dims(const MPS &) = 0;
 	virtual void log_bond_dims(const bMPS &) = 0;
 
 	virtual void init(const dmrg_options &) {}
 
-	virtual void it_log_all(size_t step_num,const torch::Tensor& E, const MPS &state) { log_all(step_num, E, state); }
-	virtual void it_log_all(size_t step_num,const btensor& E, const bMPS &state) { log_all(step_num, E, state); }
-	virtual void end_log_all(size_t step_num, const torch::Tensor& E, const MPS &state) { log_all(step_num, E, state); }
-	virtual void end_log_all(size_t step_num, const btensor& E, const bMPS &state) { log_all(step_num, E, state); }
+	virtual void it_log_all(size_t step_num, const torch::Tensor &E, const MPS &state) { log_all(step_num, E, state); }
+	virtual void it_log_all(size_t step_num, const btensor &E, const bMPS &state) { log_all(step_num, E, state); }
+	virtual void end_log_all(size_t step_num, const torch::Tensor &E, const MPS &state) { log_all(step_num, E, state); }
+	virtual void end_log_all(size_t step_num, const btensor &E, const bMPS &state) { log_all(step_num, E, state); }
 
-	virtual void log_all(size_t step_num, torch::Tensor E, const MPS &state)
+	virtual void log_all(size_t step_num, const torch::Tensor &E, const MPS &state)
 	{
 		log_step(step_num);
 		log_energy(E);
 		log_bond_dims(state);
 	}
-	virtual void log_all(size_t step_num, btensor E, const bMPS &state)
+	virtual void log_all(size_t step_num, const btensor &E, const bMPS &state)
 	{
 		log_step(step_num);
 		log_energy(E);
@@ -62,9 +62,9 @@ class dmrg_default_logger : public dmrg_logger
 {
   public:
 	void log_step(size_t) override {}
-	void log_energy(const torch::Tensor&) override {}
+	void log_energy(const torch::Tensor &) override {}
+	void log_energy(const btensor &) override {}
 	void log_bond_dims(const MPS &) override {}
-	void log_energy(const btensor&) override {}
 	void log_bond_dims(const bMPS &) override {}
 };
 
@@ -75,18 +75,18 @@ class dmrg_log_simple final : public quantt::dmrg_default_logger
 	size_t middle_bond_dim;
 
 	void log_step(size_t it) override { it_num = it; }
-	void log_energy(const torch::Tensor &) override {}
-	void log_bond_dims(const quantt::bMPS &mps) override
-	{
-		auto pos = mps.size() / 2;
-		middle_bond_dim = std::max(mps[pos].sizes()[0], mps[pos].sizes()[2]);
-	}
-	void log_bond_dims(const quantt::MPS &mps) override
-	{
-		auto pos = mps.size() / 2;
-		middle_bond_dim = std::max(mps[pos].sizes()[0], mps[pos].sizes()[2]);
-	}
+	void log_bond_dims(const quantt::bMPS &mps) override { log_bond_impl(mps); }
+	void log_bond_dims(const quantt::MPS &mps) override { log_bond_impl(mps); }
 	void it_log_all(size_t, const torch::Tensor &, const quantt::MPS &) override {}
+	void it_log_all(size_t, const btensor &, const bMPS &) override {}
+
+  private:
+	template <class tMPS>
+	void log_bond_impl(const tMPS &mps)
+	{
+		auto pos = mps.size() / 2;
+		middle_bond_dim = std::max(mps[pos].sizes()[0], mps[pos].sizes()[2]);
+	}
 };
 class dmrg_log_sweeptime final : public quantt::dmrg_default_logger
 {
@@ -142,7 +142,6 @@ class dmrg_log_sweeptime final : public quantt::dmrg_default_logger
 	}
 };
 
-
-}
+} // namespace quantt
 
 #endif // INCLUDE_DMRG_LOGGER_H

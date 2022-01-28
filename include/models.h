@@ -25,7 +25,7 @@ namespace quantt
 	 * Generate the hamiltonian for the Heisenberg model.
 	 */
 	MPO Heisenberg(torch::Tensor J,size_t lenght);
-	bMPO Heisenberg(torch::Tensor J, size_t lenght,btensor local_shape);
+	bMPO Heisenberg(torch::Tensor J, size_t lenght,const btensor& local_shape);
 	namespace details
 	{
 		MPO Heisenberg_impl(torch::Tensor J,size_t lenght);
@@ -35,6 +35,7 @@ namespace quantt
 	 * Generate the Hamiltonian for the first neighbor 1D Hubbard model. The enrgy scale is defined by the first neighbor hopping t=1.
 	 */
 	MPO Hubbard(torch::Tensor U,torch::Tensor mu,size_t lenght); 
+	bMPO Hubbard(torch::Tensor U,torch::Tensor mu,size_t lenght,const btensor& local_shape); 
 
 
 qtt_TEST_CASE("Heisenberg")

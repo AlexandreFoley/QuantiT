@@ -225,6 +225,7 @@ class btensor
 	section_sizes_cqtts(size_t dim) const;
 
 	any_quantity_cref section_conserved_qtt(size_t dim, size_t section) const;
+	any_quantity_cref element_conserved_qtt(size_t dim, size_t element) const;
 	std::tuple<any_quantity_vector::const_iterator, any_quantity_vector::const_iterator> section_conserved_qtt_range(
 	    size_t index) const;
 	std::tuple<size_t, any_quantity_cref> section_size_cqtt(size_t dim, size_t section) const;
