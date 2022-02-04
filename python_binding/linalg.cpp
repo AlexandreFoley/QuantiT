@@ -8,7 +8,7 @@ namespace py = pybind11;
 #include "blockTensor/LinearAlgebra.h"
 #include "utilities.h"
 
-using namespace quantt;
+using namespace quantit;
 using namespace utils;
 void init_linalg_qtt(py::module &m)
 {

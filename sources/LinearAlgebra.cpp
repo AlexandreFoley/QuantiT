@@ -1,6 +1,6 @@
 /*
  * File: LinearAlgebra.cpp
- * Project: quantt
+ * Project: QuantiT
  * File Created: Wednesday, 5th August 2020 11:39:13 am
  * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)
  * -----
@@ -15,7 +15,7 @@
 #include <limits>
 #include "LinearAlgebra.h"
 #include "dimension_manip.h"
-namespace quantt
+namespace quantit
 {
 
 
@@ -128,7 +128,7 @@ std::tuple<torch::Tensor,torch::Tensor,torch::Tensor> svd(torch::Tensor A, size_
 
 std::tuple<torch::Tensor,torch::Tensor,torch::Tensor> svd(torch::Tensor A, size_t split,torch::Scalar tol,size_t min_size,size_t max_size, torch::Scalar pow)
 {
-	return truncate(quantt::svd(A,split), tol,min_size,max_size, pow);
+	return truncate(quantit::svd(A,split), tol,min_size,max_size, pow);
 }
 
 
@@ -156,7 +156,7 @@ std::tuple<torch::Tensor,torch::Tensor> eigh(torch::Tensor A, size_t split,torch
 
 std::tuple<torch::Tensor,torch::Tensor> eigh(torch::Tensor A, size_t split,torch::Scalar tol,size_t min_size,size_t max_size, torch::Scalar pow)
 {
-	return truncate(quantt::eigh(A,split),tol,min_size,max_size,pow);
+	return truncate(quantit::eigh(A,split),tol,min_size,max_size,pow);
 }
 
 std::tuple<torch::Tensor,torch::Tensor> eig(torch::Tensor A, size_t split)
@@ -172,7 +172,7 @@ std::tuple<torch::Tensor,torch::Tensor> eig(torch::Tensor A, size_t split,torch:
 
 std::tuple<torch::Tensor,torch::Tensor> eig(torch::Tensor A, size_t split,torch::Scalar tol,size_t min_size,size_t max_size, torch::Scalar pow)
 {
-	return truncate(quantt::eig(A,split),tol,min_size,max_size,pow);
+	return truncate(quantit::eig(A,split),tol,min_size,max_size,pow);
 }
 
-}//namespace quantt
+}//namespace quantit

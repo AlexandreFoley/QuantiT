@@ -1,6 +1,6 @@
 /*
  * File: btensor.h
- * Project: quantt
+ * Project: QuantiT
  * File Created: Thursday, 1st October 2020 10:54:53 am
  * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)
  * -----
@@ -34,7 +34,7 @@
 
 #include "doctest/doctest_proxy.h"
 
-namespace quantt
+namespace quantit
 {
 class block_qtt_view;
 enum class btensor_size
@@ -645,7 +645,7 @@ class btensor
 	 * constituant tensor depends storngly on the structure of the network and must be done on a case by case basis.
 	 *
 	 * grouping those two operation together is necessary to bring the textual difference in an implementation of an
-	 * algorithm for torch::Tensor and quantt::btensor
+	 * algorithm for torch::Tensor and quantit::btensor
 	 *
 	 * @return btensor
 	 */
@@ -838,7 +838,7 @@ class btensor
 	any_quantity_vector
 	    c_vals; // dmrjulia equiv: QnumSum in the QTensor class. This structure doesn't need the full list (QnumMat)
 	c10::TensorOptions _options;
-	friend struct fmt::formatter<quantt::btensor>;
+	friend struct fmt::formatter<quantit::btensor>;
 	friend class mul_helpers;
 
 	/**
@@ -1839,10 +1839,10 @@ qtt_TEST_CASE("btensor")
 	}
 }
 
-} // namespace quantt
+} // namespace quantit
 
 template <>
-struct fmt::formatter<quantt::btensor>
+struct fmt::formatter<quantit::btensor>
 {
 	constexpr auto parse(format_parse_context &ctx)
 	{
@@ -1850,7 +1850,7 @@ struct fmt::formatter<quantt::btensor>
 		if (it)
 		{
 			if (it != end and *it != '}')
-				throw format_error("invalid format, no formatting option for quantt::btensor");
+				throw format_error("invalid format, no formatting option for quantit::btensor");
 			if (*it != '}')
 				throw format_error("invalid format,closing brace missing");
 		}
@@ -1859,7 +1859,7 @@ struct fmt::formatter<quantt::btensor>
 	}
 
 	template <class FormatContext>
-	auto format(const quantt::btensor &t, FormatContext &ctx)
+	auto format(const quantit::btensor &t, FormatContext &ctx)
 	{
 		constexpr auto btensor_fmt_string = "btensor rank {}\n selection rule {}\n number of sections by dim {}\n "
 		                                    "sections sizes {}\n sections conserved quantity {}\n";

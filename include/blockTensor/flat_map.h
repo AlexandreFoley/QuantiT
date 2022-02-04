@@ -1,6 +1,6 @@
 /*
  * File: flat_map.h
- * Project: quantt
+ * Project: QuantiT
  * File Created: Thursday, 15th October 2020 1:03:53 pm
  * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)
  * -----
@@ -26,7 +26,7 @@
 #include <utility>
 #include <vector>
 
-namespace quantt
+namespace quantit
 {
 template <class Key, class Value, class Comp_less = std::less<Key>,
           class Allocator = std::allocator<std::pair<Key, Value>>, template <class...> class Array = std::vector>
@@ -918,5 +918,5 @@ qtt_TEST_CASE("accessors")
 	}
 }
 
-} // namespace quantt
+} // namespace quantit
 #endif /* D7E9786D_BD4E_41BF_A6C5_4E902E127A7D */

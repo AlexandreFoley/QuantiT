@@ -1,6 +1,6 @@
 /*
  * File: groups.cpp
- * Project: quantt
+ * Project: QuantiT
  * File Created: Tuesday, 15th September 2020 12:27:31 pm
  * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)
  * -----
@@ -13,7 +13,7 @@
 #include "Conserved/quantity.h"
 #include <fmt/core.h>
 #include <ostream>
-namespace quantt
+namespace quantit
 {
 namespace conserved
 {
@@ -26,4 +26,4 @@ std::ostream &operator<<(std::ostream &out, const Z &c)
 
 
 } // namespace groups
-} // namespace quantt
+} // namespace quantit

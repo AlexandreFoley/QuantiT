@@ -1,6 +1,6 @@
 /*
  * File: catch_test.cpp
- * Project: QuanTT
+ * Project: QuantiT
  * File Created: Friday, 31st July 2020 11:04:58 am
  * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)
  * -----

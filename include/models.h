@@ -1,6 +1,6 @@
 /*
  * File: models.h
- * Project: quantt
+ * Project: QuantiT
  * File Created: Monday, 17th August 2020 10:31:00 am
  * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)
  * -----
@@ -19,7 +19,7 @@
 
 #include "doctest/doctest_proxy.h"
 
-namespace quantt
+namespace quantit
 {
 	/**
 	 * Generate the hamiltonian for the Heisenberg model.
@@ -71,7 +71,7 @@ qtt_TEST_CASE("Heisenberg")
 }
 
 
-}//quantt
+}//QuantiT
 
 
 #endif /* FC769B14_0341_4EB5_9CD2_E7CA2865AD73 */

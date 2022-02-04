@@ -1,6 +1,6 @@
 /*
  * File: dmrg_options.h
- * Project: quantt
+ * Project: QuantiT
  * File Created: Friday, 29th October 2021 4:17:42 pm
  * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)
  * Copyright (c) 2021 Alexandre Foley
@@ -9,7 +9,7 @@
 
 #ifndef INCLUDE_DMRG_OPTIONS_H
 #define INCLUDE_DMRG_OPTIONS_H
-namespace quantt
+namespace quantit
 {
 
 struct dmrg_options

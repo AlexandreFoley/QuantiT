@@ -10,7 +10,6 @@ J = torch.full((),-1)
 mu = torch.full((),2)
 Hu = qtt.operators.Hubbard(U,mu,10)
 He = qtt.operators.Heisenberg(J,10)
-
 dmrg_opt = qtt.algorithms.dmrg_options()
 # The dmrg_options structure bundle together all the adjustement knobs of DMRG
 # The most important one are certainly the cutoff for the singular values and the convergence criterion for the energy
@@ -58,4 +57,6 @@ state_V = qtt.networks.random_MPS(        4      ,      [FermionShape,HardCoreBo
 #                                  bond dimension, Length & physical dimensions              , constraint
 state_MPO = qtt.networks.random_MPS(     4        ,         Hu                            , cval(10,0))
 #                                  bond dimension, MPO for length and physical dimensions, constraint
+# %%
+#sladarabgads
 # %%

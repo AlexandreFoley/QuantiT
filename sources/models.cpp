@@ -1,6 +1,6 @@
 /*
  * File: models.cpp
- * Project: quantt
+ * Project: QuantiT
  * File Created: Monday, 17th August 2020 10:31:08 am
  * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)
  * -----
@@ -18,7 +18,7 @@
 #include <exception>
 #include <fmt/core.h>
 #include <torch/torch.h>
-namespace quantt
+namespace quantit
 {
 
 /**
@@ -171,4 +171,4 @@ bMPO Hubbard(torch::Tensor U, torch::Tensor mu, size_t lenght,const btensor& Phy
 	return to_bMPO(std::move(tmp_hamil),std::move(local_shape)).coalesce();
 }
 
-} // namespace quantt
+} // namespace quantit

@@ -1,6 +1,6 @@
 /*
  * File: dmrg.cpp
- * Project: quantt
+ * Project: QuantiT
  * File Created: Tuesday, 11th August 2020 9:48:36 am
  * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)
  * -----
@@ -19,7 +19,7 @@
 #include "torch_formatter.h"
 #include <fmt/core.h>
 #include <random>
-namespace quantt
+namespace quantit
 {
 
 using namespace details;
@@ -183,7 +183,7 @@ struct dmrg_2sites_update
 		// MPS_t tmpstate(state.begin() + oc, state.begin() + oc + 2);
 		auto local_state = tensordot(state[oc], state[oc + 1], {2}, {0});
 		std::tie(E0, local_state) = two_sites_update(local_state, twosite_hamil[oc], Env[oc - 1], Env[oc + 2]);
-		auto [u, d, v] = quantt::svd(local_state, 2, options.cutoff, options.minimum_bond, options.maximum_bond);
+		auto [u, d, v] = quantit::svd(local_state, 2, options.cutoff, options.minimum_bond, options.maximum_bond);
 		d /= sqrt(sum(d.pow(2)));
 		if (forward)
 		{
@@ -218,7 +218,7 @@ struct dmrg_2sites_update
 btensor details::dmrg_impl(const bMPO &hamiltonian, const bMPT &two_sites_hamil, bMPS &in_out_state,
                            const dmrg_options &options, benv_holder &Env, dmrg_logger &logger)
 {
-	btensor E0 = quantt::full({}, hamiltonian[0].selection_rule->neutral(), 100000.0,
+	btensor E0 = quantit::full({}, hamiltonian[0].selection_rule->neutral(), 100000.0,
 	                          hamiltonian[0].options().merge_in(torch::kDouble));
 	auto sweep_dir = 1;
 	size_t init_pos = in_out_state.orthogonality_center;
@@ -590,7 +590,7 @@ std::tuple<Tensor, Tensor, Tensor, Tensor> one_step_lanczos_impl(const Tensor &s
 	if (non_singular)
 		psi_ip /= b;
 	// fmt::print("\t\tnon singular {}\n",non_singular);
-	auto a1 = (tensordot(psi_ip.conj(), quantt::details::hamil2site_times_state(psi_ip, hamil, Lenv, Renv),
+	auto a1 = (tensordot(psi_ip.conj(), quantit::details::hamil2site_times_state(psi_ip, hamil, Lenv, Renv),
 	                     {0, 1, 2, 3}, {0, 1, 2, 3}));
 	return std::make_tuple(psi_ip, a0, a1, b);
 }
@@ -638,4 +638,4 @@ std::tuple<btensor, btensor> two_sites_update(const btensor &state, const btenso
 	return two_sites_update_impl(state, hamil, Lenv, Renv);
 }
 
-} // namespace quantt
+} // namespace quantit

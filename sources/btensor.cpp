@@ -1,6 +1,6 @@
 /*
  * File: btensor.cpp
- * Project: quantt
+ * Project: QuantiT
  * File Created: Monday, 12th October 2020 12:20:33 pm
  * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)
  *
@@ -29,7 +29,7 @@
 #include <iostream>
 #endif
 
-namespace quantt
+namespace quantit
 {
 
 auto promote_types(c10::ScalarType a, c10::ScalarType b) { return at::promote_types(a, b); }
@@ -80,6 +80,7 @@ any_quantity_cref btensor::element_conserved_qtt(size_t dim, size_t element) con
 		++it_qt;
 		++it_size;
 	}
+	throw std::runtime_error("Element not found, this should have happened and is a bug..");
 }
 std::tuple<any_quantity_vector::const_iterator, any_quantity_vector::const_iterator> btensor::
     section_conserved_qtt_range(size_t index) const
@@ -555,12 +556,12 @@ btensor rank_preserving_shape(const std::vector<int64_t> block_indices, const bt
 		if (*b_it == -1) // slice case
 		{
 			shape_spec[r] = -1;
-			out = quantt::shape_from(out, was_this.shape_from(shape_spec));
+			out = quantit::shape_from(out, was_this.shape_from(shape_spec));
 			shape_spec[r] = 0;
 		}
 		else // single element
 		{
-			out = quantt::shape_from(
+			out = quantit::shape_from(
 			    out, btensor({{{1, was_this.section_conserved_qtt(r, *b_it)}}}, was_this.selection_rule->neutral()));
 		}
 	}
@@ -1246,9 +1247,15 @@ btensor &btensor::div_(const btensor &other)
 }
 btensor btensor::bmm(const btensor &mat) const
 {
-	// The loop is not proper for parallisation preallocation of output container necessary.
-	// The need for syncronisation can be eliminated by reordering the block of mat such that all the output that have
-	// the same index are done in loop order.
+	//TODO: find out why it fails with a segfault on rank2 tensors.
+	//A cheap workaround is to increase the rank by one with a trivial dimension
+	if (this->rank == 2 and mat.rank==2)
+	{
+		auto triv_shape = btensor({{{1,selection_rule->neutral()}}},selection_rule->neutral());
+		auto new_this = this->reshape_as(disambiguated_shape_from({triv_shape,*this}));
+		auto new_mat = mat.reshape_as(disambiguated_shape_from({triv_shape,mat}));
+		return new_this.bmm(new_mat).squeeze_(0);
+	}
 	mul_helpers::check_bmm_compatibility(*this, mat);
 	auto batch_shape_inds = std::vector<int64_t>(dim(), -1);
 	batch_shape_inds.back() = 0;
@@ -1260,9 +1267,9 @@ btensor btensor::bmm(const btensor &mat) const
 	auto [comp_mask, new_sections_by_dim, new_sections_sizes, new_cvals, out_selr] = mul_helpers::shape_compute(
 	    false, rank - 2, rank - 2, this->shape_from(batch_shape_inds), mat.shape_from(batch_shape_inds));
 	btensor batch_shape(new_sections_by_dim, new_cvals, new_sections_sizes, selection_rule->neutral());
-	auto out = quantt::shape_from(
+	auto out = quantit::shape_from(
 	    batch_shape, this->shape_from(this_inds),
-	    mat.shape_from(mat_inds)); // ambiguity because of the in-class context lifted by the quantt namespace;
+	    mat.shape_from(mat_inds)); // ambiguity because of the in-class context lifted by the QuantiT namespace;
 
 	block_list_t::content_t mat_blocks(mat.blocks_list.begin(), mat.blocks_list.end());
 	// sort mat in an order ideal for parallelism.
@@ -1435,7 +1442,7 @@ btensor btensor::bmm(const btensor &mat) const
 
 btensor btensor::sum() const
 {
-	auto out = btensor({}, selection_rule.value);
+	auto out = btensor({}, selection_rule.value,this->options());
 	auto list = new_block_list_apply_to_all_blocks([](const torch::Tensor &t) { return t.sum(); });
 	torch::Tensor out_val = torch::zeros({}, options());
 	for (auto &a : list)
@@ -2292,64 +2299,64 @@ void factory_wrap(btensor &out, Factory &&factory)
 
 btensor zeros(const btensor::vec_list_t &shape_spec, any_quantity selection_rule, c10::TensorOptions opt)
 {
-	auto out = quantt::sparse_zeros(shape_spec, std::move(selection_rule), opt);
+	auto out = quantit::sparse_zeros(shape_spec, std::move(selection_rule), opt);
 	factory_wrap(out, [](torch::IntArrayRef size, c10::TensorOptions options) { return torch::zeros(size, options); });
 	return out;
 }
 btensor zeros_like(const btensor &tens, c10::TensorOptions opt)
 {
-	auto out = quantt::sparse_zeros_like(tens, opt);
+	auto out = quantit::sparse_zeros_like(tens, opt);
 	factory_wrap(out, [](torch::IntArrayRef size, c10::TensorOptions options) { return torch::zeros(size, options); });
 	return out;
 }
 
 btensor ones(const btensor::vec_list_t &shape_spec, any_quantity selection_rule, c10::TensorOptions opt)
 {
-	auto out = quantt::sparse_zeros(shape_spec, std::move(selection_rule), opt);
+	auto out = quantit::sparse_zeros(shape_spec, std::move(selection_rule), opt);
 	factory_wrap(out, [](torch::IntArrayRef size, c10::TensorOptions options) { return torch::ones(size, options); });
 	return out;
 }
 btensor ones_like(const btensor &tens, c10::TensorOptions opt)
 {
-	auto out = quantt::sparse_zeros_like(tens, opt);
+	auto out = quantit::sparse_zeros_like(tens, opt);
 	factory_wrap(out, [](torch::IntArrayRef size, c10::TensorOptions options) { return torch::ones(size, options); });
 	return out;
 }
 btensor empty(const btensor::vec_list_t &shape_spec, any_quantity selection_rule, c10::TensorOptions opt)
 {
-	auto out = quantt::sparse_zeros(shape_spec, selection_rule, opt);
+	auto out = quantit::sparse_zeros(shape_spec, selection_rule, opt);
 	factory_wrap(out, [](torch::IntArrayRef size, c10::TensorOptions options) { return torch::empty(size, options); });
 	return out;
 }
 btensor empty_like(const btensor &tens, c10::TensorOptions opt)
 {
-	auto out = quantt::sparse_zeros_like(tens, opt);
+	auto out = quantit::sparse_zeros_like(tens, opt);
 	factory_wrap(out, [](torch::IntArrayRef size, c10::TensorOptions options) { return torch::empty(size, options); });
 	return out;
 }
 btensor rand(const btensor::vec_list_t &shape_spec, any_quantity selection_rule, c10::TensorOptions opt)
 {
-	auto out = quantt::sparse_zeros(shape_spec, selection_rule, opt);
+	auto out = quantit::sparse_zeros(shape_spec, selection_rule, opt);
 	factory_wrap(out, [](torch::IntArrayRef size, c10::TensorOptions options) { return torch::rand(size, options); });
 	return out;
 }
 btensor rand_like(const btensor &tens, c10::TensorOptions opt)
 {
-	auto out = quantt::sparse_zeros_like(tens, opt);
+	auto out = quantit::sparse_zeros_like(tens, opt);
 	factory_wrap(out, [](torch::IntArrayRef size, c10::TensorOptions options) { return torch::rand(size, options); });
 	return out;
 }
 btensor full(const btensor::vec_list_t &shape_spec, any_quantity selection_rule, btensor::Scalar fill_value,
              c10::TensorOptions opt)
 {
-	auto out = quantt::sparse_zeros(shape_spec, selection_rule, opt);
+	auto out = quantit::sparse_zeros(shape_spec, selection_rule, opt);
 	factory_wrap(out, [fill_value](torch::IntArrayRef size, c10::TensorOptions options)
 	             { return torch::full(size, fill_value, options); });
 	return out;
 }
 btensor full_like(const btensor &tens, btensor::Scalar fill_value, c10::TensorOptions opt)
 {
-	auto out = quantt::sparse_zeros_like(tens, opt);
+	auto out = quantit::sparse_zeros_like(tens, opt);
 	factory_wrap(out, [fill_value](torch::IntArrayRef size, c10::TensorOptions options)
 	             { return torch::full(size, fill_value, options); });
 	return out;
@@ -2357,27 +2364,27 @@ btensor full_like(const btensor &tens, btensor::Scalar fill_value, c10::TensorOp
 btensor randint(int64_t low, int64_t high, const btensor::vec_list_t &shape_spec, any_quantity selection_rule,
                 c10::TensorOptions opt)
 {
-	auto out = quantt::sparse_zeros(shape_spec, selection_rule, opt);
+	auto out = quantit::sparse_zeros(shape_spec, selection_rule, opt);
 	factory_wrap(out, [high, low](torch::IntArrayRef size, c10::TensorOptions options)
 	             { return torch::randint(low, high, size, options); });
 	return out;
 }
 btensor randint_like(int64_t low, int64_t high, const btensor &tens, c10::TensorOptions opt)
 {
-	auto out = quantt::sparse_zeros_like(tens, opt);
+	auto out = quantit::sparse_zeros_like(tens, opt);
 	factory_wrap(out, [high, low](torch::IntArrayRef size, c10::TensorOptions options)
 	             { return torch::randint(low, high, size, options); });
 	return out;
 }
 btensor randn(const btensor::vec_list_t &shape_spec, any_quantity selection_rule, c10::TensorOptions opt)
 {
-	auto out = quantt::sparse_zeros(shape_spec, selection_rule, opt);
+	auto out = quantit::sparse_zeros(shape_spec, selection_rule, opt);
 	factory_wrap(out, [](torch::IntArrayRef size, c10::TensorOptions options) { return torch::randn(size, options); });
 	return out;
 }
 btensor randn_like(const btensor &tens, c10::TensorOptions opt)
 {
-	auto out = quantt::sparse_zeros_like(tens, opt);
+	auto out = quantit::sparse_zeros_like(tens, opt);
 	factory_wrap(out, [](torch::IntArrayRef size, c10::TensorOptions options) { return torch::randn(size, options); });
 	return out;
 }
@@ -2441,14 +2448,14 @@ void from_basic_impl(btensor &out, const torch::Tensor &values, const torch::Sca
 btensor from_basic_tensor(const btensor::vec_list_t &shape_spec, any_quantity selection_rul,
                           const torch::Tensor &values, const torch::Scalar cutoff, c10::TensorOptions opt)
 {
-	auto shape = quantt::sparse_zeros(shape_spec, selection_rul, opt);
+	auto shape = quantit::sparse_zeros(shape_spec, selection_rul, opt);
 	from_basic_impl(shape, values, cutoff);
 	return shape;
 }
 btensor from_basic_tensor_like(const btensor &shape, const torch::Tensor &values, const torch::Scalar cutoff,
                                c10::TensorOptions opt)
 {
-	auto out = quantt::sparse_zeros_like(shape, opt);
+	auto out = quantit::sparse_zeros_like(shape, opt);
 	from_basic_impl(out, values, cutoff);
 	return out;
 }
@@ -3066,7 +3073,7 @@ std::tuple<btensor::index_list, btensor::index_list> btensor::element_index_deco
 }
 btensor operator/(const btensor::Scalar &A, const btensor &B)
 {
-	auto out = quantt::sparse_zeros_like(B);
+	auto out = quantit::sparse_zeros_like(B);
 	out.reserve_space_(std::distance(B.begin(), B.end()));
 	std::transform(B.begin(), B.end(), out.begin(),
 	               [&A](const auto &in) { return std::make_pair(in.first, A / in.second); });
@@ -3185,4 +3192,4 @@ btensor operator/(const btensor::Scalar &A, const btensor &B)
 // 	return *this;
 // }
 
-} // namespace quantt
+} // namespace quantit

@@ -9,7 +9,7 @@
 #include "dmrg_options.h"
 #include <dmrg.h>
 
-using namespace quantt;
+using namespace quantit;
 namespace py = pybind11;
 
 void register_loggers(py::module_ &alg);
@@ -127,7 +127,7 @@ void register_loggers(py::module_ &alg)
 	using ddlogger = dmrg_default_logger;
 	py::class_<ddlogger, py_default_logger<>>(
 	    alg, "dmrg_logger",
-	    "base logger for quantt.algorithm.dmrg. Does nothing. Derive a class from this if you need specfic behavior "
+	    "base logger for quantit.algorithm.dmrg. Does nothing. Derive a class from this if you need specfic behavior "
 	    "that differ from either dmrg_simple_logger or dmrg_sweeptime_logger.")
 	    .def(py::init<>())
 	    // 	void log_step(size_t) override {}

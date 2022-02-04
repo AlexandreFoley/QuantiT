@@ -1,6 +1,6 @@
 /*
  * File: property.h
- * Project: QuanTT
+ * Project: QuantiT
  * File Created: Thursday, 23rd July 2020 11:30:55 am
  * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)
  * -----

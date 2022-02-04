@@ -1,6 +1,6 @@
 /*
  * File: doctest_proxy.h
- * Project: quantt
+ * Project: QuantiT
  * File Created: Wednesday, 21st October 2020 9:25:55 am
  * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)
  * -----

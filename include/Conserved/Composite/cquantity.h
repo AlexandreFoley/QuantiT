@@ -1,6 +1,6 @@
 /*
  * File: TensorGroup.h
- * Project: quantt
+ * Project: QuantiT
  * File Created: Tuesday, 1st September 2020 1:39:16 pm
  * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)
  * -----
@@ -27,7 +27,7 @@
 #include <type_traits>
 #include <utility>
 
-namespace quantt
+namespace quantit
 {
 // doing away with those reference like class won't be easy. First attempt was a failure.
 // TODO: Do away with those reference class. They proving ever more troublesome.
@@ -318,7 +318,7 @@ inline any_quantity operator+(any_quantity &&lhs, any_quantity &&rhs) { return s
 
 qtt_TEST_CASE("composite conserved")
 {
-	using namespace quantt;
+	using namespace quantit;
 	using namespace conserved;
 	any_quantity A(C<2>(0), Z(3)); // order matters.
 	any_quantity B(C<2>(1), Z(-1));
@@ -426,29 +426,29 @@ qtt_TEST_CASE("composite conserved")
 	                                     // of the formula on the right.
 }
 
-} // namespace quantt
+} // namespace quantit
 
 template <>
-struct fmt::formatter<quantt::any_quantity_cref> : fmt::formatter<quantt::vquantity>
+struct fmt::formatter<quantit::any_quantity_cref> : fmt::formatter<quantit::vquantity>
 {
 	template <class FormatContext>
-	auto format(quantt::any_quantity_cref &qt, FormatContext &ctx)
+	auto format(quantit::any_quantity_cref &qt, FormatContext &ctx)
 	{
-		return fmt::formatter<quantt::vquantity>::format(
+		return fmt::formatter<quantit::vquantity>::format(
 		    qt,
 		    ctx); // right now qt.format_to is only define for fmt::format_context. Should work for any output stream.
 	}
 };
 template <>
-struct fmt::formatter<quantt::any_quantity_ref> : public fmt::formatter<quantt::any_quantity_cref>
+struct fmt::formatter<quantit::any_quantity_ref> : public fmt::formatter<quantit::any_quantity_cref>
 {
 };
 template <>
-struct fmt::formatter<quantt::any_quantity> : public fmt::formatter<quantt::any_quantity_cref>
+struct fmt::formatter<quantit::any_quantity> : public fmt::formatter<quantit::any_quantity_cref>
 {
 	// exploits implicit conversion to get the job done.
 };
 
-std::string to_string(quantt::any_quantity_cref cqtt);
+std::string to_string(quantit::any_quantity_cref cqtt);
 
 #endif /* D56E4C12_98E1_4C9E_B0C4_5B35A5A3CD17 */

@@ -1,4 +1,4 @@
-# QuanTT
+# QuantiT
 
 ## Installation on a Compute Canada Supercomputer
 
@@ -13,7 +13,7 @@
 Note: if you use vscode to connect to the supercomputer, you might have to erase your vscode setting (~/.vscode-server) anytime you change your default module list in order for it to be loaded when you connect through vscode. VScode seem to reload whatever the default module list was at the first connetion.
 ## Installation
 
-QuanTT builds on pytorch's tensors, so we must install pytorch first.
+QuantiT builds on pytorch's tensors, so we must install pytorch first.
 To garantee correct compilation in debug mode, we must compile pytorch ourselves. This can take a significant amount of time.
 If compiling in release mode, we could make use of precompiled pytorch for our platform. The project isn't set up for that, you're on your own if you want to do that.
 
@@ -26,7 +26,7 @@ Cuda is an optionnal dependency of PyTorch.
 For python, I suggest using anaconda or miniconda, because this make installing some of the additionnal (and optionnal) cuda libraries significantly easier
 If you want cuda, install cuda10.2, the latest supported version.
 
-Pytorch can make use of a BLAS and of LAPACK, and require CMake to build (as does QuanTT).
+Pytorch can make use of a BLAS and of LAPACK, and require CMake to build (as does QuantiT).
 With conda, you can install all the necessary components with the following commands:
 	
 	# install MKL (intel's blas and lapack implementation) and other things.
@@ -44,18 +44,18 @@ if you do not wish to (or can't) use conda, you can install the python packages 
 
 ### build PyTorch
 Pytorch is a rather large project, and as such can take a long time to build.
-if you do not need the debug symbols, you can [download](https://pytorch.org/get-started/locally/) libtorch in release mode and drop it in \<path to QuanTT\>/extern/pytorch/torch.
-If you do so, you must make sure QuanTT is configure accordingly to pytorch (only release currently avaible for most platform). 
+if you do not need the debug symbols, you can [download](https://pytorch.org/get-started/locally/) libtorch in release mode and drop it in \<path to QuantiT\>/extern/pytorch/torch.
+If you do so, you must make sure QuantiT is configure accordingly to pytorch (only release currently avaible for most platform). 
 Note that pytorch precompiled in debug mode is also available for windows.
 
 Otherwise follow the instruction below.
 
 on the command line, begin with the following:
 
-	cd <path to QuanTT>
+	cd <path to QuantiT>
 	git submodule update --init --recursive
 
-This will download the submodules necessary for QuanTT to compile and work: pytorch and all its' dependencies
+This will download the submodules necessary for QuantiT to compile and work: pytorch and all its' dependencies
 We must then compile pytorch.
 
 	cd extern/pytorch
@@ -71,7 +71,7 @@ Otherwise, pytorch will build for a large array of different architecture, this 
 
 The 20XX RTX cards have the "7.5" Turing architecture. Consult [this table](https://en.wikipedia.org/wiki/CUDA#GPUs_supported) to determine the architecture of your GPU.
 
-It can be necessarry to compile Torch in debug in order to debug QuanTT, libtorch tend to be binary incompatible with programs compiled differently.
+It can be necessarry to compile Torch in debug in order to debug QuantiT, libtorch tend to be binary incompatible with programs compiled differently.
 This may vary by compiler.
 
 if you want only libtorch (torch's python binding will be missing with this):
@@ -88,11 +88,11 @@ Now we can build libtorch.
 
 	python3 setup.py build 
 
-### Build QuanTT
+### Build QuantiT
 
-Go to QuanTT home directory
+Go to QuantiT home directory
 
-	cd <path to QuanTT>
+	cd <path to QuantiT>
 
 Create a build folder and go into it.
 
@@ -109,7 +109,7 @@ You're done.
 ## Project organization
 The project has the following file structure on the top level:
 
-	QuanTT
+	QuantiT
 	├── extern/
 	├── include/
 	├── Notes/

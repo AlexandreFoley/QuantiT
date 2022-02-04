@@ -1,6 +1,6 @@
 /*
  * File: tensorgdot.h
- * Project: quantt
+ * Project: QuantiT
  * File Created: Tuesday, 10th November 2020 10:58:58 am
  * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)
  * -----
@@ -16,7 +16,7 @@
 
 #include "doctest/doctest_proxy.h"
 #include <torch/torch.h>
-namespace quantt
+namespace quantit
 {
 /**
  * @brief generalized tensordot, performs \f$ D_{ij...klm} = alpha*C_{ij...klm} + beta*\Sum_{...klm} A_{ij...klm}*B_{ij...klm} \f$
@@ -125,6 +125,6 @@ qtt_TEST_CASE("generalized tensor dot product")
 	}
 }
 
-} // namespace quantt
+} // namespace quantit
 
 #endif /* BD5A9C21_B42C_4168_AD9F_A788AD4621C8 */

@@ -1,6 +1,6 @@
 /*
  * File: 2Dheisenberg.cpp
- * Project: quantt
+ * Project: QuantiT
  * File Created: Thursday, 14th October 2021 11:27:07 am
  * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)
  * Copyright (c) 2021 Alexandre Foley
@@ -171,7 +171,7 @@ torch::Tensor make_tensor(std::tuple<int, int, std::vector<std::pair<std::array<
 	return out;
 }
 
-std::vector<torch::indexing::TensorIndex> Tindexing(const quantt::btensor::index_list &in)
+std::vector<torch::indexing::TensorIndex> Tindexing(const quantit::btensor::index_list &in)
 {
 	std::vector<torch::indexing::TensorIndex> out(in.size(), 0);
 	for (size_t i = 0; i < in.size(); ++i)
@@ -189,21 +189,21 @@ std::vector<torch::indexing::TensorIndex> Tindexing(const quantt::btensor::index
  * @param before_missing
  * @param after_missing
  * @param descriptor
- * @return quantt::btensor
+ * @return quantit::btensor
  */
-quantt::btensor guess_btensor(const torch::Tensor &tens, const quantt::btensor &before_missing,
-                              const quantt::btensor &after_missing, torch::Scalar cutoff = 1e-16)
+quantit::btensor guess_btensor(const torch::Tensor &tens, const quantit::btensor &before_missing,
+                              const quantit::btensor &after_missing, torch::Scalar cutoff = 1e-16)
 {
-	using namespace quantt;
+	using namespace quantit;
 	auto mask = tens.abs() > cutoff;
 	assert(before_missing.selection_rule->get().same_type(after_missing.selection_rule->get()));
-	quantt::any_quantity neutral = before_missing.selection_rule->neutral();
-	quantt::any_quantity out_sel_rule = before_missing.selection_rule->get() * after_missing.selection_rule;
-	quantt::btensor::index_list index(tens.dim(), 0);
+	quantit::any_quantity neutral = before_missing.selection_rule->neutral();
+	quantit::any_quantity out_sel_rule = before_missing.selection_rule->get() * after_missing.selection_rule;
+	quantit::btensor::index_list index(tens.dim(), 0);
 	auto sizes = tens.sizes();
 	auto rank = tens.dim();
 	int64_t missing_dim = tens.dim() - after_missing.dim() - 1;
-	std::map<std::tuple<int64_t, quantt::any_quantity>, int64_t>
+	std::map<std::tuple<int64_t, quantit::any_quantity>, int64_t>
 	    missing_section_sizes; // any repeat of the int in the tuple key means we've got a non-conserving tensor on our
 	                           // hands
 	// fmt::print("{}\n\n", mask);
@@ -232,10 +232,10 @@ quantt::btensor guess_btensor(const torch::Tensor &tens, const quantt::btensor &
 		// else
 		// 	fmt::print("\n");
 		increment_index_right(index, sizes, rank);
-	} while (quantt::any_truth(index));
+	} while (quantit::any_truth(index));
 	// build the description of the missing dimension. also check for non-conservation
-	quantt::btensor::index_list out_section_sizes;
-	quantt::any_quantity_vector out_cvals(0, neutral);
+	quantit::btensor::index_list out_section_sizes;
+	quantit::any_quantity_vector out_cvals(0, neutral);
 	auto max_sect_size = tens.size(missing_dim);
 	out_section_sizes.reserve(max_sect_size);
 	out_cvals.reserve(max_sect_size);
@@ -273,7 +273,7 @@ quantt::btensor guess_btensor(const torch::Tensor &tens, const quantt::btensor &
 			}
 		}
 	}
-	auto missing_side = quantt::btensor({static_cast<int64_t>(out_section_sizes.size())}, out_cvals, out_section_sizes,
+	auto missing_side = quantit::btensor({static_cast<int64_t>(out_section_sizes.size())}, out_cvals, out_section_sizes,
 	                                    neutral, before_missing.options());
 	return from_basic_tensor_like(shape_from(before_missing, missing_side, after_missing), tens, cutoff,
 	                              before_missing.options());
@@ -289,20 +289,20 @@ int main()
 	doctest_context.addFilter("test-case-exclude",
 	                          "**"); // don't run the tests. with this qtt_CHECKS, qtt_REQUIRES, etc. should work
 	                                 // outside test context. not that i want to do that.
-	using namespace quantt;
-	quantt::MPO heis(32);
+	using namespace quantit;
+	quantit::MPO heis(32);
 	int i = 0;
 	for (auto &tens : heis)
 	{
 		tens = make_tensor(string2structure(mpo_strings[i]));
 		++i;
 	}
-	quantt::bMPO bheis(32);
-	using cval = quantt::conserved::Z;
+	quantit::bMPO bheis(32);
+	using cval = quantit::conserved::Z;
 	i = 0;
-	auto phys = quantt::btensor({{{1, cval(-1)}, {1, cval(1)}}}, any_quantity(cval(0)));
+	auto phys = quantit::btensor({{{1, cval(-1)}, {1, cval(1)}}}, any_quantity(cval(0)));
 	auto physdag = phys.conj();
-	auto leftbond = quantt::btensor({{{1, cval(0)}}}, any_quantity(cval(0)));
+	auto leftbond = quantit::btensor({{{1, cval(0)}}}, any_quantity(cval(0)));
 	for (auto &tens : bheis)
 	{
 		// fmt::print("site {}\n\tleft bond {}\n\n",i, leftbond);
@@ -314,14 +314,14 @@ int main()
 		++i;
 	}
 	bheis.coalesce();
-	quantt::dmrg_options dmrg_opt;
+	quantit::dmrg_options dmrg_opt;
 	dmrg_opt.maximum_bond = 1000;
 	dmrg_opt.maximum_iterations = 50;
 	{
-		quantt::dmrg_log_simple logger;
-		quantt::bMPS state = quantt::random_bMPS(4, bheis, any_quantity(cval(0)), 0);
+		quantit::dmrg_log_simple logger;
+		quantit::bMPS state = quantit::random_bMPS(4, bheis, any_quantity(cval(0)), 0);
 		auto start = std::chrono::steady_clock::now();
-		auto E0 = quantt::dmrg(bheis, state, dmrg_opt,logger);
+		auto E0 = quantit::dmrg(bheis, state, dmrg_opt,logger);
 		auto end = std::chrono::steady_clock::now();
 		std::chrono::duration<double> elapsed_seconds = end - start;
 		fmt::print("btensor 4x8 heisenberg cylinder E0 {}, time {}\n", E0.item().toDouble(), elapsed_seconds.count());
@@ -332,8 +332,8 @@ int main()
 		auto size = 32;
 		auto local_tens = torch::rand({4, 2, 4});
 		std::string print_string = "{} sites AFM heisenberg Energy per sites {:.15}. obtained in {} seconds\n";
-		quantt::dmrg_log_simple logger;
-		quantt::MPS state(size, local_tens);
+		quantit::dmrg_log_simple logger;
+		quantit::MPS state(size, local_tens);
 		{
 			using namespace torch::indexing;
 			state[0] = state[0].index({Slice(0, 1), Ellipsis});
@@ -345,7 +345,7 @@ int main()
 		state.move_oc(0);
 		state[0] /= sqrt(tensordot(state[0], state[0].conj(), {0, 1, 2}, {0, 1, 2}));
 		auto start = std::chrono::steady_clock::now();
-		auto E0 = quantt::dmrg(heis, state, dmrg_opt,logger);
+		auto E0 = quantit::dmrg(heis, state, dmrg_opt,logger);
 		auto end = std::chrono::steady_clock::now();
 		std::chrono::duration<double> elapsed_seconds = end - start;
 		fmt::print("torch tensor 4x8 heisenberg cylinder E0 {}, time {}\n", E0.item().toDouble(),

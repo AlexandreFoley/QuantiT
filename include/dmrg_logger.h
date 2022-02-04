@@ -1,6 +1,6 @@
 /*
  * File: dmrg_logger.h
- * Project: quantt
+ * Project: QuantiT
  * File Created: Friday, 29th October 2021 4:10:27 pm
  * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)
  * Copyright (c) 2021 Alexandre Foley
@@ -15,7 +15,7 @@
 #include "dmrg_options.h"
 #include <torch/torch.h>
 
-namespace quantt
+namespace quantit
 {
 /**
  * Pure virtual base class for logging the state of dmrg.
@@ -68,16 +68,16 @@ class dmrg_default_logger : public dmrg_logger
 	void log_bond_dims(const bMPS &) override {}
 };
 
-class dmrg_log_simple final : public quantt::dmrg_default_logger
+class dmrg_log_simple final : public quantit::dmrg_default_logger
 {
   public:
 	size_t it_num;
 	size_t middle_bond_dim;
 
 	void log_step(size_t it) override { it_num = it; }
-	void log_bond_dims(const quantt::bMPS &mps) override { log_bond_impl(mps); }
-	void log_bond_dims(const quantt::MPS &mps) override { log_bond_impl(mps); }
-	void it_log_all(size_t, const torch::Tensor &, const quantt::MPS &) override {}
+	void log_bond_dims(const quantit::bMPS &mps) override { log_bond_impl(mps); }
+	void log_bond_dims(const quantit::MPS &mps) override { log_bond_impl(mps); }
+	void it_log_all(size_t, const torch::Tensor &, const quantit::MPS &) override {}
 	void it_log_all(size_t, const btensor &, const bMPS &) override {}
 
   private:
@@ -88,7 +88,7 @@ class dmrg_log_simple final : public quantt::dmrg_default_logger
 		middle_bond_dim = std::max(mps[pos].sizes()[0], mps[pos].sizes()[2]);
 	}
 };
-class dmrg_log_sweeptime final : public quantt::dmrg_default_logger
+class dmrg_log_sweeptime final : public quantit::dmrg_default_logger
 {
   public:
 	size_t it_num;
@@ -99,26 +99,26 @@ class dmrg_log_sweeptime final : public quantt::dmrg_default_logger
 
 	void log_step(size_t it) override { it_num = it; }
 	void log_energy(const torch::Tensor &) override {}
-	void log_energy(const quantt::btensor &) override {}
+	void log_energy(const quantit::btensor &) override {}
 
-	void init(const quantt::dmrg_options &opt) override
+	void init(const quantit::dmrg_options &opt) override
 	{
 		then = std::chrono::steady_clock::now();
 		time_list = std::vector<double>(opt.maximum_iterations);
 		bond_list = std::vector<size_t>(opt.maximum_iterations);
 	}
 
-	void log_bond_dims(const quantt::MPS &mps) override
+	void log_bond_dims(const quantit::MPS &mps) override
 	{
 		auto pos = mps.size() / 2;
 		middle_bond_dim = std::max(mps[pos].sizes()[0], mps[pos].sizes()[2]);
 	}
-	void log_bond_dims(const quantt::bMPS &mps) override
+	void log_bond_dims(const quantit::bMPS &mps) override
 	{
 		auto pos = mps.size() / 2;
 		middle_bond_dim = std::max(mps[pos].sizes()[0], mps[pos].sizes()[2]);
 	}
-	void it_log_all(size_t it, const quantt::btensor &E0, const quantt::bMPS &mps) override
+	void it_log_all(size_t it, const quantit::btensor &E0, const quantit::bMPS &mps) override
 	{
 		auto now = std::chrono::steady_clock::now();
 		std::chrono::duration<double> elapsed_seconds = now - then;
@@ -129,7 +129,7 @@ class dmrg_log_sweeptime final : public quantt::dmrg_default_logger
 		log_step(it);
 		log_energy(E0);
 	}
-	void it_log_all(size_t it, const torch::Tensor &E0, const quantt::MPS &mps) override
+	void it_log_all(size_t it, const torch::Tensor &E0, const quantit::MPS &mps) override
 	{
 		auto now = std::chrono::steady_clock::now();
 		std::chrono::duration<double> elapsed_seconds = now - then;
@@ -142,6 +142,6 @@ class dmrg_log_sweeptime final : public quantt::dmrg_default_logger
 	}
 };
 
-} // namespace quantt
+} // namespace quantit
 
 #endif // INCLUDE_DMRG_LOGGER_H

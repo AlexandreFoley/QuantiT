@@ -1,6 +1,6 @@
 /*
  * File: MPT.h
- * Project: QuanTT
+ * Project: QuantiT
  * File Created: Thursday, 23rd July 2020 9:38:33 am
  * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)
  * -----
@@ -25,7 +25,7 @@
 
 #include "doctest/doctest_proxy.h"
 
-namespace quantt
+namespace quantit
 {
 
 // forward declaration for dmrg_impl.
@@ -910,7 +910,7 @@ qtt_TEST_CASE("contraction equivalence tests")
  *
  * to declare it.
  *
- * @tparam T tensor train network or single tensor: quantt::btensor, torch::Tensor, MPS,MPO,MPT, bMPS,bMPO or bMPT
+ * @tparam T tensor train network or single tensor: quantit::btensor, torch::Tensor, MPS,MPO,MPT, bMPS,bMPO or bMPT
  * @tparam X void
  */
 template <class T, class X = void>
@@ -944,5 +944,5 @@ struct dependant_tensor_network<S, std::enable_if_t<std::is_base_of_v<vector_lif
     : dependant_tensor_network<btensor>
 {
 };
-} // namespace quantt
+} // namespace quantit
 #endif /* ADA5A359_8ACF_448D_91BC_09C085F510CC */

@@ -9,6 +9,60 @@
 
 #include "blockTensor/btensor.h"
 
+namespace pybind11
+{
+namespace detail
+{
+
+template <>
+struct type_caster<torch::ScalarType>
+{
+  public:
+	PYBIND11_TYPE_CASTER(torch::ScalarType, _("dtype"));
+
+	bool load(handle src, bool)
+	{
+		PyObject *source = src.ptr();
+		// if(!source)
+		//     return false;
+		if (THPDtype_Check(source))
+			value = reinterpret_cast<THPDtype *>(source)->scalar_type;
+		else
+			return false;
+		return !PyErr_Occurred();
+	}
+	static handle cast(torch::ScalarType src, return_value_policy, handle)
+	{
+		return THPDtype_New(src, std::string(c10::scalarTypeToTypeMeta(src).name()));
+	}
+};
+template <>
+struct type_caster<at::MemoryFormat>
+{
+  public:
+	PYBIND11_TYPE_CASTER(at::MemoryFormat, _("memory_format"));
+
+	bool load(handle src, bool)
+	{
+		PyObject *source = src.ptr();
+		// if(!source)
+		//     return false;
+		if (THPMemoryFormat_Check(source))
+			value = reinterpret_cast<THPMemoryFormat *>(source)->memory_format;
+		else
+			return false;
+		return !PyErr_Occurred();
+	}
+	static handle cast(at::MemoryFormat src, return_value_policy, handle)
+	{
+		std::stringstream name;
+		name << src;
+		return THPMemoryFormat_New(src, name.str());
+	}
+};
+} // namespace detail
+} // namespace pybind11
+
 namespace utils
 {
 
@@ -176,18 +230,18 @@ template <class... Args>
 struct TOPT_binder
 {
 	template <class ARGS>
-	static c10::TensorOptions generate_option(const quantt::btensor &opt_ten, ARGS &&...)
+	static c10::TensorOptions generate_option(const quantit::btensor &opt_ten, ARGS &&...)
 	{
 		return opt_ten.options();
 	}
-	static c10::TensorOptions generate_option(const quantt::btensor &opt_ten) { return opt_ten.options(); }
+	static c10::TensorOptions generate_option(const quantit::btensor &opt_ten) { return opt_ten.options(); }
 	
-	template<class Ret =quantt::btensor>
+	template<class Ret =quantit::btensor>
 	static auto bind(Ret (*f)(Args..., c10::TensorOptions))
 	{
 		using FirstEntityType = std::tuple_element_t<0, std::tuple<Args...>>;
 
-		if constexpr (std::is_same_v<quantt::remove_cvref_t<FirstEntityType>, quantt::btensor>)
+		if constexpr (std::is_same_v<quantit::remove_cvref_t<FirstEntityType>, quantit::btensor>)
 		{
 			return [f](Args... args, torch::optional<torch::ScalarType> dt, torch::optional<torch::Device> dev,
 			           torch::optional<bool> req_grad, torch::optional<bool> pin_memory)
@@ -223,7 +277,7 @@ struct TOPT_binder
 	{
 		using FirstEntityType = std::tuple_element_t<0, std::tuple<Args...>>;
 
-		if constexpr (std::is_same_v<quantt::remove_cvref_t<FirstEntityType>, quantt::btensor>)
+		if constexpr (std::is_same_v<quantit::remove_cvref_t<FirstEntityType>, quantit::btensor>)
 		{
 			return [f](Args... args, torch::optional<torch::ScalarType> dt, torch::optional<torch::Device> dev,
 			           torch::optional<bool> req_grad, torch::optional<bool> pin_memory)

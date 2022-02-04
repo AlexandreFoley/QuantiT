@@ -6,7 +6,7 @@
 
 #include "MPT.h"
 
-using namespace quantt;
+using namespace quantit;
 using namespace utils;
 namespace py = pybind11;
 
@@ -150,12 +150,12 @@ void MPS_only(py::class_<S>& pyclass)
 void init_networks(py::module &m)
 {
 	auto sub = m.def_submodule("networks");
-	auto pyMPT = py::class_<quantt::MPT>(sub, "MPT");
-	auto pyMPS = py::class_<quantt::MPS>(sub, "MPS");
-	auto pyMPO = py::class_<quantt::MPO>(sub, "MPO");
-	auto pybMPT = py::class_<quantt::bMPT>(sub, "bMPT");
-	auto pybMPS = py::class_<quantt::bMPS>(sub, "bMPS");
-	auto pybMPO = py::class_<quantt::bMPO>(sub, "bMPO");
+	auto pyMPT = py::class_<quantit::MPT>(sub, "MPT");
+	auto pyMPS = py::class_<quantit::MPS>(sub, "MPS");
+	auto pyMPO = py::class_<quantit::MPO>(sub, "MPO");
+	auto pybMPT = py::class_<quantit::bMPT>(sub, "bMPT");
+	auto pybMPS = py::class_<quantit::bMPS>(sub, "bMPS");
+	auto pybMPO = py::class_<quantit::bMPO>(sub, "bMPO");
 	common_core(pyMPT);
 	common_core(pyMPS);
 	common_core(pyMPO);
@@ -175,20 +175,20 @@ void init_networks(py::module &m)
 	           py::arg("cutoff") = 0);
 
 	// MPS random_MPS(size_t length, size_t bond_dim, size_t phys_dim, torch::TensorOptions opt = {});
-	sub.def("random_MPS", TOPT_binder<size_t, size_t, size_t>::bind(&quantt::random_MPS),
+	sub.def("random_MPS", TOPT_binder<size_t, size_t, size_t>::bind(&quantit::random_MPS),
 	      "Generate a random MPS",
 	      py::arg("length"), py::arg("bond_dim"), py::arg("phys_dim"), py::kw_only(),
 	      py::arg("dtype") = opt<stype>(), py::arg("device") = opt<tdev>(), py::arg("requires_grad") = opt<bool>(),
 	      py::arg("pin_memory") = opt<bool>());
 	// MPS random_MPS(size_t bond_dim, const MPO &hamil, torch::TensorOptions opt = {});
-	sub.def("random_MPS", TOPT_binder<size_t, const MPO&>::bind(&quantt::random_MPS),
+	sub.def("random_MPS", TOPT_binder<size_t, const MPO&>::bind(&quantit::random_MPS),
 	      "Generate a random MPS that can be contracted with the given MPO",
 	      py::arg("bond_dim"), py::arg("mpo"), py::kw_only(),
 	      py::arg("dtype") = opt<stype>(), py::arg("device") = opt<tdev>(), py::arg("requires_grad") = opt<bool>(),
 	      py::arg("pin_memory") = opt<bool>());
 	// MPS random_MPS(size_t bond_dim, const std::vector<int64_t> &phys_dims,
 	//                torch::TensorOptions opt = {}); 
-	sub.def("random_MPS", TOPT_binder<size_t, const std::vector<int64_t>& >::bind(&quantt::random_MPS),
+	sub.def("random_MPS", TOPT_binder<size_t, const std::vector<int64_t>& >::bind(&quantit::random_MPS),
 	      "Generate a random MPS with the specified physical dimensions",
 	      py::arg("bond_dim"), py::arg("phys_dim_list"), py::kw_only(),
 	      py::arg("dtype") = opt<stype>(), py::arg("device") = opt<tdev>(), py::arg("requires_grad") = opt<bool>(),
@@ -197,22 +197,22 @@ void init_networks(py::module &m)
 
 	// torch::Tensor contract(const MPS &a, const MPS &b, const MPO &obs, torch::Tensor left_edge,
 	//    const torch::Tensor &right_edge);
-	sub.def("contract",py::overload_cast<const MPS& , const MPS&, const MPO&,torch::Tensor,const torch::Tensor&>(&quantt::contract),"contract to a scalar the two given MPS with the MPO and edge tensors",py::arg("bra"),py::arg("ket"),py::arg("operator"),py::arg("left_edge"),py::arg("right_edge"));
+	sub.def("contract",py::overload_cast<const MPS& , const MPS&, const MPO&,torch::Tensor,const torch::Tensor&>(&quantit::contract),"contract to a scalar the two given MPS with the MPO and edge tensors",py::arg("bra"),py::arg("ket"),py::arg("operator"),py::arg("left_edge"),py::arg("right_edge"));
 	// torch::Tensor contract(const MPS &a, const MPS &b, const MPO &obs);
-	sub.def("contract",py::overload_cast<const MPS& , const MPS&, const MPO&>(&quantt::contract),"contract to a scalar the two given MPS with the MPO",py::arg("bra"),py::arg("ket"),py::arg("operator"));
+	sub.def("contract",py::overload_cast<const MPS& , const MPS&, const MPO&>(&quantit::contract),"contract to a scalar the two given MPS with the MPO",py::arg("bra"),py::arg("ket"),py::arg("operator"));
 	// torch::Tensor contract(const MPS &a, const MPS &b);
-	sub.def("contract",py::overload_cast<const MPS& , const MPS&>(&quantt::contract),"contract to a scalar the two given MPS",py::arg("bra"),py::arg("ket"));
+	sub.def("contract",py::overload_cast<const MPS& , const MPS&>(&quantit::contract),"contract to a scalar the two given MPS",py::arg("bra"),py::arg("ket"));
 	// torch::Tensor contract(const MPS &a, const MPS &b, torch::Tensor left_edge, const torch::Tensor &right_edge);
-	sub.def("contract",py::overload_cast<const MPS& , const MPS&,torch::Tensor,const torch::Tensor&>(&quantt::contract),"contract to a scalar the two given MPS with the edge tensors",py::arg("bra"),py::arg("ket"),py::arg("left_edge"),py::arg("right_edge"));
+	sub.def("contract",py::overload_cast<const MPS& , const MPS&,torch::Tensor,const torch::Tensor&>(&quantit::contract),"contract to a scalar the two given MPS with the edge tensors",py::arg("bra"),py::arg("ket"),py::arg("left_edge"),py::arg("right_edge"));
 
 	// btensor contract(const bMPS &a, const bMPS &b, const bMPO &obs);
-	sub.def("contract",py::overload_cast<const bMPS& , const bMPS&, const bMPO&>(&quantt::contract),"contract to a scalar the two given MPS with the MPO",py::arg("bra"),py::arg("ket"),py::arg("operator"));
+	sub.def("contract",py::overload_cast<const bMPS& , const bMPS&, const bMPO&>(&quantit::contract),"contract to a scalar the two given MPS with the MPO",py::arg("bra"),py::arg("ket"),py::arg("operator"));
 	// btensor contract(const bMPS &a, const bMPS &b, const bMPO &obs, btensor left_edge, const btensor &right_edge);
-	sub.def("contract",py::overload_cast<const bMPS& , const bMPS&, const bMPO&,quantt::btensor,const quantt::btensor&>(&quantt::contract),"contract to a scalar the two given MPS with the MPO and edge tensors",py::arg("bra"),py::arg("ket"),py::arg("operator"),py::arg("left_edge"),py::arg("right_edge"));
+	sub.def("contract",py::overload_cast<const bMPS& , const bMPS&, const bMPO&,quantit::btensor,const quantit::btensor&>(&quantit::contract),"contract to a scalar the two given MPS with the MPO and edge tensors",py::arg("bra"),py::arg("ket"),py::arg("operator"),py::arg("left_edge"),py::arg("right_edge"));
 	// btensor contract(const bMPS &a, const bMPS &b, btensor left_edge, const btensor &right_edge);
-	sub.def("contract",py::overload_cast<const bMPS& , const bMPS&,btensor,const btensor&>(&quantt::contract),"contract to a scalar the two given MPS with the edge tensors",py::arg("bra"),py::arg("ket"),py::arg("left_edge"),py::arg("right_edge"));
+	sub.def("contract",py::overload_cast<const bMPS& , const bMPS&,btensor,const btensor&>(&quantit::contract),"contract to a scalar the two given MPS with the edge tensors",py::arg("bra"),py::arg("ket"),py::arg("left_edge"),py::arg("right_edge"));
 	// btensor contract(const bMPS &a, const bMPS &b);
-	sub.def("contract",py::overload_cast<const bMPS& , const bMPS&>(&quantt::contract),"contract to a scalar the two given MPS",py::arg("bra"),py::arg("ket"));
+	sub.def("contract",py::overload_cast<const bMPS& , const bMPS&>(&quantit::contract),"contract to a scalar the two given MPS",py::arg("bra"),py::arg("ket"));
 
 
 	// bMPS random_bMPS(size_t length, size_t bond_dim, const btensor &phys_dim_spec, any_quantity_cref q_num,

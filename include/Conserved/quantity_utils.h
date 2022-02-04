@@ -1,6 +1,6 @@
 /*
  * File:quantity_utils.h
- * Project: quantt
+ * Project: QuantiT
  * File Created: Tuesday, 15th September 2020 1:16:37 pm
  * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)
  * -----
@@ -17,7 +17,7 @@
 #include "templateMeta.h"
 #include <type_traits>
 #include <utility>
-namespace quantt
+namespace quantit
 {
     class vquantity;
 namespace conserved
@@ -93,7 +93,7 @@ struct constexprequal_test<subject, std::enable_if_t<is_detected_v<comparatorequ
 	constexpr static bool call() { return do_call(0); }
 };
 template<>
-struct constexprequal_test<quantt::vquantity>
+struct constexprequal_test<quantit::vquantity>
 {
 
 	constexpr static bool call() { return std::false_type(); }
@@ -140,28 +140,28 @@ struct is_Abelian<T, std::enable_if_t<is_detected_v<abelian_present, T>>> : std:
 // parameter satisfy the constraint for a group that will work with any_quantity
 
 template<class T>
-struct is_conserved_quantt : and_<is_Abelian<T>, default_to_neutral<T>, has_op<T>, has_inverse_<T>,
+struct is_conserved_QuantiT : and_<is_Abelian<T>, default_to_neutral<T>, has_op<T>, has_inverse_<T>,
          has_comparatorequal<T>, has_comparatornotequal<T>>
 {};
 
 template<class... Args>
-struct is_conserved_quantt<quantt::flat_map<Args...> >: std::false_type {};
+struct is_conserved_QuantiT<quantit::flat_map<Args...> >: std::false_type {};
 
 template <class T>
-constexpr bool is_conserved_quantt_v = is_conserved_quantt<T>::value;
+constexpr bool is_conserved_QuantiT_v = is_conserved_QuantiT<T>::value;
 
 template <class... T>
-using all_conserved_quantt = and_<is_conserved_quantt<T>...>;
+using all_conserved_QuantiT = and_<is_conserved_QuantiT<T>...>;
 template <class... T>
-constexpr bool all_group_v = all_conserved_quantt<T...>::value;
+constexpr bool all_group_v = all_conserved_QuantiT<T...>::value;
 
 #if __cplusplus == 202002L
 template <class T>
-concept a_group = is_conserved_quantt_v<T>;
+concept a_group = is_conserved_QuantiT_v<T>;
 
 #endif
 
 } // namespace conserved
-} // namespace quantt
+} // namespace quantit
 
 #endif /* D241DFD2_9200_4C66_8225_2C3BBD27EDE4 */

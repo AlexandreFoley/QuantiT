@@ -1,6 +1,6 @@
 /*
  * File: numeric.h
- * Project: quantt
+ * Project: QuantiT
  * File Created: Thursday, 27th August 2020 10:39:15 am
  * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)
  * -----
@@ -18,7 +18,7 @@
 #include <limits>
 #include <type_traits>
 
-namespace quantt
+namespace quantit
 {
 	namespace // anonymous namespace, this stuff can't be  used from outside this file.
 	{
@@ -98,6 +98,6 @@ namespace quantt
 				return torch::ScalarType::Undefined;
 		}
 	}
-} // namespace quantt
+} // namespace quantit
 
 #endif /* BEAD62BB_7BE8_44DB_9116_0DFFA7FAB98C */

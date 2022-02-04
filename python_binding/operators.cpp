@@ -5,7 +5,7 @@
 #include "models.h"
 #include "utilities.h"
 
-using namespace quantt;
+using namespace quantit;
 namespace py = pybind11;
 
 void init_operators(py::module &m)

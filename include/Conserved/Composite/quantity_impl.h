@@ -1,6 +1,6 @@
 /*
  * File: vquantity.h
- * Project: quantt
+ * Project: QuantiT
  * File Created: Tuesday, 15th September 2020 2:56:09 pm
  * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)
  * -----
@@ -23,7 +23,7 @@
 #include <type_traits>
 #include <vector>
 
-namespace quantt
+namespace quantit
 {
 
 /**
@@ -118,8 +118,8 @@ class quantity final : public vquantity
 {
   public:
 	// has default constructor and assigment operator as well.
-	static_assert(quantt::conserved::all_group_v<Groups...>,
-	              "all template argument must statisfy the constraints of a group. See quantt/Conserved/quantity.h for "
+	static_assert(quantit::conserved::all_group_v<Groups...>,
+	              "all template argument must statisfy the constraints of a group. See QuantiT/Conserved/quantity.h for "
 	              "2 working exemples: C<N> and Z");
 	quantity(Groups... grp) : val(grp...) {}
 	quantity() = default;
@@ -166,10 +166,10 @@ class quantity final : public vquantity
 	double distance(const quantity &) const;
 	int64_t distance2(const vquantity &) const override;
 	int64_t distance2(const quantity &) const;
-	friend struct fmt::formatter<quantt::quantity<Groups...>>;
+	friend struct fmt::formatter<quantit::quantity<Groups...>>;
 	auto format_to(fmt::format_context &ctx) const -> decltype(ctx.out()) override
 	{
-		return fmt::formatter<quantt::quantity<Groups...>>().format(*this, ctx);
+		return fmt::formatter<quantit::quantity<Groups...>>().format(*this, ctx);
 	}
 
   private:
@@ -360,7 +360,7 @@ struct is_conc_cgroup_impl : public std::false_type
 {
 };
 template <class... S>
-struct is_conc_cgroup_impl<quantity<S...>> : public conserved::all_conserved_quantt<S...>
+struct is_conc_cgroup_impl<quantity<S...>> : public conserved::all_conserved_QuantiT<S...>
 {
 };
 
@@ -376,16 +376,16 @@ inline vquantity &quantity<Groups...>::operator+=(const vquantity &other)
 	return op(other);
 }
 
-} // namespace quantt
+} // namespace quantit
 
 template <class... Groups>
-struct fmt::formatter<quantt::quantity<Groups...>>
+struct fmt::formatter<quantit::quantity<Groups...>>
 {
 	constexpr auto parse(format_parse_context &ctx)
 	{
 		auto it = ctx.begin(), end = ctx.end();
 		if (it and it != end and *it != '}')
-			throw format_error("invalid format, no formatting option for quantt::quantity");
+			throw format_error("invalid format, no formatting option for quantit::quantity");
 		// if (*it != '}')
 		// {
 		// 	++it;
@@ -415,20 +415,20 @@ struct fmt::formatter<quantt::quantity<Groups...>>
 	}
 
 	template <typename FormatContext>
-	auto format(const quantt::quantity<Groups...> &qt, FormatContext &ctx)
+	auto format(const quantit::quantity<Groups...> &qt, FormatContext &ctx)
 	{
 		return format_to(ctx.out(), "[{}]", fmt::join(qt.val, ","));
 	}
 };
 
 template <>
-struct fmt::formatter<quantt::vquantity>
+struct fmt::formatter<quantit::vquantity>
 {
 	constexpr auto parse(format_parse_context &ctx)
 	{
 		auto it = ctx.begin(), end = ctx.end();
 		if (it and it != end and *it != '}')
-			throw format_error("invalid format, no formatting option for quantt::quantity");
+			throw format_error("invalid format, no formatting option for quantit::quantity");
 		if (it and *it != '}')
 			throw format_error("invalid format,closing brace missing");
 
@@ -437,7 +437,7 @@ struct fmt::formatter<quantt::vquantity>
 	}
 
 	template <class FormatContext>
-	auto format(const quantt::vquantity &qt, FormatContext &ctx)
+	auto format(const quantit::vquantity &qt, FormatContext &ctx)
 	{
 		return qt.format_to(
 		    ctx); // right now qt.format_to is only defined for fmt::format_context. Should work for any output stream.

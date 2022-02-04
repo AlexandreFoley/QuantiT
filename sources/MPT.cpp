@@ -1,6 +1,6 @@
 /*
  * File: MPT.cpp
- * Project: QuanTT
+ * Project: QuantiT
  * File Created: Thursday, 23rd July 2020 10:32:10 am
  * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)
  * -----
@@ -21,7 +21,7 @@
 #include "LinearAlgebra.h"
 #include "dmrg.h"
 // TODO: remove all explicit torch:: can ADL be my friend here?
-namespace quantt
+namespace quantit
 {
 
 void MPS::move_oc(int i)
@@ -46,9 +46,9 @@ void MPS::move_oc(int i)
 		auto &next_oc = (*this)[orthogonality_center - 1];
 		dims = curr_oc.sizes();
 
-		// TODO: rewrite this to use quantt's SVD implementation. takes care of the reshaping
+		// TODO: rewrite this to use QuantiT's SVD implementation. takes care of the reshaping
 		// auto reshaped = curr_oc.reshape({dims[0], prod(1, dims.size())});
-		auto [u, d, v] = quantt::svd(curr_oc,1);
+		auto [u, d, v] = quantit::svd(curr_oc,1);
 		curr_oc = v.permute({2,0,1}).conj(); // needs testing. svd documentation makes no mention of complex numbers case.
 		auto ud = u.mul(d); 
 		next_oc = torch::tensordot(next_oc, ud, {2}, {0});
@@ -61,9 +61,9 @@ void MPS::move_oc(int i)
 		auto &curr_oc = (*this)[orthogonality_center];
 		auto &next_oc = (*this)[orthogonality_center + 1];
 		dims = curr_oc.sizes();
-		// TODO: use quantt's SVD implementation. takes care of the reshaping
+		// TODO: use QuantiT's SVD implementation. takes care of the reshaping
 		// auto reshaped = curr_oc.reshape({prod(0, dims.size() - 1), dims[dims.size() - 1]});
-		auto [u, d, v] = quantt::svd(curr_oc,2);
+		auto [u, d, v] = quantit::svd(curr_oc,2);
 		curr_oc = u;
 
 		auto dv = v.mul(d).t().conj(); 
@@ -84,7 +84,7 @@ void bMPS::move_oc(int i)
 		auto &curr_oc = (*this)[orthogonality_center];
 		auto &next_oc = (*this)[orthogonality_center - 1];
 
-		auto [u, d, v] = quantt::svd(curr_oc,1);
+		auto [u, d, v] = quantit::svd(curr_oc,1);
 		curr_oc = v.conj().permute({2,0,1}); // needs testing. svd documentation makes no mention of complex numbers case.
 
 		// testing shows that v is only transposed in the complex number case as well.
@@ -98,7 +98,7 @@ void bMPS::move_oc(int i)
 		// move left
 		auto &curr_oc = (*this)[orthogonality_center];
 		auto &next_oc = (*this)[orthogonality_center + 1];
-		// TODO: use quantt's SVD implementation. takes care of the reshaping
+		// TODO: use QuantiT's SVD implementation. takes care of the reshaping
 		auto [u, d, v] = svd(curr_oc,2);
 		curr_oc = u;
 
@@ -539,4 +539,4 @@ bMPS random_MPS(size_t bond_dim, const std::vector<btensor> &phys_dim_spec, any_
 
 	return random_bMPS(bond_dim, phys_dim_spec, q_num,seed, opt);
 }
-} // namespace quantt
+} // namespace quantit

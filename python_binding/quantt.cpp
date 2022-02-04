@@ -1,6 +1,6 @@
 /*
- * File: quantt.cpp
- * Project: quantt
+ * File: QuantiT.cpp
+ * Project: QuantiT
  * File Created: Thursday, 11th November 2021 11:17:35 am
  * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)
  * Copyright (c) 2021 Alexandre Foley
@@ -22,7 +22,7 @@
 #include "utilities.h"
 
 using namespace utils;
-using namespace quantt;
+using namespace quantit;
 /*
  * torch must also be already loaded in the module.
  * For the module to load we need to define TORCH_USE_RTLD_GLOBAL=YES environment variable, otherwise missing symbol
@@ -30,59 +30,6 @@ using namespace quantt;
  * PYTHON_TORCH_LIBRARIES or TORCH_PYTHON_LIBRARIES (which?) cmake variable.
  */
 namespace py = pybind11;
-namespace pybind11
-{
-namespace detail
-{
-
-template <>
-struct type_caster<torch::ScalarType>
-{
-  public:
-	PYBIND11_TYPE_CASTER(torch::ScalarType, _("dtype"));
-
-	bool load(handle src, bool)
-	{
-		PyObject *source = src.ptr();
-		// if(!source)
-		//     return false;
-		if (THPDtype_Check(source))
-			value = reinterpret_cast<THPDtype *>(source)->scalar_type;
-		else
-			return false;
-		return !PyErr_Occurred();
-	}
-	static handle cast(torch::ScalarType src, return_value_policy, handle)
-	{
-		return THPDtype_New(src, std::string(c10::scalarTypeToTypeMeta(src).name()));
-	}
-};
-template <>
-struct type_caster<at::MemoryFormat>
-{
-  public:
-	PYBIND11_TYPE_CASTER(at::MemoryFormat, _("memory_format"));
-
-	bool load(handle src, bool)
-	{
-		PyObject *source = src.ptr();
-		// if(!source)
-		//     return false;
-		if (THPMemoryFormat_Check(source))
-			value = reinterpret_cast<THPMemoryFormat *>(source)->memory_format;
-		else
-			return false;
-		return !PyErr_Occurred();
-	}
-	static handle cast(at::MemoryFormat src, return_value_policy, handle)
-	{
-		std::stringstream name;
-		name << src;
-		return THPMemoryFormat_New(src, name.str());
-	}
-};
-} // namespace detail
-} // namespace pybind11
 
 /**
  * @brief register the funtion in a uniform call syntax: register both a free standing function and a class method
@@ -136,7 +83,7 @@ PYBIND11_MODULE(quantit, m)
 {
 	constexpr auto pol_internal_ref = py::return_value_policy::reference_internal;
 	auto x = torch::optional<int>();
-	using namespace quantt;
+	using namespace quantit;
 	auto PYTORCH = py::module_::import("torch");
 	m.doc() = "QuantiT";
 	init_conserved_qtt(m);
@@ -152,11 +99,19 @@ PYBIND11_MODULE(quantit, m)
 		{
 			if  (ind[i] >= self.owner.section_numbers()[i]) throw py::key_error(fmt::format("key value {} for dimension {} is greater or equal to the size of that dimension {}.",ind[i],i,self.owner.section_numbers()[i]));
 		}
-		self.access(ind)=val;
+		int i = 0;
+		auto val_size=val.sizes();
+		for (const auto& s:self.owner.block_sizes(ind))
+		{
+			if (val_size[i] != s) throw py::value_error(fmt::format("input tensor has wrong size {} at dim {}. {} was expected",val_size[i],i,s));
+			++i;
+		}
+		// And set the options to match the rest of the btensor.
+		self.access(ind)=val.to(self.owner.options());
 	})
 	.def("__getitem__",&block_helper::access_at);
 	auto pybtensor =
-	    py::class_<quantt::btensor>(m, "btensor")
+	    py::class_<quantit::btensor>(m, "btensor")
 	        .def(py::init())
 	        .def(py::init(
 	                 [](btensor::vec_list_t init_list, any_quantity sel_rule, torch::optional<torch::ScalarType> dt,
@@ -185,7 +140,7 @@ PYBIND11_MODULE(quantit, m)
 	            [](btensor &self, bool requires_grad) { self.to(self.options().requires_grad(requires_grad)); })
 	        .def(
 	            "__iter__",
-	            [](quantt::btensor &btens) { return py::make_key_iterator(btens.begin(), btens.end()); },
+	            [](quantit::btensor &btens) { return py::make_key_iterator(btens.begin(), btens.end()); },
 	            py::keep_alive<0, 1>())
 	        .def(py::self + py::self)
 	        .def(py::self - py::self)
@@ -195,7 +150,7 @@ PYBIND11_MODULE(quantit, m)
 	        .def(py::self -= py::self)
 	        .def(py::self /= py::self)
 	        .def(py::self *= py::self)
-	        .def("__repr__", [](const quantt::btensor &val) { return fmt::format("{}", val); });
+	        .def("__repr__", [](const quantit::btensor &val) { return fmt::format("{}", val); });
 	pybtensor.def("__mul__", wrap_scalar([](const btensor &A, c10::Scalar B) { return A.mul(B); }));
 	pybtensor.def("__mul__", wrap_scalar([](c10::Scalar B, const btensor &A) { return A.mul(B); }));
 	pybtensor.def("__div__", wrap_scalar([](const btensor &A, c10::Scalar B) { return A.div(B); }));
@@ -208,7 +163,7 @@ PYBIND11_MODULE(quantit, m)
 	// block, must become a property of btensor, expose the underlying blocklist, which would have a very limited (and safe) interface
 	// To expose it to python without making it public, we have to do some funny stuff.
 	pybtensor.def_property_readonly( "blocks",
-	    [](quantt::btensor &self) 
+	    [](quantit::btensor &self) 
 	    {
 			return block_helper(self);
 		},
@@ -230,92 +185,92 @@ PYBIND11_MODULE(quantit, m)
 	uniform_call(m, pybtensor, "pow_", wrap_scalar([](btensor &self, c10::Scalar x) { return self.pow_(x); }),
 	             "in-place application of element by element exponentiation", py::arg("self"), py::arg("exponent"),
 	             py::return_value_policy::reference_internal);
-	m.def("sparse_zeros", TOPT_binder<const btensor::vec_list_t &, any_quantity>::bind(&quantt::zeros),
+	m.def("sparse_zeros", TOPT_binder<const btensor::vec_list_t &, any_quantity>::bind(&quantit::zeros),
 	      "Generate an empty block tensor", py::arg("shape_specification"), py::arg("selection_rule"), py::kw_only(),
 	      py::arg("dtype") = opt<stype>(), py::arg("device") = opt<tdev>(), py::arg("requires_grad") = opt<bool>(),
 	      py::arg("pin_memory") = opt<bool>());
-	m.def("sparse_zeros_like", TOPT_binder<const btensor &>::bind(&quantt::zeros_like),
+	m.def("sparse_zeros_like", TOPT_binder<const btensor &>::bind(&quantit::zeros_like),
 	      "Generate an empty block tensor with the same shape and selection rule as the input btensor",
 	      py::arg("shape_tensor"), py::kw_only(), py::arg("dtype") = opt<stype>(), py::arg("device") = opt<tdev>(),
 	      py::arg("requires_grad") = opt<bool>(), py::arg("pin_memory") = opt<bool>());
-	m.def("zeros", TOPT_binder<const btensor::vec_list_t &, any_quantity>::bind(&quantt::zeros),
+	m.def("zeros", TOPT_binder<const btensor::vec_list_t &, any_quantity>::bind(&quantit::zeros),
 	      "Generate a block tensor with every permited block filled with zeros", py::arg("shape_specification"),
 	      py::arg("selection_rule"), py::kw_only(), py::arg("dtype") = opt<stype>(), py::arg("device") = opt<tdev>(),
 	      py::arg("requires_grad") = opt<bool>(), py::arg("pin_memory") = opt<bool>());
-	m.def("zeros_like", TOPT_binder<const btensor &>::bind(&quantt::zeros_like),
+	m.def("zeros_like", TOPT_binder<const btensor &>::bind(&quantit::zeros_like),
 	      "Generate a block tensor with the same shape and selection rule as the input btensor and with every permited "
 	      "block "
 	      "filled with zeros",
 	      py::arg("shape_tensor"), py::kw_only(), py::arg("dtype") = opt<stype>(), py::arg("device") = opt<tdev>(),
 	      py::arg("requires_grad") = opt<bool>(), py::arg("pin_memory") = opt<bool>());
-	m.def("ones", TOPT_binder<const btensor::vec_list_t &, any_quantity>::bind(&quantt::ones),
+	m.def("ones", TOPT_binder<const btensor::vec_list_t &, any_quantity>::bind(&quantit::ones),
 	      "Generate a block tensor with every permited block filled with ones", py::arg("shape_specification"),
 	      py::arg("selection_rule"), py::kw_only(), py::arg("dtype") = opt<stype>(), py::arg("device") = opt<tdev>(),
 	      py::arg("requires_grad") = opt<bool>(), py::arg("pin_memory") = opt<bool>());
-	m.def("ones_like", TOPT_binder<const btensor &>::bind(&quantt::ones_like),
+	m.def("ones_like", TOPT_binder<const btensor &>::bind(&quantit::ones_like),
 	      "Generate a block tensor with the same shape and selection rule as the input btensor and with every permited "
 	      "block "
 	      "filled with ones",
 	      py::arg("shape_tensor"), py::kw_only(), py::arg("dtype") = opt<stype>(), py::arg("device") = opt<tdev>(),
 	      py::arg("requires_grad") = opt<bool>(), py::arg("pin_memory") = opt<bool>());
-	m.def("empty", TOPT_binder<const btensor::vec_list_t &, any_quantity>::bind(&quantt::empty),
+	m.def("empty", TOPT_binder<const btensor::vec_list_t &, any_quantity>::bind(&quantit::empty),
 	      "Generate a block tensor with every permited block filled with uninitialized data",
 	      py::arg("shape_specification"), py::arg("selection_rule"), py::kw_only(), py::arg("dtype") = opt<stype>(),
 	      py::arg("device") = opt<tdev>(), py::arg("requires_grad") = opt<bool>(), py::arg("pin_memory") = opt<bool>());
-	m.def("empty_like", TOPT_binder<const btensor &>::bind(&quantt::empty_like),
+	m.def("empty_like", TOPT_binder<const btensor &>::bind(&quantit::empty_like),
 	      "Generate a block tensor with the same shape and selection rule as the input btensor and with every permited "
 	      "block "
 	      "filled with uninitialized data",
 	      py::arg("shape_tensor"), py::kw_only(), py::arg("dtype") = opt<stype>(), py::arg("device") = opt<tdev>(),
 	      py::arg("requires_grad") = opt<bool>(), py::arg("pin_memory") = opt<bool>());
-	m.def("rand", TOPT_binder<const btensor::vec_list_t &, any_quantity>::bind(&quantt::rand),
+	m.def("rand", TOPT_binder<const btensor::vec_list_t &, any_quantity>::bind(&quantit::rand),
 	      "Generate a block tensor with every permited block filled with random values", py::arg("shape_specification"),
 	      py::arg("selection_rule"), py::kw_only(), py::arg("dtype") = opt<stype>(), py::arg("device") = opt<tdev>(),
 	      py::arg("requires_grad") = opt<bool>(), py::arg("pin_memory") = opt<bool>());
-	m.def("rand_like", TOPT_binder<const btensor &>::bind(&quantt::rand_like),
+	m.def("rand_like", TOPT_binder<const btensor &>::bind(&quantit::rand_like),
 	      "Generate a block tensor with the same shape and selection rule as the input btensor and with every permited "
 	      "block "
 	      "filled with random value",
 	      py::arg("shape_tensor"), py::kw_only(), py::arg("dtype") = opt<stype>(), py::arg("device") = opt<tdev>(),
 	      py::arg("requires_grad") = opt<bool>(), py::arg("pin_memory") = opt<bool>());
-	m.def("full", wrap_scalar(TOPT_binder<const btensor::vec_list_t &, any_quantity, btensor::Scalar>::bind(&quantt::full)),
+	m.def("full", wrap_scalar(TOPT_binder<const btensor::vec_list_t &, any_quantity, btensor::Scalar>::bind(&quantit::full)),
 	      "Generate a block tensor with every permited block filled with the specified value",
 	      py::arg("shape_specification"), py::arg("selection_rule"), py::arg("fill_value"), py::kw_only(),
 	      py::arg("dtype") = opt<stype>(), py::arg("device") = opt<tdev>(), py::arg("requires_grad") = opt<bool>(),
 	      py::arg("pin_memory") = opt<bool>());
-	m.def("full_like", wrap_scalar(TOPT_binder<const btensor &, btensor::Scalar>::bind(&quantt::full_like)),
+	m.def("full_like", wrap_scalar(TOPT_binder<const btensor &, btensor::Scalar>::bind(&quantit::full_like)),
 	      "Generate a block tensor with the same shape and selection rule as the input btensor and with every permited "
 	      "block "
 	      "filled with the specified value",
 	      py::arg("shape_tensor"), py::arg("fill_value"), py::kw_only(), py::arg("dtype") = opt<stype>(),
 	      py::arg("device") = opt<tdev>(), py::arg("requires_grad") = opt<bool>(), py::arg("pin_memory") = opt<bool>());
-	m.def("randint", TOPT_binder<const btensor::vec_list_t &, any_quantity, int64_t, int64_t>::bind(&quantt::randint),
+	m.def("randint", TOPT_binder<const btensor::vec_list_t &, any_quantity, int64_t, int64_t>::bind(&quantit::randint),
 	      "Generate a block tensor with every permited block filled with random integers",
 	      py::arg("shape_specification"), py::arg("selection_rule"), py::arg("low"), py::arg("high"), py::kw_only(),
 	      py::arg("dtype") = opt<stype>(), py::arg("device") = opt<tdev>(), py::arg("requires_grad") = opt<bool>(),
 	      py::arg("pin_memory") = opt<bool>());
-	m.def("randint_like", TOPT_binder<const btensor &, int64_t, int64_t>::bind(&quantt::randint_like),
+	m.def("randint_like", TOPT_binder<const btensor &, int64_t, int64_t>::bind(&quantit::randint_like),
 	      "Generate a block tensor with the same shape and selection rule as the input btensor and with every permited "
 	      "block "
 	      "filled with random integers",
 	      py::arg("shape_tensor"), py::arg("low"), py::arg("high"), py::kw_only(), py::arg("dtype") = opt<stype>(),
 	      py::arg("device") = opt<tdev>(), py::arg("requires_grad") = opt<bool>(), py::arg("pin_memory") = opt<bool>());
-	m.def("randint", TOPT_binder<const btensor::vec_list_t &, any_quantity, int64_t>::bind(&quantt::randint),
+	m.def("randint", TOPT_binder<const btensor::vec_list_t &, any_quantity, int64_t>::bind(&quantit::randint),
 	      "Generate a block tensor with every permited block filled with random integers",
 	      py::arg("shape_specification"), py::arg("selection_rule"), py::arg("high"), py::kw_only(),
 	      py::arg("dtype") = opt<stype>(), py::arg("device") = opt<tdev>(), py::arg("requires_grad") = opt<bool>(),
 	      py::arg("pin_memory") = opt<bool>());
-	m.def("randint_like", TOPT_binder<const btensor &, int64_t>::bind(&quantt::randint_like),
+	m.def("randint_like", TOPT_binder<const btensor &, int64_t>::bind(&quantit::randint_like),
 	      "Generate a block tensor with the same shape and selection rule as the input btensor and with every permited "
 	      "block "
 	      "filled with random integers",
 	      py::arg("shape_tensor"), py::arg("high"), py::kw_only(), py::arg("dtype") = opt<stype>(),
 	      py::arg("device") = opt<tdev>(), py::arg("requires_grad") = opt<bool>(), py::arg("pin_memory") = opt<bool>());
-	m.def("randn", TOPT_binder<const btensor::vec_list_t &, any_quantity>::bind(&quantt::randn),
+	m.def("randn", TOPT_binder<const btensor::vec_list_t &, any_quantity>::bind(&quantit::randn),
 	      "Generate a block tensor with every permited block filled with normally distributed random values",
 	      py::arg("shape_specification"), py::arg("selection_rule"), py::kw_only(), py::arg("dtype") = opt<stype>(),
 	      py::arg("device") = opt<tdev>(), py::arg("requires_grad") = opt<bool>(), py::arg("pin_memory") = opt<bool>());
-	m.def("randn_like", TOPT_binder<const btensor &>::bind(&quantt::randn_like),
+	m.def("randn_like", TOPT_binder<const btensor &>::bind(&quantit::randn_like),
 	      "Generate a block tensor with the same shape and selection rule as the input btensor and with every permited "
 	      "block "
 	      "filled with normally distributed random value",
@@ -323,7 +278,7 @@ PYBIND11_MODULE(quantit, m)
 	      py::arg("requires_grad") = opt<bool>(), py::arg("pin_memory") = opt<bool>());
 	m.def("from_torch_tensor",
 	      wrap_scalar(TOPT_binder<const btensor::vec_list_t &, any_quantity, const torch::Tensor &, torch::Scalar>::bind(
-	          &quantt::from_basic_tensor)),
+	          &quantit::from_basic_tensor)),
 	      "Generate a block tensor from a torch tensor. Overall size must match with the specified shape, forbidden "
 	      "elements and elements with magnitude below the cutoff are ignored.",
 	      py::arg("shape_specification"), py::arg("selection_rule"), py::arg("values"), py::arg("cutoff") = 1e-16,
@@ -331,7 +286,7 @@ PYBIND11_MODULE(quantit, m)
 	      py::arg("requires_grad") = opt<bool>(), py::arg("pin_memory") = opt<bool>());
 	m.def("from_torch_tensor_like",
 	      wrap_scalar(TOPT_binder<const btensor &, const torch::Tensor &, const torch::Scalar>::bind(
-	          &quantt::from_basic_tensor_like)),
+	          &quantit::from_basic_tensor_like)),
 	      "Generate a block tensor from a torch tensor. Overall size must match with the shape tensor, forbidden "
 	      "elements and elements with magnitude below the cutoff are ignored.",
 	      py::arg("shape_tensor"), py::arg("values"),
@@ -390,7 +345,7 @@ PYBIND11_MODULE(quantit, m)
 	};
 	uniform_call(
 	    m, pybtensor, "block_quantities",
-	    [](const btensor &self, const quantt::btensor::index_list &block_index)
+	    [](const btensor &self, const quantit::btensor::index_list &block_index)
 	    {
 		    auto view = self.block_quantities(block_index);
 		    return py::make_iterator<py::return_value_policy::move>(deref_any_block_iter(view.begin()), deref_any_block_iter(view.end()));
@@ -407,7 +362,7 @@ PYBIND11_MODULE(quantit, m)
 	};
 	uniform_call(
 	    m, pybtensor, "block_sizes",
-	    [](const btensor &self, const quantt::btensor::index_list &block_index)
+	    [](const btensor &self, const quantit::btensor::index_list &block_index)
 	    {
 		    auto view = self.block_sizes(block_index);
 		    return py::make_iterator<py::return_value_policy::move>(view.begin(), view.end());
@@ -652,5 +607,5 @@ PYBIND11_MODULE(quantit, m)
 	// Free standing only
 	//  inline btensor disambiguated_shape_from(const std::vector<btensor> &btens_list) -> shape_from
 	m.def("shape_from",[](const std::vector<btensor>& tensors){return disambiguated_shape_from(tensors);},"return an empty tensor with the shape of the tensor product of all the tensors.",py::arg("tensors"));
-	m.def("find_selection_rule",wrap_scalar(&quantt::find_selection_rule),"find the selection rule for a torch tensor with a given candidate shape.",py::arg("tensor"),py::arg("shape"),py::arg("cutoff")=0 );
+	m.def("find_selection_rule",wrap_scalar(&quantit::find_selection_rule),"find the selection rule for a torch tensor with a given candidate shape.",py::arg("tensor"),py::arg("shape"),py::arg("cutoff")=0 );
 }

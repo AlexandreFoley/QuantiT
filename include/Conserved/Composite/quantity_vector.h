@@ -1,6 +1,6 @@
 /*
  * File: any_quantity_vector.h
- * Project: quantt
+ * Project: QuantiT
  * File Created: Friday, 18th September 2020 4:07:41 pm
  * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)
  * -----
@@ -20,7 +20,7 @@
 
 #include "doctest/doctest_proxy.h"
 
-namespace quantt
+namespace quantit
 {
 
 class any_quantity_vector final
@@ -461,5 +461,5 @@ qtt_TEST_CASE("polymorphic any_quantity container with value semantic")
 
 
 
-} // namespace quantt
+} // namespace quantit
 #endif /* D34E37A6_732F_4F45_9171_6B931CC1F812 */

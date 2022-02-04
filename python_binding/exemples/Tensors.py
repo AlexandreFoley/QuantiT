@@ -70,7 +70,7 @@ print([x for x in ConjFermionShape.sections_quantity(0)])
 # From the previous two vector shape, we can construct the shape of an operator in that Hilbert space.
 Hilb_operatorShape = qtt.shape_from([FermionShape, ConjFermionShape])
 
-print("Hilb_operator")
+print("Shape of electron's local hilber space, with particle number conservation:\n", Hilb_operatorShape)
 #%%
 # There's a few different way to construct a tensor:
 # block by block
@@ -99,12 +99,11 @@ print(c_dn_dag)
 #%%
 # here we construct the number operator by performing the multiplication of two operator using tensordot
 n_up = qtt.tensordot(c_up_dag,c_up,dims=([1],[0]))
-# we can also use matmul for such simple case
-n_dn = c_dn_dag.bmm(c_dn)
-
-print(n_up)
-print(n_dn)
-
+n_dn = qtt.tensordot(c_dn_dag,c_dn,dims=([1],[0]))
+print("n_up ", n_up)
+print("n_dn ",n_dn)
 # As we can see, the selection rule of the result is the sum of the selection rules of the tensor constracted.
 # This is expected: the number operator doesn't change the number of particle in a state, it therefore has selection rule Z(0)
+
+
 # %%

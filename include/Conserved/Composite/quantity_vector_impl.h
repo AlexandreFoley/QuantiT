@@ -1,6 +1,6 @@
 /*
  * File: quantity_vector_impl.h
- * Project: quantt
+ * Project: QuantiT
  * File Created: Monday, 28th September 2020 1:46:36 pm
  * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)
  * -----
@@ -20,7 +20,7 @@
 #include <vector>
 
 #ifdef QTT_APPLE
-namespace quantt
+namespace quantit
 {
 namespace 
 {
@@ -33,7 +33,7 @@ namespace
 namespace std
 {
 	template<>
-	class vector<quantt::DUMMY,std::allocator<quantt::DUMMY> >
+	class vector<quantit::DUMMY,std::allocator<quantit::DUMMY> >
 	{
 	public:
 		//This is pure trickery to do forbiden operation on iterators. all template of vector are declared friend to all iterator used by any vector in __wrap_iterator on the mac. hopefully this is portable.
@@ -47,7 +47,7 @@ namespace std
 	};
 }
 #endif
-namespace quantt
+namespace quantit
 {
 
 class blocklist
@@ -55,7 +55,7 @@ class blocklist
 };
 class btensor;
 
-namespace vquantt_iterator
+namespace vQuantiT_iterator
 {
 /**
  * @brief A class to to pointer arithmetic on a virtual pointer
@@ -133,7 +133,7 @@ struct cgroup_iterator
 	const virt_ptr_aritmetic *vt() { return ar; }
 };
 
-} // namespace vquantt_iterator
+} // namespace vQuantiT_iterator
 // so that different vector type have a different base type
 /**
  * @brief polymorphic (type-erased?) container of any_quantity.
@@ -156,8 +156,8 @@ struct cgroup_iterator
 class vquantity_vector
 {
   public:
-	using iterator = vquantt_iterator::cgroup_iterator;
-	using const_iterator = vquantt_iterator::const_cgroup_iterator;
+	using iterator = vQuantiT_iterator::cgroup_iterator;
+	using const_iterator = vQuantiT_iterator::const_cgroup_iterator;
 	using reverse_iterator = std::reverse_iterator<iterator>;
 	using const_reverse_iterator = std::reverse_iterator<const_iterator>;
 
@@ -333,7 +333,7 @@ class quantity_vector final : public vquantity_vector, public std::vector<S, All
 	{
 		return base_vector::clear(); // virtualize
 	}
-	struct ptr_aritmetic_t : vquantt_iterator::virt_ptr_aritmetic
+	struct ptr_aritmetic_t : vQuantiT_iterator::virt_ptr_aritmetic
 	{
 		std::ptrdiff_t ptr_diff(const vquantity *lhs, const vquantity *rhs) const override
 		{
@@ -499,6 +499,6 @@ std::unique_ptr<vquantity_vector> quantity<T...>::make_vector(size_t cnt) const
 	return std::make_unique<quantity_vector<quantity<T...>>>(cnt, *this);
 }
 
-} // namespace quantt
+} // namespace quantit
 
 #endif /* BBF1F73E_87CC_4C69_9CCC_5D2526535A4F */

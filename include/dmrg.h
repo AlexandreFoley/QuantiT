@@ -1,6 +1,6 @@
 /*
  * File: dmrg.h
- * Project: quantt
+ * Project: QuantiT
  * File Created: Tuesday, 11th August 2020 9:46:51 am
  * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)
  * -----
@@ -22,7 +22,7 @@
 #include <torch/torch.h>
 #include "doctest/doctest_proxy.h"
 
-namespace quantt
+namespace quantit
 {
 
 namespace
@@ -80,7 +80,7 @@ btensor trivial_edge(const btensor &lower_state, const btensor &Hamil, const bte
 qtt_TEST_CASE("btensor dmrg run test")
 {	
 	using cval = quantity<conserved::Z>;
-	auto T = quantt::rand({{{1,cval(1)},{1,cval(-1)}}, {{3,cval(-1)},{2,cval(1)}}, {{1,cval(-1)},{1,cval(1)}}, {{3,cval(1)},{2,cval(-1)}}},cval(0));
+	auto T = quantit::rand({{{1,cval(1)},{1,cval(-1)}}, {{3,cval(-1)},{2,cval(1)}}, {{1,cval(-1)},{1,cval(1)}}, {{3,cval(1)},{2,cval(-1)}}},cval(0));
 	bMPO Hamil(5, T);
 	dmrg_options opt;
 	opt.maximum_iterations = 10;
@@ -169,7 +169,7 @@ qtt_TEST_CASE("Btensor two sites MPO")
 	rstate[0] = rstate[0] / sqrt(contract(rstate, rstate)); // normalize
 	// fmt::print("normed state\n{}\n{}\n",rstate[0].reshape({4}),rstate[1].reshape({4}));
 	auto norm = contract(rstate,rstate);
-	qtt_CHECK(allclose(norm, quantt::ones({},cval(0))));
+	qtt_CHECK(allclose(norm, quantit::ones({},cval(0))));
 	// fmt::print("Norm2 \n{}\n",contract(rstate,rstate));
 	// fmt::print("MPS \n{}\n\n",squeeze(rstate[0])); 
 	// fmt::print("{}\n\n",squeeze(rstate[1]));
@@ -184,7 +184,7 @@ qtt_TEST_CASE("Btensor two sites MPO")
 	auto Lenv = trivial_edge(two_s_state,two_s_ising[0],two_s_state.inverse_cvals(),0,0,0);
 	auto Renv = trivial_edge(two_s_state,two_s_ising[0],two_s_state.inverse_cvals(),3,3,3);
 	auto H_av_upd = tensordot(
-	    two_s_state.conj(), quantt::details::hamil2site_times_state(two_s_state, two_s_ising[0], Lenv, Renv),
+	    two_s_state.conj(), quantit::details::hamil2site_times_state(two_s_state, two_s_ising[0], Lenv, Renv),
 	    {0, 1, 2, 3}, {0, 1, 2, 3});
 	// fmt::print("H_av {}\n\nH_av_2s {}\n\n H_av_upd {}\n\n",H_av,H_av_2s,H_av_upd);
 	qtt_CHECK(allclose(H_av, H_av_2s));
@@ -208,12 +208,12 @@ qtt_TEST_CASE("Btensor two sites MPO")
 	test = tensordot(Hpsi.conj(), Hpsi, {0, 1, 2, 3}, {0, 1, 2, 3});
 	qtt_CHECK(allclose(test, zeros_like(test)));// the input random state is always an eigenstate (in a degenerate manifold), the model is that simple.
 	auto a1_test =
-	    tensordot(Hpsi.conj(), quantt::details::hamil2site_times_state(Hpsi, two_s_ising[0], Lenv, Renv),
+	    tensordot(Hpsi.conj(), quantit::details::hamil2site_times_state(Hpsi, two_s_ising[0], Lenv, Renv),
 	                     {0, 1, 2, 3}, {0, 1, 2, 3});
 	qtt_CHECK(allclose(a1, a1_test));
 	// fmt::print("a1 \n{}\na1_test\n{}\n",a1,a1_test);
 	auto H_av_Pupd = tensordot(
-	    psi_update.conj(), quantt::details::hamil2site_times_state(psi_update, two_s_ising[0], Lenv, Renv),
+	    psi_update.conj(), quantit::details::hamil2site_times_state(psi_update, two_s_ising[0], Lenv, Renv),
 	    {0, 1, 2, 3}, {0, 1, 2, 3});
 	// fmt::print("actual update energie: \n{}\n", H_av_Pupd);
 	// fmt::print("predicted update energie: \n{}\n", E);
@@ -259,7 +259,7 @@ qtt_TEST_CASE("Two sites MPO")
 	    torch::tensordot(two_s_state, torch::tensordot(two_s_ising[0], two_s_state, {4, 5}, {1, 2}), {1, 2}, {1, 2}));
 	auto triv_env = torch::ones({1, 1, 1});
 	auto H_av_upd = torch::tensordot(
-	    two_s_state, quantt::details::hamil2site_times_state(two_s_state, two_s_ising[0], triv_env, triv_env),
+	    two_s_state, quantit::details::hamil2site_times_state(two_s_state, two_s_ising[0], triv_env, triv_env),
 	    {0, 1, 2, 3}, {0, 1, 2, 3});
 
 	qtt_CHECK(torch::allclose(H_av, H_av_2s));
@@ -277,16 +277,16 @@ qtt_TEST_CASE("Two sites MPO")
 	qtt_CHECK(torch::allclose(tensordot(Hpsi, two_s_state, {0, 1, 2, 3}, {0, 1, 2, 3}), torch::zeros({})));
 	qtt_CHECK(torch::allclose(tensordot(Hpsi, Hpsi, {0, 1, 2, 3}, {0, 1, 2, 3}), torch::ones({})));
 	auto a1_test =
-	    torch::tensordot(Hpsi, quantt::details::hamil2site_times_state(Hpsi, two_s_ising[0], triv_env, triv_env),
+	    torch::tensordot(Hpsi, quantit::details::hamil2site_times_state(Hpsi, two_s_ising[0], triv_env, triv_env),
 	                     {0, 1, 2, 3}, {0, 1, 2, 3});
 	qtt_CHECK(torch::allclose(a1, a1_test));
 	// fmt::print("a1 \n{}\na1_test\n{}\n",a1,a1_test);
 	auto H_av_Pupd = torch::tensordot(
-	    psi_update, quantt::details::hamil2site_times_state(psi_update, two_s_ising[0], triv_env, triv_env),
+	    psi_update, quantit::details::hamil2site_times_state(psi_update, two_s_ising[0], triv_env, triv_env),
 	    {0, 1, 2, 3}, {0, 1, 2, 3});
 	// fmt::print("actual update energie: \n{}\n", H_av_Pupd);
 	// fmt::print("predicted update energie: \n{}\n", E);
 }
-} // namespace quantt
+} // namespace quantit
 
 #endif /* E8650E72_8C05_4D74_98C7_61F4FD428B39 */
