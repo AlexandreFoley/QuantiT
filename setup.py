@@ -66,7 +66,7 @@ setup(
     include_package_data=True,
     extras_require={"test": ["pytest"]},
     cmake_args=['-DEMIT_PROFILER:BOOL=OFF','-DUSE_EXTERN_TORCH:BOOL=OFF',
-    "-DTORCH_INSTALL_RPATH:STRING={}".format(torch_rpath),"-DDISABLE_DOCTEST:BOOL=TRUE"],
+    "-DTORCH_INSTALL_RPATH:STRING={}".format(torch_rpath),"-DDISABLE_DOCTEST:BOOL=TRUE","-DBUILD_SHARED_LIBS:BOOL=ON"],
     python_requires=">=3.6",
     install_requires = ["torch","numpy",]
 )

@@ -31,3 +31,12 @@ target_include_directories(QuantiT PUBLIC ../extern/boost ../extern/doctest ../i
 
 # All users of this library will need at least C++17
 target_compile_features(QuantiT PUBLIC cxx_std_17)
+
+if(SKBUILD)
+   install(TARGETS QuantiT DESTINATION ./lib )
+   install(DIRECTORY "${CMAKE_SOURCE_DIR}/include/" DESTINATION ./include)
+   install(DIRECTORY "${CMAKE_SOURCE_DIR}/extern/doctest" DESTINATION ./extern/doctest)
+   install(DIRECTORY "${CMAKE_SOURCE_DIR}/extern/boost" DESTINATION ./extern/boost)
+   install(DIRECTORY "${CMAKE_SOURCE_DIR}/extern/nanobench" DESTINATION ./extern/nanobench)
+   set_target_properties(QuantiT PROPERTIES INSTALL_RPATH ${TORCH_INSTALL_RPATH})
+endif()

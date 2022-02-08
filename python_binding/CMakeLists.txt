@@ -28,10 +28,14 @@ if(pybind11_FOUND)
                    COMMAND ${CMAKE_COMMAND} -E copy_if_different
                    ${PY_EX}
                    $<TARGET_FILE_DIR:quantit>)
-
+if(APPLE)
+set(ORIGIN "@loader_path")
+else()
+set(ORIGIN "$ORIGIN") ##needs to be tested. LINUX!
+endif()
  if(SKBUILD)
    install(TARGETS quantit DESTINATION .)
-   set_target_properties(quantit PROPERTIES INSTALL_RPATH ${TORCH_INSTALL_RPATH})
+   set_target_properties(quantit PROPERTIES INSTALL_RPATH "${TORCH_INSTALL_RPATH};${ORIGIN}/lib")
    #The result of this isn't good... looks like a temporary folder.
    message(STATUS "Using scikit-build, RPATH:${TORCH_INSTALL_RPATH}")
  endif()

@@ -30,7 +30,8 @@ else()
 endif()
 
 set(CMAKE_CXX_STANDARD 17)
-
+set(CMAKE_CXX_STANDARD_REQUIRED True)
+option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
 
 set(Python3_FIND_UNVERSIONED_NAMES "FIRST") 
 find_package(Python3 COMPONENTS Interpreter Development)
