@@ -13,7 +13,7 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 if(DEFINED ENV{EBROOTGENTOO})# we're on a compute canada supercomputer
 
     MESSAGE("computecanada detected")
-    SET(CMAKE_SKIP_INSTALL_RPATH ON)
+    # SET(CMAKE_SKIP_INSTALL_RPATH ON) #We tell cmake what to add to the rpath manually. doesn't cause conflict with CC automatic rpaths
     SET(CMAKE_SYSTEM_PREFIX_PATH "$ENV{EBROOTGENTOO}")
     SET(PYTHON_EXECUTABLE "$ENV{EBROOTPYTHON}/bin/python")
     SET(CUDA_TOOLKIT_ROOT_DIR "$ENV{EBROOTCUDA}")
