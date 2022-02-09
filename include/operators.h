@@ -1,6 +1,6 @@
 /*
  * File: operators.h
- * Project: quantt
+ * Project: QuantiT
  * File Created: Monday, 17th August 2020 9:16:18 am
  * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)
  * -----
@@ -20,7 +20,7 @@
 #include "doctest/doctest_proxy.h"
 
 #include <fmt/core.h>
-namespace quantt
+namespace quantit
 {
 
 namespace
@@ -100,6 +100,6 @@ qtt_TEST_CASE("Pauli matrices")
 	// fmt::print("size of torch tensor {}\n",sizeof(sx));
 }
 
-} // namespace quantt
+} // namespace quantit
 
 #endif /* A4334AE3_0ED7_40A8_999C_F388D4675687 */

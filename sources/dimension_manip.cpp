@@ -1,6 +1,6 @@
 /*
  * File: dimension_manip.cpp
- * Project: quantt
+ * Project: QuantiT
  * File Created: Thursday, 6th August 2020 11:53:28 am
  * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)
  * -----
@@ -14,7 +14,7 @@
 
 #include "dimension_manip.h"
 
-namespace quantt{
+namespace quantit{
 
 std::vector<int64_t> concat(std::initializer_list<torch::IntArrayRef> in)
 {
@@ -60,4 +60,4 @@ torch::IntArrayRef slice(const std::vector<int64_t>& in, size_t start, size_t n)
 	return torch::IntArrayRef(in).slice(start,n);
 }
 
-}//quantt
+}//QuantiT

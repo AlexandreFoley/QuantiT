@@ -1,6 +1,6 @@
 /*
  * File: models.h
- * Project: quantt
+ * Project: QuantiT
  * File Created: Monday, 17th August 2020 10:31:00 am
  * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)
  * -----
@@ -19,13 +19,13 @@
 
 #include "doctest/doctest_proxy.h"
 
-namespace quantt
+namespace quantit
 {
 	/**
 	 * Generate the hamiltonian for the Heisenberg model.
 	 */
 	MPO Heisenberg(torch::Tensor J,size_t lenght);
-	bMPO Heisenberg(torch::Tensor J, size_t lenght,btensor local_shape);
+	bMPO Heisenberg(torch::Tensor J, size_t lenght,const btensor& local_shape);
 	namespace details
 	{
 		MPO Heisenberg_impl(torch::Tensor J,size_t lenght);
@@ -35,6 +35,7 @@ namespace quantt
 	 * Generate the Hamiltonian for the first neighbor 1D Hubbard model. The enrgy scale is defined by the first neighbor hopping t=1.
 	 */
 	MPO Hubbard(torch::Tensor U,torch::Tensor mu,size_t lenght); 
+	bMPO Hubbard(torch::Tensor U,torch::Tensor mu,size_t lenght,const btensor& local_shape); 
 
 
 qtt_TEST_CASE("Heisenberg")
@@ -70,7 +71,7 @@ qtt_TEST_CASE("Heisenberg")
 }
 
 
-}//quantt
+}//QuantiT
 
 
 #endif /* FC769B14_0341_4EB5_9CD2_E7CA2865AD73 */

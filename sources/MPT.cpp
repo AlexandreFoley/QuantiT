@@ -1,6 +1,6 @@
 /*
  * File: MPT.cpp
- * Project: QuanTT
+ * Project: QuantiT
  * File Created: Thursday, 23rd July 2020 10:32:10 am
  * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)
  * -----
@@ -21,7 +21,7 @@
 #include "LinearAlgebra.h"
 #include "dmrg.h"
 // TODO: remove all explicit torch:: can ADL be my friend here?
-namespace quantt
+namespace quantit
 {
 
 void MPS::move_oc(int i)
@@ -46,9 +46,9 @@ void MPS::move_oc(int i)
 		auto &next_oc = (*this)[orthogonality_center - 1];
 		dims = curr_oc.sizes();
 
-		// TODO: rewrite this to use quantt's SVD implementation. takes care of the reshaping
+		// TODO: rewrite this to use QuantiT's SVD implementation. takes care of the reshaping
 		// auto reshaped = curr_oc.reshape({dims[0], prod(1, dims.size())});
-		auto [u, d, v] = quantt::svd(curr_oc,1);
+		auto [u, d, v] = quantit::svd(curr_oc,1);
 		curr_oc = v.permute({2,0,1}).conj(); // needs testing. svd documentation makes no mention of complex numbers case.
 		auto ud = u.mul(d); 
 		next_oc = torch::tensordot(next_oc, ud, {2}, {0});
@@ -61,9 +61,9 @@ void MPS::move_oc(int i)
 		auto &curr_oc = (*this)[orthogonality_center];
 		auto &next_oc = (*this)[orthogonality_center + 1];
 		dims = curr_oc.sizes();
-		// TODO: use quantt's SVD implementation. takes care of the reshaping
+		// TODO: use QuantiT's SVD implementation. takes care of the reshaping
 		// auto reshaped = curr_oc.reshape({prod(0, dims.size() - 1), dims[dims.size() - 1]});
-		auto [u, d, v] = quantt::svd(curr_oc,2);
+		auto [u, d, v] = quantit::svd(curr_oc,2);
 		curr_oc = u;
 
 		auto dv = v.mul(d).t().conj(); 
@@ -84,7 +84,7 @@ void bMPS::move_oc(int i)
 		auto &curr_oc = (*this)[orthogonality_center];
 		auto &next_oc = (*this)[orthogonality_center - 1];
 
-		auto [u, d, v] = quantt::svd(curr_oc,1);
+		auto [u, d, v] = quantit::svd(curr_oc,1);
 		curr_oc = v.conj().permute({2,0,1}); // needs testing. svd documentation makes no mention of complex numbers case.
 
 		// testing shows that v is only transposed in the complex number case as well.
@@ -98,7 +98,7 @@ void bMPS::move_oc(int i)
 		// move left
 		auto &curr_oc = (*this)[orthogonality_center];
 		auto &next_oc = (*this)[orthogonality_center + 1];
-		// TODO: use quantt's SVD implementation. takes care of the reshaping
+		// TODO: use QuantiT's SVD implementation. takes care of the reshaping
 		auto [u, d, v] = svd(curr_oc,2);
 		curr_oc = u;
 
@@ -140,9 +140,16 @@ bool MPO::check_one(const Tens &tens)
 	return (sizes.size() == 4 and sizes[0] == sizes[2]);
 }
 
-bool bMPO::check_one(const Tens &tens) { return tens.dim() == 4 and Tens::check_product_compat(tens, tens, {0}, {2}); }
+bool bMPS::check_one(const Tens &tens) {
+		// check correctness on fill candidate
+	 return tens.dim() == 3 and Tens::check_product_compat(tens, tens, {0}, {2});
+	  }
+bool bMPO::check_one(const Tens &tens) {
+		// check correctness on fill candidate
+	 return tens.dim() == 4 and Tens::check_product_compat(tens, tens, {0}, {2});
+	  }
 
-void bMPO::coalesce(btensor::Scalar cutoff) {
+bMPO& bMPO::coalesce(btensor::Scalar cutoff) {
 	auto it = begin();
 	auto next_it = it+1;
 	for(; next_it != end();++it,++next_it)
@@ -154,6 +161,7 @@ void bMPO::coalesce(btensor::Scalar cutoff) {
 		next = tensordot(V.conj(),next,{0},{0});
 		*it = U.permute({0,1,3,2});
 	}
+	return *this;
 }
 
 bool MPO::check_ranks() const
@@ -354,12 +362,13 @@ void generate_random_string(std::vector<size_t>::iterator out, size_t L, T &&phy
 	// error we failed!
 }
 template <class T>
-MPS random_MPS_impl(size_t length, int64_t bond_dim, T phys_dim, torch::TensorOptions opt)
+MPS random_MPS_impl(size_t length, size_t bond_dim, T phys_dim, torch::TensorOptions opt)
 {
 	MPS out(length);
 	for (auto i = 0u; i < length; ++i)
 	{
-		out[i] = torch::rand({bond_dim, phys_dim(i), bond_dim}, opt);
+		auto bd = static_cast<int64_t>(bond_dim);
+		out[i] = torch::rand({bd, static_cast<int64_t>(phys_dim(i)), bd}, opt);
 	}
 	using namespace torch::indexing;
 	out[0] = out[0].index({Slice(0, 1), Ellipsis});                   // chop off the extra bond on the edges of the MPS
@@ -448,12 +457,12 @@ MPS random_MPS(size_t bond_dim, const MPO &hamil, torch::TensorOptions opt)
 	return random_MPS_impl(
 	    hamil.size(), bond_dim, [&hamil](size_t i) { return hamil[i].sizes()[3]; }, opt);
 }
-MPS random_MPS(size_t length, int64_t bond_dim, int64_t phys_dim, torch::TensorOptions opt = {})
+MPS random_MPS(size_t length, size_t bond_dim, size_t phys_dim, torch::TensorOptions opt)
 {
 	return random_MPS_impl(
 	    length, bond_dim, [phys_dim](size_t i) { return phys_dim; }, opt);
 }
-MPS random_MPS(size_t bond_dim, std::vector<int64_t> phys_dims, torch::TensorOptions opt = {})
+MPS random_MPS(size_t bond_dim, const std::vector<int64_t>& phys_dims, torch::TensorOptions opt )
 {
 	return random_MPS_impl(
 	    phys_dims.size(), bond_dim, [&phys_dims](size_t i) { return phys_dims[i]; }, opt);
@@ -530,4 +539,4 @@ bMPS random_MPS(size_t bond_dim, const std::vector<btensor> &phys_dim_spec, any_
 
 	return random_bMPS(bond_dim, phys_dim_spec, q_num,seed, opt);
 }
-} // namespace quantt
+} // namespace quantit

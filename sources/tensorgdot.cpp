@@ -1,6 +1,6 @@
 /*
  * File: tensorgdot.cpp
- * Project: quantt
+ * Project: QuantiT
  * File Created: Tuesday, 10th November 2020 11:01:46 am
  * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)
  * -----
@@ -15,7 +15,7 @@
 #include <ATen/WrapDimUtilsMulti.h>
 #include <fmt/core.h>
 #include <fmt/ranges.h>
-namespace quantt
+namespace quantit
 {
 
 /**
@@ -192,4 +192,4 @@ torch::Tensor& tensorgdot_(torch::Tensor& output, const torch::Tensor& input1, c
 	return output;
 }
 
-} // namespace quantt
+} // namespace quantit

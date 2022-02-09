@@ -1,6 +1,6 @@
 /*
  * File: main.cpp
- * Project: QuanTT
+ * Project: QuantiT
  * File Created: Thursday, 16th July 2020 1:47:39 pm
  * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)
  *
@@ -20,7 +20,7 @@
 #include <ostream>
 #include <torch/torch.h>
 
-void print_MPS_dims(const quantt::MPS &mps)
+void print_MPS_dims(const quantit::MPS &mps)
 {
 	fmt::print("MPS size: ");
 	for (const auto &i : mps)
@@ -29,7 +29,6 @@ void print_MPS_dims(const quantt::MPS &mps)
 	}
 	fmt::print("\n");
 }
-
 int main()
 {
 	doctest::Context doctest_context;
@@ -37,8 +36,9 @@ int main()
 	                          "**"); // don't run the tests. with this qtt_CHECKS, qtt_REQUIRES, etc. should work
 	                                 // outside test context. not that i want to do that.
 
-	using namespace quantt;
+	using namespace quantit;
 	using namespace torch::indexing;
+	at::init_num_threads();
 	fmt::print("C++ standard version in use {}\n", __cplusplus);
 	torch::set_default_dtype(torch::scalarTypeToTypeMeta(
 	    torch::kFloat64)); // otherwise the type promotion always goes to floats when promoting a tensor
@@ -50,15 +50,33 @@ int main()
 		cuda_device = torch::Device(torch::kCUDA); // set the cuda_device to the actual gpu if it would work
 	}
 
-	auto X = torch::rand({5,10});
-	auto Y = torch::rand({10,5});
-	auto out = torch::zeros({5,5});
-	auto grad = out.grad();
+	auto X = torch::rand({5,10},torch::requires_grad());
+
+	// auto Y = torch::rand({10,5}, torch::requires_grad());
+	auto Y = X * 2;
+	auto out = Y.mean();
+	fmt::print("{}\n\n",out);
+	out.backward();
+	auto grad = X.grad();
 
 
-	out.backward(X);
+	fmt::print("{}\n",grad); // all 50 elements should be 2/50 = 0.04
 
-	fmt::print("{}\n",grad);
+	using cval = quantit::quantity<quantit::conserved::Z,quantit::conserved::Z>;
+	auto FermionShape = quantit::btensor({{{1,cval(0,0)},{1,cval(1,1)},{1,cval(1,-1)},{1,cval(2,0)}}},cval(0,0));
+	fmt::print("{}\n\n",FermionShape);
+	for(int i=0;i<4;++i)
+	{
+		for(auto& x:FermionShape.block_quantities({i}))
+		{
+			fmt::print("{} ",x);
+		}
+		for(auto& x:FermionShape.block_sizes({i}))
+		{
+			fmt::print("{} ",x);
+		}
+		fmt::print("\n\n");
+	}
 	
 	return 0;
 }

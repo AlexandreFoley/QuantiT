@@ -1,6 +1,8 @@
 build/
+_skbuild/
 .vscode/
 .history/
+test-env/*
 *.pdf
 *.dvi
 *.fls
@@ -15,3 +17,4 @@ Documentation/html/*
 Documentation/latex/*
 Documentation/xml/*
 extern/cuda/*
+*.egg*

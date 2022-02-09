@@ -1,6 +1,6 @@
 /*
  * File: LinearAlgebra.h
- * Project: quantt
+ * Project: QuantiT
  * File Created: Wednesday, 5th August 2020 11:38:57 am
  * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)
  * -----
@@ -28,7 +28,7 @@
 // // we don't use pytorch's macro so its fine to redefine them. 
 // #include "doctest.h"
 
-namespace quantt
+namespace quantit
 {
 
 /**
@@ -104,15 +104,15 @@ std::tuple<torch::Tensor,torch::Tensor> truncate(std::tuple<torch::Tensor,torch:
 std::tuple<torch::Tensor,torch::Tensor,torch::Tensor> svd(torch::Tensor A, size_t split,torch::Scalar tol,size_t min_size,size_t max_size, torch::Scalar pow = 2);
 std::tuple<torch::Tensor,torch::Tensor,torch::Tensor> svd(torch::Tensor A, size_t split,torch::Scalar tol, torch::Scalar pow = 2);
 std::tuple<torch::Tensor,torch::Tensor,torch::Tensor> svd(torch::Tensor A, size_t split);
-inline std::tuple<torch::Tensor,torch::Tensor,torch::Tensor> svd(torch::Tensor A, int split){return quantt::svd(A,size_t(split) );}
+inline std::tuple<torch::Tensor,torch::Tensor,torch::Tensor> svd(torch::Tensor A, int split){return quantit::svd(A,size_t(split) );}
 
 std::tuple<torch::Tensor,torch::Tensor> eig(torch::Tensor A, size_t split);
-inline std::tuple<torch::Tensor,torch::Tensor> eig(torch::Tensor A, int split){return quantt::eig(A,size_t(split) );}
+inline std::tuple<torch::Tensor,torch::Tensor> eig(torch::Tensor A, int split){return quantit::eig(A,size_t(split) );}
 std::tuple<torch::Tensor,torch::Tensor> eig(torch::Tensor A, size_t split,torch::Scalar tol, torch::Scalar pow = 1);
 std::tuple<torch::Tensor,torch::Tensor> eig(torch::Tensor A, size_t split,torch::Scalar tol,size_t min_size,size_t max_size, torch::Scalar pow = 1);
 
 std::tuple<torch::Tensor,torch::Tensor> eigh(torch::Tensor A, size_t split);
-inline std::tuple<torch::Tensor,torch::Tensor> eigh(torch::Tensor A, int split){return quantt::eigh(A,size_t(split) );}
+inline std::tuple<torch::Tensor,torch::Tensor> eigh(torch::Tensor A, int split){return quantit::eigh(A,size_t(split) );}
 std::tuple<torch::Tensor,torch::Tensor> eigh(torch::Tensor A, size_t split,torch::Scalar tol, torch::Scalar pow = 1);
 std::tuple<torch::Tensor,torch::Tensor> eigh(torch::Tensor A, size_t split,torch::Scalar tol, size_t min_size,size_t max_size,torch::Scalar pow = 1);
 
@@ -146,5 +146,5 @@ qtt_TEST_CASE("Linear Algebra for Tensor network")
 	qtt_CHECK(torch::allclose(rs_o, s));
 }
 
-}//namespace quantt
+}//namespace quantit
 #endif /* C5116C03_2050_4F3F_8DCF_C1C103E0B22A */

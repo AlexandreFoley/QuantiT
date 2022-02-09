@@ -1,6 +1,6 @@
 /*
  * File: method_detect.h
- * Project: quantt
+ * Project: QuantiT
  * File Created: Friday, 4th September 2020 1:08:51 pm
  * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)
  * -----
@@ -17,7 +17,7 @@
 #include <tuple>
 #include <type_traits>
 
-namespace quantt
+namespace quantit
 {
 
 /*
@@ -167,5 +167,5 @@ constexpr decltype(auto) for_each2(Tuple1 &&T1, Tuple2 &&T2, F &&f)
 	    },
 	    T1);
 }
-} // namespace quantt
+} // namespace quantit
 #endif /* D5434AD3_7D18_4065_A1ED_CD37C3E10D7A */

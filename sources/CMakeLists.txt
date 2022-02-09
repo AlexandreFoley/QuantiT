@@ -15,30 +15,28 @@ set(HEADER_LIST "${INC_DIR}/MPT.h" "${INC_DIR}/LinearAlgebra.h" "${INC_DIR}/dime
                 "${BST_DIR}/stl_interfaces/sequence_container_interface.hpp" "${GRP_DIR}/Composite/quantity_vector.h"
                 "${GRP_DIR}/Composite/quantity_impl.h" "${GRP_DIR}/Composite/cquantity.h" "${GRP_DIR}/Composite/quantity_vector_impl.h"
                 "${GRP_DIR}/quantity.h" "${GRP_DIR}/quantity_utils.h" "${BTEN_DIR}/btensor.h" "${BTEN_DIR}/flat_map.h"
-                "${INC_DIR}/tensorgdot.h" "${BTEN_DIR}/LinearAlgebra.h" )
+                "${INC_DIR}/tensorgdot.h" "${BTEN_DIR}/LinearAlgebra.h" "${INC_DIR}/dmrg_logger.h" "${INC_DIR/dmrg_options.h}")
 
-set(SOURCE_LIST )
-# if(EMIT_PROFILER)
-#     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pg")
-#     SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pg")
-#     SET(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -pg")
-#     # SET(CMAKE_STATIC_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -pg")
-# endif(EMIT_PROFILER)
+set(SOURCE_LIST MPT.cpp LinearAlgebra.cpp dimension_manip.cpp torch_formatter.cpp dmrg.cpp operators.cpp 
+models.cpp any_quantity.cpp groups.cpp btensor.cpp tensorgdot.cpp btensor_linalg.cpp dmrg_logger.cpp )
 
 # Make an automatic library - will be static or dynamic based on user setting
-add_library(QuanTT_lib MPT.cpp LinearAlgebra.cpp dimension_manip.cpp torch_formatter.cpp dmrg.cpp operators.cpp 
-            models.cpp any_quantity.cpp groups.cpp btensor.cpp tensorgdot.cpp btensor_linalg.cpp  ${HEADER_LIST})
-
-
+add_library(QuantiT ${SOURCE_LIST} ${HEADER_LIST})
 
 # We need this directory, and users of our library will need it too
-target_include_directories(QuanTT_lib PUBLIC ../extern/boost ../extern/doctest ../include)
+target_include_directories(QuantiT PUBLIC ../extern/boost ../extern/doctest ../include)
 
 # This doesn't depends on (header only) boost. present as an exemple.
-# target_link_libraries(QuanTT_lib PRIVATE Boost::boost)
+# target_link_libraries(QuantiT_lib PRIVATE Boost::boost)
 
 # All users of this library will need at least C++17
-target_compile_features(QuanTT_lib PUBLIC cxx_std_17)
+target_compile_features(QuantiT PUBLIC cxx_std_17)
 
-# # IDEs should put the headers in a nice place
-# source_group(TREE "${PROJECT_SOURCE_DIR}/include" PREFIX "Header Files" FILES ${HEADER_LIST})
+if(SKBUILD)
+   install(TARGETS QuantiT DESTINATION ./lib )
+   install(DIRECTORY "${CMAKE_SOURCE_DIR}/include/" DESTINATION ./include)
+   install(DIRECTORY "${CMAKE_SOURCE_DIR}/extern/doctest" DESTINATION ./extern/doctest)
+   install(DIRECTORY "${CMAKE_SOURCE_DIR}/extern/boost" DESTINATION ./extern/boost)
+   install(DIRECTORY "${CMAKE_SOURCE_DIR}/extern/nanobench" DESTINATION ./extern/nanobench)
+   set_target_properties(QuantiT PROPERTIES INSTALL_RPATH ${TORCH_INSTALL_RPATH})
+endif()

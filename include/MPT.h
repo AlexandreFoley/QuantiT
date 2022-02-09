@@ -1,6 +1,6 @@
 /*
  * File: MPT.h
- * Project: QuanTT
+ * Project: QuantiT
  * File Created: Thursday, 23rd July 2020 9:38:33 am
  * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)
  * -----
@@ -25,7 +25,7 @@
 
 #include "doctest/doctest_proxy.h"
 
-namespace quantt
+namespace quantit
 {
 
 // forward declaration for dmrg_impl.
@@ -110,6 +110,9 @@ class vector_lift
 	friend class vector_lift;   // I don't know of a way to limit template friend to types with the same tensors.
 	template <class T, class U> // can copy and move a vector_lift no matter the derived class.
 	vector_lift(const vector_lift<T, U> &other) : tensors(other.tensors)
+	{
+	}
+	explicit vector_lift(const std::vector<Tens> other) : tensors(std::move(other))
 	{
 	}
 	template <class T, class U>
@@ -269,13 +272,14 @@ class vector_lift
 class MPT final : public vector_lift<MPT>
 {
   public:
-	MPT() : vector_lift<MPT>() {}
-	MPT(size_type size) : vector_lift<MPT>(size) {}
-	MPT(size_type size, const Tens &val) : vector_lift<MPT>(size, val) {}
-	MPT(const MPT &other) : vector_lift<MPT>(other) {}
-	MPT(MPT &&other) noexcept : vector_lift<MPT>(std::move(other)) {}
-	MPT(std::initializer_list<Tens> initl) : vector_lift<MPT>(initl) {}
-	MPT(const_iterator begin, const_iterator end) : vector_lift(begin, end) {}
+	// MPT() : vector_lift<MPT>() {}
+	// MPT(size_type size) : vector_lift<MPT>(size) {}
+	// MPT(size_type size, const Tens &val) : vector_lift<MPT>(size, val) {}
+	// MPT(const MPT &other) : vector_lift<MPT>(other) {}
+	// MPT(MPT &&other) noexcept : vector_lift<MPT>(std::move(other)) {}
+	// MPT(std::initializer_list<Tens> initl) : vector_lift<MPT>(initl) {}
+	// MPT(const_iterator begin, const_iterator end) : vector_lift(begin, end) {}
+	using vector_lift<MPT>::vector_lift; //import base class constructors as they are.
 
 	virtual ~MPT() = default;
 
@@ -312,6 +316,15 @@ class MPS final
 	MPS(size_type size, size_t oc) : vector_lift<MPS>(size), orthogonality_center(oc) {}
 	MPS(const MPS &other) : vector_lift(other), orthogonality_center(other.orthogonality_center) {}
 	MPS(MPS &&other) noexcept : vector_lift(std::move(other)), orthogonality_center(other.orthogonality_center) {}
+	MPS(std::vector<Tens> initl, size_t oc = 0) : vector_lift<MPS>(std::move(initl)), orthogonality_center(oc)
+	{
+		bool ok = check_ranks();
+		if (not ok)
+			throw std::invalid_argument("one or more input Tensors has rank differing from 3 and/or a bond dimension "
+			                            "mismatch with its neighbor (dims 0 and 2).");
+		if (oc >= size() and oc != 0)
+			throw std::invalid_argument("orthogonality center position greater than the number of defined tensors.");
+	}
 	MPS(std::initializer_list<Tens> initl, size_t oc = 0) : vector_lift<MPS>(initl), orthogonality_center(oc)
 	{
 		bool ok = check_ranks();
@@ -404,6 +417,17 @@ class MPO final : public vector_lift<MPO> // specialization for rank 4 tensors
 	MPO(size_type size) : vector_lift<MPO>(size) {}
 	MPO(const MPO &other) : vector_lift<MPO>(other) {}
 	MPO(MPO &&other) noexcept : vector_lift<MPO>(std::move(other)) {}
+	MPO(std::vector<Tens> initl) : vector_lift<MPO>(std::move(initl))
+	{
+		bool ok = check_ranks();
+		// @cond
+		if (not ok)
+		{
+			throw std::invalid_argument("one or more input Tensors has rank differing from 4 and/or a bond dimension "
+			                            "mismatch with its neighbor (dims 0 and 2).");
+		}
+		// @endcond
+	}
 	MPO(std::initializer_list<Tens> initl) : vector_lift<MPO>(initl)
 	{
 		bool ok = check_ranks();
@@ -461,13 +485,14 @@ inline void swap(MPO &lhs, MPO &rhs) noexcept { lhs.swap(rhs); }
 class bMPT final : public vector_lift<bMPT, btensor>
 {
   public:
-	bMPT() : vector_lift<bMPT, btensor>() {}
-	bMPT(size_type size) : vector_lift<bMPT, btensor>(size) {}
-	bMPT(size_type size, const Tens &val) : vector_lift<bMPT, btensor>(size, val) {}
-	bMPT(const bMPT &other) : vector_lift(other) {}
-	bMPT(bMPT &&other) noexcept : vector_lift(std::move(other)) {}
-	bMPT(std::initializer_list<Tens> initl) : vector_lift<bMPT, btensor>(initl) {}
-	bMPT(const_iterator begin, const_iterator end) : vector_lift(begin, end) {}
+	// bMPT() : vector_lift<bMPT, btensor>() {}
+	// bMPT(size_type size) : vector_lift<bMPT, btensor>(size) {}
+	// bMPT(size_type size, const Tens &val) : vector_lift<bMPT, btensor>(size, val) {}
+	// bMPT(const bMPT &other) : vector_lift(other) {}
+	// bMPT(bMPT &&other) noexcept : vector_lift(std::move(other)) {}
+	// bMPT(std::initializer_list<Tens> initl) : vector_lift<bMPT, btensor>(initl) {}
+	// bMPT(const_iterator begin, const_iterator end) : vector_lift(begin, end) {}
+	using vector_lift<bMPT,btensor>::vector_lift;
 
 	virtual ~bMPT() = default;
 
@@ -504,6 +529,15 @@ class bMPS final : public vector_lift<bMPS, btensor> // specialization for rank 
 	bMPS(size_type size, size_t oc) : vector_lift<bMPS, btensor>(size), orthogonality_center(std::min(oc, size - 1)) {}
 	bMPS(const bMPS &other) : vector_lift(other), orthogonality_center(other.orthogonality_center) {}
 	bMPS(bMPS &&other) noexcept : vector_lift(std::move(other)), orthogonality_center(other.orthogonality_center) {}
+	bMPS(std::vector<Tens> initl, size_t oc = 0) : vector_lift<bMPS, btensor>(std::move(initl)), orthogonality_center(oc)
+	{
+		bool ok = check_ranks();
+		if (not ok)
+			throw std::invalid_argument("one or more input Tensors has rank differing from 3 and/or a bond dimension "
+			                            "mismatch with its neighbor (dims 0 and 2).");
+		if (oc >= size() and oc != 0)
+			throw std::invalid_argument("orthogonality center position greater than the number of defined tensors.");
+	}
 	bMPS(std::initializer_list<Tens> initl, size_t oc = 0) : vector_lift<bMPS, btensor>(initl), orthogonality_center(oc)
 	{
 		bool ok = check_ranks();
@@ -607,6 +641,17 @@ class bMPO final : public vector_lift<bMPO, btensor> // specialization for rank 
 		}
 		// @endcond
 	}
+	bMPO(std::vector<Tens> initl) : vector_lift<bMPO, btensor>(std::move(initl))
+	{
+		bool ok = check_ranks();
+		// @cond
+		if (not ok)
+		{
+			throw std::invalid_argument("one or more input Tensors has rank differing from 4 and/or a bond dimension "
+			                            "mismatch with its neighbor (dims 0 and 2).");
+		}
+		// @endcond
+	}
 
 	bMPO(size_type size, const Tens &val) : vector_lift<bMPO, btensor>(size, val)
 	{
@@ -648,18 +693,18 @@ class bMPO final : public vector_lift<bMPO, btensor> // specialization for rank 
 	}
 
 	static bMPO empty_copy(const bMPO &in) { return bMPO(in.size()); }
-	void coalesce(btensor::Scalar cutoff=0);
+	bMPO& coalesce(btensor::Scalar cutoff=0);
 };
 inline void swap(bMPO &lhs, bMPO &rhs) noexcept { lhs.swap(rhs); }
 
 btensor contract(const bMPS &a, const bMPS &b, const bMPO &obs);
 btensor contract(const bMPS &a, const bMPS &b, const bMPO &obs, btensor left_edge, const btensor &right_edge);
-template <class T, class S,
-          class Z = std::enable_if_t<std::is_base_of_v<vector_lift<T, S>, T>>> // Z only serves to prevent call on
+template <class T,
+          class Z = std::enable_if_t<std::is_base_of_v<vector_lift<T, typename T::Tens>, T>>> // Z only serves to prevent call on
                                                                                // something else than MPT,MPS and MPO.
 void print_dims(const T &mps)
 {
-	fmt::print("MPS size: ");
+	fmt::print("MPN sizes: ");
 	for (const auto &i : mps)
 	{
 		fmt::print("{},", i.sizes());
@@ -865,7 +910,7 @@ qtt_TEST_CASE("contraction equivalence tests")
  *
  * to declare it.
  *
- * @tparam T tensor train network or single tensor: quantt::btensor, torch::Tensor, MPS,MPO,MPT, bMPS,bMPO or bMPT
+ * @tparam T tensor train network or single tensor: quantit::btensor, torch::Tensor, MPS,MPO,MPT, bMPS,bMPO or bMPT
  * @tparam X void
  */
 template <class T, class X = void>
@@ -899,5 +944,5 @@ struct dependant_tensor_network<S, std::enable_if_t<std::is_base_of_v<vector_lif
     : dependant_tensor_network<btensor>
 {
 };
-} // namespace quantt
+} // namespace quantit
 #endif /* ADA5A359_8ACF_448D_91BC_09C085F510CC */

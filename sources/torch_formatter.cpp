@@ -1,6 +1,6 @@
 /*
  * File: tens_formatter.cpp
- * Project: QuanTT
+ * Project: QuantiT
  * File Created: Tuesday, 21st July 2020 6:10:10 pm
  * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)
  * -----
@@ -16,7 +16,7 @@
 
 #include "torch_formatter.h"
 
-void quantt::print(const torch::Tensor& X)
+void quantit::print(const torch::Tensor& X)
 {
 	fmt::print("{}\n\n", X);
 }

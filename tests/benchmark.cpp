@@ -1,6 +1,6 @@
 /*
  * File: benchmark.cpp
- * Project: quantt
+ * Project: QuantiT
  * File Created: Monday, 20th September 2021 12:59:11 pm
  * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)
  * Copyright (c) 2021 Alexandre Foley
@@ -47,21 +47,21 @@ int main()
 	torch::set_num_threads(1);
 	torch::set_default_dtype(torch::scalarTypeToTypeMeta(torch::kFloat64));
 	torch::InferenceMode _GUARD;
-	// {	using cval = quantt::quantity<quantt::conserved::Z>;
+	// {	using cval = quantit::quantity<quantit::conserved::Z>;
 	// 	auto r = std::mt19937(std::random_device()());
 	// 	auto size_generator = std::uniform_int_distribution(10, 40); // size generator
 	// 	auto cval_generator = std::uniform_int_distribution(-5, 5);  // conserved value generator
 	// 	auto sg = [&]() { return size_generator(r); };
 	// 	auto cg = [&]() { return cval_generator(r); };
 	// 	auto shapeA =
-	// 	    quantt::btensor({{{sg(), cval(cg())}, {sg(), cval(cg())}, {sg(), cval(cg())}, {sg(), cval(cg())}}},
-	// cval(0)); 	auto shapeB = quantt::btensor({{{1, cval(cg())}, {1, cval(cg())}, {1, cval(cg())}}}, cval(0)); 	auto
-	// shapeC = quantt::shape_from(shapeA, shapeB).reshape({}).conj(); 	auto shapeX = shape_from(shapeA, shapeB, shapeC);
+	// 	    quantit::btensor({{{sg(), cval(cg())}, {sg(), cval(cg())}, {sg(), cval(cg())}, {sg(), cval(cg())}}},
+	// cval(0)); 	auto shapeB = quantit::btensor({{{1, cval(cg())}, {1, cval(cg())}, {1, cval(cg())}}}, cval(0)); 	auto
+	// shapeC = quantit::shape_from(shapeA, shapeB).reshape({}).conj(); 	auto shapeX = shape_from(shapeA, shapeB, shapeC);
 	// 	auto tX = torch::rand({200, 200});
-	// 	auto X = quantt::rand_like(shapeX);
+	// 	auto X = quantit::rand_like(shapeX);
 	// 	auto Y = X.conj();
 
-	// quantt::btensor Z;}
+	// quantit::btensor Z;}
 	// DNO(Z = X.tensordot(Y, {0}, {0}));
 	// auto tZ = torch::tensordot(tX,tX,{0},{0});
 	// fmt::print("{}\n",Z.begin());
@@ -93,7 +93,7 @@ int main()
 	// });
 	// ankerl::nanobench::Bench().minEpochIterations(1000).run("tensorgdot",[&]()
 	// {
-	// 	DNO(quantt::tensorgdot(O,X,Y,{2},{0}));
+	// 	DNO(quantit::tensorgdot(O,X,Y,{2},{0}));
 	// 	DNO(O*=0);//zeros it out
 	// });
 	#ifdef E_PROFILER

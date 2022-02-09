@@ -1,6 +1,6 @@
 /*
  * File: dimension_manip.h
- * Project: quantt
+ * Project: QuantiT
  * File Created: Thursday, 6th August 2020 11:49:57 am
  * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)
  * -----
@@ -22,7 +22,7 @@
 
 #include "doctest/doctest_proxy.h"
 
-namespace quantt{
+namespace quantit{
 /**
  * concatenate into a single list multiple tensor dimension lists.
  * concat({a,b,c},{d,e,f},{g,h,j}) -> {a,b,c,d,e,f,g,h,j}
@@ -80,7 +80,7 @@ qtt_TEST_CASE("dimension manipulation tools")
 
 
 
-}//quantt
+}//QuantiT
 
 
 

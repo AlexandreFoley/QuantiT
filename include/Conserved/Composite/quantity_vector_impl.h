@@ -1,6 +1,6 @@
 /*
  * File: quantity_vector_impl.h
- * Project: quantt
+ * Project: QuantiT
  * File Created: Monday, 28th September 2020 1:46:36 pm
  * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)
  * -----
@@ -17,7 +17,37 @@
 #include "Conserved/Composite/cquantity.h"
 #include "boost/stl_interfaces/iterator_interface.hpp"
 #include <numeric>
-namespace quantt
+#include <vector>
+
+#ifdef QTT_APPLE
+namespace quantit
+{
+namespace 
+{
+	class DUMMY
+	{};
+
+}
+
+}
+namespace std
+{
+	template<>
+	class vector<quantit::DUMMY,std::allocator<quantit::DUMMY> >
+	{
+	public:
+		//This is pure trickery to do forbiden operation on iterators. all template of vector are declared friend to all iterator used by any vector in __wrap_iterator on the mac. hopefully this is portable.
+		//This is way more open than it strictly need to be and clearly an implementation detail.
+		// it is entirely possible that some implementation of vector's iterator are not as wide open to (template) abuse.
+		template<class U,class T,class pointer_type>
+		static U convert_iterator(const T& t)
+		{
+			return U(static_cast<pointer_type>(t.base()));
+		}
+	};
+}
+#endif
+namespace quantit
 {
 
 class blocklist
@@ -25,7 +55,7 @@ class blocklist
 };
 class btensor;
 
-namespace vquantt_iterator
+namespace vQuantiT_iterator
 {
 /**
  * @brief A class to to pointer arithmetic on a virtual pointer
@@ -103,7 +133,7 @@ struct cgroup_iterator
 	const virt_ptr_aritmetic *vt() { return ar; }
 };
 
-} // namespace vquantt_iterator
+} // namespace vQuantiT_iterator
 // so that different vector type have a different base type
 /**
  * @brief polymorphic (type-erased?) container of any_quantity.
@@ -126,8 +156,8 @@ struct cgroup_iterator
 class vquantity_vector
 {
   public:
-	using iterator = vquantt_iterator::cgroup_iterator;
-	using const_iterator = vquantt_iterator::const_cgroup_iterator;
+	using iterator = vQuantiT_iterator::cgroup_iterator;
+	using const_iterator = vQuantiT_iterator::const_cgroup_iterator;
 	using reverse_iterator = std::reverse_iterator<iterator>;
 	using const_reverse_iterator = std::reverse_iterator<const_iterator>;
 
@@ -209,6 +239,7 @@ class vquantity_vector
 	const_reverse_iterator rbegin() const { return (crbegin()); }
 	const_reverse_iterator rend() const { return (crend()); }
 };
+
 
 template <class S, class Allocator = std::allocator<S>, class = std::enable_if_t<std::is_base_of_v<vquantity, S>>>
 class quantity_vector final : public vquantity_vector, public std::vector<S, Allocator>
@@ -302,7 +333,7 @@ class quantity_vector final : public vquantity_vector, public std::vector<S, All
 	{
 		return base_vector::clear(); // virtualize
 	}
-	struct ptr_aritmetic_t : vquantt_iterator::virt_ptr_aritmetic
+	struct ptr_aritmetic_t : vQuantiT_iterator::virt_ptr_aritmetic
 	{
 		std::ptrdiff_t ptr_diff(const vquantity *lhs, const vquantity *rhs) const override
 		{
@@ -424,10 +455,14 @@ class quantity_vector final : public vquantity_vector, public std::vector<S, All
 	{
 		if (in.vt() != &ar)
 			throw std::bad_cast();
+		#ifdef QTT_APPLE
+		return std::vector<DUMMY>::convert_iterator<const_iterator,vquantity_vector::const_iterator,const S *>(in);
+		#else
 		const_iterator out;
-		// this silly fidling is only ok with random access iterator
+		// this silly fidling is only ok with random access iterators. we don't know what the operator +- do in general otherwise
 		auto _diff = out.base() - static_cast<const S *>(in.base());
 		return out -= _diff;
+		#endif
 	}
 	static reverse_iterator to_S_iterator(std::reverse_iterator<vquantity_vector::iterator> in)
 	{
@@ -445,10 +480,14 @@ class quantity_vector final : public vquantity_vector, public std::vector<S, All
 		{
 			throw std::bad_cast();
 		}
+		#ifdef QTT_APPLE
+		return std::vector<DUMMY>::convert_iterator<iterator,vquantity_vector::iterator,S *>(in);
+		#else
 		iterator out;
 		// this silly fidling is only ok with random access iterator
 		auto _diff = out.base() - static_cast<S *>(in.base());
 		return out -= _diff;
+		#endif
 	}
 
 	std::unique_ptr<vquantity_vector> clone() const override { return std::make_unique<quantity_vector>(*this); }
@@ -460,6 +499,6 @@ std::unique_ptr<vquantity_vector> quantity<T...>::make_vector(size_t cnt) const
 	return std::make_unique<quantity_vector<quantity<T...>>>(cnt, *this);
 }
 
-} // namespace quantt
+} // namespace quantit
 
 #endif /* BBF1F73E_87CC_4C69_9CCC_5D2526535A4F */

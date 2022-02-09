@@ -1,6 +1,6 @@
 /*
  * File: btensor.cpp
- * Project: quantt
+ * Project: QuantiT
  * File Created: Monday, 12th October 2020 12:20:33 pm
  * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)
  *
@@ -29,7 +29,7 @@
 #include <iostream>
 #endif
 
-namespace quantt
+namespace quantit
 {
 
 auto promote_types(c10::ScalarType a, c10::ScalarType b) { return at::promote_types(a, b); }
@@ -66,6 +66,21 @@ any_quantity_cref btensor::section_conserved_qtt(size_t index, size_t block) con
 #endif
 	auto ori = std::reduce(sections_by_dim.begin(), sections_by_dim.begin() + index, 0);
 	return c_vals[ori + block];
+}
+any_quantity_cref btensor::element_conserved_qtt(size_t dim, size_t element) const {
+	auto dim_size = sizes()[dim];
+	if (element >= dim_size) throw std::invalid_argument(fmt::format("There are only {} elements along dimension {}. You requested element {}",dim_size,dim,element));
+	auto section_num = section_number(dim);
+	auto [it_qt,end_qt] = section_conserved_qtt_range(dim);
+	auto [it_size,end_s] = section_sizes(dim);
+	while(it_qt!=end_qt)
+	{
+		if (element >= *it_size) element -=*it_size;
+		else return *it_qt;
+		++it_qt;
+		++it_size;
+	}
+	throw std::runtime_error("Element not found, this should have happened and is a bug..");
 }
 std::tuple<any_quantity_vector::const_iterator, any_quantity_vector::const_iterator> btensor::
     section_conserved_qtt_range(size_t index) const
@@ -192,7 +207,7 @@ void increment_index_left(btensor::index_list &index, torch::IntArrayRef max_ind
 		cond_add &= !cond_reset;
 	}
 }
-size_t tensor_list_size_guess(const btensor::init_list_t &list, any_quantity_cref sel_rul, size_t rank,
+size_t tensor_list_size_guess(const btensor::vec_list_t &list, any_quantity_cref sel_rul, size_t rank,
                               const btensor::index_list &sections_by_dims)
 {
 	constexpr size_t max_guess = 50;
@@ -222,7 +237,7 @@ size_t tensor_list_size_guess(const btensor::init_list_t &list, any_quantity_cre
 	}
 	return guess;
 }
-btensor::index_list block_shapes_from_struct_list(const btensor::init_list_t &list, size_t rank)
+btensor::index_list block_shapes_from_struct_list(const btensor::vec_list_t &list, size_t rank)
 {
 	btensor::index_list sections_by_dims(rank);
 	for (size_t i = 0; i < rank; ++i) // computed the number of section along each dims, will get it from the btensor
@@ -232,7 +247,7 @@ btensor::index_list block_shapes_from_struct_list(const btensor::init_list_t &li
 	}
 	return sections_by_dims;
 }
-btensor::index_list block_sizes_from_struct_list(const btensor::init_list_t &list, btensor::index_list sections_by_dim)
+btensor::index_list block_sizes_from_struct_list(const btensor::vec_list_t &list, btensor::index_list sections_by_dim)
 {
 	btensor::index_list section_sizes(std::reduce(sections_by_dim.begin(), sections_by_dim.end(), 0));
 	size_t i = 0;
@@ -246,7 +261,7 @@ btensor::index_list block_sizes_from_struct_list(const btensor::init_list_t &lis
 	}
 	return section_sizes;
 }
-any_quantity_vector c_vals_from_struct_list(const btensor::init_list_t &list, size_t size, any_quantity_cref sel_rul)
+any_quantity_vector c_vals_from_struct_list(const btensor::vec_list_t &list, size_t size, any_quantity_cref sel_rul)
 {
 	any_quantity_vector c_vals(size, sel_rul.neutral());
 	size_t i = 0;
@@ -293,7 +308,8 @@ btensor::Scalar btensor::item() const
 	else
 		throw std::logic_error("Only simgle block and single element tensors can be converted to scalar");
 }
-btensor::btensor(btensor::init_list_t dir_block_size_cqtt, any_quantity_cref selection_rule, c10::TensorOptions opt)
+btensor::btensor(const btensor::vec_list_t &dir_block_size_cqtt, any_quantity_cref selection_rule,
+                 c10::TensorOptions opt)
     : selection_rule(selection_rule), rank(dir_block_size_cqtt.size()),
       sections_by_dim(block_shapes_from_struct_list(dir_block_size_cqtt, rank)),
       sections_sizes(block_sizes_from_struct_list(dir_block_size_cqtt, sections_by_dim)),
@@ -309,7 +325,7 @@ btensor::btensor(btensor::init_list_t dir_block_size_cqtt, any_quantity_cref sel
 	_options = torch::empty({}, _options).options(); // freeze the options parameter to whatever the current global
 	                                                 // default is. There's probably a better way.
 }
-btensor::btensor(btensor::init_list_t dir_block_size_cqtt, any_quantity_cref selection_rule, size_t num_blocks,
+btensor::btensor(const btensor::vec_list_t &dir_block_size_cqtt, any_quantity_cref selection_rule, size_t num_blocks,
                  c10::TensorOptions opt)
     : selection_rule(std::move(selection_rule)), rank(dir_block_size_cqtt.size()),
       sections_by_dim(block_shapes_from_struct_list(dir_block_size_cqtt, rank)),
@@ -429,7 +445,7 @@ std::string btensor::check_tensor(const btensor &T)
 	return M;
 }
 
-btensor::const_block_qtt_view btensor::block_quantities(index_list block_index) const
+btensor::const_block_qtt_view btensor::block_quantities(const index_list &block_index) const
 {
 	return const_block_qtt_view(c_vals.cbegin(), c_vals.cend(), sections_by_dim, std::move(block_index));
 }
@@ -437,9 +453,9 @@ btensor::const_block_qtt_view btensor::block_quantities(index_list block_index) 
 // {
 // 	return block_qtt_view(c_vals.begin(), c_vals.end(), sections_by_dim, std::move(block_index));
 // }
-btensor::const_block_size_view btensor::block_sizes(index_list block_index) const
+btensor::const_block_size_view btensor::block_sizes(const index_list &block_index) const
 {
-	auto a = sections_sizes.begin();
+	// auto a = sections_sizes.begin();
 	return const_block_size_view(sections_sizes.begin(), sections_sizes.end(), sections_by_dim, std::move(block_index));
 }
 /**
@@ -540,12 +556,12 @@ btensor rank_preserving_shape(const std::vector<int64_t> block_indices, const bt
 		if (*b_it == -1) // slice case
 		{
 			shape_spec[r] = -1;
-			out = quantt::shape_from(out, was_this.shape_from(shape_spec));
+			out = quantit::shape_from(out, was_this.shape_from(shape_spec));
 			shape_spec[r] = 0;
 		}
 		else // single element
 		{
-			out = quantt::shape_from(
+			out = quantit::shape_from(
 			    out, btensor({{{1, was_this.section_conserved_qtt(r, *b_it)}}}, was_this.selection_rule->neutral()));
 		}
 	}
@@ -1231,9 +1247,15 @@ btensor &btensor::div_(const btensor &other)
 }
 btensor btensor::bmm(const btensor &mat) const
 {
-	// The loop is not proper for parallisation preallocation of output container necessary.
-	// The need for syncronisation can be eliminated by reordering the block of mat such that all the output that have
-	// the same index are done in loop order.
+	//TODO: find out why it fails with a segfault on rank2 tensors.
+	//A cheap workaround is to increase the rank by one with a trivial dimension
+	if (this->rank == 2 and mat.rank==2)
+	{
+		auto triv_shape = btensor({{{1,selection_rule->neutral()}}},selection_rule->neutral());
+		auto new_this = this->reshape_as(disambiguated_shape_from({triv_shape,*this}));
+		auto new_mat = mat.reshape_as(disambiguated_shape_from({triv_shape,mat}));
+		return new_this.bmm(new_mat).squeeze_(0);
+	}
 	mul_helpers::check_bmm_compatibility(*this, mat);
 	auto batch_shape_inds = std::vector<int64_t>(dim(), -1);
 	batch_shape_inds.back() = 0;
@@ -1245,9 +1267,9 @@ btensor btensor::bmm(const btensor &mat) const
 	auto [comp_mask, new_sections_by_dim, new_sections_sizes, new_cvals, out_selr] = mul_helpers::shape_compute(
 	    false, rank - 2, rank - 2, this->shape_from(batch_shape_inds), mat.shape_from(batch_shape_inds));
 	btensor batch_shape(new_sections_by_dim, new_cvals, new_sections_sizes, selection_rule->neutral());
-	auto out = quantt::shape_from(
+	auto out = quantit::shape_from(
 	    batch_shape, this->shape_from(this_inds),
-	    mat.shape_from(mat_inds)); // ambiguity because of the in-class context lifted by the quantt namespace;
+	    mat.shape_from(mat_inds)); // ambiguity because of the in-class context lifted by the QuantiT namespace;
 
 	block_list_t::content_t mat_blocks(mat.blocks_list.begin(), mat.blocks_list.end());
 	// sort mat in an order ideal for parallelism.
@@ -1420,7 +1442,7 @@ btensor btensor::bmm(const btensor &mat) const
 
 btensor btensor::sum() const
 {
-	auto out = btensor({}, selection_rule.value);
+	auto out = btensor({}, selection_rule.value,this->options());
 	auto list = new_block_list_apply_to_all_blocks([](const torch::Tensor &t) { return t.sum(); });
 	torch::Tensor out_val = torch::zeros({}, options());
 	for (auto &a : list)
@@ -1482,10 +1504,56 @@ btensor btensor::pow(btensor::Scalar exponent) const
 	}
 	return btensor(*this, std::move(out_list), opt);
 }
+/*
+ * Will require updates if torch::Scalar changes
+ */
+#define AT_FORALL_BTENSOR_SCALAR_TYPES(_)                                                                              \
+	_(c10::complex<double>, ComplexDouble) _(double, Double) _(int64_t, Long) _(bool, Bool)
+template <class T>
+btensor::Scalar detail_mul(T o, btensor::Scalar b)
+{
+#define TYPECAST_CASES_B(act_type, Enum_name)                                                                          \
+	case torch::ScalarType::Enum_name:                                                                                 \
+		return o * b.to<act_type>();                                                                                   \
+		break;
 
+	switch (b.type())
+	{
+		AT_FORALL_BTENSOR_SCALAR_TYPES(TYPECAST_CASES_B)
+
+	default:
+		throw std::runtime_error("unknow scalar type");
+	}
+#undef TYPECAST_CASES_B
+}
+btensor::Scalar Scalar_mul(btensor::Scalar a, btensor::Scalar b)
+{
+
+#define TYPECAST_CASES_A(act_type, Enum_name)                                                                          \
+	case torch::ScalarType::Enum_name:                                                                                 \
+		return detail_mul(a.to<act_type>(), b);                                                                        \
+		break;
+
+	switch (a.type())
+	{
+		AT_FORALL_BTENSOR_SCALAR_TYPES(TYPECAST_CASES_A)
+
+	default:
+		throw std::runtime_error("unknow scalar type");
+	};
+#undef TYPECAST_CASES_A
+}
+btensor btensor::add(btensor::Scalar other, btensor::Scalar alpha) const
+{
+	return full_like(*this, Scalar_mul(other, alpha)).add_(*this);
+}
+btensor& btensor::add_(btensor::Scalar other, btensor::Scalar alpha)
+{
+	return add_(full_like(*this, Scalar_mul(other, alpha)));
+}
 btensor &btensor::pow_(btensor::Scalar exponent)
 {
-	auto X = torch::zeros({5, 5});
+	// auto X = torch::zeros({5, 5});
 	// torch::pow_(X,exponent);
 	// X.pow_(exponent);
 	apply_to_all_blocks([](torch::Tensor &x, btensor::Scalar exponent) { return x.pow_(exponent); }, exponent);
@@ -1616,6 +1684,12 @@ btensor btensor::div(const btensor &other) const
 btensor btensor::pow(const btensor &exponent) const
 {
 	return broadcast_operation(exponent, [](const torch::Tensor &A, const torch::Tensor &B) { return A.pow(B); });
+}
+btensor &btensor::pow_(const btensor &exponent)
+{
+	return broadcast_operation_(
+	    exponent, [](torch::Tensor &A, const torch::Tensor &B) { return A.pow_(B); },
+	    [](const torch::Tensor &A, const torch::Tensor &B) { return A.pow(B); });
 }
 btensor btensor::mul(const btensor &other) const
 {
@@ -1945,7 +2019,7 @@ btensor btensor::tensordot(const btensor &other, torch::IntArrayRef dim_self, to
 				std::tie(this_curr_block, other_curr_block) =
 				    find_next_match(this_curr_block, this_col_end, other_curr_block, other_col_end);
 				if (this_curr_block != this_col_end and
-				    other_curr_block != other_col_end) // TODO: getting a false match, in dmrg environement prep.
+				    other_curr_block != other_col_end) 
 				{
 					// compute the block index for this combination of columns of the input block tensors
 
@@ -1960,7 +2034,7 @@ btensor btensor::tensordot(const btensor &other, torch::IntArrayRef dim_self, to
 					// firstprivate(curr_out) firstprivate(out_block_index) firstprivate(this_col_end)
 					// firstprivate(other_col_end) firstprivate(size_vector) firstprivate(a) firstprivate(b)
 					{ // this scope can be executed by a single independant thread. further parallelism is possible
-					  // at the cost of extra memory. Everything that is defined outside this scope should be
+					  // at the cost of extra memory, and an extra reduction step. Everything that is defined outside this scope should be
 					  // firstprivate() inside.
 
 						auto curr_block_mat = torch::mm(std::get<1>(*this_curr_block), std::get<1>(*other_curr_block));
@@ -2223,94 +2297,94 @@ void factory_wrap(btensor &out, Factory &&factory)
 	} while (any_truth(index));
 }
 
-btensor zeros(btensor::init_list_t shape_spec, any_quantity selection_rule, c10::TensorOptions opt)
+btensor zeros(const btensor::vec_list_t &shape_spec, any_quantity selection_rule, c10::TensorOptions opt)
 {
-	auto out = quantt::sparse_zeros(shape_spec, std::move(selection_rule), opt);
+	auto out = quantit::sparse_zeros(shape_spec, std::move(selection_rule), opt);
 	factory_wrap(out, [](torch::IntArrayRef size, c10::TensorOptions options) { return torch::zeros(size, options); });
 	return out;
 }
 btensor zeros_like(const btensor &tens, c10::TensorOptions opt)
 {
-	auto out = quantt::sparse_zeros_like(tens, opt);
+	auto out = quantit::sparse_zeros_like(tens, opt);
 	factory_wrap(out, [](torch::IntArrayRef size, c10::TensorOptions options) { return torch::zeros(size, options); });
 	return out;
 }
 
-btensor ones(btensor::init_list_t shape_spec, any_quantity selection_rule, c10::TensorOptions opt)
+btensor ones(const btensor::vec_list_t &shape_spec, any_quantity selection_rule, c10::TensorOptions opt)
 {
-	auto out = quantt::sparse_zeros(shape_spec, std::move(selection_rule), opt);
+	auto out = quantit::sparse_zeros(shape_spec, std::move(selection_rule), opt);
 	factory_wrap(out, [](torch::IntArrayRef size, c10::TensorOptions options) { return torch::ones(size, options); });
 	return out;
 }
 btensor ones_like(const btensor &tens, c10::TensorOptions opt)
 {
-	auto out = quantt::sparse_zeros_like(tens, opt);
+	auto out = quantit::sparse_zeros_like(tens, opt);
 	factory_wrap(out, [](torch::IntArrayRef size, c10::TensorOptions options) { return torch::ones(size, options); });
 	return out;
 }
-btensor empty(btensor::init_list_t shape_spec, any_quantity selection_rule, c10::TensorOptions opt)
+btensor empty(const btensor::vec_list_t &shape_spec, any_quantity selection_rule, c10::TensorOptions opt)
 {
-	auto out = quantt::sparse_zeros(shape_spec, selection_rule, opt);
+	auto out = quantit::sparse_zeros(shape_spec, selection_rule, opt);
 	factory_wrap(out, [](torch::IntArrayRef size, c10::TensorOptions options) { return torch::empty(size, options); });
 	return out;
 }
 btensor empty_like(const btensor &tens, c10::TensorOptions opt)
 {
-	auto out = quantt::sparse_zeros_like(tens, opt);
+	auto out = quantit::sparse_zeros_like(tens, opt);
 	factory_wrap(out, [](torch::IntArrayRef size, c10::TensorOptions options) { return torch::empty(size, options); });
 	return out;
 }
-btensor rand(btensor::init_list_t shape_spec, any_quantity selection_rule, c10::TensorOptions opt)
+btensor rand(const btensor::vec_list_t &shape_spec, any_quantity selection_rule, c10::TensorOptions opt)
 {
-	auto out = quantt::sparse_zeros(shape_spec, selection_rule, opt);
+	auto out = quantit::sparse_zeros(shape_spec, selection_rule, opt);
 	factory_wrap(out, [](torch::IntArrayRef size, c10::TensorOptions options) { return torch::rand(size, options); });
 	return out;
 }
 btensor rand_like(const btensor &tens, c10::TensorOptions opt)
 {
-	auto out = quantt::sparse_zeros_like(tens, opt);
+	auto out = quantit::sparse_zeros_like(tens, opt);
 	factory_wrap(out, [](torch::IntArrayRef size, c10::TensorOptions options) { return torch::rand(size, options); });
 	return out;
 }
-btensor full(btensor::init_list_t shape_spec, any_quantity selection_rule, btensor::Scalar fill_value,
+btensor full(const btensor::vec_list_t &shape_spec, any_quantity selection_rule, btensor::Scalar fill_value,
              c10::TensorOptions opt)
 {
-	auto out = quantt::sparse_zeros(shape_spec, selection_rule, opt);
+	auto out = quantit::sparse_zeros(shape_spec, selection_rule, opt);
 	factory_wrap(out, [fill_value](torch::IntArrayRef size, c10::TensorOptions options)
 	             { return torch::full(size, fill_value, options); });
 	return out;
 }
 btensor full_like(const btensor &tens, btensor::Scalar fill_value, c10::TensorOptions opt)
 {
-	auto out = quantt::sparse_zeros_like(tens, opt);
+	auto out = quantit::sparse_zeros_like(tens, opt);
 	factory_wrap(out, [fill_value](torch::IntArrayRef size, c10::TensorOptions options)
 	             { return torch::full(size, fill_value, options); });
 	return out;
 }
-btensor randint(int64_t low, int64_t high, btensor::init_list_t shape_spec, any_quantity selection_rule,
+btensor randint(int64_t low, int64_t high, const btensor::vec_list_t &shape_spec, any_quantity selection_rule,
                 c10::TensorOptions opt)
 {
-	auto out = quantt::sparse_zeros(shape_spec, selection_rule, opt);
+	auto out = quantit::sparse_zeros(shape_spec, selection_rule, opt);
 	factory_wrap(out, [high, low](torch::IntArrayRef size, c10::TensorOptions options)
 	             { return torch::randint(low, high, size, options); });
 	return out;
 }
 btensor randint_like(int64_t low, int64_t high, const btensor &tens, c10::TensorOptions opt)
 {
-	auto out = quantt::sparse_zeros_like(tens, opt);
+	auto out = quantit::sparse_zeros_like(tens, opt);
 	factory_wrap(out, [high, low](torch::IntArrayRef size, c10::TensorOptions options)
 	             { return torch::randint(low, high, size, options); });
 	return out;
 }
-btensor randn(btensor::init_list_t shape_spec, any_quantity selection_rule, c10::TensorOptions opt)
+btensor randn(const btensor::vec_list_t &shape_spec, any_quantity selection_rule, c10::TensorOptions opt)
 {
-	auto out = quantt::sparse_zeros(shape_spec, selection_rule, opt);
+	auto out = quantit::sparse_zeros(shape_spec, selection_rule, opt);
 	factory_wrap(out, [](torch::IntArrayRef size, c10::TensorOptions options) { return torch::randn(size, options); });
 	return out;
 }
 btensor randn_like(const btensor &tens, c10::TensorOptions opt)
 {
-	auto out = quantt::sparse_zeros_like(tens, opt);
+	auto out = quantit::sparse_zeros_like(tens, opt);
 	factory_wrap(out, [](torch::IntArrayRef size, c10::TensorOptions options) { return torch::randn(size, options); });
 	return out;
 }
@@ -2348,7 +2422,7 @@ torch::Tensor btensor::to_dense() const
 	return out;
 }
 
-void from_basic_impl(btensor &out, const torch::Tensor &values,const torch::Scalar cutoff)
+void from_basic_impl(btensor &out, const torch::Tensor &values, const torch::Scalar cutoff)
 {
 	if (out.dim() != values.dim())
 		throw std::invalid_argument("input arguments have incompatible rank!");
@@ -2361,25 +2435,28 @@ void from_basic_impl(btensor &out, const torch::Tensor &values,const torch::Scal
 		{
 			auto shape_view = out.block_sizes(index);
 			auto S = btensor::full_slice(out, index);
-			auto block =  values.index(torch::ArrayRef(S));
-			if ( (torch::linalg::vector_norm(block.flatten(),2,{},false,{})>cutoff).item().to<bool>() ) //only insert the block if it's a significative quantity.
-			out.block(index) = block;
+			auto block = values.index(torch::ArrayRef(S));
+			if ((torch::linalg::vector_norm(block.flatten(), 2, {}, false, {}) > cutoff)
+			        .item()
+			        .to<bool>()) // only insert the block if it's a significative quantity.
+				out.block(index) = block;
 			// fmt::print("\tindex {}\n\tSlice {}\n\t block {}\n================\n",index,S,out.block(index));
 		}
 		out.block_increment(index);
 	} while (any_truth(index));
 }
-btensor from_basic_tensor(btensor::init_list_t shape_spec, any_quantity selection_rul, const torch::Tensor &values, const torch::Scalar cutoff,
-                          c10::TensorOptions opt)
+btensor from_basic_tensor(const btensor::vec_list_t &shape_spec, any_quantity selection_rul,
+                          const torch::Tensor &values, const torch::Scalar cutoff, c10::TensorOptions opt)
 {
-	auto shape = quantt::sparse_zeros(shape_spec, selection_rul, opt);
-	from_basic_impl(shape, values,cutoff);
+	auto shape = quantit::sparse_zeros(shape_spec, selection_rul, opt);
+	from_basic_impl(shape, values, cutoff);
 	return shape;
 }
-btensor from_basic_tensor_like(const btensor &shape, const torch::Tensor &values, const torch::Scalar cutoff, c10::TensorOptions opt)
+btensor from_basic_tensor_like(const btensor &shape, const torch::Tensor &values, const torch::Scalar cutoff,
+                               c10::TensorOptions opt)
 {
-	auto out = quantt::sparse_zeros_like(shape, opt);
-	from_basic_impl(out, values,cutoff);
+	auto out = quantit::sparse_zeros_like(shape, opt);
+	from_basic_impl(out, values, cutoff);
 	return out;
 }
 bool allclose(const btensor &a, const btensor &b, double rtol, double atol, bool equal_nan)
@@ -2437,8 +2514,8 @@ any_quantity find_selection_rule(const torch::Tensor &tens, const btensor &shape
 	if (shape.dim() != 2)
 		throw std::invalid_argument("the shape specifying btensor must be rank 2");
 	auto state = torch::zeros(tens.sizes()[tens.dim() - 1], tens.options());
-	auto quantitiesi = [&shape](size_t element_pos, size_t dim)
-	    -> const vquantity & { // return type must be specified, because return by value isn't an option here.
+	auto quantitiesi = [&shape](size_t element_pos, size_t dim) -> const vquantity &
+	{ // return type must be specified, because return by value isn't an option here.
 		size_t block = 0;
 		auto [sect_size_beg, sect_size_end, sect_cqtt_beg, sec_cqtt_end] = shape.section_sizes_cqtts(dim);
 		while (sect_size_beg != sect_size_end and dim > *sect_size_beg)
@@ -2453,12 +2530,10 @@ any_quantity find_selection_rule(const torch::Tensor &tens, const btensor &shape
 		// in that case use:
 		// return shape.section_conserved_qtt(dim,block));
 	};
-	auto quantities1 = [&quantitiesi, &shape](size_t element_pos) -> const vquantity & {
-		return quantitiesi(element_pos, 0);
-	};
-	auto quantities2 = [&quantitiesi, &shape](size_t element_pos) -> const vquantity & {
-		return quantitiesi(element_pos, 1);
-	};
+	auto quantities1 = [&quantitiesi, &shape](size_t element_pos) -> const vquantity &
+	{ return quantitiesi(element_pos, 0); };
+	auto quantities2 = [&quantitiesi, &shape](size_t element_pos) -> const vquantity &
+	{ return quantitiesi(element_pos, 1); };
 	any_quantity out_sel_rule;
 	bool first_hit = true;
 	for (auto i = 0; i < state.sizes()[0]; ++i)
@@ -2967,33 +3042,42 @@ bool btensor::anynan() const
 }
 /**
  * @brief split an index adressing an element within the full tensor into a block index, block-element index pair.
- * 
- * @param element_index 
- * @return std::tuple<index_list,index_list> 
+ *
+ * @param element_index
+ * @return std::tuple<index_list,index_list>
  */
-std::tuple<btensor::index_list,btensor::index_list> btensor::element_index_decompose(const index_list& element_index) const
+std::tuple<btensor::index_list, btensor::index_list> btensor::element_index_decompose(
+    const index_list &element_index) const
 {
 	auto full_size = sizes();
 	index_list blockind(rank);
 	index_list subelind(rank);
 	auto section_size_it = sections_sizes.begin();
-	for(int dim=0; dim<rank;++dim)
+	for (int dim = 0; dim < rank; ++dim)
 	{
 		assert(element_index[dim] < full_size[dim]);
 		auto section_end = section_size_it + sections_by_dim[dim];
 		int64_t ind = element_index[dim];
 		int64_t block_ind = 0;
-		while(section_size_it != section_end and ind >= *section_size_it)
+		while (section_size_it != section_end and ind >= *section_size_it)
 		{
 			ind -= *section_size_it;
 			++section_size_it;
 			++block_ind;
 		}
-	blockind[dim] = block_ind;
-	subelind[dim] = ind;
-	section_size_it = section_end;
+		blockind[dim] = block_ind;
+		subelind[dim] = ind;
+		section_size_it = section_end;
 	}
-	return std::make_tuple(blockind,subelind);
+	return std::make_tuple(blockind, subelind);
+}
+btensor operator/(const btensor::Scalar &A, const btensor &B)
+{
+	auto out = quantit::sparse_zeros_like(B);
+	out.reserve_space_(std::distance(B.begin(), B.end()));
+	std::transform(B.begin(), B.end(), out.begin(),
+	               [&A](const auto &in) { return std::make_pair(in.first, A / in.second); });
+	return out;
 }
 /**
  * @brief make a full torch::tensor from a btensor
@@ -3108,4 +3192,4 @@ std::tuple<btensor::index_list,btensor::index_list> btensor::element_index_decom
 // 	return *this;
 // }
 
-} // namespace quantt
+} // namespace quantit

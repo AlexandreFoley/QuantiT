@@ -1,6 +1,6 @@
 /*
  * File:quantity.h
- * Project: quantt
+ * Project: QuantiT
  * File Created: Tuesday, 15th September 2020 12:19:54 pm
  * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)
  * -----
@@ -21,7 +21,7 @@
 #include <ostream>
 
 #include "doctest/doctest_proxy.h"
-namespace quantt
+namespace quantit
 {
 /**
  * Groups tend to have **very** short names in the litterature.
@@ -160,7 +160,7 @@ class C
 		out << fmt::format("grp::C<{}>({})", C::N, c.val);
 		return out;
 	}
-	friend struct fmt::formatter<quantt::conserved::C<N>>;
+	friend struct fmt::formatter<quantit::conserved::C<N>>;
 };
 
 /**
@@ -234,7 +234,7 @@ class Z
 	constexpr bool operator<(Z other) const { return val < other.val; }
 	constexpr bool operator>(Z other) const { return val > other.val; }
 	friend std::ostream &operator<<(std::ostream &out, const Z &c);
-	friend struct fmt::formatter<quantt::conserved::Z>;
+	friend struct fmt::formatter<quantit::conserved::Z>;
 };
 
 
@@ -258,12 +258,12 @@ void swap(C<N> &lhs, C<N> &rhs) noexcept
 	lhs.swap(rhs);
 }
 
-// using is_conversed_quantt =     and_<default_to_neutral<T>, has_op<T>, has_inverse_<T>,
+// using is_conversed_QuantiT =     and_<default_to_neutral<T>, has_op<T>, has_inverse_<T>,
 //         has_comparatorequal<T>, has_comparatornotequal<T>, is_Abelian<T>>;
 static_assert(has_constexpr_equal<Z>::value, "debug");
 
-static_assert(is_conserved_quantt_v<Z>, "Z isn't a group?! something is very wrong");
-static_assert(is_conserved_quantt_v<C<5>>, "C<5> isn't a group?! something is very wrong");
+static_assert(is_conserved_QuantiT_v<Z>, "Z isn't a group?! something is very wrong");
+static_assert(is_conserved_QuantiT_v<C<5>>, "C<5> isn't a group?! something is very wrong");
 
 } // namespace conserved
 
@@ -319,10 +319,10 @@ qtt_TEST_CASE("simple conserved")
 	}
 }
 
-} // namespace quantt
+} // namespace quantit
 
 template <uint16_t N>
-struct fmt::formatter<quantt::conserved::C<N>>
+struct fmt::formatter<quantit::conserved::C<N>>
 {
 	constexpr auto parse(format_parse_context &ctx)
 	{
@@ -330,7 +330,7 @@ struct fmt::formatter<quantt::conserved::C<N>>
 		if (it)
 		{
 			if (it != end and *it != '}')
-				throw format_error("invalid format, no formatting option for quantt::quantity");
+				throw format_error("invalid format, no formatting option for quantit::quantity");
 			if (*it != '}')
 				throw format_error("invalid format,closing brace missing");
 		}
@@ -339,7 +339,7 @@ struct fmt::formatter<quantt::conserved::C<N>>
 	}
 
 	template <class FormatContext>
-	auto format(const quantt::conserved::C<N> &z, FormatContext &ctx)
+	auto format(const quantit::conserved::C<N> &z, FormatContext &ctx)
 	{
 
 		return format_to(
@@ -348,7 +348,7 @@ struct fmt::formatter<quantt::conserved::C<N>>
 	}
 };
 template <>
-struct fmt::formatter<quantt::conserved::Z>
+struct fmt::formatter<quantit::conserved::Z>
 {
 	constexpr auto parse(format_parse_context &ctx)
 	{
@@ -356,7 +356,7 @@ struct fmt::formatter<quantt::conserved::Z>
 		if (it)
 		{
 			if (it != end and *it != '}')
-				throw format_error("invalid format, no formatting option for quantt::conserved::Z");
+				throw format_error("invalid format, no formatting option for quantit::conserved::Z");
 			if (*it != '}')
 				throw format_error("invalid format,closing brace missing");
 		}
@@ -365,7 +365,7 @@ struct fmt::formatter<quantt::conserved::Z>
 	}
 
 	template <class FormatContext>
-	auto format(const quantt::conserved::Z &z, FormatContext &ctx)
+	auto format(const quantit::conserved::Z &z, FormatContext &ctx)
 	{
 		return format_to(
 		    ctx.out(), "Z({})",

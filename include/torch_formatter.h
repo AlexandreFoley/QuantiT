@@ -1,6 +1,6 @@
 /*
  * File: tens_formatter.h
- * Project: QuanTT
+ * Project: QuantiT
  * File Created: Tuesday, 21st July 2020 6:07:08 pm
  * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)
  * -----
@@ -18,7 +18,7 @@
 #include <fmt/ostream.h>
 #include <fmt/format.h>
 #include <charconv>
-namespace quantt
+namespace quantit
 {
 	void print(const torch::Tensor& X);
 }

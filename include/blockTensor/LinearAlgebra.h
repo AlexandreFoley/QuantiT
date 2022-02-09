@@ -1,6 +1,6 @@
 /*
  * File: LinearAlgebra.h
- * Project: quantt
+ * Project: QuantiT
  * File Created: Thursday, 13th May 2021 11:22:38 am
  * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)
  * Copyright (c) 2021 Alexandre Foley
@@ -18,7 +18,7 @@
 #include <fmt/ranges.h>
 #include <ostream>
 
-namespace quantt
+namespace quantit
 {
 
 /**
@@ -445,7 +445,7 @@ qtt_TEST_CASE("btensor Linear algebra")
 		{
 			using cqt = conserved::C<2>;
 			btensor dummy = rand({}, cqt(0));
-			btensor X = quantt::rand({{{2, cqt(-2)}, {2, cqt(0)}, {2, cqt(2)}},
+			btensor X = quantit::rand({{{2, cqt(-2)}, {2, cqt(0)}, {2, cqt(2)}},
 			                          {{1, cqt(1)}, {1, cqt(-1)}},
 			                          {{1, cqt(1)}, {1, cqt(-1)}},
 			                          {{2, cqt(2)}, {2, cqt(0)}, {2, cqt(-2)}}},
@@ -565,6 +565,6 @@ qtt_TEST_CASE("btensor Linear algebra")
 	}
 }
 
-} // namespace quantt
+} // namespace quantit
 
 #endif // BTENSORLINEARALGEBRA_H

@@ -1,6 +1,6 @@
 /*
  * File: operators.cpp
- * Project: quantt
+ * Project: QuantiT
  * File Created: Monday, 17th August 2020 9:41:54 am
  * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)
  * -----
@@ -15,7 +15,7 @@
 
 
 
-namespace quantt
+namespace quantit
 {
 
 std::tuple<tens,tens,tens,tens> fermions()
@@ -87,4 +87,4 @@ std::tuple<tens,tens,tens,tens,tens> pauli()
 	return std::make_tuple(Sx,iSy,Sz,lo,id);
 }
 
-}//quantt
+}//QuantiT

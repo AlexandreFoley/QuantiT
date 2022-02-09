@@ -1,6 +1,6 @@
 /*
  * File: dmrg.cpp
- * Project: quantt
+ * Project: QuantiT
  * File Created: Tuesday, 11th August 2020 9:48:36 am
  * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)
  * -----
@@ -19,7 +19,7 @@
 #include "torch_formatter.h"
 #include <fmt/core.h>
 #include <random>
-namespace quantt
+namespace quantit
 {
 
 using namespace details;
@@ -179,54 +179,22 @@ struct dmrg_2sites_update
 				return x;
 			}
 		}();
-		// current clear problem: the orthogonality center doesn't contain the norm, or in other words, the
-		// alogirthm doesn't maintain the MPS's canonicity. applies for both torch tensor and btensor, but for some
-		// reason the problem gets corrected everytimes it occur with torch tensors. with the torch tensor the norm
-		// is either 1 or 2, with btensor it's all over the place fmt::print("a0 predict1 : {}\n", contract(state,
-		// state, hamil).item().toDouble()); fmt::print("a0 predict2 : {}\n", contract(state, state, hamil, Env[-1],
-		// Env[state.size()]).item().toDouble());
-		MPO_t tmpMPO(hamil.begin() + oc, hamil.begin() + oc + 2);
-		MPS_t tmpstate(state.begin() + oc, state.begin() + oc + 2);
-		// auto a02 = contract(tmpstate, tmpstate, tmpMPO, Env[oc - 1], Env[oc + 2]);
-		// fmt::print("a0 predict from env: {}\n", a02.item().toDouble());
-
-		// print("{:-^40}\nstate norm: {}\n", "", contract(state, state).item().toDouble());
-		// The oc is at oc+forward?!? there's something i don't understand.
-		// print("forward {}, oc {} norm: {}, ", forward, oc,
-		//       tensordot(state[oc], state[oc].conj(), {0, 1, 2}, {0, 1, 2}).item().toDouble());
-		// print("oc + 1 norm: {}\n",
-		//       tensordot(state[oc + 1], state[oc + 1].conj(), {0, 1, 2}, {0, 1, 2}).item().toDouble());
+		// MPO_t tmpMPO(hamil.begin() + oc, hamil.begin() + oc + 2);
+		// MPS_t tmpstate(state.begin() + oc, state.begin() + oc + 2);
 		auto local_state = tensordot(state[oc], state[oc + 1], {2}, {0});
-		// print("local norm: {}\n",
-		//       tensordot(local_state, local_state.conj(), {0, 1, 2, 3}, {0, 1, 2, 3}).item().toDouble());
 		std::tie(E0, local_state) = two_sites_update(local_state, twosite_hamil[oc], Env[oc - 1], Env[oc + 2]);
-		// print("updated state norm: {}\n",
-		//       tensordot(local_state, local_state.conj(), {0, 1, 2, 3}, {0, 1, 2, 3}).item().toDouble());
-		auto [u, d, v] = quantt::svd(local_state, 2, options.cutoff, options.minimum_bond, options.maximum_bond);
-		// print("SVD sum square singular values: {}\n", sum(d.pow(2)).item().toDouble());
+		auto [u, d, v] = quantit::svd(local_state, 2, options.cutoff, options.minimum_bond, options.maximum_bond);
 		d /= sqrt(sum(d.pow(2)));
 		if (forward)
 		{
-			// the orthogonality center was at oc
 			state[oc] = u;
-			// print("sum d2 {}, u norm {}, v norm {}\n", sum(d.pow(2)).item().toDouble(),
-			//       tensordot(u.conj(), u, {0, 1, 2}, {0, 1, 2}).item().toDouble(),
-			//       tensordot(v.conj(), v, {0, 1, 2}, {0, 1, 2}).item().toDouble());
 			state[oc + 1] = (v.mul_(d).conj()).permute({2, 0, 1});
-			// print("forward post SVD norm {}\n",
-			//       tensordot(state[oc + 1], state[oc + 1].conj(), {0, 1, 2}, {0, 1, 2}).item().toDouble());
 			Env[oc] = compute_left_env(hamil[oc], state[oc], Env[oc - 1]);
 		}
 		else
 		{
 			auto d_r = d.reshape_as(shape_from(unsqueezing_shape, d));
-			// print("sum d2 {}, v norm {}, u norm {}\n", sum(d.pow(2)).item().toDouble(),
-			//       tensordot(v.conj(), v, {0, 1, 2}, {0, 1, 2}).item().toDouble(),
-			//       tensordot(u.conj(), u, {0, 1, 2}, {0, 1, 2}).item().toDouble());
-			// the orthognality center was at oc+1
 			state[oc] = u.mul_(d);
-			// print("backward post SVD norm {}\n",
-			//       tensordot(state[oc], state[oc].conj(), {0, 1, 2}, {0, 1, 2}).item().toDouble());
 			state[oc + 1] = (v.conj()).permute({2, 0, 1});
 			Env[oc + 1] = compute_right_env(hamil[oc + 1], state[oc + 1], Env[oc + 2]);
 		}
@@ -236,11 +204,21 @@ struct dmrg_2sites_update
 		return E0;
 	}
 };
-
+/**
+ * @brief Shared implementation of the differeent interface to dmrg with 2 sites update.
+ * 
+ * @param hamiltonian 
+ * @param two_sites_hamil 
+ * @param in_out_state 
+ * @param options 
+ * @param Env 
+ * @param logger 
+ * @return btensor 
+ */
 btensor details::dmrg_impl(const bMPO &hamiltonian, const bMPT &two_sites_hamil, bMPS &in_out_state,
                            const dmrg_options &options, benv_holder &Env, dmrg_logger &logger)
 {
-	btensor E0 = quantt::full({}, hamiltonian[0].selection_rule->neutral(), 100000.0,
+	btensor E0 = quantit::full({}, hamiltonian[0].selection_rule->neutral(), 100000.0,
 	                          hamiltonian[0].options().merge_in(torch::kDouble));
 	auto sweep_dir = 1;
 	size_t init_pos = in_out_state.orthogonality_center;
@@ -261,20 +239,9 @@ btensor details::dmrg_impl(const bMPO &hamiltonian, const bMPT &two_sites_hamil,
 	for (iteration = 0u; iteration < options.maximum_iterations; ++iteration)
 	{
 		btensor E0_tens;
-		// fmt::print("\nSweep\n\n");
 		std::tie(E0_tens, step) =
 		    sweep(in_out_state, update, step, 2 * N_step, in_out_state.size() - 2); // sweep from the oc and back to it.
 		logger.it_log_all(iteration, E0_tens, in_out_state);
-		// DBG
-		// int oc = in_out_state.orthogonality_center;
-		// auto S2State = tensordot(in_out_state[oc], in_out_state[oc + 1], {2}, {0});
-		// auto E0_env = hamil2site_times_state(S2State, two_sites_hamil[oc], Env[oc - 1], Env[oc + 2]);
-		// E0_env = tensordot(E0_env, S2State.conj(), {0, 1, 2, 3}, {0, 1, 2, 3});
-		// auto dbg_E0 = contract(in_out_state, in_out_state, hamiltonian).item().to<double>();
-		// auto dbg_snorm = contract(in_out_state, in_out_state).item().to<double>();
-		// print("{:-^40}\n E0 contract: {}\nE0 dmrg {}\nstate norm: {}\nenv E0{}\n", "", dbg_E0,
-		        //    E0_tens.item().to<double>(), dbg_snorm, E0_env.item().to<double>());
-		//\DBG
 		swap(E0, E0_tens);
 		if (!(((E0 - E0_tens).abs() > options.convergence_criterion))
 		         .item()
@@ -288,6 +255,7 @@ btensor details::dmrg_impl(const bMPO &hamiltonian, const bMPT &two_sites_hamil,
 	}
 	if (oc != init_pos)
 	{
+		//The oc isn't actually where the orthogonaility center variable says it is in the python binding after dmrg....
 		if (oc != init_pos - 1 and init_pos != in_out_state.size() - 1)
 			throw std::runtime_error(fmt::format(
 			    "the orthogonality center finished somewhere surprising! final oc: {}. original oc: {}", oc, init_pos));
@@ -350,8 +318,12 @@ torch::Tensor details::dmrg_impl(const MPO &hamiltonian, const MPT &twosites_ham
 			throw std::runtime_error(fmt::format(
 			    "the orthogonality center finished somewhere surprising! final oc: {}. original oc: {}", oc, init_pos));
 	}
-	if (oc != init_pos)
-		in_out_state.move_oc(init_pos);
+	oc += (oc == 0 ); //The oc never really finishes at 0 with the current algo.
+	// The leftward sweep finishes with the oc at 1, but set the oc at 0, 
+	// such the site 0 and 1 are updated together once by the next rightward sweep.
+	// this trickery is necessary to get this optimization without writing special code in the sweeper.
+	if (oc != init_pos) //then we actually move it back to its origin location.
+		in_out_state.move_oc(init_pos); 
 
 	logger.end_log_all(iteration, E0, in_out_state);
 
@@ -618,7 +590,7 @@ std::tuple<Tensor, Tensor, Tensor, Tensor> one_step_lanczos_impl(const Tensor &s
 	if (non_singular)
 		psi_ip /= b;
 	// fmt::print("\t\tnon singular {}\n",non_singular);
-	auto a1 = (tensordot(psi_ip.conj(), quantt::details::hamil2site_times_state(psi_ip, hamil, Lenv, Renv),
+	auto a1 = (tensordot(psi_ip.conj(), quantit::details::hamil2site_times_state(psi_ip, hamil, Lenv, Renv),
 	                     {0, 1, 2, 3}, {0, 1, 2, 3}));
 	return std::make_tuple(psi_ip, a0, a1, b);
 }
@@ -666,4 +638,4 @@ std::tuple<btensor, btensor> two_sites_update(const btensor &state, const btenso
 	return two_sites_update_impl(state, hamil, Lenv, Renv);
 }
 
-} // namespace quantt
+} // namespace quantit

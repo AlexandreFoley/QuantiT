@@ -1,6 +1,6 @@
 /*
  * File: catch_test.cpp
- * Project: QuanTT
+ * Project: QuantiT
  * File Created: Friday, 31st July 2020 11:04:58 am
  * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)
  * -----
@@ -17,7 +17,7 @@
 int main(int argc, char **argv)
 {
 	doctest::Context context;
-
+	at::init_num_threads();
 	// custom
 	context.addFilter("test-case", "*heisenberg*");
 

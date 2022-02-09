@@ -10,7 +10,7 @@
 #include <numeric>
 #include <stdexcept>
 #include <tuple>
-namespace quantt
+namespace quantit
 {
 
 namespace LA_helpers
@@ -639,7 +639,7 @@ int64_t lower_bound(torch::Tensor &tens, const torch::Scalar &scal)
 		return lower_bound_dev<torch::kCUDA>(tens, scal);
 	else if (tens.device() == torch::kCPU)
 		return lower_bound_dev<torch::kCPU>(tens, scal);
-	throw std::logic_error(fmt::format("unsupported backend {} for quantt::lower_bound(torch::Tensor&,torch::Scalar&>",
+	throw std::logic_error(fmt::format("unsupported backend {} for quantit::lower_bound(torch::Tensor&,torch::Scalar&>",
 	                                   c10::DeviceTypeName(tens.device().type())));
 }
 /**
@@ -672,7 +672,7 @@ std::tuple<btensor, std::tuple<BTENS...>> truncate_impl(btensor &&d, std::tuple<
 		vd.index_put_({torch::indexing::Slice(n, n + l)}, tens); // bug here.
 		n += l;
 	}
-	// quantt::print(vd);
+	// quantit::print(vd);
 	vd = std::get<0>(
 	    vd.sort(-1, true)); // sort the last (only) dimension in descending order //no inplace sort in torch...
 	// vd is now sorted in ascending order.
@@ -813,4 +813,4 @@ std::tuple<btensor, btensor> eigh(const btensor &A, size_t split, btensor::Scala
 	return eigh(A, split, tol, min_size, max_size, pow);
 }
 
-} // namespace quantt
+} // namespace quantit
