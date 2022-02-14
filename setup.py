@@ -43,7 +43,7 @@ def get_torch_rpath():
         #not a virtual env
         #Those two value are unnaffected by pip's isolation system.
         paths.append(site.getusersitepackages())
-        paths += site.getsitepackages()
+    paths += site.getsitepackages()
     for path in paths:
         plp = pl.Path(path)
         q = plp / 'torch' / 'lib'

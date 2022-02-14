@@ -24,7 +24,7 @@ models.cpp any_quantity.cpp groups.cpp btensor.cpp tensorgdot.cpp btensor_linalg
 add_library(QuantiT ${SOURCE_LIST} ${HEADER_LIST})
 
 # We need this directory, and users of our library will need it too
-target_include_directories(QuantiT PUBLIC ../extern/boost ../extern/doctest ../include)
+target_include_directories(QuantiT PUBLIC ${CMAKE_SOURCE_DIR}/extern/boost ${CMAKE_SOURCE_DIR}/extern/nanobench ${CMAKE_SOURCE_DIR}/extern/doctest ${CMAKE_SOURCE_DIR}/include)
 
 # This doesn't depends on (header only) boost. present as an exemple.
 # target_link_libraries(QuantiT_lib PRIVATE Boost::boost)
@@ -33,10 +33,35 @@ target_include_directories(QuantiT PUBLIC ../extern/boost ../extern/doctest ../i
 target_compile_features(QuantiT PUBLIC cxx_std_17)
 
 if(SKBUILD)
-   install(TARGETS QuantiT DESTINATION ./lib )
-   install(DIRECTORY "${CMAKE_SOURCE_DIR}/include/" DESTINATION ./include)
-   install(DIRECTORY "${CMAKE_SOURCE_DIR}/extern/doctest" DESTINATION ./extern/doctest)
-   install(DIRECTORY "${CMAKE_SOURCE_DIR}/extern/boost" DESTINATION ./extern/boost)
-   install(DIRECTORY "${CMAKE_SOURCE_DIR}/extern/nanobench" DESTINATION ./extern/nanobench)
+   install(DIRECTORY "${CMAKE_SOURCE_DIR}/include/"  TYPE INCLUDE
+   COMPONENT QuantiT)
+   install(DIRECTORY "${CMAKE_SOURCE_DIR}/extern/doctest" TYPE INCLUDE
+   COMPONENT QuantiT)
+   install(DIRECTORY "${CMAKE_SOURCE_DIR}/extern/boost" TYPE INCLUDE
+   COMPONENT QuantiT)
+   install(DIRECTORY "${CMAKE_SOURCE_DIR}/extern/nanobench" TYPE INCLUDE
+   COMPONENT QuantiT)
+   MESSAGE("INSTALL PREFIX"p ${CMAKE_INSTALL_PREFIX})
+#    target_include_directories(QuantiT PUBLIC $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/extern/boost ${CMAKE_SOURCE_DIR}/extern/doctest ${CMAKE_SOURCE_DIR}/include>  $<INSTALL_INTERFACE:extern/boost extern/doctest include >)
+   install(TARGETS QuantiT DESTINATION ./lib EXPORT quantitConfig LIBRARY DESTINATION ./lib  ARCHIVE DESTINATION ./lib  INCLUDES DESTINATION ./include/ )
    set_target_properties(QuantiT PROPERTIES INSTALL_RPATH ${TORCH_INSTALL_RPATH})
+#    set_target_properties(QuantiT PROPERTIES INTERFACE_INCLUDE_DIRECTORIES "./include ./extern/doctest ./extern/boost ./extern/nanobench")
+#    install(TARGETS
+#         your_target
+#     EXPORT YourPackageConfig
+#     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+#     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+#     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+# )
+    export(TARGETS
+            QuantiT
+        NAMESPACE QuantiT::
+        FILE "./quantitConfig.cmake"
+    )
+#     install(EXPORT
+#     quantitConfig
+# DESTINATION "${CMAKE_INSTALL_PREFIX}/share/cmake"
+# NAMESPACE quantit::
+# )
+
 endif()
