@@ -68,7 +68,18 @@ endif()
 # Now we can find pybind11
 
 find_package(Torch REQUIRED)
-find_package(fmt 7 REQUIRED)
+find_package(fmt 7)
+if (NOT fmt_FOUND)
+MESSAGE(STATUS "fetching {fmt}")
+    include(FetchContent)
+    FetchContent_Declare(
+        fmt
+        GIT_REPOSITORY "https://github.com/fmtlib/fmt"
+        GIT_TAG "8.1.1"
+    )
+    FetchContent_MakeAvailable(fmt)
+endif()
+
 find_library(GOOGLE_PROFILER profiler )
 if (GOOGLE_PROFILER STREQUAL "GOOGLE_PROFILER-NOTFOUND")
     set(GOOGLE_PROFILER_FOUND false)

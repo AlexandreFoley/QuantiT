@@ -339,7 +339,7 @@ struct fmt::formatter<quantit::conserved::C<N>>
 	}
 
 	template <class FormatContext>
-	auto format(const quantit::conserved::C<N> &z, FormatContext &ctx)
+	auto format(const quantit::conserved::C<N> &z, FormatContext &ctx) const
 	{
 
 		return format_to(
@@ -365,7 +365,7 @@ struct fmt::formatter<quantit::conserved::Z>
 	}
 
 	template <class FormatContext>
-	auto format(const quantit::conserved::Z &z, FormatContext &ctx)
+	auto format(const quantit::conserved::Z &z, FormatContext &ctx) const
 	{
 		return format_to(
 		    ctx.out(), "Z({})",
