@@ -4,7 +4,7 @@
  * File Created: Monday, 20th September 2021 12:59:11 pm
  * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)
  * Copyright (c) 2021 Alexandre Foley
- * All rights reserved
+ * Licensed under GPL v3
  */
 // #if E_PROFILER
 // #define DOCTEST_CONFIG_DISABLE

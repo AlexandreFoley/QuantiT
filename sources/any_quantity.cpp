@@ -8,7 +8,7 @@
  * Modified By: Alexandre Foley (Alexandre.foley@usherbrooke.ca>)
  * -----
  * Copyright (c) 2020 Alexandre Foley
- * All rights reserved
+ * Licensed under GPL v3
  */
 #include "Conserved/Composite/cquantity.h"
 #include "Conserved/Composite/quantity_vector.h"

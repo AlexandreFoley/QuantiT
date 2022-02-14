@@ -5,7 +5,7 @@
  * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)
  *
  * Copyright (c) 2020 Alexandre Foley
- * All rights reserved
+ * Licensed under GPL v3
  */
 #include "blockTensor/btensor.h"
 #include "tensorgdot.h"

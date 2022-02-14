@@ -4,7 +4,7 @@
  * File Created: Thursday, 13th May 2021 11:22:38 am
  * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)
  * Copyright (c) 2021 Alexandre Foley
- * All rights reserved
+ * Licensed under GPL v3
  */
 
 #ifndef BTENSORLINEARALGEBRA_H

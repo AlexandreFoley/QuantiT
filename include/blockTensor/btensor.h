@@ -8,7 +8,7 @@
  * Modified By: Alexandre Foley (Alexandre.foley@usherbrooke.ca>)
  * -----
  * Copyright (c) 2021 Alexandre Foley
- * All rights reserved
+ * Licensed under GPL v3
  */
 
 #ifndef D49FFA60_85C4_431A_BA62_9B1D30D67E86

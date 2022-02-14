@@ -58,7 +58,7 @@ setup(
     version="0.1.0",
     description="QuantiT python bindings",
     author="Alexandre Foley",
-    license="All rights reserved",
+    license="GPL v3",
     packages=find_packages(where="python_binding"),
     package_dir={"": "python_binding"},
     cmake_install_dir="python_binding/quantit",

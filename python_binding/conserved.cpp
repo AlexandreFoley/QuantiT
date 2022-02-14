@@ -4,7 +4,7 @@
  * File Created: Monday, 15th November 2021 10:26:52 am
  * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)
  * Copyright (c) 2021 Alexandre Foley
- * All rights reserved
+ * Licensed under GPL v3
  */
 
 #include <pybind11/pybind11.h>

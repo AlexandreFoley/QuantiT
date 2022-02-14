@@ -4,7 +4,7 @@
  * File Created: Friday, 29th October 2021 4:17:42 pm
  * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)
  * Copyright (c) 2021 Alexandre Foley
- * All rights reserved
+ * Licensed under GPL v3
  */
 
 #ifndef INCLUDE_DMRG_OPTIONS_H
