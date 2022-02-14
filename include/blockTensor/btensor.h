@@ -1859,7 +1859,7 @@ struct fmt::formatter<quantit::btensor>
 	}
 
 	template <class FormatContext>
-	auto format(const quantit::btensor &t, FormatContext &ctx)
+	auto format(const quantit::btensor &t, FormatContext &ctx) const
 	{
 		constexpr auto btensor_fmt_string = "btensor rank {}\n selection rule {}\n number of sections by dim {}\n "
 		                                    "sections sizes {}\n sections conserved quantity {}\n";

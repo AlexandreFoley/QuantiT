@@ -13,14 +13,14 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 if(DEFINED ENV{EBROOTGENTOO})# we're on a compute canada supercomputer
 
     MESSAGE("computecanada detected")
-    SET(CMAKE_SKIP_INSTALL_RPATH ON)
+    # SET(CMAKE_SKIP_INSTALL_RPATH ON) #We tell cmake what to add to the rpath manually. doesn't cause conflict with CC automatic rpaths
     SET(CMAKE_SYSTEM_PREFIX_PATH "$ENV{EBROOTGENTOO}")
     SET(PYTHON_EXECUTABLE "$ENV{EBROOTPYTHON}/bin/python")
     SET(CUDA_TOOLKIT_ROOT_DIR "$ENV{EBROOTCUDA}")
-    SET(CUDA_ROOT "${CUDA_TOOLKIT_ROOT_DIR}")
-    SET(CUDNN_ROOT "$ENV{EBROOTCUDNN}")
-    SET(CUDNN_LIBRARY_PATH "${CUDNN_ROOT}/lib64")
-    SET(CUDNN_INCLUDE_PATH "${CUDNN_ROOT}/include")
+    # SET(CUDA_ROOT "${CUDA_TOOLKIT_ROOT_DIR}")
+    SET(CUDNN_TOOLKIT_ROOT "$ENV{EBROOTCUDNN}")
+    SET(CUDNN_LIBRARY_PATH "${CUDNN_TOOLKIT_ROOT}/lib64/libcudnn.so")
+    SET(CUDNN_INCLUDE_PATH "${CUDNN_TOOLKIT_ROOT}/include")
 else()
     if(DEFINED ENV{CUDA_TOOLKIT_ROOT_DIR})
         set(CUDA_TOOLKIT_ROOT_DIR "$ENV{CUDA_TOOLKIT_ROOT_DIR}")
@@ -68,7 +68,18 @@ endif()
 # Now we can find pybind11
 
 find_package(Torch REQUIRED)
-find_package(fmt 7 REQUIRED)
+find_package(fmt 7)
+if (NOT fmt_FOUND)
+MESSAGE(STATUS "fetching {fmt}")
+    include(FetchContent)
+    FetchContent_Declare(
+        fmt
+        GIT_REPOSITORY "https://github.com/fmtlib/fmt"
+        GIT_TAG "8.1.1"
+    )
+    FetchContent_MakeAvailable(fmt)
+endif()
+
 find_library(GOOGLE_PROFILER profiler )
 if (GOOGLE_PROFILER STREQUAL "GOOGLE_PROFILER-NOTFOUND")
     set(GOOGLE_PROFILER_FOUND false)

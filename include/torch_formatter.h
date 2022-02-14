@@ -63,7 +63,7 @@ struct fmt::formatter<torch::Tensor>
 	}
 
 	template <typename FormatContext>
-	auto format(const torch::Tensor &tens, FormatContext &ctx)
+	auto format(const torch::Tensor &tens, FormatContext &ctx) const
 	{
 		std::stringstream strstr;
 		at::print(strstr, tens, linelenght);

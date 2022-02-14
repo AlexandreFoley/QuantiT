@@ -437,7 +437,7 @@ struct fmt::formatter<quantit::vquantity>
 	}
 
 	template <class FormatContext>
-	auto format(const quantit::vquantity &qt, FormatContext &ctx)
+	auto format(const quantit::vquantity &qt, FormatContext &ctx) const
 	{
 		return qt.format_to(
 		    ctx); // right now qt.format_to is only defined for fmt::format_context. Should work for any output stream.

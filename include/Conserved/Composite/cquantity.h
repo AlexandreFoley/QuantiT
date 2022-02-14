@@ -432,7 +432,7 @@ template <>
 struct fmt::formatter<quantit::any_quantity_cref> : fmt::formatter<quantit::vquantity>
 {
 	template <class FormatContext>
-	auto format(quantit::any_quantity_cref &qt, FormatContext &ctx)
+	auto format(quantit::any_quantity_cref &qt, FormatContext &ctx) const
 	{
 		return fmt::formatter<quantit::vquantity>::format(
 		    qt,
