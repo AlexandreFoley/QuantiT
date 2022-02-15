@@ -11,7 +11,7 @@
 # endif(EMIT_PROFILER)
 
 add_executable(heisenberg2D 2Dheisenberg.cpp )
-target_compile_features(heisenberg2D PRIVATE cxx_std_20)
+target_compile_features(heisenberg2D PRIVATE)
 target_link_libraries(heisenberg2D PRIVATE QuantiT)
 
 set(NANB_DIR "${PROJECT_SOURCE_DIR}/extern/nanobench")
