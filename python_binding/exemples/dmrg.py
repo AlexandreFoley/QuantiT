@@ -28,7 +28,7 @@ state_V = qtt.networks.random_MPS(      4        ,      [4,2,4]  )
 state_MPO = qtt.networks.random_MPS(     4        ,         He)
 #                                  bond dimension, MPO for length and physical dimensions
 #DMRG can also be called with an externally built MPS.
-He_E2 = qtt.algorithm.dmrg(He,state_MPO)
+He_E2 = qtt.algorithms.dmrg(He,state_MPO,dmrg_opt)
 # %%
 
 #And now with conservation laws and block tensors!

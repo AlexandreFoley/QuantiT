@@ -76,14 +76,18 @@ endif()
 find_package(Torch REQUIRED)
 find_package(fmt 7)
 if (NOT fmt_FOUND)
+set(FMT_INSTALL ON)
 MESSAGE(STATUS "fetching {fmt}")
     include(FetchContent)
     FetchContent_Declare(
         fmt
         GIT_REPOSITORY "https://github.com/fmtlib/fmt"
         GIT_TAG "8.1.1"
+        GIT_SHALLOW TRUE
     )
     FetchContent_MakeAvailable(fmt)
+    MESSAGE(STATUS ${fmt_SOURCE_DIR})
+    # add_subdirectory(${fmt_SOURCE_DIR})
 endif()
 
 find_library(GOOGLE_PROFILER profiler )
