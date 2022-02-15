@@ -2,9 +2,6 @@
 
 
 
-set(COMPONENT_SRCS DMRG_heisenber_test.h) #make vs-code intellisence work with with fresh, unused, header files. HEADER_LIST is definied in sources/CMakeList.txt
-
-
 
 # if(EMIT_PROFILER)
 #     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pg")

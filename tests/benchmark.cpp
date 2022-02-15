@@ -17,7 +17,9 @@
 #include "blockTensor/btensor.h"
 #include "nanobench.h"
 #include "tensorgdot.h"
+#ifdef E_PROFILER
 #include <gperftools/profiler.h>
+#endif
 #include <random>
 #include <torch/torch.h>
 	// #include <chrono>
