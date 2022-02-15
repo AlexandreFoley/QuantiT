@@ -50,7 +50,7 @@ if(SKBUILD)
     COMMAND "${PYTHON_EXECUTABLE}" -c
             "import pybind11; print(pybind11.get_cmake_dir())"
     OUTPUT_VARIABLE _tmp_dir
-    OUTPUT_STRIP_TRAILING_WHITESPACE COMMAND_ECHO STDOUT)
+    OUTPUT_STRIP_TRAILING_WHITESPACE )
   list(APPEND CMAKE_PREFIX_PATH "${_tmp_dir}")
   find_package(pybind11 CONFIG REQUIRED)
   set(Torch_DIR ${TORCH_INSTALL_RPATH}/../share/cmake/Torch)
@@ -63,7 +63,7 @@ else()
         MESSAGE("Using Torch located in ${Torch_DIR}")
     else()
         MESSAGE("Searching for Torch")
-        execute_process( COMMAND "${PYTHON_EXECUTABLE}" -c "import torch;print(torch.utils.cmake_prefix_path)" OUTPUT_VARIABLE Torch_DIR COMMAND_ECHO STDOUT)
+        execute_process( COMMAND "${PYTHON_EXECUTABLE}" -c "import torch;print(torch.utils.cmake_prefix_path)" OUTPUT_VARIABLE Torch_DIR )
         string(REGEX REPLACE "\n$" "" Torch_DIR "${Torch_DIR}" )
         set(Torch_DIR "${Torch_DIR}/Torch")
         MESSAGE("System installed Torch found: ${Torch_DIR}")
