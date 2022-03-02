@@ -16,10 +16,10 @@
 #include <stdexcept>
 
 #include "blockTensor/btensor.h"
-#include <string_view>
-#include <torch/extension.h>
-#include <torch/csrc/MemoryFormat.h>
 #include "utilities.h"
+#include <string_view>
+#include <torch/csrc/MemoryFormat.h>
+#include <torch/extension.h>
 
 using namespace utils;
 using namespace quantit;
@@ -66,17 +66,11 @@ void init_operators(py::module &m);
 void init_algorithms(py::module &m);
 class block_helper
 {
-	public:
-	btensor& owner;
-	block_helper(btensor& _owner):owner(_owner) {}
-	torch::Tensor& access(const btensor::index_list &block_index)
-	{
-		return owner.block(block_index);
-	}
-	torch::Tensor& access_at(const btensor::index_list &block_index)
-	{
-		return owner.block_at(block_index);
-	}
+  public:
+	btensor &owner;
+	block_helper(btensor &_owner) : owner(_owner) {}
+	torch::Tensor &access(const btensor::index_list &block_index) { return owner.block(block_index); }
+	torch::Tensor &access_at(const btensor::index_list &block_index) { return owner.block_at(block_index); }
 };
 // The first argument needs to match the name of the *.so in the BUILD file.
 PYBIND11_MODULE(quantit, m)
@@ -91,25 +85,33 @@ PYBIND11_MODULE(quantit, m)
 	init_networks(m);
 	init_operators(m);
 	init_algorithms(m);
-	auto pyblocklist = py::class_<block_helper>(m,"block_list")
-	.def("__setitem__",[](block_helper& self,const btensor::index_list ind,const torch::Tensor& val)
-	{
-		if (ind.size() != self.owner.dim()) throw py::key_error("key dimension incompatible with the tensor");
-		for (int i =0; i< self.owner.dim();++i)
-		{
-			if  (ind[i] >= self.owner.section_numbers()[i]) throw py::key_error(fmt::format("key value {} for dimension {} is greater or equal to the size of that dimension {}.",ind[i],i,self.owner.section_numbers()[i]));
-		}
-		int i = 0;
-		auto val_size=val.sizes();
-		for (const auto& s:self.owner.block_sizes(ind))
-		{
-			if (val_size[i] != s) throw py::value_error(fmt::format("input tensor has wrong size {} at dim {}. {} was expected",val_size[i],i,s));
-			++i;
-		}
-		// And set the options to match the rest of the btensor.
-		self.access(ind)=val.to(self.owner.options());
-	})
-	.def("__getitem__",&block_helper::access_at);
+	auto pyblocklist =
+	    py::class_<block_helper>(m, "block_list")
+	        .def("__setitem__",
+	             [](block_helper &self, const btensor::index_list ind, const torch::Tensor &val)
+	             {
+		             if (ind.size() != self.owner.dim())
+			             throw py::key_error("key dimension incompatible with the tensor");
+		             for (int i = 0; i < self.owner.dim(); ++i)
+		             {
+			             if (ind[i] >= self.owner.section_numbers()[i])
+				             throw py::key_error(fmt::format(
+				                 "key value {} for dimension {} is greater or equal to the size of that dimension {}.",
+				                 ind[i], i, self.owner.section_numbers()[i]));
+		             }
+		             int i = 0;
+		             auto val_size = val.sizes();
+		             for (const auto &s : self.owner.block_sizes(ind))
+		             {
+			             if (val_size[i] != s)
+				             throw py::value_error(fmt::format(
+				                 "input tensor has wrong size {} at dim {}. {} was expected", val_size[i], i, s));
+			             ++i;
+		             }
+		             // And set the options to match the rest of the btensor.
+		             self.access(ind) = val.to(self.owner.options());
+	             })
+	        .def("__getitem__", &block_helper::access_at);
 	auto pybtensor =
 	    py::class_<quantit::btensor>(m, "btensor")
 	        .def(py::init())
@@ -134,13 +136,12 @@ PYBIND11_MODULE(quantit, m)
 	            [](btensor &self, torch::ScalarType dtype) { self.to(dtype); })
 	        .def_property(
 	            "device", [](const btensor &self) { return self.options().device(); },
-	            [](btensor &self, torch::Device device) {  self.to(device); })
+	            [](btensor &self, torch::Device device) { self.to(device); })
 	        .def_property(
 	            "requires_grad", [](const btensor &self) { return self.options().requires_grad(); },
 	            [](btensor &self, bool requires_grad) { self.to(self.options().requires_grad(requires_grad)); })
 	        .def(
-	            "__iter__",
-	            [](quantit::btensor &btens) { return py::make_key_iterator(btens.begin(), btens.end()); },
+	            "__iter__", [](quantit::btensor &btens) { return py::make_key_iterator(btens.begin(), btens.end()); },
 	            py::keep_alive<0, 1>())
 	        .def(py::self + py::self)
 	        .def(py::self - py::self)
@@ -160,14 +161,11 @@ PYBIND11_MODULE(quantit, m)
 	// btensor& t_() {return transpose_(dim()-1,dim()-2);}
 	pybtensor.def("t_", &btensor::t_, "permute the last two dimension of the tensor",
 	              py::return_value_policy::reference_internal);
-	// block, must become a property of btensor, expose the underlying blocklist, which would have a very limited (and safe) interface
-	// To expose it to python without making it public, we have to do some funny stuff.
-	pybtensor.def_property_readonly( "blocks",
-	    [](quantit::btensor &self) 
-	    {
-			return block_helper(self);
-		},
-	    "blocks contained within the btensor", py::return_value_policy::reference_internal);
+	// block, must become a property of btensor, expose the underlying blocklist, which would have a very limited (and
+	// safe) interface To expose it to python without making it public, we have to do some funny stuff.
+	pybtensor.def_property_readonly(
+	    "blocks", [](quantit::btensor &self) { return block_helper(self); }, "blocks contained within the btensor",
+	    py::return_value_policy::reference_internal);
 	// uniform_call(m,pybtensor, "add" ,[](const btensor& self, const btensor& other, py::object){});
 	// J'ai besoin d'une façon de convertir les nombre python vers des btensor::Scalar et vis-versa. Idéalement,
 	// btensor::Scalar n'est pas explicitement exposé en python. toute fonction qui retourne un btensor::Scalar va faire
@@ -233,7 +231,8 @@ PYBIND11_MODULE(quantit, m)
 	      "filled with random value",
 	      py::arg("shape_tensor"), py::kw_only(), py::arg("dtype") = opt<stype>(), py::arg("device") = opt<tdev>(),
 	      py::arg("requires_grad") = opt<bool>(), py::arg("pin_memory") = opt<bool>());
-	m.def("full", wrap_scalar(TOPT_binder<const btensor::vec_list_t &, any_quantity, btensor::Scalar>::bind(&quantit::full)),
+	m.def("full",
+	      wrap_scalar(TOPT_binder<const btensor::vec_list_t &, any_quantity, btensor::Scalar>::bind(&quantit::full)),
 	      "Generate a block tensor with every permited block filled with the specified value",
 	      py::arg("shape_specification"), py::arg("selection_rule"), py::arg("fill_value"), py::kw_only(),
 	      py::arg("dtype") = opt<stype>(), py::arg("device") = opt<tdev>(), py::arg("requires_grad") = opt<bool>(),
@@ -276,22 +275,23 @@ PYBIND11_MODULE(quantit, m)
 	      "filled with normally distributed random value",
 	      py::arg("shape_tensor"), py::kw_only(), py::arg("dtype") = opt<stype>(), py::arg("device") = opt<tdev>(),
 	      py::arg("requires_grad") = opt<bool>(), py::arg("pin_memory") = opt<bool>());
-	m.def("from_torch_tensor",
-	      wrap_scalar(TOPT_binder<const btensor::vec_list_t &, any_quantity, const torch::Tensor &, torch::Scalar>::bind(
-	          &quantit::from_basic_tensor)),
-	      "Generate a block tensor from a torch tensor. Overall size must match with the specified shape, forbidden "
-	      "elements and elements with magnitude below the cutoff are ignored.",
-	      py::arg("shape_specification"), py::arg("selection_rule"), py::arg("values"), py::arg("cutoff") = 1e-16,
-	      py::kw_only(), py::arg("dtype") = opt<stype>(), py::arg("device") = opt<tdev>(),
-	      py::arg("requires_grad") = opt<bool>(), py::arg("pin_memory") = opt<bool>());
+	m.def(
+	    "from_torch_tensor",
+	    wrap_scalar(TOPT_binder<const btensor::vec_list_t &, any_quantity, const torch::Tensor &, torch::Scalar>::bind(
+	        &quantit::from_basic_tensor)),
+	    "Generate a block tensor from a torch tensor. Overall size must match with the specified shape, forbidden "
+	    "elements and elements with magnitude below the cutoff are ignored.",
+	    py::arg("shape_specification"), py::arg("selection_rule"), py::arg("values"), py::arg("cutoff") = 1e-16,
+	    py::kw_only(), py::arg("dtype") = opt<stype>(), py::arg("device") = opt<tdev>(),
+	    py::arg("requires_grad") = opt<bool>(), py::arg("pin_memory") = opt<bool>());
 	m.def("from_torch_tensor_like",
 	      wrap_scalar(TOPT_binder<const btensor &, const torch::Tensor &, const torch::Scalar>::bind(
 	          &quantit::from_basic_tensor_like)),
 	      "Generate a block tensor from a torch tensor. Overall size must match with the shape tensor, forbidden "
 	      "elements and elements with magnitude below the cutoff are ignored.",
-	      py::arg("shape_tensor"), py::arg("values"),
-	      py::arg("cutoff") = 1e-16, py::kw_only(), py::arg("dtype") = opt<stype>(), py::arg("device") = opt<tdev>(),
-	      py::arg("requires_grad") = opt<bool>(), py::arg("pin_memory") = opt<bool>());
+	      py::arg("shape_tensor"), py::arg("values"), py::arg("cutoff") = 1e-16, py::kw_only(),
+	      py::arg("dtype") = opt<stype>(), py::arg("device") = opt<tdev>(), py::arg("requires_grad") = opt<bool>(),
+	      py::arg("pin_memory") = opt<bool>());
 
 	// python implicitly define the other order for the operators with heterogenous types.
 	//  inline btensor operator>(const btensor &A, btensor::Scalar other) { return greater(A, other); }
@@ -331,34 +331,35 @@ PYBIND11_MODULE(quantit, m)
 	    m, pybtensor, "get_cvals", [](const btensor &self) { return self.get_cvals(); },
 	    "return the list of all conserved quantities, ordered by dimension.", py::arg("self"));
 	//  btensor::Scalar item() const;
-	uniform_call(m, pybtensor, "item", wrap_scalar([](const btensor &self) { return self.item() ;}),
+	uniform_call(m, pybtensor, "item", wrap_scalar([](const btensor &self) { return self.item(); }),
 	             "return the raw value contained in the tensor of it is rank 0", py::arg("self"));
 	// block_quantities
-	class deref_any_block_iter:public btensor::const_block_qtt_iter
+	class deref_any_block_iter : public btensor::const_block_qtt_iter
 	{
-		public:
+	  public:
 		using btensor::const_block_qtt_iter::const_block_qtt_iter;
-		deref_any_block_iter(const btensor::const_block_qtt_iter it):btensor::const_block_qtt_iter(it) {}
+		deref_any_block_iter(const btensor::const_block_qtt_iter it) : btensor::const_block_qtt_iter(it) {}
 
-		any_quantity operator*(){return btensor::const_block_qtt_iter::operator*();}
-		//any_quantity_cref do not exist in python, only any_quantity.
+		any_quantity operator*() { return btensor::const_block_qtt_iter::operator*(); }
+		// any_quantity_cref do not exist in python, only any_quantity.
 	};
 	uniform_call(
 	    m, pybtensor, "block_quantities",
 	    [](const btensor &self, const quantit::btensor::index_list &block_index)
 	    {
 		    auto view = self.block_quantities(block_index);
-		    return py::make_iterator<py::return_value_policy::move>(deref_any_block_iter(view.begin()), deref_any_block_iter(view.end()));
+		    return py::make_iterator<py::return_value_policy::move>(deref_any_block_iter(view.begin()),
+		                                                            deref_any_block_iter(view.end()));
 	    },
 	    "return the list conserved quantity of each dimension of the block with the given index", py::arg("self"),
 	    py::arg("block_index"), py::keep_alive<0, 1>());
-	class deref_size_block_iter:public btensor::const_block_size_iter
+	class deref_size_block_iter : public btensor::const_block_size_iter
 	{
-		public:
+	  public:
 		using btensor::const_block_size_iter::const_block_size_iter;
-		deref_size_block_iter(const btensor::const_block_size_iter it):btensor::const_block_size_iter(it) {}
+		deref_size_block_iter(const btensor::const_block_size_iter it) : btensor::const_block_size_iter(it) {}
 
-		int operator*(){return btensor::const_block_size_iter::operator*();}
+		int operator*() { return btensor::const_block_size_iter::operator*(); }
 	};
 	uniform_call(
 	    m, pybtensor, "block_sizes",
@@ -370,28 +371,36 @@ PYBIND11_MODULE(quantit, m)
 	    "return the list sizes of each dimension of the block with the given index", py::arg("self"),
 	    py::arg("block_index"), py::keep_alive<0, 1>());
 	// std::tuple<index_list::const_iterator, index_list::const_iterator> section_sizes(size_t dim) const;
-	uniform_call(m,pybtensor,"sections_size",[](const btensor& self,size_t dim)
+	uniform_call(
+	    m, pybtensor, "sections_size",
+	    [](const btensor &self, size_t dim)
+	    {
+		    auto its = self.section_sizes(dim);
+		    return py::make_iterator(std::get<0>(its), std::get<1>(its));
+	    },
+	    "return an iterator on the size of the section of a dimension", py::arg("self"), py::arg("dim"),
+	    py::return_value_policy::reference_internal);
+	class deref_any_vector_iter : public any_quantity_vector::const_iterator
 	{
-		auto its = self.section_sizes(dim);
-		return py::make_iterator(std::get<0>(its),std::get<1>(its));
-	},"return an iterator on the size of the section of a dimension",py::arg("self"),py::arg("dim"), py::return_value_policy::reference_internal);
-	class deref_any_vector_iter:public any_quantity_vector::const_iterator
-	{
-		public:
+	  public:
 		using any_quantity_vector::const_iterator::const_iterator;
-		deref_any_vector_iter(const any_quantity_vector::const_iterator it):any_quantity_vector::const_iterator(it) {}
+		deref_any_vector_iter(const any_quantity_vector::const_iterator it) : any_quantity_vector::const_iterator(it) {}
 
-		any_quantity operator*(){return any_quantity_vector::const_iterator::operator*();}
-		//any_quantity_cref do not exist in python, only any_quantity.
+		any_quantity operator*() { return any_quantity_vector::const_iterator::operator*(); }
+		// any_quantity_cref do not exist in python, only any_quantity.
 	};
-	// std::tuple<any_quantity_vector::const_iterator, any_quantity_vector::const_iterator> section_cqtts(size_t dim) const;
-	// sizes
-	uniform_call(m,pybtensor,"sections_quantity",[](const btensor & self, size_t dim)
-	{
-		auto its = self.section_cqtts(dim);
-		return py::make_iterator<py::return_value_policy::move>(deref_any_vector_iter(std::get<0>(its)),deref_any_vector_iter(std::get<1>(its)));
-	}
-	,"return the conserved quantity of each section of a dimension",py::arg("self"),py::arg("dim"),py::return_value_policy::reference_internal);
+	// std::tuple<any_quantity_vector::const_iterator, any_quantity_vector::const_iterator> section_cqtts(size_t dim)
+	// const; sizes
+	uniform_call(
+	    m, pybtensor, "sections_quantity",
+	    [](const btensor &self, size_t dim)
+	    {
+		    auto its = self.section_cqtts(dim);
+		    return py::make_iterator<py::return_value_policy::move>(deref_any_vector_iter(std::get<0>(its)),
+		                                                            deref_any_vector_iter(std::get<1>(its)));
+	    },
+	    "return the conserved quantity of each section of a dimension", py::arg("self"), py::arg("dim"),
+	    py::return_value_policy::reference_internal);
 	uniform_call(
 	    m, pybtensor, "sizes", [](const btensor &a) { return a.sizes(); }, "return the full sizes of the tensor",
 	    py::arg("self"));
@@ -399,11 +408,11 @@ PYBIND11_MODULE(quantit, m)
 	uniform_call(
 	    m, pybtensor, "dim", [](const btensor &a) { return a.dim(); }, "the rank of the tensor", py::arg("self"));
 	// btensor add(const btensor &other, Scalar alpha = 1) const;
-	uniform_call(
-	    m, pybtensor, "add",
-	    wrap_scalar([](const btensor &self, const btensor &other, c10::Scalar alpha) { return self.add(other, alpha); }),
-	    "perform addition with a scalar (default=1) prefactor on the other tensor", py::arg("self"), py::arg("other"),
-	    py::arg("alpha") = 1);
+	uniform_call(m, pybtensor, "add",
+	             wrap_scalar([](const btensor &self, const btensor &other, c10::Scalar alpha)
+	                         { return self.add(other, alpha); }),
+	             "perform addition with a scalar (default=1) prefactor on the other tensor", py::arg("self"),
+	             py::arg("other"), py::arg("alpha") = 1);
 	// btensor &add_(const btensor &other, Scalar alpha = 1);
 	uniform_call(
 	    m, pybtensor, "add_",
@@ -516,96 +525,224 @@ PYBIND11_MODULE(quantit, m)
 	uniform_call(
 	    m, pybtensor, "transpose_",
 	    [](btensor &self, int64_t dim0, int64_t dim1) { return self.transpose_(dim0, dim1); },
-	    "in place exchange of the two specified dimensions", py::arg("self"), py::arg("dim0"), py::arg("dim1"), pol_internal_ref);
+	    "in place exchange of the two specified dimensions", py::arg("self"), py::arg("dim0"), py::arg("dim1"),
+	    pol_internal_ref);
 	// btensor sub(const btensor &other, Scalar alpha = 1) const { return add(other, -alpha); }
-	uniform_call(m,pybtensor,"sub",wrap_scalar([](const btensor& self, const btensor& other,c10::Scalar alpha){return self.sub(other,alpha);}),
-	"perform the substraction with another tensor muliplied by a scalar prefactor",py::arg("self"),py::arg("other"),py::arg("alpha")=1);
+	uniform_call(m, pybtensor, "sub",
+	             wrap_scalar([](const btensor &self, const btensor &other, c10::Scalar alpha)
+	                         { return self.sub(other, alpha); }),
+	             "perform the substraction with another tensor muliplied by a scalar prefactor", py::arg("self"),
+	             py::arg("other"), py::arg("alpha") = 1);
 	// btensor &sub_(const btensor &other, Scalar alpha = 1) { return add_(other, -alpha); }
-	uniform_call(m,pybtensor,"sub_",wrap_scalar([]( btensor& self, const btensor& other,c10::Scalar alpha){return self.sub_(other,alpha);}),
-	"perform the in-place substraction with another tensor muliplied by a scalar prefactor",py::arg("self"),py::arg("other"),py::arg("alpha")=1,pol_internal_ref);
+	uniform_call(
+	    m, pybtensor, "sub_",
+	    wrap_scalar([](btensor &self, const btensor &other, c10::Scalar alpha) { return self.sub_(other, alpha); }),
+	    "perform the in-place substraction with another tensor muliplied by a scalar prefactor", py::arg("self"),
+	    py::arg("other"), py::arg("alpha") = 1, pol_internal_ref);
 	// btensor sub(Scalar other, Scalar alpha = 1) const;
-	uniform_call(m,pybtensor,"sub",wrap_scalar([](const btensor& self, c10::Scalar other,c10::Scalar alpha){return self.sub(other,alpha);}),
-	"perform the substraction with another tensor muliplied by a scalar prefactor",py::arg("self"),py::arg("other"),py::arg("alpha")=1);
+	uniform_call(
+	    m, pybtensor, "sub",
+	    wrap_scalar([](const btensor &self, c10::Scalar other, c10::Scalar alpha) { return self.sub(other, alpha); }),
+	    "perform the substraction with another tensor muliplied by a scalar prefactor", py::arg("self"),
+	    py::arg("other"), py::arg("alpha") = 1);
 	// btensor &sub_(Scalar other, Scalar alpha = 1);
-	uniform_call(m,pybtensor,"sub_",wrap_scalar([]( btensor& self, c10::Scalar other,c10::Scalar alpha){return self.sub_(other,alpha);}),
-	"perform the in-place substraction with another tensor muliplied by a scalar prefactor",py::arg("self"),py::arg("other"),py::arg("alpha")=1,pol_internal_ref);
+	uniform_call(
+	    m, pybtensor, "sub_",
+	    wrap_scalar([](btensor &self, c10::Scalar other, c10::Scalar alpha) { return self.sub_(other, alpha); }),
+	    "perform the in-place substraction with another tensor muliplied by a scalar prefactor", py::arg("self"),
+	    py::arg("other"), py::arg("alpha") = 1, pol_internal_ref);
 	// btensor subtract(const btensor &other, Scalar alpha = 1) const { return sub(other, alpha); }
-	uniform_call(m,pybtensor,"subtract",wrap_scalar([](const btensor& self, const btensor& other,c10::Scalar alpha){return self.sub(other,alpha);}),
-	"perform the substraction with another tensor muliplied by a scalar prefactor",py::arg("self"),py::arg("other"),py::arg("alpha")=1);
+	uniform_call(m, pybtensor, "subtract",
+	             wrap_scalar([](const btensor &self, const btensor &other, c10::Scalar alpha)
+	                         { return self.sub(other, alpha); }),
+	             "perform the substraction with another tensor muliplied by a scalar prefactor", py::arg("self"),
+	             py::arg("other"), py::arg("alpha") = 1);
 	// btensor &subtract_(const btensor &other, Scalar alpha = 1) { return sub_(other, alpha); }
-	uniform_call(m,pybtensor,"subtract_",wrap_scalar([]( btensor& self, const btensor& other,c10::Scalar alpha){return self.sub_(other,alpha);}),
-	"perform the in-place substraction with another tensor muliplied by a scalar prefactor",py::arg("self"),py::arg("other"),py::arg("alpha")=1,pol_internal_ref);
+	uniform_call(
+	    m, pybtensor, "subtract_",
+	    wrap_scalar([](btensor &self, const btensor &other, c10::Scalar alpha) { return self.sub_(other, alpha); }),
+	    "perform the in-place substraction with another tensor muliplied by a scalar prefactor", py::arg("self"),
+	    py::arg("other"), py::arg("alpha") = 1, pol_internal_ref);
 	// btensor subtract(Scalar other, Scalar alpha = 1) const { return sub(other, alpha); }
-	uniform_call(m,pybtensor,"subtract",wrap_scalar([](const btensor& self, c10::Scalar other,c10::Scalar alpha){return self.sub(other,alpha);}),
-	"perform the substraction with another tensor muliplied by a scalar prefactor",py::arg("self"),py::arg("other"),py::arg("alpha")=1);
+	uniform_call(
+	    m, pybtensor, "subtract",
+	    wrap_scalar([](const btensor &self, c10::Scalar other, c10::Scalar alpha) { return self.sub(other, alpha); }),
+	    "perform the substraction with another tensor muliplied by a scalar prefactor", py::arg("self"),
+	    py::arg("other"), py::arg("alpha") = 1);
 	// btensor &subtract_(Scalar other, Scalar alpha = 1) { return sub_(other, alpha); }
-	uniform_call(m,pybtensor,"subtract_",wrap_scalar([]( btensor& self, c10::Scalar other,c10::Scalar alpha){return self.sub_(other,alpha);}),
-	"perform the in-place substraction with another tensor muliplied by a scalar prefactor",py::arg("self"),py::arg("other"),py::arg("alpha")=1,pol_internal_ref);
+	uniform_call(
+	    m, pybtensor, "subtract_",
+	    wrap_scalar([](btensor &self, c10::Scalar other, c10::Scalar alpha) { return self.sub_(other, alpha); }),
+	    "perform the in-place substraction with another tensor muliplied by a scalar prefactor", py::arg("self"),
+	    py::arg("other"), py::arg("alpha") = 1, pol_internal_ref);
 	// btensor tensordot(const btensor &other, torch::IntArrayRef dim_self, torch::IntArrayRef dims_other) const;
-	uniform_call(m,pybtensor,"tensordot",[](const btensor& self, const btensor& other, std::tuple<torch::IntArrayRef,torch::IntArrayRef> dims){return self.tensordot(other,std::get<0>(dims),std::get<1>(dims));},
-	"perform the tensor contraction of the specified dimensions of the two tensors",py::arg("self"),py::arg("other"),py::arg("dims"));
-	uniform_call(m,pybtensor,"tensordot",[](const btensor& self, const btensor& other, size_t dims)
-	{
-		std::vector<int64_t> dim_self(dims);
-		std::vector<int64_t> dim_other(dims);
-		std::iota(dim_other.begin(),dim_other.end(),0);
-		std::iota(dim_self.begin(),dim_self.end(),self.dim()-dims);
-		return self.tensordot(other,dim_self,dim_other);
-		},
-	"perform the tensor contraction of the last dims dimensions of the first tensor with the first dims dimension of the second tensor",py::arg("self"),py::arg("other"),py::arg("dims"));
+	uniform_call(
+	    m, pybtensor, "tensordot",
+	    [](const btensor &self, const btensor &other, std::tuple<torch::IntArrayRef, torch::IntArrayRef> dims)
+	    { return self.tensordot(other, std::get<0>(dims), std::get<1>(dims)); },
+	    "perform the tensor contraction of the specified dimensions of the two tensors", py::arg("self"),
+	    py::arg("other"), py::arg("dims"));
+	uniform_call(
+	    m, pybtensor, "tensordot",
+	    [](const btensor &self, const btensor &other, size_t dims)
+	    {
+		    std::vector<int64_t> dim_self(dims);
+		    std::vector<int64_t> dim_other(dims);
+		    std::iota(dim_other.begin(), dim_other.end(), 0);
+		    std::iota(dim_self.begin(), dim_self.end(), self.dim() - dims);
+		    return self.tensordot(other, dim_self, dim_other);
+	    },
+	    "perform the tensor contraction of the last dims dimensions of the first tensor with the first dims dimension "
+	    "of the second tensor",
+	    py::arg("self"), py::arg("other"), py::arg("dims"));
 	// btensor squeeze() const;
-	uniform_call(m,pybtensor,"squeeze",[](const btensor& self) {return self.squeeze();},"reshape the tensor such that all size one dimensions are removed from the tensor", py::arg("self"));
+	uniform_call(
+	    m, pybtensor, "squeeze", [](const btensor &self) { return self.squeeze(); },
+	    "reshape the tensor such that all size one dimensions are removed from the tensor", py::arg("self"));
 	// btensor squeeze(int64_t dim) const;
-	uniform_call(m,pybtensor,"squeeze",[](const btensor& self, int64_t dim){return self.squeeze(dim);},"squeeze the specified size one dimensions",py::arg("self"),py::arg("dim"));
+	uniform_call(
+	    m, pybtensor, "squeeze", [](const btensor &self, int64_t dim) { return self.squeeze(dim); },
+	    "squeeze the specified size one dimensions", py::arg("self"), py::arg("dim"));
 	// btensor& squeeze_(int64_t dim);
-	uniform_call(m,pybtensor,"squeeze_",[](btensor& self, int64_t dim){return self.squeeze_(dim);},"in-place squeeze the specified size one dimensions",py::arg("self"),py::arg("dim"),pol_internal_ref);
+	uniform_call(
+	    m, pybtensor, "squeeze_", [](btensor &self, int64_t dim) { return self.squeeze_(dim); },
+	    "in-place squeeze the specified size one dimensions", py::arg("self"), py::arg("dim"), pol_internal_ref);
 	// btensor& squeeze_();
-	uniform_call(m,pybtensor,"squeeze_",[](btensor& self) {return self.squeeze_();},"in-place reshape the tensor such that all size one dimensions are removed from the tensor", py::arg("self"),pol_internal_ref);
+	uniform_call(
+	    m, pybtensor, "squeeze_", [](btensor &self) { return self.squeeze_(); },
+	    "in-place reshape the tensor such that all size one dimensions are removed from the tensor", py::arg("self"),
+	    pol_internal_ref);
 	// btensor isnan() const;
-	uniform_call(m,pybtensor,"isnan",[](const btensor& self){return self.isnan();},"test elements for nan",py::arg("self"));
+	uniform_call(
+	    m, pybtensor, "isnan", [](const btensor &self) { return self.isnan(); }, "test elements for nan",
+	    py::arg("self"));
 	// torch::Tensor any() const;
-	uniform_call(m,pybtensor,"any",[](const btensor& self){return self.any();},"verify wether any element of the tensor is true.",py::arg("self"));
+	uniform_call(
+	    m, pybtensor, "any", [](const btensor &self) { return self.any(); },
+	    "verify wether any element of the tensor is true.", py::arg("self"));
 	// bool anynan() const;
-	uniform_call(m,pybtensor,"anynan",[](const btensor& self){return self.anynan();},"test whether any elements is nan",py::arg("self"));
+	uniform_call(
+	    m, pybtensor, "anynan", [](const btensor &self) { return self.anynan(); }, "test whether any elements is nan",
+	    py::arg("self"));
 	// btensor conj() const;
-	uniform_call(m,pybtensor,"conj",[](const btensor& self){return self.conj();},"apply complex conjugation to every element, and inverse all conserved quantity.",py::arg("self"));
+	uniform_call(
+	    m, pybtensor, "conj", [](const btensor &self) { return self.conj(); },
+	    "apply complex conjugation to every element, and inverse all conserved quantity.", py::arg("self"));
 	// btensor conj_only() const;
-	uniform_call(m,pybtensor,"conj_only",[](const btensor& self){return self.conj_only();},"apply complex conjugation to every element.",py::arg("self"));
+	uniform_call(
+	    m, pybtensor, "conj_only", [](const btensor &self) { return self.conj_only(); },
+	    "apply complex conjugation to every element.", py::arg("self"));
 	// btensor inverse_cvals() const;
-	uniform_call(m,pybtensor,"inverse_cvals",[](const btensor& self){return self.inverse_cvals();},"inverse all conserved quantity.",py::arg("self"));
+	uniform_call(
+	    m, pybtensor, "inverse_cvals", [](const btensor &self) { return self.inverse_cvals(); },
+	    "inverse all conserved quantity.", py::arg("self"));
 	// btensor &inverse_cvals_();
-	uniform_call(m,pybtensor,"inverse_cvals_",[]( btensor& self){return self.inverse_cvals();},"in place inverse all conserved quantity.",py::arg("self"),pol_internal_ref);
+	uniform_call(
+	    m, pybtensor, "inverse_cvals_", [](btensor &self) { return self.inverse_cvals(); },
+	    "in place inverse all conserved quantity.", py::arg("self"), pol_internal_ref);
 	// btensor cval_shift(any_quantity_cref shift, int64_t dim) const;
-	uniform_call(m,pybtensor,"cval_shift",[](const btensor& self,any_quantity qt,int64_t dim){return self.cval_shift(qt,dim);},"Shifts the conserved quantities of one dimension of the tensor, applies the opposite shift to the conservation rule.",py::arg("self"),py::arg("shift"),py::arg("dim"));
+	uniform_call(
+	    m, pybtensor, "cval_shift",
+	    [](const btensor &self, any_quantity qt, int64_t dim) { return self.cval_shift(qt, dim); },
+	    "Shifts the conserved quantities of one dimension of the tensor, applies the opposite shift to the "
+	    "conservation rule.",
+	    py::arg("self"), py::arg("shift"), py::arg("dim"));
 	// btensor &cval_shift_(any_quantity_cref shift, int64_t dim);
-	uniform_call(m,pybtensor,"cval_shift_",[](btensor& self,any_quantity qt,int64_t dim){return self.cval_shift_(qt,dim);},"Shifts the conserved quantities of one dimension of the tensor, applies the opposite shift to the conservation rule.",py::arg("self"),py::arg("shift"),py::arg("dim"),pol_internal_ref);
+	uniform_call(
+	    m, pybtensor, "cval_shift_",
+	    [](btensor &self, any_quantity qt, int64_t dim) { return self.cval_shift_(qt, dim); },
+	    "Shifts the conserved quantities of one dimension of the tensor, applies the opposite shift to the "
+	    "conservation rule.",
+	    py::arg("self"), py::arg("shift"), py::arg("dim"), pol_internal_ref);
 	// btensor &non_conserving_cval_shift_(any_quantity_cref shift, int64_t dim);
-	uniform_call(m,pybtensor,"non_conserving_cval_shift_",[](btensor& self,any_quantity qt,int64_t dim){return self.non_conserving_cval_shift_(qt,dim);},"Shifts the conserved quantities of one dimension of the tensor. only for empty tensors",py::arg("self"),py::arg("shift"),py::arg("dim"),pol_internal_ref);
+	uniform_call(
+	    m, pybtensor, "non_conserving_cval_shift_",
+	    [](btensor &self, any_quantity qt, int64_t dim) { return self.non_conserving_cval_shift_(qt, dim); },
+	    "Shifts the conserved quantities of one dimension of the tensor. only for empty tensors", py::arg("self"),
+	    py::arg("shift"), py::arg("dim"), pol_internal_ref);
 	// btensor &shift_selection_rule_(any_quantity_cref shift);
-	uniform_call(m,pybtensor,"shift_selection_rule_",[](btensor& self,any_quantity qt){return self.shift_selection_rule_(qt);},"Apply shift to the selection rule, only for empty tensors",py::arg("self"),py::arg("shift"),pol_internal_ref);
+	uniform_call(
+	    m, pybtensor, "shift_selection_rule_",
+	    [](btensor &self, any_quantity qt) { return self.shift_selection_rule_(qt); },
+	    "Apply shift to the selection rule, only for empty tensors", py::arg("self"), py::arg("shift"),
+	    pol_internal_ref);
 	// btensor &set_selection_rule_(any_quantity_cref value);
-	uniform_call(m,pybtensor,"set_selection_rule_",[](btensor& self,any_quantity qt){return self.set_selection_rule_(qt);}," Set a new selection rule, only for empty tensors",py::arg("self"),py::arg("shift"),pol_internal_ref);
-	uniform_call(m,pybtensor,"set_selection_rule",[](btensor& self,any_quantity qt){return btensor(self).set_selection_rule_(qt);},"Create a new tensor with a new selection rule, only for empty tensors",py::arg("self"),py::arg("shift"),pol_internal_ref);
+	uniform_call(
+	    m, pybtensor, "set_selection_rule_",
+	    [](btensor &self, any_quantity qt) { return self.set_selection_rule_(qt); },
+	    " Set a new selection rule, only for empty tensors", py::arg("self"), py::arg("shift"), pol_internal_ref);
+	uniform_call(
+	    m, pybtensor, "set_selection_rule",
+	    [](btensor &self, any_quantity qt) { return btensor(self).set_selection_rule_(qt); },
+	    "Create a new tensor with a new selection rule, only for empty tensors", py::arg("self"), py::arg("shift"),
+	    pol_internal_ref);
 	// btensor &neutral_selection_rule_() {return set_selection_rule_(selection_rule->neutral());}
-	uniform_call(m,pybtensor,"neutral_selection_rule_",[](btensor& self){return self.neutral_selection_rule_();},"set the selection rule to the nuetral element",py::arg("self"),pol_internal_ref);
+	uniform_call(
+	    m, pybtensor, "neutral_selection_rule_", [](btensor &self) { return self.neutral_selection_rule_(); },
+	    "set the selection rule to the neutral element", py::arg("self"), pol_internal_ref);
 	// btensor neutral_selection_rule()
-	uniform_call(m,pybtensor,"neutral_selection_rule",[](btensor& self){return self.neutral_selection_rule();},"set the selection rule to the nuetral element",py::arg("self"));
+	uniform_call(
+	    m, pybtensor, "neutral_selection_rule", [](btensor &self) { return self.neutral_selection_rule(); },
+	    "set the selection rule to the nuetral element", py::arg("self"));
 	// btensor to(const torch::TensorOptions &options = {}, bool non_blocking = false, bool copy = false,
 	//            c10::optional<c10::MemoryFormat> memory_format = c10::nullopt) const
-	pybtensor.def("to",[](const btensor& self,torch::ScalarType dtype, c10::optional<torch::Device> dev,bool non_blocking, bool copy,c10::MemoryFormat fmt){return self.to(torch::TensorOptions(dtype).device(dev),non_blocking,copy,fmt);},"perform tensor dtype conversion", py::arg("dtype"),py::kw_only(),py::arg("device")=c10::optional<torch::Device>(),py::arg("non_blocking")=false,py::arg("copy")=false,py::arg("memory_format")=c10::MemoryFormat::Preserve);
+	pybtensor.def(
+	    "to",
+	    [](const btensor &self, torch::ScalarType dtype, c10::optional<torch::Device> dev, bool non_blocking, bool copy,
+	       c10::MemoryFormat fmt) { return self.to(torch::TensorOptions(dtype).device(dev), non_blocking, copy, fmt); },
+	    "perform tensor dtype conversion", py::arg("dtype"), py::kw_only(),
+	    py::arg("device") = c10::optional<torch::Device>(), py::arg("non_blocking") = false, py::arg("copy") = false,
+	    py::arg("memory_format") = c10::MemoryFormat::Preserve);
 	// btensor to(const torch::Tensor &other, bool non_blocking = false, bool copy = false,
 	//            c10::optional<c10::MemoryFormat> memory_format = c10::nullopt) const
-	pybtensor.def("to",[](const btensor& self,const torch::Tensor & other, bool non_blocking, bool copy, c10::MemoryFormat fmt){return self.to(other,non_blocking,copy,fmt);},"perform tensor dtype and device conversion using supplied tensor options",py::arg("other"),py::kw_only(),py::arg("non_blocking")=false,py::arg("copy")=false,py::arg("memory_format")=c10::MemoryFormat::Preserve);
+	pybtensor.def(
+	    "to",
+	    [](const btensor &self, const torch::Tensor &other, bool non_blocking, bool copy, c10::MemoryFormat fmt)
+	    { return self.to(other, non_blocking, copy, fmt); },
+	    "perform tensor dtype and device conversion using supplied tensor options", py::arg("other"), py::kw_only(),
+	    py::arg("non_blocking") = false, py::arg("copy") = false,
+	    py::arg("memory_format") = c10::MemoryFormat::Preserve);
 	// btensor to(const btensor &other, bool non_blocking = false, bool copy = false,
 	//            c10::optional<c10::MemoryFormat> memory_format = c10::nullopt) const
-	pybtensor.def("to",[](const btensor& self,const btensor & other, bool non_blocking, bool copy, c10::MemoryFormat fmt){return self.to(other,non_blocking,copy,fmt);},"perform tensor dtype and device conversion using supplied tensor options",py::arg("other"),py::kw_only(),py::arg("non_blocking")=false,py::arg("copy")=false,py::arg("memory_format")=c10::MemoryFormat::Preserve);
+	pybtensor.def(
+	    "to",
+	    [](const btensor &self, const btensor &other, bool non_blocking, bool copy, c10::MemoryFormat fmt)
+	    { return self.to(other, non_blocking, copy, fmt); },
+	    "perform tensor dtype and device conversion using supplied tensor options", py::arg("other"), py::kw_only(),
+	    py::arg("non_blocking") = false, py::arg("copy") = false,
+	    py::arg("memory_format") = c10::MemoryFormat::Preserve);
 	// btensor shape_from(const std::vector<int64_t> &dims) const;
-	uniform_call(m,pybtensor,"shape_from",[](const btensor& self, const std::vector<int64_t>& dims){return self.shape_from(dims);},"return the shape of the tensor specifed. supply -1 to keep the whole dimension, otherwise specify the index value.",py::arg("self"),py::arg("dims"));
+	uniform_call(
+	    m, pybtensor, "shape_from",
+	    [](const btensor &self, const std::vector<int64_t> &dims) { return self.shape_from(dims); },
+	    "return the shape of the tensor specifed. supply -1 to keep the whole dimension, otherwise specify the index "
+	    "value.",
+	    py::arg("self"), py::arg("dims"));
 	// btensor basic_create_view(const std::vector<int64_t> &dims, bool preserve_rank = false);
-	uniform_call(m,pybtensor,"basic_create_view",[](btensor& self, const std::vector<int64_t>& dims,bool preserve_rank){return self.basic_create_view(dims,preserve_rank);},"return the shape of the tensor specifed. supply -1 to keep the whole dimension, otherwise specify the index value.",py::arg("self"),py::arg("dims"),py::arg("preserve_rank")=false);
-
+	uniform_call(
+	    m, pybtensor, "basic_create_view",
+	    [](btensor &self, const std::vector<int64_t> &dims, bool preserve_rank)
+	    { return self.basic_create_view(dims, preserve_rank); },
+	    "return the shape of the tensor specifed. supply -1 to keep the whole dimension, otherwise specify the index "
+	    "value.",
+	    py::arg("self"), py::arg("dims"), py::arg("preserve_rank") = false);
+	uniform_call(
+	    m, pybtensor, "basic_index_put_",
+	    [](btensor &self, std::vector<int64_t> index, const btensor &value)
+	    { return self.basic_index_put_(index, value); },
+	    "insert the values at the specified view", py::arg("self"), py::arg("index"), py::arg("values"), pol_internal_ref);
+	uniform_call(
+	    m, pybtensor, "basic_index_put_",
+	    [](btensor &self, std::vector<int64_t> index, const torch::Tensor &value)
+	    { return self.basic_index_put_(index, value); },
+	    "insert the values at the specified view, drop any element that do not satisfy the selection rule.",
+	    py::arg("self"), py::arg("index"), py::arg("values"), pol_internal_ref);
 	// Free standing only
 	//  inline btensor disambiguated_shape_from(const std::vector<btensor> &btens_list) -> shape_from
-	m.def("shape_from",[](const std::vector<btensor>& tensors){return disambiguated_shape_from(tensors);},"return an empty tensor with the shape of the tensor product of all the tensors.",py::arg("tensors"));
-	m.def("find_selection_rule",wrap_scalar(&quantit::find_selection_rule),"find the selection rule for a torch tensor with a given candidate shape.",py::arg("tensor"),py::arg("shape"),py::arg("cutoff")=0 );
+	m.def(
+	    "shape_from", [](const std::vector<btensor> &tensors) { return disambiguated_shape_from(tensors); },
+	    "return an empty tensor with the shape of the tensor product of all the tensors.", py::arg("tensors"));
+	m.def("find_selection_rule", wrap_scalar(&quantit::find_selection_rule),
+	      "find the selection rule for a torch tensor with a given candidate shape.", py::arg("tensor"),
+	      py::arg("shape"), py::arg("cutoff") = 0);
 }

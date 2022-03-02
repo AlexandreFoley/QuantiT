@@ -29,10 +29,6 @@
 
 namespace quantit
 {
-// doing away with those reference like class won't be easy. First attempt was a failure.
-// TODO: Do away with those reference class. They proving ever more troublesome.
-// class any_quantity_ref;
-// class any_quantity_cref;
 using any_quantity_cref = const vquantity &;
 using any_quantity_ref = vquantity &;
 class any_quantity;

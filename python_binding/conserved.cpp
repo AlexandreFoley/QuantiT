@@ -55,6 +55,6 @@ void init_conserved_qtt(py::module &m)
 	conserved_sub.def("C3", [](int z){return quantit::any_quantity(C<3>(z));});
 	conserved_sub.def("C4", [](int z){return quantit::any_quantity(C<4>(z));});
 	conserved_sub.def("C5", [](int z){return quantit::any_quantity(C<5>(z));});
-	conserved_sub.def("C6", [](int z){return quantit::any_quantity(C<6>(z));});
+	conserved_sub.def("C6", [](int z){return quantit::any_quantity(C<6>(z));}) ;
 
 }

@@ -323,6 +323,7 @@ class btensor
 	 */
 
 	btensor &basic_index_put_(const std::vector<int64_t> &dims, const btensor &value);
+	btensor &basic_index_put_(const std::vector<int64_t> &dims, const torch::Tensor &value);
 
 	btensor neutral_shape() const;
 	/**
@@ -976,6 +977,7 @@ class btensor
 	btensor broadcast_operation(const btensor &other, F &&f) const;
 	template <class F, class F_>
 	btensor &broadcast_operation_(const btensor &other, F &&f, F_ &&f_);
+	btensor &impl_basic_index_put_(const std::vector<int64_t> &dims, const btensor &value);
 };
 
 /**

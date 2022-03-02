@@ -6,11 +6,16 @@ if(pybind11_FOUND)
 
   MESSAGE("PYTORCH LIB" ${TORCH_INSTALL_PREFIX})
   find_library(TORCH_PYTHON_LIBRARY torch_python PATHS "${TORCH_INSTALL_PREFIX}/lib")
-  MESSAGE("TORCH LIB: " ${TORCH_PYTHON_LIBRARY} ${PYTHON_TORCH_LIBRARY})
+  MESSAGE("TORCH LIB: " ${TORCH_PYTHON_LIBRARY}  "<>" ${PYTHON_TORCH_LIBRARY})
 
+  #wraping it in a target library will save us grief if i ever attempt to autogenerate a .cmake for the quantit python module
+  add_library(torch_python SHARED IMPORTED)
+  set_target_properties(torch_python PROPERTIES
+    IMPORTED_LOCATION ${TORCH_PYTHON_LIBRARY}
+  )
 
   add_library(quantit MODULE quantt.cpp conserved.cpp linalg.cpp networks.cpp operators.cpp algorithm.cpp)
-  target_link_libraries(quantit PUBLIC pybind11::module ${TORCH_PYTHON_LIBRARY} QuantiT)
+  target_link_libraries(quantit PUBLIC pybind11::module torch_python QuantiT)
   set_target_properties(quantit PROPERTIES PREFIX "") #remove the "lib" from the resulting shared object
 
   set(EX_DIR ${CMAKE_CURRENT_SOURCE_DIR}/exemples)
@@ -35,7 +40,7 @@ set(ORIGIN "$ORIGIN") ##needs to be tested. LINUX!
 endif()
  if(SKBUILD)
    install(TARGETS quantit DESTINATION .)
-   set_target_properties(quantit PROPERTIES INSTALL_RPATH "${TORCH_INSTALL_RPATH};${ORIGIN}/lib")
+   set_target_properties(quantit PROPERTIES INSTALL_RPATH "${ORIGIN}/lib/torch;${ORIGIN}/lib")
    #The result of this isn't good... looks like a temporary folder.
    message(STATUS "Using scikit-build, RPATH:${TORCH_INSTALL_RPATH}")
  endif()

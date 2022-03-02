@@ -1,3 +1,9 @@
 {
-	"author": {"name": "Alexandre Foley","email": "Alexandre.foley@usherbrooke.ca"}
+	"author": {
+		"name": "Alexandre Foley",
+		"email": "Alexandre.foley@usherbrooke.ca"
+	},
+	"dependencies": {
+		"katex": "^0.15.2"
+	}
 }

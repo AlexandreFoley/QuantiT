@@ -671,10 +671,8 @@ btensor btensor::basic_create_view(const std::vector<int64_t> &dims, bool preser
 std::string to_string(const btensor &x) { return fmt::format("{}", x); }
 void print(const btensor &x) { fmt::print("{}\n\n", x); }
 
-btensor &btensor::basic_index_put_(const std::vector<int64_t> &dims, const btensor &value)
+btensor &btensor::impl_basic_index_put_(const std::vector<int64_t> &dims, const btensor &value)
 {
-	btensor reduced_shape = shape_from(dims);
-	btensor::add_tensor_check(reduced_shape, value);
 	auto [blocks, element] = to_block_basis(dims, sections_by_dim, sections_sizes, dim());
 
 	auto output_index = [](const std::vector<int64_t> &this_index, const btensor::index_list &value_index)
@@ -704,6 +702,19 @@ btensor &btensor::basic_index_put_(const std::vector<int64_t> &dims, const btens
 		blocks_list[out_ind].index_put_(element, block);
 	}
 	return *this;
+}
+
+btensor& btensor::basic_index_put_(const std::vector<int64_t> &dims, const torch::Tensor& value)
+{
+	btensor reduced_shape = shape_from(dims);
+	return impl_basic_index_put_(dims,quantit::from_basic_tensor_like(reduced_shape,value));
+}
+
+btensor &btensor::basic_index_put_(const std::vector<int64_t> &dims, const btensor &value)
+{
+	btensor reduced_shape = shape_from(dims);
+	btensor::add_tensor_check(reduced_shape, value);
+	return impl_basic_index_put_(dims, value);
 }
 
 btensor btensor::neutral_shape() const
@@ -2436,9 +2447,9 @@ void from_basic_impl(btensor &out, const torch::Tensor &values, const torch::Sca
 			auto shape_view = out.block_sizes(index);
 			auto S = btensor::full_slice(out, index);
 			auto block = values.index(torch::ArrayRef(S));
-			if ((torch::linalg::vector_norm(block.flatten(), 2, {}, false, {}) > cutoff)
+			if ((torch::linalg::vector_norm(block.flatten().to(torch::promote_types(torch::kFloat,torch::typeMetaToScalarType(block.options().dtype()))), 2, {}, false, {}) > cutoff)
 			        .item()
-			        .to<bool>()) // only insert the block if it's a significative quantity.
+			        .toBool()) // only insert the block if it's a significative quantity.
 				out.block(index) = block;
 			// fmt::print("\tindex {}\n\tSlice {}\n\t block {}\n================\n",index,S,out.block(index));
 		}
