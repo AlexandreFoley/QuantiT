@@ -43,7 +43,7 @@ else()
 endif()
 
 set(Python3_FIND_UNVERSIONED_NAMES "FIRST") 
-find_package(Python3 COMPONENTS Interpreter Numpy Development)
+find_package(Python3 COMPONENTS Interpreter  Development)
 execute_process( COMMAND which "${PYTHON_EXECUTABLE}" )
 #TODO: eliminate absolute paths to external lib and to quantit/include that appear in quantitConfig.cmake and quantitConfig-release.cmake. for partial answer see https://stackoverflow.com/questions/62000801/cmake-how-do-i-avoid-getting-absolute-paths-in-interface-target-properties
 if(SKBUILD)

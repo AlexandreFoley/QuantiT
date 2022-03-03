@@ -6,7 +6,7 @@
 	add dependencies for cuda (module spider cuda/11.4)
 	add a pytorch compatible version of cuda (11.4 seems ok even though it's not explicitly present in pytorch's list, we have to use 11.4 for cudnn on beluga).
 	add a version of cudnn compatible with your version of cuda (cudnn 8.2.0 for cuda 11.4 at the moment of writing this)
-	add fmt 7
+	add fmt 7 or 8
 	save your module list (module save [profile_name])
 	install pytorch in your userspace (pip install --no-index torch)
 	install quantit in your userspace (pip install --user git+https://github.com/AlexandreFoley/QuantiT)
@@ -19,8 +19,8 @@ QuantiT builds on pytorch's tensors, so we must install pytorch first.
 To garantee correct compilation in debug mode, we must compile pytorch ourselves. This can take a significant amount of time.
 If compiling in release mode, we could make use of precompiled pytorch for our platform. The project isn't set up for that, you're on your own if you want to do that.
 
-This project depends on the {fmt} v7 library, install it with a package manager. (package often called libfmt)
-You can skip the installation of {fmt}, if you do, the project will pull it from github at bundle it inside quantit's build.
+This project depends on the {fmt} v7 or v8 library, install it with a package manager. (package often called libfmt)
+You can skip the installation of {fmt}, if you do, the project will pull it from github and bundle it inside quantit's build.
 
 ### PyTorch's dependencies
 Python3 and some modules are dependencies of PyTorch.
@@ -35,7 +35,7 @@ With conda, you can install all the necessary components with the following comm
 	# install MKL (intel's blas and lapack implementation) and other things.
 	conda install numpy ninja pyyaml mkl mkl-include setuptools cmake cffi
 
-Add LAPACK support for the GPU if needed
+Add LAPACK support for the GPU if needed (adapt the following command to your version of cuda)
 
 	conda install -c pytorch magma-cuda102
 
@@ -45,7 +45,7 @@ Add cuDNN if you want, version 7.6.5, for cuda10.2, make sure this is right for 
 
 If you do not wish to (or can't) use conda, you can install the python packages with pip (wheel numpy pyyaml setuptools cffi), lapack and a BLAS with you package manager, and cuda (magma and  cudnn) have to be installed manually. See these installation instructions for [magma](https://icl.cs.utk.edu/projectsfiles/magma/doxygen/installing.html) and [cudnn](https://docs.nvidia.com/deeplearning/cudnn/install-guide/index.html)
 
-### build PyTorch
+### Install PyTorch
 
 Go to pytorch's [getting started page](https://pytorch.org/get-started/locally/) and select your system, package, compute platform and the python language. Then execute the supplied package manager command.
 
