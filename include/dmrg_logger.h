@@ -35,17 +35,59 @@ class dmrg_logger
 
 	virtual void init(const dmrg_options &) {}
 
+	/**
+	 * Logs the energy and the state of the MPS during the dmrg iterations.
+	 * 
+	 * @param step_num the current step number
+	 * @param E the energy of the state
+	 * @param state The MPS state at the current step.
+	 */
 	virtual void it_log_all(size_t step_num, const torch::Tensor &E, const MPS &state) { log_all(step_num, E, state); }
+	/**
+	 * Logs the energy and the state of the MPS during the dmrg iterations.
+	 * 
+	 * @param step_num the current step number
+	 * @param E the energy of the state
+	 * @param state The MPS state at the current step.
+	 */
 	virtual void it_log_all(size_t step_num, const btensor &E, const bMPS &state) { log_all(step_num, E, state); }
+	/**
+	 * Logs the energy and the state of the MPS when the DMRG procedure is done.
+	 * 
+	 * @param step_num the current step number
+	 * @param E the energy of the state
+	 * @param state The MPS state at the end of the step.
+	 */
 	virtual void end_log_all(size_t step_num, const torch::Tensor &E, const MPS &state) { log_all(step_num, E, state); }
+	/**
+	 * Logs the energy and the state of the MPS when the DMRG procedure is done.
+	 * 
+	 * @param step_num the current step number
+	 * @param E the energy of the state
+	 * @param state The MPS state at the end of the step.
+	 */
 	virtual void end_log_all(size_t step_num, const btensor &E, const bMPS &state) { log_all(step_num, E, state); }
 
+	/**
+	 * Log the current step number, the current energy, and the bond dimensions of the MPS
+	 * 
+	 * @param step_num the current step number
+	 * @param E the energy of the state
+	 * @param state The MPS state to log.
+	 */
 	virtual void log_all(size_t step_num, const torch::Tensor &E, const MPS &state)
 	{
 		log_step(step_num);
 		log_energy(E);
 		log_bond_dims(state);
 	}
+	/**
+	 * Log the current step number, the current energy, and the bond dimensions of the MPS
+	 * 
+	 * @param step_num the current step number
+	 * @param E the energy of the state
+	 * @param state The MPS state to log.
+	 */
 	virtual void log_all(size_t step_num, const btensor &E, const bMPS &state)
 	{
 		log_step(step_num);

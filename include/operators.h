@@ -16,6 +16,7 @@
 
 #include <torch/torch.h>
 
+#include "Conserved/quantity.h"
 #include "blockTensor/btensor.h"
 #include "doctest/doctest_proxy.h"
 
@@ -98,6 +99,16 @@ qtt_TEST_CASE("Pauli matrices")
 	qtt_CHECK(torch::equal(torch::matmul(sz, sz), id));
 	qtt_CHECK(torch::equal(torch::matmul(sx, torch::matmul(isy, sz)), -1 * id));
 	// fmt::print("size of torch tensor {}\n",sizeof(sx));
+}
+qtt_TEST_CASE("conserved quantities fermions")
+{
+	using cvals = quantity<conserved::Z>;
+	auto shape = btensor({{{1, cvals(0)},{2,cvals(1)},{1,cvals(2)}}}, cvals(0));
+	auto op_shape = shape_from(shape,shape.conj());
+
+	auto [c_up, c_dn, F, id] = fermions(op_shape);
+	qtt_CHECK(c_up.selection_rule->get() == cvals(-1));
+	qtt_CHECK(c_dn.selection_rule->get() == cvals(-1));
 }
 
 } // namespace quantit

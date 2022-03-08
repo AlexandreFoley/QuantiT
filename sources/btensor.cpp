@@ -2529,9 +2529,9 @@ any_quantity find_selection_rule(const torch::Tensor &tens, const btensor &shape
 	{ // return type must be specified, because return by value isn't an option here.
 		size_t block = 0;
 		auto [sect_size_beg, sect_size_end, sect_cqtt_beg, sec_cqtt_end] = shape.section_sizes_cqtts(dim);
-		while (sect_size_beg != sect_size_end and dim > *sect_size_beg)
+		while (sect_size_beg != sect_size_end and element_pos > *sect_size_beg)
 		{
-			dim -= *(sect_size_beg);
+			element_pos -= *(sect_size_beg);
 			++sect_size_beg;
 			++sect_cqtt_beg;
 			++block;
@@ -2545,7 +2545,7 @@ any_quantity find_selection_rule(const torch::Tensor &tens, const btensor &shape
 	{ return quantitiesi(element_pos, 0); };
 	auto quantities2 = [&quantitiesi, &shape](size_t element_pos) -> const vquantity &
 	{ return quantitiesi(element_pos, 1); };
-	any_quantity out_sel_rule;
+	any_quantity out_sel_rule = shape.selection_rule->neutral(); // when no hit, we assign neutral.
 	bool first_hit = true;
 	for (auto i = 0; i < state.sizes()[0]; ++i)
 	{
