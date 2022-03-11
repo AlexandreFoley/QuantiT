@@ -151,6 +151,7 @@ PYBIND11_MODULE(quantit, m)
 	        .def(py::self -= py::self)
 	        .def(py::self /= py::self)
 	        .def(py::self *= py::self)
+	        .def(- py::self)
 	        .def("__repr__", [](const quantit::btensor &val) { return fmt::format("{}", val); });
 	pybtensor.def("__mul__", wrap_scalar([](const btensor &A, c10::Scalar B) { return A.mul(B); }));
 	pybtensor.def("__mul__", wrap_scalar([](c10::Scalar B, const btensor &A) { return A.mul(B); }));
@@ -183,11 +184,11 @@ PYBIND11_MODULE(quantit, m)
 	uniform_call(m, pybtensor, "pow_", wrap_scalar([](btensor &self, c10::Scalar x) { return self.pow_(x); }),
 	             "in-place application of element by element exponentiation", py::arg("self"), py::arg("exponent"),
 	             py::return_value_policy::reference_internal);
-	m.def("sparse_zeros", TOPT_binder<const btensor::vec_list_t &, any_quantity>::bind(&quantit::zeros),
+	m.def("sparse_zeros", TOPT_binder<const btensor::vec_list_t &, any_quantity>::bind(&quantit::sparse_zeros),
 	      "Generate an empty block tensor", py::arg("shape_specification"), py::arg("selection_rule"), py::kw_only(),
 	      py::arg("dtype") = opt<stype>(), py::arg("device") = opt<tdev>(), py::arg("requires_grad") = opt<bool>(),
 	      py::arg("pin_memory") = opt<bool>());
-	m.def("sparse_zeros_like", TOPT_binder<const btensor &>::bind(&quantit::zeros_like),
+	m.def("sparse_zeros_like", TOPT_binder<const btensor &>::bind(&quantit::sparse_zeros_like),
 	      "Generate an empty block tensor with the same shape and selection rule as the input btensor",
 	      py::arg("shape_tensor"), py::kw_only(), py::arg("dtype") = opt<stype>(), py::arg("device") = opt<tdev>(),
 	      py::arg("requires_grad") = opt<bool>(), py::arg("pin_memory") = opt<bool>());

@@ -103,12 +103,41 @@ qtt_TEST_CASE("Pauli matrices")
 qtt_TEST_CASE("conserved quantities fermions")
 {
 	using cvals = quantity<conserved::Z>;
-	auto shape = btensor({{{1, cvals(0)},{2,cvals(1)},{1,cvals(2)}}}, cvals(0));
-	auto op_shape = shape_from(shape,shape.conj());
+	auto shape = btensor({{{1, cvals(0)}, {2, cvals(1)}, {1, cvals(2)}}}, cvals(0));
+	auto op_shape = shape_from(shape, shape.conj());
 
 	auto [c_up, c_dn, F, id] = fermions(op_shape);
 	qtt_CHECK(c_up.selection_rule->get() == cvals(-1));
 	qtt_CHECK(c_dn.selection_rule->get() == cvals(-1));
+
+	qtt_SUBCASE("insertion into MPO tensor")
+	{
+		auto U = full({}, cvals(0), 6);
+		auto mu = full({}, cvals(0), 3);
+		auto t = full({}, cvals(0), 1);
+		auto c_dag_up = c_up.conj().permute({1, 0});
+		auto c_dag_dn = c_dn.conj().permute({1, 0});
+		auto leftbond = btensor(
+		    {{{1, cvals(0)}, {1, cvals(1)}, {1, cvals(1)}, {1, cvals(-1)}, {1, cvals(-1)}, {1, cvals(0)}}}, cvals(0));
+		auto T = shape_from(leftbond, shape, leftbond.conj(), shape.conj());
+
+		auto n_up = c_dag_up.bmm(c_up);
+		auto n_dn = c_dag_dn.bmm(c_dn);
+
+		auto H_l = -mu * (n_up + n_dn) + U * (n_up.bmm(n_dn));
+
+		T.basic_index_put_({0, -1, 0, -1}, id);
+		T.basic_index_put_({1, -1, 0, -1}, c_up);
+		T.basic_index_put_({2, -1, 0, -1}, c_dn);
+		T.basic_index_put_({ 3, -1, 0, -1 }, c_dag_up);
+		T.basic_index_put_({ 4, -1, 0, -1 }, c_dag_dn);
+		T.basic_index_put_({ 5, -1, 0, -1 }, H_l);
+		T.basic_index_put_({ 5, -1, 1, -1 }, t * F.bmm(c_dag_up));
+		T.basic_index_put_({ 5, -1, 2, -1 }, t * F.bmm(c_dag_dn));
+		T.basic_index_put_({ 5, -1, 3, -1 }, t * c_up.bmm( F));
+		T.basic_index_put_({ 5, -1, 4, -1 }, t * c_dn.bmm( F));
+		T.basic_index_put_({ 5, -1, 5, -1 }, id);
+	}
 }
 
 } // namespace quantit

@@ -433,9 +433,7 @@ std::tuple<btensor, btensor, btensor> svd(const btensor &tensor, const BOOL some
 	// fmt::print("d \n {}\n",d);
 	std::vector<int64_t> to_U_shape(tensor.dim(), -1);
 	to_U_shape.back() = 0;
-	btensor U = shape_from(tensor.shape_from(to_U_shape)
-	                           .shift_selection_rule_(tensor.section_conserved_qtt(tensor.dim() - 1, 0).inverse()),
-	                       rightD_shape);
+	btensor U = shape_from(tensor.shape_from(to_U_shape),rightD_shape).set_selection_rule_(tensor.selection_rule);
 	// fmt::print("right_D_shape: \n {}\nU: \n{}",rightD_shape,U);
 	std::vector<int64_t> to_V_others(tensor.dim(), -1);
 	*(to_V_others.end() - 2) = to_V_others.back() = 0;

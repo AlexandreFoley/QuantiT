@@ -268,7 +268,7 @@ class flat_map
 	{
 		bool success = false; // true if the value was actually inserted.
 		auto it = std::lower_bound(begin(), end(), value.first, comp);
-		if (it->first != value.first)
+		if (it ==end() or it->first != value.first)
 		{
 			it = iterator(content.insert(it.base_reference(), value));
 			success = true;
@@ -279,7 +279,7 @@ class flat_map
 	{
 		bool success = false; // true if the value was actually inserted.
 		auto it = std::lower_bound(begin(), end(), value.first, comp);
-		if (it->first != value.first)
+		if ( it == end() or it->first != value.first)
 		{
 			it = iterator(content.insert(it.base_reference(), std::move(value)));
 			success = true;
@@ -667,13 +667,15 @@ class flat_map
 			insert(source.begin(), source.end());
 		}
 	}
-
+	//TODO: figure out what went wrong with previous implementation of find. It used the flat_map iterator instead of the content iterator.
+	// Suggest a bug in either comp or the iterators.
 	iterator find(const key_type &k)
 	{
-		auto it = std::lower_bound(begin(), end(), k, comp);
-		if (comp(*it, k))
+		auto it = std::lower_bound(content.begin(), content.end(), k, comp);
+		if (it == content.end() or comp(k, *it))
+			// we should enter here only if *it != key or it is at the end
 			return end();
-		return it;
+		return iterator(it);
 	}
 	const_iterator find(const key_type &k) const { return const_cast<flat_map *>(this)->find(k); }
 	size_type count(const key_type &k) const { return find(k) != end(); }

@@ -103,12 +103,12 @@ bMPO Heisenberg(torch::Tensor J, size_t lenght,const btensor& phys_shape)
  * @brief 
  * 
  * The local tensor are defined by the following matrix of operators:
- * 1           0         0       0       0
- * c_up        0         0       0       0
- * c_dn        0         0       0       0
- * c_up^dg     0         0       0       0
- * c_dn^dg     0         0       0       0
- * U-mu*N  c_up^dg*F c_dn^dg*F F*c_up F*c_dn 1
+ * 1                      0           0          0       0     0
+ * c_up                   0           0          0       0     0
+ * c_dn                   0           0          0       0     0
+ * c_up^dg                0           0          0       0     0
+ * c_dn^dg                0           0          0       0     0
+ * U n_up n_dn-mu*N  -c_up^dg*F  -c_dn^dg*F  -F*c_up  -F*c_dn  1
  * 
  * @param U e-e interaction
  * @param mu chemical potential
@@ -119,9 +119,9 @@ MPO Hubbard(torch::Tensor U, torch::Tensor mu, size_t lenght)
 {
 	constexpr char errorstr[] = "{0} must be a rank 0 tensor (a scalar), the supplied {0} is rank {1}";
 	if (U.sizes().size() > 0)
-		throw std::invalid_argument(fmt::format(errorstr, "U", U.sizes().size()));
+		throw std::invalid_argument(fmt::format(errorstr, "U", U.dim()));
 	if (mu.sizes().size() > 0)
-		throw std::invalid_argument(fmt::format(errorstr, "mu", mu.sizes().size()));
+		throw std::invalid_argument(fmt::format(errorstr, "mu", mu.dim()));
 	auto local_tens = torch::zeros({6, 4, 6, 4});
 	auto [c_up, c_dn, F, id] = fermions();
 	auto n_up = torch::matmul(c_up.conj().t(), c_up);

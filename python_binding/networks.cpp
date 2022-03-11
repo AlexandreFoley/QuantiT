@@ -32,6 +32,8 @@ void common_core(py::class_<S> &pyclass)
 	// reference operator[](size_t i) { return tensors[i]; }
 	pyclass.def("__getitem__",[](S& self, size_t i){return self[i];}
 	, py::return_value_policy::reference_internal);
+	pyclass.def("__setitem__",[](S& self, size_t i,const typename S::Tens& val){self[i] = val;}
+	, py::return_value_policy::reference_internal);
 	// reference front() { return tensors.front(); }
 	pyclass.def("front", [](S& self){return self.front();}, py::return_value_policy::reference_internal);
 	// reference back() { return tensors.back(); }

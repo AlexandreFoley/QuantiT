@@ -468,10 +468,10 @@ class btensor
 	btensor add(btensor &&other, Scalar alpha = 1) const;
 	btensor &add_(const btensor &other, Scalar alpha = 1);
 	btensor &add_(btensor &&other, Scalar alpha = 1);
-	btensor add(Scalar other, Scalar alpha=1)const;
-	btensor &add_(Scalar other, Scalar alpha=1);
-	btensor &operator+=(Scalar other){return add_(other);};
-	btensor &operator-=(Scalar other){return sub_(other);};
+	btensor add(Scalar other, Scalar alpha = 1) const;
+	btensor &add_(Scalar other, Scalar alpha = 1);
+	btensor &operator+=(Scalar other) { return add_(other); };
+	btensor &operator-=(Scalar other) { return sub_(other); };
 	btensor &operator+=(const btensor &other) { return add_(other); }
 	btensor &operator+=(btensor &&other) { return add_(std::move(other)); }
 	btensor &operator-=(const btensor &other) { return add_(other, -1); }
@@ -535,6 +535,7 @@ class btensor
 	btensor &operator*=(const btensor &other) { return mul_(other); }
 	btensor &operator/=(btensor::Scalar val) { return div_(val); }
 	btensor &operator/=(const btensor &other) { return div_(other); }
+	btensor operator-() { return mul(-1); }
 
 	/**
 	 * @brief in-place element wise product, with broadcasting on size 1 dimensions.
@@ -618,8 +619,8 @@ class btensor
 	btensor &sub_(const btensor &other, Scalar alpha = 1) { return add_(other, -alpha); }
 	btensor sub(btensor &&other, Scalar alpha = 1) const { return add(std::move(other), -alpha); }
 	btensor &sub_(btensor &&other, Scalar alpha = 1) { return add_(std::move(other), -alpha); }
-	btensor sub(Scalar other, Scalar alpha = 1) const {return add(other,-alpha);}
-	btensor &sub_(Scalar other, Scalar alpha = 1){return add_(other,-alpha);};
+	btensor sub(Scalar other, Scalar alpha = 1) const { return add(other, -alpha); }
+	btensor &sub_(Scalar other, Scalar alpha = 1) { return add_(other, -alpha); };
 	btensor subtract(const btensor &other, Scalar alpha = 1) const { return sub(other, alpha); }
 	btensor &subtract_(const btensor &other, Scalar alpha = 1) { return sub_(other, alpha); }
 	btensor subtract(Scalar other, Scalar alpha = 1) const { return sub(other, alpha); }
@@ -742,7 +743,7 @@ class btensor
 
 	btensor to(const torch::TensorOptions &options = {}, bool non_blocking = false, bool copy = false,
 	           c10::optional<c10::MemoryFormat> memory_format = c10::nullopt) const
-	{ 
+	{
 		btensor::block_list_t out_list =
 		    new_block_list_apply_to_all_blocks([&options, non_blocking, copy, memory_format](const auto &atensor)
 		                                       { return atensor.to(options, non_blocking, copy, memory_format); });
@@ -752,7 +753,7 @@ class btensor
 	}
 	btensor to(const btensor &other, bool non_blocking = false, bool copy = false,
 	           c10::optional<c10::MemoryFormat> memory_format = c10::nullopt) const
-	{ 
+	{
 		auto options = other.options();
 		return to(options, non_blocking, copy, memory_format);
 	}
@@ -1773,6 +1774,17 @@ qtt_TEST_CASE("btensor")
 		    torch::allclose(C.block({1, 1}), A11.mul(B1))); // it's the details of the allocation that depends on order
 		qtt_WARN_THROWS(B.mul_(A));                         // failure on pytorch side.
 	}
+	qtt_SUBCASE("Basic index put")
+	{
+		btensor B({{{3, cqt(1)}, {4, cqt(4)}, {1, cqt(3)}},
+		           {{2, cqt(-1)}, {4, cqt(1)}},
+		           {{4, cqt(-3)}, {4, cqt(-2)}, {2, cqt(0)}}},
+		          any_quantity(cqt(0)));
+		btensor C = quantit::rand({{{3, cqt(1)}, {4, cqt(4)}, {1, cqt(3)}},
+		           {{4, cqt(-3)}, {4, cqt(-2)}, {2, cqt(0)}}},
+		          any_quantity(cqt(1)));
+		qtt_CHECK_NOTHROW(B.basic_index_put_({-1,0,-1},C));
+	}
 	qtt_SUBCASE("batched matrix multiply")
 	{
 		// B and C are compatible
@@ -1838,6 +1850,12 @@ qtt_TEST_CASE("btensor")
 		}
 		qtt_CHECK(torch::allclose(BC.block_at({0, 0, 0}), B002.matmul(C020)));
 		qtt_CHECK(torch::allclose(BC.block_at({0, 1, 2}), B011.matmul(C012)));
+
+		auto b = B.basic_create_view({1, -1, -1});
+		auto c = C.basic_create_view({1, -1, -1});
+		qtt_REQUIRE(btensor::check_tensor(b) == "");
+		qtt_REQUIRE(btensor::check_tensor(c) == "");
+		qtt_CHECK_NOTHROW(b.bmm(c));
 	}
 }
 

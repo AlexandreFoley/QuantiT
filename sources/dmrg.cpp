@@ -26,8 +26,9 @@ using namespace details;
 
 template <class... T>
 void print(T &&...X)
-{ // So i can comment out a single line and disable all the debug printing within this class. had a runtime cost still. for some reason the arguement still got evaluated.
-  fmt::print(std::forward<T>(X)...);
+{ // So i can comment out a single line and disable all the debug printing within this class. had a runtime cost still.
+  // for some reason the arguement still got evaluated.
+	fmt::print(std::forward<T>(X)...);
 }
 template <class X>
 struct env_holder_impl
@@ -206,20 +207,20 @@ struct dmrg_2sites_update
 };
 /**
  * @brief Shared implementation of the differeent interface to dmrg with 2 sites update.
- * 
- * @param hamiltonian 
- * @param two_sites_hamil 
- * @param in_out_state 
- * @param options 
- * @param Env 
- * @param logger 
- * @return btensor 
+ *
+ * @param hamiltonian
+ * @param two_sites_hamil
+ * @param in_out_state
+ * @param options
+ * @param Env
+ * @param logger
+ * @return btensor
  */
 btensor details::dmrg_impl(const bMPO &hamiltonian, const bMPT &two_sites_hamil, bMPS &in_out_state,
                            const dmrg_options &options, benv_holder &Env, dmrg_logger &logger)
 {
 	btensor E0 = quantit::full({}, hamiltonian[0].selection_rule->neutral(), 100000.0,
-	                          hamiltonian[0].options().merge_in(torch::kDouble));
+	                           hamiltonian[0].options().merge_in(torch::kDouble));
 	auto sweep_dir = 1;
 	size_t init_pos = in_out_state.orthogonality_center;
 	auto N_step = two_sites_hamil.size() - 1 + (two_sites_hamil.size() == 1);
@@ -255,7 +256,8 @@ btensor details::dmrg_impl(const bMPO &hamiltonian, const bMPT &two_sites_hamil,
 	}
 	if (oc != init_pos)
 	{
-		//The oc isn't actually where the orthogonaility center variable says it is in the python binding after dmrg....
+		// The oc isn't actually where the orthogonaility center variable says it is in the python binding after
+		// dmrg....
 		if (oc != init_pos - 1 and init_pos != in_out_state.size() - 1)
 			throw std::runtime_error(fmt::format(
 			    "the orthogonality center finished somewhere surprising! final oc: {}. original oc: {}", oc, init_pos));
@@ -275,9 +277,10 @@ btensor details::dmrg_impl(const bMPO &hamiltonian, const bMPT &two_sites_hamil,
 torch::Tensor details::dmrg_impl(const MPO &hamiltonian, const MPT &twosites_hamil, MPS &in_out_state,
                                  const dmrg_options &options, env_holder &Env, dmrg_logger &logger)
 {
-	//TODO check for non-zero input.
-	auto norm = contract(in_out_state,in_out_state).item().toDouble();
-	if (norm == 0 or norm < 1e-15) throw std::invalid_argument("initial state has zero norm!");//this test is less than ideal.
+	// TODO check for non-zero input.
+	auto norm = contract(in_out_state, in_out_state).item().toDouble();
+	if (norm == 0 or norm < 1e-15)
+		throw std::invalid_argument("initial state has zero norm!"); // this test is less than ideal.
 	torch::Tensor E0 = torch::full({}, 100000.0, in_out_state[0].options().merge_in(torch::kDouble));
 	auto sweep_dir = 1;
 	size_t init_pos = in_out_state.orthogonality_center;
@@ -318,12 +321,12 @@ torch::Tensor details::dmrg_impl(const MPO &hamiltonian, const MPT &twosites_ham
 			throw std::runtime_error(fmt::format(
 			    "the orthogonality center finished somewhere surprising! final oc: {}. original oc: {}", oc, init_pos));
 	}
-	oc += (oc == 0 ); //The oc never really finishes at 0 with the current algo.
-	// The leftward sweep finishes with the oc at 1, but set the oc at 0, 
+	oc += (oc == 0); // The oc never really finishes at 0 with the current algo.
+	// The leftward sweep finishes with the oc at 1, but set the oc at 0,
 	// such the site 0 and 1 are updated together once by the next rightward sweep.
 	// this trickery is necessary to get this optimization without writing special code in the sweeper.
-	if (oc != init_pos) //then we actually move it back to its origin location.
-		in_out_state.move_oc(init_pos); 
+	if (oc != init_pos) // then we actually move it back to its origin location.
+		in_out_state.move_oc(init_pos);
 
 	logger.end_log_all(iteration, E0, in_out_state);
 
@@ -334,7 +337,8 @@ auto edge_shape_prep_impl(const shape_t &tens, int64_t dim)
 {
 	auto tens_vec = std::vector<int64_t>(tens.dim(), 0);
 	tens_vec[dim] = -1;
-	auto Shape = shape_from(tens, tens_vec).neutral_selection_rule();
+	 auto Shape = shape_from(tens, tens_vec);
+	Shape.neutral_selection_rule_();
 	return shape_from(Shape, shape_from(Shape, {0})).inverse_cvals_();
 }
 btensor details::edge_shape_prep(const btensor &tens, int64_t dim) { return edge_shape_prep_impl(tens, dim); }
@@ -375,13 +379,14 @@ void generate_env_impl(const MPO_T &hamiltonian, const MPS_T &state, env_hold_T 
 	Env.env = MPT_t(hamiltonian.size() + 2);
 
 	auto Lstate_shape = edge_shape_prep(state.front(), 0);
-	auto trivial_Ledge =
-	    ones_like(shape_from(Lstate_shape, edge_shape_prep(hamiltonian.front(), 0), Lstate_shape.inverse_cvals()),
-	              torch::TensorOptions().requires_grad(false));
+	auto LHam_shape = edge_shape_prep(hamiltonian.front(), 0);
+	auto trivial_Ledge = ones_like(shape_from(Lstate_shape, LHam_shape, Lstate_shape.inverse_cvals()),
+	                               torch::TensorOptions().requires_grad(false));
 	auto Rstate_shape = edge_shape_prep(state.back(), 2);
 	auto trivial_Redge =
 	    ones_like(shape_from(Rstate_shape, edge_shape_prep(hamiltonian.back(), 2), Rstate_shape.inverse_cvals()),
 	              torch::TensorOptions().requires_grad(false));
+	// fmt::print("{}\n\n", trivial_Redge);
 	Env[-1] = trivial_Ledge;
 	Env[hamiltonian.size()] = trivial_Redge;
 	// fmt::print("on the left: \n \t{}\n\n\t{}\n\n\t{}",Env[-1],hamiltonian[0],state[0]);
@@ -515,6 +520,10 @@ bMPT details::compute_2sitesHamil(const bMPO &hamil) { return compute_2sitesHami
 template <class Tensor>
 Tensor hamil2site_times_state_impl(const Tensor &state, const Tensor &hamil, const Tensor &Lenv, const Tensor &Renv)
 {
+	// fmt::print("state {}\n\n", state);
+	// fmt::print("hamil {}\n\n", hamil);
+	// fmt::print("Lenv {}\n\n", Lenv);
+	// fmt::print("Renv {}\n\n", Renv);
 	auto out = tensordot(Lenv, state, {0}, {0});
 	out = tensordot(out, hamil, {0, 2, 3}, {0, 4, 5});
 	out = tensordot(out, Renv, {1, 4}, {0, 1});
@@ -554,8 +563,10 @@ std::tuple<Tensor, Tensor, Tensor> eig2x2Mat_impl(const Tensor &a0, const Tensor
 		n_coeff = ones_like(n_coeff);
 		o_coeff = zeros_like(o_coeff);
 	}
-	if (o_coeff.isnan().any().item().toBool()) throw std::logic_error("nan found in output tensor");
-	if (n_coeff.isnan().any().item().toBool()) throw std::logic_error("nan found in output tensor");
+	if (o_coeff.isnan().any().item().toBool())
+		throw std::logic_error("nan found in output tensor");
+	if (n_coeff.isnan().any().item().toBool())
+		throw std::logic_error("nan found in output tensor");
 	// wackadoodle conditionnals in previous expression to have 1 instead of a nan when o_coeff is zeros.
 	return std::make_tuple(E0, o_coeff, n_coeff);
 }
@@ -575,11 +586,12 @@ std::tuple<Tensor, Tensor, Tensor, Tensor> one_step_lanczos_impl(const Tensor &s
                                                                  const Tensor &Lenv, const Tensor &Renv)
 {
 	auto psi_ip = hamil2site_times_state(state, hamil, Lenv, Renv);
+	// fmt::print("psi_ip {}\n",psi_ip);
+	// fmt::print("state {}\n",state);
 	// auto a0 = torch::real(torch::tensordot(psi_ip, state.conj(), {0, 1, 2, 3}, {0, 1, 2, 3}));//real doesn't work if
 	// the dtype isn't complex... hopefully will be solved on pytorch's end once the complex support is completed
 	auto a0 = (tensordot(psi_ip, state.conj(), {0, 1, 2, 3}, {0, 1, 2, 3}));
 	// fmt::print("a0 {}\n",a0);
-	// fmt::print("state {}\n",state);
 	psi_ip -= state * a0;
 	auto b = sqrt((tensordot(psi_ip, psi_ip.conj(), {0, 1, 2, 3}, {0, 1, 2, 3})));
 	const bool non_singular = [&]()
@@ -614,7 +626,7 @@ std::tuple<Tensor, Tensor> two_sites_update_impl(const Tensor &state, const Tens
 {
 	auto [psi_ip, a0, a1, b] = one_step_lanczos(state, hamil, Lenv, Renv);
 	// print("STATE UPDATE\nnorm psi_ip {}\n",
-	        //    tensordot(psi_ip, psi_ip.conj(), {0, 1, 2, 3}, {0, 1, 2, 3}).item().toDouble());
+	//    tensordot(psi_ip, psi_ip.conj(), {0, 1, 2, 3}, {0, 1, 2, 3}).item().toDouble());
 	// fmt::print("Psi_ip {}\n\na0 {}\n\n a1 {}\n\nb
 	// {}\n\n",psi_ip.item().toDouble(),a0.item().toDouble(),a1.item().toDouble(),b.item().toDouble());
 	// print("\ta0 {} a1 {} b {}\n", a0.item().toDouble(), a1.item().toDouble(), b.item().toDouble());

@@ -79,6 +79,7 @@ btensor trivial_edge(const btensor &lower_state, const btensor &Hamil, const bte
 } // namespace details
 qtt_TEST_CASE("btensor dmrg run test")
 {	
+	//TODO: make it so dmrg run with silly target cval (like 0 particles) behave in a more graceful (e.g. finnish quickly) manner than currently(crash)
 	using cval = quantity<conserved::Z>;
 	auto T = quantit::rand({{{1,cval(1)},{1,cval(-1)}}, {{3,cval(-1)},{2,cval(1)}}, {{1,cval(-1)},{1,cval(1)}}, {{3,cval(1)},{2,cval(-1)}}},cval(0));
 	bMPO Hamil(5, T);

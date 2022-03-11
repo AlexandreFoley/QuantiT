@@ -29,6 +29,19 @@
 #include <iostream>
 #endif
 
+/* Note: The "MS" section flags are to remove duplicates.  */
+#define DEFINE_GDB_PY_SCRIPT(script_name) \
+  asm("\
+.pushsection \".debug_gdb_scripts\", \"MS\",@progbits,1\n\
+.byte 1 /* Python */\n\
+.asciz \"" script_name "\"\n\
+.popsection \n\
+");
+
+#ifndef NDEBUG
+DEFINE_GDB_PY_SCRIPT("btensor-gdb.py")
+#endif
+
 namespace quantit
 {
 
@@ -503,7 +516,7 @@ btensor btensor::shape_from(const std::vector<int64_t> &dims) const
 		}
 		block_ind -= std::distance(sec_sizes_beg, sec_sizes_end);
 		out_sel_rule.op(
-		    section_conserved_qtt(i, block_ind),
+		    section_conserved_qtt(i, block_ind).inverse(),
 		    not is_slice); // when el_index is negative, block_ind should be 0 and !is_slice false, which is always ok.
 		++i;
 	}
@@ -591,13 +604,13 @@ std::tuple<std::vector<int64_t>, std::vector<torch::indexing::TensorIndex>> to_b
 			sections_sizeit += *(section_dimit);
 			auto index = a;
 			// TODO: rework this loop, the computation of the value of blockit should be simpler.
-			while (sectionsize_beg != sections_sizeit and a >= *sectionsize_beg)
+			while (sectionsize_beg != sections_sizeit and index >= *sectionsize_beg)
 			{
 				index -= *sectionsize_beg;
 				++sectionsize_beg;
 				++(*blockit);
 			}
-			(*blockit) -= (*blockit) != 0; // the loop does one too many step for a correct blockit;
+			// (*blockit) -= (*blockit) != 0; // the loop does one too many step for a correct blockit;
 			*elementit = index;
 		}
 		else
@@ -693,13 +706,13 @@ btensor &btensor::impl_basic_index_put_(const std::vector<int64_t> &dims, const 
 		const auto &block = std::get<1>(index_block);
 		auto out_ind = output_index(blocks, index);
 		if (!this->blocks_list.contains(out_ind))
-		{
+		{		
 			auto size_view = this->block_sizes(out_ind);
 			std::vector<int64_t> size(size_view.begin(),
 			                          size_view.end()); // because torch factories don't accept iterator pairs.
-			this->blocks_list[out_ind] = torch::zeros(size, options());
+			this->blocks_list.insert({out_ind,torch::zeros(size,options())});
 		}
-		blocks_list[out_ind].index_put_(element, block);
+		this->blocks_list.at(out_ind).index_put_(element, block);
 	}
 	return *this;
 }
@@ -2079,7 +2092,7 @@ btensor &btensor::squeeze_(int64_t dim)
 	{ // do the squeeze
 		std::vector<int64_t> res(this->dim(), -1);
 		res[dim] = 0;
-		*this = reshape(res);
+		*this = basic_create_view(res);
 	}
 	return *this;
 }
@@ -2529,7 +2542,7 @@ any_quantity find_selection_rule(const torch::Tensor &tens, const btensor &shape
 	{ // return type must be specified, because return by value isn't an option here.
 		size_t block = 0;
 		auto [sect_size_beg, sect_size_end, sect_cqtt_beg, sec_cqtt_end] = shape.section_sizes_cqtts(dim);
-		while (sect_size_beg != sect_size_end and element_pos > *sect_size_beg)
+		while (sect_size_beg != sect_size_end and element_pos >= *sect_size_beg)
 		{
 			element_pos -= *(sect_size_beg);
 			++sect_size_beg;
@@ -2604,9 +2617,10 @@ btensor btensor::add(const btensor &other, Scalar alpha) const
 	    other.blocks_list,
 	    // collision : do an addition in place
 	    [&alpha](torch::Tensor &a, const torch::Tensor &b)
-	    { a.add_(b, alpha); }, // no collision, multiply with the constant and make an independent copy
+	    { a.add_(b, alpha); },
+		 // no collision, multiply with the constant and make an independent copy
 	    [&alpha](torch::Tensor &x) { x = x.mul(alpha); });
-	out._options = std::get<1>(*out.begin()).options();
+	if (out.begin() != out.end() ) out._options = std::get<1>(*out.begin()).options();
 	return out;
 }
 /*!
@@ -3030,6 +3044,7 @@ btensor btensor::isnan() const
 torch::Tensor btensor::any() const
 {
 	auto it = this->begin();
+	if (it == this->end() ) return torch::Tensor();
 	auto out = std::get<1>(*it).any();
 	auto &out_acc = *(out.data_ptr<bool>());
 	while (it != this->end() and !out_acc)
