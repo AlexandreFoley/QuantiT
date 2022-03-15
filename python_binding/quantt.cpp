@@ -691,7 +691,7 @@ PYBIND11_MODULE(quantit, m)
 	    "to",
 	    [](const btensor &self, torch::ScalarType dtype, c10::optional<torch::Device> dev, bool non_blocking, bool copy,
 	       c10::MemoryFormat fmt) { return self.to(torch::TensorOptions(dtype).device(dev), non_blocking, copy, fmt); },
-	    "perform tensor dtype conversion", py::arg("dtype")= c10::optional<torch::Dtype>(),, py::kw_only(),
+	    "perform tensor dtype conversion", py::arg("dtype")= c10::optional<torch::Dtype>(), py::kw_only(),
 	    py::arg("device") = c10::optional<torch::Device>(), py::arg("non_blocking") = false, py::arg("copy") = false,
 	    py::arg("memory_format") = c10::MemoryFormat::Preserve);
 	// btensor to(const torch::Tensor &other, bool non_blocking = false, bool copy = false,

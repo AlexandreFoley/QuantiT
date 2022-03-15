@@ -4,9 +4,13 @@ project(QuantiT LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-set(QUANTIT_MAJOR_VERSION 0)
-set(QUANTIT_MINOR_VERSION 1)
-set(QUANTIT_PATCH_VERSION 0)
+#Read the version string from VERSION.txt. This is so we can have a single source of truth for the version number.
+file(STRINGS VERSION.txt CONFIG REGEX "^[ ]*[A-Za-z0-9_]+[ ]*=")
+list(TRANSFORM CONFIG STRIP)
+list(TRANSFORM CONFIG REPLACE "([^=]+)=[ ]*(.*)" "set(\\1 \"\\2\")\n")
+cmake_language(EVAL CODE ${CONFIG})
+
+
 set(QUANTIT_VERSION
     ${QUANTIT_MAJOR_VERSION}.${QUANTIT_MINOR_VERSION}.${QUANTIT_PATCH_VERSION})
 

@@ -53,9 +53,16 @@ def get_torch_rpath():
 
 torch_rpath = get_torch_rpath()
 
+version_file = open("VERSION.txt",'r')
+version = ""
+for line in version_file:
+    version += line + '\n'
+exec(version)
+version_string = str(QUANTIT_MAJOR_VERSION) + "." + str(QUANTIT_MINOR_VERSION) + "." + str(QUANTIT_PATCH_VERSION)
+
 setup(
     name="quantit",
-    version="0.1.0",
+    version=version_string,
     description="QuantiT python bindings",
     author="Alexandre Foley",
     license="GPL v3",
