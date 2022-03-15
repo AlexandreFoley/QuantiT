@@ -982,6 +982,19 @@ class btensor
 };
 
 /**
+ * @brief create an empty (no allocatred blocks) btensor with the same shape and selection rule as the imput tensor
+ * 
+ * @param tens shape specifying tensor
+ * @param opt tensor options, specified option overwrite those copied from tens
+ * @return empty btensor
+ */
+inline btensor sparse_zeros_like(const btensor &tens, c10::TensorOptions opt = {})
+{
+	auto out = btensor(tens,btensor::block_list_t());
+	out._options = out._options.merge_in(opt);
+	return out;
+}
+/**
  * @brief Construct an empty block tensor from the supplied btensors.
  *
  * The output structure is the same as that of the tensor product of the supplied tensors.
@@ -994,7 +1007,7 @@ inline btensor shape_from(const std::vector<btensor> &btens_list)
 	// now what's missing is a way to make view on btensors. For that i will almost definitly need to reproduce the
 	// equivalent part of pytorch. I had hoped to make that at a much later point, but it needed now. This function will
 	// be very useful to implement the tensor (kronecker) product
-	auto out = *btens_list.begin();
+	auto out = quantit::sparse_zeros_like(*btens_list.begin());
 	auto tens_it = btens_list.begin();
 	++tens_it;
 	for (; tens_it != btens_list.end(); ++tens_it)
@@ -1258,16 +1271,10 @@ inline btensor &tensorgdot_(btensor &add, const btensor &mul1, const btensor &mu
 	return add.tensorgdot_(mul1, mul2, dims1, dims2, beta, alpha);
 }
 
-inline btensor sparse_zeros_like(const btensor &tens, c10::TensorOptions opt = {})
-{
-	auto out = shape_from({tens});
-	out._options = out._options.merge_in(opt);
-	return out;
-}
 inline btensor sparse_zeros(const btensor::vec_list_t &shape_spec, any_quantity selection_rule,
                             c10::TensorOptions opt = {})
 {
-	return btensor(std::move(shape_spec), std::move(selection_rule), opt);
+	return btensor(shape_spec, std::move(selection_rule), std::move(opt) );
 }
 btensor zeros(const btensor::vec_list_t &shape_spec, any_quantity selection_rule, c10::TensorOptions opt = {});
 btensor zeros_like(const btensor &tens, c10::TensorOptions opt = {});

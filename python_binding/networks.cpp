@@ -3,6 +3,7 @@
 #include "utilities.h"
 #include <torch/extension.h>
 #include <pybind11/pybind11.h>
+#include <torch/types.h>
 
 #include "MPT.h"
 
@@ -114,7 +115,7 @@ void common_core(py::class_<S> &pyclass)
 	    "to",
 	    [](const S &self, torch::ScalarType dtype, c10::optional<torch::Device> dev, bool non_blocking, bool copy,
 	       c10::MemoryFormat fmt) { return self.to(torch::TensorOptions(dtype).device(dev), non_blocking, copy, fmt); },
-	    "perform tensors options conversion", py::arg("dtype"), py::kw_only(),
+	    "perform tensors options conversion", py::arg("dtype") = c10::optional<torch::Dtype>(), py::kw_only(),
 	    py::arg("device") = c10::optional<torch::Device>(), py::arg("non_blocking") = false, py::arg("copy") = false,
 	    py::arg("memory_format") = c10::MemoryFormat::Preserve);
 	// inplace version of to, will resolve to any equivalent out-of-place equivalent.i
@@ -123,7 +124,7 @@ void common_core(py::class_<S> &pyclass)
 	    [](S &self, torch::ScalarType dtype, c10::optional<torch::Device> dev, bool non_blocking, bool copy,
 	       c10::MemoryFormat fmt)
 	    { return self.to_(torch::TensorOptions(dtype).device(dev), non_blocking, copy, fmt); },
-	    "perform tensors options conversion", py::arg("dtype"), py::kw_only(),
+	    "perform tensors options conversion", py::arg("dtype")= c10::optional<torch::Dtype>(), py::kw_only(),
 	    py::arg("device") = c10::optional<torch::Device>(), py::arg("non_blocking") = false, py::arg("copy") = false,
 	    py::arg("memory_format") = c10::MemoryFormat::Preserve, py::return_value_policy::reference_internal);
 	// void print_dims(const T &mps) //T = MPS,MPT,MPO,bMPS,bMPT,bMPO
