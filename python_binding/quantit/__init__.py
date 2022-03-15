@@ -9,9 +9,9 @@ except ImportError as e:
 	# This is the post-install script, quantit.so and libQuantit.so aren't expected to be able to find torch's dynamic library 
 	# in a portable way by just copying the quantit folder around.
 	# This find the torch installation directory and symlink it into quantit install directory whenever quantit.so fails to load torch.
-	if not "cannot open shared object file: No such file or directory" in e.msg:
-		#if the error message doesn't relate to missing shared object there's no point in doing the rest, so we raise the execption to the importer.
-		raise e
+	# if not "cannot open shared object file: No such file or directory" in e.msg:
+	# 	#if the error message doesn't relate to missing shared object there's no point in doing the rest, so we raise the execption to the importer.
+	# 	raise e
 	
 	
 	init_path = pl.Path(__file__).resolve()
