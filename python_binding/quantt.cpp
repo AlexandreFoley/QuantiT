@@ -15,6 +15,7 @@
 #include <pybind11/stl.h>
 #include <stdexcept>
 
+#include "Conserved/Composite/cquantity.h"
 #include "blockTensor/btensor.h"
 #include "utilities.h"
 #include <string_view>
@@ -131,7 +132,8 @@ PYBIND11_MODULE(quantit, m)
 	             py::arg("init_list"), py::arg("sel_rule"), py::kw_only(), py::arg("dtype") = opt<stype>(),
 	             py::arg("device") = opt<tdev>(), py::arg("requires_grad") = opt<bool>(),
 	             py::arg("pin_memory") = opt<bool>())
-	        .def_property(
+	  		.def_property_readonly("selection_rule",[](const btensor& self) {return quantit::any_quantity(self.selection_rule);})      
+			.def_property(
 	            "dtype", [](const btensor &self) { return c10::typeMetaToScalarType(self.options().dtype()); },
 	            [](btensor &self, torch::ScalarType dtype) { self.to(dtype); })
 	        .def_property(

@@ -76,11 +76,11 @@ public:
 
 	bool operator==(const any_quantity_vector& other) const
 	{
-		return *ptr == *(other.ptr);
+		return ptr and *ptr == *(other.ptr);
 	}
 	bool operator!=(const any_quantity_vector& other) const
 	{
-		return *ptr != *(other.ptr);
+		return not operator==(other);
 	}
 
 	reference operator[](size_t n)
@@ -89,39 +89,49 @@ public:
 	}
 	const_reference operator[](size_t n) const
 	{
+		if (not ptr) throw std::runtime_error( fmt::format("{} cannot be called with unitialized any_quantity_vector.",__func__ ) );
 		return (*ptr)[n];
 	}
 	reference at(size_t n)
 	{
+		if (not ptr) throw std::runtime_error( fmt::format("{} cannot be called with unitialized any_quantity_vector.",__func__ ) );
 		return ptr->at(n);
 	}
 	const_reference at(size_t n) const
 	{
+		if (not ptr) throw std::runtime_error( fmt::format("{} cannot be called with unitialized any_quantity_vector.",__func__ ) );
 		return ptr->at(n);
 	}
 
 	reference front()
 	{
+		if (not ptr) throw std::runtime_error( fmt::format("{} cannot be called with unitialized any_quantity_vector.",__func__ ) );
 		return ptr->front();
 	}
 	const_reference front() const
 	{
+		if (not ptr) throw std::runtime_error( fmt::format("{} cannot be called with unitialized any_quantity_vector.",__func__ ) );
+
 		return ptr->front();
 	}
 	reference back()
 	{
+		if (not ptr) throw std::runtime_error( fmt::format("{} cannot be called with unitialized any_quantity_vector.",__func__ ) );
 		return ptr->back();
 	}
 	const_reference back() const
 	{
+		if (not ptr) throw std::runtime_error( fmt::format("{} cannot be called with unitialized any_quantity_vector.",__func__ ) );
 		return ptr->back();
 	}
 	pointer data()
 	{
+		if (not ptr) return nullptr;
 		return (ptr->data());
 	}
 	const_pointer data() const
 	{
+		if (not ptr) return nullptr;
 		return (ptr->data());
 	}
 	// capacity
@@ -147,52 +157,69 @@ public:
 	}
 	void shrink_to_fit()
 	{
+		if (ptr)
 		ptr->shrink_to_fit();
 	}
 	//modifiers
 	void clear()
 	{
+		if (ptr)
 		ptr->clear();
 	}
 	iterator insert(const_iterator pos, const_reference Val)
 	{
+		if (not ptr) throw std::runtime_error( fmt::format("{} cannot be called with unitialized any_quantity_vector.",__func__ ) );
 		return ptr->insert(pos, Val);
 	}
 	iterator insert(const_iterator pos, size_t count, const_reference Val)
 	{
+		if (not ptr) throw std::runtime_error( fmt::format("{} cannot be called with unitialized any_quantity_vector.",__func__ ) );
 		return ptr->insert(pos, count, Val);
 	}
 	iterator insert(const_iterator pos, const_iterator first, const_iterator last)
 	{
+		if (not ptr) throw std::runtime_error( fmt::format("{} cannot be called with unitialized any_quantity_vector.",__func__ ) );
 		return ptr->insert(pos, first, last);
 	}
 	iterator insert(const_iterator pos, const_reverse_iterator first, const_reverse_iterator last)
 	{
+		if (not ptr) throw std::runtime_error( fmt::format("{} cannot be called with unitialized any_quantity_vector.",__func__ ) );
 		return ptr->insert(pos, first, last);
 	}
 	iterator erase(const_iterator pos)
 	{
+		if (not ptr) return iterator();
 		return ptr->erase(pos);
 	}
 	iterator erase(const_iterator first, const_iterator last)
 	{
+		if (not ptr) return iterator();
 		return ptr->erase(first, last);
 	}
 	void push_back(const_reference value)
 	{
-		ptr->push_back(value);
+		if (ptr)
+			ptr->push_back(value);
+		else
+			*this = any_quantity_vector(1,value);
+
 	}
 	void pop_back()
 	{
+		if (not ptr) throw std::runtime_error( fmt::format("{} cannot be called with unitialized any_quantity_vector.",__func__ ) );
 		ptr->pop_back();
 	}
 	void resize(size_t count)
 	{
+		if (not ptr) throw std::runtime_error("unitialized any_quantity_vector cannot be resized without specifying a fill value.");
 		ptr->resize(count);
 	}
 	void resize(size_t count, const_reference val)
 	{
-		ptr->resize(count, val);
+		if (ptr)
+			ptr->resize(count, val);
+		else
+			*this = any_quantity_vector(count,val);
 	}
 	void swap(any_quantity_vector& other)
 	{
@@ -201,27 +228,34 @@ public:
 	}
 	iterator begin()
 	{
+		if (not ptr) return iterator();
 		return ptr->begin();
 	}
 	iterator end()
 	{
+		if (not ptr) return iterator();
 		return ptr->end();
 	}
 	const_iterator cbegin() const
 	{
+		if (not ptr) return iterator();
+
 		return ptr->cbegin();
 	}
 	const_iterator cend() const
 	{
+		if (not ptr) return iterator();
 		return ptr->cend();
 	}
 
 	reverse_iterator rbegin()
 	{
+		if (not ptr) return reverse_iterator();
 		return ptr->rbegin();
 	}
 	reverse_iterator rend()
 	{
+		if (not ptr) return reverse_iterator();
 		return ptr->rend();
 	}
 	const_iterator begin() const
@@ -234,10 +268,12 @@ public:
 	};
 	const_reverse_iterator crbegin() const
 	{
+		if (not ptr) return reverse_iterator();
 		return ptr->crbegin();
 	}
 	const_reverse_iterator crend() const
 	{
+		if (not ptr) return reverse_iterator();
 		return ptr->crend();
 	}
 	const_reverse_iterator rbegin() const
@@ -251,6 +287,7 @@ public:
 
 	any_quantity_vector permute(const int64_t* permute_begin, const int64_t* permute_end, const std::vector<int64_t> repetition) const
 	{
+		if (not ptr) return any_quantity_vector();
 		return any_quantity_vector(ptr->virtual_permute(permute_begin, permute_end, repetition));
 	}
 };

@@ -22,30 +22,32 @@
 #ifdef QTT_APPLE
 namespace quantit
 {
-namespace 
+namespace
 {
-	class DUMMY
-	{};
+class DUMMY
+{
+};
 
-}
+} // namespace
 
-}
+} // namespace quantit
 namespace std
 {
-	template<>
-	class vector<quantit::DUMMY,std::allocator<quantit::DUMMY> >
+template <>
+class vector<quantit::DUMMY, std::allocator<quantit::DUMMY>>
+{
+  public:
+	// This is pure trickery to do forbiden operation on iterators. all template of vector are declared friend to all
+	// iterator used by any vector in __wrap_iterator on the mac. hopefully this is portable. This is way more open than
+	// it strictly need to be and clearly an implementation detail.
+	//  it is entirely possible that some implementation of vector's iterator are not as wide open to (template) abuse.
+	template <class U, class T, class pointer_type>
+	static U convert_iterator(const T &t)
 	{
-	public:
-		//This is pure trickery to do forbiden operation on iterators. all template of vector are declared friend to all iterator used by any vector in __wrap_iterator on the mac. hopefully this is portable.
-		//This is way more open than it strictly need to be and clearly an implementation detail.
-		// it is entirely possible that some implementation of vector's iterator are not as wide open to (template) abuse.
-		template<class U,class T,class pointer_type>
-		static U convert_iterator(const T& t)
-		{
-			return U(static_cast<pointer_type>(t.base()));
-		}
-	};
-}
+		return U(static_cast<pointer_type>(t.base()));
+	}
+};
+} // namespace std
 #endif
 namespace quantit
 {
@@ -92,8 +94,14 @@ struct const_cgroup_iterator
 	using base_type = boost::stl_interfaces::iterator_interface<const_cgroup_iterator, std::random_access_iterator_tag,
 	                                                            any_quantity, any_quantity_cref, const vquantity *>;
 	any_quantity_cref operator*() const { return *it; }
-	const vquantity* operator->() const {return it; }
-	base_type::difference_type operator-(const_cgroup_iterator rhs) { return ar->ptr_diff(it, rhs.it); }
+	const vquantity *operator->() const { return it; }
+	base_type::difference_type operator-(const_cgroup_iterator rhs)
+	{
+		if (ar)
+			return ar->ptr_diff(it, rhs.it);
+		else
+			return 0;
+	}
 	const_cgroup_iterator &operator+=(base_type::difference_type n)
 	{
 		it = ar->ptr_add(it, n);
@@ -121,7 +129,7 @@ struct cgroup_iterator
 	    typename boost::stl_interfaces::iterator_interface<cgroup_iterator, std::random_access_iterator_tag,
 	                                                       any_quantity, any_quantity_ref, vquantity *, std::ptrdiff_t>;
 	any_quantity_ref operator*() const { return *it; }
-	vquantity* operator->() const {return it; }
+	vquantity *operator->() const { return it; }
 	base_type::difference_type operator-(cgroup_iterator rhs) { return ar->ptr_diff(it, rhs.it); }
 	cgroup_iterator &operator+=(base_type::difference_type n)
 	{
@@ -239,7 +247,6 @@ class vquantity_vector
 	const_reverse_iterator rbegin() const { return (crbegin()); }
 	const_reverse_iterator rend() const { return (crend()); }
 };
-
 
 template <class S, class Allocator = std::allocator<S>, class = std::enable_if_t<std::is_base_of_v<vquantity, S>>>
 class quantity_vector final : public vquantity_vector, public std::vector<S, Allocator>
@@ -403,7 +410,8 @@ class quantity_vector final : public vquantity_vector, public std::vector<S, All
 		quantity_vector out(size());
 		size_t p = 0;
 		for (; permute_begin != permute_end;
-		     ++permute_begin) // to properly break this up would while reusing the s value would require a coroutine. or lazy algorithm (i.e. range)
+		     ++permute_begin) // to properly break this up would while reusing the s value would require a coroutine. or
+		                      // lazy algorithm (i.e. range)
 		{
 			auto rep = repetition[*permute_begin];
 			auto s = std::reduce(repetition.begin(), repetition.begin() + *permute_begin, 0);
@@ -455,14 +463,15 @@ class quantity_vector final : public vquantity_vector, public std::vector<S, All
 	{
 		if (in.vt() != &ar)
 			throw std::bad_cast();
-		#ifdef QTT_APPLE
-		return std::vector<DUMMY>::convert_iterator<const_iterator,vquantity_vector::const_iterator,const S *>(in);
-		#else
+#ifdef QTT_APPLE
+		return std::vector<DUMMY>::convert_iterator<const_iterator, vquantity_vector::const_iterator, const S *>(in);
+#else
 		const_iterator out;
-		// this silly fidling is only ok with random access iterators. we don't know what the operator +- do in general otherwise
+		// this silly fidling is only ok with random access iterators. we don't know what the operator +- do in general
+		// otherwise
 		auto _diff = out.base() - static_cast<const S *>(in.base());
 		return out -= _diff;
-		#endif
+#endif
 	}
 	static reverse_iterator to_S_iterator(std::reverse_iterator<vquantity_vector::iterator> in)
 	{
@@ -480,14 +489,14 @@ class quantity_vector final : public vquantity_vector, public std::vector<S, All
 		{
 			throw std::bad_cast();
 		}
-		#ifdef QTT_APPLE
-		return std::vector<DUMMY>::convert_iterator<iterator,vquantity_vector::iterator,S *>(in);
-		#else
+#ifdef QTT_APPLE
+		return std::vector<DUMMY>::convert_iterator<iterator, vquantity_vector::iterator, S *>(in);
+#else
 		iterator out;
 		// this silly fidling is only ok with random access iterator
 		auto _diff = out.base() - static_cast<S *>(in.base());
 		return out -= _diff;
-		#endif
+#endif
 	}
 
 	std::unique_ptr<vquantity_vector> clone() const override { return std::make_unique<quantity_vector>(*this); }

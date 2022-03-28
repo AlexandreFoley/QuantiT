@@ -842,6 +842,7 @@ class btensor
 	c10::TensorOptions _options;
 	friend struct fmt::formatter<quantit::btensor>;
 	friend class mul_helpers;
+	friend btensor eye_like(const btensor& shape,c10::TensorOptions opt);
 
 	/**
 	 * @brief Construct a new btensor object, copy the shape another btensor, uses the supplied block list
@@ -1318,6 +1319,23 @@ inline btensor randint(const btensor::vec_list_t &shape_spec, any_quantity selec
 {
 	return randint(high, shape_spec, selection_rule, opt);
 }
+/**
+ * @brief create a matrix with the identity matrix for every permited block on the diagonnal.
+ * 
+ * @param shape_n shape descriptor, either rank 1 or 2. when the input is rank 1, it describes the row of an hermitian matrix
+ * @param opt tensor options
+ * @return btensor 
+ */
+btensor eye(const btensor::vec_list_t& shape_n,c10::TensorOptions opt ={});
+/**
+ * @brief create a matrix with the identity matrix for every permited block on the diagonnal.
+ * 
+ * @param shape shape of the matrix to construct
+ * @param opt tensor options
+ * @return btensor 
+ */
+btensor eye_like(const btensor& shape,c10::TensorOptions opt ={});
+
 btensor randn(const btensor::vec_list_t &shape_spec, any_quantity selection_rule, c10::TensorOptions opt = {});
 btensor randn_like(const btensor &tens, c10::TensorOptions opt = {});
 
@@ -1866,6 +1884,9 @@ qtt_TEST_CASE("btensor")
 	}
 }
 
+class bad_selection_rule : public std::invalid_argument {using std::invalid_argument::invalid_argument;};
+class non_matching_cvals : public std::invalid_argument {using std::invalid_argument::invalid_argument;};
+class non_matching_sizes : public std::invalid_argument {using std::invalid_argument::invalid_argument;};
 } // namespace quantit
 
 template <>

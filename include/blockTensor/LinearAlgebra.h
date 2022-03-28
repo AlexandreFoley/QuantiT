@@ -241,6 +241,8 @@ inline std::ostream &operator<<(std::ostream &out, any_quantity_cref qt)
 
 std::string qformat(any_quantity_cref qt);
 
+std::tuple<btensor, btensor> truncate(btensor &&e, btensor &&S, size_t max, size_t min,
+                                               btensor::Scalar tol, btensor::Scalar pow);
 std::tuple<btensor, btensor, btensor> truncate(btensor &&U, btensor &&d, btensor &&V, size_t max, size_t min,
                                                btensor::Scalar tol, btensor::Scalar pow);
 

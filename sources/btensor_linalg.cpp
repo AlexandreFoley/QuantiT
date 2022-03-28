@@ -185,7 +185,7 @@ size_t compact_tensor_count(btensor::block_list_t::content_t &tensor, bool rank_
 }
 /**
  * @brief make a set of full torch tensor from a btensor, removes lines and columns of zeros in the last 2 dimensions
- *	
+ *
  * @param tensor
  * @return torch::Tensor
  */
@@ -209,7 +209,8 @@ compact_dense(const btensor &tensor)
 			{
 				lout &= *a_it == *b_it;
 				// if ( not lout) break; //might be faster not to break, this loop should be fairly short because of the
-				// exponential nature of the tensor with the lenght of this. //always flatten into matrices when it gets here, so it could be somewhat long.
+				// exponential nature of the tensor with the lenght of this. //always flatten into matrices when it gets
+				// here, so it could be somewhat long.
 			}
 		}
 		return lout;
@@ -285,7 +286,7 @@ using namespace LA_helpers;
 
 std::string qformat(any_quantity_cref qt) { return fmt::format("{}", qt); }
 
-std::tuple<btensor, btensor> eigh(const btensor &tensor, BOOL upper )
+std::tuple<btensor, btensor> eigh(const btensor &tensor, BOOL upper)
 {
 	// extract independant btensors
 	std::vector<std::tuple<torch::Tensor, btensor::index_list, std::vector<std::tuple<int, torch::indexing::Slice>>,
@@ -345,7 +346,7 @@ std::tuple<btensor, btensor> eigh(const btensor &tensor, BOOL upper )
 	b_i = 0;
 	for (auto &[basictensor, other_indices, rows, cols] : tensors_n_indices)
 	{
-		auto [bD, bU] = torch::linalg::eigh(basictensor, upper? "U":"L");
+		auto [bD, bU] = torch::linalg::eigh(basictensor, upper ? "U" : "L");
 		auto extra_block_slice = std::make_tuple(b_i, torch::indexing::Slice());
 		for (auto &row : rows)
 		{
@@ -365,7 +366,7 @@ std::tuple<btensor, btensor> eigh(const btensor &tensor, size_t split)
 	// reshape according to split
 	auto rtensor = tensor.reshape({static_cast<int64_t>(split)});
 	// call batched SVD
-	auto [d, rU] = eigh(rtensor,true);//we want the eigenvectors.
+	auto [d, rU] = eigh(rtensor, true); // we want the eigenvectors.
 	// undo reshape
 	std::vector<int64_t> U_shape(tensor.dim(), -1);
 	{
@@ -433,7 +434,7 @@ std::tuple<btensor, btensor, btensor> svd(const btensor &tensor, const BOOL some
 	// fmt::print("d \n {}\n",d);
 	std::vector<int64_t> to_U_shape(tensor.dim(), -1);
 	to_U_shape.back() = 0;
-	btensor U = shape_from(tensor.shape_from(to_U_shape),rightD_shape).set_selection_rule_(tensor.selection_rule);
+	btensor U = shape_from(tensor.shape_from(to_U_shape), rightD_shape).set_selection_rule_(tensor.selection_rule);
 	// fmt::print("right_D_shape: \n {}\nU: \n{}",rightD_shape,U);
 	std::vector<int64_t> to_V_others(tensor.dim(), -1);
 	*(to_V_others.end() - 2) = to_V_others.back() = 0;
@@ -575,7 +576,6 @@ int64_t lower_bound_impl(torch::Tensor &tens, const torch::Scalar &val)
 	static_assert(Dev_type == torch::kCUDA or Dev_type == torch::kCPU, "unsupported device type for this function.");
 }
 
-
 #define SWITCH_CASE_TORCHDTYPE_NUMERIC_PROP(CPPTYPE, c10ScalarType, numeric_property)                                  \
 	case c10::ScalarType::c10ScalarType:                                                                               \
 		return torch::Scalar(                                                                                          \
@@ -583,27 +583,25 @@ int64_t lower_bound_impl(torch::Tensor &tens, const torch::Scalar &val)
 		        decltype(c10::impl::ScalarTypeToCPPType<c10::ScalarType::c10ScalarType>::t)>::numeric_property());     \
 		break;
 
-#define NUMERICAL_PROP_BODY(DTYPE, SUBSTITUTED_MACRO, numeric_property)                                                 \
-	switch (torch::typeMetaToScalarType(DTYPE))                                                                 \
+#define NUMERICAL_PROP_BODY(DTYPE, SUBSTITUTED_MACRO, numeric_property)                                                \
+	switch (torch::typeMetaToScalarType(DTYPE))                                                                        \
 	{                                                                                                                  \
 		AT_FORALL_SCALAR_TYPES(SUBSTITUTED_MACRO)                                                                      \
 	default:                                                                                                           \
 		throw std::invalid_argument(                                                                                   \
 		    fmt::format("unsupported element type {} of tensors for {}, complex numbers are unsupported.",             \
-		                DTYPE.name(), #numeric_property));                                                      \
+		                DTYPE.name(), #numeric_property));                                                             \
 		break;                                                                                                         \
 	}
 
-torch::Scalar epsilon(caffe2::TypeMeta dtype)
-{
+torch::Scalar epsilon(caffe2::TypeMeta dtype){
 #define SUB_THIRD(CPPTYPE, C10ScalarType) SWITCH_CASE_TORCHDTYPE_NUMERIC_PROP(CPPTYPE, C10ScalarType, epsilon)
-	NUMERICAL_PROP_BODY(dtype,SUB_THIRD,epsilon)
+    NUMERICAL_PROP_BODY(dtype, SUB_THIRD, epsilon)
 #undef SUB_THIRD
-}
-torch::Scalar epsilon(const torch::Tensor &tens)
+} torch::Scalar epsilon(const torch::Tensor &tens)
 {
 #define SUB_THIRD(CPPTYPE, C10ScalarType) SWITCH_CASE_TORCHDTYPE_NUMERIC_PROP(CPPTYPE, C10ScalarType, epsilon)
-	NUMERICAL_PROP_BODY(tens.dtype(),SUB_THIRD,epsilon)
+	NUMERICAL_PROP_BODY(tens.dtype(), SUB_THIRD, epsilon)
 #undef SUB_THIRD
 }
 // macro for usage with lower_bound_dev
@@ -675,7 +673,8 @@ std::tuple<btensor, std::tuple<BTENS...>> truncate_impl(btensor &&d, std::tuple<
 	    vd.sort(-1, true)); // sort the last (only) dimension in descending order //no inplace sort in torch...
 	// vd is now sorted in ascending order.
 	auto smallest_value = vd.index({torch::indexing::Ellipsis, compute_last_index(vd, tol, pow, min, max)});
-	smallest_value -= 2*smallest_value*epsilon(d.options().dtype()); // Better chance to preserve degenerate multiplets that way.
+	smallest_value -=
+	    2 * smallest_value * epsilon(d.options().dtype()); // Better chance to preserve degenerate multiplets that way.
 	// fmt::print("epsilon {}\n",epsilon(smallest_value).toDouble());
 	// for each block trio, we can remove all the values smaller than the one in smallest_value
 	// without inducing an error larger than the tol.
@@ -786,6 +785,16 @@ std::tuple<btensor, btensor> truncate(std::tuple<btensor, btensor> &&e_S, size_t
 	    truncate_impl(std::move(std::get<0>(e_S)), std::make_tuple(std::move(std::get<0>(e_S))), max, min, tol, pow);
 	return std::make_tuple(std::move(d), std::move(std::get<0>(unit)));
 }
+std::tuple<btensor,btensor, btensor> truncate(btensor&& U, btensor &&e, btensor &&S, size_t max, size_t min, btensor::Scalar tol,
+                                               btensor::Scalar pow)
+{
+	return truncate(std::tuple<btensor,btensor,btensor>(std::move(U),std::move(e),std::move(S)),max,min,tol,pow);
+}
+std::tuple<btensor, btensor> truncate(btensor &&e, btensor &&S, size_t max, size_t min, btensor::Scalar tol,
+                                               btensor::Scalar pow)
+{
+	return truncate(std::tuple<btensor,btensor>(std::move(e),std::move(S)),max,min,tol,pow);
+}
 
 std::tuple<btensor, btensor, btensor> svd(const btensor &A, size_t split, btensor::Scalar tol, size_t min_size,
                                           size_t max_size, btensor::Scalar pow)
@@ -798,11 +807,13 @@ std::tuple<btensor, btensor, btensor> svd(const btensor &A, size_t split, btenso
 	size_t max_size = std::numeric_limits<size_t>::max();
 	return svd(A, split, tol, min_size, max_size, pow);
 }
-std::tuple<btensor,btensor> eigh(const btensor &A,size_t split,btensor::Scalar tol,size_t min_size,size_t max_size, btensor::Scalar pow)
+std::tuple<btensor, btensor> eigh(const btensor &A, size_t split, btensor::Scalar tol, size_t min_size, size_t max_size,
+                                  btensor::Scalar pow)
 {
-	//TODO: truncating doesn't have the same meaning here as it does in SVD.
-	//The most meaningful thing we could do is truncate based on the value of exp(-\beta E)/Tr(exp(-\beta E)) where beta is an additionnal user parameter.
-	return truncate(eigh(A,split),max_size,min_size,tol,pow);
+	// TODO: truncating doesn't have the same meaning here as it does in SVD.
+	// The most meaningful thing we could do is truncate based on the value of exp(-\beta E)/Tr(exp(-\beta E)) where
+	// beta is an additionnal user parameter.
+	return truncate(eigh(A, split), max_size, min_size, tol, pow);
 }
 std::tuple<btensor, btensor> eigh(const btensor &A, size_t split, btensor::Scalar tol, btensor::Scalar pow)
 {

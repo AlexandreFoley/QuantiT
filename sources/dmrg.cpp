@@ -244,7 +244,7 @@ btensor details::dmrg_impl(const bMPO &hamiltonian, const bMPT &two_sites_hamil,
 		    sweep(in_out_state, update, step, 2 * N_step, in_out_state.size() - 2); // sweep from the oc and back to it.
 		logger.it_log_all(iteration, E0_tens, in_out_state);
 		swap(E0, E0_tens);
-		if (!(((E0 - E0_tens).abs() > options.convergence_criterion))
+		if (!((((E0 - E0_tens)/E0).abs() > options.convergence_criterion))
 		         .item()
 		         .toBool()) // looks weird? it's so it stop on nan (nan
 		                    // compare false with everything).

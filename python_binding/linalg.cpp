@@ -62,4 +62,16 @@ void init_linalg_qtt(py::module &m)
 	               "the tolerence with a pow-norm. The number of eigenvalues kept is always in [min_size,max_size]",
 	               py::arg("tensor"), py::arg("split"), py::arg("tol"), py::kw_only(), py::arg("min_size") = 1,
 	               py::arg("max_size") = std::numeric_limits<size_t>::max(), py::arg("pow") = 1);
+// std::tuple<btensor, btensor, btensor> truncate(btensor &&U, btensor &&d, btensor &&V, size_t max, size_t min,
+                                            //    btensor::Scalar tol, btensor::Scalar pow);
+	linalg_sub.def("truncate",wrap_scalar([](btensor& U, btensor&d, btensor& V,size_t max, size_t min, btensor::Scalar tol, btensor::Scalar pow)
+	{
+		std::tie(U,d,V) = quantit::truncate(std::move(U),std::move(d),std::move(V),max,min,tol,pow);
+	}),"Result is stored in the supplied tensors. Truncates the three supplied tensors based on the content of the d tensor. Assumes d is in a decending order. truncation is such the the reconstruction error of SVD tensors is bellow tol when using a pow-norm and the size of the truncated dimension is in [min,max]",
+	py::arg("U"),py::arg("d"),py::arg("V"),py::arg("max"),py::arg("min"),py::arg("tol"),py::arg("pow"));
+	linalg_sub.def("truncate",wrap_scalar([](btensor&e, btensor& S,size_t max, size_t min, btensor::Scalar tol, btensor::Scalar pow)
+	{
+		std::tie(e,S) = quantit::truncate(std::move(e),std::move(S),max,min,tol,pow);
+	}),"Result is stored in the supplied tensors. Truncates the two supplied tensors based on the content of the e tensor. The size of the truncated dimension is in [min,max]",
+	py::arg("e"),py::arg("S"),py::arg("max"),py::arg("min"),py::arg("tol"),py::arg("pow"));
 }

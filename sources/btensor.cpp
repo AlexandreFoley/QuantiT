@@ -29,9 +29,11 @@
 #include <iostream>
 #endif
 
+
+#ifdef INJECT_PRETTY_PRINTER
 /* Note: The "MS" section flags are to remove duplicates.  */
-#define DEFINE_GDB_PY_SCRIPT(script_name) \
-  asm("\
+#define DEFINE_GDB_PY_SCRIPT(script_name)                                                                              \
+	asm("\
 .pushsection \".debug_gdb_scripts\", \"MS\",@progbits,1\n\
 .byte 1 /* Python */\n\
 .asciz \"" script_name "\"\n\
@@ -41,6 +43,7 @@
 #ifndef NDEBUG
 DEFINE_GDB_PY_SCRIPT("btensor-gdb.py")
 #endif
+#endif //INJECT_PRETTY_PRINTER
 
 namespace quantit
 {
@@ -80,16 +83,21 @@ any_quantity_cref btensor::section_conserved_qtt(size_t index, size_t block) con
 	auto ori = std::reduce(sections_by_dim.begin(), sections_by_dim.begin() + index, 0);
 	return c_vals[ori + block];
 }
-any_quantity_cref btensor::element_conserved_qtt(size_t dim, size_t element) const {
+any_quantity_cref btensor::element_conserved_qtt(size_t dim, size_t element) const
+{
 	auto dim_size = sizes()[dim];
-	if (element >= dim_size) throw std::invalid_argument(fmt::format("There are only {} elements along dimension {}. You requested element {}",dim_size,dim,element));
+	if (element >= dim_size)
+		throw std::invalid_argument(fmt::format(
+		    "There are only {} elements along dimension {}. You requested element {}", dim_size, dim, element));
 	auto section_num = section_number(dim);
-	auto [it_qt,end_qt] = section_conserved_qtt_range(dim);
-	auto [it_size,end_s] = section_sizes(dim);
-	while(it_qt!=end_qt)
+	auto [it_qt, end_qt] = section_conserved_qtt_range(dim);
+	auto [it_size, end_s] = section_sizes(dim);
+	while (it_qt != end_qt)
 	{
-		if (element >= *it_size) element -=*it_size;
-		else return *it_qt;
+		if (element >= *it_size)
+			element -= *it_size;
+		else
+			return *it_qt;
 		++it_qt;
 		++it_size;
 	}
@@ -492,6 +500,22 @@ btensor btensor::shape_from(const std::vector<int64_t> &dims) const
 	// rank: the number of -1 in arguement.
 	if (dims.size() != rank)
 		throw std::invalid_argument("The argument lenght must match the tensor's rank");
+	{
+		bool size_compat = true;
+		auto it_dims = dims.begin();
+		std::vector<int64_t> sizes = this->sizes();
+		auto it_size = sizes.begin();
+		while (it_dims != dims.end())
+		{
+			size_compat &= *it_dims < *it_size or *it_dims == -1;
+			++it_dims;
+			++it_size;
+		}
+		if (not size_compat)
+			throw std::invalid_argument(fmt::format(
+			    "The tensor doesn't have that many element, all elements must be smaller than {}, but received {}",
+			    sizes, dims));
+	}
 	size_t out_rank = 0;
 	index_list out_sections_by_dim(this->sections_by_dim.size());
 	any_quantity out_sel_rule = this->selection_rule.value;
@@ -706,27 +730,34 @@ btensor &btensor::impl_basic_index_put_(const std::vector<int64_t> &dims, const 
 		const auto &block = std::get<1>(index_block);
 		auto out_ind = output_index(blocks, index);
 		if (!this->blocks_list.contains(out_ind))
-		{		
+		{
 			auto size_view = this->block_sizes(out_ind);
 			std::vector<int64_t> size(size_view.begin(),
 			                          size_view.end()); // because torch factories don't accept iterator pairs.
-			this->blocks_list.insert({out_ind,torch::zeros(size,options())});
+			this->blocks_list.insert({out_ind, torch::zeros(size, options())});
 		}
 		this->blocks_list.at(out_ind).index_put_(element, block);
 	}
 	return *this;
 }
 
-btensor& btensor::basic_index_put_(const std::vector<int64_t> &dims, const torch::Tensor& value)
+btensor &btensor::basic_index_put_(const std::vector<int64_t> &dims, const torch::Tensor &value)
 {
 	btensor reduced_shape = shape_from(dims);
-	return impl_basic_index_put_(dims,quantit::from_basic_tensor_like(reduced_shape,value));
+	return impl_basic_index_put_(dims, quantit::from_basic_tensor_like(reduced_shape, value));
 }
 
 btensor &btensor::basic_index_put_(const std::vector<int64_t> &dims, const btensor &value)
 {
 	btensor reduced_shape = shape_from(dims);
-	btensor::add_tensor_check(reduced_shape, value);
+	try
+	{
+		btensor::add_tensor_check(reduced_shape, value);
+	}
+	catch (const bad_selection_rule &e)
+	{
+		throw bad_selection_rule(fmt::format(" input value need selection rule {} to go at index {}, but it has {}",reduced_shape.selection_rule,dims,value.selection_rule ));
+	}
 	return impl_basic_index_put_(dims, value);
 }
 
@@ -1271,13 +1302,13 @@ btensor &btensor::div_(const btensor &other)
 }
 btensor btensor::bmm(const btensor &mat) const
 {
-	//TODO: find out why it fails with a segfault on rank2 tensors.
-	//A cheap workaround is to increase the rank by one with a trivial dimension
-	if (this->rank == 2 and mat.rank==2)
+	// TODO: find out why it fails with a segfault on rank2 tensors.
+	// A cheap workaround is to increase the rank by one with a trivial dimension
+	if (this->rank == 2 and mat.rank == 2)
 	{
-		auto triv_shape = btensor({{{1,selection_rule->neutral()}}},selection_rule->neutral());
-		auto new_this = this->reshape_as(disambiguated_shape_from({triv_shape,*this}));
-		auto new_mat = mat.reshape_as(disambiguated_shape_from({triv_shape,mat}));
+		auto triv_shape = btensor({{{1, selection_rule->neutral()}}}, selection_rule->neutral());
+		auto new_this = this->reshape_as(disambiguated_shape_from({triv_shape, *this}));
+		auto new_mat = mat.reshape_as(disambiguated_shape_from({triv_shape, mat}));
 		return new_this.bmm(new_mat).squeeze_(0);
 	}
 	mul_helpers::check_bmm_compatibility(*this, mat);
@@ -1466,7 +1497,7 @@ btensor btensor::bmm(const btensor &mat) const
 
 btensor btensor::sum() const
 {
-	auto out = btensor({}, selection_rule.value,this->options());
+	auto out = btensor({}, selection_rule.value, this->options());
 	auto list = new_block_list_apply_to_all_blocks([](const torch::Tensor &t) { return t.sum(); });
 	torch::Tensor out_val = torch::zeros({}, options());
 	for (auto &a : list)
@@ -1571,7 +1602,7 @@ btensor btensor::add(btensor::Scalar other, btensor::Scalar alpha) const
 {
 	return full_like(*this, Scalar_mul(other, alpha)).add_(*this);
 }
-btensor& btensor::add_(btensor::Scalar other, btensor::Scalar alpha)
+btensor &btensor::add_(btensor::Scalar other, btensor::Scalar alpha)
 {
 	return add_(full_like(*this, Scalar_mul(other, alpha)));
 }
@@ -2042,8 +2073,7 @@ btensor btensor::tensordot(const btensor &other, torch::IntArrayRef dim_self, to
 				// }
 				std::tie(this_curr_block, other_curr_block) =
 				    find_next_match(this_curr_block, this_col_end, other_curr_block, other_col_end);
-				if (this_curr_block != this_col_end and
-				    other_curr_block != other_col_end) 
+				if (this_curr_block != this_col_end and other_curr_block != other_col_end)
 				{
 					// compute the block index for this combination of columns of the input block tensors
 
@@ -2058,8 +2088,8 @@ btensor btensor::tensordot(const btensor &other, torch::IntArrayRef dim_self, to
 					// firstprivate(curr_out) firstprivate(out_block_index) firstprivate(this_col_end)
 					// firstprivate(other_col_end) firstprivate(size_vector) firstprivate(a) firstprivate(b)
 					{ // this scope can be executed by a single independant thread. further parallelism is possible
-					  // at the cost of extra memory, and an extra reduction step. Everything that is defined outside this scope should be
-					  // firstprivate() inside.
+					  // at the cost of extra memory, and an extra reduction step. Everything that is defined outside
+					  // this scope should be firstprivate() inside.
 
 						auto curr_block_mat = torch::mm(std::get<1>(*this_curr_block), std::get<1>(*other_curr_block));
 						++this_curr_block; // break the match.
@@ -2195,14 +2225,15 @@ bool btensor::test_same_shape(const btensor &a, const btensor &b)
 		return false;
 	return true;
 }
+
 void btensor::add_tensor_check(const btensor &a, const btensor &b)
 {
 	if (!(a.c_vals == b.c_vals))
-		throw std::invalid_argument("The conserved quantities of the tensors must be a perfect match");
+		throw non_matching_cvals("The conserved quantities of the tensors must be a perfect match");
 	if (!(a.selection_rule == b.selection_rule))
-		throw std::invalid_argument("The selection rules of the tensors must be the same");
+		throw bad_selection_rule("The selection rules of the tensors must be the same");
 	if (!(a.sections_sizes == b.sections_sizes))
-		throw std::invalid_argument("The blocks of the tensors must have the same dimensions");
+		throw non_matching_sizes("The blocks of the tensors must have the same dimensions");
 }
 
 // Nasty shenanigans to read the refcount of a torch::Tensor. that thing is private with no accessor. So i make my own
@@ -2400,6 +2431,30 @@ btensor randint_like(int64_t low, int64_t high, const btensor &tens, c10::Tensor
 	             { return torch::randint(low, high, size, options); });
 	return out;
 }
+btensor eye(const btensor::vec_list_t &shape_n, c10::TensorOptions opt)
+{
+	auto shape = btensor(shape_n, std::get<1>(shape_n[0][0]).neutral(), opt);
+	if (shape.dim() > 2)
+		throw std::invalid_argument("the input shape must be 1 or 2 dimensionnal");
+	if (shape.dim() == 1)
+		shape = shape_from(shape, shape.conj());
+	return eye_like(shape);
+}
+btensor eye_like(const btensor &shape, c10::TensorOptions opt)
+{
+	if (shape.rank != 2) throw std::invalid_argument(" eye require input shape of rank 2");
+	auto out = sparse_zeros_like(shape, opt);
+	auto N = std::min(out.sections_by_dim[0], out.sections_by_dim[1]);
+	for (auto i = 0 * N; i < N; ++i)
+	{
+		if (out.block_conservation_rule_test({i, i}))
+		{
+			auto blockshape = out.block_sizes({i, i});
+			out.blocks_list[{i, i}] = torch::eye(*blockshape.begin(), *(++blockshape.begin()), out.options());
+		}
+	}
+	return out;
+}
 btensor randn(const btensor::vec_list_t &shape_spec, any_quantity selection_rule, c10::TensorOptions opt)
 {
 	auto out = quantit::sparse_zeros(shape_spec, selection_rule, opt);
@@ -2460,7 +2515,9 @@ void from_basic_impl(btensor &out, const torch::Tensor &values, const torch::Sca
 			auto shape_view = out.block_sizes(index);
 			auto S = btensor::full_slice(out, index);
 			auto block = values.index(torch::ArrayRef(S));
-			if ((torch::linalg::vector_norm(block.flatten().to(torch::promote_types(torch::kFloat,torch::typeMetaToScalarType(block.options().dtype()))), 2, {}, false, {}) > cutoff)
+			if ((torch::linalg::vector_norm(block.flatten().to(torch::promote_types(
+			                                    torch::kFloat, torch::typeMetaToScalarType(block.options().dtype()))),
+			                                2, {}, false, {}) > cutoff)
 			        .item()
 			        .toBool()) // only insert the block if it's a significative quantity.
 				out.block(index) = block;
@@ -2616,11 +2673,11 @@ btensor btensor::add(const btensor &other, Scalar alpha) const
 	out.blocks_list.merge(
 	    other.blocks_list,
 	    // collision : do an addition in place
-	    [&alpha](torch::Tensor &a, const torch::Tensor &b)
-	    { a.add_(b, alpha); },
-		 // no collision, multiply with the constant and make an independent copy
+	    [&alpha](torch::Tensor &a, const torch::Tensor &b) { a.add_(b, alpha); },
+	    // no collision, multiply with the constant and make an independent copy
 	    [&alpha](torch::Tensor &x) { x = x.mul(alpha); });
-	if (out.begin() != out.end() ) out._options = std::get<1>(*out.begin()).options();
+	if (out.begin() != out.end())
+		out._options = std::get<1>(*out.begin()).options();
 	return out;
 }
 /*!
@@ -3044,7 +3101,8 @@ btensor btensor::isnan() const
 torch::Tensor btensor::any() const
 {
 	auto it = this->begin();
-	if (it == this->end() ) return torch::Tensor();
+	if (it == this->end())
+		return torch::Tensor();
 	auto out = std::get<1>(*it).any();
 	auto &out_acc = *(out.data_ptr<bool>());
 	while (it != this->end() and !out_acc)
