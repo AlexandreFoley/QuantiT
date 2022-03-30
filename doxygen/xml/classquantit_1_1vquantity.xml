@@ -1,0 +1,509 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classquantit_1_1vquantity" kind="class" language="C++" prot="public" abstract="yes">
+    <compoundname>quantit::vquantity</compoundname>
+    <derivedcompoundref refid="classquantit_1_1quantity" prot="public" virt="non-virtual">quantit::quantity&lt; Groups &gt;</derivedcompoundref>
+    <includes refid="quantity__impl_8h" local="no">quantity_impl.h</includes>
+      <sectiondef kind="friend">
+      <memberdef kind="friend" id="classquantit_1_1vquantity_1aa043db784b89e20cff4f1351bf119afb" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>struct</type>
+        <definition>friend struct cgroup_iterator</definition>
+        <argsstring></argsstring>
+        <name>cgroup_iterator</name>
+        <param>
+          <type>cgroup_iterator</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="47" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" bodystart="47" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="friend" id="classquantit_1_1vquantity_1aa3f30b8c2d942a813810bbc01c7885d8" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>struct</type>
+        <definition>friend struct const_cgroup_iterator</definition>
+        <argsstring></argsstring>
+        <name>const_cgroup_iterator</name>
+        <param>
+          <type>const_cgroup_iterator</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="48" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" bodystart="48" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classquantit_1_1vquantity_1a4f7f5a467bb7b33abafbec43ac46065b" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type><ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref> &amp;</type>
+        <definition>virtual vquantity&amp; quantit::vquantity::op</definition>
+        <argsstring>(const vquantity &amp;)=0</argsstring>
+        <name>op</name>
+        <reimplementedby refid="classquantit_1_1quantity_1a7b60ef05dc153e201f6fabc6d3c7f15a">op</reimplementedby>
+        <param>
+          <type>const <ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref> &amp;</type>
+        </param>
+        <briefdescription>
+<para>in place implementation of the group operation. *this = (*this)*other, where &quot;other&quot; is the argument givent </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>vquantity&amp; : a reference to the current object. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="56" column="19"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vquantity_1ab33b83edd8986b9903e691246c54a44d" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type><ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref> &amp;</type>
+        <definition>virtual vquantity&amp; quantit::vquantity::op</definition>
+        <argsstring>(const vquantity &amp;, bool cond)=0</argsstring>
+        <name>op</name>
+        <reimplementedby refid="classquantit_1_1quantity_1a382d9877d1f20a2c7177335487fe12d0">op</reimplementedby>
+        <param>
+          <type>const <ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref> &amp;</type>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>cond</declname>
+        </param>
+        <briefdescription>
+<para>conditionnal, in place application of the group operation </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>cond</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>does nothing to this when false </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>vquantity&amp; reference to the current object </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="63" column="19"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vquantity_1a1b9d16298426bdf26b63d3f248b06e45" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void quantit::vquantity::op_to</definition>
+        <argsstring>(vquantity &amp;) const =0</argsstring>
+        <name>op_to</name>
+        <reimplementedby refid="classquantit_1_1quantity_1acf76334df02c4becbdf269f9b2c0e11a">op_to</reimplementedby>
+        <param>
+          <type><ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref> &amp;</type>
+        </param>
+        <briefdescription>
+<para>in place implementation of the group operation, the result is stored in the given argument. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="69" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vquantity_1a34f22b1d9b0cc1b50c055a279ecdc2fe" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type><ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref> &amp;</type>
+        <definition>virtual vquantity&amp; quantit::vquantity::inverse_</definition>
+        <argsstring>()=0</argsstring>
+        <name>inverse_</name>
+        <reimplementedby refid="classquantit_1_1quantity_1a77525a487ba70963a63825ba407b4125">inverse_</reimplementedby>
+        <briefdescription>
+<para>in place computation of the inverse of *this. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>vquantity&amp; : reference to the current object. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="75" column="19"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vquantity_1a3625d2f986585bb6ba22fc09c845bd64" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classquantit_1_1any__quantity" kindref="compound">any_quantity</ref></type>
+        <definition>any_quantity quantit::vquantity::inverse</definition>
+        <argsstring>() const</argsstring>
+        <name>inverse</name>
+        <briefdescription>
+<para>out of place inverse on a reference. return a new <ref refid="classquantit_1_1any__quantity" kindref="compound">any_quantity</ref> object containing the inverse of this. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para><ref refid="classquantit_1_1any__quantity" kindref="compound">any_quantity</ref> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="76" column="14" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/cquantity.h" bodystart="285" bodyend="285"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vquantity_1a9da713105c05af2f127e09f44e1e9a86" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classquantit_1_1any__quantity" kindref="compound">any_quantity</ref></type>
+        <definition>any_quantity quantit::vquantity::inv</definition>
+        <argsstring>() const</argsstring>
+        <name>inv</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="77" column="14" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/cquantity.h" bodystart="286" bodyend="286"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vquantity_1a40374252a018c5f909e81dd563c710e5" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref> &amp;</type>
+        <definition>vquantity&amp; quantit::vquantity::inv_</definition>
+        <argsstring>()</argsstring>
+        <name>inv_</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="78" column="11" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" bodystart="78" bodyend="78"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vquantity_1ac2a4c17bb527e63655ef288a413e29ef" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>std::unique_ptr&lt; <ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref> &gt;</type>
+        <definition>virtual std::unique_ptr&lt;vquantity&gt; quantit::vquantity::clone</definition>
+        <argsstring>() const =0</argsstring>
+        <name>clone</name>
+        <reimplementedby refid="classquantit_1_1quantity_1ab6214f46d3afc81ba4f64fe7bf4c0eae">clone</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="79" column="25"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vquantity_1a9dc7b1ad855b6eaed785be0ed8032ff3" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>std::unique_ptr&lt; <ref refid="classquantit_1_1vquantity__vector" kindref="compound">vquantity_vector</ref> &gt;</type>
+        <definition>virtual std::unique_ptr&lt;vquantity_vector&gt; quantit::vquantity::make_vector</definition>
+        <argsstring>(size_t cnt) const =0</argsstring>
+        <name>make_vector</name>
+        <reimplementedby refid="classquantit_1_1quantity_1a002d2eea6406dc64d5a13c138651a608">make_vector</reimplementedby>
+        <param>
+          <type>size_t</type>
+          <declname>cnt</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="80" column="25"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vquantity_1a10532e7b14882cddae51182a12a72732" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classquantit_1_1any__quantity" kindref="compound">any_quantity</ref></type>
+        <definition>any_quantity quantit::vquantity::neutral</definition>
+        <argsstring>() const</argsstring>
+        <name>neutral</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="82" column="14" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/cquantity.h" bodystart="287" bodyend="287"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vquantity_1aa48ae6a414194af0a1a807ba7e776535" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type><ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref> &amp;</type>
+        <definition>virtual vquantity&amp; quantit::vquantity::operator=</definition>
+        <argsstring>(const vquantity &amp;)=0</argsstring>
+        <name>operator=</name>
+        <reimplementedby refid="classquantit_1_1quantity_1aa5c1f1fece7948ad080bd7f0344de24c">operator=</reimplementedby>
+        <param>
+          <type>const <ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="83" column="19"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vquantity_1a2438ad6059b5328c86e12fd3b6b282e9" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type><ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref> &amp;</type>
+        <definition>virtual vquantity&amp; quantit::vquantity::operator*=</definition>
+        <argsstring>(const vquantity &amp;)=0</argsstring>
+        <name>operator*=</name>
+        <reimplementedby refid="classquantit_1_1quantity_1af1dd0b2f53dcfbb4ad3efc58c4c168a1">operator*=</reimplementedby>
+        <param>
+          <type>const <ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="84" column="19"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vquantity_1a920a1c02eefb4893decb3a216d2cd83a" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type><ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref> &amp;</type>
+        <definition>virtual vquantity&amp; quantit::vquantity::operator+=</definition>
+        <argsstring>(const vquantity &amp;)=0</argsstring>
+        <name>operator+=</name>
+        <reimplementedby refid="classquantit_1_1quantity_1a22345cc18fce468fdd6f0f1cb3aada3e">operator+=</reimplementedby>
+        <param>
+          <type>const <ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="85" column="19"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vquantity_1a3ca12b964283ebcb323c3b36f87a855b" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>bool</type>
+        <definition>virtual bool quantit::vquantity::is_equal</definition>
+        <argsstring>(const vquantity &amp;) const =0</argsstring>
+        <name>is_equal</name>
+        <reimplementedby refid="classquantit_1_1quantity_1adb62605df2f5ee1af51f667c64acc0a6">is_equal</reimplementedby>
+        <param>
+          <type>const <ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="86" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vquantity_1a3093b6656ecf9f2c8284a33d53cf0bf8" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>bool</type>
+        <definition>virtual bool quantit::vquantity::is_different</definition>
+        <argsstring>(const vquantity &amp;) const =0</argsstring>
+        <name>is_different</name>
+        <reimplementedby refid="classquantit_1_1quantity_1a554068ca9f77a173320ea9bcc582cd9e">is_different</reimplementedby>
+        <param>
+          <type>const <ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="87" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vquantity_1a2bf4febec84736a205d70140dcbb97ca" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>bool</type>
+        <definition>virtual bool quantit::vquantity::is_lesser</definition>
+        <argsstring>(const vquantity &amp;) const =0</argsstring>
+        <name>is_lesser</name>
+        <reimplementedby refid="classquantit_1_1quantity_1ad360afb44c9d68ac1f6fc6b1da47efab">is_lesser</reimplementedby>
+        <param>
+          <type>const <ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="88" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vquantity_1ae8d1fe9e05dbe9ac9108c4dff059ea69" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>bool</type>
+        <definition>virtual bool quantit::vquantity::is_greater</definition>
+        <argsstring>(const vquantity &amp;) const =0</argsstring>
+        <name>is_greater</name>
+        <reimplementedby refid="classquantit_1_1quantity_1ac1d1117ea827df707578ea8b93b42296">is_greater</reimplementedby>
+        <param>
+          <type>const <ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="89" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vquantity_1a18bd7957cfa5a8bab168622ae3f5d9ff" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>bool</type>
+        <definition>virtual bool quantit::vquantity::same_type</definition>
+        <argsstring>(const vquantity &amp;other) const =0</argsstring>
+        <name>same_type</name>
+        <reimplementedby refid="classquantit_1_1quantity_1acf491601a9eecb3fffa2d7f22fd10feb">same_type</reimplementedby>
+        <param>
+          <type>const <ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref> &amp;</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="90" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vquantity_1a0eb99749d6f467642bbb9dd1fca03448" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void quantit::vquantity::swap</definition>
+        <argsstring>(vquantity &amp;)=0</argsstring>
+        <name>swap</name>
+        <reimplementedby refid="classquantit_1_1quantity_1a6da7995801c2eccefde9eb53bad19c8a">swap</reimplementedby>
+        <param>
+          <type><ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="91" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vquantity_1a2fc1eba2cd3fd6d2f63860712562a3a8" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>auto</type>
+        <definition>virtual auto quantit::vquantity::format_to</definition>
+        <argsstring>(fmt::format_context &amp;ctx) const -&gt; decltype(ctx.out())=0</argsstring>
+        <name>format_to</name>
+        <reimplementedby refid="classquantit_1_1quantity_1a602e0eb237c9f6bc64eb13f4ef638211">format_to</reimplementedby>
+        <param>
+          <type>fmt::format_context &amp;</type>
+          <declname>ctx</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="92" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vquantity_1a315b374ade4065ae639e5a2f3901baca" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>double</type>
+        <definition>virtual double quantit::vquantity::distance</definition>
+        <argsstring>(const vquantity &amp;) const =0</argsstring>
+        <name>distance</name>
+        <reimplementedby refid="classquantit_1_1quantity_1a633ed75abb9b47372b5b3d30505a1ff6">distance</reimplementedby>
+        <param>
+          <type>const <ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="93" column="16"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vquantity_1ab63503d752af84a95bc7d4fdc36acb56" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>int64_t</type>
+        <definition>virtual int64_t quantit::vquantity::distance2</definition>
+        <argsstring>(const vquantity &amp;) const =0</argsstring>
+        <name>distance2</name>
+        <reimplementedby refid="classquantit_1_1quantity_1a1fe57470d9f95531bd71cce620f045ac">distance2</reimplementedby>
+        <param>
+          <type>const <ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="94" column="17"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vquantity_1a722612c570d6c9f2623c7c4f4d032a21" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type></type>
+        <definition>virtual quantit::vquantity::~vquantity</definition>
+        <argsstring>()</argsstring>
+        <name>~vquantity</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="95" column="9" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" bodystart="95" bodyend="95"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="protected-func">
+      <memberdef kind="function" id="classquantit_1_1vquantity_1a3d7d4d4f2a5cd0c3dc26ce422d537072" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>std::unique_ptr&lt; <ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref> &gt;</type>
+        <definition>virtual std::unique_ptr&lt;vquantity&gt; quantit::vquantity::make_neutral</definition>
+        <argsstring>() const =0</argsstring>
+        <name>make_neutral</name>
+        <reimplementedby refid="classquantit_1_1quantity_1a2bdd89bb923fbd8669d3f805dd457bda">make_neutral</reimplementedby>
+        <briefdescription>
+<para>create the neutral element of whatever underlying type </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>std::unique_ptr&lt;vquantity&gt; : the neutral element </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="103" column="25"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>interface type for the implementation of a <ref refid="classquantit_1_1any__quantity" kindref="compound">any_quantity</ref> <ref refid="classquantit_1_1any__quantity" kindref="compound">any_quantity</ref> stands for &quot;composite group&quot; and is the tensor product of multiple simple groups. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>The function that take a vquantity as an argument are not expected to work if the actual type of the argument isn&apos;t the same derived type as this. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>quantit::vquantity</label>
+        <link refid="classquantit_1_1vquantity"/>
+      </node>
+      <node id="2">
+        <label>quantit::quantity&lt; Groups &gt;</label>
+        <link refid="classquantit_1_1quantity"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="45" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" bodystart="46" bodyend="104"/>
+    <listofallmembers>
+      <member refid="classquantit_1_1vquantity_1aa043db784b89e20cff4f1351bf119afb" prot="private" virt="non-virtual"><scope>quantit::vquantity</scope><name>cgroup_iterator</name></member>
+      <member refid="classquantit_1_1vquantity_1ac2a4c17bb527e63655ef288a413e29ef" prot="public" virt="pure-virtual"><scope>quantit::vquantity</scope><name>clone</name></member>
+      <member refid="classquantit_1_1vquantity_1aa3f30b8c2d942a813810bbc01c7885d8" prot="private" virt="non-virtual"><scope>quantit::vquantity</scope><name>const_cgroup_iterator</name></member>
+      <member refid="classquantit_1_1vquantity_1a315b374ade4065ae639e5a2f3901baca" prot="public" virt="pure-virtual"><scope>quantit::vquantity</scope><name>distance</name></member>
+      <member refid="classquantit_1_1vquantity_1ab63503d752af84a95bc7d4fdc36acb56" prot="public" virt="pure-virtual"><scope>quantit::vquantity</scope><name>distance2</name></member>
+      <member refid="classquantit_1_1vquantity_1a2fc1eba2cd3fd6d2f63860712562a3a8" prot="public" virt="pure-virtual"><scope>quantit::vquantity</scope><name>format_to</name></member>
+      <member refid="classquantit_1_1vquantity_1a9da713105c05af2f127e09f44e1e9a86" prot="public" virt="non-virtual"><scope>quantit::vquantity</scope><name>inv</name></member>
+      <member refid="classquantit_1_1vquantity_1a40374252a018c5f909e81dd563c710e5" prot="public" virt="non-virtual"><scope>quantit::vquantity</scope><name>inv_</name></member>
+      <member refid="classquantit_1_1vquantity_1a3625d2f986585bb6ba22fc09c845bd64" prot="public" virt="non-virtual"><scope>quantit::vquantity</scope><name>inverse</name></member>
+      <member refid="classquantit_1_1vquantity_1a34f22b1d9b0cc1b50c055a279ecdc2fe" prot="public" virt="pure-virtual"><scope>quantit::vquantity</scope><name>inverse_</name></member>
+      <member refid="classquantit_1_1vquantity_1a3093b6656ecf9f2c8284a33d53cf0bf8" prot="public" virt="pure-virtual"><scope>quantit::vquantity</scope><name>is_different</name></member>
+      <member refid="classquantit_1_1vquantity_1a3ca12b964283ebcb323c3b36f87a855b" prot="public" virt="pure-virtual"><scope>quantit::vquantity</scope><name>is_equal</name></member>
+      <member refid="classquantit_1_1vquantity_1ae8d1fe9e05dbe9ac9108c4dff059ea69" prot="public" virt="pure-virtual"><scope>quantit::vquantity</scope><name>is_greater</name></member>
+      <member refid="classquantit_1_1vquantity_1a2bf4febec84736a205d70140dcbb97ca" prot="public" virt="pure-virtual"><scope>quantit::vquantity</scope><name>is_lesser</name></member>
+      <member refid="classquantit_1_1vquantity_1a3d7d4d4f2a5cd0c3dc26ce422d537072" prot="protected" virt="pure-virtual"><scope>quantit::vquantity</scope><name>make_neutral</name></member>
+      <member refid="classquantit_1_1vquantity_1a9dc7b1ad855b6eaed785be0ed8032ff3" prot="public" virt="pure-virtual"><scope>quantit::vquantity</scope><name>make_vector</name></member>
+      <member refid="classquantit_1_1vquantity_1a10532e7b14882cddae51182a12a72732" prot="public" virt="non-virtual"><scope>quantit::vquantity</scope><name>neutral</name></member>
+      <member refid="classquantit_1_1vquantity_1a4f7f5a467bb7b33abafbec43ac46065b" prot="public" virt="pure-virtual"><scope>quantit::vquantity</scope><name>op</name></member>
+      <member refid="classquantit_1_1vquantity_1ab33b83edd8986b9903e691246c54a44d" prot="public" virt="pure-virtual"><scope>quantit::vquantity</scope><name>op</name></member>
+      <member refid="classquantit_1_1vquantity_1a1b9d16298426bdf26b63d3f248b06e45" prot="public" virt="pure-virtual"><scope>quantit::vquantity</scope><name>op_to</name></member>
+      <member refid="classquantit_1_1vquantity_1a2438ad6059b5328c86e12fd3b6b282e9" prot="public" virt="pure-virtual"><scope>quantit::vquantity</scope><name>operator*=</name></member>
+      <member refid="classquantit_1_1vquantity_1a920a1c02eefb4893decb3a216d2cd83a" prot="public" virt="pure-virtual"><scope>quantit::vquantity</scope><name>operator+=</name></member>
+      <member refid="classquantit_1_1vquantity_1aa48ae6a414194af0a1a807ba7e776535" prot="public" virt="pure-virtual"><scope>quantit::vquantity</scope><name>operator=</name></member>
+      <member refid="classquantit_1_1vquantity_1a18bd7957cfa5a8bab168622ae3f5d9ff" prot="public" virt="pure-virtual"><scope>quantit::vquantity</scope><name>same_type</name></member>
+      <member refid="classquantit_1_1vquantity_1a0eb99749d6f467642bbb9dd1fca03448" prot="public" virt="pure-virtual"><scope>quantit::vquantity</scope><name>swap</name></member>
+      <member refid="classquantit_1_1vquantity_1a722612c570d6c9f2623c7c4f4d032a21" prot="public" virt="virtual"><scope>quantit::vquantity</scope><name>~vquantity</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

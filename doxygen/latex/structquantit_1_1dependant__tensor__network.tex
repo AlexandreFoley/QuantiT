@@ -1,0 +1,31 @@
+\hypertarget{structquantit_1_1dependant__tensor__network}{}\doxysection{quantit\+::dependant\+\_\+tensor\+\_\+network$<$ T, X $>$ Struct Template Reference}
+\label{structquantit_1_1dependant__tensor__network}\index{quantit::dependant\_tensor\_network$<$ T, X $>$@{quantit::dependant\_tensor\_network$<$ T, X $>$}}
+
+
+template struct to determine the correct tensor train network to use given another tensor train network or single tensor  
+
+
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$class T, class X = void$>$\newline
+struct quantit\+::dependant\+\_\+tensor\+\_\+network$<$ T, X $>$}
+
+template struct to determine the correct tensor train network to use given another tensor train network or single tensor 
+
+the struct define 3 dependent typename MPT\+\_\+type, MPS\+\_\+type and MPO\+\_\+type that hold the correct tensor type given another tensor train network. useful for writing templated function on tensor train types\+: if a \mbox{\hyperlink{classquantit_1_1MPS}{MPS}} with the same underlying tensor as some network type T is needed on can write \begin{DoxyVerb}typename dependant_tensor_network<T>::MPS_type x;
+\end{DoxyVerb}
+ to declare it.
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & tensor train network or single tensor\+: \mbox{\hyperlink{classquantit_1_1btensor}{quantit\+::btensor}}, torch\+::\+Tensor, \mbox{\hyperlink{classquantit_1_1MPS}{MPS}},\mbox{\hyperlink{classquantit_1_1MPO}{MPO}},\mbox{\hyperlink{classquantit_1_1MPT}{MPT}}, \mbox{\hyperlink{classquantit_1_1bMPS}{b\+MPS}},\mbox{\hyperlink{classquantit_1_1bMPO}{b\+MPO}} or \mbox{\hyperlink{classquantit_1_1bMPT}{b\+MPT}} \\
+\hline
+{\em X} & void \\
+\hline
+\end{DoxyTemplParams}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/alex/project/quantt/include/MPT.\+h\end{DoxyCompactItemize}

@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classquantit_1_1bad__selection__rule" kind="class" language="C++" prot="public">
+    <compoundname>quantit::bad_selection_rule</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">std::invalid_argument</basecompoundref>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="3">
+        <label>std::logic_error</label>
+        <childnode refid="4" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>std::invalid_argument</label>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>std::exception</label>
+      </node>
+      <node id="1">
+        <label>quantit::bad_selection_rule</label>
+        <link refid="classquantit_1_1bad__selection__rule"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="3">
+        <label>std::logic_error</label>
+        <childnode refid="4" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>std::invalid_argument</label>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>std::exception</label>
+      </node>
+      <node id="1">
+        <label>quantit::bad_selection_rule</label>
+        <link refid="classquantit_1_1bad__selection__rule"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/home/alex/project/quantt/include/blockTensor/btensor.h" line="1885" column="1" bodyfile="/home/alex/project/quantt/include/blockTensor/btensor.h" bodystart="1885" bodyend="1885"/>
+    <listofallmembers>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

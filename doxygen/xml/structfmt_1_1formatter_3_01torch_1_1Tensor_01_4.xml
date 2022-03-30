@@ -1,0 +1,81 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="structfmt_1_1formatter_3_01torch_1_1Tensor_01_4" kind="struct" language="C++" prot="public">
+    <compoundname>fmt::formatter&lt; torch::Tensor &gt;</compoundname>
+    <includes refid="torch__formatter_8h" local="no">torch_formatter.h</includes>
+    <templateparamlist>
+    </templateparamlist>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structfmt_1_1formatter_3_01torch_1_1Tensor_01_4_1a7013f642b1e100f823aed114f9e267a5" prot="public" static="no" mutable="no">
+        <type>uint</type>
+        <definition>uint fmt::formatter&lt; torch::Tensor &gt;::linelenght</definition>
+        <argsstring></argsstring>
+        <name>linelenght</name>
+        <initializer>= 80</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/torch_formatter.h" line="32" column="6" bodyfile="/home/alex/project/quantt/include/torch_formatter.h" bodystart="32" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="structfmt_1_1formatter_3_01torch_1_1Tensor_01_4_1acc3c571145363290f65755ad7c9752d2" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>constexpr auto</type>
+        <definition>constexpr auto fmt::formatter&lt; torch::Tensor &gt;::parse</definition>
+        <argsstring>(format_parse_context &amp;ctx)</argsstring>
+        <name>parse</name>
+        <param>
+          <type>format_parse_context &amp;</type>
+          <declname>ctx</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/torch_formatter.h" line="34" column="16" bodyfile="/home/alex/project/quantt/include/torch_formatter.h" bodystart="34" bodyend="63"/>
+      </memberdef>
+      <memberdef kind="function" id="structfmt_1_1formatter_3_01torch_1_1Tensor_01_4_1ab7f56a4d140126a0f1593bba1343349e" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename FormatContext</type>
+          </param>
+        </templateparamlist>
+        <type>auto</type>
+        <definition>auto fmt::formatter&lt; torch::Tensor &gt;::format</definition>
+        <argsstring>(const torch::Tensor &amp;tens, FormatContext &amp;ctx) const</argsstring>
+        <name>format</name>
+        <param>
+          <type>const torch::Tensor &amp;</type>
+          <declname>tens</declname>
+        </param>
+        <param>
+          <type>FormatContext &amp;</type>
+          <declname>ctx</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/torch_formatter.h" line="66" column="6" bodyfile="/home/alex/project/quantt/include/torch_formatter.h" bodystart="66" bodyend="90"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>fmt::formatter for torch::Tensor </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/alex/project/quantt/include/torch_formatter.h" line="30" column="1" bodyfile="/home/alex/project/quantt/include/torch_formatter.h" bodystart="31" bodyend="91"/>
+    <listofallmembers>
+      <member refid="structfmt_1_1formatter_3_01torch_1_1Tensor_01_4_1ab7f56a4d140126a0f1593bba1343349e" prot="public" virt="non-virtual"><scope>fmt::formatter&lt; torch::Tensor &gt;</scope><name>format</name></member>
+      <member refid="structfmt_1_1formatter_3_01torch_1_1Tensor_01_4_1a7013f642b1e100f823aed114f9e267a5" prot="public" virt="non-virtual"><scope>fmt::formatter&lt; torch::Tensor &gt;</scope><name>linelenght</name></member>
+      <member refid="structfmt_1_1formatter_3_01torch_1_1Tensor_01_4_1acc3c571145363290f65755ad7c9752d2" prot="public" virt="non-virtual"><scope>fmt::formatter&lt; torch::Tensor &gt;</scope><name>parse</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

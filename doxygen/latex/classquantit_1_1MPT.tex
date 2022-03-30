@@ -1,0 +1,241 @@
+\hypertarget{classquantit_1_1MPT}{}\doxysection{quantit\+::MPT Class Reference}
+\label{classquantit_1_1MPT}\index{quantit::MPT@{quantit::MPT}}
+
+
+tensor train type  
+
+
+
+
+{\ttfamily \#include $<$MPT.\+h$>$}
+
+
+
+Inheritance diagram for quantit\+::MPT\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=186pt]{classquantit_1_1MPT__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for quantit\+::MPT\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=186pt]{classquantit_1_1MPT__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classquantit_1_1vector__lift_a4dfa9ff1e27b8a910ac5b234cba6e706}\label{classquantit_1_1vector__lift_a4dfa9ff1e27b8a910ac5b234cba6e706}} 
+using {\bfseries Tens} = torch\+::\+Tensor
+\item 
+\mbox{\Hypertarget{classquantit_1_1vector__lift_a5adbd470520fc9b5fe634a52f9acfaec}\label{classquantit_1_1vector__lift_a5adbd470520fc9b5fe634a52f9acfaec}} 
+using {\bfseries VTens} = std\+::vector$<$ Tens $>$
+\item 
+\mbox{\Hypertarget{classquantit_1_1vector__lift_a4b667b1852ca1b7a29537e981e57200c}\label{classquantit_1_1vector__lift_a4b667b1852ca1b7a29537e981e57200c}} 
+using {\bfseries size\+\_\+type} = typename VTens\+::size\+\_\+type
+\item 
+\mbox{\Hypertarget{classquantit_1_1vector__lift_a22bfa093a70400986edf9a8a955ac2dd}\label{classquantit_1_1vector__lift_a22bfa093a70400986edf9a8a955ac2dd}} 
+using {\bfseries iterator} = typename VTens\+::iterator
+\item 
+\mbox{\Hypertarget{classquantit_1_1vector__lift_ad909e815b6f898bff49f3ee486fecebb}\label{classquantit_1_1vector__lift_ad909e815b6f898bff49f3ee486fecebb}} 
+using {\bfseries const\+\_\+iterator} = typename VTens\+::const\+\_\+iterator
+\item 
+\mbox{\Hypertarget{classquantit_1_1vector__lift_a626a11de2e6bda79ab46e1a77edc2f2b}\label{classquantit_1_1vector__lift_a626a11de2e6bda79ab46e1a77edc2f2b}} 
+using {\bfseries reverse\+\_\+iterator} = typename VTens\+::reverse\+\_\+iterator
+\item 
+\mbox{\Hypertarget{classquantit_1_1vector__lift_a010c9ed3c923579de934ffff451ca7c4}\label{classquantit_1_1vector__lift_a010c9ed3c923579de934ffff451ca7c4}} 
+using {\bfseries const\+\_\+reverse\+\_\+iterator} = typename VTens\+::const\+\_\+reverse\+\_\+iterator
+\item 
+\mbox{\Hypertarget{classquantit_1_1vector__lift_ac3d6a73e33d5cbcca35eb30c2adc7a2e}\label{classquantit_1_1vector__lift_ac3d6a73e33d5cbcca35eb30c2adc7a2e}} 
+using {\bfseries const\+\_\+reference} = typename VTens\+::const\+\_\+reference
+\item 
+\mbox{\Hypertarget{classquantit_1_1vector__lift_a222022770001c4c0d304f96e74550044}\label{classquantit_1_1vector__lift_a222022770001c4c0d304f96e74550044}} 
+using {\bfseries reference} = typename VTens\+::reference
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classquantit_1_1MPT_ae8bd100b221125d8930d3e31f1cb5948}\label{classquantit_1_1MPT_ae8bd100b221125d8930d3e31f1cb5948}} 
+void {\bfseries swap} (\mbox{\hyperlink{classquantit_1_1MPT}{MPT}} \&other)
+\item 
+\mbox{\Hypertarget{classquantit_1_1MPT_a5335d9e0a9563a7688cf3de54bc7d9fa}\label{classquantit_1_1MPT_a5335d9e0a9563a7688cf3de54bc7d9fa}} 
+\mbox{\hyperlink{classquantit_1_1MPT}{MPT}} \& {\bfseries operator=} (\mbox{\hyperlink{classquantit_1_1MPT}{MPT}} other)
+\item 
+\mbox{\Hypertarget{classquantit_1_1vector__lift_a84cb551c61497288e7843feed0b3b721}\label{classquantit_1_1vector__lift_a84cb551c61497288e7843feed0b3b721}} 
+{\bfseries operator MPT} ()
+\item 
+\mbox{\Hypertarget{classquantit_1_1vector__lift_a7342e772fe3690acb188e125fc344d5f}\label{classquantit_1_1vector__lift_a7342e772fe3690acb188e125fc344d5f}} 
+void {\bfseries swap} (\mbox{\hyperlink{classquantit_1_1vector__lift}{vector\+\_\+lift}} \&other) noexcept
+\item 
+\mbox{\Hypertarget{classquantit_1_1vector__lift_a0c2c2ba4b3ad03ddde07fb9c70b53f11}\label{classquantit_1_1vector__lift_a0c2c2ba4b3ad03ddde07fb9c70b53f11}} 
+reference {\bfseries at} (size\+\_\+t i)
+\item 
+\mbox{\Hypertarget{classquantit_1_1vector__lift_a3d8a0350129264205d3015ca9cf34b9c}\label{classquantit_1_1vector__lift_a3d8a0350129264205d3015ca9cf34b9c}} 
+const\+\_\+reference {\bfseries at} (size\+\_\+t i) const
+\item 
+\mbox{\Hypertarget{classquantit_1_1vector__lift_a425eaa4e4f7916a82cce013f2326aa5d}\label{classquantit_1_1vector__lift_a425eaa4e4f7916a82cce013f2326aa5d}} 
+reference {\bfseries operator\mbox{[}$\,$\mbox{]}} (size\+\_\+t i)
+\item 
+\mbox{\Hypertarget{classquantit_1_1vector__lift_a68a57ec836b4682f46a76628c95cd578}\label{classquantit_1_1vector__lift_a68a57ec836b4682f46a76628c95cd578}} 
+const\+\_\+reference {\bfseries operator\mbox{[}$\,$\mbox{]}} (size\+\_\+t i) const
+\item 
+\mbox{\Hypertarget{classquantit_1_1vector__lift_aa3bd63ea81a34f5ee3fa71fce489a175}\label{classquantit_1_1vector__lift_aa3bd63ea81a34f5ee3fa71fce489a175}} 
+reference {\bfseries front} ()
+\item 
+\mbox{\Hypertarget{classquantit_1_1vector__lift_a060ed759f9e5dc16fd6203ed368c0270}\label{classquantit_1_1vector__lift_a060ed759f9e5dc16fd6203ed368c0270}} 
+const\+\_\+reference {\bfseries front} () const
+\item 
+\mbox{\Hypertarget{classquantit_1_1vector__lift_a772b9530f48687cd7fb535096f3ce26b}\label{classquantit_1_1vector__lift_a772b9530f48687cd7fb535096f3ce26b}} 
+reference {\bfseries back} ()
+\item 
+\mbox{\Hypertarget{classquantit_1_1vector__lift_ab4db3513ed7825e45b3406cfdc7da875}\label{classquantit_1_1vector__lift_ab4db3513ed7825e45b3406cfdc7da875}} 
+const\+\_\+reference {\bfseries back} () const
+\item 
+\mbox{\Hypertarget{classquantit_1_1vector__lift_a0224c7c93d21a5ba0569f610bd255c63}\label{classquantit_1_1vector__lift_a0224c7c93d21a5ba0569f610bd255c63}} 
+Tens $\ast$ {\bfseries data} () noexcept
+\item 
+\mbox{\Hypertarget{classquantit_1_1vector__lift_a5f18c716ca86473b5b812b06353be923}\label{classquantit_1_1vector__lift_a5f18c716ca86473b5b812b06353be923}} 
+const Tens $\ast$ {\bfseries data} () const noexcept
+\item 
+\mbox{\Hypertarget{classquantit_1_1vector__lift_a1deeecee80d8abeda4eac94db68a2ad1}\label{classquantit_1_1vector__lift_a1deeecee80d8abeda4eac94db68a2ad1}} 
+iterator {\bfseries begin} () noexcept
+\item 
+\mbox{\Hypertarget{classquantit_1_1vector__lift_aa5911d3b655feb2144e112b3e9e84ec8}\label{classquantit_1_1vector__lift_aa5911d3b655feb2144e112b3e9e84ec8}} 
+const\+\_\+iterator {\bfseries begin} () const noexcept
+\item 
+\mbox{\Hypertarget{classquantit_1_1vector__lift_ac016b067a7fa102613a6a74e5ff90426}\label{classquantit_1_1vector__lift_ac016b067a7fa102613a6a74e5ff90426}} 
+const\+\_\+iterator {\bfseries cbegin} () const noexcept
+\item 
+\mbox{\Hypertarget{classquantit_1_1vector__lift_a8fe08c939748a75779b92a72bcc22f6b}\label{classquantit_1_1vector__lift_a8fe08c939748a75779b92a72bcc22f6b}} 
+iterator {\bfseries end} () noexcept
+\item 
+\mbox{\Hypertarget{classquantit_1_1vector__lift_a587ab8175a47d2af0fc40489f3765a9e}\label{classquantit_1_1vector__lift_a587ab8175a47d2af0fc40489f3765a9e}} 
+const\+\_\+iterator {\bfseries end} () const noexcept
+\item 
+\mbox{\Hypertarget{classquantit_1_1vector__lift_aea239fb31a5660eb18c79cde67b677ac}\label{classquantit_1_1vector__lift_aea239fb31a5660eb18c79cde67b677ac}} 
+const\+\_\+iterator {\bfseries cend} () const noexcept
+\item 
+\mbox{\Hypertarget{classquantit_1_1vector__lift_a3cf5b4780aa2e6f57356314d3964d2e6}\label{classquantit_1_1vector__lift_a3cf5b4780aa2e6f57356314d3964d2e6}} 
+reverse\+\_\+iterator {\bfseries rbegin} () noexcept
+\item 
+\mbox{\Hypertarget{classquantit_1_1vector__lift_afc4aa1b9321982066adde405295bc43c}\label{classquantit_1_1vector__lift_afc4aa1b9321982066adde405295bc43c}} 
+const\+\_\+reverse\+\_\+iterator {\bfseries rbegin} () const noexcept
+\item 
+\mbox{\Hypertarget{classquantit_1_1vector__lift_a6ce4e97c324ec1ec6a65c1eb7bbe32ea}\label{classquantit_1_1vector__lift_a6ce4e97c324ec1ec6a65c1eb7bbe32ea}} 
+const\+\_\+reverse\+\_\+iterator {\bfseries crbegin} () const noexcept
+\item 
+\mbox{\Hypertarget{classquantit_1_1vector__lift_a291e908c3205f95cf581809317f5fe46}\label{classquantit_1_1vector__lift_a291e908c3205f95cf581809317f5fe46}} 
+reverse\+\_\+iterator {\bfseries rend} () noexcept
+\item 
+\mbox{\Hypertarget{classquantit_1_1vector__lift_a7536dda8a7b23fd261d6bda7c27776cb}\label{classquantit_1_1vector__lift_a7536dda8a7b23fd261d6bda7c27776cb}} 
+const\+\_\+reverse\+\_\+iterator {\bfseries rend} () const noexcept
+\item 
+\mbox{\Hypertarget{classquantit_1_1vector__lift_a08392d8d4aef61f39510004ca280cf52}\label{classquantit_1_1vector__lift_a08392d8d4aef61f39510004ca280cf52}} 
+const\+\_\+reverse\+\_\+iterator {\bfseries crend} () const noexcept
+\item 
+\mbox{\Hypertarget{classquantit_1_1vector__lift_a8745b99fad2af212589ee49df5a69012}\label{classquantit_1_1vector__lift_a8745b99fad2af212589ee49df5a69012}} 
+auto {\bfseries empty} () const noexcept
+\item 
+\mbox{\Hypertarget{classquantit_1_1vector__lift_ad878af4ca8650de9eceff7e380b8ae4e}\label{classquantit_1_1vector__lift_ad878af4ca8650de9eceff7e380b8ae4e}} 
+auto {\bfseries size} () const noexcept
+\item 
+\mbox{\Hypertarget{classquantit_1_1vector__lift_a9a3ba903e635bdd9c17c00c3d6577ff6}\label{classquantit_1_1vector__lift_a9a3ba903e635bdd9c17c00c3d6577ff6}} 
+auto {\bfseries max\+\_\+size} () const noexcept
+\item 
+\mbox{\Hypertarget{classquantit_1_1vector__lift_afd332192732cc9139b409ba205b0d825}\label{classquantit_1_1vector__lift_afd332192732cc9139b409ba205b0d825}} 
+void {\bfseries reserve} (size\+\_\+t new\+\_\+cap)
+\item 
+\mbox{\Hypertarget{classquantit_1_1vector__lift_a91f3daf5c44bb8d5fe10f182f6abea67}\label{classquantit_1_1vector__lift_a91f3daf5c44bb8d5fe10f182f6abea67}} 
+auto {\bfseries capacity} () const noexcept
+\item 
+\mbox{\Hypertarget{classquantit_1_1vector__lift_a304415454d09c0705d2f6015afe505fa}\label{classquantit_1_1vector__lift_a304415454d09c0705d2f6015afe505fa}} 
+void {\bfseries shrink\+\_\+to\+\_\+fit} ()
+\item 
+\mbox{\Hypertarget{classquantit_1_1vector__lift_aca4d0987de2f20030aabd50a36b6f6fa}\label{classquantit_1_1vector__lift_aca4d0987de2f20030aabd50a36b6f6fa}} 
+void {\bfseries clear} () noexcept
+\item 
+\mbox{\Hypertarget{classquantit_1_1vector__lift_ad4f63687789e500c54d4da041dce7d6b}\label{classquantit_1_1vector__lift_ad4f63687789e500c54d4da041dce7d6b}} 
+iterator {\bfseries insert} (const\+\_\+iterator pos, const Tens \&val)
+\item 
+\mbox{\Hypertarget{classquantit_1_1vector__lift_a25a3654b7a751703e3cbbd16f19177ef}\label{classquantit_1_1vector__lift_a25a3654b7a751703e3cbbd16f19177ef}} 
+iterator {\bfseries insert} (const\+\_\+iterator pos, Tens \&\&val)
+\item 
+\mbox{\Hypertarget{classquantit_1_1vector__lift_a75f79572ff8f0695d23201582996b906}\label{classquantit_1_1vector__lift_a75f79572ff8f0695d23201582996b906}} 
+iterator {\bfseries insert} (const\+\_\+iterator pos, size\+\_\+type count, Tens \&\&val)
+\item 
+\mbox{\Hypertarget{classquantit_1_1vector__lift_ac860ab8f995ca814daef39a09f861572}\label{classquantit_1_1vector__lift_ac860ab8f995ca814daef39a09f861572}} 
+iterator {\bfseries insert} (const\+\_\+iterator pos, Input\+IT first, Input\+IT last)
+\item 
+\mbox{\Hypertarget{classquantit_1_1vector__lift_a6662a0c02ce9e07b0e2a81b4fde48674}\label{classquantit_1_1vector__lift_a6662a0c02ce9e07b0e2a81b4fde48674}} 
+iterator {\bfseries insert} (const\+\_\+iterator pos, std\+::initializer\+\_\+list$<$ Tens $>$ list)
+\item 
+\mbox{\Hypertarget{classquantit_1_1vector__lift_a14c3993765ca99ae4ca3beb2e6455fe6}\label{classquantit_1_1vector__lift_a14c3993765ca99ae4ca3beb2e6455fe6}} 
+iterator {\bfseries emplace} (const\+\_\+iterator pos, Args \&\&...args)
+\item 
+\mbox{\Hypertarget{classquantit_1_1vector__lift_a0f316c8d93098a029935aa60d8b850ce}\label{classquantit_1_1vector__lift_a0f316c8d93098a029935aa60d8b850ce}} 
+iterator {\bfseries erase} (const\+\_\+iterator pos)
+\item 
+\mbox{\Hypertarget{classquantit_1_1vector__lift_a6b2cb538b63a2d398ee8169045ccc93f}\label{classquantit_1_1vector__lift_a6b2cb538b63a2d398ee8169045ccc93f}} 
+iterator {\bfseries erase} (const\+\_\+iterator first, const\+\_\+iterator last)
+\item 
+\mbox{\Hypertarget{classquantit_1_1vector__lift_afb68adc182c0a25b422e7dff3cdcbde2}\label{classquantit_1_1vector__lift_afb68adc182c0a25b422e7dff3cdcbde2}} 
+void {\bfseries push\+\_\+back} (const Tens \&val)
+\item 
+\mbox{\Hypertarget{classquantit_1_1vector__lift_ab3e23728d13dc8bb3cf494a20c99a809}\label{classquantit_1_1vector__lift_ab3e23728d13dc8bb3cf494a20c99a809}} 
+void {\bfseries push\+\_\+back} (Tens \&\&val)
+\item 
+\mbox{\Hypertarget{classquantit_1_1vector__lift_aa0170758a7b359bc1f6c3f116c4ef8f4}\label{classquantit_1_1vector__lift_aa0170758a7b359bc1f6c3f116c4ef8f4}} 
+auto {\bfseries emplace\+\_\+back} (Args \&\&...args)
+\item 
+\mbox{\Hypertarget{classquantit_1_1vector__lift_a828e4fde579fc2392e7f9691271266b4}\label{classquantit_1_1vector__lift_a828e4fde579fc2392e7f9691271266b4}} 
+void {\bfseries pop\+\_\+back} ()
+\item 
+\mbox{\Hypertarget{classquantit_1_1vector__lift_aa38d33276c29f0ce13024699e40253f4}\label{classquantit_1_1vector__lift_aa38d33276c29f0ce13024699e40253f4}} 
+void {\bfseries resize} (size\+\_\+type count)
+\item 
+\mbox{\Hypertarget{classquantit_1_1vector__lift_a537084285b6501165e50a3565c9a7d19}\label{classquantit_1_1vector__lift_a537084285b6501165e50a3565c9a7d19}} 
+void {\bfseries resize} (size\+\_\+type count, const Tens \&value)
+\item 
+\mbox{\Hypertarget{classquantit_1_1vector__lift_ac8dbb3c3520d908dac38494187bdc0cb}\label{classquantit_1_1vector__lift_ac8dbb3c3520d908dac38494187bdc0cb}} 
+\mbox{\hyperlink{classquantit_1_1MPT}{MPT}} {\bfseries to} (const torch\+::\+Tensor\+Options \&options=\{\}, bool non\+\_\+blocking=false, bool copy=false, c10\+::optional$<$ c10\+::\+Memory\+Format $>$ memory\+\_\+format=c10\+::nullopt) const
+\item 
+\mbox{\Hypertarget{classquantit_1_1vector__lift_ad8a66d5449ae3316b828fe7c491e151f}\label{classquantit_1_1vector__lift_ad8a66d5449ae3316b828fe7c491e151f}} 
+\mbox{\hyperlink{classquantit_1_1MPT}{MPT}} {\bfseries to} (torch\+::\+Device device, torch\+::\+Scalar\+Type dtype, bool non\+\_\+blocking=false, bool copy=false, c10\+::optional$<$ c10\+::\+Memory\+Format $>$ memory\+\_\+format=c10\+::nullopt) const
+\item 
+\mbox{\Hypertarget{classquantit_1_1vector__lift_a9f5fd7e554f2e4c804a7ac55e8b79c05}\label{classquantit_1_1vector__lift_a9f5fd7e554f2e4c804a7ac55e8b79c05}} 
+\mbox{\hyperlink{classquantit_1_1MPT}{MPT}} {\bfseries to} (torch\+::\+Scalar\+Type dtype, bool non\+\_\+blocking=false, bool copy=false, c10\+::optional$<$ c10\+::\+Memory\+Format $>$ memory\+\_\+format=c10\+::nullopt) const
+\item 
+\mbox{\Hypertarget{classquantit_1_1vector__lift_a7429cdaf9d908a06767666fca723101e}\label{classquantit_1_1vector__lift_a7429cdaf9d908a06767666fca723101e}} 
+\mbox{\hyperlink{classquantit_1_1MPT}{MPT}} {\bfseries to} (caffe2\+::\+Type\+Meta type\+\_\+meta, bool non\+\_\+blocking=false, bool copy=false, c10\+::optional$<$ c10\+::\+Memory\+Format $>$ memory\+\_\+format=c10\+::nullopt) const
+\item 
+\mbox{\Hypertarget{classquantit_1_1vector__lift_aa15da92b21438c52be24d3e88551e81e}\label{classquantit_1_1vector__lift_aa15da92b21438c52be24d3e88551e81e}} 
+\mbox{\hyperlink{classquantit_1_1MPT}{MPT}} {\bfseries to} (const torch\+::\+Tensor \&other, bool non\+\_\+blocking=false, bool copy=false, c10\+::optional$<$ c10\+::\+Memory\+Format $>$ memory\+\_\+format=c10\+::nullopt) const
+\item 
+\mbox{\Hypertarget{classquantit_1_1vector__lift_a6cffef995a9f020e4f07e5a55595b875}\label{classquantit_1_1vector__lift_a6cffef995a9f020e4f07e5a55595b875}} 
+\mbox{\hyperlink{classquantit_1_1MPT}{MPT}} \& {\bfseries to\+\_\+} (Args \&\&...args)
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classquantit_1_1MPT_a4cd3d2f534074252d0b5066013943394}\label{classquantit_1_1MPT_a4cd3d2f534074252d0b5066013943394}} 
+static \mbox{\hyperlink{classquantit_1_1MPT}{MPT}} {\bfseries empty\+\_\+copy} (const \mbox{\hyperlink{classquantit_1_1MPT}{MPT}} \&in)
+\end{DoxyCompactItemize}
+\doxysubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classquantit_1_1MPT_a53e1e46d86cd81ffe0762293e2604544}\label{classquantit_1_1MPT_a53e1e46d86cd81ffe0762293e2604544}} 
+void {\bfseries swap} (\mbox{\hyperlink{classquantit_1_1MPT}{MPT}} \&lhs, \mbox{\hyperlink{classquantit_1_1MPT}{MPT}} \&rhs)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+tensor train type 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/alex/project/quantt/include/MPT.\+h\end{DoxyCompactItemize}

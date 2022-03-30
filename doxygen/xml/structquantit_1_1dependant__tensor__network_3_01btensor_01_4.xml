@@ -1,0 +1,100 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="structquantit_1_1dependant__tensor__network_3_01btensor_01_4" kind="struct" language="C++" prot="public">
+    <compoundname>quantit::dependant_tensor_network&lt; btensor &gt;</compoundname>
+    <derivedcompoundref refid="structquantit_1_1dependant__tensor__network_3_01S_00_01std_1_1enable__if__t_3_01std_1_1is__base_7caa039768c7fc487ea8fbc6fa9338de" prot="public" virt="non-virtual">quantit::dependant_tensor_network&lt; S, std::enable_if_t&lt; std::is_base_of_v&lt; vector_lift&lt; S, btensor &gt;, S &gt; &gt; &gt;</derivedcompoundref>
+    <templateparamlist>
+    </templateparamlist>
+      <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="structquantit_1_1dependant__tensor__network_3_01btensor_01_4_1a4507d066bca72db401000bc022001621" prot="public" static="no">
+        <type><ref refid="classquantit_1_1bMPT" kindref="compound">bMPT</ref></type>
+        <definition>using quantit::dependant_tensor_network&lt; btensor &gt;::MPT_type =  bMPT</definition>
+        <argsstring></argsstring>
+        <name>MPT_type</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="922" column="1" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="922" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="structquantit_1_1dependant__tensor__network_3_01btensor_01_4_1a2cf407e7e9e07a0d48cc5e6019c6ada3" prot="public" static="no">
+        <type><ref refid="classquantit_1_1bMPO" kindref="compound">bMPO</ref></type>
+        <definition>using quantit::dependant_tensor_network&lt; btensor &gt;::MPO_type =  bMPO</definition>
+        <argsstring></argsstring>
+        <name>MPO_type</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="923" column="1" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="923" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="structquantit_1_1dependant__tensor__network_3_01btensor_01_4_1ae56d020f9379568c7efef1f3495ac983" prot="public" static="no">
+        <type><ref refid="classquantit_1_1bMPS" kindref="compound">bMPS</ref></type>
+        <definition>using quantit::dependant_tensor_network&lt; btensor &gt;::MPS_type =  bMPS</definition>
+        <argsstring></argsstring>
+        <name>MPS_type</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="924" column="1" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="924" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="structquantit_1_1dependant__tensor__network_3_01btensor_01_4_1ab556370b3ff35484e05f8afb073ba905" prot="public" static="no">
+        <type>benv_holder</type>
+        <definition>using quantit::dependant_tensor_network&lt; btensor &gt;::env_type =  benv_holder</definition>
+        <argsstring></argsstring>
+        <name>env_type</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="925" column="1" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="925" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="structquantit_1_1dependant__tensor__network_3_01btensor_01_4_1adb1efde3821e06bf14da3cf0627071c2" prot="public" static="no">
+        <type><ref refid="classquantit_1_1btensor" kindref="compound">btensor</ref></type>
+        <definition>using quantit::dependant_tensor_network&lt; btensor &gt;::base_tensor_type =  btensor</definition>
+        <argsstring></argsstring>
+        <name>base_tensor_type</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="926" column="1" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="926" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>quantit::dependant_tensor_network&lt; btensor &gt;</label>
+        <link refid="structquantit_1_1dependant__tensor__network_3_01btensor_01_4"/>
+      </node>
+      <node id="2">
+        <label>quantit::dependant_tensor_network&lt; S, std::enable_if_t&lt; std::is_base_of_v&lt; vector_lift&lt; S, btensor &gt;, S &gt; &gt; &gt;</label>
+        <link refid="structquantit_1_1dependant__tensor__network_3_01S_00_01std_1_1enable__if__t_3_01std_1_1is__base_7caa039768c7fc487ea8fbc6fa9338de"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <location file="/home/alex/project/quantt/include/MPT.h" line="920" column="1" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="921" bodyend="927"/>
+    <listofallmembers>
+      <member refid="structquantit_1_1dependant__tensor__network_3_01btensor_01_4_1adb1efde3821e06bf14da3cf0627071c2" prot="public" virt="non-virtual"><scope>quantit::dependant_tensor_network&lt; btensor &gt;</scope><name>base_tensor_type</name></member>
+      <member refid="structquantit_1_1dependant__tensor__network_3_01btensor_01_4_1ab556370b3ff35484e05f8afb073ba905" prot="public" virt="non-virtual"><scope>quantit::dependant_tensor_network&lt; btensor &gt;</scope><name>env_type</name></member>
+      <member refid="structquantit_1_1dependant__tensor__network_3_01btensor_01_4_1a2cf407e7e9e07a0d48cc5e6019c6ada3" prot="public" virt="non-virtual"><scope>quantit::dependant_tensor_network&lt; btensor &gt;</scope><name>MPO_type</name></member>
+      <member refid="structquantit_1_1dependant__tensor__network_3_01btensor_01_4_1ae56d020f9379568c7efef1f3495ac983" prot="public" virt="non-virtual"><scope>quantit::dependant_tensor_network&lt; btensor &gt;</scope><name>MPS_type</name></member>
+      <member refid="structquantit_1_1dependant__tensor__network_3_01btensor_01_4_1a4507d066bca72db401000bc022001621" prot="public" virt="non-virtual"><scope>quantit::dependant_tensor_network&lt; btensor &gt;</scope><name>MPT_type</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

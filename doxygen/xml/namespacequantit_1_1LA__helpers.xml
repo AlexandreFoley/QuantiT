@@ -1,0 +1,157 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="namespacequantit_1_1LA__helpers" kind="namespace" language="C++">
+    <compoundname>quantit::LA_helpers</compoundname>
+      <sectiondef kind="typedef">
+      <memberdef kind="typedef" id="blockTensor_2LinearAlgebra_8h_1a7e9e3d30ff48668587b26da8fe11de0c" prot="public" static="no">
+        <type>torch::indexing::Slice</type>
+        <definition>using quantit::LA_helpers::Slice = typedef torch::indexing::Slice</definition>
+        <argsstring></argsstring>
+        <name>Slice</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/blockTensor/LinearAlgebra.h" line="225" column="1" bodyfile="/home/alex/project/quantt/include/blockTensor/LinearAlgebra.h" bodystart="225" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="blockTensor_2LinearAlgebra_8h_1a70a366395e195852919961557c3797b3" prot="public" static="no">
+        <type>torch::indexing::TensorIndex</type>
+        <definition>using quantit::LA_helpers::TensInd = typedef torch::indexing::TensorIndex</definition>
+        <argsstring></argsstring>
+        <name>TensInd</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/blockTensor/LinearAlgebra.h" line="226" column="1" bodyfile="/home/alex/project/quantt/include/blockTensor/LinearAlgebra.h" bodystart="226" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="blockTensor_2LinearAlgebra_8h_1a32d8775c4111b9078525de70cd97186f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>btensor::block_list_t::content_t</type>
+        <definition>btensor::block_list_t::content_t quantit::LA_helpers::reorder_by_cvals</definition>
+        <argsstring>(const btensor &amp;tensor)</argsstring>
+        <name>reorder_by_cvals</name>
+        <param>
+          <type>const <ref refid="classquantit_1_1btensor" kindref="compound">btensor</ref> &amp;</type>
+          <declname>tensor</declname>
+        </param>
+        <briefdescription>
+<para>reorder the block list of the tensor by their conserved values </para>
+        </briefdescription>
+        <detaileddescription>
+<para>All of the blocks of each of the tensor given in output have the same conserved value for each dimensions. The sum of the output tensors equals the input tensor.</para>
+<para>Consider only the last 2 dimensions when determining the blocks. This is so batched linear algebra benefit from the block structure too. For tensor networks need, reshape to a rank 2 tensor first.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>tensor</parametername>
+</parameternamelist>
+<parameterdescription>
+<para></para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>std::vector&lt;btensor::block_list_t&gt; </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/blockTensor/LinearAlgebra.h" line="208" column="34" declfile="/home/alex/project/quantt/include/blockTensor/LinearAlgebra.h" declline="208" declcolumn="34"/>
+      </memberdef>
+      <memberdef kind="function" id="blockTensor_2LinearAlgebra_8h_1a2a47d4d75f9b2c0dd4dbfd564e5bca7b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::tuple&lt; torch::Tensor, btensor::index_list, std::vector&lt; std::tuple&lt; int, torch::indexing::Slice &gt; &gt;, std::vector&lt; std::tuple&lt; int, torch::indexing::Slice &gt; &gt; &gt;</type>
+        <definition>std::tuple&lt;torch::Tensor, btensor::index_list, std::vector&lt;std::tuple&lt;int, torch::indexing::Slice&gt; &gt;, std::vector&lt;std::tuple&lt;int, torch::indexing::Slice&gt; &gt; &gt; quantit::LA_helpers::compact_dense_single</definition>
+        <argsstring>(typename btensor::block_list_t::content_t::const_iterator start, typename btensor::block_list_t::content_t::const_iterator end)</argsstring>
+        <name>compact_dense_single</name>
+        <param>
+          <type>typename btensor::block_list_t::content_t::const_iterator</type>
+          <declname>start</declname>
+        </param>
+        <param>
+          <type>typename btensor::block_list_t::content_t::const_iterator</type>
+          <declname>end</declname>
+        </param>
+        <briefdescription>
+<para>compactify a range of blocks into a single dense torch::tensor </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Create the minimal size necessary for the resulting tensor, assumes all blocks are in the same sector for all but the last 2 dimensions. return the compactified <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>start</parametername>
+</parameternamelist>
+<parameterdescription>
+<para></para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>end</parametername>
+</parameternamelist>
+<parameterdescription>
+<para></para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>std::tuple&lt;torch::Tensor,std::vector&lt;std::tuple&lt;int,torch::indexing::Slice&gt;&gt;,std::vector&lt;std::tuple&lt;int,torch::indexing::Slice&gt;&gt;&gt; </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/blockTensor/LinearAlgebra.h" line="222" column="1" declfile="/home/alex/project/quantt/include/blockTensor/LinearAlgebra.h" declline="222" declcolumn="1"/>
+      </memberdef>
+      <memberdef kind="function" id="blockTensor_2LinearAlgebra_8h_1a0fe4f13fa31f60ea22bac0e71fea6966" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::tuple&lt; btensor::index_list, std::array&lt; TensInd, 3 &gt; &gt;</type>
+        <definition>std::tuple&lt;btensor::index_list, std::array&lt;TensInd, 3&gt; &gt; quantit::LA_helpers::build_index_slice</definition>
+        <argsstring>(const btensor::index_list &amp;other_indices, const std::tuple&lt; int, Slice &gt; &amp;rb_slices, const std::tuple&lt; int, Slice &gt; &amp;cb_slices)</argsstring>
+        <name>build_index_slice</name>
+        <param>
+          <type>const btensor::index_list &amp;</type>
+          <declname>other_indices</declname>
+        </param>
+        <param>
+          <type>const std::tuple&lt; int, Slice &gt; &amp;</type>
+          <declname>rb_slices</declname>
+        </param>
+        <param>
+          <type>const std::tuple&lt; int, Slice &gt; &amp;</type>
+          <declname>cb_slices</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/blockTensor/LinearAlgebra.h" line="227" column="12" declfile="/home/alex/project/quantt/include/blockTensor/LinearAlgebra.h" declline="227" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="function" id="blockTensor_2LinearAlgebra_8h_1ad20e21eead430e0ccdb53781ff7075c2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; std::tuple&lt; torch::Tensor, btensor::index_list, std::vector&lt; std::tuple&lt; int, torch::indexing::Slice &gt; &gt;, std::vector&lt; std::tuple&lt; int, torch::indexing::Slice &gt; &gt; &gt; &gt;</type>
+        <definition>std::vector&lt;std::tuple&lt;torch::Tensor, btensor::index_list, std::vector&lt;std::tuple&lt;int, torch::indexing::Slice&gt; &gt;, std::vector&lt;std::tuple&lt;int, torch::indexing::Slice&gt; &gt; &gt; &gt; quantit::LA_helpers::compact_dense</definition>
+        <argsstring>(const btensor &amp;tensor)</argsstring>
+        <name>compact_dense</name>
+        <param>
+          <type>const <ref refid="classquantit_1_1btensor" kindref="compound">btensor</ref> &amp;</type>
+          <declname>tensor</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/blockTensor/LinearAlgebra.h" line="233" column="1" declfile="/home/alex/project/quantt/include/blockTensor/LinearAlgebra.h" declline="233" declcolumn="1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/alex/project/quantt/include/blockTensor/LinearAlgebra.h" line="194" column="1"/>
+  </compounddef>
+</doxygen>

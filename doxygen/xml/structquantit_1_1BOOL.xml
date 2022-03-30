@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="structquantit_1_1BOOL" kind="struct" language="C++" prot="public">
+    <compoundname>quantit::BOOL</compoundname>
+    <includes refid="blockTensor_2LinearAlgebra_8h" local="no">LinearAlgebra.h</includes>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structquantit_1_1BOOL_1acae86ff27d2b0f0a7d1279c2f15dcd7e" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool quantit::BOOL::val</definition>
+        <argsstring></argsstring>
+        <name>val</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/blockTensor/LinearAlgebra.h" line="32" column="6" bodyfile="/home/alex/project/quantt/include/blockTensor/LinearAlgebra.h" bodystart="32" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="structquantit_1_1BOOL_1a47af559781c1d0d4851569cf59cf48cc" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type></type>
+        <definition>quantit::BOOL::BOOL</definition>
+        <argsstring>(bool _val) noexcept</argsstring>
+        <name>BOOL</name>
+        <param>
+          <type>bool</type>
+          <declname>_val</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/blockTensor/LinearAlgebra.h" line="33" column="1" bodyfile="/home/alex/project/quantt/include/blockTensor/LinearAlgebra.h" bodystart="33" bodyend="33"/>
+      </memberdef>
+      <memberdef kind="function" id="structquantit_1_1BOOL_1a0e48af38447eeb2c7bd413bc885982b1" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type></type>
+        <definition>quantit::BOOL::operator bool</definition>
+        <argsstring>() const noexcept</argsstring>
+        <name>operator bool</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/blockTensor/LinearAlgebra.h" line="34" column="1" bodyfile="/home/alex/project/quantt/include/blockTensor/LinearAlgebra.h" bodystart="34" bodyend="34"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>A bool type with no implicit conversion from arithmetic types. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>to avoid abiguous overloads between the batch svd and the tensors svd </para>
+    </detaileddescription>
+    <location file="/home/alex/project/quantt/include/blockTensor/LinearAlgebra.h" line="30" column="1" bodyfile="/home/alex/project/quantt/include/blockTensor/LinearAlgebra.h" bodystart="31" bodyend="35"/>
+    <listofallmembers>
+      <member refid="structquantit_1_1BOOL_1a47af559781c1d0d4851569cf59cf48cc" prot="public" virt="non-virtual"><scope>quantit::BOOL</scope><name>BOOL</name></member>
+      <member refid="structquantit_1_1BOOL_1a0e48af38447eeb2c7bd413bc885982b1" prot="public" virt="non-virtual"><scope>quantit::BOOL</scope><name>operator bool</name></member>
+      <member refid="structquantit_1_1BOOL_1acae86ff27d2b0f0a7d1279c2f15dcd7e" prot="public" virt="non-virtual"><scope>quantit::BOOL</scope><name>val</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

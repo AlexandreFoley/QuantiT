@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="structquantit_1_1or__" kind="struct" language="C++" prot="public">
+    <compoundname>quantit::or_</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">std::false_type</basecompoundref>
+    <includes refid="templateMeta_8h" local="no">templateMeta.h</includes>
+    <templateparamlist>
+      <param>
+        <type>class...</type>
+        <declname>Conds</declname>
+        <defname>Conds</defname>
+      </param>
+    </templateparamlist>
+    <briefdescription>
+<para>logical or for template parameter pack </para>
+    </briefdescription>
+    <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>Conds</parametername>
+</parameternamelist>
+<parameterdescription>
+<para></para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>quantit::or_&lt; Conds &gt;</label>
+        <link refid="structquantit_1_1or__"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>std::false_type</label>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>quantit::or_&lt; Conds &gt;</label>
+        <link refid="structquantit_1_1or__"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>std::false_type</label>
+      </node>
+    </collaborationgraph>
+    <location file="/home/alex/project/quantt/include/templateMeta.h" line="103" column="1" bodyfile="/home/alex/project/quantt/include/templateMeta.h" bodystart="104" bodyend="105"/>
+    <listofallmembers>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,99 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="dmrg__options_8h" kind="file" language="C++">
+    <compoundname>dmrg_options.h</compoundname>
+    <includedby refid="dmrg_8h" local="yes">/home/alex/project/quantt/include/dmrg.h</includedby>
+    <includedby refid="dmrg__logger_8h" local="yes">/home/alex/project/quantt/include/dmrg_logger.h</includedby>
+    <invincdepgraph>
+      <node id="1">
+        <label>/home/alex/project/quantt/include/dmrg_options.h</label>
+        <link refid="dmrg__options_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>/home/alex/project/quantt/include/dmrg.h</label>
+        <link refid="dmrg_8h_source"/>
+      </node>
+      <node id="3">
+        <label>/home/alex/project/quantt/include/dmrg_logger.h</label>
+        <link refid="dmrg__logger_8h_source"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="structquantit_1_1dmrg__options" prot="public">quantit::dmrg_options</innerclass>
+    <innernamespace refid="namespacequantit">quantit</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>File:<sp/>dmrg_options.h</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>Project:<sp/>QuantiT</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>File<sp/>Created:<sp/>Friday,<sp/>29th<sp/>October<sp/>2021<sp/>4:17:42<sp/>pm</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>Author:<sp/>Alexandre<sp/>Foley<sp/>(Alexandre.foley@usherbrooke.ca)</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>Copyright<sp/>(c)<sp/>2021<sp/>Alexandre<sp/>Foley</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>Licensed<sp/>under<sp/>GPL<sp/>v3</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>INCLUDE_DMRG_OPTIONS_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>INCLUDE_DMRG_OPTIONS_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">quantit</highlight></codeline>
+<codeline lineno="13"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight></codeline>
+<codeline lineno="15" refid="structquantit_1_1dmrg__options" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structquantit_1_1dmrg__options" kindref="compound">dmrg_options</ref></highlight></codeline>
+<codeline lineno="16"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="17"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>cutoff;</highlight></codeline>
+<codeline lineno="18"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>convergence_criterion;</highlight></codeline>
+<codeline lineno="19"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>maximum_bond;</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>minimum_bond;</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>maximum_iterations;</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>state_gradient;<sp/></highlight><highlight class="comment">//<sp/>will<sp/>default<sp/>to<sp/>off!<sp/>I<sp/>can&apos;t<sp/>think<sp/>of<sp/>a<sp/>situation<sp/>where<sp/>we<sp/>might<sp/>want<sp/>to<sp/>compute<sp/>a</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>hamil_gradient;<sp/></highlight><highlight class="comment">//<sp/>will<sp/>default<sp/>to<sp/>off!<sp/>I<sp/>can&apos;t<sp/>think<sp/>of<sp/>a<sp/>situation<sp/>where<sp/>we<sp/>might<sp/>want<sp/>to<sp/>compute<sp/>a</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>gradient<sp/>through<sp/>DMRG,<sp/>but<sp/>who<sp/>knows.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>default<sp/>values<sp/>for<sp/>constructors.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>if<sp/>a<sp/>constructor<sp/>doesn&apos;t<sp/>require<sp/>user<sp/>input<sp/>for<sp/>some<sp/>member,<sp/>it<sp/>use<sp/>the<sp/>values<sp/>found<sp/>in<sp/>the<sp/>following<sp/>definition.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>def_cutoff<sp/>=<sp/>1e-6;</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>def_conv_crit<sp/>=<sp/>1e-5;</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>def_max_bond<sp/>=<sp/>std::numeric_limits&lt;size_t&gt;::max();<sp/></highlight><highlight class="comment">//<sp/>a<sp/>rather<sp/>large<sp/>number.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>def_min_bond<sp/>=</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>4;<sp/></highlight><highlight class="comment">//<sp/>I<sp/>have<sp/>found<sp/>that<sp/>dmrg<sp/>behave<sp/>better<sp/>if<sp/>we<sp/>prevent<sp/>bond<sp/>dimension<sp/>from<sp/>going<sp/>too<sp/>low.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>def_max_it<sp/>=<sp/>1000;</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>def_pytorch_gradient<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="structquantit_1_1dmrg__options" kindref="compound">dmrg_options</ref>(</highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>_cutoff,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>_convergence_criterion)</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/>cutoff(_cutoff),<sp/>convergence_criterion(_convergence_criterion),<sp/>maximum_bond(def_max_bond),</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>minimum_bond(def_min_bond),<sp/>maximum_iterations(def_max_it),<sp/>state_gradient(def_pytorch_gradient),<sp/>hamil_gradient(def_pytorch_gradient)</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="structquantit_1_1dmrg__options" kindref="compound">dmrg_options</ref>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>_max_bond,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>_min_bond,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>_max_iterations)</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/>cutoff(def_cutoff),<sp/>convergence_criterion(def_conv_crit),<sp/>maximum_bond(_max_bond),<sp/>minimum_bond(_min_bond),</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>maximum_iterations(_max_iterations),<sp/>state_gradient(def_pytorch_gradient),<sp/>hamil_gradient(def_pytorch_gradient)</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="structquantit_1_1dmrg__options" kindref="compound">dmrg_options</ref>(</highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>_cutoff,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>_convergence_criterion,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>_max_bond,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>_min_bond,</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>_max_iterations,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>_state_gradient<sp/>=<sp/>def_pytorch_gradient,</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>_hamil_gradient<sp/>=<sp/>def_pytorch_gradient)</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/>cutoff(_cutoff),<sp/>convergence_criterion(_convergence_criterion),<sp/>maximum_bond(_max_bond),</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>minimum_bond(_min_bond),<sp/>maximum_iterations(_max_iterations),<sp/>state_gradient(_state_gradient),<sp/>hamil_gradient(_hamil_gradient)</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="structquantit_1_1dmrg__options" kindref="compound">dmrg_options</ref>()<sp/>:<sp/><ref refid="structquantit_1_1dmrg__options" kindref="compound">dmrg_options</ref>(def_cutoff,<sp/>def_conv_crit)<sp/>{}</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="structquantit_1_1dmrg__options" kindref="compound">dmrg_options</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="structquantit_1_1dmrg__options" kindref="compound">dmrg_options</ref><sp/>&amp;)<sp/>=<sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="structquantit_1_1dmrg__options" kindref="compound">dmrg_options</ref>(<ref refid="structquantit_1_1dmrg__options" kindref="compound">dmrg_options</ref><sp/>&amp;&amp;)<sp/>=<sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"></highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="structquantit_1_1dmrg__options" kindref="compound">dmrg_options</ref><sp/>&amp;operator=(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="structquantit_1_1dmrg__options" kindref="compound">dmrg_options</ref><sp/>&amp;)<sp/>=<sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="structquantit_1_1dmrg__options" kindref="compound">dmrg_options</ref><sp/>&amp;operator=(<ref refid="structquantit_1_1dmrg__options" kindref="compound">dmrg_options</ref><sp/>&amp;&amp;)<sp/>=<sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="58"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="59"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"></highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight></codeline>
+<codeline lineno="62"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">//<sp/>INCLUDE_DMRG_OPTIONS_H</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="/home/alex/project/quantt/include/dmrg_options.h"/>
+  </compounddef>
+</doxygen>

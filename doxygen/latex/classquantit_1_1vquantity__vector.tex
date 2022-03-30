@@ -1,0 +1,206 @@
+\hypertarget{classquantit_1_1vquantity__vector}{}\doxysection{quantit\+::vquantity\+\_\+vector Class Reference}
+\label{classquantit_1_1vquantity__vector}\index{quantit::vquantity\_vector@{quantit::vquantity\_vector}}
+
+
+polymorphic (type-\/erased?) container of \mbox{\hyperlink{classquantit_1_1any__quantity}{any\+\_\+quantity}}. All the element in the container are of the same concrete type, but the concrete type doesn\textquotesingle{}t change the type of the container. Implement most of the interface of std\+::vector (some parts are templates that can\textquotesingle{}t be replaced with run time polymorphism).  
+
+
+
+
+{\ttfamily \#include $<$quantity\+\_\+vector\+\_\+impl.\+h$>$}
+
+
+
+Inheritance diagram for quantit\+::vquantity\+\_\+vector\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=214pt]{classquantit_1_1vquantity__vector__inherit__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classquantit_1_1vquantity__vector_a946ec9f720e87ec900292468816bb044}\label{classquantit_1_1vquantity__vector_a946ec9f720e87ec900292468816bb044}} 
+using {\bfseries iterator} = \mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1cgroup__iterator}{v\+Quanti\+T\+\_\+iterator\+::cgroup\+\_\+iterator}}
+\item 
+\mbox{\Hypertarget{classquantit_1_1vquantity__vector_aa20d70726c7434d60d0466eadf3996f2}\label{classquantit_1_1vquantity__vector_aa20d70726c7434d60d0466eadf3996f2}} 
+using {\bfseries const\+\_\+iterator} = \mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator}{v\+Quanti\+T\+\_\+iterator\+::const\+\_\+cgroup\+\_\+iterator}}
+\item 
+\mbox{\Hypertarget{classquantit_1_1vquantity__vector_a5f2dcc3b3ff780fb8495b21b3f11e355}\label{classquantit_1_1vquantity__vector_a5f2dcc3b3ff780fb8495b21b3f11e355}} 
+using {\bfseries reverse\+\_\+iterator} = std\+::reverse\+\_\+iterator$<$ \mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1cgroup__iterator}{iterator}} $>$
+\item 
+\mbox{\Hypertarget{classquantit_1_1vquantity__vector_a7571e8b722803d5b45b011146ed6bc53}\label{classquantit_1_1vquantity__vector_a7571e8b722803d5b45b011146ed6bc53}} 
+using {\bfseries const\+\_\+reverse\+\_\+iterator} = std\+::reverse\+\_\+iterator$<$ \mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator}{const\+\_\+iterator}} $>$
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classquantit_1_1vquantity__vector_a77f6fe8a0a1d5e41b77174618f57ba39}\label{classquantit_1_1vquantity__vector_a77f6fe8a0a1d5e41b77174618f57ba39}} 
+virtual \mbox{\hyperlink{classquantit_1_1blocklist}{blocklist}} {\bfseries identify\+\_\+blocks} (const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&) const =0
+\item 
+\mbox{\Hypertarget{classquantit_1_1vquantity__vector_a18e79812033d7d9a7dd22c6882d3f019}\label{classquantit_1_1vquantity__vector_a18e79812033d7d9a7dd22c6882d3f019}} 
+virtual std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classquantit_1_1vquantity__vector}{vquantity\+\_\+vector}} $>$ {\bfseries clone} () const =0
+\item 
+virtual \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \& \mbox{\hyperlink{classquantit_1_1vquantity__vector_a73daccea7b560113dda1bdd131f3039e}{operator\mbox{[}$\,$\mbox{]}}} (size\+\_\+t)=0
+\begin{DoxyCompactList}\small\item\em accessors. can be implemented as virtual, by exploiting the covariant return type. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classquantit_1_1vquantity__vector_a997b905b69599a02e29d41356505cfd0}\label{classquantit_1_1vquantity__vector_a997b905b69599a02e29d41356505cfd0}} 
+virtual const \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \& {\bfseries operator\mbox{[}$\,$\mbox{]}} (size\+\_\+t) const =0
+\item 
+\mbox{\Hypertarget{classquantit_1_1vquantity__vector_afd248e370daef3c0d26b80d884304f63}\label{classquantit_1_1vquantity__vector_afd248e370daef3c0d26b80d884304f63}} 
+virtual \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \& {\bfseries at} (size\+\_\+t)=0
+\item 
+\mbox{\Hypertarget{classquantit_1_1vquantity__vector_a34c96411f0a5e14b1a5d6081d4f635f8}\label{classquantit_1_1vquantity__vector_a34c96411f0a5e14b1a5d6081d4f635f8}} 
+virtual const \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \& {\bfseries at} (size\+\_\+t) const =0
+\item 
+\mbox{\Hypertarget{classquantit_1_1vquantity__vector_a04a7768802fa80d76c28c7187db8d264}\label{classquantit_1_1vquantity__vector_a04a7768802fa80d76c28c7187db8d264}} 
+virtual \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \& {\bfseries front} ()=0
+\item 
+\mbox{\Hypertarget{classquantit_1_1vquantity__vector_ab72f7597d4361dfb3c906c26a67bc74c}\label{classquantit_1_1vquantity__vector_ab72f7597d4361dfb3c906c26a67bc74c}} 
+virtual const \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \& {\bfseries front} () const =0
+\item 
+\mbox{\Hypertarget{classquantit_1_1vquantity__vector_a92b88aff7bf42d9661679ec072f67a70}\label{classquantit_1_1vquantity__vector_a92b88aff7bf42d9661679ec072f67a70}} 
+virtual \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \& {\bfseries back} ()=0
+\item 
+\mbox{\Hypertarget{classquantit_1_1vquantity__vector_a360483dd1dc03b9761247516039344a7}\label{classquantit_1_1vquantity__vector_a360483dd1dc03b9761247516039344a7}} 
+virtual const \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \& {\bfseries back} () const =0
+\item 
+\mbox{\Hypertarget{classquantit_1_1vquantity__vector_a29cccb929ad613842006d1e6087c86cd}\label{classquantit_1_1vquantity__vector_a29cccb929ad613842006d1e6087c86cd}} 
+virtual \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} $\ast$ {\bfseries data} ()=0
+\item 
+\mbox{\Hypertarget{classquantit_1_1vquantity__vector_a5e9e43b98609ed47cb180e8d41ea93df}\label{classquantit_1_1vquantity__vector_a5e9e43b98609ed47cb180e8d41ea93df}} 
+virtual const \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} $\ast$ {\bfseries data} () const =0
+\item 
+\mbox{\Hypertarget{classquantit_1_1vquantity__vector_aff064f8d23aaa065ed1c222af5c1f2a2}\label{classquantit_1_1vquantity__vector_aff064f8d23aaa065ed1c222af5c1f2a2}} 
+virtual bool {\bfseries operator==} (const \mbox{\hyperlink{classquantit_1_1vquantity__vector}{vquantity\+\_\+vector}} \&) const =0
+\item 
+\mbox{\Hypertarget{classquantit_1_1vquantity__vector_a33b381fe4009e3fc7e6ad309ee8a95d6}\label{classquantit_1_1vquantity__vector_a33b381fe4009e3fc7e6ad309ee8a95d6}} 
+virtual bool {\bfseries operator!=} (const \mbox{\hyperlink{classquantit_1_1vquantity__vector}{vquantity\+\_\+vector}} \&) const =0
+\item 
+\mbox{\Hypertarget{classquantit_1_1vquantity__vector_aafc7b8ab227c73b493feda9ec90e6b63}\label{classquantit_1_1vquantity__vector_aafc7b8ab227c73b493feda9ec90e6b63}} 
+virtual bool {\bfseries empty} () const =0
+\item 
+\mbox{\Hypertarget{classquantit_1_1vquantity__vector_a8941926772b526e5b4d2d05bab99c2ed}\label{classquantit_1_1vquantity__vector_a8941926772b526e5b4d2d05bab99c2ed}} 
+virtual size\+\_\+t {\bfseries size} () const =0
+\item 
+\mbox{\Hypertarget{classquantit_1_1vquantity__vector_a8f426866d12fa1216c081004c695f483}\label{classquantit_1_1vquantity__vector_a8f426866d12fa1216c081004c695f483}} 
+virtual size\+\_\+t {\bfseries max\+\_\+size} () const =0
+\item 
+\mbox{\Hypertarget{classquantit_1_1vquantity__vector_a2d08327aa3d410e7f26b9e96d9cbdc71}\label{classquantit_1_1vquantity__vector_a2d08327aa3d410e7f26b9e96d9cbdc71}} 
+virtual void {\bfseries reserve} (size\+\_\+t)=0
+\item 
+\mbox{\Hypertarget{classquantit_1_1vquantity__vector_a0eee00f5aa5dd4022f8d4cb0f4d907c3}\label{classquantit_1_1vquantity__vector_a0eee00f5aa5dd4022f8d4cb0f4d907c3}} 
+virtual size\+\_\+t {\bfseries capacity} () const =0
+\item 
+\mbox{\Hypertarget{classquantit_1_1vquantity__vector_af024c17b6c31a99894544f054d6c5c36}\label{classquantit_1_1vquantity__vector_af024c17b6c31a99894544f054d6c5c36}} 
+virtual void {\bfseries shrink\+\_\+to\+\_\+fit} ()=0
+\item 
+\mbox{\Hypertarget{classquantit_1_1vquantity__vector_afcb9a8a6a3f02d71589ae2e72cb2b22a}\label{classquantit_1_1vquantity__vector_afcb9a8a6a3f02d71589ae2e72cb2b22a}} 
+virtual void {\bfseries clear} ()=0
+\item 
+\mbox{\Hypertarget{classquantit_1_1vquantity__vector_abe8a98e329314ec79fe05bdc8c568984}\label{classquantit_1_1vquantity__vector_abe8a98e329314ec79fe05bdc8c568984}} 
+virtual \mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1cgroup__iterator}{iterator}} {\bfseries insert} (\mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator}{const\+\_\+iterator}} pos, const \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \&Val)=0
+\item 
+\mbox{\Hypertarget{classquantit_1_1vquantity__vector_a3cb6eef84ec3f2065005f6ddb946f60b}\label{classquantit_1_1vquantity__vector_a3cb6eef84ec3f2065005f6ddb946f60b}} 
+virtual \mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1cgroup__iterator}{iterator}} {\bfseries insert} (\mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator}{const\+\_\+iterator}} pos, size\+\_\+t count, const \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \&Val)=0
+\item 
+\mbox{\Hypertarget{classquantit_1_1vquantity__vector_a5581ae3f32cd537f3321adffb708862a}\label{classquantit_1_1vquantity__vector_a5581ae3f32cd537f3321adffb708862a}} 
+virtual \mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1cgroup__iterator}{iterator}} {\bfseries insert} (\mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator}{const\+\_\+iterator}} pos, \mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator}{const\+\_\+iterator}} first, \mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator}{const\+\_\+iterator}} last)=0
+\item 
+\mbox{\Hypertarget{classquantit_1_1vquantity__vector_a3d59afa4aaa4a655a567e74a2c72d72c}\label{classquantit_1_1vquantity__vector_a3d59afa4aaa4a655a567e74a2c72d72c}} 
+virtual \mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1cgroup__iterator}{iterator}} {\bfseries insert} (\mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator}{const\+\_\+iterator}} pos, const\+\_\+reverse\+\_\+iterator first, const\+\_\+reverse\+\_\+iterator last)=0
+\item 
+\mbox{\Hypertarget{classquantit_1_1vquantity__vector_a3493a3a5a45b47a5b33e527aaced2a8d}\label{classquantit_1_1vquantity__vector_a3493a3a5a45b47a5b33e527aaced2a8d}} 
+virtual \mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1cgroup__iterator}{iterator}} {\bfseries erase} (\mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator}{const\+\_\+iterator}} pos)=0
+\item 
+\mbox{\Hypertarget{classquantit_1_1vquantity__vector_ab7bae266a780d5bff2291743280ac704}\label{classquantit_1_1vquantity__vector_ab7bae266a780d5bff2291743280ac704}} 
+virtual \mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1cgroup__iterator}{iterator}} {\bfseries erase} (\mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator}{const\+\_\+iterator}} first, \mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator}{const\+\_\+iterator}} last)=0
+\item 
+\mbox{\Hypertarget{classquantit_1_1vquantity__vector_a064c74e3e9223a1ad8353753fc4df280}\label{classquantit_1_1vquantity__vector_a064c74e3e9223a1ad8353753fc4df280}} 
+virtual void {\bfseries push\+\_\+back} (const \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \&value)=0
+\item 
+\mbox{\Hypertarget{classquantit_1_1vquantity__vector_a722218e879940de100e01086795c09f1}\label{classquantit_1_1vquantity__vector_a722218e879940de100e01086795c09f1}} 
+virtual void {\bfseries pop\+\_\+back} ()=0
+\item 
+\mbox{\Hypertarget{classquantit_1_1vquantity__vector_a8c21333a4dec94f5a9ffbfacd2e2495d}\label{classquantit_1_1vquantity__vector_a8c21333a4dec94f5a9ffbfacd2e2495d}} 
+virtual void {\bfseries resize} (size\+\_\+t count)=0
+\item 
+\mbox{\Hypertarget{classquantit_1_1vquantity__vector_ad5ea413797a1f890a354ff2624227da4}\label{classquantit_1_1vquantity__vector_ad5ea413797a1f890a354ff2624227da4}} 
+virtual void {\bfseries resize} (size\+\_\+t count, const \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \&val)=0
+\item 
+\mbox{\Hypertarget{classquantit_1_1vquantity__vector_af4c01c756e8afbaa5d74cafa4705e7bc}\label{classquantit_1_1vquantity__vector_af4c01c756e8afbaa5d74cafa4705e7bc}} 
+virtual void {\bfseries swap} (\mbox{\hyperlink{classquantit_1_1vquantity__vector}{vquantity\+\_\+vector}} \&other)=0
+\item 
+\mbox{\Hypertarget{classquantit_1_1vquantity__vector_a80e4943f08ef31e54d41dd42c15e08b0}\label{classquantit_1_1vquantity__vector_a80e4943f08ef31e54d41dd42c15e08b0}} 
+virtual std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classquantit_1_1vquantity__vector}{vquantity\+\_\+vector}} $>$ {\bfseries virtual\+\_\+permute} (const int64\+\_\+t $\ast$permute\+\_\+begin, const int64\+\_\+t $\ast$permute\+\_\+end, const std\+::vector$<$ int64\+\_\+t $>$ \&repetition) const =0
+\item 
+\mbox{\Hypertarget{classquantit_1_1vquantity__vector_a10c05ab658c6fdffaec35bb5e983d773}\label{classquantit_1_1vquantity__vector_a10c05ab658c6fdffaec35bb5e983d773}} 
+\mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1cgroup__iterator}{iterator}} {\bfseries begin} ()
+\item 
+\mbox{\Hypertarget{classquantit_1_1vquantity__vector_a528eb166ff41dd6215074af4089b770e}\label{classquantit_1_1vquantity__vector_a528eb166ff41dd6215074af4089b770e}} 
+\mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1cgroup__iterator}{iterator}} {\bfseries end} ()
+\item 
+\mbox{\Hypertarget{classquantit_1_1vquantity__vector_af5c3faa025c6d6422c3eadd9ba8dc74b}\label{classquantit_1_1vquantity__vector_af5c3faa025c6d6422c3eadd9ba8dc74b}} 
+\mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator}{const\+\_\+iterator}} {\bfseries cbegin} () const
+\item 
+\mbox{\Hypertarget{classquantit_1_1vquantity__vector_ae500f61ebb2dbebe4098fa97f9e6f208}\label{classquantit_1_1vquantity__vector_ae500f61ebb2dbebe4098fa97f9e6f208}} 
+\mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator}{const\+\_\+iterator}} {\bfseries cend} () const
+\item 
+\mbox{\Hypertarget{classquantit_1_1vquantity__vector_a6c6fdf66d6eae6220e4f94b7619889f9}\label{classquantit_1_1vquantity__vector_a6c6fdf66d6eae6220e4f94b7619889f9}} 
+reverse\+\_\+iterator {\bfseries rbegin} ()
+\item 
+\mbox{\Hypertarget{classquantit_1_1vquantity__vector_af5186aac793bc795bb1befe20f97898d}\label{classquantit_1_1vquantity__vector_af5186aac793bc795bb1befe20f97898d}} 
+reverse\+\_\+iterator {\bfseries rend} ()
+\item 
+\mbox{\Hypertarget{classquantit_1_1vquantity__vector_a3ec2400ab909861ef65b7553d710aef3}\label{classquantit_1_1vquantity__vector_a3ec2400ab909861ef65b7553d710aef3}} 
+\mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator}{const\+\_\+iterator}} {\bfseries begin} () const
+\item 
+\mbox{\Hypertarget{classquantit_1_1vquantity__vector_a71a9311fca6466186c042d27bbba19e1}\label{classquantit_1_1vquantity__vector_a71a9311fca6466186c042d27bbba19e1}} 
+\mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator}{const\+\_\+iterator}} {\bfseries end} () const
+\item 
+\mbox{\Hypertarget{classquantit_1_1vquantity__vector_a3a0e26b88d5991f4fdc9f7fa0343f4e2}\label{classquantit_1_1vquantity__vector_a3a0e26b88d5991f4fdc9f7fa0343f4e2}} 
+const\+\_\+reverse\+\_\+iterator {\bfseries crbegin} () const
+\item 
+\mbox{\Hypertarget{classquantit_1_1vquantity__vector_a8a9027bc60195c173dd63a880e949b02}\label{classquantit_1_1vquantity__vector_a8a9027bc60195c173dd63a880e949b02}} 
+const\+\_\+reverse\+\_\+iterator {\bfseries crend} () const
+\item 
+\mbox{\Hypertarget{classquantit_1_1vquantity__vector_ad80da9905a8dd945f8424988366845ae}\label{classquantit_1_1vquantity__vector_ad80da9905a8dd945f8424988366845ae}} 
+const\+\_\+reverse\+\_\+iterator {\bfseries rbegin} () const
+\item 
+\mbox{\Hypertarget{classquantit_1_1vquantity__vector_a8e5045d8032d3b8ed89688c2d2493ddd}\label{classquantit_1_1vquantity__vector_a8e5045d8032d3b8ed89688c2d2493ddd}} 
+const\+\_\+reverse\+\_\+iterator {\bfseries rend} () const
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+polymorphic (type-\/erased?) container of \mbox{\hyperlink{classquantit_1_1any__quantity}{any\+\_\+quantity}}. All the element in the container are of the same concrete type, but the concrete type doesn\textquotesingle{}t change the type of the container. Implement most of the interface of std\+::vector (some parts are templates that can\textquotesingle{}t be replaced with run time polymorphism). 
+
+While iterating on the polymorphic container is possible, and useful for prototyping, doing so will incur a significant cost due to virtual calls. {\bfseries{For perfomance critical operations on the whole collection, it is necessary to implement the loop as polymorphic function that will resolve in O(1) polymorphic call/dynamic\+\_\+cast.}}
+
+The visitor pattern could also be used to accomplish efficient iteration on the vector, but a visitor cannot be made to work with all the types in an open set of types.
+
+Note\+: I can\textquotesingle{}t help but feel there\textquotesingle{}s one too many inderection level necessary here (pointer to conc\+\_\+vect.\+data, data is a pointer to the actual data) There\textquotesingle{}s almost certainly a design without this extra indirection and the same interface. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classquantit_1_1vquantity__vector_a73daccea7b560113dda1bdd131f3039e}\label{classquantit_1_1vquantity__vector_a73daccea7b560113dda1bdd131f3039e}} 
+\index{quantit::vquantity\_vector@{quantit::vquantity\_vector}!operator\mbox{[}\mbox{]}@{operator[]}}
+\index{operator\mbox{[}\mbox{]}@{operator[]}!quantit::vquantity\_vector@{quantit::vquantity\_vector}}
+\doxysubsubsection{\texorpdfstring{operator[]()}{operator[]()}}
+{\footnotesize\ttfamily virtual \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}}\& quantit\+::vquantity\+\_\+vector\+::operator\mbox{[}$\,$\mbox{]} (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+accessors. can be implemented as virtual, by exploiting the covariant return type. 
+
+\begin{DoxyReturn}{Returns}
+vquantity\& 
+\end{DoxyReturn}
+
+
+Implemented in \mbox{\hyperlink{classquantit_1_1quantity__vector_af184f0e8a275938590a86d252abb2f24}{quantit\+::quantity\+\_\+vector$<$ S, Allocator, class $>$}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/alex/project/quantt/include/\+Conserved/\+Composite/quantity\+\_\+vector\+\_\+impl.\+h\end{DoxyCompactItemize}

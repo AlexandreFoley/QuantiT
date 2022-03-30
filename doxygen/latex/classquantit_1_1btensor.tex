@@ -1,0 +1,1518 @@
+\hypertarget{classquantit_1_1btensor}{}\doxysection{quantit\+::btensor Class Reference}
+\label{classquantit_1_1btensor}\index{quantit::btensor@{quantit::btensor}}
+
+
+btensor is a type meant to represent block sparse tensor with conservation laws. The conservation law determines which block can or cannot be non-\/nul. Each block is itself a tensor of the same rank as the overall tensor.  
+
+
+
+
+{\ttfamily \#include $<$btensor.\+h$>$}
+
+
+
+Collaboration diagram for quantit\+::btensor\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=244pt]{classquantit_1_1btensor__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structquantit_1_1btensor_1_1block__prop__iter}{block\+\_\+prop\+\_\+iter}}
+\item 
+struct \mbox{\hyperlink{structquantit_1_1btensor_1_1block__prop__view}{block\+\_\+prop\+\_\+view}}
+\item 
+struct \mbox{\hyperlink{structquantit_1_1btensor_1_1const__block__prop__iter}{const\+\_\+block\+\_\+prop\+\_\+iter}}
+\item 
+struct \mbox{\hyperlink{structquantit_1_1btensor_1_1const__block__prop__view}{const\+\_\+block\+\_\+prop\+\_\+view}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_aeb10af309cd0aa5b68f995f237f115fb}\label{classquantit_1_1btensor_aeb10af309cd0aa5b68f995f237f115fb}} 
+using {\bfseries index\+\_\+list} = std\+::vector$<$ int64\+\_\+t $>$
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_ad5e43901944555555e9bfee4f0d9ee3f}\label{classquantit_1_1btensor_ad5e43901944555555e9bfee4f0d9ee3f}} 
+using {\bfseries block\+\_\+list\+\_\+t} = \mbox{\hyperlink{classquantit_1_1flat__map}{flat\+\_\+map}}$<$ index\+\_\+list, torch\+::\+Tensor $>$
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a799bb042f48eff373f4362c44682f39a}\label{classquantit_1_1btensor_a799bb042f48eff373f4362c44682f39a}} 
+using {\bfseries init\+\_\+list\+\_\+t} = std\+::initializer\+\_\+list$<$ std\+::initializer\+\_\+list$<$ std\+::tuple$<$ size\+\_\+t, \mbox{\hyperlink{classquantit_1_1any__quantity}{any\+\_\+quantity}} $>$ $>$$>$
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a37483f60431fd313140dc861cb436fa8}\label{classquantit_1_1btensor_a37483f60431fd313140dc861cb436fa8}} 
+using {\bfseries vec\+\_\+list\+\_\+t} = std\+::vector$<$ std\+::vector$<$ std\+::tuple$<$ size\+\_\+t, \mbox{\hyperlink{classquantit_1_1any__quantity}{any\+\_\+quantity}} $>$ $>$$>$
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_aeb69df3f09347a2c02e972d09db4d300}\label{classquantit_1_1btensor_aeb69df3f09347a2c02e972d09db4d300}} 
+using {\bfseries Scalar} = torch\+::\+Scalar
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a2b9ad2e8d2b3d1631ee17c453e501fe4}\label{classquantit_1_1btensor_a2b9ad2e8d2b3d1631ee17c453e501fe4}} 
+using {\bfseries block\+\_\+qtt\+\_\+iter} = \mbox{\hyperlink{structquantit_1_1btensor_1_1block__prop__iter}{block\+\_\+prop\+\_\+iter}}$<$ \mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1cgroup__iterator}{any\+\_\+quantity\+\_\+vector\+::iterator}} $>$
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a6de658368d5bec0fcf660f1493e80779}\label{classquantit_1_1btensor_a6de658368d5bec0fcf660f1493e80779}} 
+using {\bfseries const\+\_\+block\+\_\+qtt\+\_\+iter} = \mbox{\hyperlink{structquantit_1_1btensor_1_1const__block__prop__iter}{const\+\_\+block\+\_\+prop\+\_\+iter}}$<$ \mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator}{any\+\_\+quantity\+\_\+vector\+::const\+\_\+iterator}}, \mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1cgroup__iterator}{any\+\_\+quantity\+\_\+vector\+::iterator}} $>$
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_aec964e3f38a2231d64318270f09e9eef}\label{classquantit_1_1btensor_aec964e3f38a2231d64318270f09e9eef}} 
+using {\bfseries block\+\_\+qtt\+\_\+view} = \mbox{\hyperlink{structquantit_1_1btensor_1_1block__prop__view}{block\+\_\+prop\+\_\+view}}$<$ \mbox{\hyperlink{structquantit_1_1btensor_1_1block__prop__iter}{block\+\_\+qtt\+\_\+iter}} $>$
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a04baa4f670f521b48b99b2386d618b2d}\label{classquantit_1_1btensor_a04baa4f670f521b48b99b2386d618b2d}} 
+using {\bfseries const\+\_\+block\+\_\+qtt\+\_\+view} = \mbox{\hyperlink{structquantit_1_1btensor_1_1const__block__prop__view}{const\+\_\+block\+\_\+prop\+\_\+view}}$<$ \mbox{\hyperlink{structquantit_1_1btensor_1_1const__block__prop__iter}{const\+\_\+block\+\_\+qtt\+\_\+iter}}, \mbox{\hyperlink{structquantit_1_1btensor_1_1block__prop__iter}{block\+\_\+qtt\+\_\+iter}} $>$
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_ab9a8bc9c7102251ee3411c774ff625ce}\label{classquantit_1_1btensor_ab9a8bc9c7102251ee3411c774ff625ce}} 
+using {\bfseries block\+\_\+size\+\_\+iter} = \mbox{\hyperlink{structquantit_1_1btensor_1_1block__prop__iter}{block\+\_\+prop\+\_\+iter}}$<$ index\+\_\+list\+::iterator $>$
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a94aeb11429eb42d05d0607f25848050f}\label{classquantit_1_1btensor_a94aeb11429eb42d05d0607f25848050f}} 
+using {\bfseries const\+\_\+block\+\_\+size\+\_\+iter} = \mbox{\hyperlink{structquantit_1_1btensor_1_1const__block__prop__iter}{const\+\_\+block\+\_\+prop\+\_\+iter}}$<$ index\+\_\+list\+::const\+\_\+iterator, index\+\_\+list\+::iterator $>$
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_ab1d7a3469e70533a3d74ba7df3475a3d}\label{classquantit_1_1btensor_ab1d7a3469e70533a3d74ba7df3475a3d}} 
+using {\bfseries block\+\_\+size\+\_\+view} = \mbox{\hyperlink{structquantit_1_1btensor_1_1block__prop__view}{block\+\_\+prop\+\_\+view}}$<$ \mbox{\hyperlink{structquantit_1_1btensor_1_1block__prop__iter}{block\+\_\+size\+\_\+iter}} $>$
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_ac85a6e0adca11b45539314974bd4a970}\label{classquantit_1_1btensor_ac85a6e0adca11b45539314974bd4a970}} 
+using {\bfseries const\+\_\+block\+\_\+size\+\_\+view} = \mbox{\hyperlink{structquantit_1_1btensor_1_1const__block__prop__view}{const\+\_\+block\+\_\+prop\+\_\+view}}$<$ \mbox{\hyperlink{structquantit_1_1btensor_1_1const__block__prop__iter}{const\+\_\+block\+\_\+size\+\_\+iter}}, \mbox{\hyperlink{structquantit_1_1btensor_1_1block__prop__iter}{block\+\_\+size\+\_\+iter}} $>$
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classquantit_1_1btensor_a7b943710b36561f1f76f2bec7e5fa63b}{btensor}} (const vec\+\_\+list\+\_\+t \&dir\+\_\+block\+\_\+size\+\_\+cqtt, \mbox{\hyperlink{classquantit_1_1vquantity}{any\+\_\+quantity\+\_\+cref}} selection\+\_\+rule, c10\+::\+Tensor\+Options opt=\{\})
+\begin{DoxyCompactList}\small\item\em Construct a new btensor object. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a0df7d7b6f5fba87b3b0afeb64cc82cc9}\label{classquantit_1_1btensor_a0df7d7b6f5fba87b3b0afeb64cc82cc9}} 
+{\bfseries btensor} (const vec\+\_\+list\+\_\+t \&dir\+\_\+block\+\_\+size\+\_\+cqtt, \mbox{\hyperlink{classquantit_1_1vquantity}{any\+\_\+quantity\+\_\+cref}} selection\+\_\+rule, size\+\_\+t num\+\_\+blocks, c10\+::\+Tensor\+Options opt=\{\})
+\item 
+\mbox{\hyperlink{classquantit_1_1btensor_a7c4b39c3944d26c53ce30924d9d19221}{btensor}} (index\+\_\+list \+\_\+sections\+\_\+by\+\_\+dim, \mbox{\hyperlink{classquantit_1_1any__quantity__vector}{any\+\_\+quantity\+\_\+vector}} \+\_\+c\+\_\+vals, index\+\_\+list \+\_\+section\+\_\+sizes, \mbox{\hyperlink{classquantit_1_1any__quantity}{any\+\_\+quantity}} \+\_\+sel\+\_\+rule, c10\+::\+Tensor\+Options opt=\{\})
+\begin{DoxyCompactList}\small\item\em Construct a new btensor object from a subset of the raw structure. use carefully. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a2e126c2f39920056eeb828d2dda317c2}\label{classquantit_1_1btensor_a2e126c2f39920056eeb828d2dda317c2}} 
+{\bfseries btensor} (const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&other)
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a781eda489246a61d7e0dec211ebdd8ba}\label{classquantit_1_1btensor_a781eda489246a61d7e0dec211ebdd8ba}} 
+{\bfseries btensor} (\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&\&other)
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_ab8accb3d7600a33d405d8c82d11c902c}\label{classquantit_1_1btensor_ab8accb3d7600a33d405d8c82d11c902c}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \& {\bfseries operator=} (\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} other)
+\item 
+\mbox{\hyperlink{classquantit_1_1btensor_a9c4b09d43d375bcacfde1e9d3828c9f4}{btensor}} (size\+\_\+t \+\_\+rank, \mbox{\hyperlink{classquantit_1_1flat__map}{block\+\_\+list\+\_\+t}} \+\_\+blocks, index\+\_\+list \+\_\+sections\+\_\+by\+\_\+dims, index\+\_\+list \+\_\+sections\+\_\+sizes, \mbox{\hyperlink{classquantit_1_1any__quantity__vector}{any\+\_\+quantity\+\_\+vector}} \+\_\+c\+\_\+vals, \mbox{\hyperlink{classquantit_1_1any__quantity}{any\+\_\+quantity}} \+\_\+sel\+\_\+rule, c10\+::\+Tensor\+Options opt=\{\})
+\begin{DoxyCompactList}\small\item\em Construct a new btensor object. construct from raw structure elements. Avoid using this constructor if you can. \end{DoxyCompactList}\item 
+std\+::vector$<$ int64\+\_\+t $>$ \mbox{\hyperlink{classquantit_1_1btensor_a210be19c2e6965f45a5d028a27edb2df}{sizes}} () const
+\begin{DoxyCompactList}\small\item\em return the list of the sizes along each dimensions of the tensor \end{DoxyCompactList}\item 
+btensor\+::\+Scalar \mbox{\hyperlink{classquantit_1_1btensor_a01c490238e0022b585dc430b13ec7dd1}{item}} () const
+\begin{DoxyCompactList}\small\item\em if the tensor contain a single element, return a scalar object. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classquantit_1_1btensor_a7831359050b455e8bf4ead7bf205a1ae}{block\+\_\+increment}} (btensor\+::index\+\_\+list \&block\+\_\+index) const
+\begin{DoxyCompactList}\small\item\em increment a block index for this tensor \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a3ebd3d5bdf055354b82254067e13e5c9}\label{classquantit_1_1btensor_a3ebd3d5bdf055354b82254067e13e5c9}} 
+void {\bfseries swap} (\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&)
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a0b489b6f960e7846245baf2aaa7d66a0}\label{classquantit_1_1btensor_a0b489b6f960e7846245baf2aaa7d66a0}} 
+bool {\bfseries block\+\_\+conservation\+\_\+rule\+\_\+test} (index\+\_\+list block\+\_\+index) const
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a1d4ad1dc15c534551a0e716f779f6347}\label{classquantit_1_1btensor_a1d4ad1dc15c534551a0e716f779f6347}} 
+size\+\_\+t {\bfseries section\+\_\+size} (size\+\_\+t \mbox{\hyperlink{classquantit_1_1btensor_a399cee30857b6b711c46817bbc0a9c56}{dim}}, size\+\_\+t section) const
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a294fa5ce9cebda7d6e4dfe94bc2c0384}\label{classquantit_1_1btensor_a294fa5ce9cebda7d6e4dfe94bc2c0384}} 
+std\+::tuple$<$ index\+\_\+list\+::const\+\_\+iterator, index\+\_\+list\+::const\+\_\+iterator $>$ {\bfseries section\+\_\+sizes} (size\+\_\+t \mbox{\hyperlink{classquantit_1_1btensor_a399cee30857b6b711c46817bbc0a9c56}{dim}}) const
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a8011c285612e00a24b08f15fad6b3ea7}\label{classquantit_1_1btensor_a8011c285612e00a24b08f15fad6b3ea7}} 
+std\+::tuple$<$ \mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator}{any\+\_\+quantity\+\_\+vector\+::const\+\_\+iterator}}, \mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator}{any\+\_\+quantity\+\_\+vector\+::const\+\_\+iterator}} $>$ {\bfseries section\+\_\+cqtts} (size\+\_\+t \mbox{\hyperlink{classquantit_1_1btensor_a399cee30857b6b711c46817bbc0a9c56}{dim}}) const
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_ae60ecb2f76a04f7c8aa26650065b4919}\label{classquantit_1_1btensor_ae60ecb2f76a04f7c8aa26650065b4919}} 
+std\+::tuple$<$ index\+\_\+list\+::const\+\_\+iterator, index\+\_\+list\+::const\+\_\+iterator, \mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator}{any\+\_\+quantity\+\_\+vector\+::const\+\_\+iterator}}, \mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator}{any\+\_\+quantity\+\_\+vector\+::const\+\_\+iterator}} $>$ {\bfseries section\+\_\+sizes\+\_\+cqtts} (size\+\_\+t \mbox{\hyperlink{classquantit_1_1btensor_a399cee30857b6b711c46817bbc0a9c56}{dim}}) const
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a735a54314939812d6a072b99e08e4f41}\label{classquantit_1_1btensor_a735a54314939812d6a072b99e08e4f41}} 
+\mbox{\hyperlink{classquantit_1_1vquantity}{any\+\_\+quantity\+\_\+cref}} {\bfseries section\+\_\+conserved\+\_\+qtt} (size\+\_\+t \mbox{\hyperlink{classquantit_1_1btensor_a399cee30857b6b711c46817bbc0a9c56}{dim}}, size\+\_\+t section) const
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_aa72c9562dfdb8f20eadec23949fd57fd}\label{classquantit_1_1btensor_aa72c9562dfdb8f20eadec23949fd57fd}} 
+\mbox{\hyperlink{classquantit_1_1vquantity}{any\+\_\+quantity\+\_\+cref}} {\bfseries element\+\_\+conserved\+\_\+qtt} (size\+\_\+t \mbox{\hyperlink{classquantit_1_1btensor_a399cee30857b6b711c46817bbc0a9c56}{dim}}, size\+\_\+t element) const
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a06bbbb38aaf2a2ce2bfb72a64daa94d3}\label{classquantit_1_1btensor_a06bbbb38aaf2a2ce2bfb72a64daa94d3}} 
+std\+::tuple$<$ \mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator}{any\+\_\+quantity\+\_\+vector\+::const\+\_\+iterator}}, \mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator}{any\+\_\+quantity\+\_\+vector\+::const\+\_\+iterator}} $>$ {\bfseries section\+\_\+conserved\+\_\+qtt\+\_\+range} (size\+\_\+t \mbox{\hyperlink{classquantit_1_1btensor_ab59f73f7c6380e0bd8ca60e576d4b8d2}{index}}) const
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a361df233fa9fdcd0b30f00f4a96d5bfa}\label{classquantit_1_1btensor_a361df233fa9fdcd0b30f00f4a96d5bfa}} 
+std\+::tuple$<$ size\+\_\+t, \mbox{\hyperlink{classquantit_1_1vquantity}{any\+\_\+quantity\+\_\+cref}} $>$ {\bfseries section\+\_\+size\+\_\+cqtt} (size\+\_\+t \mbox{\hyperlink{classquantit_1_1btensor_a399cee30857b6b711c46817bbc0a9c56}{dim}}, size\+\_\+t section) const
+\item 
+torch\+::\+Tensor \& \mbox{\hyperlink{classquantit_1_1btensor_ab310947ff381e337d498cc343766a13c}{block\+\_\+at}} (const index\+\_\+list \&)
+\begin{DoxyCompactList}\small\item\em access the block at the block index given in argument. \end{DoxyCompactList}\item 
+torch\+::\+Tensor \& \mbox{\hyperlink{classquantit_1_1btensor_a04c88f784e4188dcb1f96e10a280bec8}{block}} (const index\+\_\+list \&)
+\begin{DoxyCompactList}\small\item\em access the block at the index given in argument. Allocate space for the block if necessary. \end{DoxyCompactList}\item 
+const \mbox{\hyperlink{classquantit_1_1flat__map}{block\+\_\+list\+\_\+t}} \& \mbox{\hyperlink{classquantit_1_1btensor_a18334e24f0068037814d8b060c60a0fc}{blocks}} () const
+\begin{DoxyCompactList}\small\item\em const reference to the raw block list. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structquantit_1_1btensor_1_1const__block__prop__view}{const\+\_\+block\+\_\+qtt\+\_\+view}} \mbox{\hyperlink{classquantit_1_1btensor_a1720ff8aa74853ae8bb00909342b6776}{block\+\_\+quantities}} (const index\+\_\+list \&block\+\_\+index) const
+\begin{DoxyCompactList}\small\item\em obtain a view on the conserved quantities of each indices of a block with the block index given in argument \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structquantit_1_1btensor_1_1const__block__prop__view}{const\+\_\+block\+\_\+size\+\_\+view}} \mbox{\hyperlink{classquantit_1_1btensor_a18efb9612ab0b9c34f438f0197abc502}{block\+\_\+sizes}} (const index\+\_\+list \&block\+\_\+index) const
+\begin{DoxyCompactList}\small\item\em obtain a view on the size of the block. \end{DoxyCompactList}\item 
+int64\+\_\+t \mbox{\hyperlink{classquantit_1_1btensor_a399cee30857b6b711c46817bbc0a9c56}{dim}} () const
+\begin{DoxyCompactList}\small\item\em Return the rank of the tensor. \end{DoxyCompactList}\item 
+size\+\_\+t \mbox{\hyperlink{classquantit_1_1btensor_af88cd6bb654832133a7dfbefa8f629c1}{section\+\_\+number}} (size\+\_\+t \mbox{\hyperlink{classquantit_1_1btensor_a399cee30857b6b711c46817bbc0a9c56}{dim}}) const
+\begin{DoxyCompactList}\small\item\em return the number of sections in a given dimension \end{DoxyCompactList}\item 
+const auto \& \mbox{\hyperlink{classquantit_1_1btensor_ab35ce624f7923057fe83535f2a72b87d}{section\+\_\+numbers}} () const
+\begin{DoxyCompactList}\small\item\em return the number of section for all the dimensions, in order. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_abfa2904aa349cfaff3cb451676bfd1e7}\label{classquantit_1_1btensor_abfa2904aa349cfaff3cb451676bfd1e7}} 
+const auto \& {\bfseries get\+\_\+cvals} () const
+\item 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \mbox{\hyperlink{classquantit_1_1btensor_aee959f8823a1ccb165e6ddeced75b0f6}{shape\+\_\+from}} (const std\+::vector$<$ int64\+\_\+t $>$ \&dims) const
+\begin{DoxyCompactList}\small\item\em create an empty tensor from selected dimensions of this. Minimum necessary set of feature for tensor network reshape. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \mbox{\hyperlink{classquantit_1_1btensor_a8619fb2e99352fa12aa8525ea3ecdcf0}{basic\+\_\+create\+\_\+view}} (const std\+::vector$<$ int64\+\_\+t $>$ \&dims, bool preserve\+\_\+rank=false)
+\begin{DoxyCompactList}\small\item\em Create a view object on this tensor. Minimum necessary set of feature for tensor network reshape. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \& \mbox{\hyperlink{classquantit_1_1btensor_ad78bdfc2bf9c771f09ee0841c2455e02}{basic\+\_\+index\+\_\+put\+\_\+}} (const std\+::vector$<$ int64\+\_\+t $>$ \&dims, const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&value)
+\begin{DoxyCompactList}\small\item\em make all the the conserved value and the conservation rule the neutral element of the group. works only on empty tensors. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_abfb1f1daac073010f9ce461eeeb2953a}\label{classquantit_1_1btensor_abfb1f1daac073010f9ce461eeeb2953a}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \& {\bfseries basic\+\_\+index\+\_\+put\+\_\+} (const std\+::vector$<$ int64\+\_\+t $>$ \&dims, const torch\+::\+Tensor \&value)
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_ad0f6a9b00c7da20c43dca330f396e486}\label{classquantit_1_1btensor_ad0f6a9b00c7da20c43dca330f396e486}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} {\bfseries neutral\+\_\+shape} () const
+\item 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \& \mbox{\hyperlink{classquantit_1_1btensor_a6c5ce2bf6e0c189de1475db903fcef87}{neutral\+\_\+shape\+\_\+}} ()
+\item 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \mbox{\hyperlink{classquantit_1_1btensor_ad0a016599b6c1ba4a98111075081acda}{tensor\+\_\+product\+\_\+shape}} (const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&other) const
+\begin{DoxyCompactList}\small\item\em compute the shape of the tensor product of this with the other tensor. store the shape information in an empty btensor \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \mbox{\hyperlink{classquantit_1_1btensor_ab59f73f7c6380e0bd8ca60e576d4b8d2}{index}} (torch\+::\+Array\+Ref$<$ torch\+::indexing\+::\+Tensor\+Index $>$ indices) const
+\begin{DoxyCompactList}\small\item\em create a view on the block tensor. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \mbox{\hyperlink{classquantit_1_1btensor_aa058a2117553c629ce362eb711945e58}{index}} (std\+::initializer\+\_\+list$<$ torch\+::indexing\+::\+Tensor\+Index $>$ indices) const
+\begin{DoxyCompactList}\small\item\em create a view on the block tensor. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \& \mbox{\hyperlink{classquantit_1_1btensor_a8ee26adff8b22f7c20d85706b0deda4a}{index\+\_\+put\+\_\+}} (torch\+::\+Array\+Ref$<$ torch\+::indexing\+::\+Tensor\+Index $>$ indices, const torch\+::\+Tensor \&rhs)
+\begin{DoxyCompactList}\small\item\em Elements insertion operator, for basic torch tensor. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \& \mbox{\hyperlink{classquantit_1_1btensor_a0a73b856d0a4da81209ed45b483bba4a}{index\+\_\+put\+\_\+}} (torch\+::\+Array\+Ref$<$ torch\+::indexing\+::\+Tensor\+Index $>$ indices, const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&rhs)
+\begin{DoxyCompactList}\small\item\em Elements insertion operator, for block tensor. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \& \mbox{\hyperlink{classquantit_1_1btensor_a9f7fed837898e36e46e003819b5183ca}{index\+\_\+put\+\_\+}} (torch\+::\+Array\+Ref$<$ torch\+::indexing\+::\+Tensor\+Index $>$ indices, const Scalar \&v)
+\begin{DoxyCompactList}\small\item\em Elements insertion operator, for scalars. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \& \mbox{\hyperlink{classquantit_1_1btensor_a6fc6df002361366fd2a92b8719114ebf}{index\+\_\+put\+\_\+}} (std\+::initializer\+\_\+list$<$ torch\+::indexing\+::\+Tensor\+Index $>$ indices, const torch\+::\+Tensor \&rhs)
+\begin{DoxyCompactList}\small\item\em Elements insertion operator, for basic torch tensor. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \& \mbox{\hyperlink{classquantit_1_1btensor_abf801ccfc47e2cea549de96560345924}{index\+\_\+put\+\_\+}} (std\+::initializer\+\_\+list$<$ torch\+::indexing\+::\+Tensor\+Index $>$ indices, const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&rhs)
+\begin{DoxyCompactList}\small\item\em Elements insertion operator, for block tensor. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \& \mbox{\hyperlink{classquantit_1_1btensor_a89aa8e2f2b22575d4927170457d44a30}{index\+\_\+put\+\_\+}} (std\+::initializer\+\_\+list$<$ torch\+::indexing\+::\+Tensor\+Index $>$ indices, const Scalar \&v)
+\begin{DoxyCompactList}\small\item\em Elements insertion operator, for scalars. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a00094f5a1ebec2e8ce64be0e46c94ebe}\label{classquantit_1_1btensor_a00094f5a1ebec2e8ce64be0e46c94ebe}} 
+block\+\_\+list\+\_\+t\+::const\+\_\+iterator {\bfseries begin} () const
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a01eb039a3e9c204c80735ac4e0f74142}\label{classquantit_1_1btensor_a01eb039a3e9c204c80735ac4e0f74142}} 
+block\+\_\+list\+\_\+t\+::const\+\_\+iterator {\bfseries end} () const
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_ad8899443c274e6db7ca917836f861589}\label{classquantit_1_1btensor_ad8899443c274e6db7ca917836f861589}} 
+block\+\_\+list\+\_\+t\+::const\+\_\+iterator {\bfseries cbegin} () const
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a440442cbdd7adeff498dd085416e5c16}\label{classquantit_1_1btensor_a440442cbdd7adeff498dd085416e5c16}} 
+block\+\_\+list\+\_\+t\+::const\+\_\+iterator {\bfseries cend} () const
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a1af81f39b41b1c84109617d5c4ec0972}\label{classquantit_1_1btensor_a1af81f39b41b1c84109617d5c4ec0972}} 
+block\+\_\+list\+\_\+t\+::iterator {\bfseries begin} ()
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a7f16613c11ecfd2f15732ec5b607a877}\label{classquantit_1_1btensor_a7f16613c11ecfd2f15732ec5b607a877}} 
+block\+\_\+list\+\_\+t\+::iterator {\bfseries end} ()
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a6a22df7a1f01cdb4ccd465a03d4ca808}\label{classquantit_1_1btensor_a6a22df7a1f01cdb4ccd465a03d4ca808}} 
+block\+\_\+list\+\_\+t\+::reverse\+\_\+iterator {\bfseries rbegin} ()
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_adcba131e1100c9098ed28212a9a12e8a}\label{classquantit_1_1btensor_adcba131e1100c9098ed28212a9a12e8a}} 
+block\+\_\+list\+\_\+t\+::reverse\+\_\+iterator {\bfseries rend} ()
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a62792eef34b2dded3fbba91cd45996b2}\label{classquantit_1_1btensor_a62792eef34b2dded3fbba91cd45996b2}} 
+block\+\_\+list\+\_\+t\+::const\+\_\+reverse\+\_\+iterator {\bfseries rbegin} () const
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_abd0ba29335c083d7961c4529fc602c2f}\label{classquantit_1_1btensor_abd0ba29335c083d7961c4529fc602c2f}} 
+block\+\_\+list\+\_\+t\+::const\+\_\+reverse\+\_\+iterator {\bfseries rend} () const
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a7d94c40cbe874876ae68f77f2c79e348}\label{classquantit_1_1btensor_a7d94c40cbe874876ae68f77f2c79e348}} 
+block\+\_\+list\+\_\+t\+::const\+\_\+reverse\+\_\+iterator {\bfseries crbegin} () const
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a5637f6bda9a4e667b129405552356c3c}\label{classquantit_1_1btensor_a5637f6bda9a4e667b129405552356c3c}} 
+block\+\_\+list\+\_\+t\+::const\+\_\+reverse\+\_\+iterator {\bfseries crend} () const
+\item 
+torch\+::\+Tensor \mbox{\hyperlink{classquantit_1_1btensor_a6a97b9d52b04fe14bf7bb5a55a810382}{to\+\_\+dense}} () const
+\begin{DoxyCompactList}\small\item\em Convert the block tensor to a regular torch tensor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_af96b62005aa71662e4c7be762595a91a}\label{classquantit_1_1btensor_af96b62005aa71662e4c7be762595a91a}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} {\bfseries add} (const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&other, Scalar alpha=1) const
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a8578bce0213f9a97133fe029d166379d}\label{classquantit_1_1btensor_a8578bce0213f9a97133fe029d166379d}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} {\bfseries add} (\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&\&other, Scalar alpha=1) const
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a9526260fef259dd49605138f3769716f}\label{classquantit_1_1btensor_a9526260fef259dd49605138f3769716f}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \& {\bfseries add\+\_\+} (const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&other, Scalar alpha=1)
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a597fc1701d2ebd5c7d4e1c793eaa6f0a}\label{classquantit_1_1btensor_a597fc1701d2ebd5c7d4e1c793eaa6f0a}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \& {\bfseries add\+\_\+} (\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&\&other, Scalar alpha=1)
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a61453fe8c5919bb7b9d8c44bdec010b8}\label{classquantit_1_1btensor_a61453fe8c5919bb7b9d8c44bdec010b8}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} {\bfseries add} (Scalar other, Scalar alpha=1) const
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a14ab2c98b40f8d211e7b29667a07db6d}\label{classquantit_1_1btensor_a14ab2c98b40f8d211e7b29667a07db6d}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \& {\bfseries add\+\_\+} (Scalar other, Scalar alpha=1)
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a109c38d9761e577b74558b47d79d4578}\label{classquantit_1_1btensor_a109c38d9761e577b74558b47d79d4578}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \& {\bfseries operator+=} (Scalar other)
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_ae39e1beeba982b25c0f685303e027e25}\label{classquantit_1_1btensor_ae39e1beeba982b25c0f685303e027e25}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \& {\bfseries operator-\/=} (Scalar other)
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_ae0734b0facdc54c239ff1b64e87171d3}\label{classquantit_1_1btensor_ae0734b0facdc54c239ff1b64e87171d3}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \& {\bfseries operator+=} (const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&other)
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a08d421493a2bef0fb493e62e5618a618}\label{classquantit_1_1btensor_a08d421493a2bef0fb493e62e5618a618}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \& {\bfseries operator+=} (\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&\&other)
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a7dadd7696686ea3f3650421c11943fd0}\label{classquantit_1_1btensor_a7dadd7696686ea3f3650421c11943fd0}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \& {\bfseries operator-\/=} (const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&other)
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a572bea2379c409bb44200f0878b97e58}\label{classquantit_1_1btensor_a572bea2379c409bb44200f0878b97e58}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \& {\bfseries operator-\/=} (\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&\&other)
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a0fbb649cdc2c3dccc52bc7bdb238fb48}\label{classquantit_1_1btensor_a0fbb649cdc2c3dccc52bc7bdb238fb48}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} {\bfseries addmv} (const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&mat, const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&vec, Scalar beta=1, Scalar alpha=1) const
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_ae1c237aa88404ca69b436595059891d2}\label{classquantit_1_1btensor_ae1c237aa88404ca69b436595059891d2}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \& {\bfseries addmv} (const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&mat, const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&vec, Scalar beta=1)
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a85a1fabfd0e6a768b43eff04cf3f9a21}\label{classquantit_1_1btensor_a85a1fabfd0e6a768b43eff04cf3f9a21}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} {\bfseries addmm} (const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&mat, const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&mat2, Scalar beta=1, Scalar alpha=1) const
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_ac6f44d187d4667fe0c81560b78484437}\label{classquantit_1_1btensor_ac6f44d187d4667fe0c81560b78484437}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \& {\bfseries addmm\+\_\+} (const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&mat, const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&mat2, Scalar beta=1, Scalar alpha=1)
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a934f94b32a52932fbf814752da785079}\label{classquantit_1_1btensor_a934f94b32a52932fbf814752da785079}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} {\bfseries addbmm} (const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&mat, const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&mat2, Scalar beta=1, Scalar alpha=1) const
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a4a5c505c6648216266a2b66aac9f180d}\label{classquantit_1_1btensor_a4a5c505c6648216266a2b66aac9f180d}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \& {\bfseries addbmm\+\_\+} (const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&mat, const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&mat2, Scalar beta=1, Scalar alpha=1)
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a6e41d89ccffb5e64d76018b541063f9b}\label{classquantit_1_1btensor_a6e41d89ccffb5e64d76018b541063f9b}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \& {\bfseries addcdiv\+\_\+} (const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&tensor1, const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&tensor2, Scalar beta=1)
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a98fd2e36a8a8e998c826a4f3deb702b9}\label{classquantit_1_1btensor_a98fd2e36a8a8e998c826a4f3deb702b9}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} {\bfseries addcdiv} (const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&tensor1, const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&tensor2, Scalar beta=1)
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a2cf4d3a76553ccfc58b4225dadd8edc2}\label{classquantit_1_1btensor_a2cf4d3a76553ccfc58b4225dadd8edc2}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \& {\bfseries addcmul\+\_\+} (const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&tensor1, const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&tensor2, Scalar beta=1)
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_aed1b6997c86e54a0c155c835dc926e17}\label{classquantit_1_1btensor_aed1b6997c86e54a0c155c835dc926e17}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} {\bfseries addcmul} (const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&tensor1, const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&tensor2, Scalar beta=1)
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a7cea3afb4bf3aabde1c67496ef9417df}\label{classquantit_1_1btensor_a7cea3afb4bf3aabde1c67496ef9417df}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} {\bfseries baddbmm} (const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&bathc1, const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&batch2, Scalar beta=1, Scalar alpha=1) const
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a7027c2e58d1e8e37b4b3fd037d9e3bee}\label{classquantit_1_1btensor_a7027c2e58d1e8e37b4b3fd037d9e3bee}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \& {\bfseries baddbmm\+\_\+} (const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&bathc1, const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&batch2, Scalar beta=1, Scalar alpha=1)
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a268117f541ac845d75c1b1acd100332b}\label{classquantit_1_1btensor_a268117f541ac845d75c1b1acd100332b}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} {\bfseries bmm} (const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&mat) const
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_af41654c3bd38f3b1b33b84e3506582ab}\label{classquantit_1_1btensor_af41654c3bd38f3b1b33b84e3506582ab}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} {\bfseries dot} (const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&other) const
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a43817292c24dfe72c39c9e0603579de0}\label{classquantit_1_1btensor_a43817292c24dfe72c39c9e0603579de0}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} {\bfseries vdot} (const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&other) const
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_ad212ce7cbdf200de9a551d7001f83b74}\label{classquantit_1_1btensor_ad212ce7cbdf200de9a551d7001f83b74}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} {\bfseries kron} (const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&other) const
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_ae8698e15b3f765e2a86fe5c73bd7b03c}\label{classquantit_1_1btensor_ae8698e15b3f765e2a86fe5c73bd7b03c}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} {\bfseries matmul} (const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&other) const
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_aebeb61ac88feba87faf1c79d6fdce752}\label{classquantit_1_1btensor_aebeb61ac88feba87faf1c79d6fdce752}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} {\bfseries mm} (const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&other) const
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_aa4a1677cb63da7bbf239d4e1d7afc09e}\label{classquantit_1_1btensor_aa4a1677cb63da7bbf239d4e1d7afc09e}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} {\bfseries sum} () const
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a0e7d6bc11752aad4ea4ef2a6e378cfc0}\label{classquantit_1_1btensor_a0e7d6bc11752aad4ea4ef2a6e378cfc0}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} {\bfseries t} () const
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a3c2fb6168468677f515607b5fc0fd1ac}\label{classquantit_1_1btensor_a3c2fb6168468677f515607b5fc0fd1ac}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \& {\bfseries t\+\_\+} ()
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a100bc35dd4606a1d980569ccf56585d2}\label{classquantit_1_1btensor_a100bc35dd4606a1d980569ccf56585d2}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} {\bfseries sqrt} () const
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a21d5621994a0b7ece0059ebb593d9734}\label{classquantit_1_1btensor_a21d5621994a0b7ece0059ebb593d9734}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \& {\bfseries sqrt\+\_\+} ()
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_af695d8c1b5d38554476920f3f851ee47}\label{classquantit_1_1btensor_af695d8c1b5d38554476920f3f851ee47}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} {\bfseries abs} () const
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_ae9cc572eb5a962bcb4be2c1535ba0659}\label{classquantit_1_1btensor_ae9cc572eb5a962bcb4be2c1535ba0659}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \& {\bfseries abs\+\_\+} ()
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a0edf85382bbee55870229540c4912f1d}\label{classquantit_1_1btensor_a0edf85382bbee55870229540c4912f1d}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} {\bfseries pow} (btensor\+::\+Scalar exponent) const
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a23779d7148f1df5e9938eb0b3bf087e6}\label{classquantit_1_1btensor_a23779d7148f1df5e9938eb0b3bf087e6}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \& {\bfseries pow\+\_\+} (btensor\+::\+Scalar exponent)
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a50dae84454200f432ddfd492fde24b72}\label{classquantit_1_1btensor_a50dae84454200f432ddfd492fde24b72}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} {\bfseries pow} (const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&exponent) const
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_ad52141be90fab8e1e2448b3e2aec7666}\label{classquantit_1_1btensor_ad52141be90fab8e1e2448b3e2aec7666}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \& {\bfseries pow\+\_\+} (const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&exponent)
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_ad47de70372c7a3f14c9d93adb9080b7f}\label{classquantit_1_1btensor_ad47de70372c7a3f14c9d93adb9080b7f}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} {\bfseries ge} (btensor\+::\+Scalar other) const
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a2b55ae642f17719ef8a2306e32b12784}\label{classquantit_1_1btensor_a2b55ae642f17719ef8a2306e32b12784}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} {\bfseries ge} (const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&other) const
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_aea176d77f4c6f36028686deac4504598}\label{classquantit_1_1btensor_aea176d77f4c6f36028686deac4504598}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} {\bfseries le} (btensor\+::\+Scalar other) const
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_ab478cbf5313025c9bf41f0ff54461551}\label{classquantit_1_1btensor_ab478cbf5313025c9bf41f0ff54461551}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} {\bfseries le} (const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&other) const
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_af93efef1358386621a55b873ff07d9a6}\label{classquantit_1_1btensor_af93efef1358386621a55b873ff07d9a6}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} {\bfseries less} (const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&other) const
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a65a198ec575e269590c4c64cee195811}\label{classquantit_1_1btensor_a65a198ec575e269590c4c64cee195811}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} {\bfseries less} (btensor\+::\+Scalar other) const
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a0f813e6608623a45693c1c382228c74e}\label{classquantit_1_1btensor_a0f813e6608623a45693c1c382228c74e}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} {\bfseries greater} (const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&other) const
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a4fb9b50353bc493fc4d3821b316edc65}\label{classquantit_1_1btensor_a4fb9b50353bc493fc4d3821b316edc65}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} {\bfseries greater} (btensor\+::\+Scalar other) const
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a98bc5383bef6944c61e02a14a9a91518}\label{classquantit_1_1btensor_a98bc5383bef6944c61e02a14a9a91518}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} {\bfseries eq} (btensor\+::\+Scalar other) const
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_ac34e73f2bdad1b54ec94c0a3b36a59a8}\label{classquantit_1_1btensor_ac34e73f2bdad1b54ec94c0a3b36a59a8}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} {\bfseries eq} (const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&other) const
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_aecc44085de7c7513c38b3f3ae9e43a1c}\label{classquantit_1_1btensor_aecc44085de7c7513c38b3f3ae9e43a1c}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} {\bfseries not\+\_\+equal} (btensor\+::\+Scalar other) const
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a2c2c790e8f5322426b50a0c4d82d1cbf}\label{classquantit_1_1btensor_a2c2c790e8f5322426b50a0c4d82d1cbf}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} {\bfseries not\+\_\+equal} (const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&other) const
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a7aff6124cf79f4cb30bd60e6854d4144}\label{classquantit_1_1btensor_a7aff6124cf79f4cb30bd60e6854d4144}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} {\bfseries div} (btensor\+::\+Scalar) const
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_aa2171441c703a4fe016e25f6720c191b}\label{classquantit_1_1btensor_aa2171441c703a4fe016e25f6720c191b}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \& {\bfseries div\+\_\+} (btensor\+::\+Scalar)
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a5086e4795d6315c37e2f2cfe46fceca9}\label{classquantit_1_1btensor_a5086e4795d6315c37e2f2cfe46fceca9}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} {\bfseries div} (const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&other) const
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a463c224fcf93e375c7ce9e4bc814c75d}\label{classquantit_1_1btensor_a463c224fcf93e375c7ce9e4bc814c75d}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \& {\bfseries div\+\_\+} (const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&other)
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a25492fd0cf70bd04a15152b2828ff84a}\label{classquantit_1_1btensor_a25492fd0cf70bd04a15152b2828ff84a}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \& {\bfseries operator$\ast$=} (btensor\+::\+Scalar val)
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a6f4773f1a5435c9f67462c9d00bb69cd}\label{classquantit_1_1btensor_a6f4773f1a5435c9f67462c9d00bb69cd}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \& {\bfseries operator$\ast$=} (const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&other)
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a9257048ffbc8a78ea6825c979b8c9f6c}\label{classquantit_1_1btensor_a9257048ffbc8a78ea6825c979b8c9f6c}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \& {\bfseries operator/=} (btensor\+::\+Scalar val)
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a7602827a205d1054a078242c3fde3b70}\label{classquantit_1_1btensor_a7602827a205d1054a078242c3fde3b70}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \& {\bfseries operator/=} (const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&other)
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a1c927b4b96f0df440eb15d371d60326c}\label{classquantit_1_1btensor_a1c927b4b96f0df440eb15d371d60326c}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} {\bfseries operator-\/} ()
+\item 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \& \mbox{\hyperlink{classquantit_1_1btensor_ac88360f21d921bc565957aa94c292e3e}{mul\+\_\+}} (const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&other)
+\begin{DoxyCompactList}\small\item\em in-\/place element wise product, with broadcasting on size 1 dimensions. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a53a0ad6ab7a223e665a04f2a4a74be54}\label{classquantit_1_1btensor_a53a0ad6ab7a223e665a04f2a4a74be54}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} {\bfseries mul} (const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&other) const
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a9329bdb7db6827c606f518afdf723bfc}\label{classquantit_1_1btensor_a9329bdb7db6827c606f518afdf723bfc}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} {\bfseries mul} (Scalar other) const
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_ab4d4aeb5542d3b146adc8c7f618bd5d4}\label{classquantit_1_1btensor_ab4d4aeb5542d3b146adc8c7f618bd5d4}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \& {\bfseries mul\+\_\+} (Scalar other)
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a648ff1a8b48695e2220c67c163d2b87a}\label{classquantit_1_1btensor_a648ff1a8b48695e2220c67c163d2b87a}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} {\bfseries multiply} (const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&other) const
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_aecbcd853d7db4e7f879281cacd927d24}\label{classquantit_1_1btensor_aecbcd853d7db4e7f879281cacd927d24}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \& {\bfseries multiply\+\_\+} (const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&other)
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a5759ec5ee73a725f919e21c9ad5893da}\label{classquantit_1_1btensor_a5759ec5ee73a725f919e21c9ad5893da}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} {\bfseries multiply} (Scalar other) const
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_acdf2c3bced0851d2ffa2963b8f8f868a}\label{classquantit_1_1btensor_acdf2c3bced0851d2ffa2963b8f8f868a}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \& {\bfseries multiply\+\_\+} (Scalar other)
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_aef107bf98b7a14ff7b18ee6ab74138fe}\label{classquantit_1_1btensor_aef107bf98b7a14ff7b18ee6ab74138fe}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} {\bfseries mv} (const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&vec) const
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a0c1f8e920e86f933c19ce6c3326104ef}\label{classquantit_1_1btensor_a0c1f8e920e86f933c19ce6c3326104ef}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} {\bfseries permute} (torch\+::\+Int\+Array\+Ref) const
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a6e1177240b65cf9ae984ac05bd5d6453}\label{classquantit_1_1btensor_a6e1177240b65cf9ae984ac05bd5d6453}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \& {\bfseries permute\+\_\+} (torch\+::\+Int\+Array\+Ref)
+\item 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \mbox{\hyperlink{classquantit_1_1btensor_a444e6084e8589ae5ae4236cb35c27f01}{reshape}} (torch\+::\+Int\+Array\+Ref index\+\_\+group) const
+\begin{DoxyCompactList}\small\item\em Reshape the btensor into a btensor of a lower rank. \end{DoxyCompactList}\item 
+{\footnotesize template$<$reshape\+\_\+mode mode = reshape\+\_\+mode\+::dims\+\_\+only$>$ }\\\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \mbox{\hyperlink{classquantit_1_1btensor_a5c0f704cd6343d24b4a42031e2e22bc5}{reshape\+\_\+as}} (const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&other) const
+\begin{DoxyCompactList}\small\item\em reshape the tensor into the shape of the supplied tensor. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \mbox{\hyperlink{classquantit_1_1btensor_a391e6d73f73bc486c0f080e6cd8ab7a8}{reshape}} (std\+::initializer\+\_\+list$<$ int64\+\_\+t $>$ a)
+\begin{DoxyCompactList}\small\item\em Reshape the btensor into a btensor of a lower rank. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \mbox{\hyperlink{classquantit_1_1btensor_a6176a831cc6ebf1769453bbd38846e3f}{transpose}} (int64\+\_\+t dim0, int64\+\_\+t dim1) const
+\begin{DoxyCompactList}\small\item\em exchange the order of two indices. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a68dcc4e14de14d0077d36d74455e5273}\label{classquantit_1_1btensor_a68dcc4e14de14d0077d36d74455e5273}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \& {\bfseries transpose\+\_\+} (int64\+\_\+t dim0, int64\+\_\+t dim1)
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a401c2c270d7f5f3863215461c914e602}\label{classquantit_1_1btensor_a401c2c270d7f5f3863215461c914e602}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} {\bfseries sub} (const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&other, Scalar alpha=1) const
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a8a8a3cb85f0c1835e35be8e9fda06691}\label{classquantit_1_1btensor_a8a8a3cb85f0c1835e35be8e9fda06691}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \& {\bfseries sub\+\_\+} (const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&other, Scalar alpha=1)
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_adb8cefd06bd67dfd951c7a94401887b8}\label{classquantit_1_1btensor_adb8cefd06bd67dfd951c7a94401887b8}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} {\bfseries sub} (\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&\&other, Scalar alpha=1) const
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a4d131c891643d88c0528c9065d37de5b}\label{classquantit_1_1btensor_a4d131c891643d88c0528c9065d37de5b}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \& {\bfseries sub\+\_\+} (\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&\&other, Scalar alpha=1)
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_ac466be1e461dcb032af2f3ab98493448}\label{classquantit_1_1btensor_ac466be1e461dcb032af2f3ab98493448}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} {\bfseries sub} (Scalar other, Scalar alpha=1) const
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a1a49aa0e6dd17e12ad2d19286499acaa}\label{classquantit_1_1btensor_a1a49aa0e6dd17e12ad2d19286499acaa}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \& {\bfseries sub\+\_\+} (Scalar other, Scalar alpha=1)
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a87cd93fed91f19af47c00bb34ff38191}\label{classquantit_1_1btensor_a87cd93fed91f19af47c00bb34ff38191}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} {\bfseries subtract} (const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&other, Scalar alpha=1) const
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a3a2d3056bf180fc794a0d5ecfee4105e}\label{classquantit_1_1btensor_a3a2d3056bf180fc794a0d5ecfee4105e}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \& {\bfseries subtract\+\_\+} (const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&other, Scalar alpha=1)
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a3a2304fb10f081161f3bfe8ceabd60b5}\label{classquantit_1_1btensor_a3a2304fb10f081161f3bfe8ceabd60b5}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} {\bfseries subtract} (Scalar other, Scalar alpha=1) const
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a307aac4131fc15a55d2badd728eaf5c5}\label{classquantit_1_1btensor_a307aac4131fc15a55d2badd728eaf5c5}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \& {\bfseries subtract\+\_\+} (Scalar other, Scalar alpha=1)
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_aa4c0666de033a5a36b7cb44a25ba264a}\label{classquantit_1_1btensor_aa4c0666de033a5a36b7cb44a25ba264a}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} {\bfseries tensordot} (const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&other, torch\+::\+Int\+Array\+Ref dim\+\_\+self, torch\+::\+Int\+Array\+Ref dims\+\_\+other) const
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a156b81939db01a79de8ce940526a8d6a}\label{classquantit_1_1btensor_a156b81939db01a79de8ce940526a8d6a}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} {\bfseries tensorgdot} (const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&mul1, const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&mul2, torch\+::\+Int\+Array\+Ref dims1, torch\+::\+Int\+Array\+Ref dims2, Scalar beta=1, Scalar alpha=1) const
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_af1b6cdd46a57cdf88154a7f037d19517}\label{classquantit_1_1btensor_af1b6cdd46a57cdf88154a7f037d19517}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \& {\bfseries tensorgdot\+\_\+} (const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&mul1, const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&mul2, torch\+::\+Int\+Array\+Ref dims1, torch\+::\+Int\+Array\+Ref dims2, Scalar beta=1, Scalar alpha=1)
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_aa2702c03eed0b59e2aeddb841c192fa9}\label{classquantit_1_1btensor_aa2702c03eed0b59e2aeddb841c192fa9}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} {\bfseries squeeze} () const
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a34cea434fb7a2ad8f76d9f963b6d7e1a}\label{classquantit_1_1btensor_a34cea434fb7a2ad8f76d9f963b6d7e1a}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} {\bfseries squeeze} (int64\+\_\+t \mbox{\hyperlink{classquantit_1_1btensor_a399cee30857b6b711c46817bbc0a9c56}{dim}}) const
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a5aec6d672f962905833cd3dd78f99463}\label{classquantit_1_1btensor_a5aec6d672f962905833cd3dd78f99463}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \& {\bfseries squeeze\+\_\+} (int64\+\_\+t \mbox{\hyperlink{classquantit_1_1btensor_a399cee30857b6b711c46817bbc0a9c56}{dim}})
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_ad8ee2b72c7e9770a451578470a3006ae}\label{classquantit_1_1btensor_ad8ee2b72c7e9770a451578470a3006ae}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \& {\bfseries squeeze\+\_\+} ()
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a300ab07624a9c6e63cd48e89eea35fc7}\label{classquantit_1_1btensor_a300ab07624a9c6e63cd48e89eea35fc7}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} {\bfseries isnan} () const
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a2252bc461a496d4006b6cf7c92c6ea63}\label{classquantit_1_1btensor_a2252bc461a496d4006b6cf7c92c6ea63}} 
+torch\+::\+Tensor {\bfseries any} () const
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_aa573174ccaa323bf64189e3a88eb1a14}\label{classquantit_1_1btensor_aa573174ccaa323bf64189e3a88eb1a14}} 
+bool {\bfseries anynan} () const
+\item 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \mbox{\hyperlink{classquantit_1_1btensor_a7ecbb590915372481349263bcc60cfd8}{conj}} () const
+\begin{DoxyCompactList}\small\item\em return the complex conjugate of this tensor and inverse the conserved quantities \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \mbox{\hyperlink{classquantit_1_1btensor_a902003e818128aef05e5e6a39ac77501}{conj\+\_\+only}} () const
+\begin{DoxyCompactList}\small\item\em return the complex conjugate of this tensor \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \mbox{\hyperlink{classquantit_1_1btensor_a1742f2450d18a58b0508799e9d48c469}{inverse\+\_\+cvals}} () const
+\begin{DoxyCompactList}\small\item\em create a new tensor with its section rule and all its conserved quantities inversed. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \& \mbox{\hyperlink{classquantit_1_1btensor_a5960100f9b13fb48702b30644283d9a4}{inverse\+\_\+cvals\+\_\+}} ()
+\begin{DoxyCompactList}\small\item\em inverse the selection rule and all the conserved quantities of this btensor. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \mbox{\hyperlink{classquantit_1_1btensor_aef10a4a7f737d8d45fb4e457440bf7de}{cval\+\_\+shift}} (\mbox{\hyperlink{classquantit_1_1vquantity}{any\+\_\+quantity\+\_\+cref}} shift, int64\+\_\+t \mbox{\hyperlink{classquantit_1_1btensor_a399cee30857b6b711c46817bbc0a9c56}{dim}}) const
+\begin{DoxyCompactList}\small\item\em Shifts the conserved quantities of one dimension of the tensor, applies the opposite shift to the conservation rule. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \& \mbox{\hyperlink{classquantit_1_1btensor_a037f8cc269cc93d75d84a95fbb0b16a2}{cval\+\_\+shift\+\_\+}} (\mbox{\hyperlink{classquantit_1_1vquantity}{any\+\_\+quantity\+\_\+cref}} shift, int64\+\_\+t \mbox{\hyperlink{classquantit_1_1btensor_a399cee30857b6b711c46817bbc0a9c56}{dim}})
+\begin{DoxyCompactList}\small\item\em Shifts the conserved quantities of one dimension of the tensor, applies the opposite shift to the conservation rule. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \& \mbox{\hyperlink{classquantit_1_1btensor_a6934183b8e07a5548b6af93fa6d30676}{non\+\_\+conserving\+\_\+cval\+\_\+shift\+\_\+}} (\mbox{\hyperlink{classquantit_1_1vquantity}{any\+\_\+quantity\+\_\+cref}} shift, int64\+\_\+t \mbox{\hyperlink{classquantit_1_1btensor_a399cee30857b6b711c46817bbc0a9c56}{dim}})
+\begin{DoxyCompactList}\small\item\em Shifts the conserved quantities of one dimension of the tensor without regards for the conservation laws. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \& \mbox{\hyperlink{classquantit_1_1btensor_af4e02d410e3e3c2f32903b352917877a}{shift\+\_\+selection\+\_\+rule\+\_\+}} (\mbox{\hyperlink{classquantit_1_1vquantity}{any\+\_\+quantity\+\_\+cref}} shift)
+\begin{DoxyCompactList}\small\item\em Modify the selection rule by the value of shift. Can only be done on empty tensors . \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classquantit_1_1btensor_af1f9b62db4386110f2b9db59615638f1}{reserve\+\_\+space\+\_\+}} (size\+\_\+t N)
+\begin{DoxyCompactList}\small\item\em Reserve space in the block list. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_af22340d87671cb9256b2ddd62a3d1419}\label{classquantit_1_1btensor_af22340d87671cb9256b2ddd62a3d1419}} 
+void {\bfseries reserve\+\_\+space\+\_\+} (btensor\+\_\+size)
+\item 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \& \mbox{\hyperlink{classquantit_1_1btensor_a8eb0fa9598edbcca7bd461e828efcae9}{set\+\_\+selection\+\_\+rule\+\_\+}} (\mbox{\hyperlink{classquantit_1_1vquantity}{any\+\_\+quantity\+\_\+cref}} value)
+\begin{DoxyCompactList}\small\item\em Set the selection rule of the block tensor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a9938ca873fca45a633e65c789586a3dc}\label{classquantit_1_1btensor_a9938ca873fca45a633e65c789586a3dc}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \& {\bfseries neutral\+\_\+selection\+\_\+rule\+\_\+} ()
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a6491831f28313cb7bfb8898d382c6cfc}\label{classquantit_1_1btensor_a6491831f28313cb7bfb8898d382c6cfc}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} {\bfseries neutral\+\_\+selection\+\_\+rule} () const
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a4df6cbc84f2195e0e9c31bb46ddf8c7f}\label{classquantit_1_1btensor_a4df6cbc84f2195e0e9c31bb46ddf8c7f}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} {\bfseries to} (const torch\+::\+Tensor\+Options \&options=\{\}, bool non\+\_\+blocking=false, bool copy=false, c10\+::optional$<$ c10\+::\+Memory\+Format $>$ memory\+\_\+format=c10\+::nullopt) const
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_ad7dad57c873818fa9617f58522a1a9a8}\label{classquantit_1_1btensor_ad7dad57c873818fa9617f58522a1a9a8}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} {\bfseries to} (const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&other, bool non\+\_\+blocking=false, bool copy=false, c10\+::optional$<$ c10\+::\+Memory\+Format $>$ memory\+\_\+format=c10\+::nullopt) const
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a45c16637e525d988d89da32becf61b75}\label{classquantit_1_1btensor_a45c16637e525d988d89da32becf61b75}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} {\bfseries to} (torch\+::\+Device device, torch\+::\+Scalar\+Type dtype, bool non\+\_\+blocking=false, bool copy=false, c10\+::optional$<$ c10\+::\+Memory\+Format $>$ memory\+\_\+format=c10\+::nullopt) const
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_ab66093d2d85010a3398aa2785e7cf7e4}\label{classquantit_1_1btensor_ab66093d2d85010a3398aa2785e7cf7e4}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} {\bfseries to} (torch\+::\+Scalar\+Type dtype, bool non\+\_\+blocking=false, bool copy=false, c10\+::optional$<$ c10\+::\+Memory\+Format $>$ memory\+\_\+format=c10\+::nullopt) const
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a6e2807c9fa229dd591b20d3b66eee7cd}\label{classquantit_1_1btensor_a6e2807c9fa229dd591b20d3b66eee7cd}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} {\bfseries to} (caffe2\+::\+Type\+Meta type\+\_\+meta, bool non\+\_\+blocking=false, bool copy=false, c10\+::optional$<$ c10\+::\+Memory\+Format $>$ memory\+\_\+format=c10\+::nullopt) const
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_ad8f19565b73f40fd31973702e6862f46}\label{classquantit_1_1btensor_ad8f19565b73f40fd31973702e6862f46}} 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} {\bfseries to} (const torch\+::\+Tensor \&other, bool non\+\_\+blocking=false, bool copy=false, c10\+::optional$<$ c10\+::\+Memory\+Format $>$ memory\+\_\+format=c10\+::nullopt) const
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a0bd5ce01b1230d8623719b3671337a8c}\label{classquantit_1_1btensor_a0bd5ce01b1230d8623719b3671337a8c}} 
+c10\+::\+Tensor\+Options {\bfseries options} () const
+\item 
+std\+::tuple$<$ index\+\_\+list, index\+\_\+list $>$ \mbox{\hyperlink{classquantit_1_1btensor_ad9a02622134dc835f3a333bac282a1cb}{element\+\_\+index\+\_\+decompose}} (const index\+\_\+list \&element\+\_\+index) const
+\begin{DoxyCompactList}\small\item\em split an index adressing an element within the full tensor into a block index, block-\/element index pair. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_aac31d2c7bd9c3900b27542ce17fbe274}\label{classquantit_1_1btensor_aac31d2c7bd9c3900b27542ce17fbe274}} 
+static size\+\_\+t {\bfseries btensor\+\_\+compute\+\_\+max\+\_\+size} (const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&btens, size\+\_\+t max=std\+::numeric\+\_\+limits$<$ size\+\_\+t $>$\+::max())
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a917ea0d16b970cf832504a502cbf1289}\label{classquantit_1_1btensor_a917ea0d16b970cf832504a502cbf1289}} 
+static void {\bfseries add\+\_\+tensor\+\_\+check} (const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&a, const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&b)
+\item 
+static std\+::string \mbox{\hyperlink{classquantit_1_1btensor_aaba4b107e02154ce231380c1bb844766}{check\+\_\+tensor}} (const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&)
+\begin{DoxyCompactList}\small\item\em Check that the tensor is correct. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a5d8897e8e51c880654c5d467b2b0a8bc}\label{classquantit_1_1btensor_a5d8897e8e51c880654c5d467b2b0a8bc}} 
+static void \mbox{\hyperlink{classquantit_1_1btensor_a5d8897e8e51c880654c5d467b2b0a8bc}{throw\+\_\+bad\+\_\+tensor}} (const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&)
+\begin{DoxyCompactList}\small\item\em throw an error in any situation where check\+\_\+tensor return a non-\/empty string \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a6638386777d0b8bed4efa38635f44d0a}\label{classquantit_1_1btensor_a6638386777d0b8bed4efa38635f44d0a}} 
+{\footnotesize template$<$bool Throws = false$>$ }\\static bool {\bfseries check\+\_\+product\+\_\+compat} (const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&in1, const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&in2, torch\+::\+Int\+Array\+Ref dims1, torch\+::\+Int\+Array\+Ref dims2) noexcept(!Throws)
+\item 
+static std\+::vector$<$ torch\+::indexing\+::\+Tensor\+Index $>$ \mbox{\hyperlink{classquantit_1_1btensor_a0584d58aef82ff1994c454d5644142e5}{full\+\_\+slice}} (const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&tensor, const btensor\+::index\+\_\+list \&\mbox{\hyperlink{classquantit_1_1btensor_a04c88f784e4188dcb1f96e10a280bec8}{block}})
+\begin{DoxyCompactList}\small\item\em compute the slices associated with a block in a full tensor with the same shape. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_acbb787c67f9a0c677d9182eb4e92ece6}\label{classquantit_1_1btensor_acbb787c67f9a0c677d9182eb4e92ece6}} 
+static bool {\bfseries test\+\_\+same\+\_\+shape} (const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&a, const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&b)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a30cc2f016d81c4956955aeff74f9683e}\label{classquantit_1_1btensor_a30cc2f016d81c4956955aeff74f9683e}} 
+\mbox{\hyperlink{classproperty}{property}}$<$ \mbox{\hyperlink{classquantit_1_1any__quantity}{any\+\_\+quantity}}, \mbox{\hyperlink{classquantit_1_1btensor}{btensor}}, \mbox{\hyperlink{classquantit_1_1vquantity}{any\+\_\+quantity\+\_\+cref}} $>$ {\bfseries selection\+\_\+rule}
+\end{DoxyCompactItemize}
+\doxysubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a8abcac097679ea55af2d1d69154fc3cd}\label{classquantit_1_1btensor_a8abcac097679ea55af2d1d69154fc3cd}} 
+struct {\bfseries fmt\+::formatter$<$ quantit\+::btensor $>$}
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_a5093c86ab4783ee74c199212372e1a8d}\label{classquantit_1_1btensor_a5093c86ab4783ee74c199212372e1a8d}} 
+class {\bfseries mul\+\_\+helpers}
+\item 
+\mbox{\Hypertarget{classquantit_1_1btensor_aba0ba61994d2725dc6cc24c47deefa7f}\label{classquantit_1_1btensor_aba0ba61994d2725dc6cc24c47deefa7f}} 
+{\footnotesize template$<$class... BTENS$>$ }\\std\+::tuple$<$ \mbox{\hyperlink{classquantit_1_1btensor}{btensor}}, std\+::tuple$<$ BTENS... $>$ $>$ {\bfseries truncate\+\_\+impl} (\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&\&d, std\+::tuple$<$ BTENS... $>$ \&\&unitaries, size\+\_\+t max, size\+\_\+t min, btensor\+::\+Scalar tol, btensor\+::\+Scalar pow)
+\item 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \mbox{\hyperlink{classquantit_1_1btensor_a17d65b7567711e3a99727df6139563d8}{sparse\+\_\+zeros\+\_\+like}} (const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&tens, c10\+::\+Tensor\+Options opt)
+\begin{DoxyCompactList}\small\item\em create an empty (no allocatred blocks) btensor with the same shape and selection rule as the imput tensor \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \mbox{\hyperlink{classquantit_1_1btensor_ac56cbb1dbc7e3b803e8e44aca0a02c45}{eye\+\_\+like}} (const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&shape, c10\+::\+Tensor\+Options opt)
+\begin{DoxyCompactList}\small\item\em create a matrix with the identity matrix for every permited block on the diagonnal. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+btensor is a type meant to represent block sparse tensor with conservation laws. The conservation law determines which block can or cannot be non-\/nul. Each block is itself a tensor of the same rank as the overall tensor. 
+
+Each dimensions of the tensor are separated in sections with independent sizes, each of those section has an associated conserved quantity. The blocks are formed by the intersection of those section. The only block that can contain non-\/zero values are those the satisfy the selection rule\+: the sum over the dimension of the conserved quantity must equal a specififed value (the selection rule).
+
+exemple with a rank 2 tensor (matrix) of the inner structure of this type\+: \begin{DoxyVerb}             S0,0 │ S0,1 │ S0,2 │ S0,3
+            ╔═════╪══════╪══════╪═════╗
+            ║     │      │      │     ║
+        S1,0║(0,0)│ (0,1)│ (0,2)│(0,3)║
+            ║     │      │      │     ║
+           ─╫─────┼──────┼──────┼─────╢
+            ║     │      │      │     ║
+        S1,1║(1,0)│ (1,1)│ (1,2)│(1,3)║
+            ║     │      │      │     ║
+           ─╫─────┼──────┼──────┼─────╢
+            ║     │      │      │     ║
+        S1,2║(2,0)│ (2,1)│ (2,2)│(2,3)║
+            ║     │      │      │     ║
+            ╚═════╧══════╧══════╧═════╝
+\end{DoxyVerb}
+ In the preceding exemple, the rows are separated in 4 sections, and the columns in 3 sections. This make up to 12 blocks, that we label by section. Let\textquotesingle{}s consider that the conserved quantity is simply an integer under the addition,that the column sections \mbox{[}-\/2,-\/1,1\mbox{]}, the row sections have the conserved quantity \mbox{[}1,2,3,-\/1\mbox{]} and the selection rule is 0. In that case, only the blocks \mbox{[}(1,0),(0,1),(2,3)\mbox{]} can be non-\/zero. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classquantit_1_1btensor_a7b943710b36561f1f76f2bec7e5fa63b}\label{classquantit_1_1btensor_a7b943710b36561f1f76f2bec7e5fa63b}} 
+\index{quantit::btensor@{quantit::btensor}!btensor@{btensor}}
+\index{btensor@{btensor}!quantit::btensor@{quantit::btensor}}
+\doxysubsubsection{\texorpdfstring{btensor()}{btensor()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily quantit\+::btensor\+::btensor (\begin{DoxyParamCaption}\item[{const vec\+\_\+list\+\_\+t \&}]{dir\+\_\+block\+\_\+size\+\_\+cqtt,  }\item[{\mbox{\hyperlink{classquantit_1_1vquantity}{any\+\_\+quantity\+\_\+cref}}}]{selection\+\_\+rule,  }\item[{c10\+::\+Tensor\+Options}]{opt = {\ttfamily \{\}} }\end{DoxyParamCaption})}
+
+
+
+Construct a new btensor object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dir\+\_\+block\+\_\+size\+\_\+cqtt} & a nested list of pair of section size and conserved quantities. The number of element in the first is level is the rank of the tensor. The number of elements in the second level is the number of section for that dimension of the tensor \\
+\hline
+{\em selection\+\_\+rule} & determine which blocks are allowed to be non-\/zero. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classquantit_1_1btensor_a7c4b39c3944d26c53ce30924d9d19221}\label{classquantit_1_1btensor_a7c4b39c3944d26c53ce30924d9d19221}} 
+\index{quantit::btensor@{quantit::btensor}!btensor@{btensor}}
+\index{btensor@{btensor}!quantit::btensor@{quantit::btensor}}
+\doxysubsubsection{\texorpdfstring{btensor()}{btensor()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily quantit\+::btensor\+::btensor (\begin{DoxyParamCaption}\item[{index\+\_\+list}]{\+\_\+sections\+\_\+by\+\_\+dim,  }\item[{\mbox{\hyperlink{classquantit_1_1any__quantity__vector}{any\+\_\+quantity\+\_\+vector}}}]{\+\_\+c\+\_\+vals,  }\item[{index\+\_\+list}]{\+\_\+section\+\_\+sizes,  }\item[{\mbox{\hyperlink{classquantit_1_1any__quantity}{any\+\_\+quantity}}}]{\+\_\+sel\+\_\+rule,  }\item[{c10\+::\+Tensor\+Options}]{opt = {\ttfamily \{\}} }\end{DoxyParamCaption})}
+
+
+
+Construct a new btensor object from a subset of the raw structure. use carefully. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em \+\_\+sections\+\_\+by\+\_\+dim} & \\
+\hline
+{\em \+\_\+c\+\_\+vals} & \\
+\hline
+{\em \+\_\+section\+\_\+sizes} & \\
+\hline
+{\em \+\_\+sel\+\_\+rule} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classquantit_1_1btensor_a9c4b09d43d375bcacfde1e9d3828c9f4}\label{classquantit_1_1btensor_a9c4b09d43d375bcacfde1e9d3828c9f4}} 
+\index{quantit::btensor@{quantit::btensor}!btensor@{btensor}}
+\index{btensor@{btensor}!quantit::btensor@{quantit::btensor}}
+\doxysubsubsection{\texorpdfstring{btensor()}{btensor()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily quantit\+::btensor\+::btensor (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{\+\_\+rank,  }\item[{\mbox{\hyperlink{classquantit_1_1flat__map}{block\+\_\+list\+\_\+t}}}]{\+\_\+blocks,  }\item[{index\+\_\+list}]{\+\_\+sections\+\_\+by\+\_\+dims,  }\item[{index\+\_\+list}]{\+\_\+sections\+\_\+sizes,  }\item[{\mbox{\hyperlink{classquantit_1_1any__quantity__vector}{any\+\_\+quantity\+\_\+vector}}}]{\+\_\+c\+\_\+vals,  }\item[{\mbox{\hyperlink{classquantit_1_1any__quantity}{any\+\_\+quantity}}}]{\+\_\+sel\+\_\+rule,  }\item[{c10\+::\+Tensor\+Options}]{opt = {\ttfamily \{\}} }\end{DoxyParamCaption})}
+
+
+
+Construct a new btensor object. construct from raw structure elements. Avoid using this constructor if you can. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em \+\_\+rank} & \+: the number of dimension of the tensor \\
+\hline
+{\em \+\_\+blocks} & \+: list of pair$<$position,sub-\/tensor$>$, the position is stored in a block index \\
+\hline
+{\em \+\_\+sections\+\_\+by\+\_\+dims} & \+: number of section for each dimension of the tensor \\
+\hline
+{\em \+\_\+section\+\_\+sizes} & \+: number of element for each section of each dimension \\
+\hline
+{\em \+\_\+c\+\_\+vals} & \+: conserved quantity associated to each of the section in each of the dimension \\
+\hline
+{\em \+\_\+sel\+\_\+rule} & \+: overall selection rule, the sum over the dimension of the conserved quantities of a given block must equal this value for a block to be allowed to differ from zero. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classquantit_1_1btensor_a8619fb2e99352fa12aa8525ea3ecdcf0}\label{classquantit_1_1btensor_a8619fb2e99352fa12aa8525ea3ecdcf0}} 
+\index{quantit::btensor@{quantit::btensor}!basic\_create\_view@{basic\_create\_view}}
+\index{basic\_create\_view@{basic\_create\_view}!quantit::btensor@{quantit::btensor}}
+\doxysubsubsection{\texorpdfstring{basic\_create\_view()}{basic\_create\_view()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} quantit\+::btensor\+::basic\+\_\+create\+\_\+view (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ int64\+\_\+t $>$ \&}]{dims,  }\item[{bool}]{preserve\+\_\+rank = {\ttfamily false} }\end{DoxyParamCaption})}
+
+
+
+Create a view object on this tensor. Minimum necessary set of feature for tensor network reshape. 
+
+Basic version of index, it can only discard whole dimensions.
+
+
+\begin{DoxyParams}{Parameters}
+{\em dims} & List of dimensions, put -\/1 to keep the dimension, specify the index to keep otherwise. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+btensor\& 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classquantit_1_1btensor_ad78bdfc2bf9c771f09ee0841c2455e02}\label{classquantit_1_1btensor_ad78bdfc2bf9c771f09ee0841c2455e02}} 
+\index{quantit::btensor@{quantit::btensor}!basic\_index\_put\_@{basic\_index\_put\_}}
+\index{basic\_index\_put\_@{basic\_index\_put\_}!quantit::btensor@{quantit::btensor}}
+\doxysubsubsection{\texorpdfstring{basic\_index\_put\_()}{basic\_index\_put\_()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classquantit_1_1btensor}{btensor}}\& quantit\+::btensor\+::basic\+\_\+index\+\_\+put\+\_\+ (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ int64\+\_\+t $>$ \&}]{dims,  }\item[{const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&}]{value }\end{DoxyParamCaption})}
+
+
+
+make all the the conserved value and the conservation rule the neutral element of the group. works only on empty tensors. 
+
+\begin{DoxyReturn}{Returns}
+btensor\& 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classquantit_1_1btensor_a04c88f784e4188dcb1f96e10a280bec8}\label{classquantit_1_1btensor_a04c88f784e4188dcb1f96e10a280bec8}} 
+\index{quantit::btensor@{quantit::btensor}!block@{block}}
+\index{block@{block}!quantit::btensor@{quantit::btensor}}
+\doxysubsubsection{\texorpdfstring{block()}{block()}}
+{\footnotesize\ttfamily torch\+::\+Tensor\& quantit\+::btensor\+::block (\begin{DoxyParamCaption}\item[{const index\+\_\+list \&}]{ }\end{DoxyParamCaption})}
+
+
+
+access the block at the index given in argument. Allocate space for the block if necessary. 
+
+Throws a std\+::bad\+\_\+argument if the block isn\textquotesingle{}t allowed by the conservation law.
+
+\begin{DoxyReturn}{Returns}
+torch\+::\+Tensor\& 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classquantit_1_1btensor_ab310947ff381e337d498cc343766a13c}\label{classquantit_1_1btensor_ab310947ff381e337d498cc343766a13c}} 
+\index{quantit::btensor@{quantit::btensor}!block\_at@{block\_at}}
+\index{block\_at@{block\_at}!quantit::btensor@{quantit::btensor}}
+\doxysubsubsection{\texorpdfstring{block\_at()}{block\_at()}}
+{\footnotesize\ttfamily torch\+::\+Tensor\& quantit\+::btensor\+::block\+\_\+at (\begin{DoxyParamCaption}\item[{const index\+\_\+list \&}]{ }\end{DoxyParamCaption})}
+
+
+
+access the block at the block index given in argument. 
+
+Throws a std\+::out\+\_\+of\+\_\+range if the block isn\textquotesingle{}t allocated or allowed.
+
+\begin{DoxyReturn}{Returns}
+torch\+::\+Tensor\& 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classquantit_1_1btensor_a7831359050b455e8bf4ead7bf205a1ae}\label{classquantit_1_1btensor_a7831359050b455e8bf4ead7bf205a1ae}} 
+\index{quantit::btensor@{quantit::btensor}!block\_increment@{block\_increment}}
+\index{block\_increment@{block\_increment}!quantit::btensor@{quantit::btensor}}
+\doxysubsubsection{\texorpdfstring{block\_increment()}{block\_increment()}}
+{\footnotesize\ttfamily void quantit\+::btensor\+::block\+\_\+increment (\begin{DoxyParamCaption}\item[{btensor\+::index\+\_\+list \&}]{block\+\_\+index }\end{DoxyParamCaption}) const}
+
+
+
+increment a block index for this tensor 
+
+
+\begin{DoxyParams}{Parameters}
+{\em block\+\_\+index} & reference to the block index to increment. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classquantit_1_1btensor_a1720ff8aa74853ae8bb00909342b6776}\label{classquantit_1_1btensor_a1720ff8aa74853ae8bb00909342b6776}} 
+\index{quantit::btensor@{quantit::btensor}!block\_quantities@{block\_quantities}}
+\index{block\_quantities@{block\_quantities}!quantit::btensor@{quantit::btensor}}
+\doxysubsubsection{\texorpdfstring{block\_quantities()}{block\_quantities()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structquantit_1_1btensor_1_1const__block__prop__view}{const\+\_\+block\+\_\+qtt\+\_\+view}} quantit\+::btensor\+::block\+\_\+quantities (\begin{DoxyParamCaption}\item[{const index\+\_\+list \&}]{block\+\_\+index }\end{DoxyParamCaption}) const}
+
+
+
+obtain a view on the conserved quantities of each indices of a block with the block index given in argument 
+
+the conserved quantity for any block can be accessed that way, whether non-\/zero values are allowed or not.
+
+
+\begin{DoxyParams}{Parameters}
+{\em block\+\_\+index} & index of the block \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+const\+\_\+block\+\_\+qtt\+\_\+view 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classquantit_1_1btensor_a18efb9612ab0b9c34f438f0197abc502}\label{classquantit_1_1btensor_a18efb9612ab0b9c34f438f0197abc502}} 
+\index{quantit::btensor@{quantit::btensor}!block\_sizes@{block\_sizes}}
+\index{block\_sizes@{block\_sizes}!quantit::btensor@{quantit::btensor}}
+\doxysubsubsection{\texorpdfstring{block\_sizes()}{block\_sizes()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structquantit_1_1btensor_1_1const__block__prop__view}{const\+\_\+block\+\_\+size\+\_\+view}} quantit\+::btensor\+::block\+\_\+sizes (\begin{DoxyParamCaption}\item[{const index\+\_\+list \&}]{block\+\_\+index }\end{DoxyParamCaption}) const}
+
+
+
+obtain a view on the size of the block. 
+
+The size of any block can be accessed in this manner, whether non-\/zero values are allowed or not.
+
+
+\begin{DoxyParams}{Parameters}
+{\em block\+\_\+index} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+const\+\_\+block\+\_\+size\+\_\+view 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classquantit_1_1btensor_a18334e24f0068037814d8b060c60a0fc}\label{classquantit_1_1btensor_a18334e24f0068037814d8b060c60a0fc}} 
+\index{quantit::btensor@{quantit::btensor}!blocks@{blocks}}
+\index{blocks@{blocks}!quantit::btensor@{quantit::btensor}}
+\doxysubsubsection{\texorpdfstring{blocks()}{blocks()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classquantit_1_1flat__map}{block\+\_\+list\+\_\+t}}\& quantit\+::btensor\+::blocks (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+const reference to the raw block list. 
+
+\begin{DoxyReturn}{Returns}
+const block\+\_\+list\+\_\+t\& 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classquantit_1_1btensor_aaba4b107e02154ce231380c1bb844766}\label{classquantit_1_1btensor_aaba4b107e02154ce231380c1bb844766}} 
+\index{quantit::btensor@{quantit::btensor}!check\_tensor@{check\_tensor}}
+\index{check\_tensor@{check\_tensor}!quantit::btensor@{quantit::btensor}}
+\doxysubsubsection{\texorpdfstring{check\_tensor()}{check\_tensor()}}
+{\footnotesize\ttfamily static std\+::string quantit\+::btensor\+::check\+\_\+tensor (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Check that the tensor is correct. 
+
+No forbidden element allocated, torch tensor sizes matches their sectors sizes, etc.
+
+return a string explaining violations.
+
+\begin{DoxyReturn}{Returns}
+std\+::string 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classquantit_1_1btensor_a7ecbb590915372481349263bcc60cfd8}\label{classquantit_1_1btensor_a7ecbb590915372481349263bcc60cfd8}} 
+\index{quantit::btensor@{quantit::btensor}!conj@{conj}}
+\index{conj@{conj}!quantit::btensor@{quantit::btensor}}
+\doxysubsubsection{\texorpdfstring{conj()}{conj()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} quantit\+::btensor\+::conj (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+return the complex conjugate of this tensor and inverse the conserved quantities 
+
+For non complex type, the only the conserved quantities are modified. Those two operation are grouped together because in the context of tensor networks for quantum mechanics. the adjoint operation conjugate the values and inverse the conserved quantities. The adjoint also transpose the opterator or state, but the effect of the transposition of a network on its constituant tensor depends storngly on the structure of the network and must be done on a case by case basis.
+
+grouping those two operation together is necessary to bring the textual difference in an implementation of an algorithm for torch\+::\+Tensor and \mbox{\hyperlink{classquantit_1_1btensor}{quantit\+::btensor}}
+
+\begin{DoxyReturn}{Returns}
+btensor 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classquantit_1_1btensor_a902003e818128aef05e5e6a39ac77501}\label{classquantit_1_1btensor_a902003e818128aef05e5e6a39ac77501}} 
+\index{quantit::btensor@{quantit::btensor}!conj\_only@{conj\_only}}
+\index{conj\_only@{conj\_only}!quantit::btensor@{quantit::btensor}}
+\doxysubsubsection{\texorpdfstring{conj\_only()}{conj\_only()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} quantit\+::btensor\+::conj\+\_\+only (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+return the complex conjugate of this tensor 
+
+For non complex type, the output is identical to the input. The conserved quantities are unaffected.
+
+\begin{DoxyReturn}{Returns}
+btensor 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classquantit_1_1btensor_aef10a4a7f737d8d45fb4e457440bf7de}\label{classquantit_1_1btensor_aef10a4a7f737d8d45fb4e457440bf7de}} 
+\index{quantit::btensor@{quantit::btensor}!cval\_shift@{cval\_shift}}
+\index{cval\_shift@{cval\_shift}!quantit::btensor@{quantit::btensor}}
+\doxysubsubsection{\texorpdfstring{cval\_shift()}{cval\_shift()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} quantit\+::btensor\+::cval\+\_\+shift (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classquantit_1_1vquantity}{any\+\_\+quantity\+\_\+cref}}}]{shift,  }\item[{int64\+\_\+t}]{dim }\end{DoxyParamCaption}) const}
+
+
+
+Shifts the conserved quantities of one dimension of the tensor, applies the opposite shift to the conservation rule. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em shift} & shift to apply \\
+\hline
+{\em dim} & dimension to which the shift is applied \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classquantit_1_1btensor_a037f8cc269cc93d75d84a95fbb0b16a2}\label{classquantit_1_1btensor_a037f8cc269cc93d75d84a95fbb0b16a2}} 
+\index{quantit::btensor@{quantit::btensor}!cval\_shift\_@{cval\_shift\_}}
+\index{cval\_shift\_@{cval\_shift\_}!quantit::btensor@{quantit::btensor}}
+\doxysubsubsection{\texorpdfstring{cval\_shift\_()}{cval\_shift\_()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classquantit_1_1btensor}{btensor}}\& quantit\+::btensor\+::cval\+\_\+shift\+\_\+ (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classquantit_1_1vquantity}{any\+\_\+quantity\+\_\+cref}}}]{shift,  }\item[{int64\+\_\+t}]{dim }\end{DoxyParamCaption})}
+
+
+
+Shifts the conserved quantities of one dimension of the tensor, applies the opposite shift to the conservation rule. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em shift} & shift to apply \\
+\hline
+{\em dim} & dimension to which the shift is applied \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classquantit_1_1btensor_a399cee30857b6b711c46817bbc0a9c56}\label{classquantit_1_1btensor_a399cee30857b6b711c46817bbc0a9c56}} 
+\index{quantit::btensor@{quantit::btensor}!dim@{dim}}
+\index{dim@{dim}!quantit::btensor@{quantit::btensor}}
+\doxysubsubsection{\texorpdfstring{dim()}{dim()}}
+{\footnotesize\ttfamily int64\+\_\+t quantit\+::btensor\+::dim (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Return the rank of the tensor. 
+
+\begin{DoxyReturn}{Returns}
+int64\+\_\+t 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classquantit_1_1btensor_ad9a02622134dc835f3a333bac282a1cb}\label{classquantit_1_1btensor_ad9a02622134dc835f3a333bac282a1cb}} 
+\index{quantit::btensor@{quantit::btensor}!element\_index\_decompose@{element\_index\_decompose}}
+\index{element\_index\_decompose@{element\_index\_decompose}!quantit::btensor@{quantit::btensor}}
+\doxysubsubsection{\texorpdfstring{element\_index\_decompose()}{element\_index\_decompose()}}
+{\footnotesize\ttfamily std\+::tuple$<$index\+\_\+list, index\+\_\+list$>$ quantit\+::btensor\+::element\+\_\+index\+\_\+decompose (\begin{DoxyParamCaption}\item[{const index\+\_\+list \&}]{element\+\_\+index }\end{DoxyParamCaption}) const}
+
+
+
+split an index adressing an element within the full tensor into a block index, block-\/element index pair. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em element\+\_\+index} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+std\+::tuple$<$index\+\_\+list,index\+\_\+list$>$ 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classquantit_1_1btensor_a0584d58aef82ff1994c454d5644142e5}\label{classquantit_1_1btensor_a0584d58aef82ff1994c454d5644142e5}} 
+\index{quantit::btensor@{quantit::btensor}!full\_slice@{full\_slice}}
+\index{full\_slice@{full\_slice}!quantit::btensor@{quantit::btensor}}
+\doxysubsubsection{\texorpdfstring{full\_slice()}{full\_slice()}}
+{\footnotesize\ttfamily static std\+::vector$<$torch\+::indexing\+::\+Tensor\+Index$>$ quantit\+::btensor\+::full\+\_\+slice (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&}]{tensor,  }\item[{const btensor\+::index\+\_\+list \&}]{block }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+compute the slices associated with a block in a full tensor with the same shape. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em tensor} & \\
+\hline
+{\em block} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+std\+::vector$<$torch\+::indexing\+::\+Tensor\+Index$>$ 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classquantit_1_1btensor_aa058a2117553c629ce362eb711945e58}\label{classquantit_1_1btensor_aa058a2117553c629ce362eb711945e58}} 
+\index{quantit::btensor@{quantit::btensor}!index@{index}}
+\index{index@{index}!quantit::btensor@{quantit::btensor}}
+\doxysubsubsection{\texorpdfstring{index()}{index()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} quantit\+::btensor\+::index (\begin{DoxyParamCaption}\item[{std\+::initializer\+\_\+list$<$ torch\+::indexing\+::\+Tensor\+Index $>$}]{indices }\end{DoxyParamCaption}) const}
+
+
+
+create a view on the block tensor. 
+
+The view on the btensor is itself a btensor. The underlying non-\/zero blocks are shared, new blocks cannot be added to the original tensor this way.
+
+
+\begin{DoxyParams}{Parameters}
+{\em indicesa} & list of torch\textquotesingle{}s index class, allow for slices, ellipsis, and index. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+btensor view on the original tensor 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classquantit_1_1btensor_ab59f73f7c6380e0bd8ca60e576d4b8d2}\label{classquantit_1_1btensor_ab59f73f7c6380e0bd8ca60e576d4b8d2}} 
+\index{quantit::btensor@{quantit::btensor}!index@{index}}
+\index{index@{index}!quantit::btensor@{quantit::btensor}}
+\doxysubsubsection{\texorpdfstring{index()}{index()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} quantit\+::btensor\+::index (\begin{DoxyParamCaption}\item[{torch\+::\+Array\+Ref$<$ torch\+::indexing\+::\+Tensor\+Index $>$}]{indices }\end{DoxyParamCaption}) const}
+
+
+
+create a view on the block tensor. 
+
+The view on the btensor is itself a btensor. The underlying non-\/zero blocks are shared, new blocks cannot be added to the original tensor this way.
+
+
+\begin{DoxyParams}{Parameters}
+{\em indices} & torch\textquotesingle{}s index class, allow for slices, ellipsis, boolean, tensors, and simple index. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+btensor view on the original tensor 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classquantit_1_1btensor_abf801ccfc47e2cea549de96560345924}\label{classquantit_1_1btensor_abf801ccfc47e2cea549de96560345924}} 
+\index{quantit::btensor@{quantit::btensor}!index\_put\_@{index\_put\_}}
+\index{index\_put\_@{index\_put\_}!quantit::btensor@{quantit::btensor}}
+\doxysubsubsection{\texorpdfstring{index\_put\_()}{index\_put\_()}\hspace{0.1cm}{\footnotesize\ttfamily [1/6]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classquantit_1_1btensor}{btensor}}\& quantit\+::btensor\+::index\+\_\+put\+\_\+ (\begin{DoxyParamCaption}\item[{std\+::initializer\+\_\+list$<$ torch\+::indexing\+::\+Tensor\+Index $>$}]{indices,  }\item[{const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&}]{rhs }\end{DoxyParamCaption})}
+
+
+
+Elements insertion operator, for block tensor. 
+
+The input tensor block structure must match the view\textquotesingle{}s block structure
+
+
+\begin{DoxyParams}{Parameters}
+{\em indices} & list of torch\textquotesingle{}s index class, allow for slices, ellipsis, and simple index. \\
+\hline
+{\em rhs} & tensor of values to insert, it\textquotesingle{}s shape must match the view described by the indices \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+btensor\& reference to this 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classquantit_1_1btensor_a89aa8e2f2b22575d4927170457d44a30}\label{classquantit_1_1btensor_a89aa8e2f2b22575d4927170457d44a30}} 
+\index{quantit::btensor@{quantit::btensor}!index\_put\_@{index\_put\_}}
+\index{index\_put\_@{index\_put\_}!quantit::btensor@{quantit::btensor}}
+\doxysubsubsection{\texorpdfstring{index\_put\_()}{index\_put\_()}\hspace{0.1cm}{\footnotesize\ttfamily [2/6]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classquantit_1_1btensor}{btensor}}\& quantit\+::btensor\+::index\+\_\+put\+\_\+ (\begin{DoxyParamCaption}\item[{std\+::initializer\+\_\+list$<$ torch\+::indexing\+::\+Tensor\+Index $>$}]{indices,  }\item[{const Scalar \&}]{v }\end{DoxyParamCaption})}
+
+
+
+Elements insertion operator, for scalars. 
+
+If the index describes multiple elements, all the element that respect the conservation law are set to the supplied value.
+
+
+\begin{DoxyParams}{Parameters}
+{\em indices} & list of torch\textquotesingle{}s index class, allow for slices, ellipsis, and simple index. \\
+\hline
+{\em rhs} & tensor of values to insert, it\textquotesingle{}s shape must match the view described by the indices \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+btensor\& reference to this 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classquantit_1_1btensor_a6fc6df002361366fd2a92b8719114ebf}\label{classquantit_1_1btensor_a6fc6df002361366fd2a92b8719114ebf}} 
+\index{quantit::btensor@{quantit::btensor}!index\_put\_@{index\_put\_}}
+\index{index\_put\_@{index\_put\_}!quantit::btensor@{quantit::btensor}}
+\doxysubsubsection{\texorpdfstring{index\_put\_()}{index\_put\_()}\hspace{0.1cm}{\footnotesize\ttfamily [3/6]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classquantit_1_1btensor}{btensor}}\& quantit\+::btensor\+::index\+\_\+put\+\_\+ (\begin{DoxyParamCaption}\item[{std\+::initializer\+\_\+list$<$ torch\+::indexing\+::\+Tensor\+Index $>$}]{indices,  }\item[{const torch\+::\+Tensor \&}]{rhs }\end{DoxyParamCaption})}
+
+
+
+Elements insertion operator, for basic torch tensor. 
+
+The input tensor is sliced into blocks. elements of the input tensors disallowed by the conservation law are silently droped.
+
+
+\begin{DoxyParams}{Parameters}
+{\em indices} & list of torch\textquotesingle{}s index class, allow for slices, ellipsis, and simple index. \\
+\hline
+{\em rhs} & tensor of values to insert, it\textquotesingle{}s shape must match the view described by the indices \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+btensor\& reference to this 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classquantit_1_1btensor_a0a73b856d0a4da81209ed45b483bba4a}\label{classquantit_1_1btensor_a0a73b856d0a4da81209ed45b483bba4a}} 
+\index{quantit::btensor@{quantit::btensor}!index\_put\_@{index\_put\_}}
+\index{index\_put\_@{index\_put\_}!quantit::btensor@{quantit::btensor}}
+\doxysubsubsection{\texorpdfstring{index\_put\_()}{index\_put\_()}\hspace{0.1cm}{\footnotesize\ttfamily [4/6]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classquantit_1_1btensor}{btensor}}\& quantit\+::btensor\+::index\+\_\+put\+\_\+ (\begin{DoxyParamCaption}\item[{torch\+::\+Array\+Ref$<$ torch\+::indexing\+::\+Tensor\+Index $>$}]{indices,  }\item[{const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&}]{rhs }\end{DoxyParamCaption})}
+
+
+
+Elements insertion operator, for block tensor. 
+
+The input tensor block structure must match the view\textquotesingle{}s block structure
+
+
+\begin{DoxyParams}{Parameters}
+{\em indices} & list of torch\textquotesingle{}s index class, allow for slices, ellipsis, and simple index. \\
+\hline
+{\em rhs} & tensor of values to insert, it\textquotesingle{}s shape must match the view described by the indices \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+btensor\& reference to this 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classquantit_1_1btensor_a9f7fed837898e36e46e003819b5183ca}\label{classquantit_1_1btensor_a9f7fed837898e36e46e003819b5183ca}} 
+\index{quantit::btensor@{quantit::btensor}!index\_put\_@{index\_put\_}}
+\index{index\_put\_@{index\_put\_}!quantit::btensor@{quantit::btensor}}
+\doxysubsubsection{\texorpdfstring{index\_put\_()}{index\_put\_()}\hspace{0.1cm}{\footnotesize\ttfamily [5/6]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classquantit_1_1btensor}{btensor}}\& quantit\+::btensor\+::index\+\_\+put\+\_\+ (\begin{DoxyParamCaption}\item[{torch\+::\+Array\+Ref$<$ torch\+::indexing\+::\+Tensor\+Index $>$}]{indices,  }\item[{const Scalar \&}]{v }\end{DoxyParamCaption})}
+
+
+
+Elements insertion operator, for scalars. 
+
+If the index describes multiple elements, all the element that respect the conservation law are set to the supplied value.
+
+
+\begin{DoxyParams}{Parameters}
+{\em indices} & list of torch\textquotesingle{}s index class, allow for slices, ellipsis, and simple index. \\
+\hline
+{\em rhs} & tensor of values to insert, it\textquotesingle{}s shape must match the view described by the indices \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+btensor\& reference to this 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classquantit_1_1btensor_a8ee26adff8b22f7c20d85706b0deda4a}\label{classquantit_1_1btensor_a8ee26adff8b22f7c20d85706b0deda4a}} 
+\index{quantit::btensor@{quantit::btensor}!index\_put\_@{index\_put\_}}
+\index{index\_put\_@{index\_put\_}!quantit::btensor@{quantit::btensor}}
+\doxysubsubsection{\texorpdfstring{index\_put\_()}{index\_put\_()}\hspace{0.1cm}{\footnotesize\ttfamily [6/6]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classquantit_1_1btensor}{btensor}}\& quantit\+::btensor\+::index\+\_\+put\+\_\+ (\begin{DoxyParamCaption}\item[{torch\+::\+Array\+Ref$<$ torch\+::indexing\+::\+Tensor\+Index $>$}]{indices,  }\item[{const torch\+::\+Tensor \&}]{rhs }\end{DoxyParamCaption})}
+
+
+
+Elements insertion operator, for basic torch tensor. 
+
+The input tensor is sliced into blocks. elements of the input tensors disallowed by the conservation law are silently droped.
+
+
+\begin{DoxyParams}{Parameters}
+{\em indices} & list of torch\textquotesingle{}s index class, allow for slices, ellipsis, and simple index. \\
+\hline
+{\em rhs} & tensor of values to insert, it\textquotesingle{}s shape must match the view described by the indices \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+btensor\& reference to this 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classquantit_1_1btensor_a1742f2450d18a58b0508799e9d48c469}\label{classquantit_1_1btensor_a1742f2450d18a58b0508799e9d48c469}} 
+\index{quantit::btensor@{quantit::btensor}!inverse\_cvals@{inverse\_cvals}}
+\index{inverse\_cvals@{inverse\_cvals}!quantit::btensor@{quantit::btensor}}
+\doxysubsubsection{\texorpdfstring{inverse\_cvals()}{inverse\_cvals()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} quantit\+::btensor\+::inverse\+\_\+cvals (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+create a new tensor with its section rule and all its conserved quantities inversed. 
+
+Conserved quantities must be inversed when doing the hermitian conjugation of an operator.
+
+Caution\+: The blocks of the new tensors are shallow copies of the original.
+
+\begin{DoxyReturn}{Returns}
+btensor 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classquantit_1_1btensor_a5960100f9b13fb48702b30644283d9a4}\label{classquantit_1_1btensor_a5960100f9b13fb48702b30644283d9a4}} 
+\index{quantit::btensor@{quantit::btensor}!inverse\_cvals\_@{inverse\_cvals\_}}
+\index{inverse\_cvals\_@{inverse\_cvals\_}!quantit::btensor@{quantit::btensor}}
+\doxysubsubsection{\texorpdfstring{inverse\_cvals\_()}{inverse\_cvals\_()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classquantit_1_1btensor}{btensor}}\& quantit\+::btensor\+::inverse\+\_\+cvals\+\_\+ (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+inverse the selection rule and all the conserved quantities of this btensor. 
+
+Conserved quantities must be inversed when doing the hermitian conjugation of an operator.
+
+\begin{DoxyReturn}{Returns}
+btensor\& 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classquantit_1_1btensor_a01c490238e0022b585dc430b13ec7dd1}\label{classquantit_1_1btensor_a01c490238e0022b585dc430b13ec7dd1}} 
+\index{quantit::btensor@{quantit::btensor}!item@{item}}
+\index{item@{item}!quantit::btensor@{quantit::btensor}}
+\doxysubsubsection{\texorpdfstring{item()}{item()}}
+{\footnotesize\ttfamily btensor\+::\+Scalar quantit\+::btensor\+::item (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+if the tensor contain a single element, return a scalar object. 
+
+\begin{DoxyReturn}{Returns}
+btensor\+::\+Scalar 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classquantit_1_1btensor_ac88360f21d921bc565957aa94c292e3e}\label{classquantit_1_1btensor_ac88360f21d921bc565957aa94c292e3e}} 
+\index{quantit::btensor@{quantit::btensor}!mul\_@{mul\_}}
+\index{mul\_@{mul\_}!quantit::btensor@{quantit::btensor}}
+\doxysubsubsection{\texorpdfstring{mul\_()}{mul\_()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classquantit_1_1btensor}{btensor}}\& quantit\+::btensor\+::mul\+\_\+ (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&}]{other }\end{DoxyParamCaption})}
+
+
+
+in-\/place element wise product, with broadcasting on size 1 dimensions. 
+
+Will throw an error if the rank of this is smaller than the would be output. I suspect this is a bug in torch. There\textquotesingle{}s no reason not to adapt the rank of the tensor, from a storage perspective this isn\textquotesingle{}t different from increasing the size of one dimenion, which this function can do.
+
+
+\begin{DoxyParams}{Parameters}
+{\em other} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+btensor\& 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classquantit_1_1btensor_a6c5ce2bf6e0c189de1475db903fcef87}\label{classquantit_1_1btensor_a6c5ce2bf6e0c189de1475db903fcef87}} 
+\index{quantit::btensor@{quantit::btensor}!neutral\_shape\_@{neutral\_shape\_}}
+\index{neutral\_shape\_@{neutral\_shape\_}!quantit::btensor@{quantit::btensor}}
+\doxysubsubsection{\texorpdfstring{neutral\_shape\_()}{neutral\_shape\_()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classquantit_1_1btensor}{btensor}}\& quantit\+::btensor\+::neutral\+\_\+shape\+\_\+ (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em other} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+btensor 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classquantit_1_1btensor_a6934183b8e07a5548b6af93fa6d30676}\label{classquantit_1_1btensor_a6934183b8e07a5548b6af93fa6d30676}} 
+\index{quantit::btensor@{quantit::btensor}!non\_conserving\_cval\_shift\_@{non\_conserving\_cval\_shift\_}}
+\index{non\_conserving\_cval\_shift\_@{non\_conserving\_cval\_shift\_}!quantit::btensor@{quantit::btensor}}
+\doxysubsubsection{\texorpdfstring{non\_conserving\_cval\_shift\_()}{non\_conserving\_cval\_shift\_()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classquantit_1_1btensor}{btensor}}\& quantit\+::btensor\+::non\+\_\+conserving\+\_\+cval\+\_\+shift\+\_\+ (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classquantit_1_1vquantity}{any\+\_\+quantity\+\_\+cref}}}]{shift,  }\item[{int64\+\_\+t}]{dim }\end{DoxyParamCaption})}
+
+
+
+Shifts the conserved quantities of one dimension of the tensor without regards for the conservation laws. 
+
+Can only be applied to empty tensors.
+
+
+\begin{DoxyParams}{Parameters}
+{\em shift} & shift to apply \\
+\hline
+{\em dim} & dimension to which the shift is applied \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classquantit_1_1btensor_af1f9b62db4386110f2b9db59615638f1}\label{classquantit_1_1btensor_af1f9b62db4386110f2b9db59615638f1}} 
+\index{quantit::btensor@{quantit::btensor}!reserve\_space\_@{reserve\_space\_}}
+\index{reserve\_space\_@{reserve\_space\_}!quantit::btensor@{quantit::btensor}}
+\doxysubsubsection{\texorpdfstring{reserve\_space\_()}{reserve\_space\_()}}
+{\footnotesize\ttfamily void quantit\+::btensor\+::reserve\+\_\+space\+\_\+ (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{N }\end{DoxyParamCaption})}
+
+
+
+Reserve space in the block list. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em N} & number of blocks for which to reserve space \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classquantit_1_1btensor_a391e6d73f73bc486c0f080e6cd8ab7a8}\label{classquantit_1_1btensor_a391e6d73f73bc486c0f080e6cd8ab7a8}} 
+\index{quantit::btensor@{quantit::btensor}!reshape@{reshape}}
+\index{reshape@{reshape}!quantit::btensor@{quantit::btensor}}
+\doxysubsubsection{\texorpdfstring{reshape()}{reshape()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} quantit\+::btensor\+::reshape (\begin{DoxyParamCaption}\item[{std\+::initializer\+\_\+list$<$ int64\+\_\+t $>$}]{a }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Reshape the btensor into a btensor of a lower rank. 
+
+This function is significantly different from torch\textquotesingle{}s equivalent, both in the required input and the resulting tensor. The reshaping is done once on the block structure and once on the block content. Consequently, the content is permuted relative to the same reshape done on a regular tensor.
+
+
+\begin{DoxyParams}{Parameters}
+{\em index\+\_\+group} & each integer mark the first element of the next bundle of index to group for exemple\+: \mbox{[}3,4,5\mbox{]} would group index 0,1,2 into a single new index, leave 3 and 4 as they are, and group 5..rank-\/1 together \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+btensor reshaped tensor 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classquantit_1_1btensor_a444e6084e8589ae5ae4236cb35c27f01}\label{classquantit_1_1btensor_a444e6084e8589ae5ae4236cb35c27f01}} 
+\index{quantit::btensor@{quantit::btensor}!reshape@{reshape}}
+\index{reshape@{reshape}!quantit::btensor@{quantit::btensor}}
+\doxysubsubsection{\texorpdfstring{reshape()}{reshape()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} quantit\+::btensor\+::reshape (\begin{DoxyParamCaption}\item[{torch\+::\+Int\+Array\+Ref}]{index\+\_\+group }\end{DoxyParamCaption}) const}
+
+
+
+Reshape the btensor into a btensor of a lower rank. 
+
+This function is significantly different from torch\textquotesingle{}s equivalent, both in the required input and the resulting tensor. The reshaping is done once on the block structure and once on the block content. Consequently, the content is permuted relative to the same reshape done on a regular tensor.
+
+
+\begin{DoxyParams}{Parameters}
+{\em index\+\_\+group} & each integer mark the first element of the next bundle of index to group for exemple\+: \mbox{[}3,4,5\mbox{]} would group index 0,1,2 into a single new index, leave 3 and 4 as they are, and group 5..rank-\/1 together \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+btensor reshaped tensor 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classquantit_1_1btensor_a5c0f704cd6343d24b4a42031e2e22bc5}\label{classquantit_1_1btensor_a5c0f704cd6343d24b4a42031e2e22bc5}} 
+\index{quantit::btensor@{quantit::btensor}!reshape\_as@{reshape\_as}}
+\index{reshape\_as@{reshape\_as}!quantit::btensor@{quantit::btensor}}
+\doxysubsubsection{\texorpdfstring{reshape\_as()}{reshape\_as()}}
+{\footnotesize\ttfamily template$<$reshape\+\_\+mode mode = reshape\+\_\+mode\+::dims\+\_\+only$>$ \\
+\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} quantit\+::btensor\+::reshape\+\_\+as (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&}]{other }\end{DoxyParamCaption}) const}
+
+
+
+reshape the tensor into the shape of the supplied tensor. 
+
+The supplied tensor must have conserved quantities compatible with this. Therefore, the conserved quantities of the blocks of this must factorize into the conserved quantity of the matching block of the arguement. Can reshape into a tensor of greater rank.
+
+When overwrite\+\_\+c\+\_\+vals is true, the selection rule will be overwritten with the one of the input tensor. The non-\/zero blocks of this must satisfy the selection rule of the proposed output shape.
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em reshaping} & mode, modify the conserved quantities on the indices only by default, overwrite the selection rule with reshape\+\_\+mode\+::overwrite\+\_\+cvals \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em other} & Tensor with the target shape. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+btensor Reshaped tensor 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classquantit_1_1btensor_af88cd6bb654832133a7dfbefa8f629c1}\label{classquantit_1_1btensor_af88cd6bb654832133a7dfbefa8f629c1}} 
+\index{quantit::btensor@{quantit::btensor}!section\_number@{section\_number}}
+\index{section\_number@{section\_number}!quantit::btensor@{quantit::btensor}}
+\doxysubsubsection{\texorpdfstring{section\_number()}{section\_number()}}
+{\footnotesize\ttfamily size\+\_\+t quantit\+::btensor\+::section\+\_\+number (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{dim }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+return the number of sections in a given dimension 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dim} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+size\+\_\+t 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classquantit_1_1btensor_ab35ce624f7923057fe83535f2a72b87d}\label{classquantit_1_1btensor_ab35ce624f7923057fe83535f2a72b87d}} 
+\index{quantit::btensor@{quantit::btensor}!section\_numbers@{section\_numbers}}
+\index{section\_numbers@{section\_numbers}!quantit::btensor@{quantit::btensor}}
+\doxysubsubsection{\texorpdfstring{section\_numbers()}{section\_numbers()}}
+{\footnotesize\ttfamily const auto\& quantit\+::btensor\+::section\+\_\+numbers (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+return the number of section for all the dimensions, in order. 
+
+\begin{DoxyReturn}{Returns}
+const auto\& 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classquantit_1_1btensor_a8eb0fa9598edbcca7bd461e828efcae9}\label{classquantit_1_1btensor_a8eb0fa9598edbcca7bd461e828efcae9}} 
+\index{quantit::btensor@{quantit::btensor}!set\_selection\_rule\_@{set\_selection\_rule\_}}
+\index{set\_selection\_rule\_@{set\_selection\_rule\_}!quantit::btensor@{quantit::btensor}}
+\doxysubsubsection{\texorpdfstring{set\_selection\_rule\_()}{set\_selection\_rule\_()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classquantit_1_1btensor}{btensor}}\& quantit\+::btensor\+::set\+\_\+selection\+\_\+rule\+\_\+ (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classquantit_1_1vquantity}{any\+\_\+quantity\+\_\+cref}}}]{value }\end{DoxyParamCaption})}
+
+
+
+Set the selection rule of the block tensor. 
+
+Only works on empty btensor.
+
+
+\begin{DoxyParams}{Parameters}
+{\em value} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+btensor\& 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classquantit_1_1btensor_aee959f8823a1ccb165e6ddeced75b0f6}\label{classquantit_1_1btensor_aee959f8823a1ccb165e6ddeced75b0f6}} 
+\index{quantit::btensor@{quantit::btensor}!shape\_from@{shape\_from}}
+\index{shape\_from@{shape\_from}!quantit::btensor@{quantit::btensor}}
+\doxysubsubsection{\texorpdfstring{shape\_from()}{shape\_from()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} quantit\+::btensor\+::shape\+\_\+from (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ int64\+\_\+t $>$ \&}]{dims }\end{DoxyParamCaption}) const}
+
+
+
+create an empty tensor from selected dimensions of this. Minimum necessary set of feature for tensor network reshape. 
+
+Basic version of index, it can only discard whole dimensions.
+
+
+\begin{DoxyParams}{Parameters}
+{\em dims} & List of dimensions, put -\/1 to keep the dimension, specify the index to keep otherwise. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+btensor 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classquantit_1_1btensor_af4e02d410e3e3c2f32903b352917877a}\label{classquantit_1_1btensor_af4e02d410e3e3c2f32903b352917877a}} 
+\index{quantit::btensor@{quantit::btensor}!shift\_selection\_rule\_@{shift\_selection\_rule\_}}
+\index{shift\_selection\_rule\_@{shift\_selection\_rule\_}!quantit::btensor@{quantit::btensor}}
+\doxysubsubsection{\texorpdfstring{shift\_selection\_rule\_()}{shift\_selection\_rule\_()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classquantit_1_1btensor}{btensor}}\& quantit\+::btensor\+::shift\+\_\+selection\+\_\+rule\+\_\+ (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classquantit_1_1vquantity}{any\+\_\+quantity\+\_\+cref}}}]{shift }\end{DoxyParamCaption})}
+
+
+
+Modify the selection rule by the value of shift. Can only be done on empty tensors . 
+
+
+\begin{DoxyParams}{Parameters}
+{\em shift} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+btensor\& 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classquantit_1_1btensor_a210be19c2e6965f45a5d028a27edb2df}\label{classquantit_1_1btensor_a210be19c2e6965f45a5d028a27edb2df}} 
+\index{quantit::btensor@{quantit::btensor}!sizes@{sizes}}
+\index{sizes@{sizes}!quantit::btensor@{quantit::btensor}}
+\doxysubsubsection{\texorpdfstring{sizes()}{sizes()}}
+{\footnotesize\ttfamily std\+::vector$<$int64\+\_\+t$>$ quantit\+::btensor\+::sizes (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+return the list of the sizes along each dimensions of the tensor 
+
+\begin{DoxyReturn}{Returns}
+std\+::vector$<$int64\+\_\+t$>$ 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classquantit_1_1btensor_ad0a016599b6c1ba4a98111075081acda}\label{classquantit_1_1btensor_ad0a016599b6c1ba4a98111075081acda}} 
+\index{quantit::btensor@{quantit::btensor}!tensor\_product\_shape@{tensor\_product\_shape}}
+\index{tensor\_product\_shape@{tensor\_product\_shape}!quantit::btensor@{quantit::btensor}}
+\doxysubsubsection{\texorpdfstring{tensor\_product\_shape()}{tensor\_product\_shape()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} quantit\+::btensor\+::tensor\+\_\+product\+\_\+shape (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&}]{other }\end{DoxyParamCaption}) const}
+
+
+
+compute the shape of the tensor product of this with the other tensor. store the shape information in an empty btensor 
+
+If you want to actually proceed to the tensor product, use tensordot with no contracted
+
+
+\begin{DoxyParams}{Parameters}
+{\em other} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+btensor 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classquantit_1_1btensor_a6a97b9d52b04fe14bf7bb5a55a810382}\label{classquantit_1_1btensor_a6a97b9d52b04fe14bf7bb5a55a810382}} 
+\index{quantit::btensor@{quantit::btensor}!to\_dense@{to\_dense}}
+\index{to\_dense@{to\_dense}!quantit::btensor@{quantit::btensor}}
+\doxysubsubsection{\texorpdfstring{to\_dense()}{to\_dense()}}
+{\footnotesize\ttfamily torch\+::\+Tensor quantit\+::btensor\+::to\+\_\+dense (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Convert the block tensor to a regular torch tensor. 
+
+\begin{DoxyReturn}{Returns}
+torch\+::\+Tensor 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classquantit_1_1btensor_a6176a831cc6ebf1769453bbd38846e3f}\label{classquantit_1_1btensor_a6176a831cc6ebf1769453bbd38846e3f}} 
+\index{quantit::btensor@{quantit::btensor}!transpose@{transpose}}
+\index{transpose@{transpose}!quantit::btensor@{quantit::btensor}}
+\doxysubsubsection{\texorpdfstring{transpose()}{transpose()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} quantit\+::btensor\+::transpose (\begin{DoxyParamCaption}\item[{int64\+\_\+t}]{dim0,  }\item[{int64\+\_\+t}]{dim1 }\end{DoxyParamCaption}) const}
+
+
+
+exchange the order of two indices. 
+
+Simplify to a matrix transpose for tensors of rank 2.
+
+
+\begin{DoxyParams}{Parameters}
+{\em dim0} & \\
+\hline
+{\em dim1} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+btensor 
+\end{DoxyReturn}
+
+
+\doxysubsection{Friends And Related Function Documentation}
+\mbox{\Hypertarget{classquantit_1_1btensor_ac56cbb1dbc7e3b803e8e44aca0a02c45}\label{classquantit_1_1btensor_ac56cbb1dbc7e3b803e8e44aca0a02c45}} 
+\index{quantit::btensor@{quantit::btensor}!eye\_like@{eye\_like}}
+\index{eye\_like@{eye\_like}!quantit::btensor@{quantit::btensor}}
+\doxysubsubsection{\texorpdfstring{eye\_like}{eye\_like}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} eye\+\_\+like (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&}]{shape,  }\item[{c10\+::\+Tensor\+Options}]{opt }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+create a matrix with the identity matrix for every permited block on the diagonnal. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em shape} & shape of the matrix to construct \\
+\hline
+{\em opt} & tensor options \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+btensor 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classquantit_1_1btensor_a17d65b7567711e3a99727df6139563d8}\label{classquantit_1_1btensor_a17d65b7567711e3a99727df6139563d8}} 
+\index{quantit::btensor@{quantit::btensor}!sparse\_zeros\_like@{sparse\_zeros\_like}}
+\index{sparse\_zeros\_like@{sparse\_zeros\_like}!quantit::btensor@{quantit::btensor}}
+\doxysubsubsection{\texorpdfstring{sparse\_zeros\_like}{sparse\_zeros\_like}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} sparse\+\_\+zeros\+\_\+like (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&}]{tens,  }\item[{c10\+::\+Tensor\+Options}]{opt = {\ttfamily \{\}} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+create an empty (no allocatred blocks) btensor with the same shape and selection rule as the imput tensor 
+
+
+\begin{DoxyParams}{Parameters}
+{\em tens} & shape specifying tensor \\
+\hline
+{\em opt} & tensor options, specified option overwrite those copied from tens \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+empty btensor 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/alex/project/quantt/include/block\+Tensor/btensor.\+h\end{DoxyCompactItemize}

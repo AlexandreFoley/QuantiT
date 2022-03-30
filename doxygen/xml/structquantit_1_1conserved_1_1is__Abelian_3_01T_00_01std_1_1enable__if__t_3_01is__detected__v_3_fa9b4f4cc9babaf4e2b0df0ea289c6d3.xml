@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="structquantit_1_1conserved_1_1is__Abelian_3_01T_00_01std_1_1enable__if__t_3_01is__detected__v_3_fa9b4f4cc9babaf4e2b0df0ea289c6d3" kind="struct" language="C++" prot="public">
+    <compoundname>quantit::conserved::is_Abelian&lt; T, std::enable_if_t&lt; is_detected_v&lt; abelian_present, T &gt; &gt; &gt;</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">std::integral_constant&lt; bool, T::is_Abelian &gt;</basecompoundref>
+    <templateparamlist>
+      <param>
+        <type>class T</type>
+      </param>
+    </templateparamlist>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>std::integral_constant&lt; bool, T::is_Abelian &gt;</label>
+      </node>
+      <node id="1">
+        <label>quantit::conserved::is_Abelian&lt; T, std::enable_if_t&lt; is_detected_v&lt; abelian_present, T &gt; &gt; &gt;</label>
+        <link refid="structquantit_1_1conserved_1_1is__Abelian_3_01T_00_01std_1_1enable__if__t_3_01is__detected__v_3_fa9b4f4cc9babaf4e2b0df0ea289c6d3"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>std::integral_constant&lt; bool, T::is_Abelian &gt;</label>
+      </node>
+      <node id="1">
+        <label>quantit::conserved::is_Abelian&lt; T, std::enable_if_t&lt; is_detected_v&lt; abelian_present, T &gt; &gt; &gt;</label>
+        <link refid="structquantit_1_1conserved_1_1is__Abelian_3_01T_00_01std_1_1enable__if__t_3_01is__detected__v_3_fa9b4f4cc9babaf4e2b0df0ea289c6d3"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/home/alex/project/quantt/include/Conserved/quantity_utils.h" line="136" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/quantity_utils.h" bodystart="137" bodyend="138"/>
+    <listofallmembers>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

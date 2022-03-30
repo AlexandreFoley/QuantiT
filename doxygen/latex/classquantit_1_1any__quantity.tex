@@ -1,0 +1,276 @@
+\hypertarget{classquantit_1_1any__quantity}{}\doxysection{quantit\+::any\+\_\+quantity Class Reference}
+\label{classquantit_1_1any__quantity}\index{quantit::any\_quantity@{quantit::any\_quantity}}
+
+
+wrapper for the polymorphic composite groups from vquantity.\+h that provide value semantics We expect that for a given problem, the type of the underlying cgoup\+\_\+impl used will be uniform.  
+
+
+
+
+{\ttfamily \#include $<$cquantity.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classquantit_1_1any__quantity_ae8506bebe0e2fb8419cfbd371148c5a1}\label{classquantit_1_1any__quantity_ae8506bebe0e2fb8419cfbd371148c5a1}} 
+{\bfseries any\+\_\+quantity} (const \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \&other)
+\item 
+\mbox{\Hypertarget{classquantit_1_1any__quantity_a1863cfdbac4bb1ae90a6ad97ddf8215b}\label{classquantit_1_1any__quantity_a1863cfdbac4bb1ae90a6ad97ddf8215b}} 
+{\bfseries any\+\_\+quantity} (std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} $>$ \&\&\+\_\+impl)
+\item 
+{\footnotesize template$<$class... Groups, class  = std\+::enable\+\_\+if\+\_\+t$<$                !std\+::disjunction\+\_\+v$<$std\+::is\+\_\+same$<$\+Groups, any\+\_\+quantity\+\_\+cref$>$...,                                    std\+::is\+\_\+same$<$\+Groups, any\+\_\+quantity\+\_\+ref$>$...,                                     std\+::is\+\_\+same$<$\+Groups, any\+\_\+quantity$>$...$>$                     and conserved\+::all\+\_\+group\+\_\+v$<$\+Groups...$>$$>$$>$ }\\\mbox{\hyperlink{classquantit_1_1any__quantity_a0d55a33316ff6b8caf4ed91fcaa98496}{any\+\_\+quantity}} (Groups... grps)
+\begin{DoxyCompactList}\small\item\em Construct a new \mbox{\hyperlink{classquantit_1_1any__quantity}{any\+\_\+quantity}} object. It compose the group element it receive. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classquantit_1_1any__quantity_a00bc0f329e8f9bb6c20a4736bd214400}\label{classquantit_1_1any__quantity_a00bc0f329e8f9bb6c20a4736bd214400}} 
+\mbox{\hyperlink{classquantit_1_1any__quantity_a00bc0f329e8f9bb6c20a4736bd214400}{any\+\_\+quantity}} ()
+\begin{DoxyCompactList}\small\item\em Construct a new \mbox{\hyperlink{classquantit_1_1any__quantity}{any\+\_\+quantity}} object, initialized with a representation of the trivial group. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classquantit_1_1any__quantity_a767df070bdc539bc0849f1bf2501af3a}\label{classquantit_1_1any__quantity_a767df070bdc539bc0849f1bf2501af3a}} 
+{\bfseries any\+\_\+quantity} (const \mbox{\hyperlink{classquantit_1_1any__quantity}{any\+\_\+quantity}} \&other)
+\item 
+\mbox{\Hypertarget{classquantit_1_1any__quantity_a1d6a84eead603a1dba8f89d55a374da8}\label{classquantit_1_1any__quantity_a1d6a84eead603a1dba8f89d55a374da8}} 
+{\bfseries any\+\_\+quantity} (\mbox{\hyperlink{classquantit_1_1any__quantity}{any\+\_\+quantity}} \&\&)=default
+\item 
+\mbox{\Hypertarget{classquantit_1_1any__quantity_a41e86ea3afdd514bd530f293940100ee}\label{classquantit_1_1any__quantity_a41e86ea3afdd514bd530f293940100ee}} 
+\mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \& {\bfseries get} ()
+\item 
+\mbox{\Hypertarget{classquantit_1_1any__quantity_a7bd0acf869c5f45532d1a683f696541b}\label{classquantit_1_1any__quantity_a7bd0acf869c5f45532d1a683f696541b}} 
+const \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \& {\bfseries get} () const
+\item 
+void \mbox{\hyperlink{classquantit_1_1any__quantity_ad0d315c7b2da8a1328e2b902835f22d4}{swap}} (\mbox{\hyperlink{classquantit_1_1any__quantity}{any\+\_\+quantity}} \&other) noexcept
+\begin{DoxyCompactList}\small\item\em swap function with reference to \mbox{\hyperlink{classquantit_1_1any__quantity}{any\+\_\+quantity}}. Always work. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classquantit_1_1any__quantity_a90757051196169d5e2d10787de6ed9f6}\label{classquantit_1_1any__quantity_a90757051196169d5e2d10787de6ed9f6}} 
+void {\bfseries swap} (\mbox{\hyperlink{classquantit_1_1vquantity}{any\+\_\+quantity\+\_\+ref}} other)
+\item 
+\mbox{\hyperlink{classquantit_1_1any__quantity}{any\+\_\+quantity}} \mbox{\hyperlink{classquantit_1_1any__quantity_aa8c093a2b1d5c34d94f3ab592ff7e13d}{neutral}} () const
+\begin{DoxyCompactList}\small\item\em generate the neutral element of the underlying gorup. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classquantit_1_1vquantity}{any\+\_\+quantity\+\_\+ref}} \mbox{\hyperlink{classquantit_1_1any__quantity_a6b6c29d553dcf03438472ddc7b5a95b1}{operator=}} (\mbox{\hyperlink{classquantit_1_1vquantity}{any\+\_\+quantity\+\_\+cref}} other)
+\begin{DoxyCompactList}\small\item\em assigment operators, copy the value into this. These assigment operator can change the underlying type of $\ast$this. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classquantit_1_1any__quantity_a1c328cdd7adb6fb98dcf9055498a8f7f}\label{classquantit_1_1any__quantity_a1c328cdd7adb6fb98dcf9055498a8f7f}} 
+\mbox{\hyperlink{classquantit_1_1vquantity}{any\+\_\+quantity\+\_\+ref}} {\bfseries operator=} (\mbox{\hyperlink{classquantit_1_1vquantity}{any\+\_\+quantity\+\_\+ref}} other)
+\item 
+\mbox{\Hypertarget{classquantit_1_1any__quantity_ae77d58e9bfa7a7647d66926e16c8904f}\label{classquantit_1_1any__quantity_ae77d58e9bfa7a7647d66926e16c8904f}} 
+\mbox{\hyperlink{classquantit_1_1vquantity}{any\+\_\+quantity\+\_\+ref}} {\bfseries operator=} (const \mbox{\hyperlink{classquantit_1_1any__quantity}{any\+\_\+quantity}} \&other)
+\item 
+\mbox{\Hypertarget{classquantit_1_1any__quantity_a09b8d708df66713eea0cb6906d7659e3}\label{classquantit_1_1any__quantity_a09b8d708df66713eea0cb6906d7659e3}} 
+\mbox{\hyperlink{classquantit_1_1vquantity}{any\+\_\+quantity\+\_\+ref}} {\bfseries operator=} (\mbox{\hyperlink{classquantit_1_1any__quantity}{any\+\_\+quantity}} \&\&other)
+\item 
+\mbox{\hyperlink{classquantit_1_1any__quantity_ae056980308dca3d6fda141061ce1e29e}{operator any\+\_\+quantity\+\_\+cref}} () const
+\begin{DoxyCompactList}\small\item\em implicit conversion to the reference to const type \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classquantit_1_1any__quantity_a890408ca918ea9cb0de2e36b5323d282}{operator any\+\_\+quantity\+\_\+ref}} ()
+\begin{DoxyCompactList}\small\item\em implicit conversion to the reference type \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classquantit_1_1vquantity}{any\+\_\+quantity\+\_\+ref}} \mbox{\hyperlink{classquantit_1_1any__quantity_a9c54f38103926637b9d7717c4ccd3398}{operator$\ast$=}} (\mbox{\hyperlink{classquantit_1_1vquantity}{any\+\_\+quantity\+\_\+cref}} other)
+\begin{DoxyCompactList}\small\item\em In place group operation. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classquantit_1_1any__quantity_a83fb9cad11b7f0f589c698301093b3bf}\label{classquantit_1_1any__quantity_a83fb9cad11b7f0f589c698301093b3bf}} 
+\mbox{\hyperlink{classquantit_1_1vquantity}{any\+\_\+quantity\+\_\+ref}} {\bfseries operator+=} (\mbox{\hyperlink{classquantit_1_1vquantity}{any\+\_\+quantity\+\_\+cref}} other)
+\item 
+\mbox{\Hypertarget{classquantit_1_1any__quantity_a154e128e37a2c5385d7d3293b8b5971b}\label{classquantit_1_1any__quantity_a154e128e37a2c5385d7d3293b8b5971b}} 
+\mbox{\hyperlink{classquantit_1_1vquantity}{any\+\_\+quantity\+\_\+ref}} {\bfseries op} (\mbox{\hyperlink{classquantit_1_1vquantity}{any\+\_\+quantity\+\_\+cref}} other, bool cond)
+\item 
+\mbox{\hyperlink{classquantit_1_1vquantity}{any\+\_\+quantity\+\_\+ref}} \mbox{\hyperlink{classquantit_1_1any__quantity_a547346ca6b62b9c7ef8da68c5f5d2f2b}{inverse\+\_\+}} ()
+\begin{DoxyCompactList}\small\item\em in place inverse \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classquantit_1_1any__quantity}{any\+\_\+quantity}} \mbox{\hyperlink{classquantit_1_1any__quantity_acc3573b702443d7407650cd46ff4befe}{inverse}} () const \&
+\begin{DoxyCompactList}\small\item\em return a new \mbox{\hyperlink{classquantit_1_1any__quantity}{any\+\_\+quantity}} object that is the inverse of this. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classquantit_1_1any__quantity_abd368f8d264f9a9650ed1f4ea5aabc29}\label{classquantit_1_1any__quantity_abd368f8d264f9a9650ed1f4ea5aabc29}} 
+\mbox{\hyperlink{classquantit_1_1any__quantity}{any\+\_\+quantity}} {\bfseries inverse} () \&\&
+\end{DoxyCompactItemize}
+\doxysubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classquantit_1_1any__quantity}{any\+\_\+quantity}} \mbox{\hyperlink{classquantit_1_1any__quantity_a27770f0b29b8f58e0d4d39c74d93c3fd}{operator$\ast$}} (\mbox{\hyperlink{classquantit_1_1vquantity}{any\+\_\+quantity\+\_\+cref}} lhs, \mbox{\hyperlink{classquantit_1_1vquantity}{any\+\_\+quantity\+\_\+cref}} rhs)
+\begin{DoxyCompactList}\small\item\em out of place group operation, on two composite group element of the same type \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classquantit_1_1any__quantity_a5015430246a1f5c6b0ce20156dbe84f3}\label{classquantit_1_1any__quantity_a5015430246a1f5c6b0ce20156dbe84f3}} 
+\mbox{\hyperlink{classquantit_1_1any__quantity}{any\+\_\+quantity}} {\bfseries operator+} (\mbox{\hyperlink{classquantit_1_1vquantity}{any\+\_\+quantity\+\_\+cref}} lhs, \mbox{\hyperlink{classquantit_1_1vquantity}{any\+\_\+quantity\+\_\+cref}} rhs)
+\item 
+\mbox{\Hypertarget{classquantit_1_1any__quantity_a15b3013775efa0739e9990a02819f7b8}\label{classquantit_1_1any__quantity_a15b3013775efa0739e9990a02819f7b8}} 
+\mbox{\hyperlink{classquantit_1_1any__quantity}{any\+\_\+quantity}} {\bfseries operator$\ast$} (\mbox{\hyperlink{classquantit_1_1vquantity}{any\+\_\+quantity\+\_\+cref}} lhs, \mbox{\hyperlink{classquantit_1_1any__quantity}{any\+\_\+quantity}} \&\&rhs)
+\item 
+\mbox{\Hypertarget{classquantit_1_1any__quantity_a67a57b391b23657b1e60e29c9331b753}\label{classquantit_1_1any__quantity_a67a57b391b23657b1e60e29c9331b753}} 
+\mbox{\hyperlink{classquantit_1_1any__quantity}{any\+\_\+quantity}} {\bfseries operator+} (\mbox{\hyperlink{classquantit_1_1vquantity}{any\+\_\+quantity\+\_\+cref}} lhs, \mbox{\hyperlink{classquantit_1_1any__quantity}{any\+\_\+quantity}} \&\&rhs)
+\item 
+\mbox{\Hypertarget{classquantit_1_1any__quantity_a061732166ad36e4c1cb93e9ff98b1ac2}\label{classquantit_1_1any__quantity_a061732166ad36e4c1cb93e9ff98b1ac2}} 
+\mbox{\hyperlink{classquantit_1_1any__quantity}{any\+\_\+quantity}} {\bfseries operator$\ast$} (\mbox{\hyperlink{classquantit_1_1any__quantity}{any\+\_\+quantity}} \&\&lhs, \mbox{\hyperlink{classquantit_1_1vquantity}{any\+\_\+quantity\+\_\+cref}} rhs)
+\item 
+\mbox{\Hypertarget{classquantit_1_1any__quantity_a4fa66fb0e94a92fa2047fae70a86eecc}\label{classquantit_1_1any__quantity_a4fa66fb0e94a92fa2047fae70a86eecc}} 
+\mbox{\hyperlink{classquantit_1_1any__quantity}{any\+\_\+quantity}} {\bfseries operator+} (\mbox{\hyperlink{classquantit_1_1any__quantity}{any\+\_\+quantity}} \&\&lhs, \mbox{\hyperlink{classquantit_1_1vquantity}{any\+\_\+quantity\+\_\+cref}} rhs)
+\item 
+\mbox{\Hypertarget{classquantit_1_1any__quantity_ad777e0adb4130624f6ef2a113a652b3f}\label{classquantit_1_1any__quantity_ad777e0adb4130624f6ef2a113a652b3f}} 
+\mbox{\hyperlink{classquantit_1_1any__quantity}{any\+\_\+quantity}} {\bfseries operator$\ast$} (\mbox{\hyperlink{classquantit_1_1any__quantity}{any\+\_\+quantity}} \&\&lhs, \mbox{\hyperlink{classquantit_1_1any__quantity}{any\+\_\+quantity}} \&\&rhs)
+\item 
+\mbox{\Hypertarget{classquantit_1_1any__quantity_ae3b279db007fb2ff4013bdfed186a95d}\label{classquantit_1_1any__quantity_ae3b279db007fb2ff4013bdfed186a95d}} 
+\mbox{\hyperlink{classquantit_1_1any__quantity}{any\+\_\+quantity}} {\bfseries operator+} (\mbox{\hyperlink{classquantit_1_1any__quantity}{any\+\_\+quantity}} \&\&lhs, \mbox{\hyperlink{classquantit_1_1any__quantity}{any\+\_\+quantity}} \&\&rhs)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+wrapper for the polymorphic composite groups from vquantity.\+h that provide value semantics We expect that for a given problem, the type of the underlying cgoup\+\_\+impl used will be uniform. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classquantit_1_1any__quantity_a0d55a33316ff6b8caf4ed91fcaa98496}\label{classquantit_1_1any__quantity_a0d55a33316ff6b8caf4ed91fcaa98496}} 
+\index{quantit::any\_quantity@{quantit::any\_quantity}!any\_quantity@{any\_quantity}}
+\index{any\_quantity@{any\_quantity}!quantit::any\_quantity@{quantit::any\_quantity}}
+\doxysubsubsection{\texorpdfstring{any\_quantity()}{any\_quantity()}}
+{\footnotesize\ttfamily template$<$class... Groups, class  = std\+::enable\+\_\+if\+\_\+t$<$                !std\+::disjunction\+\_\+v$<$std\+::is\+\_\+same$<$\+Groups, any\+\_\+quantity\+\_\+cref$>$...,                                    std\+::is\+\_\+same$<$\+Groups, any\+\_\+quantity\+\_\+ref$>$...,                                     std\+::is\+\_\+same$<$\+Groups, any\+\_\+quantity$>$...$>$                     and conserved\+::all\+\_\+group\+\_\+v$<$\+Groups...$>$$>$$>$ \\
+quantit\+::any\+\_\+quantity\+::any\+\_\+quantity (\begin{DoxyParamCaption}\item[{Groups...}]{grps }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Construct a new \mbox{\hyperlink{classquantit_1_1any__quantity}{any\+\_\+quantity}} object. It compose the group element it receive. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em Groups} & types of the different group we\textquotesingle{}re composing \\
+\hline
+{\em std\+::enable\+\_\+if\+\_\+t$<$groups\+::all\+\_\+group\+\_\+v$<$\+Groups...$>$$>$} & verify that the arguements all satisfy the required group interface. \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em grps} & values used to initialized the group \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classquantit_1_1any__quantity_acc3573b702443d7407650cd46ff4befe}\label{classquantit_1_1any__quantity_acc3573b702443d7407650cd46ff4befe}} 
+\index{quantit::any\_quantity@{quantit::any\_quantity}!inverse@{inverse}}
+\index{inverse@{inverse}!quantit::any\_quantity@{quantit::any\_quantity}}
+\doxysubsubsection{\texorpdfstring{inverse()}{inverse()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classquantit_1_1any__quantity}{any\+\_\+quantity}} quantit\+::any\+\_\+quantity\+::inverse (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const \&\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+return a new \mbox{\hyperlink{classquantit_1_1any__quantity}{any\+\_\+quantity}} object that is the inverse of this. 
+
+\begin{DoxyReturn}{Returns}
+\mbox{\hyperlink{classquantit_1_1any__quantity}{any\+\_\+quantity}} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classquantit_1_1any__quantity_a547346ca6b62b9c7ef8da68c5f5d2f2b}\label{classquantit_1_1any__quantity_a547346ca6b62b9c7ef8da68c5f5d2f2b}} 
+\index{quantit::any\_quantity@{quantit::any\_quantity}!inverse\_@{inverse\_}}
+\index{inverse\_@{inverse\_}!quantit::any\_quantity@{quantit::any\_quantity}}
+\doxysubsubsection{\texorpdfstring{inverse\_()}{inverse\_()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classquantit_1_1vquantity}{any\+\_\+quantity\+\_\+ref}} quantit\+::any\+\_\+quantity\+::inverse\+\_\+ (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+in place inverse 
+
+\begin{DoxyReturn}{Returns}
+\mbox{\hyperlink{classquantit_1_1any__quantity}{any\+\_\+quantity}}\& 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classquantit_1_1any__quantity_aa8c093a2b1d5c34d94f3ab592ff7e13d}\label{classquantit_1_1any__quantity_aa8c093a2b1d5c34d94f3ab592ff7e13d}} 
+\index{quantit::any\_quantity@{quantit::any\_quantity}!neutral@{neutral}}
+\index{neutral@{neutral}!quantit::any\_quantity@{quantit::any\_quantity}}
+\doxysubsubsection{\texorpdfstring{neutral()}{neutral()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classquantit_1_1any__quantity}{any\+\_\+quantity}} quantit\+::any\+\_\+quantity\+::neutral (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+generate the neutral element of the underlying gorup. 
+
+\begin{DoxyReturn}{Returns}
+\mbox{\hyperlink{classquantit_1_1any__quantity}{any\+\_\+quantity}} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classquantit_1_1any__quantity_ae056980308dca3d6fda141061ce1e29e}\label{classquantit_1_1any__quantity_ae056980308dca3d6fda141061ce1e29e}} 
+\index{quantit::any\_quantity@{quantit::any\_quantity}!operator any\_quantity\_cref@{operator any\_quantity\_cref}}
+\index{operator any\_quantity\_cref@{operator any\_quantity\_cref}!quantit::any\_quantity@{quantit::any\_quantity}}
+\doxysubsubsection{\texorpdfstring{operator any\_quantity\_cref()}{operator any\_quantity\_cref()}}
+{\footnotesize\ttfamily quantit\+::any\+\_\+quantity\+::operator \mbox{\hyperlink{classquantit_1_1vquantity}{any\+\_\+quantity\+\_\+cref}} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+implicit conversion to the reference to const type 
+
+\begin{DoxyReturn}{Returns}
+any\+\_\+quantity\+\_\+cref\+: a reference to this constant object 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classquantit_1_1any__quantity_a890408ca918ea9cb0de2e36b5323d282}\label{classquantit_1_1any__quantity_a890408ca918ea9cb0de2e36b5323d282}} 
+\index{quantit::any\_quantity@{quantit::any\_quantity}!operator any\_quantity\_ref@{operator any\_quantity\_ref}}
+\index{operator any\_quantity\_ref@{operator any\_quantity\_ref}!quantit::any\_quantity@{quantit::any\_quantity}}
+\doxysubsubsection{\texorpdfstring{operator any\_quantity\_ref()}{operator any\_quantity\_ref()}}
+{\footnotesize\ttfamily quantit\+::any\+\_\+quantity\+::operator \mbox{\hyperlink{classquantit_1_1vquantity}{any\+\_\+quantity\+\_\+ref}} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+implicit conversion to the reference type 
+
+\begin{DoxyReturn}{Returns}
+any\+\_\+quantity\+\_\+ref \+: a reference to this object 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classquantit_1_1any__quantity_a9c54f38103926637b9d7717c4ccd3398}\label{classquantit_1_1any__quantity_a9c54f38103926637b9d7717c4ccd3398}} 
+\index{quantit::any\_quantity@{quantit::any\_quantity}!operator$\ast$=@{operator$\ast$=}}
+\index{operator$\ast$=@{operator$\ast$=}!quantit::any\_quantity@{quantit::any\_quantity}}
+\doxysubsubsection{\texorpdfstring{operator$\ast$=()}{operator*=()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classquantit_1_1vquantity}{any\+\_\+quantity\+\_\+ref}} quantit\+::any\+\_\+quantity\+::operator$\ast$= (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classquantit_1_1vquantity}{any\+\_\+quantity\+\_\+cref}}}]{other }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+In place group operation. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em other} & \+: constant reference to another composite group of the same type. work with \mbox{\hyperlink{classquantit_1_1any__quantity}{any\+\_\+quantity}}, any\+\_\+quantity\+\_\+ref and any\+\_\+quantity\+\_\+cref for input. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\mbox{\hyperlink{classquantit_1_1any__quantity}{any\+\_\+quantity}}\& reference to $\ast$this 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classquantit_1_1any__quantity_a6b6c29d553dcf03438472ddc7b5a95b1}\label{classquantit_1_1any__quantity_a6b6c29d553dcf03438472ddc7b5a95b1}} 
+\index{quantit::any\_quantity@{quantit::any\_quantity}!operator=@{operator=}}
+\index{operator=@{operator=}!quantit::any\_quantity@{quantit::any\_quantity}}
+\doxysubsubsection{\texorpdfstring{operator=()}{operator=()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classquantit_1_1vquantity}{any\+\_\+quantity\+\_\+ref}} quantit\+::any\+\_\+quantity\+::operator= (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classquantit_1_1vquantity}{any\+\_\+quantity\+\_\+cref}}}]{other }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+assigment operators, copy the value into this. These assigment operator can change the underlying type of $\ast$this. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em other} & a \mbox{\hyperlink{classquantit_1_1any__quantity}{any\+\_\+quantity}}, any\+\_\+quantity\+\_\+ref or any\+\_\+quantity\+\_\+cref \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\mbox{\hyperlink{classquantit_1_1any__quantity}{any\+\_\+quantity}}\& \+:reference to $\ast$this 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classquantit_1_1any__quantity_ad0d315c7b2da8a1328e2b902835f22d4}\label{classquantit_1_1any__quantity_ad0d315c7b2da8a1328e2b902835f22d4}} 
+\index{quantit::any\_quantity@{quantit::any\_quantity}!swap@{swap}}
+\index{swap@{swap}!quantit::any\_quantity@{quantit::any\_quantity}}
+\doxysubsubsection{\texorpdfstring{swap()}{swap()}}
+{\footnotesize\ttfamily void quantit\+::any\+\_\+quantity\+::swap (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classquantit_1_1any__quantity}{any\+\_\+quantity}} \&}]{other }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+
+
+swap function with reference to \mbox{\hyperlink{classquantit_1_1any__quantity}{any\+\_\+quantity}}. Always work. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em other} & \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Friends And Related Function Documentation}
+\mbox{\Hypertarget{classquantit_1_1any__quantity_a27770f0b29b8f58e0d4d39c74d93c3fd}\label{classquantit_1_1any__quantity_a27770f0b29b8f58e0d4d39c74d93c3fd}} 
+\index{quantit::any\_quantity@{quantit::any\_quantity}!operator$\ast$@{operator$\ast$}}
+\index{operator$\ast$@{operator$\ast$}!quantit::any\_quantity@{quantit::any\_quantity}}
+\doxysubsubsection{\texorpdfstring{operator$\ast$}{operator*}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classquantit_1_1any__quantity}{any\+\_\+quantity}} operator$\ast$ (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classquantit_1_1vquantity}{any\+\_\+quantity\+\_\+cref}}}]{lhs,  }\item[{\mbox{\hyperlink{classquantit_1_1vquantity}{any\+\_\+quantity\+\_\+cref}}}]{rhs }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+out of place group operation, on two composite group element of the same type 
+
+
+\begin{DoxyParams}{Parameters}
+{\em lhs} & can be a \mbox{\hyperlink{classquantit_1_1any__quantity}{any\+\_\+quantity}},any\+\_\+quantity\+\_\+ref or any\+\_\+quantity\+\_\+cref \\
+\hline
+{\em rhs} & can be a \mbox{\hyperlink{classquantit_1_1any__quantity}{any\+\_\+quantity}},any\+\_\+quantity\+\_\+ref or any\+\_\+quantity\+\_\+cref \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\mbox{\hyperlink{classquantit_1_1any__quantity}{any\+\_\+quantity}} a new \mbox{\hyperlink{classquantit_1_1any__quantity}{any\+\_\+quantity}} object. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/alex/project/quantt/include/\+Conserved/\+Composite/cquantity.\+h\end{DoxyCompactItemize}

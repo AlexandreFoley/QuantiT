@@ -1,0 +1,128 @@
+\hypertarget{namespacequantit_1_1conserved}{}\doxysection{quantit\+::conserved Namespace Reference}
+\label{namespacequantit_1_1conserved}\index{quantit::conserved@{quantit::conserved}}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classquantit_1_1conserved_1_1C}{C}}
+\begin{DoxyCompactList}\small\item\em C\+\_\+N, the cyclic group with N elements. The conserved quantities associated with discrete rotationnal symmetry are element of this familly of groups. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classquantit_1_1conserved_1_1Z}{Z}}
+\item 
+struct \mbox{\hyperlink{structquantit_1_1conserved_1_1constexprequal__membertest}{constexprequal\+\_\+membertest}}
+\item 
+struct \mbox{\hyperlink{structquantit_1_1conserved_1_1constexprequal__membertest_3_01subject_00_01std_1_1enable__if__t_3ef0d61a01dcb0d0d7c1e449e122da3dc}{constexprequal\+\_\+membertest$<$ subject, std\+::enable\+\_\+if\+\_\+t$<$ is\+\_\+detected\+\_\+v$<$ comparatorequal\+\_\+member\+\_\+sig, subject $>$ $>$ $>$}}
+\item 
+struct \mbox{\hyperlink{structquantit_1_1conserved_1_1constexprequal__test}{constexprequal\+\_\+test}}
+\item 
+struct \mbox{\hyperlink{structquantit_1_1conserved_1_1constexprequal__test_3_01subject_00_01std_1_1enable__if__t_3_01is_e132d3cd872a172980fdb6e254265e40}{constexprequal\+\_\+test$<$ subject, std\+::enable\+\_\+if\+\_\+t$<$ is\+\_\+detected\+\_\+v$<$ comparatorequal\+\_\+sig, subject $>$ $>$ $>$}}
+\item 
+struct \mbox{\hyperlink{structquantit_1_1conserved_1_1constexprequal__test_3_01quantit_1_1vquantity_01_4}{constexprequal\+\_\+test$<$ quantit\+::vquantity $>$}}
+\item 
+struct \mbox{\hyperlink{structquantit_1_1conserved_1_1default__to__neutral}{default\+\_\+to\+\_\+neutral}}
+\item 
+struct \mbox{\hyperlink{structquantit_1_1conserved_1_1default__to__neutral_3_01T_00_01std_1_1enable__if__t_3_01has__op_355861d3f89e640fd17366de3746df00a}{default\+\_\+to\+\_\+neutral$<$ T, std\+::enable\+\_\+if\+\_\+t$<$ has\+\_\+op$<$ T $>$\+::value \&\&std\+::is\+\_\+default\+\_\+constructible\+\_\+v$<$ T $>$ \&\&has\+\_\+inverse\+\_\+$<$ T $>$\+::value \&\&has\+\_\+constexpr\+\_\+equal$<$ T $>$\+::value $>$ $>$}}
+\item 
+struct \mbox{\hyperlink{structquantit_1_1conserved_1_1is__Abelian}{is\+\_\+\+Abelian}}
+\item 
+struct \mbox{\hyperlink{structquantit_1_1conserved_1_1is__Abelian_3_01T_00_01std_1_1enable__if__t_3_01is__detected__v_3_fa9b4f4cc9babaf4e2b0df0ea289c6d3}{is\+\_\+\+Abelian$<$ T, std\+::enable\+\_\+if\+\_\+t$<$ is\+\_\+detected\+\_\+v$<$ abelian\+\_\+present, T $>$ $>$ $>$}}
+\item 
+struct \mbox{\hyperlink{structquantit_1_1conserved_1_1is__conserved__QuantiT}{is\+\_\+conserved\+\_\+\+QuantiT}}
+\item 
+struct \mbox{\hyperlink{structquantit_1_1conserved_1_1is__conserved__QuantiT_3_01quantit_1_1flat__map_3_01Args_8_8_8_01_4_01_4}{is\+\_\+conserved\+\_\+\+Quanti\+T$<$ quantit\+::flat\+\_\+map$<$ Args... $>$ $>$}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{namespacequantit_1_1conserved_a0e3da50d8ef9a37bb6a34307dc619912}\label{namespacequantit_1_1conserved_a0e3da50d8ef9a37bb6a34307dc619912}} 
+{\footnotesize template$<$class T $>$ }\\using {\bfseries op2\+\_\+sig} = decltype(conserved\+::op(std\+::declval$<$ const T \& $>$(), std\+::declval$<$ const T \& $>$()))
+\item 
+\mbox{\Hypertarget{namespacequantit_1_1conserved_aba7df796153d8b784c693bd656adc3e2}\label{namespacequantit_1_1conserved_aba7df796153d8b784c693bd656adc3e2}} 
+{\footnotesize template$<$class T $>$ }\\using {\bfseries op\+\_\+sig} = decltype(std\+::declval$<$ T \& $>$().op(std\+::declval$<$ T \& $>$()))
+\item 
+\mbox{\Hypertarget{namespacequantit_1_1conserved_ab14617fa0dd8fc9e46c20377b22aa886}\label{namespacequantit_1_1conserved_ab14617fa0dd8fc9e46c20377b22aa886}} 
+{\footnotesize template$<$class T $>$ }\\using {\bfseries has\+\_\+op} = \mbox{\hyperlink{structquantit_1_1and__}{and\+\_\+}}$<$ is\+\_\+detected\+\_\+exact$<$ T \&, op\+\_\+sig, T $>$, is\+\_\+detected\+\_\+exact$<$ T, op2\+\_\+sig, T $>$ $>$
+\item 
+\mbox{\Hypertarget{namespacequantit_1_1conserved_ae3e11fd92261f074373fbc1295c29675}\label{namespacequantit_1_1conserved_ae3e11fd92261f074373fbc1295c29675}} 
+{\footnotesize template$<$class T $>$ }\\using {\bfseries inverse\+\_\+\+\_\+sig} = decltype(std\+::declval$<$ T \& $>$().inverse\+\_\+())
+\item 
+\mbox{\Hypertarget{namespacequantit_1_1conserved_a59b42d4c39770c076fe17903404ecf60}\label{namespacequantit_1_1conserved_a59b42d4c39770c076fe17903404ecf60}} 
+{\footnotesize template$<$class T $>$ }\\using {\bfseries has\+\_\+inverse\+\_\+} = is\+\_\+detected\+\_\+exact$<$ T \&, inverse\+\_\+\+\_\+sig, T $>$
+\item 
+\mbox{\Hypertarget{namespacequantit_1_1conserved_acc035f563b769b4e5b1bc4b158fb3f32}\label{namespacequantit_1_1conserved_acc035f563b769b4e5b1bc4b158fb3f32}} 
+{\footnotesize template$<$class T $>$ }\\using {\bfseries commute\+\_\+\+\_\+sig} = decltype(std\+::declval$<$ T \& $>$().commute\+\_\+(std\+::declval$<$ T \& $>$()))
+\item 
+\mbox{\Hypertarget{namespacequantit_1_1conserved_abee11043922299431298e56cb171e092}\label{namespacequantit_1_1conserved_abee11043922299431298e56cb171e092}} 
+{\footnotesize template$<$class T $>$ }\\using {\bfseries has\+\_\+commute\+\_\+} = is\+\_\+detected\+\_\+exact$<$ void, commute\+\_\+\+\_\+sig, T $>$
+\item 
+\mbox{\Hypertarget{namespacequantit_1_1conserved_a2041a5bb8e85fdc26e638ccfa4554a50}\label{namespacequantit_1_1conserved_a2041a5bb8e85fdc26e638ccfa4554a50}} 
+{\footnotesize template$<$class T $>$ }\\using {\bfseries commute\+\_\+sig} = decltype(std\+::declval$<$ const T \& $>$().commute(std\+::declval$<$ T \& $>$()))
+\item 
+\mbox{\Hypertarget{namespacequantit_1_1conserved_a20e2ce120f1e701b7c8f86733078ed02}\label{namespacequantit_1_1conserved_a20e2ce120f1e701b7c8f86733078ed02}} 
+{\footnotesize template$<$class T $>$ }\\using {\bfseries comparatorequal\+\_\+sig} = decltype(operator==(std\+::declval$<$ const T \& $>$(), std\+::declval$<$ const T \& $>$()))
+\item 
+\mbox{\Hypertarget{namespacequantit_1_1conserved_a1ccf2884f449c74d68dc65a4e7d53d1f}\label{namespacequantit_1_1conserved_a1ccf2884f449c74d68dc65a4e7d53d1f}} 
+{\footnotesize template$<$class T $>$ }\\using {\bfseries comparatorequal\+\_\+member\+\_\+sig} = decltype(std\+::declval$<$ const T \& $>$().operator==(std\+::declval$<$ const T \& $>$()))
+\item 
+\mbox{\Hypertarget{namespacequantit_1_1conserved_a9ff1a8113ba97863fcc4c9dbd44a6a55}\label{namespacequantit_1_1conserved_a9ff1a8113ba97863fcc4c9dbd44a6a55}} 
+{\footnotesize template$<$class T $>$ }\\using {\bfseries has\+\_\+constexpr\+\_\+equal\+\_\+member} = std\+::bool\+\_\+constant$<$ \mbox{\hyperlink{structquantit_1_1conserved_1_1constexprequal__membertest}{constexprequal\+\_\+membertest}}$<$ T $>$\+::call()$>$
+\item 
+\mbox{\Hypertarget{namespacequantit_1_1conserved_ada82c9a3d0d95b857b5a2d15ac8166bc}\label{namespacequantit_1_1conserved_ada82c9a3d0d95b857b5a2d15ac8166bc}} 
+{\footnotesize template$<$class T $>$ }\\using {\bfseries has\+\_\+constexpr\+\_\+equal\+\_\+outclass} = std\+::bool\+\_\+constant$<$ \mbox{\hyperlink{structquantit_1_1conserved_1_1constexprequal__test}{constexprequal\+\_\+test}}$<$ T $>$\+::call()$>$
+\item 
+\mbox{\Hypertarget{namespacequantit_1_1conserved_a1c00a5bb4fb5d288fe8aed67eda4a739}\label{namespacequantit_1_1conserved_a1c00a5bb4fb5d288fe8aed67eda4a739}} 
+{\footnotesize template$<$class T $>$ }\\using {\bfseries has\+\_\+constexpr\+\_\+equal} = \mbox{\hyperlink{structquantit_1_1or__}{or\+\_\+}}$<$ has\+\_\+constexpr\+\_\+equal\+\_\+member$<$ T $>$, has\+\_\+constexpr\+\_\+equal\+\_\+outclass$<$ T $>$ $>$
+\item 
+\mbox{\Hypertarget{namespacequantit_1_1conserved_aa05c75acba0b20f825cd30186ae09f6c}\label{namespacequantit_1_1conserved_aa05c75acba0b20f825cd30186ae09f6c}} 
+{\footnotesize template$<$class T $>$ }\\using {\bfseries has\+\_\+comparatorequal} = \mbox{\hyperlink{structquantit_1_1or__}{or\+\_\+}}$<$ is\+\_\+detected\+\_\+exact$<$ bool, comparatorequal\+\_\+member\+\_\+sig, T $>$, is\+\_\+detected\+\_\+exact$<$ bool, comparatorequal\+\_\+sig, T $>$ $>$
+\item 
+\mbox{\Hypertarget{namespacequantit_1_1conserved_add74f6e961aeff86410e1e44ef9617cd}\label{namespacequantit_1_1conserved_add74f6e961aeff86410e1e44ef9617cd}} 
+{\footnotesize template$<$class T $>$ }\\using {\bfseries comparatornotequal\+\_\+member\+\_\+sig} = decltype(std\+::declval$<$ const T \& $>$().operator!=(std\+::declval$<$ const T \& $>$()))
+\item 
+\mbox{\Hypertarget{namespacequantit_1_1conserved_a8c282dfa5a8a50936c8578374e7d2d57}\label{namespacequantit_1_1conserved_a8c282dfa5a8a50936c8578374e7d2d57}} 
+{\footnotesize template$<$class T $>$ }\\using {\bfseries comparatornotequal\+\_\+sig} = decltype(operator!=(std\+::declval$<$ const T \& $>$(), std\+::declval$<$ const T \& $>$()))
+\item 
+\mbox{\Hypertarget{namespacequantit_1_1conserved_af70619420a3354c5f759832de377e83c}\label{namespacequantit_1_1conserved_af70619420a3354c5f759832de377e83c}} 
+{\footnotesize template$<$class T $>$ }\\using {\bfseries has\+\_\+comparatornotequal} = \mbox{\hyperlink{structquantit_1_1or__}{or\+\_\+}}$<$ is\+\_\+detected\+\_\+exact$<$ bool, comparatornotequal\+\_\+member\+\_\+sig, T $>$, is\+\_\+detected\+\_\+exact$<$ bool, comparatornotequal\+\_\+sig, T $>$ $>$
+\item 
+\mbox{\Hypertarget{namespacequantit_1_1conserved_a95000e6a6b4a2eb83f594db2ebb94b7b}\label{namespacequantit_1_1conserved_a95000e6a6b4a2eb83f594db2ebb94b7b}} 
+{\footnotesize template$<$class T $>$ }\\using {\bfseries abelian\+\_\+present} = decltype(T\+::is\+\_\+\+Abelian)
+\item 
+\mbox{\Hypertarget{namespacequantit_1_1conserved_a28fcd84fe217fdc9486b490a726b0de5}\label{namespacequantit_1_1conserved_a28fcd84fe217fdc9486b490a726b0de5}} 
+{\footnotesize template$<$class... T$>$ }\\using {\bfseries all\+\_\+conserved\+\_\+\+QuantiT} = \mbox{\hyperlink{structquantit_1_1and__}{and\+\_\+}}$<$ \mbox{\hyperlink{structquantit_1_1conserved_1_1is__conserved__QuantiT}{is\+\_\+conserved\+\_\+\+QuantiT}}$<$ T $>$... $>$
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{namespacequantit_1_1conserved_aff6c4710e2b04fa0baf8802eaad895a9}\label{namespacequantit_1_1conserved_aff6c4710e2b04fa0baf8802eaad895a9}} 
+{\footnotesize template$<$uint16\+\_\+t N$>$ }\\int64\+\_\+t {\bfseries distance2} (\mbox{\hyperlink{classquantit_1_1conserved_1_1C}{C}}$<$ N $>$ a, \mbox{\hyperlink{classquantit_1_1conserved_1_1C}{C}}$<$ N $>$ b)
+\item 
+\mbox{\Hypertarget{namespacequantit_1_1conserved_ad81067a44304f4564af20a62c3234442}\label{namespacequantit_1_1conserved_ad81067a44304f4564af20a62c3234442}} 
+{\footnotesize template$<$uint16\+\_\+t N$>$ }\\double {\bfseries distance} (\mbox{\hyperlink{classquantit_1_1conserved_1_1C}{C}}$<$ N $>$ a, \mbox{\hyperlink{classquantit_1_1conserved_1_1C}{C}}$<$ N $>$ b)
+\item 
+\mbox{\Hypertarget{namespacequantit_1_1conserved_a295e4df8a9722ebe97228820cd2f7014}\label{namespacequantit_1_1conserved_a295e4df8a9722ebe97228820cd2f7014}} 
+int64\+\_\+t {\bfseries distance2} (\mbox{\hyperlink{classquantit_1_1conserved_1_1Z}{Z}} a, \mbox{\hyperlink{classquantit_1_1conserved_1_1Z}{Z}} b)
+\item 
+\mbox{\Hypertarget{namespacequantit_1_1conserved_ab01d278a86ebf124bc1e0355870f1fad}\label{namespacequantit_1_1conserved_ab01d278a86ebf124bc1e0355870f1fad}} 
+double {\bfseries distance} (\mbox{\hyperlink{classquantit_1_1conserved_1_1Z}{Z}} a, \mbox{\hyperlink{classquantit_1_1conserved_1_1Z}{Z}} b)
+\item 
+\mbox{\Hypertarget{namespacequantit_1_1conserved_a5e9fa82d0954131b904814c3d2bb4554}\label{namespacequantit_1_1conserved_a5e9fa82d0954131b904814c3d2bb4554}} 
+void {\bfseries swap} (\mbox{\hyperlink{classquantit_1_1conserved_1_1Z}{Z}} \&lhs, \mbox{\hyperlink{classquantit_1_1conserved_1_1Z}{Z}} \&rhs) noexcept
+\item 
+\mbox{\Hypertarget{namespacequantit_1_1conserved_a9a22ad7c0635c163b8a4c7e6444cf049}\label{namespacequantit_1_1conserved_a9a22ad7c0635c163b8a4c7e6444cf049}} 
+{\footnotesize template$<$uint16\+\_\+t N$>$ }\\void {\bfseries swap} (\mbox{\hyperlink{classquantit_1_1conserved_1_1C}{C}}$<$ N $>$ \&lhs, \mbox{\hyperlink{classquantit_1_1conserved_1_1C}{C}}$<$ N $>$ \&rhs) noexcept
+\item 
+\mbox{\Hypertarget{namespacequantit_1_1conserved_a8ffce82a2be496c0a1d38267fc7b73f7}\label{namespacequantit_1_1conserved_a8ffce82a2be496c0a1d38267fc7b73f7}} 
+{\footnotesize template$<$class T $>$ }\\constexpr T {\bfseries op} (T lhs, const T \&rhs)
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{namespacequantit_1_1conserved_a3c1cb9cec974b5ad4a88933153815624}\label{namespacequantit_1_1conserved_a3c1cb9cec974b5ad4a88933153815624}} 
+{\footnotesize template$<$class T $>$ }\\constexpr bool {\bfseries is\+\_\+conserved\+\_\+\+Quanti\+T\+\_\+v} = \mbox{\hyperlink{structquantit_1_1conserved_1_1is__conserved__QuantiT}{is\+\_\+conserved\+\_\+\+QuantiT}}$<$T$>$\+::value
+\item 
+\mbox{\Hypertarget{namespacequantit_1_1conserved_a055e71674b0f6f197fb67084116e28b7}\label{namespacequantit_1_1conserved_a055e71674b0f6f197fb67084116e28b7}} 
+{\footnotesize template$<$class... T$>$ }\\constexpr bool {\bfseries all\+\_\+group\+\_\+v} = \mbox{\hyperlink{structquantit_1_1and__}{all\+\_\+conserved\+\_\+\+QuantiT}}$<$T...$>$\+::value
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Groups tend to have {\bfseries{very}} short names in the litterature. I want it to be easy to refer to litterature, so we use those short names. So a namespace will protect us from name clashes. 

@@ -1,0 +1,303 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classproperty" kind="class" language="C++" prot="public" final="yes">
+    <compoundname>property</compoundname>
+    <includes refid="property_8h" local="no">property.h</includes>
+    <templateparamlist>
+      <param>
+        <type>class content</type>
+      </param>
+      <param>
+        <type>class owner</type>
+      </param>
+      <param>
+        <type>class cref_type</type>
+        <defval>const content &amp;</defval>
+      </param>
+      <param>
+        <type>class unique_type</type>
+        <defval>owner</defval>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classproperty_1a4ed72742106c3def7066ba93c944f92c" prot="private" static="no" mutable="no">
+        <type>content</type>
+        <definition>content property&lt; content, owner, cref_type, unique_type &gt;::value</definition>
+        <argsstring></argsstring>
+        <name>value</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/property.h" line="37" column="9" bodyfile="/home/alex/project/quantt/include/property.h" bodystart="37" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-func">
+      <memberdef kind="function" id="classproperty_1a3c55fefcda7a01171bfe3f60560804c4" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>property&lt; content, owner, cref_type, unique_type &gt;::property</definition>
+        <argsstring>()=default</argsstring>
+        <name>property</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/property.h" line="39" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classproperty_1a49c4c54d154d22a6aef115e4a59812e4" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>property&lt; content, owner, cref_type, unique_type &gt;::property</definition>
+        <argsstring>(cref_type val)</argsstring>
+        <name>property</name>
+        <param>
+          <type>cref_type</type>
+          <declname>val</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/property.h" line="40" column="1" bodyfile="/home/alex/project/quantt/include/property.h" bodystart="40" bodyend="41"/>
+      </memberdef>
+      <memberdef kind="function" id="classproperty_1a2296ad737663c08e8e03a561a0d802bf" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class...</type>
+            <declname>Args</declname>
+            <defname>Args</defname>
+          </param>
+          <param>
+            <type>class E</type>
+            <defval>std::enable_if_t&lt;std::is_constructible_v&lt;content, Args...&gt;&gt;</defval>
+          </param>
+        </templateparamlist>
+        <type></type>
+        <definition>property&lt; content, owner, cref_type, unique_type &gt;::property</definition>
+        <argsstring>(Args... args)</argsstring>
+        <name>property</name>
+        <param>
+          <type>Args...</type>
+          <declname>args</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/property.h" line="43" column="1" bodyfile="/home/alex/project/quantt/include/property.h" bodystart="43" bodyend="43"/>
+      </memberdef>
+      <memberdef kind="function" id="classproperty_1a8ce58c2b3d10917f1f3ba23c2e395ce3" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>property&lt; content, owner, cref_type, unique_type &gt;::property</definition>
+        <argsstring>(content &amp;&amp;val)</argsstring>
+        <name>property</name>
+        <param>
+          <type>content &amp;&amp;</type>
+          <declname>val</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/property.h" line="45" column="1" bodyfile="/home/alex/project/quantt/include/property.h" bodystart="45" bodyend="46"/>
+      </memberdef>
+      <memberdef kind="function" id="classproperty_1a603b66bde338062454da16e369b46d2f" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>property&lt; content, owner, cref_type, unique_type &gt;::property</definition>
+        <argsstring>(property &amp;&amp;)=default</argsstring>
+        <name>property</name>
+        <param>
+          <type><ref refid="classproperty" kindref="compound">property</ref> &amp;&amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/property.h" line="48" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classproperty_1a650cf37ff8072cfab178aa8d2040999f" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>property&lt; content, owner, cref_type, unique_type &gt;::property</definition>
+        <argsstring>(const property &amp;)=default</argsstring>
+        <name>property</name>
+        <param>
+          <type>const <ref refid="classproperty" kindref="compound">property</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/property.h" line="49" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classproperty_1a284d3b3635a5e8595a27e5a0f5286bf0" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classproperty" kindref="compound">property</ref> &amp;</type>
+        <definition>property&amp; property&lt; content, owner, cref_type, unique_type &gt;::operator=</definition>
+        <argsstring>(const property &amp;)=default</argsstring>
+        <name>operator=</name>
+        <param>
+          <type>const <ref refid="classproperty" kindref="compound">property</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/property.h" line="50" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classproperty_1aedf7b7bc3831cc0cc1870fbc80a18eb7" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classproperty" kindref="compound">property</ref> &amp;</type>
+        <definition>property&amp; property&lt; content, owner, cref_type, unique_type &gt;::operator=</definition>
+        <argsstring>(property &amp;&amp;)=default</argsstring>
+        <name>operator=</name>
+        <param>
+          <type><ref refid="classproperty" kindref="compound">property</ref> &amp;&amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/property.h" line="51" column="10"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classproperty_1a308a846b142d1e4287c4d0202db8f33e" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type></type>
+        <definition>property&lt; content, owner, cref_type, unique_type &gt;::operator cref_type</definition>
+        <argsstring>() const noexcept</argsstring>
+        <name>operator cref_type</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/property.h" line="54" column="1" bodyfile="/home/alex/project/quantt/include/property.h" bodystart="54" bodyend="54"/>
+      </memberdef>
+      <memberdef kind="function" id="classproperty_1adb58f3ae45996edceb8fa1fcecd9b1bc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classproperty" kindref="compound">property</ref> &amp;</type>
+        <definition>property&amp; property&lt; content, owner, cref_type, unique_type &gt;::operator=</definition>
+        <argsstring>(cref_type new_value)</argsstring>
+        <name>operator=</name>
+        <param>
+          <type>cref_type</type>
+          <declname>new_value</declname>
+        </param>
+        <briefdescription>
+<para>read access through implicit conversion </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Value or ref assignment operator Define it to give public write access to value, with any and all checks necessary. Do not define assignement operators to keep the value private. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>new_value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>new value </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>property&amp; *this </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/property.h" line="63" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classproperty_1aed01b27239420a0c08a49d7df6f4c9f8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classproperty" kindref="compound">property</ref> &amp;</type>
+        <definition>property&amp; property&lt; content, owner, cref_type, unique_type &gt;::operator=</definition>
+        <argsstring>(content &amp;&amp;new_value)</argsstring>
+        <name>operator=</name>
+        <param>
+          <type>content &amp;&amp;</type>
+          <declname>new_value</declname>
+        </param>
+        <briefdescription>
+<para>move assignment operator Define it to give public write access to value, with any and all checks necessary. Do not define assignement operators to keep the value private. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>new_value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>new value </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>property&amp; *this </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/property.h" line="71" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classproperty_1a058c3e1632a91b77ada3d87b435ceea1" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const content *</type>
+        <definition>const content* property&lt; content, owner, cref_type, unique_type &gt;::operator-&gt;</definition>
+        <argsstring>() const</argsstring>
+        <name>operator-&gt;</name>
+        <briefdescription>
+<para>Arrow dereferencing operator. Let you call the members const without going through the conversion operator first. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/property.h" line="78" column="15" bodyfile="/home/alex/project/quantt/include/property.h" bodystart="78" bodyend="78"/>
+      </memberdef>
+      <memberdef kind="function" id="classproperty_1a324f8f88627201aa9db0001bbad5f488" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>property&lt; content, owner, cref_type, unique_type &gt;::~property</definition>
+        <argsstring>()</argsstring>
+        <name>~property</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/property.h" line="80" column="1" bodyfile="/home/alex/project/quantt/include/property.h" bodystart="80" bodyend="80"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>wrapper for properties, allow direct access to users with checks without an explicit setter and getter. for cheap to copy type, one can use the value itself for the ref_type. Usage of property is incompatible with the keyword auto. if you use auto, you will either get an error. If you use auto&amp; you get a reference to the wrapper type. This is because the auto keyword doesn&apos;t do conversions and the magic of this class wrapper is in the fact that it does implicit conversions. unique_type is for the situation where it is desirable to have a different type (setter and getter) for a property with the same owning class and content type. if a completly unique type is necessary the type of an empty lambda []{} can be used for unique_type, because all lambda have a unique type. </para>
+    </detaileddescription>
+    <location file="/home/alex/project/quantt/include/property.h" line="32" column="24" bodyfile="/home/alex/project/quantt/include/property.h" bodystart="33" bodyend="81"/>
+    <listofallmembers>
+      <member refid="classproperty_1a308a846b142d1e4287c4d0202db8f33e" prot="public" virt="non-virtual"><scope>property</scope><name>operator cref_type</name></member>
+      <member refid="classproperty_1a058c3e1632a91b77ada3d87b435ceea1" prot="public" virt="non-virtual"><scope>property</scope><name>operator-&gt;</name></member>
+      <member refid="classproperty_1a284d3b3635a5e8595a27e5a0f5286bf0" prot="private" virt="non-virtual"><scope>property</scope><name>operator=</name></member>
+      <member refid="classproperty_1aedf7b7bc3831cc0cc1870fbc80a18eb7" prot="private" virt="non-virtual"><scope>property</scope><name>operator=</name></member>
+      <member refid="classproperty_1adb58f3ae45996edceb8fa1fcecd9b1bc" prot="public" virt="non-virtual"><scope>property</scope><name>operator=</name></member>
+      <member refid="classproperty_1aed01b27239420a0c08a49d7df6f4c9f8" prot="public" virt="non-virtual"><scope>property</scope><name>operator=</name></member>
+      <member refid="classproperty_1a3c55fefcda7a01171bfe3f60560804c4" prot="private" virt="non-virtual"><scope>property</scope><name>property</name></member>
+      <member refid="classproperty_1a49c4c54d154d22a6aef115e4a59812e4" prot="private" virt="non-virtual"><scope>property</scope><name>property</name></member>
+      <member refid="classproperty_1a2296ad737663c08e8e03a561a0d802bf" prot="private" virt="non-virtual"><scope>property</scope><name>property</name></member>
+      <member refid="classproperty_1a8ce58c2b3d10917f1f3ba23c2e395ce3" prot="private" virt="non-virtual"><scope>property</scope><name>property</name></member>
+      <member refid="classproperty_1a603b66bde338062454da16e369b46d2f" prot="private" virt="non-virtual"><scope>property</scope><name>property</name></member>
+      <member refid="classproperty_1a650cf37ff8072cfab178aa8d2040999f" prot="private" virt="non-virtual"><scope>property</scope><name>property</name></member>
+      <member refid="classproperty_1a4ed72742106c3def7066ba93c944f92c" prot="private" virt="non-virtual"><scope>property</scope><name>value</name></member>
+      <member refid="classproperty_1a324f8f88627201aa9db0001bbad5f488" prot="public" virt="non-virtual"><scope>property</scope><name>~property</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="structquantit_1_1conserved_1_1constexprequal__membertest" kind="struct" language="C++" prot="public">
+    <compoundname>quantit::conserved::constexprequal_membertest</compoundname>
+    <templateparamlist>
+      <param>
+        <type>class subject</type>
+      </param>
+      <param>
+        <type>class E</type>
+        <defval>void</defval>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="structquantit_1_1conserved_1_1constexprequal__membertest_1a150d4b971c5f9ce98f2f897322920677" prot="public" static="yes" constexpr="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>constexpr static bool</type>
+        <definition>constexpr static bool quantit::conserved::constexprequal_membertest&lt; subject, E &gt;::call</definition>
+        <argsstring>()</argsstring>
+        <name>call</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/quantity_utils.h" line="66" column="23" bodyfile="/home/alex/project/quantt/include/Conserved/quantity_utils.h" bodystart="66" bodyend="66"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/alex/project/quantt/include/Conserved/quantity_utils.h" line="64" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/quantity_utils.h" bodystart="65" bodyend="67"/>
+    <listofallmembers>
+      <member refid="structquantit_1_1conserved_1_1constexprequal__membertest_1a150d4b971c5f9ce98f2f897322920677" prot="public" virt="non-virtual"><scope>quantit::conserved::constexprequal_membertest</scope><name>call</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

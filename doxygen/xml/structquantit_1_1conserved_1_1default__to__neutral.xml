@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="structquantit_1_1conserved_1_1default__to__neutral" kind="struct" language="C++" prot="public">
+    <compoundname>quantit::conserved::default_to_neutral</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">std::false_type</basecompoundref>
+    <templateparamlist>
+      <param>
+        <type>class T</type>
+      </param>
+      <param>
+        <type>class</type>
+        <defval>void</defval>
+      </param>
+    </templateparamlist>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>quantit::conserved::default_to_neutral&lt; T, class &gt;</label>
+        <link refid="structquantit_1_1conserved_1_1default__to__neutral"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>std::false_type</label>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>quantit::conserved::default_to_neutral&lt; T, class &gt;</label>
+        <link refid="structquantit_1_1conserved_1_1default__to__neutral"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>std::false_type</label>
+      </node>
+    </collaborationgraph>
+    <location file="/home/alex/project/quantt/include/Conserved/quantity_utils.h" line="120" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/quantity_utils.h" bodystart="121" bodyend="122"/>
+    <listofallmembers>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="structfmt_1_1formatter_3_01quantit_1_1conserved_1_1C_3_01N_01_4_01_4" kind="struct" language="C++" prot="public">
+    <compoundname>fmt::formatter&lt; quantit::conserved::C&lt; N &gt; &gt;</compoundname>
+    <templateparamlist>
+      <param>
+        <type>uint16_t</type>
+        <declname>N</declname>
+        <defname>N</defname>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="structfmt_1_1formatter_3_01quantit_1_1conserved_1_1C_3_01N_01_4_01_4_1a6417ba492e108ec7d049c961e0e590e3" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>constexpr auto</type>
+        <definition>constexpr auto fmt::formatter&lt; quantit::conserved::C&lt; N &gt; &gt;::parse</definition>
+        <argsstring>(format_parse_context &amp;ctx)</argsstring>
+        <name>parse</name>
+        <param>
+          <type>format_parse_context &amp;</type>
+          <declname>ctx</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/quantity.h" line="327" column="16" bodyfile="/home/alex/project/quantt/include/Conserved/quantity.h" bodystart="327" bodyend="339"/>
+      </memberdef>
+      <memberdef kind="function" id="structfmt_1_1formatter_3_01quantit_1_1conserved_1_1C_3_01N_01_4_01_4_1ad0590f5724b70a0c83f2c5ddb76cb3d8" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class FormatContext</type>
+          </param>
+        </templateparamlist>
+        <type>auto</type>
+        <definition>auto fmt::formatter&lt; quantit::conserved::C&lt; N &gt; &gt;::format</definition>
+        <argsstring>(const quantit::conserved::C&lt; N &gt; &amp;z, FormatContext &amp;ctx) const</argsstring>
+        <name>format</name>
+        <param>
+          <type>const <ref refid="classquantit_1_1conserved_1_1C" kindref="compound">quantit::conserved::C</ref>&lt; N &gt; &amp;</type>
+          <declname>z</declname>
+        </param>
+        <param>
+          <type>FormatContext &amp;</type>
+          <declname>ctx</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/quantity.h" line="342" column="6" bodyfile="/home/alex/project/quantt/include/Conserved/quantity.h" bodystart="342" bodyend="348"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/alex/project/quantt/include/Conserved/quantity.h" line="325" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/quantity.h" bodystart="326" bodyend="349"/>
+    <listofallmembers>
+      <member refid="structfmt_1_1formatter_3_01quantit_1_1conserved_1_1C_3_01N_01_4_01_4_1ad0590f5724b70a0c83f2c5ddb76cb3d8" prot="public" virt="non-virtual"><scope>fmt::formatter&lt; quantit::conserved::C&lt; N &gt; &gt;</scope><name>format</name></member>
+      <member refid="structfmt_1_1formatter_3_01quantit_1_1conserved_1_1C_3_01N_01_4_01_4_1a6417ba492e108ec7d049c961e0e590e3" prot="public" virt="non-virtual"><scope>fmt::formatter&lt; quantit::conserved::C&lt; N &gt; &gt;</scope><name>parse</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

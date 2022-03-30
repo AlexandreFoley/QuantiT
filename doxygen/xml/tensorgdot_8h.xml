@@ -1,0 +1,109 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="tensorgdot_8h" kind="file" language="C++">
+    <compoundname>tensorgdot.h</compoundname>
+    <includes local="yes">doctest/doctest_proxy.h</includes>
+    <includes local="no">torch/torch.h</includes>
+    <incdepgraph>
+      <node id="1">
+        <label>/home/alex/project/quantt/include/tensorgdot.h</label>
+        <link refid="tensorgdot_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>torch/torch.h</label>
+      </node>
+      <node id="2">
+        <label>doctest/doctest_proxy.h</label>
+      </node>
+    </incdepgraph>
+    <innernamespace refid="namespacequantit">quantit</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>File:<sp/>tensorgdot.h</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>Project:<sp/>QuantiT</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>File<sp/>Created:<sp/>Tuesday,<sp/>10th<sp/>November<sp/>2020<sp/>10:58:58<sp/>am</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>Author:<sp/>Alexandre<sp/>Foley<sp/>(Alexandre.foley@usherbrooke.ca)</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>-----</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>Last<sp/>Modified:<sp/>Tuesday,<sp/>10th<sp/>November<sp/>2020<sp/>10:58:58<sp/>am</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>Modified<sp/>By:<sp/>Alexandre<sp/>Foley<sp/>(Alexandre.foley@usherbrooke.ca&gt;)</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>-----</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>Copyright<sp/>(c)<sp/>2020<sp/>Alexandre<sp/>Foley</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>Licensed<sp/>under<sp/>GPL<sp/>v3</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>BD5A9C21_B42C_4168_AD9F_A788AD4621C8</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>BD5A9C21_B42C_4168_AD9F_A788AD4621C8</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;doctest/doctest_proxy.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;torch/torch.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">quantit</highlight></codeline>
+<codeline lineno="20"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="34"><highlight class="normal">torch::Tensor<sp/>tensorgdot(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>torch::Tensor&amp;<sp/>add,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>torch::Tensor&amp;<sp/>mul1,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>torch::Tensor&amp;<sp/>mul2,</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::IntArrayRef<sp/>dims1,<sp/>torch::IntArrayRef<sp/>dims2,</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::Scalar<sp/>beta<sp/>=<sp/>1,<sp/>torch::Scalar<sp/>alpha<sp/>=<sp/>1);</highlight></codeline>
+<codeline lineno="51"><highlight class="normal">torch::Tensor&amp;<sp/>tensorgdot_(torch::Tensor&amp;<sp/>output,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>torch::Tensor&amp;<sp/>mul1,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>torch::Tensor&amp;<sp/>mul2,</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::IntArrayRef<sp/>dims1,<sp/>torch::IntArrayRef<sp/>dims2,</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::Scalar<sp/>beta<sp/>=<sp/>1,<sp/>torch::Scalar<sp/>alpha<sp/>=<sp/>1);</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"></highlight></codeline>
+<codeline lineno="69"><highlight class="normal">torch::Tensor&amp;<sp/>tensorgdot_out(torch::Tensor&amp;<sp/>output,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>torch::Tensor&amp;<sp/>add,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>torch::Tensor&amp;<sp/>mul1,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>torch::Tensor&amp;<sp/>mul2,</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::IntArrayRef<sp/>dims1,<sp/>torch::IntArrayRef<sp/>dims2,</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::Scalar<sp/>beta<sp/>=<sp/>1,<sp/>torch::Scalar<sp/>alpha<sp/>=<sp/>1);</highlight></codeline>
+<codeline lineno="84"><highlight class="normal">torch::Tensor&amp;<sp/>tensorgdot_(torch::Tensor&amp;<sp/>output,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>torch::Tensor&amp;<sp/>input1,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>torch::Tensor&amp;<sp/>input2,</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>dims,</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::Scalar<sp/>beta<sp/>=<sp/>1,<sp/>torch::Scalar<sp/>alpha<sp/>=<sp/>1);</highlight></codeline>
+<codeline lineno="87"><highlight class="normal">qtt_TEST_CASE(</highlight><highlight class="stringliteral">&quot;generalized<sp/>tensor<sp/>dot<sp/>product&quot;</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="88"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal">torch;</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/>Tensor<sp/>A<sp/>=<sp/>torch::rand({5,<sp/>7,<sp/>6});</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/>Tensor<sp/>B<sp/>=<sp/>torch::rand({5,<sp/>6,<sp/>7});</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/>Tensor<sp/>out<sp/>=<sp/>torch::rand({5,<sp/>5});</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/>Tensor<sp/>out_copy<sp/>=<sp/>clone(out);</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;int64_t&gt;<sp/>dims1<sp/>=<sp/>{1,<sp/>2};</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;int64_t&gt;<sp/>dims2<sp/>=<sp/>{2,<sp/>1};</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/>out<sp/>+=<sp/>tensordot(A,<sp/>B,<sp/>dims1,<sp/>dims2);</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/>qtt_SUBCASE(</highlight><highlight class="stringliteral">&quot;tensorgdot&quot;</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>new_out<sp/>=<sp/>tensorgdot(out_copy,<sp/>A,<sp/>B,<sp/>dims1,<sp/>dims2);</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>qtt_CHECK(allclose(new_out,<sp/>out));</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/>qtt_SUBCASE(</highlight><highlight class="stringliteral">&quot;tensorgdot&quot;</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>tensorgdot_(out_copy,<sp/>A,<sp/>B,<sp/>dims1,<sp/>dims2);</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>qtt_CHECK(allclose(out_copy,<sp/>out));</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/>qtt_SUBCASE(</highlight><highlight class="stringliteral">&quot;tensorgdot_out&quot;</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Tensor<sp/>out_copy2<sp/>=<sp/>clone(out_copy);</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>tensorgdot_out(out_copy,<sp/>out_copy2,<sp/>A,<sp/>B,<sp/>dims1,<sp/>dims2);</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>qtt_CHECK(allclose(out_copy,<sp/>out));</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/>qtt_SUBCASE(</highlight><highlight class="stringliteral">&quot;tensorgdot_out<sp/>v2&quot;</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//this<sp/>usage<sp/>is<sp/>equivalent<sp/>to<sp/>a<sp/>call<sp/>to<sp/>tensordot_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>tensorgdot_out(out_copy,<sp/>out_copy,<sp/>A,<sp/>B,<sp/>dims1,<sp/>dims2);</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>qtt_CHECK(allclose(out_copy,<sp/>out));</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/>qtt_SUBCASE(</highlight><highlight class="stringliteral">&quot;tensorgdot<sp/>no<sp/>permutation&quot;</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>B2<sp/>=<sp/>B.permute({2,<sp/>1,<sp/>0});</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>tensorgdot_(out_copy,<sp/>A,<sp/>B2,<sp/>2);</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>qtt_CHECK(allclose(out_copy,<sp/>out));</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>qtt_CHECK_THROWS(tensorgdot_(out_copy,<sp/>A,<sp/>B,<sp/>2));</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="126"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"></highlight></codeline>
+<codeline lineno="128"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>quantit</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="129"><highlight class="normal"></highlight></codeline>
+<codeline lineno="130"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>BD5A9C21_B42C_4168_AD9F_A788AD4621C8<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
+    </programlisting>
+    <location file="/home/alex/project/quantt/include/tensorgdot.h"/>
+  </compounddef>
+</doxygen>

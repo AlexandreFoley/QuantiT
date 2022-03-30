@@ -1,0 +1,392 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="models_8h" kind="file" language="C++">
+    <compoundname>models.h</compoundname>
+    <includes local="no">torch/torch.h</includes>
+    <includes refid="MPT_8h" local="yes">MPT.h</includes>
+    <includes local="yes">doctest/doctest_proxy.h</includes>
+    <incdepgraph>
+      <node id="15">
+        <label>functional</label>
+      </node>
+      <node id="23">
+        <label>fmt/format.h</label>
+      </node>
+      <node id="16">
+        <label>iterator</label>
+      </node>
+      <node id="27">
+        <label>cstdint</label>
+      </node>
+      <node id="35">
+        <label>charconv</label>
+      </node>
+      <node id="29">
+        <label>Conserved/Composite/quantity_vector.h</label>
+        <link refid="quantity__vector_8h_source"/>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>boost/stl_interfaces/iterator_interface.hpp</label>
+      </node>
+      <node id="32">
+        <label>property.h</label>
+        <link refid="property_8h_source"/>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>cassert</label>
+      </node>
+      <node id="34">
+        <label>fmt/ostream.h</label>
+      </node>
+      <node id="38">
+        <label>stdexcept</label>
+      </node>
+      <node id="17">
+        <label>numeric</label>
+      </node>
+      <node id="36">
+        <label>ATen/Functions.h</label>
+      </node>
+      <node id="37">
+        <label>exception</label>
+      </node>
+      <node id="31">
+        <label>boost/stl_interfaces/view_interface.hpp</label>
+      </node>
+      <node id="6">
+        <label>Conserved/Composite/quantity_impl.h</label>
+        <link refid="quantity__impl_8h_source"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+      </node>
+      <node id="28">
+        <label>ostream</label>
+      </node>
+      <node id="33">
+        <label>torch_formatter.h</label>
+        <link refid="torch__formatter_8h_source"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+      </node>
+      <node id="13">
+        <label>fmt/core.h</label>
+      </node>
+      <node id="20">
+        <label>templateMeta.h</label>
+        <link refid="templateMeta_8h_source"/>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+      </node>
+      <node id="40">
+        <label>random</label>
+      </node>
+      <node id="5">
+        <label>Conserved/Composite/cquantity.h</label>
+        <link refid="cquantity_8h_source"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+      </node>
+      <node id="24">
+        <label>ios</label>
+      </node>
+      <node id="3">
+        <label>MPT.h</label>
+        <link refid="MPT_8h_source"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>blockTensor/flat_map.h</label>
+        <link refid="flat__map_8h_source"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+      </node>
+      <node id="26">
+        <label>Conserved/quantity.h</label>
+        <link refid="quantity_8h_source"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="21">
+        <label>tuple</label>
+      </node>
+      <node id="39">
+        <label>torch/csrc/utils/variadic.h</label>
+      </node>
+      <node id="14">
+        <label>fmt/ranges.h</label>
+      </node>
+      <node id="19">
+        <label>vector</label>
+      </node>
+      <node id="18">
+        <label>utility</label>
+      </node>
+      <node id="4">
+        <label>blockTensor/btensor.h</label>
+        <link refid="btensor_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>torch/torch.h</label>
+      </node>
+      <node id="1">
+        <label>/home/alex/project/quantt/include/models.h</label>
+        <link refid="models_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>Conserved/quantity_utils.h</label>
+        <link refid="quantity__utils_8h_source"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+      </node>
+      <node id="22">
+        <label>type_traits</label>
+      </node>
+      <node id="10">
+        <label>algorithm</label>
+      </node>
+      <node id="30">
+        <label>Conserved/Composite/quantity_vector_impl.h</label>
+        <link refid="quantity__vector__impl_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+      </node>
+      <node id="25">
+        <label>memory</label>
+      </node>
+      <node id="9">
+        <label>doctest/doctest_proxy.h</label>
+      </node>
+    </incdepgraph>
+    <innernamespace refid="namespacequantit">quantit</innernamespace>
+    <innernamespace refid="namespacequantit_1_1details">quantit::details</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>File:<sp/>models.h</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>Project:<sp/>QuantiT</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>File<sp/>Created:<sp/>Monday,<sp/>17th<sp/>August<sp/>2020<sp/>10:31:00<sp/>am</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>Author:<sp/>Alexandre<sp/>Foley<sp/>(Alexandre.foley@usherbrooke.ca)</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>-----</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>Last<sp/>Modified:<sp/>Monday,<sp/>17th<sp/>August<sp/>2020<sp/>10:31:00<sp/>am</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>Modified<sp/>By:<sp/>Alexandre<sp/>Foley<sp/>(Alexandre.foley@usherbrooke.ca&gt;)</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>-----</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>Copyright<sp/>(c)<sp/>2020<sp/>Alexandre<sp/>Foley</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>Licensed<sp/>under<sp/>GPL<sp/>v3</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>FC769B14_0341_4EB5_9CD2_E7CA2865AD73</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>FC769B14_0341_4EB5_9CD2_E7CA2865AD73</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;torch/torch.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;MPT.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;doctest/doctest_proxy.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">quantit</highlight></codeline>
+<codeline lineno="23"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/>MPO<sp/>Heisenberg(torch::Tensor<sp/>J,</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>lenght);</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/>bMPO<sp/>Heisenberg(torch::Tensor<sp/>J,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>lenght,</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>btensor&amp;<sp/>local_shape);</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">details</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>MPO<sp/>Heisenberg_impl(torch::Tensor<sp/>J,</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>lenght);</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/>MPO<sp/>Hubbard(torch::Tensor<sp/>U,torch::Tensor<sp/>mu,</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>lenght);<sp/></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/>bMPO<sp/>Hubbard(torch::Tensor<sp/>U,torch::Tensor<sp/>mu,</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>lenght,</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>btensor&amp;<sp/>local_shape);<sp/></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal">qtt_TEST_CASE(</highlight><highlight class="stringliteral">&quot;Heisenberg&quot;</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="42"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>J(1);</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>qtt_REQUIRE(J.isIntegral(false)<sp/>);</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>Heis<sp/>=<sp/>details::Heisenberg_impl(torch::tensor(J),3);</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/>qtt_CHECK(Heis[0].sizes().size()<sp/>==<sp/>4);</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>size_left_edge<sp/>=<sp/>std::vector&lt;int64_t&gt;{1l,2l,5l,2l};</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/>qtt_CHECK(Heis[0].sizes().vec()<sp/>==<sp/>size_left_edge);</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/>qtt_CHECK(Heis[1].sizes().size()<sp/>==<sp/>4);</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>size_middle<sp/>=<sp/>std::vector&lt;int64_t&gt;{5l,2l,5l,2l};</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/>qtt_CHECK(Heis[1].sizes().vec()<sp/>==<sp/>size_middle);</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/>qtt_CHECK(Heis[2].sizes().size()<sp/>==<sp/>4);</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>size_right_edge<sp/>=<sp/>std::vector&lt;int64_t&gt;{5l,2l,1l,2l};<sp/></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/>qtt_CHECK(Heis[2].sizes().vec()<sp/>==<sp/>size_right_edge);</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"></highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/>qtt_REQUIRE(!Heis[0].is_floating_point());</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"></highlight></codeline>
+<codeline lineno="58"><highlight class="normal"></highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>test_Heis<sp/>=<sp/><sp/>torch::zeros({8,8},torch::kInt8);</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>acc<sp/>=<sp/>test_Heis.accessor&lt;int8_t,2&gt;();</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>acc[0][0]<sp/>=<sp/>acc[2][1]<sp/>=<sp/>acc[1][2]<sp/>=<sp/>2;</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>acc[4][2]<sp/>=<sp/>acc[2][4]<sp/>=<sp/>acc[5][3]<sp/>=<sp/>acc[3][5]<sp/>=<sp/>2;</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>acc[7][7]<sp/>=<sp/>acc[6][5]<sp/>=<sp/>acc[5][6]<sp/>=<sp/>2;</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>acc[2][2]<sp/>=<sp/>acc[5][5]<sp/>=<sp/>-2;</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"></highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>cont_Heis<sp/>=<sp/>torch::tensordot(Heis[0],Heis[1],{2},{0}).permute({0,1,3,4,2,5}).reshape({1,4,5,4});</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/>cont_Heis<sp/>=<sp/>torch::tensordot(cont_Heis,Heis[2],{2},{0}).permute({0,1,3,4,2,5}).reshape({8,8});</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/>qtt_CHECK(torch::equal(cont_Heis,test_Heis));</highlight></codeline>
+<codeline lineno="71"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"></highlight></codeline>
+<codeline lineno="73"><highlight class="normal"></highlight></codeline>
+<codeline lineno="74"><highlight class="normal">}</highlight><highlight class="comment">//QuantiT</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="75"><highlight class="normal"></highlight></codeline>
+<codeline lineno="76"><highlight class="normal"></highlight></codeline>
+<codeline lineno="77"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>FC769B14_0341_4EB5_9CD2_E7CA2865AD73<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
+    </programlisting>
+    <location file="/home/alex/project/quantt/include/models.h"/>
+  </compounddef>
+</doxygen>

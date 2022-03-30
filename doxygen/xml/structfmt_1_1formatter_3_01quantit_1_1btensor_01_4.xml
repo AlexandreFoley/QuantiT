@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="structfmt_1_1formatter_3_01quantit_1_1btensor_01_4" kind="struct" language="C++" prot="public">
+    <compoundname>fmt::formatter&lt; quantit::btensor &gt;</compoundname>
+    <templateparamlist>
+    </templateparamlist>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="structfmt_1_1formatter_3_01quantit_1_1btensor_01_4_1a68858a44d6813796e4577a1ff50f5e68" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>constexpr auto</type>
+        <definition>constexpr auto fmt::formatter&lt; quantit::btensor &gt;::parse</definition>
+        <argsstring>(format_parse_context &amp;ctx)</argsstring>
+        <name>parse</name>
+        <param>
+          <type>format_parse_context &amp;</type>
+          <declname>ctx</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/blockTensor/btensor.h" line="1893" column="16" bodyfile="/home/alex/project/quantt/include/blockTensor/btensor.h" bodystart="1893" bodyend="1905"/>
+      </memberdef>
+      <memberdef kind="function" id="structfmt_1_1formatter_3_01quantit_1_1btensor_01_4_1a01c0ddd8e168f2c7a3bceb6ac8276ba8" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class FormatContext</type>
+          </param>
+        </templateparamlist>
+        <type>auto</type>
+        <definition>auto fmt::formatter&lt; quantit::btensor &gt;::format</definition>
+        <argsstring>(const quantit::btensor &amp;t, FormatContext &amp;ctx) const</argsstring>
+        <name>format</name>
+        <param>
+          <type>const <ref refid="classquantit_1_1btensor" kindref="compound">quantit::btensor</ref> &amp;</type>
+          <declname>t</declname>
+        </param>
+        <param>
+          <type>FormatContext &amp;</type>
+          <declname>ctx</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/blockTensor/btensor.h" line="1908" column="6" bodyfile="/home/alex/project/quantt/include/blockTensor/btensor.h" bodystart="1908" bodyend="1920"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/alex/project/quantt/include/blockTensor/btensor.h" line="1891" column="1" bodyfile="/home/alex/project/quantt/include/blockTensor/btensor.h" bodystart="1892" bodyend="1921"/>
+    <listofallmembers>
+      <member refid="structfmt_1_1formatter_3_01quantit_1_1btensor_01_4_1a01c0ddd8e168f2c7a3bceb6ac8276ba8" prot="public" virt="non-virtual"><scope>fmt::formatter&lt; quantit::btensor &gt;</scope><name>format</name></member>
+      <member refid="structfmt_1_1formatter_3_01quantit_1_1btensor_01_4_1a68858a44d6813796e4577a1ff50f5e68" prot="public" virt="non-virtual"><scope>fmt::formatter&lt; quantit::btensor &gt;</scope><name>parse</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

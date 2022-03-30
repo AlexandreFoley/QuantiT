@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="namespacequantit_1_1vQuantiT__iterator" kind="namespace" language="C++">
+    <compoundname>quantit::vQuantiT_iterator</compoundname>
+    <innerclass refid="structquantit_1_1vQuantiT__iterator_1_1virt__ptr__aritmetic" prot="public">quantit::vQuantiT_iterator::virt_ptr_aritmetic</innerclass>
+    <innerclass refid="structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator" prot="public">quantit::vQuantiT_iterator::const_cgroup_iterator</innerclass>
+    <innerclass refid="structquantit_1_1vQuantiT__iterator_1_1cgroup__iterator" prot="public">quantit::vQuantiT_iterator::cgroup_iterator</innerclass>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" line="60" column="1"/>
+  </compounddef>
+</doxygen>

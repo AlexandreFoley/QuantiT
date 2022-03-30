@@ -1,0 +1,481 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="dmrg__logger_8h" kind="file" language="C++">
+    <compoundname>dmrg_logger.h</compoundname>
+    <includes refid="MPT_8h" local="yes">MPT.h</includes>
+    <includes refid="btensor_8h" local="yes">blockTensor/btensor.h</includes>
+    <includes refid="dmrg__options_8h" local="yes">dmrg_options.h</includes>
+    <includes local="no">torch/torch.h</includes>
+    <includedby refid="dmrg_8h" local="yes">/home/alex/project/quantt/include/dmrg.h</includedby>
+    <incdepgraph>
+      <node id="14">
+        <label>functional</label>
+      </node>
+      <node id="22">
+        <label>fmt/format.h</label>
+      </node>
+      <node id="15">
+        <label>iterator</label>
+      </node>
+      <node id="26">
+        <label>cstdint</label>
+      </node>
+      <node id="35">
+        <label>charconv</label>
+      </node>
+      <node id="41">
+        <label>dmrg_options.h</label>
+        <link refid="dmrg__options_8h_source"/>
+      </node>
+      <node id="28">
+        <label>Conserved/Composite/quantity_vector.h</label>
+        <link refid="quantity__vector_8h_source"/>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>boost/stl_interfaces/iterator_interface.hpp</label>
+      </node>
+      <node id="31">
+        <label>property.h</label>
+        <link refid="property_8h_source"/>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>cassert</label>
+      </node>
+      <node id="34">
+        <label>fmt/ostream.h</label>
+      </node>
+      <node id="38">
+        <label>stdexcept</label>
+      </node>
+      <node id="16">
+        <label>numeric</label>
+      </node>
+      <node id="36">
+        <label>ATen/Functions.h</label>
+      </node>
+      <node id="37">
+        <label>exception</label>
+      </node>
+      <node id="30">
+        <label>boost/stl_interfaces/view_interface.hpp</label>
+      </node>
+      <node id="5">
+        <label>Conserved/Composite/quantity_impl.h</label>
+        <link refid="quantity__impl_8h_source"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+      </node>
+      <node id="27">
+        <label>ostream</label>
+      </node>
+      <node id="32">
+        <label>torch_formatter.h</label>
+        <link refid="torch__formatter_8h_source"/>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>fmt/core.h</label>
+      </node>
+      <node id="19">
+        <label>templateMeta.h</label>
+        <link refid="templateMeta_8h_source"/>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+      </node>
+      <node id="40">
+        <label>random</label>
+      </node>
+      <node id="4">
+        <label>Conserved/Composite/cquantity.h</label>
+        <link refid="cquantity_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+      </node>
+      <node id="23">
+        <label>ios</label>
+      </node>
+      <node id="2">
+        <label>MPT.h</label>
+        <link refid="MPT_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>blockTensor/flat_map.h</label>
+        <link refid="flat__map_8h_source"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+      </node>
+      <node id="25">
+        <label>Conserved/quantity.h</label>
+        <link refid="quantity_8h_source"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="20">
+        <label>tuple</label>
+      </node>
+      <node id="39">
+        <label>torch/csrc/utils/variadic.h</label>
+      </node>
+      <node id="13">
+        <label>fmt/ranges.h</label>
+      </node>
+      <node id="18">
+        <label>vector</label>
+      </node>
+      <node id="17">
+        <label>utility</label>
+      </node>
+      <node id="3">
+        <label>blockTensor/btensor.h</label>
+        <link refid="btensor_8h_source"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="33">
+        <label>torch/torch.h</label>
+      </node>
+      <node id="6">
+        <label>Conserved/quantity_utils.h</label>
+        <link refid="quantity__utils_8h_source"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>/home/alex/project/quantt/include/dmrg_logger.h</label>
+        <link refid="dmrg__logger_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+      </node>
+      <node id="21">
+        <label>type_traits</label>
+      </node>
+      <node id="9">
+        <label>algorithm</label>
+      </node>
+      <node id="29">
+        <label>Conserved/Composite/quantity_vector_impl.h</label>
+        <link refid="quantity__vector__impl_8h_source"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+      </node>
+      <node id="24">
+        <label>memory</label>
+      </node>
+      <node id="8">
+        <label>doctest/doctest_proxy.h</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="2">
+        <label>/home/alex/project/quantt/include/dmrg.h</label>
+        <link refid="dmrg_8h_source"/>
+      </node>
+      <node id="1">
+        <label>/home/alex/project/quantt/include/dmrg_logger.h</label>
+        <link refid="dmrg__logger_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="classquantit_1_1dmrg__logger" prot="public">quantit::dmrg_logger</innerclass>
+    <innerclass refid="classquantit_1_1dmrg__default__logger" prot="public">quantit::dmrg_default_logger</innerclass>
+    <innerclass refid="classquantit_1_1dmrg__log__simple" prot="public">quantit::dmrg_log_simple</innerclass>
+    <innerclass refid="classquantit_1_1dmrg__log__sweeptime" prot="public">quantit::dmrg_log_sweeptime</innerclass>
+    <innernamespace refid="namespacequantit">quantit</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>File:<sp/>dmrg_logger.h</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>Project:<sp/>QuantiT</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>File<sp/>Created:<sp/>Friday,<sp/>29th<sp/>October<sp/>2021<sp/>4:10:27<sp/>pm</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>Author:<sp/>Alexandre<sp/>Foley<sp/>(Alexandre.foley@usherbrooke.ca)</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>Copyright<sp/>(c)<sp/>2021<sp/>Alexandre<sp/>Foley</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>Licensed<sp/>under<sp/>GPL<sp/>v3</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>INCLUDE_DMRG_LOGGER_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>INCLUDE_DMRG_LOGGER_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;MPT.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;blockTensor/btensor.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;dmrg_options.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;torch/torch.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">quantit</highlight></codeline>
+<codeline lineno="19"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="27" refid="classquantit_1_1dmrg__logger" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classquantit_1_1dmrg__logger" kindref="compound">dmrg_logger</ref></highlight></codeline>
+<codeline lineno="28"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>log_step(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal">)<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>log_energy(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>torch::Tensor<sp/>&amp;)<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>log_energy(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classquantit_1_1btensor" kindref="compound">btensor</ref><sp/>&amp;)<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>log_bond_dims(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classquantit_1_1MPS" kindref="compound">MPS</ref><sp/>&amp;)<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>log_bond_dims(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classquantit_1_1bMPS" kindref="compound">bMPS</ref><sp/>&amp;)<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>init(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="structquantit_1_1dmrg__options" kindref="compound">dmrg_options</ref><sp/>&amp;)<sp/>{}</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight></codeline>
+<codeline lineno="45" refid="classquantit_1_1dmrg__logger_1aec679b092519a3b96ca9d4df7b388af5" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classquantit_1_1dmrg__logger_1aec679b092519a3b96ca9d4df7b388af5" kindref="member">it_log_all</ref>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>step_num,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>torch::Tensor<sp/>&amp;E,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classquantit_1_1MPS" kindref="compound">MPS</ref><sp/>&amp;state)<sp/>{<sp/><ref refid="classquantit_1_1dmrg__logger_1a9f638588362a5b58350f5cbbec1b417e" kindref="member">log_all</ref>(step_num,<sp/>E,<sp/>state);<sp/>}</highlight></codeline>
+<codeline lineno="53" refid="classquantit_1_1dmrg__logger_1ae174380571b94f642328d02b1ef0e997" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classquantit_1_1dmrg__logger_1ae174380571b94f642328d02b1ef0e997" kindref="member">it_log_all</ref>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>step_num,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classquantit_1_1btensor" kindref="compound">btensor</ref><sp/>&amp;E,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classquantit_1_1bMPS" kindref="compound">bMPS</ref><sp/>&amp;state)<sp/>{<sp/><ref refid="classquantit_1_1dmrg__logger_1a9f638588362a5b58350f5cbbec1b417e" kindref="member">log_all</ref>(step_num,<sp/>E,<sp/>state);<sp/>}</highlight></codeline>
+<codeline lineno="61" refid="classquantit_1_1dmrg__logger_1a40e35a635a42df1666b452aaaeba3c22" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classquantit_1_1dmrg__logger_1a40e35a635a42df1666b452aaaeba3c22" kindref="member">end_log_all</ref>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>step_num,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>torch::Tensor<sp/>&amp;E,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classquantit_1_1MPS" kindref="compound">MPS</ref><sp/>&amp;state)<sp/>{<sp/><ref refid="classquantit_1_1dmrg__logger_1a9f638588362a5b58350f5cbbec1b417e" kindref="member">log_all</ref>(step_num,<sp/>E,<sp/>state);<sp/>}</highlight></codeline>
+<codeline lineno="69" refid="classquantit_1_1dmrg__logger_1aefe31347ea89511837801ca25bce9c3a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classquantit_1_1dmrg__logger_1aefe31347ea89511837801ca25bce9c3a" kindref="member">end_log_all</ref>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>step_num,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classquantit_1_1btensor" kindref="compound">btensor</ref><sp/>&amp;E,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classquantit_1_1bMPS" kindref="compound">bMPS</ref><sp/>&amp;state)<sp/>{<sp/><ref refid="classquantit_1_1dmrg__logger_1a9f638588362a5b58350f5cbbec1b417e" kindref="member">log_all</ref>(step_num,<sp/>E,<sp/>state);<sp/>}</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"></highlight></codeline>
+<codeline lineno="78" refid="classquantit_1_1dmrg__logger_1a9f638588362a5b58350f5cbbec1b417e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classquantit_1_1dmrg__logger_1a9f638588362a5b58350f5cbbec1b417e" kindref="member">log_all</ref>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>step_num,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>torch::Tensor<sp/>&amp;E,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classquantit_1_1MPS" kindref="compound">MPS</ref><sp/>&amp;state)</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>log_step(step_num);</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>log_energy(E);</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>log_bond_dims(state);</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="91" refid="classquantit_1_1dmrg__logger_1ac04464f362a6f8e37b38696ccbcf067a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classquantit_1_1dmrg__logger_1ac04464f362a6f8e37b38696ccbcf067a" kindref="member">log_all</ref>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>step_num,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classquantit_1_1btensor" kindref="compound">btensor</ref><sp/>&amp;E,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classquantit_1_1bMPS" kindref="compound">bMPS</ref><sp/>&amp;state)</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>log_step(step_num);</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>log_energy(E);</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>log_bond_dims(state);</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"></highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/>~<ref refid="classquantit_1_1dmrg__logger" kindref="compound">dmrg_logger</ref>()<sp/>{}</highlight></codeline>
+<codeline lineno="99"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="103" refid="classquantit_1_1dmrg__default__logger" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classquantit_1_1dmrg__default__logger" kindref="compound">dmrg_default_logger</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="classquantit_1_1dmrg__logger" kindref="compound">dmrg_logger</ref></highlight></codeline>
+<codeline lineno="104"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>log_step(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal">)</highlight><highlight class="keyword"><sp/>override<sp/></highlight><highlight class="normal">{}</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>log_energy(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>torch::Tensor<sp/>&amp;)</highlight><highlight class="keyword"><sp/>override<sp/></highlight><highlight class="normal">{}</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>log_energy(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classquantit_1_1btensor" kindref="compound">btensor</ref><sp/>&amp;)</highlight><highlight class="keyword"><sp/>override<sp/></highlight><highlight class="normal">{}</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>log_bond_dims(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classquantit_1_1MPS" kindref="compound">MPS</ref><sp/>&amp;)</highlight><highlight class="keyword"><sp/>override<sp/></highlight><highlight class="normal">{}</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>log_bond_dims(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classquantit_1_1bMPS" kindref="compound">bMPS</ref><sp/>&amp;)</highlight><highlight class="keyword"><sp/>override<sp/></highlight><highlight class="normal">{}</highlight></codeline>
+<codeline lineno="111"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"></highlight></codeline>
+<codeline lineno="113" refid="classquantit_1_1dmrg__log__simple" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classquantit_1_1dmrg__log__simple" kindref="compound">dmrg_log_simple</ref><sp/>final<sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="classquantit_1_1dmrg__default__logger" kindref="compound">quantit::dmrg_default_logger</ref></highlight></codeline>
+<codeline lineno="114"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>it_num;</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>middle_bond_dim;</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"></highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>log_step(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>it)</highlight><highlight class="keyword"><sp/>override<sp/></highlight><highlight class="normal">{<sp/>it_num<sp/>=<sp/>it;<sp/>}</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>log_bond_dims(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classquantit_1_1bMPS" kindref="compound">quantit::bMPS</ref><sp/>&amp;mps)</highlight><highlight class="keyword"><sp/>override<sp/></highlight><highlight class="normal">{<sp/>log_bond_impl(mps);<sp/>}</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>log_bond_dims(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classquantit_1_1MPS" kindref="compound">quantit::MPS</ref><sp/>&amp;mps)</highlight><highlight class="keyword"><sp/>override<sp/></highlight><highlight class="normal">{<sp/>log_bond_impl(mps);<sp/>}</highlight></codeline>
+<codeline lineno="122" refid="classquantit_1_1dmrg__log__simple_1a474aeafcac00435f639aa70211feed3d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classquantit_1_1dmrg__log__simple_1a474aeafcac00435f639aa70211feed3d" kindref="member">it_log_all</ref>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal">,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>torch::Tensor<sp/>&amp;,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classquantit_1_1MPS" kindref="compound">quantit::MPS</ref><sp/>&amp;)</highlight><highlight class="keyword"><sp/>override<sp/></highlight><highlight class="normal">{}</highlight></codeline>
+<codeline lineno="123" refid="classquantit_1_1dmrg__log__simple_1adc0139d3f688086acdac169e0af2df8b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classquantit_1_1dmrg__log__simple_1adc0139d3f688086acdac169e0af2df8b" kindref="member">it_log_all</ref>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal">,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classquantit_1_1btensor" kindref="compound">btensor</ref><sp/>&amp;,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classquantit_1_1bMPS" kindref="compound">bMPS</ref><sp/>&amp;)</highlight><highlight class="keyword"><sp/>override<sp/></highlight><highlight class="normal">{}</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"></highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>tMPS&gt;</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>log_bond_impl(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>tMPS<sp/>&amp;mps)</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>pos<sp/>=<sp/>mps.size()<sp/>/<sp/>2;</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>middle_bond_dim<sp/>=<sp/>std::max(mps[pos].sizes()[0],<sp/>mps[pos].sizes()[2]);</highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="132"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="133" refid="classquantit_1_1dmrg__log__sweeptime" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classquantit_1_1dmrg__log__sweeptime" kindref="compound">dmrg_log_sweeptime</ref><sp/>final<sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="classquantit_1_1dmrg__default__logger" kindref="compound">quantit::dmrg_default_logger</ref></highlight></codeline>
+<codeline lineno="134"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>it_num;</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>middle_bond_dim;</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/>std::chrono::steady_clock::time_point<sp/>then;</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;double&gt;<sp/>time_list;</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;size_t&gt;<sp/>bond_list;</highlight></codeline>
+<codeline lineno="141"><highlight class="normal"></highlight></codeline>
+<codeline lineno="142"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>log_step(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>it)</highlight><highlight class="keyword"><sp/>override<sp/></highlight><highlight class="normal">{<sp/>it_num<sp/>=<sp/>it;<sp/>}</highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>log_energy(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>torch::Tensor<sp/>&amp;)</highlight><highlight class="keyword"><sp/>override<sp/></highlight><highlight class="normal">{}</highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>log_energy(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classquantit_1_1btensor" kindref="compound">quantit::btensor</ref><sp/>&amp;)</highlight><highlight class="keyword"><sp/>override<sp/></highlight><highlight class="normal">{}</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"></highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>init(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="structquantit_1_1dmrg__options" kindref="compound">quantit::dmrg_options</ref><sp/>&amp;opt)</highlight><highlight class="keyword"><sp/>override</highlight></codeline>
+<codeline lineno="147"><highlight class="keyword"><sp/><sp/><sp/><sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>then<sp/>=<sp/>std::chrono::steady_clock::now();</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>time_list<sp/>=<sp/>std::vector&lt;double&gt;(opt.maximum_iterations);</highlight></codeline>
+<codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>bond_list<sp/>=<sp/>std::vector&lt;size_t&gt;(opt.maximum_iterations);</highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"></highlight></codeline>
+<codeline lineno="153"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>log_bond_dims(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classquantit_1_1MPS" kindref="compound">quantit::MPS</ref><sp/>&amp;mps)</highlight><highlight class="keyword"><sp/>override</highlight></codeline>
+<codeline lineno="154"><highlight class="keyword"><sp/><sp/><sp/><sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="155"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>pos<sp/>=<sp/>mps.size()<sp/>/<sp/>2;</highlight></codeline>
+<codeline lineno="156"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>middle_bond_dim<sp/>=<sp/>std::max(mps[pos].sizes()[0],<sp/>mps[pos].sizes()[2]);</highlight></codeline>
+<codeline lineno="157"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="158"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>log_bond_dims(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classquantit_1_1bMPS" kindref="compound">quantit::bMPS</ref><sp/>&amp;mps)</highlight><highlight class="keyword"><sp/>override</highlight></codeline>
+<codeline lineno="159"><highlight class="keyword"><sp/><sp/><sp/><sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="160"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>pos<sp/>=<sp/>mps.size()<sp/>/<sp/>2;</highlight></codeline>
+<codeline lineno="161"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>middle_bond_dim<sp/>=<sp/>std::max(mps[pos].sizes()[0],<sp/>mps[pos].sizes()[2]);</highlight></codeline>
+<codeline lineno="162"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="163" refid="classquantit_1_1dmrg__log__sweeptime_1a94e0c72a29ed2bcc51d2066eb41f4d0d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classquantit_1_1dmrg__log__sweeptime_1a94e0c72a29ed2bcc51d2066eb41f4d0d" kindref="member">it_log_all</ref>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>it,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classquantit_1_1btensor" kindref="compound">quantit::btensor</ref><sp/>&amp;E0,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classquantit_1_1bMPS" kindref="compound">quantit::bMPS</ref><sp/>&amp;mps)</highlight><highlight class="keyword"><sp/>override</highlight></codeline>
+<codeline lineno="164"><highlight class="keyword"><sp/><sp/><sp/><sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="165"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>now<sp/>=<sp/>std::chrono::steady_clock::now();</highlight></codeline>
+<codeline lineno="166"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::chrono::duration&lt;double&gt;<sp/>elapsed_seconds<sp/>=<sp/>now<sp/>-<sp/>then;</highlight></codeline>
+<codeline lineno="167"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>then<sp/>=<sp/>now;</highlight></codeline>
+<codeline lineno="168"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>log_bond_dims(mps);</highlight></codeline>
+<codeline lineno="169"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>bond_list[it]<sp/>=<sp/>middle_bond_dim;</highlight></codeline>
+<codeline lineno="170"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>time_list[it]<sp/>=<sp/>elapsed_seconds.count();</highlight></codeline>
+<codeline lineno="171"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>log_step(it);</highlight></codeline>
+<codeline lineno="172"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>log_energy(E0);</highlight></codeline>
+<codeline lineno="173"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="174" refid="classquantit_1_1dmrg__log__sweeptime_1acf8dafd8065d0417a90a1d55dad06745" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classquantit_1_1dmrg__log__sweeptime_1acf8dafd8065d0417a90a1d55dad06745" kindref="member">it_log_all</ref>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>it,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>torch::Tensor<sp/>&amp;E0,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classquantit_1_1MPS" kindref="compound">quantit::MPS</ref><sp/>&amp;mps)</highlight><highlight class="keyword"><sp/>override</highlight></codeline>
+<codeline lineno="175"><highlight class="keyword"><sp/><sp/><sp/><sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="176"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>now<sp/>=<sp/>std::chrono::steady_clock::now();</highlight></codeline>
+<codeline lineno="177"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::chrono::duration&lt;double&gt;<sp/>elapsed_seconds<sp/>=<sp/>now<sp/>-<sp/>then;</highlight></codeline>
+<codeline lineno="178"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>then<sp/>=<sp/>now;</highlight></codeline>
+<codeline lineno="179"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>log_bond_dims(mps);</highlight></codeline>
+<codeline lineno="180"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>bond_list[it]<sp/>=<sp/>middle_bond_dim;</highlight></codeline>
+<codeline lineno="181"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>time_list[it]<sp/>=<sp/>elapsed_seconds.count();</highlight></codeline>
+<codeline lineno="182"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>log_step(it);</highlight></codeline>
+<codeline lineno="183"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>log_energy(E0);</highlight></codeline>
+<codeline lineno="184"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="185"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="186"><highlight class="normal"></highlight></codeline>
+<codeline lineno="187"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>quantit</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="188"><highlight class="normal"></highlight></codeline>
+<codeline lineno="189"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">//<sp/>INCLUDE_DMRG_LOGGER_H</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="/home/alex/project/quantt/include/dmrg_logger.h"/>
+  </compounddef>
+</doxygen>

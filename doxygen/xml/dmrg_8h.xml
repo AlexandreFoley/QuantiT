@@ -1,0 +1,638 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="dmrg_8h" kind="file" language="C++">
+    <compoundname>dmrg.h</compoundname>
+    <includes refid="MPT_8h" local="yes">MPT.h</includes>
+    <includes refid="dmrg__logger_8h" local="yes">dmrg_logger.h</includes>
+    <includes refid="dmrg__options_8h" local="yes">dmrg_options.h</includes>
+    <includes local="no">cmath</includes>
+    <includes local="no">limits</includes>
+    <includes local="no">torch/torch.h</includes>
+    <includes local="yes">doctest/doctest_proxy.h</includes>
+    <incdepgraph>
+      <node id="14">
+        <label>functional</label>
+      </node>
+      <node id="22">
+        <label>fmt/format.h</label>
+      </node>
+      <node id="44">
+        <label>limits</label>
+      </node>
+      <node id="15">
+        <label>iterator</label>
+      </node>
+      <node id="26">
+        <label>cstdint</label>
+      </node>
+      <node id="35">
+        <label>charconv</label>
+      </node>
+      <node id="42">
+        <label>dmrg_options.h</label>
+        <link refid="dmrg__options_8h_source"/>
+      </node>
+      <node id="1">
+        <label>/home/alex/project/quantt/include/dmrg.h</label>
+        <link refid="dmrg_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="28">
+        <label>Conserved/Composite/quantity_vector.h</label>
+        <link refid="quantity__vector_8h_source"/>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>boost/stl_interfaces/iterator_interface.hpp</label>
+      </node>
+      <node id="31">
+        <label>property.h</label>
+        <link refid="property_8h_source"/>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+      </node>
+      <node id="43">
+        <label>cmath</label>
+      </node>
+      <node id="11">
+        <label>cassert</label>
+      </node>
+      <node id="34">
+        <label>fmt/ostream.h</label>
+      </node>
+      <node id="38">
+        <label>stdexcept</label>
+      </node>
+      <node id="16">
+        <label>numeric</label>
+      </node>
+      <node id="36">
+        <label>ATen/Functions.h</label>
+      </node>
+      <node id="37">
+        <label>exception</label>
+      </node>
+      <node id="30">
+        <label>boost/stl_interfaces/view_interface.hpp</label>
+      </node>
+      <node id="5">
+        <label>Conserved/Composite/quantity_impl.h</label>
+        <link refid="quantity__impl_8h_source"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+      </node>
+      <node id="27">
+        <label>ostream</label>
+      </node>
+      <node id="32">
+        <label>torch_formatter.h</label>
+        <link refid="torch__formatter_8h_source"/>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>fmt/core.h</label>
+      </node>
+      <node id="19">
+        <label>templateMeta.h</label>
+        <link refid="templateMeta_8h_source"/>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+      </node>
+      <node id="40">
+        <label>random</label>
+      </node>
+      <node id="4">
+        <label>Conserved/Composite/cquantity.h</label>
+        <link refid="cquantity_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+      </node>
+      <node id="23">
+        <label>ios</label>
+      </node>
+      <node id="2">
+        <label>MPT.h</label>
+        <link refid="MPT_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>blockTensor/flat_map.h</label>
+        <link refid="flat__map_8h_source"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+      </node>
+      <node id="25">
+        <label>Conserved/quantity.h</label>
+        <link refid="quantity_8h_source"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="20">
+        <label>tuple</label>
+      </node>
+      <node id="39">
+        <label>torch/csrc/utils/variadic.h</label>
+      </node>
+      <node id="13">
+        <label>fmt/ranges.h</label>
+      </node>
+      <node id="18">
+        <label>vector</label>
+      </node>
+      <node id="17">
+        <label>utility</label>
+      </node>
+      <node id="3">
+        <label>blockTensor/btensor.h</label>
+        <link refid="btensor_8h_source"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="33">
+        <label>torch/torch.h</label>
+      </node>
+      <node id="6">
+        <label>Conserved/quantity_utils.h</label>
+        <link refid="quantity__utils_8h_source"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+      </node>
+      <node id="41">
+        <label>dmrg_logger.h</label>
+        <link refid="dmrg__logger_8h_source"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+      </node>
+      <node id="21">
+        <label>type_traits</label>
+      </node>
+      <node id="9">
+        <label>algorithm</label>
+      </node>
+      <node id="29">
+        <label>Conserved/Composite/quantity_vector_impl.h</label>
+        <link refid="quantity__vector__impl_8h_source"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+      </node>
+      <node id="24">
+        <label>memory</label>
+      </node>
+      <node id="8">
+        <label>doctest/doctest_proxy.h</label>
+      </node>
+    </incdepgraph>
+    <innernamespace refid="namespacequantit">quantit</innernamespace>
+    <innernamespace refid="namespacequantit_1_1details">quantit::details</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>File:<sp/>dmrg.h</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>Project:<sp/>QuantiT</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>File<sp/>Created:<sp/>Tuesday,<sp/>11th<sp/>August<sp/>2020<sp/>9:46:51<sp/>am</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>Author:<sp/>Alexandre<sp/>Foley<sp/>(Alexandre.foley@usherbrooke.ca)</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>-----</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>Last<sp/>Modified:<sp/>Tuesday,<sp/>11th<sp/>August<sp/>2020<sp/>9:46:52<sp/>am</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>Modified<sp/>By:<sp/>Alexandre<sp/>Foley<sp/>(Alexandre.foley@usherbrooke.ca&gt;)</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>-----</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>Copyright<sp/>(c)<sp/>2020<sp/>Alexandre<sp/>Foley</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>Licensed<sp/>under<sp/>GPL<sp/>v3</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>E8650E72_8C05_4D74_98C7_61F4FD428B39</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>E8650E72_8C05_4D74_98C7_61F4FD428B39</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;MPT.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;dmrg_logger.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;dmrg_options.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;cmath&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;limits&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;torch/torch.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;doctest/doctest_proxy.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">quantit</highlight></codeline>
+<codeline lineno="26"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="keyword">namespace</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="30"><highlight class="normal">dmrg_default_logger<sp/>dummy_logger;</highlight></codeline>
+<codeline lineno="31"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="37"><highlight class="normal">torch::Tensor<sp/>dmrg(<sp/>MPO<sp/>&amp;hamiltonian,<sp/>MPS<sp/>&amp;in_out_state,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>dmrg_options<sp/>&amp;options,</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dmrg_logger<sp/>&amp;logger<sp/>=<sp/>dummy_logger);</highlight></codeline>
+<codeline lineno="39"><highlight class="normal">btensor<sp/>dmrg(<sp/>bMPO<sp/>&amp;hamiltonian,<sp/>bMPS<sp/>&amp;in_out_state,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>dmrg_options<sp/>&amp;options,</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dmrg_logger<sp/>&amp;logger<sp/>=<sp/>dummy_logger);</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal">std::tuple&lt;torch::Tensor,<sp/>MPS&gt;<sp/>dmrg(<sp/>MPO<sp/>&amp;hamiltonian,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>dmrg_options<sp/>&amp;options,</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dmrg_logger<sp/>&amp;logger<sp/>=<sp/>dummy_logger);</highlight></codeline>
+<codeline lineno="49"><highlight class="normal">std::tuple&lt;btensor,<sp/>bMPS&gt;<sp/>dmrg(<sp/>bMPO<sp/>&amp;hamiltonian,<sp/>any_quantity_cref<sp/>state_constraint<sp/>,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>dmrg_options<sp/>&amp;options,</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dmrg_logger<sp/>&amp;logger<sp/>=<sp/>dummy_logger);</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">details</highlight></codeline>
+<codeline lineno="53"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"></highlight></codeline>
+<codeline lineno="55"><highlight class="normal">btensor<sp/>dmrg_impl(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>bMPO<sp/>&amp;hamiltonian,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>bMPT<sp/>&amp;two_sites_hamil,<sp/>bMPS<sp/>&amp;in_out_state,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>dmrg_options<sp/>&amp;options,</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>benv_holder<sp/>&amp;Env,<sp/>dmrg_logger<sp/>&amp;logger);</highlight></codeline>
+<codeline lineno="57"><highlight class="normal">torch::Tensor<sp/>dmrg_impl(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>MPO<sp/>&amp;hamiltonian,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>MPT<sp/>&amp;twosites_hamil,<sp/>MPS<sp/>&amp;in_out_state,</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>dmrg_options<sp/>&amp;options,<sp/>env_holder<sp/>&amp;Env,<sp/>dmrg_logger<sp/>&amp;logger);</highlight></codeline>
+<codeline lineno="59"><highlight class="normal">std::tuple&lt;torch::Tensor,<sp/>torch::Tensor,<sp/>torch::Tensor&gt;<sp/>eig2x2Mat(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>torch::Tensor<sp/>&amp;a0,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>torch::Tensor<sp/>&amp;a1,</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>torch::Tensor<sp/>&amp;b);</highlight></codeline>
+<codeline lineno="61"><highlight class="normal">std::tuple&lt;btensor,<sp/>btensor,<sp/>btensor&gt;<sp/>eig2x2Mat(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>btensor<sp/>&amp;a0,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>btensor<sp/>&amp;a1,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>btensor<sp/>&amp;b);</highlight></codeline>
+<codeline lineno="62"><highlight class="normal">torch::Tensor<sp/>hamil2site_times_state(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>torch::Tensor<sp/>&amp;state,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>torch::Tensor<sp/>&amp;hamil,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>torch::Tensor<sp/>&amp;Lenv,</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>torch::Tensor<sp/>&amp;Renv);</highlight></codeline>
+<codeline lineno="64"><highlight class="normal">btensor<sp/>hamil2site_times_state(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>btensor<sp/>&amp;state,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>btensor<sp/>&amp;hamil,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>btensor<sp/>&amp;Lenv,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>btensor<sp/>&amp;Renv);</highlight></codeline>
+<codeline lineno="65"><highlight class="normal">MPT<sp/>compute_2sitesHamil(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>MPO<sp/>&amp;hamil);</highlight></codeline>
+<codeline lineno="66"><highlight class="normal">bMPT<sp/>compute_2sitesHamil(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>bMPO<sp/>&amp;hamil);</highlight></codeline>
+<codeline lineno="67"><highlight class="normal">std::tuple&lt;torch::Tensor,<sp/>torch::Tensor,<sp/>torch::Tensor,<sp/>torch::Tensor&gt;<sp/>one_step_lanczos(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>torch::Tensor<sp/>&amp;state,</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>torch::Tensor<sp/>&amp;hamil,</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>torch::Tensor<sp/>&amp;Lenv,</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>torch::Tensor<sp/>&amp;Renv);</highlight></codeline>
+<codeline lineno="71"><highlight class="normal">std::tuple&lt;btensor,<sp/>btensor,<sp/>btensor,<sp/>btensor&gt;<sp/>one_step_lanczos(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>btensor<sp/>&amp;state,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>btensor<sp/>&amp;hamil,</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>btensor<sp/>&amp;Lenv,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>btensor<sp/>&amp;Renv);</highlight></codeline>
+<codeline lineno="73"><highlight class="normal">btensor<sp/>edge_shape_prep(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>btensor<sp/>&amp;tens,int64_t<sp/>dim);</highlight></codeline>
+<codeline lineno="74"><highlight class="normal">torch_shape<sp/>edge_shape_prep(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>torch_shape<sp/>&amp;tens,<sp/>int64_t<sp/>dim);</highlight></codeline>
+<codeline lineno="75"><highlight class="normal">torch::Tensor<sp/>trivial_edge(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>torch::Tensor<sp/>&amp;lower_state,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>torch::Tensor<sp/>&amp;Hamil,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>torch::Tensor<sp/>&amp;upper_state,</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>int64_t<sp/>index_low,<sp/>int64_t<sp/>index_op,<sp/>int64_t<sp/>index_up);</highlight></codeline>
+<codeline lineno="77"><highlight class="normal">btensor<sp/>trivial_edge(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>btensor<sp/>&amp;lower_state,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>btensor<sp/>&amp;Hamil,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>btensor<sp/>&amp;upper_state,<sp/>int64_t<sp/>index_low,</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>int64_t<sp/>index_op,<sp/>int64_t<sp/>index_up);</highlight></codeline>
+<codeline lineno="79"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>details</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="80"><highlight class="normal">qtt_TEST_CASE(</highlight><highlight class="stringliteral">&quot;btensor<sp/>dmrg<sp/>run<sp/>test&quot;</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="81"><highlight class="normal">{<sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//TODO:<sp/>make<sp/>it<sp/>so<sp/>dmrg<sp/>run<sp/>with<sp/>silly<sp/>target<sp/>cval<sp/>(like<sp/>0<sp/>particles)<sp/>behave<sp/>in<sp/>a<sp/>more<sp/>graceful<sp/>(e.g.<sp/>finnish<sp/>quickly)<sp/>manner<sp/>than<sp/>currently(crash)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>cval<sp/>=<sp/>quantity&lt;conserved::Z&gt;;</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>T<sp/>=<sp/>quantit::rand({{{1,cval(1)},{1,cval(-1)}},<sp/>{{3,cval(-1)},{2,cval(1)}},<sp/>{{1,cval(-1)},{1,cval(1)}},<sp/>{{3,cval(1)},{2,cval(-1)}}},cval(0));</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/>bMPO<sp/>Hamil(5,<sp/>T);</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/>dmrg_options<sp/>opt;</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/>opt.maximum_iterations<sp/>=<sp/>10;</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Hamil[0]<sp/>=<sp/>Hamil[0].basic_create_view({0,-1,-1,-1},</highlight><highlight class="keyword">true</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Hamil[Hamil.size()<sp/>-<sp/>1]<sp/>=<sp/>Hamil[Hamil.size()<sp/>-<sp/>1].basic_create_view({-1,-1,<sp/>0,-1},</highlight><highlight class="keyword">true</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/>qtt_REQUIRE(Hamil.check_ranks());</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/>btensor<sp/>E;</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/>bMPS<sp/>state;</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>std::tie(E,state)<sp/>=<sp/>dmrg(Hamil,opt);</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/>qtt_CHECK_NOTHROW(std::tie(E,<sp/>state)<sp/>=<sp/>dmrg(Hamil,<sp/>cval(1),<sp/>opt));</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>fmt::print(&quot;E<sp/>{}\n\n&quot;,E);</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="98"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="99"><highlight class="normal">qtt_TEST_CASE(</highlight><highlight class="stringliteral">&quot;dmrg<sp/>run<sp/>test&quot;</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="100"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>T<sp/>=<sp/>torch::rand({2,<sp/>5,<sp/>2,<sp/>5});</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/>MPO<sp/>Hamil(5,<sp/>T);</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/>dmrg_options<sp/>opt;</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/>opt.maximum_iterations<sp/>=<sp/>10;</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal">torch::indexing;</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Hamil[0]<sp/>=<sp/>Hamil[0].index({Slice(0,<sp/>1),<sp/>Ellipsis});</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Hamil[Hamil.size()<sp/>-<sp/>1]<sp/>=<sp/>Hamil[Hamil.size()<sp/>-<sp/>1].index({Ellipsis,<sp/>Slice(0,<sp/>1),<sp/>Slice()});</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>E;</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/>MPS<sp/>state;</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>std::tie(E,state)<sp/>=<sp/>dmrg(Hamil,opt);</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/>qtt_CHECK_NOTHROW(std::tie(E,<sp/>state)<sp/>=<sp/>dmrg(Hamil,<sp/>opt));</highlight></codeline>
+<codeline lineno="114"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="115"><highlight class="normal">qtt_TEST_CASE(</highlight><highlight class="stringliteral">&quot;2x2<sp/>eigen<sp/>value<sp/>problem&quot;</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="116"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>setup:<sp/>a<sp/>random<sp/>answer<sp/>from<sp/>which<sp/>we<sp/>construct<sp/>a<sp/>matrix</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>angle<sp/>=<sp/>torch::rand({},<sp/>torch::kFloat64)<sp/>*<sp/>2<sp/>*<sp/>M_PI;</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>E0<sp/>=<sp/>torch::rand({},<sp/>torch::kFloat64)<sp/>*<sp/>-1;</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>E1<sp/>=<sp/>torch::rand({},<sp/>torch::kFloat64);</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>psi00<sp/>=<sp/>torch::zeros({},<sp/>torch::kFloat64);</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>psi01<sp/>=<sp/>torch::zeros({},<sp/>torch::kFloat64);</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/>psi00<sp/>=<sp/>cos(angle);</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/>psi01<sp/>=<sp/>sin(angle);</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>psi10<sp/>=<sp/>torch::zeros({},<sp/>torch::kFloat64);</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>psi11<sp/>=<sp/>torch::zeros({},<sp/>torch::kFloat64);</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/>psi10<sp/>=<sp/>sin(angle);</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/>psi11<sp/>=<sp/>-cos(angle);</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>a0<sp/>=<sp/>psi00.pow(2)<sp/>*<sp/>E0<sp/>+<sp/>psi10.pow(2)<sp/>*<sp/>E1;<sp/><sp/></highlight><highlight class="comment">//<sp/>matrix<sp/>element</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>a1<sp/>=<sp/>psi01.pow(2)<sp/>*<sp/>E0<sp/>+<sp/>psi11.pow(2)<sp/>*<sp/>E1;<sp/><sp/></highlight><highlight class="comment">//<sp/>matrix<sp/>element</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>b<sp/>=<sp/>psi01<sp/>*<sp/>psi00<sp/>*<sp/>E0<sp/>+<sp/>psi11<sp/>*<sp/>psi10<sp/>*<sp/>E1;<sp/></highlight><highlight class="comment">//<sp/>matrix<sp/>element</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="132"><highlight class="normal"></highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>[T_E0,<sp/>T_psi00,<sp/>T_psi01]<sp/>=<sp/>details::eig2x2Mat(a0,<sp/>a1,<sp/>b);</highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>for<sp/>the<sp/>phase<sp/>gauge<sp/>freedom.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>state_check<sp/>=<sp/>(torch::allclose(psi00,<sp/>T_psi00)<sp/>and<sp/>torch::allclose(psi01,<sp/>T_psi01))<sp/>or</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(torch::allclose(-1<sp/>*<sp/>psi00,<sp/>T_psi00)<sp/>and<sp/>torch::allclose(-1<sp/>*<sp/>psi01,<sp/>T_psi01));</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/>qtt_CHECK(state_check);</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/>qtt_CHECK(torch::allclose(T_E0,<sp/>E0));</highlight></codeline>
+<codeline lineno="139"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"></highlight></codeline>
+<codeline lineno="141"><highlight class="normal">qtt_TEST_CASE(</highlight><highlight class="stringliteral">&quot;Btensor<sp/>two<sp/>sites<sp/>MPO&quot;</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="142"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::set_default_dtype(torch::scalarTypeToTypeMeta(</highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::kFloat64));<sp/></highlight><highlight class="comment">//<sp/>otherwise<sp/>the<sp/>type<sp/>promotion<sp/>always<sp/>goes<sp/>to<sp/>floats<sp/>when<sp/>promoting<sp/>a<sp/>tensor</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="145"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal">torch::indexing;</highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal">details;</highlight></codeline>
+<codeline lineno="147"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>l_ising<sp/>=<sp/>torch::zeros({3,<sp/>2,<sp/>3,<sp/>2});</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//only<sp/>the<sp/>Sz<sp/>spin<sp/>model<sp/>can<sp/>be<sp/>written<sp/>in<sp/>MPO<sp/>form<sp/>with<sp/>conservation<sp/>laws.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>acc<sp/>=<sp/>l_ising.accessor&lt;double,<sp/>4&gt;();</highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>acc[1][0][0][0]<sp/>=<sp/>acc[2][0][1][0]<sp/>=<sp/>1;</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>acc[1][1][0][1]<sp/>=<sp/>acc[2][1][1][1]<sp/>=<sp/>-1;</highlight></codeline>
+<codeline lineno="153"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//Identities</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>acc[0][0][0][0]<sp/>=<sp/>acc[0][1][0][1]<sp/>=<sp/>1;</highlight></codeline>
+<codeline lineno="155"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>acc[2][0][2][0]<sp/>=<sp/>acc[2][1][2][1]<sp/>=<sp/>1;</highlight></codeline>
+<codeline lineno="156"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="157"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>cval<sp/>=<sp/>quantity&lt;conserved::Z&gt;;</highlight></codeline>
+<codeline lineno="158"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>bl_ising<sp/>=<sp/>btensor({{{3,cval(0)}},{{1,cval(1)},{1,cval(-1)}},{{3,cval(0)}},{{1,cval(-1)},{1,cval(1)}}},cval(0));</highlight></codeline>
+<codeline lineno="159"><highlight class="normal"><sp/><sp/><sp/><sp/>bl_ising<sp/>=<sp/>from_basic_tensor_like(bl_ising,l_ising);</highlight></codeline>
+<codeline lineno="160"><highlight class="normal"><sp/><sp/><sp/><sp/>bMPO<sp/>ising(2,<sp/>bl_ising);</highlight></codeline>
+<codeline lineno="161"><highlight class="normal"><sp/><sp/><sp/><sp/>ising[0]<sp/>=<sp/>ising[0].basic_create_view({2,<sp/>-1,-1,-1},</highlight><highlight class="keyword">true</highlight><highlight class="normal">);</highlight><highlight class="comment">//preserve<sp/>the<sp/>rank<sp/>when<sp/>creating<sp/>the<sp/>view</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="162"><highlight class="normal"><sp/><sp/><sp/><sp/>ising[1]<sp/>=<sp/>ising[1].basic_create_view({-1,<sp/>-1,<sp/>0,-1},</highlight><highlight class="keyword">true</highlight><highlight class="normal">);</highlight><highlight class="comment">//preserve<sp/>the<sp/>rank<sp/>when<sp/>create<sp/>the<sp/>view.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="163"><highlight class="normal"></highlight></codeline>
+<codeline lineno="164"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>two_s_ising<sp/>=<sp/>details::compute_2sitesHamil(ising);</highlight></codeline>
+<codeline lineno="165"><highlight class="normal"></highlight></codeline>
+<codeline lineno="166"><highlight class="normal"><sp/><sp/><sp/><sp/>bMPS<sp/>rstate<sp/>=<sp/>random_bMPS(4,ising,cval(0));</highlight><highlight class="comment">//edges<sp/>have<sp/>bond<sp/>dimension<sp/>1.<sp/>if<sp/>you<sp/>want<sp/>a<sp/>uniform<sp/>bond<sp/>dimenison,<sp/>ask<sp/>for<sp/>a<sp/>MPS<sp/>longer<sp/>than<sp/>you<sp/>need,<sp/>and<sp/>chop<sp/>off<sp/>the<sp/>edges.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="167"><highlight class="normal"></highlight></codeline>
+<codeline lineno="168"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>fmt::print(&quot;Norm2<sp/>\n{}\n&quot;,contract(rstate,rstate));</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="169"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>fmt::print(&quot;state\n{}\n{}\n&quot;,rstate[0].reshape({4}),rstate[1].reshape({4}));</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="170"><highlight class="normal"><sp/><sp/><sp/><sp/>rstate[0]<sp/>=<sp/>rstate[0]<sp/>/<sp/>sqrt(contract(rstate,<sp/>rstate));<sp/></highlight><highlight class="comment">//<sp/>normalize</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="171"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>fmt::print(&quot;normed<sp/>state\n{}\n{}\n&quot;,rstate[0].reshape({4}),rstate[1].reshape({4}));</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="172"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>norm<sp/>=<sp/>contract(rstate,rstate);</highlight></codeline>
+<codeline lineno="173"><highlight class="normal"><sp/><sp/><sp/><sp/>qtt_CHECK(allclose(norm,<sp/>quantit::ones({},cval(0))));</highlight></codeline>
+<codeline lineno="174"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>fmt::print(&quot;Norm2<sp/>\n{}\n&quot;,contract(rstate,rstate));</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="175"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>fmt::print(&quot;MPS<sp/>\n{}\n\n&quot;,squeeze(rstate[0]));<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="176"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>fmt::print(&quot;{}\n\n&quot;,squeeze(rstate[1]));</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="177"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>two_s_state<sp/>=<sp/>tensordot(rstate[0],<sp/>rstate[1],<sp/>{2},<sp/>{0});</highlight></codeline>
+<codeline lineno="178"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>fmt::print(&quot;{}\n\n&quot;,two_s_state);</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="179"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>avg<sp/>=<sp/>tensordot(two_s_state,<sp/>two_s_state.conj(),<sp/>{0,<sp/>1,<sp/>2,<sp/>3},<sp/>{0,<sp/>1,<sp/>2,<sp/>3});</highlight></codeline>
+<codeline lineno="180"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>fmt::print(&quot;avg<sp/>{}\n\n&quot;,avg);</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="181"><highlight class="normal"><sp/><sp/><sp/><sp/>qtt_CHECK(allclose(avg,ones_like(avg)<sp/>));</highlight></codeline>
+<codeline lineno="182"><highlight class="normal"></highlight></codeline>
+<codeline lineno="183"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>H_av<sp/>=<sp/>contract(rstate,<sp/>rstate,<sp/>ising);</highlight></codeline>
+<codeline lineno="184"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>H_av_2s<sp/>=<sp/>squeeze(tensordot(two_s_state.conj(),<sp/>tensordot(two_s_ising[0],<sp/>two_s_state,<sp/>{4,<sp/>5},<sp/>{1,<sp/>2}),<sp/>{1,<sp/>2},<sp/>{1,<sp/>2}));</highlight></codeline>
+<codeline lineno="185"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>Lenv<sp/>=<sp/>trivial_edge(two_s_state,two_s_ising[0],two_s_state.inverse_cvals(),0,0,0);</highlight></codeline>
+<codeline lineno="186"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>Renv<sp/>=<sp/>trivial_edge(two_s_state,two_s_ising[0],two_s_state.inverse_cvals(),3,3,3);</highlight></codeline>
+<codeline lineno="187"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>H_av_upd<sp/>=<sp/>tensordot(</highlight></codeline>
+<codeline lineno="188"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>two_s_state.conj(),<sp/>quantit::details::hamil2site_times_state(two_s_state,<sp/>two_s_ising[0],<sp/>Lenv,<sp/>Renv),</highlight></codeline>
+<codeline lineno="189"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{0,<sp/>1,<sp/>2,<sp/>3},<sp/>{0,<sp/>1,<sp/>2,<sp/>3});</highlight></codeline>
+<codeline lineno="190"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>fmt::print(&quot;H_av<sp/>{}\n\nH_av_2s<sp/>{}\n\n<sp/>H_av_upd<sp/>{}\n\n&quot;,H_av,H_av_2s,H_av_upd);</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="191"><highlight class="normal"><sp/><sp/><sp/><sp/>qtt_CHECK(allclose(H_av,<sp/>H_av_2s));</highlight></codeline>
+<codeline lineno="192"><highlight class="normal"><sp/><sp/><sp/><sp/>qtt_CHECK(allclose(H_av,<sp/>H_av_upd));</highlight></codeline>
+<codeline lineno="193"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>fmt::print(&quot;Correct<sp/>value:<sp/>\n{}\n&quot;,H_av);</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="194"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>fmt::print(&quot;from<sp/>two<sp/>sites:<sp/>\n{}\n&quot;,H_av_2s);</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="195"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>fmt::print(&quot;from<sp/>two<sp/>sites<sp/>update:<sp/>\n{}\n&quot;,H_av_upd);</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="196"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>[Hpsi,<sp/>a0,<sp/>a1,<sp/>b]<sp/>=<sp/>details::one_step_lanczos(two_s_state,<sp/>two_s_ising[0],<sp/>Lenv,<sp/>Renv);</highlight></codeline>
+<codeline lineno="197"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>fmt::print(&quot;Ising<sp/>Hamil:<sp/>{}<sp/>\n\n&quot;,<sp/>squeeze(two_s_ising[0]).reshape({2})<sp/>);</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="198"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>fmt::print(&quot;state:<sp/>{}<sp/>\n\n&quot;,<sp/>squeeze(two_s_state).reshape({})<sp/>);</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="199"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>fmt::print(&quot;one<sp/>step<sp/>lanczos:<sp/>\n{}\n&quot;,a0);</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="200"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>[E,<sp/>o_coeff,<sp/>n_coeff]<sp/>=<sp/>details::eig2x2Mat(a0,<sp/>a1,<sp/>b);</highlight></codeline>
+<codeline lineno="201"><highlight class="normal"><sp/><sp/><sp/><sp/>qtt_CHECK(allclose(o_coeff.pow(2)<sp/>+<sp/>n_coeff.pow(2),<sp/>ones_like(o_coeff)));</highlight></codeline>
+<codeline lineno="202"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>psi_update<sp/>=<sp/>o_coeff<sp/>*<sp/>two_s_state<sp/>+<sp/>n_coeff<sp/>*<sp/>Hpsi;</highlight></codeline>
+<codeline lineno="203"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>test<sp/>=<sp/>tensordot(psi_update.conj(),<sp/>psi_update,<sp/>{0,<sp/>1,<sp/>2,<sp/>3},<sp/>{0,<sp/>1,<sp/>2,<sp/>3});</highlight></codeline>
+<codeline lineno="204"><highlight class="normal"><sp/><sp/><sp/><sp/>qtt_CHECK(allclose(test,<sp/>ones_like(test)));</highlight></codeline>
+<codeline lineno="205"><highlight class="normal"><sp/><sp/><sp/><sp/>test<sp/>=<sp/>tensordot(two_s_state.conj(),<sp/>two_s_state,<sp/>{0,<sp/>1,<sp/>2,<sp/>3},<sp/>{0,<sp/>1,<sp/>2,<sp/>3});</highlight></codeline>
+<codeline lineno="206"><highlight class="normal"><sp/><sp/><sp/><sp/>qtt_CHECK(allclose(test,<sp/>ones_like(test)));</highlight></codeline>
+<codeline lineno="207"><highlight class="normal"><sp/><sp/><sp/><sp/>test<sp/>=tensordot(Hpsi,<sp/>two_s_state.conj(),<sp/>{0,<sp/>1,<sp/>2,<sp/>3},<sp/>{0,<sp/>1,<sp/>2,<sp/>3});</highlight></codeline>
+<codeline lineno="208"><highlight class="normal"><sp/><sp/><sp/><sp/>qtt_CHECK(allclose(test,<sp/>zeros_like(test)));</highlight></codeline>
+<codeline lineno="209"><highlight class="normal"><sp/><sp/><sp/><sp/>test<sp/>=<sp/>tensordot(Hpsi.conj(),<sp/>Hpsi,<sp/>{0,<sp/>1,<sp/>2,<sp/>3},<sp/>{0,<sp/>1,<sp/>2,<sp/>3});</highlight></codeline>
+<codeline lineno="210"><highlight class="normal"><sp/><sp/><sp/><sp/>qtt_CHECK(allclose(test,<sp/>zeros_like(test)));</highlight><highlight class="comment">//<sp/>the<sp/>input<sp/>random<sp/>state<sp/>is<sp/>always<sp/>an<sp/>eigenstate<sp/>(in<sp/>a<sp/>degenerate<sp/>manifold),<sp/>the<sp/>model<sp/>is<sp/>that<sp/>simple.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="211"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>a1_test<sp/>=</highlight></codeline>
+<codeline lineno="212"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>tensordot(Hpsi.conj(),<sp/>quantit::details::hamil2site_times_state(Hpsi,<sp/>two_s_ising[0],<sp/>Lenv,<sp/>Renv),</highlight></codeline>
+<codeline lineno="213"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{0,<sp/>1,<sp/>2,<sp/>3},<sp/>{0,<sp/>1,<sp/>2,<sp/>3});</highlight></codeline>
+<codeline lineno="214"><highlight class="normal"><sp/><sp/><sp/><sp/>qtt_CHECK(allclose(a1,<sp/>a1_test));</highlight></codeline>
+<codeline lineno="215"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>fmt::print(&quot;a1<sp/>\n{}\na1_test\n{}\n&quot;,a1,a1_test);</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="216"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>H_av_Pupd<sp/>=<sp/>tensordot(</highlight></codeline>
+<codeline lineno="217"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>psi_update.conj(),<sp/>quantit::details::hamil2site_times_state(psi_update,<sp/>two_s_ising[0],<sp/>Lenv,<sp/>Renv),</highlight></codeline>
+<codeline lineno="218"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{0,<sp/>1,<sp/>2,<sp/>3},<sp/>{0,<sp/>1,<sp/>2,<sp/>3});</highlight></codeline>
+<codeline lineno="219"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>fmt::print(&quot;actual<sp/>update<sp/>energie:<sp/>\n{}\n&quot;,<sp/>H_av_Pupd);</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="220"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>fmt::print(&quot;predicted<sp/>update<sp/>energie:<sp/>\n{}\n&quot;,<sp/>E);</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="221"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="222"><highlight class="normal">qtt_TEST_CASE(</highlight><highlight class="stringliteral">&quot;Two<sp/>sites<sp/>MPO&quot;</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="223"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="224"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::set_default_dtype(torch::scalarTypeToTypeMeta(</highlight></codeline>
+<codeline lineno="225"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::kFloat64));<sp/></highlight><highlight class="comment">//<sp/>otherwise<sp/>the<sp/>type<sp/>promotion<sp/>always<sp/>goes<sp/>to<sp/>floats<sp/>when<sp/>promoting<sp/>a<sp/>tensor</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="226"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal">torch::indexing;</highlight></codeline>
+<codeline lineno="227"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//Sx<sp/>*Sx<sp/>version</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="228"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>l_ising<sp/>=<sp/>torch::zeros({3,<sp/>2,<sp/>3,<sp/>2});</highlight></codeline>
+<codeline lineno="229"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="230"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>acc<sp/>=<sp/>l_ising.accessor&lt;double,<sp/>4&gt;();</highlight></codeline>
+<codeline lineno="231"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//Sx</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="232"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>acc[1][0][0][1]<sp/>=<sp/>acc[1][1][0][0]<sp/>=<sp/>1;</highlight></codeline>
+<codeline lineno="233"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>acc[2][0][1][1]<sp/>=<sp/>acc[2][1][1][0]<sp/>=<sp/>1;</highlight></codeline>
+<codeline lineno="234"><highlight class="normal"></highlight></codeline>
+<codeline lineno="235"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//corner<sp/>identities</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="236"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>acc[0][0][0][0]<sp/>=<sp/>acc[0][1][0][1]<sp/>=<sp/>1;</highlight></codeline>
+<codeline lineno="237"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>acc[2][0][2][0]<sp/>=<sp/>acc[2][1][2][1]<sp/>=<sp/>1;</highlight></codeline>
+<codeline lineno="238"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="239"><highlight class="normal"><sp/><sp/><sp/><sp/>MPO<sp/>ising(2,<sp/>l_ising);</highlight></codeline>
+<codeline lineno="240"><highlight class="normal"><sp/><sp/><sp/><sp/>ising[0]<sp/>=<sp/>ising[0].index({Slice(2,<sp/>3),<sp/>Ellipsis});</highlight></codeline>
+<codeline lineno="241"><highlight class="normal"><sp/><sp/><sp/><sp/>ising[1]<sp/>=<sp/>ising[1].index({Slice(),<sp/>Slice(),<sp/>Slice(0,<sp/>1),<sp/>Slice()});</highlight></codeline>
+<codeline lineno="242"><highlight class="normal"></highlight></codeline>
+<codeline lineno="243"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>two_s_ising<sp/>=<sp/>details::compute_2sitesHamil(ising);</highlight></codeline>
+<codeline lineno="244"><highlight class="normal"></highlight></codeline>
+<codeline lineno="245"><highlight class="normal"><sp/><sp/><sp/><sp/>MPS<sp/>rstate(2,<sp/>torch::rand({2,<sp/>2,<sp/>2}));</highlight></codeline>
+<codeline lineno="246"><highlight class="normal"><sp/><sp/><sp/><sp/>rstate[0]<sp/>=<sp/>rstate[0].index({Slice(0,<sp/>1),<sp/>Ellipsis});</highlight></codeline>
+<codeline lineno="247"><highlight class="normal"><sp/><sp/><sp/><sp/>rstate[1]<sp/>=<sp/>rstate[1].index({Ellipsis,<sp/>Slice(1,<sp/>2)});</highlight></codeline>
+<codeline lineno="248"><highlight class="normal"></highlight></codeline>
+<codeline lineno="249"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>fmt::print(&quot;Norm2<sp/>\n{}\n&quot;,contract(rstate,rstate));</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="250"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>fmt::print(&quot;state\n{}\n{}\n&quot;,rstate[0].reshape({4}),rstate[1].reshape({4}));</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="251"><highlight class="normal"><sp/><sp/><sp/><sp/>rstate[0]<sp/>=<sp/>rstate[0]<sp/>/<sp/>torch::sqrt(contract(rstate,<sp/>rstate));<sp/></highlight><highlight class="comment">//<sp/>normalize</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="252"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>fmt::print(&quot;normed<sp/>state\n{}\n{}\n&quot;,rstate[0].reshape({4}),rstate[1].reshape({4}));</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="253"><highlight class="normal"><sp/><sp/><sp/><sp/>qtt_CHECK(torch::allclose(contract(rstate,<sp/>rstate),<sp/>torch::ones({})));</highlight></codeline>
+<codeline lineno="254"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>fmt::print(&quot;Norm2<sp/>\n{}\n&quot;,contract(rstate,rstate));</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="255"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>two_s_state<sp/>=<sp/>torch::tensordot(rstate[0],<sp/>rstate[1],<sp/>{2},<sp/>{0});</highlight></codeline>
+<codeline lineno="256"><highlight class="normal"><sp/><sp/><sp/><sp/>qtt_CHECK(torch::allclose(tensordot(two_s_state,<sp/>two_s_state,<sp/>{0,<sp/>1,<sp/>2,<sp/>3},<sp/>{0,<sp/>1,<sp/>2,<sp/>3}),<sp/>torch::ones({})));</highlight></codeline>
+<codeline lineno="257"><highlight class="normal"></highlight></codeline>
+<codeline lineno="258"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>H_av<sp/>=<sp/>contract(rstate,<sp/>rstate,<sp/>ising);</highlight></codeline>
+<codeline lineno="259"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>H_av_2s<sp/>=<sp/>torch::squeeze(</highlight></codeline>
+<codeline lineno="260"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::tensordot(two_s_state,<sp/>torch::tensordot(two_s_ising[0],<sp/>two_s_state,<sp/>{4,<sp/>5},<sp/>{1,<sp/>2}),<sp/>{1,<sp/>2},<sp/>{1,<sp/>2}));</highlight></codeline>
+<codeline lineno="261"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>triv_env<sp/>=<sp/>torch::ones({1,<sp/>1,<sp/>1});</highlight></codeline>
+<codeline lineno="262"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>H_av_upd<sp/>=<sp/>torch::tensordot(</highlight></codeline>
+<codeline lineno="263"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>two_s_state,<sp/>quantit::details::hamil2site_times_state(two_s_state,<sp/>two_s_ising[0],<sp/>triv_env,<sp/>triv_env),</highlight></codeline>
+<codeline lineno="264"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{0,<sp/>1,<sp/>2,<sp/>3},<sp/>{0,<sp/>1,<sp/>2,<sp/>3});</highlight></codeline>
+<codeline lineno="265"><highlight class="normal"></highlight></codeline>
+<codeline lineno="266"><highlight class="normal"><sp/><sp/><sp/><sp/>qtt_CHECK(torch::allclose(H_av,<sp/>H_av_2s));</highlight></codeline>
+<codeline lineno="267"><highlight class="normal"><sp/><sp/><sp/><sp/>qtt_CHECK(torch::allclose(H_av,<sp/>H_av_upd));</highlight></codeline>
+<codeline lineno="268"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>fmt::print(&quot;Correct<sp/>value:<sp/>\n{}\n&quot;,H_av);</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="269"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>fmt::print(&quot;from<sp/>two<sp/>sites:<sp/>\n{}\n&quot;,H_av_2s);</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="270"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>fmt::print(&quot;from<sp/>two<sp/>sites<sp/>update:<sp/>\n{}\n&quot;,H_av_upd);</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="271"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>[Hpsi,<sp/>a0,<sp/>a1,<sp/>b]<sp/>=<sp/>details::one_step_lanczos(two_s_state,<sp/>two_s_ising[0],<sp/>triv_env,<sp/>triv_env);</highlight></codeline>
+<codeline lineno="272"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>fmt::print(&quot;one<sp/>step<sp/>lanczos:<sp/>\n{}\n&quot;,a0);</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="273"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>[E,<sp/>o_coeff,<sp/>n_coeff]<sp/>=<sp/>details::eig2x2Mat(a0,<sp/>a1,<sp/>b);</highlight></codeline>
+<codeline lineno="274"><highlight class="normal"><sp/><sp/><sp/><sp/>qtt_CHECK(torch::allclose(o_coeff.pow(2)<sp/>+<sp/>n_coeff.pow(2),<sp/>torch::ones({})));</highlight></codeline>
+<codeline lineno="275"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>psi_update<sp/>=<sp/>o_coeff<sp/>*<sp/>two_s_state<sp/>+<sp/>n_coeff<sp/>*<sp/>Hpsi;</highlight></codeline>
+<codeline lineno="276"><highlight class="normal"><sp/><sp/><sp/><sp/>qtt_CHECK(torch::allclose(tensordot(psi_update,<sp/>psi_update,<sp/>{0,<sp/>1,<sp/>2,<sp/>3},<sp/>{0,<sp/>1,<sp/>2,<sp/>3}),<sp/>torch::ones({})));</highlight></codeline>
+<codeline lineno="277"><highlight class="normal"><sp/><sp/><sp/><sp/>qtt_CHECK(torch::allclose(tensordot(two_s_state,<sp/>two_s_state,<sp/>{0,<sp/>1,<sp/>2,<sp/>3},<sp/>{0,<sp/>1,<sp/>2,<sp/>3}),<sp/>torch::ones({})));</highlight></codeline>
+<codeline lineno="278"><highlight class="normal"><sp/><sp/><sp/><sp/>qtt_CHECK(torch::allclose(tensordot(Hpsi,<sp/>two_s_state,<sp/>{0,<sp/>1,<sp/>2,<sp/>3},<sp/>{0,<sp/>1,<sp/>2,<sp/>3}),<sp/>torch::zeros({})));</highlight></codeline>
+<codeline lineno="279"><highlight class="normal"><sp/><sp/><sp/><sp/>qtt_CHECK(torch::allclose(tensordot(Hpsi,<sp/>Hpsi,<sp/>{0,<sp/>1,<sp/>2,<sp/>3},<sp/>{0,<sp/>1,<sp/>2,<sp/>3}),<sp/>torch::ones({})));</highlight></codeline>
+<codeline lineno="280"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>a1_test<sp/>=</highlight></codeline>
+<codeline lineno="281"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::tensordot(Hpsi,<sp/>quantit::details::hamil2site_times_state(Hpsi,<sp/>two_s_ising[0],<sp/>triv_env,<sp/>triv_env),</highlight></codeline>
+<codeline lineno="282"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{0,<sp/>1,<sp/>2,<sp/>3},<sp/>{0,<sp/>1,<sp/>2,<sp/>3});</highlight></codeline>
+<codeline lineno="283"><highlight class="normal"><sp/><sp/><sp/><sp/>qtt_CHECK(torch::allclose(a1,<sp/>a1_test));</highlight></codeline>
+<codeline lineno="284"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>fmt::print(&quot;a1<sp/>\n{}\na1_test\n{}\n&quot;,a1,a1_test);</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="285"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>H_av_Pupd<sp/>=<sp/>torch::tensordot(</highlight></codeline>
+<codeline lineno="286"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>psi_update,<sp/>quantit::details::hamil2site_times_state(psi_update,<sp/>two_s_ising[0],<sp/>triv_env,<sp/>triv_env),</highlight></codeline>
+<codeline lineno="287"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{0,<sp/>1,<sp/>2,<sp/>3},<sp/>{0,<sp/>1,<sp/>2,<sp/>3});</highlight></codeline>
+<codeline lineno="288"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>fmt::print(&quot;actual<sp/>update<sp/>energie:<sp/>\n{}\n&quot;,<sp/>H_av_Pupd);</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="289"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>fmt::print(&quot;predicted<sp/>update<sp/>energie:<sp/>\n{}\n&quot;,<sp/>E);</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="290"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="291"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>quantit</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="292"><highlight class="normal"></highlight></codeline>
+<codeline lineno="293"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>E8650E72_8C05_4D74_98C7_61F4FD428B39<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
+    </programlisting>
+    <location file="/home/alex/project/quantt/include/dmrg.h"/>
+  </compounddef>
+</doxygen>

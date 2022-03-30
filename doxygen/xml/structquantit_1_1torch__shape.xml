@@ -1,0 +1,254 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="structquantit_1_1torch__shape" kind="struct" language="C++" prot="public">
+    <compoundname>quantit::torch_shape</compoundname>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structquantit_1_1torch__shape_1aaf3a246265e6308a24d45ce8e062fc72" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; int64_t &gt;</type>
+        <definition>std::vector&lt;int64_t&gt; quantit::torch_shape::_sizes</definition>
+        <argsstring></argsstring>
+        <name>_sizes</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/blockTensor/btensor.h" line="1046" column="13" bodyfile="/home/alex/project/quantt/include/blockTensor/btensor.h" bodystart="1046" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structquantit_1_1torch__shape_1ad606e32ba489a2cfa039b49cc3fda62d" prot="public" static="no" mutable="no">
+        <type>torch::TensorOptions</type>
+        <definition>torch::TensorOptions quantit::torch_shape::opt</definition>
+        <argsstring></argsstring>
+        <name>opt</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/blockTensor/btensor.h" line="1047" column="22" bodyfile="/home/alex/project/quantt/include/blockTensor/btensor.h" bodystart="1047" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="structquantit_1_1torch__shape_1a58412f85ad95fdb4d85c9be8452fdb4b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>quantit::torch_shape::torch_shape</definition>
+        <argsstring>()=default</argsstring>
+        <name>torch_shape</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/blockTensor/btensor.h" line="1048" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="structquantit_1_1torch__shape_1ab66b8d32347066f0e2c88bb60ed1e6a5" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>quantit::torch_shape::torch_shape</definition>
+        <argsstring>(const torch::Tensor &amp;tens)</argsstring>
+        <name>torch_shape</name>
+        <param>
+          <type>const torch::Tensor &amp;</type>
+          <declname>tens</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/blockTensor/btensor.h" line="1049" column="1" bodyfile="/home/alex/project/quantt/include/blockTensor/btensor.h" bodystart="1049" bodyend="1049"/>
+      </memberdef>
+      <memberdef kind="function" id="structquantit_1_1torch__shape_1adecaf0bb45e5bdd88471a55659facf19" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>quantit::torch_shape::torch_shape</definition>
+        <argsstring>(std::vector&lt; int64_t &gt; _sizes, torch::TensorOptions _opt)</argsstring>
+        <name>torch_shape</name>
+        <param>
+          <type>std::vector&lt; int64_t &gt;</type>
+          <declname>_sizes</declname>
+        </param>
+        <param>
+          <type>torch::TensorOptions</type>
+          <declname>_opt</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/blockTensor/btensor.h" line="1050" column="1" bodyfile="/home/alex/project/quantt/include/blockTensor/btensor.h" bodystart="1050" bodyend="1053"/>
+      </memberdef>
+      <memberdef kind="function" id="structquantit_1_1torch__shape_1ab73142f977bea4e83e3671f899953dec" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int64_t</type>
+        <definition>int64_t quantit::torch_shape::dim</definition>
+        <argsstring>() const</argsstring>
+        <name>dim</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/blockTensor/btensor.h" line="1054" column="9" bodyfile="/home/alex/project/quantt/include/blockTensor/btensor.h" bodystart="1054" bodyend="1054"/>
+      </memberdef>
+      <memberdef kind="function" id="structquantit_1_1torch__shape_1a137fc97c37a7f9fe7f97d89bd3e8f6aa" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>torch::IntArrayRef</type>
+        <definition>torch::IntArrayRef quantit::torch_shape::sizes</definition>
+        <argsstring>() const</argsstring>
+        <name>sizes</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/blockTensor/btensor.h" line="1055" column="20" bodyfile="/home/alex/project/quantt/include/blockTensor/btensor.h" bodystart="1055" bodyend="1055"/>
+      </memberdef>
+      <memberdef kind="function" id="structquantit_1_1torch__shape_1acfe5edeb87476d40d653e579bf3db30a" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>quantit::torch_shape::operator torch::Tensor</definition>
+        <argsstring>() const</argsstring>
+        <name>operator torch::Tensor</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/blockTensor/btensor.h" line="1056" column="1" bodyfile="/home/alex/project/quantt/include/blockTensor/btensor.h" bodystart="1056" bodyend="1056"/>
+      </memberdef>
+      <memberdef kind="function" id="structquantit_1_1torch__shape_1a3766a493998137cc129a123b0bac6824" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="structquantit_1_1torch__shape" kindref="compound">torch_shape</ref></type>
+        <definition>torch_shape quantit::torch_shape::neutral_shape</definition>
+        <argsstring>()</argsstring>
+        <name>neutral_shape</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/blockTensor/btensor.h" line="1057" column="13" bodyfile="/home/alex/project/quantt/include/blockTensor/btensor.h" bodystart="1057" bodyend="1057"/>
+      </memberdef>
+      <memberdef kind="function" id="structquantit_1_1torch__shape_1a09c25cbe80f028f120a02f090574a739" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="structquantit_1_1torch__shape" kindref="compound">torch_shape</ref> &amp;</type>
+        <definition>torch_shape&amp; quantit::torch_shape::neutral_shape_</definition>
+        <argsstring>()</argsstring>
+        <name>neutral_shape_</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/blockTensor/btensor.h" line="1058" column="13" bodyfile="/home/alex/project/quantt/include/blockTensor/btensor.h" bodystart="1058" bodyend="1058"/>
+      </memberdef>
+      <memberdef kind="function" id="structquantit_1_1torch__shape_1a7f348a0a8af6e7f4ffab00089ed9cbac" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="structquantit_1_1torch__shape" kindref="compound">torch_shape</ref> &amp;</type>
+        <definition>torch_shape&amp; quantit::torch_shape::inverse_cvals</definition>
+        <argsstring>()</argsstring>
+        <name>inverse_cvals</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/blockTensor/btensor.h" line="1059" column="13" bodyfile="/home/alex/project/quantt/include/blockTensor/btensor.h" bodystart="1059" bodyend="1059"/>
+      </memberdef>
+      <memberdef kind="function" id="structquantit_1_1torch__shape_1a8895156bc36b343c3dd5d9f1802754a5" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="structquantit_1_1torch__shape" kindref="compound">torch_shape</ref></type>
+        <definition>torch_shape quantit::torch_shape::inverse_cvals_</definition>
+        <argsstring>()</argsstring>
+        <name>inverse_cvals_</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/blockTensor/btensor.h" line="1060" column="13" bodyfile="/home/alex/project/quantt/include/blockTensor/btensor.h" bodystart="1060" bodyend="1060"/>
+      </memberdef>
+      <memberdef kind="function" id="structquantit_1_1torch__shape_1a626fc4e146ff4f85d9d1e07fcf2891d9" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="structquantit_1_1torch__shape" kindref="compound">torch_shape</ref></type>
+        <definition>torch_shape quantit::torch_shape::neutral_selection_rule</definition>
+        <argsstring>()</argsstring>
+        <name>neutral_selection_rule</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/blockTensor/btensor.h" line="1061" column="13" bodyfile="/home/alex/project/quantt/include/blockTensor/btensor.h" bodystart="1061" bodyend="1061"/>
+      </memberdef>
+      <memberdef kind="function" id="structquantit_1_1torch__shape_1a3f389926623b73850c26e1c1f9b05280" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="structquantit_1_1torch__shape" kindref="compound">torch_shape</ref> &amp;</type>
+        <definition>torch_shape&amp; quantit::torch_shape::neutral_selection_rule_</definition>
+        <argsstring>()</argsstring>
+        <name>neutral_selection_rule_</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/blockTensor/btensor.h" line="1062" column="13" bodyfile="/home/alex/project/quantt/include/blockTensor/btensor.h" bodystart="1062" bodyend="1062"/>
+      </memberdef>
+      <memberdef kind="function" id="structquantit_1_1torch__shape_1a9370bbd629ce520328cfec4de3ce0e2a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="structquantit_1_1torch__shape" kindref="compound">torch_shape</ref> &amp;</type>
+        <definition>torch_shape&amp; quantit::torch_shape::set_selection_rule_</definition>
+        <argsstring>(any_quantity_cref)</argsstring>
+        <name>set_selection_rule_</name>
+        <param>
+          <type><ref refid="classquantit_1_1vquantity" kindref="compound">any_quantity_cref</ref></type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/blockTensor/btensor.h" line="1063" column="13" bodyfile="/home/alex/project/quantt/include/blockTensor/btensor.h" bodystart="1063" bodyend="1063"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="2">
+        <label>std::vector&lt; int64_t &gt;</label>
+      </node>
+      <node id="1">
+        <label>quantit::torch_shape</label>
+        <link refid="structquantit_1_1torch__shape"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>_sizes</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/home/alex/project/quantt/include/blockTensor/btensor.h" line="1044" column="1" bodyfile="/home/alex/project/quantt/include/blockTensor/btensor.h" bodystart="1045" bodyend="1064"/>
+    <listofallmembers>
+      <member refid="structquantit_1_1torch__shape_1aaf3a246265e6308a24d45ce8e062fc72" prot="public" virt="non-virtual"><scope>quantit::torch_shape</scope><name>_sizes</name></member>
+      <member refid="structquantit_1_1torch__shape_1ab73142f977bea4e83e3671f899953dec" prot="public" virt="non-virtual"><scope>quantit::torch_shape</scope><name>dim</name></member>
+      <member refid="structquantit_1_1torch__shape_1a7f348a0a8af6e7f4ffab00089ed9cbac" prot="public" virt="non-virtual"><scope>quantit::torch_shape</scope><name>inverse_cvals</name></member>
+      <member refid="structquantit_1_1torch__shape_1a8895156bc36b343c3dd5d9f1802754a5" prot="public" virt="non-virtual"><scope>quantit::torch_shape</scope><name>inverse_cvals_</name></member>
+      <member refid="structquantit_1_1torch__shape_1a626fc4e146ff4f85d9d1e07fcf2891d9" prot="public" virt="non-virtual"><scope>quantit::torch_shape</scope><name>neutral_selection_rule</name></member>
+      <member refid="structquantit_1_1torch__shape_1a3f389926623b73850c26e1c1f9b05280" prot="public" virt="non-virtual"><scope>quantit::torch_shape</scope><name>neutral_selection_rule_</name></member>
+      <member refid="structquantit_1_1torch__shape_1a3766a493998137cc129a123b0bac6824" prot="public" virt="non-virtual"><scope>quantit::torch_shape</scope><name>neutral_shape</name></member>
+      <member refid="structquantit_1_1torch__shape_1a09c25cbe80f028f120a02f090574a739" prot="public" virt="non-virtual"><scope>quantit::torch_shape</scope><name>neutral_shape_</name></member>
+      <member refid="structquantit_1_1torch__shape_1acfe5edeb87476d40d653e579bf3db30a" prot="public" virt="non-virtual"><scope>quantit::torch_shape</scope><name>operator torch::Tensor</name></member>
+      <member refid="structquantit_1_1torch__shape_1ad606e32ba489a2cfa039b49cc3fda62d" prot="public" virt="non-virtual"><scope>quantit::torch_shape</scope><name>opt</name></member>
+      <member refid="structquantit_1_1torch__shape_1a9370bbd629ce520328cfec4de3ce0e2a" prot="public" virt="non-virtual"><scope>quantit::torch_shape</scope><name>set_selection_rule_</name></member>
+      <member refid="structquantit_1_1torch__shape_1a137fc97c37a7f9fe7f97d89bd3e8f6aa" prot="public" virt="non-virtual"><scope>quantit::torch_shape</scope><name>sizes</name></member>
+      <member refid="structquantit_1_1torch__shape_1a58412f85ad95fdb4d85c9be8452fdb4b" prot="public" virt="non-virtual"><scope>quantit::torch_shape</scope><name>torch_shape</name></member>
+      <member refid="structquantit_1_1torch__shape_1ab66b8d32347066f0e2c88bb60ed1e6a5" prot="public" virt="non-virtual"><scope>quantit::torch_shape</scope><name>torch_shape</name></member>
+      <member refid="structquantit_1_1torch__shape_1adecaf0bb45e5bdd88471a55659facf19" prot="public" virt="non-virtual"><scope>quantit::torch_shape</scope><name>torch_shape</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

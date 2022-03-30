@@ -1,0 +1,162 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="LinearAlgebra_8h" kind="file" language="C++">
+    <compoundname>LinearAlgebra.h</compoundname>
+    <includes local="no">cstdint</includes>
+    <includes local="no">torch/torch.h</includes>
+    <includes local="no">fmt/core.h</includes>
+    <includes local="no">fmt/ostream.h</includes>
+    <includes refid="torch__formatter_8h" local="yes">torch_formatter.h</includes>
+    <includes local="yes">doctest/doctest_proxy.h</includes>
+    <incdepgraph>
+      <node id="7">
+        <label>fmt/format.h</label>
+      </node>
+      <node id="2">
+        <label>cstdint</label>
+      </node>
+      <node id="8">
+        <label>charconv</label>
+      </node>
+      <node id="5">
+        <label>fmt/ostream.h</label>
+      </node>
+      <node id="1">
+        <label>/home/alex/project/quantt/include/LinearAlgebra.h</label>
+        <link refid="LinearAlgebra_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>torch_formatter.h</label>
+        <link refid="torch__formatter_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>fmt/core.h</label>
+      </node>
+      <node id="3">
+        <label>torch/torch.h</label>
+      </node>
+      <node id="9">
+        <label>doctest/doctest_proxy.h</label>
+      </node>
+    </incdepgraph>
+    <innernamespace refid="namespacequantit">quantit</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>File:<sp/>LinearAlgebra.h</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>Project:<sp/>QuantiT</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>File<sp/>Created:<sp/>Wednesday,<sp/>5th<sp/>August<sp/>2020<sp/>11:38:57<sp/>am</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>Author:<sp/>Alexandre<sp/>Foley<sp/>(Alexandre.foley@usherbrooke.ca)</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>-----</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>Last<sp/>Modified:<sp/>Wednesday,<sp/>5th<sp/>August<sp/>2020<sp/>3:34:16<sp/>pm</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>Modified<sp/>By:<sp/>Alexandre<sp/>Foley<sp/>(Alexandre.foley@usherbrooke.ca&gt;)</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>-----</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>Copyright<sp/>(c)<sp/>2020<sp/>Alexandre<sp/>Foley</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>Licensed<sp/>under<sp/>GPL<sp/>v3</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>C5116C03_2050_4F3F_8DCF_C1C103E0B22A</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>C5116C03_2050_4F3F_8DCF_C1C103E0B22A</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;cstdint&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;torch/torch.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;fmt/core.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;fmt/ostream.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;torch_formatter.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;doctest/doctest_proxy.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="comment">//<sp/>//doctest<sp/>always<sp/>last.<sp/>its&apos;<sp/>macro<sp/>must<sp/>work<sp/>and<sp/>conflict<sp/>with<sp/>pytorch&apos;s.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="comment">//<sp/>#include<sp/>&quot;doctest_redef.h&quot;<sp/>//<sp/>makes<sp/>the<sp/>redefinition<sp/>appear<sp/>without<sp/>compiler<sp/>warnings.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="comment">//<sp/>//<sp/>we<sp/>don&apos;t<sp/>use<sp/>pytorch&apos;s<sp/>macro<sp/>so<sp/>its<sp/>fine<sp/>to<sp/>redefine<sp/>them.<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="comment">//<sp/>#include<sp/>&quot;doctest.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">quantit</highlight></codeline>
+<codeline lineno="32"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight></codeline>
+<codeline lineno="46"><highlight class="normal">int64_t<sp/>compute_first_index_ascending(torch::Tensor<sp/>d,torch::Scalar<sp/>tol,torch::Scalar<sp/>pow,</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>min_size,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>max_size);</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"></highlight></codeline>
+<codeline lineno="60"><highlight class="normal">int64_t<sp/>compute_last_index(torch::Tensor<sp/>d,torch::Scalar<sp/>tol,torch::Scalar<sp/>pow,</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>min_size,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>max_size);</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight><highlight class="comment">//TODO:<sp/>add<sp/>possibility<sp/>of<sp/>pre-allocated<sp/>output,<sp/>and<sp/>the<sp/>possibility<sp/>not<sp/>to<sp/>compute<sp/>the<sp/>eigen/singular<sp/>vectors.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="70"><highlight class="normal">std::tuple&lt;torch::Tensor,torch::Tensor,torch::Tensor&gt;<sp/>truncate(torch::Tensor<sp/>u,torch::Tensor<sp/>d,<sp/>torch::Tensor<sp/>v,<sp/>torch::Scalar<sp/>tol=0,</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>min_size=1,</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>max_size=-1,<sp/>torch::Scalar<sp/>pow=2);</highlight></codeline>
+<codeline lineno="71"><highlight class="normal">std::tuple&lt;torch::Tensor,torch::Tensor,torch::Tensor&gt;<sp/>truncate(std::tuple&lt;torch::Tensor,torch::Tensor,torch::Tensor&gt;&amp;<sp/>tensors,<sp/>torch::Scalar<sp/>tol=0,</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>min_size=1,</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>max_size=-1,<sp/>torch::Scalar<sp/>pow=2);</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"></highlight></codeline>
+<codeline lineno="80"><highlight class="normal">std::tuple&lt;torch::Tensor,torch::Tensor&gt;<sp/>truncate(torch::Tensor<sp/>u,torch::Tensor<sp/>e,<sp/>torch::Scalar<sp/>tol=0,</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>min_size=1,</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>max_size=-1,<sp/>torch::Scalar<sp/>pow=1);</highlight></codeline>
+<codeline lineno="95"><highlight class="normal">std::tuple&lt;torch::Tensor,torch::Tensor&gt;<sp/>truncate(std::tuple&lt;torch::Tensor,torch::Tensor&gt;&amp;<sp/>tensors,<sp/>torch::Scalar<sp/>tol=0,</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>min_size=1,</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>max_size=-1,<sp/>torch::Scalar<sp/>pow=1);</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"></highlight></codeline>
+<codeline lineno="104"><highlight class="normal">std::tuple&lt;torch::Tensor,torch::Tensor,torch::Tensor&gt;<sp/>svd(torch::Tensor<sp/>A,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>split,torch::Scalar<sp/>tol,</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>min_size,</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>max_size,<sp/>torch::Scalar<sp/>pow<sp/>=<sp/>2);</highlight></codeline>
+<codeline lineno="105"><highlight class="normal">std::tuple&lt;torch::Tensor,torch::Tensor,torch::Tensor&gt;<sp/>svd(torch::Tensor<sp/>A,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>split,torch::Scalar<sp/>tol,<sp/>torch::Scalar<sp/>pow<sp/>=<sp/>2);</highlight></codeline>
+<codeline lineno="106"><highlight class="normal">std::tuple&lt;torch::Tensor,torch::Tensor,torch::Tensor&gt;<sp/>svd(torch::Tensor<sp/>A,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>split);</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/>std::tuple&lt;torch::Tensor,torch::Tensor,torch::Tensor&gt;<sp/>svd(torch::Tensor<sp/>A,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>split){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>quantit::svd(A,</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal">(split)<sp/>);}</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"></highlight></codeline>
+<codeline lineno="109"><highlight class="normal">std::tuple&lt;torch::Tensor,torch::Tensor&gt;<sp/>eig(torch::Tensor<sp/>A,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>split);</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/>std::tuple&lt;torch::Tensor,torch::Tensor&gt;<sp/>eig(torch::Tensor<sp/>A,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>split){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>quantit::eig(A,</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal">(split)<sp/>);}</highlight></codeline>
+<codeline lineno="111"><highlight class="normal">std::tuple&lt;torch::Tensor,torch::Tensor&gt;<sp/>eig(torch::Tensor<sp/>A,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>split,torch::Scalar<sp/>tol,<sp/>torch::Scalar<sp/>pow<sp/>=<sp/>1);</highlight></codeline>
+<codeline lineno="112"><highlight class="normal">std::tuple&lt;torch::Tensor,torch::Tensor&gt;<sp/>eig(torch::Tensor<sp/>A,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>split,torch::Scalar<sp/>tol,</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>min_size,</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>max_size,<sp/>torch::Scalar<sp/>pow<sp/>=<sp/>1);</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"></highlight></codeline>
+<codeline lineno="114"><highlight class="normal">std::tuple&lt;torch::Tensor,torch::Tensor&gt;<sp/>eigh(torch::Tensor<sp/>A,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>split);</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/>std::tuple&lt;torch::Tensor,torch::Tensor&gt;<sp/>eigh(torch::Tensor<sp/>A,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>split){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>quantit::eigh(A,</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal">(split)<sp/>);}</highlight></codeline>
+<codeline lineno="116"><highlight class="normal">std::tuple&lt;torch::Tensor,torch::Tensor&gt;<sp/>eigh(torch::Tensor<sp/>A,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>split,torch::Scalar<sp/>tol,<sp/>torch::Scalar<sp/>pow<sp/>=<sp/>1);</highlight></codeline>
+<codeline lineno="117"><highlight class="normal">std::tuple&lt;torch::Tensor,torch::Tensor&gt;<sp/>eigh(torch::Tensor<sp/>A,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>split,torch::Scalar<sp/>tol,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>min_size,</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>max_size,torch::Scalar<sp/>pow<sp/>=<sp/>1);</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"></highlight></codeline>
+<codeline lineno="119"><highlight class="normal">qtt_TEST_CASE(</highlight><highlight class="stringliteral">&quot;Linear<sp/>Algebra<sp/>for<sp/>Tensor<sp/>network&quot;</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="120"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::set_default_dtype(torch::scalarTypeToTypeMeta(torch::kFloat64));<sp/></highlight><highlight class="comment">//otherwise<sp/>the<sp/>type<sp/>promotion<sp/>always<sp/>goes<sp/>to<sp/>floats<sp/>when<sp/>promoting<sp/>a<sp/>tensor</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>split<sp/>=<sp/>2;</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>tensor_shape<sp/>=<sp/>std::vector&lt;int64_t&gt;{10,3,10,3};</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>matrix_shape<sp/>=<sp/>std::vector&lt;int64_t&gt;{30,30};</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>u_shape<sp/>=<sp/>std::vector&lt;int64_t&gt;{10,3,30};</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>A<sp/>=<sp/>torch::rand(tensor_shape);</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>ra<sp/>=<sp/>A.reshape(matrix_shape);</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>[u_o,d_o,v_o]<sp/>=<sp/>ra.svd();</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>[u,d,v]<sp/>=<sp/>svd(A,2);</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"></highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/>qtt_CHECK(u_o.sizes()<sp/>==<sp/>std::vector&lt;int64_t&gt;(matrix_shape));</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/>qtt_REQUIRE(u.sizes()<sp/>==<sp/>std::vector&lt;int64_t&gt;(u_shape));</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"></highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/>qtt_REQUIRE_NOTHROW(</highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>ru_o<sp/>=<sp/>u_o.reshape(u_shape));</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>ru_o<sp/>=<sp/>u_o.reshape(u_shape);</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"></highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/>qtt_CHECK(torch::allclose(ru_o,<sp/>u));</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"></highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>[e_o,s_o]<sp/>=<sp/>torch::linalg::eigh(ra,</highlight><highlight class="stringliteral">&quot;L&quot;</highlight><highlight class="normal">);<sp/></highlight></codeline>
+<codeline lineno="140"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>rs_o<sp/>=<sp/>s_o.reshape(u_shape);</highlight></codeline>
+<codeline lineno="141"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>[e,s]<sp/>=<sp/>eigh(A,2);</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"></highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/>qtt_REQUIRE(s.sizes()<sp/>==<sp/>std::vector&lt;int64_t&gt;(u_shape));</highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>fmt::print(&quot;s<sp/>{}\n&quot;,s);</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="145"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>fmt::print(&quot;s_o<sp/>{}\n&quot;,rs_o);</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/>qtt_CHECK(torch::allclose(rs_o,<sp/>s));</highlight></codeline>
+<codeline lineno="147"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"></highlight></codeline>
+<codeline lineno="149"><highlight class="normal">}</highlight><highlight class="comment">//namespace<sp/>quantit</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="150"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>C5116C03_2050_4F3F_8DCF_C1C103E0B22A<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
+    </programlisting>
+    <location file="/home/alex/project/quantt/include/LinearAlgebra.h"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="structquantit_1_1or___3_01cond_00_01conds_8_8_8_01_4" kind="struct" language="C++" prot="public">
+    <compoundname>quantit::or_&lt; cond, conds... &gt;</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">std::conditional_t&lt; cond::value, std::true_type, or_&lt; conds... &gt; &gt;</basecompoundref>
+    <templateparamlist>
+      <param>
+        <type>class cond</type>
+      </param>
+      <param>
+        <type>class...</type>
+        <declname>conds</declname>
+        <defname>conds</defname>
+      </param>
+    </templateparamlist>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>quantit::or_&lt; cond, conds... &gt;</label>
+        <link refid="structquantit_1_1or___3_01cond_00_01conds_8_8_8_01_4"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>std::conditional_t&lt; cond::value, std::true_type, or_&lt; conds... &gt; &gt;</label>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>quantit::or_&lt; cond, conds... &gt;</label>
+        <link refid="structquantit_1_1or___3_01cond_00_01conds_8_8_8_01_4"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>std::conditional_t&lt; cond::value, std::true_type, or_&lt; conds... &gt; &gt;</label>
+      </node>
+    </collaborationgraph>
+    <location file="/home/alex/project/quantt/include/templateMeta.h" line="107" column="1" bodyfile="/home/alex/project/quantt/include/templateMeta.h" bodystart="108" bodyend="109"/>
+    <listofallmembers>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

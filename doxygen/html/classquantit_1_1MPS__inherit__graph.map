@@ -1,0 +1,4 @@
+<map id="quantit::MPS" name="quantit::MPS">
+<area shape="rect" id="node1" title="Class for the matrix product state. A tensor train of rank three tensors, with an orthogonality cente..." alt="" coords="24,95,128,121"/>
+<area shape="rect" id="node2" href="$classquantit_1_1vector__lift.html" title=" " alt="" coords="5,5,147,47"/>
+</map>

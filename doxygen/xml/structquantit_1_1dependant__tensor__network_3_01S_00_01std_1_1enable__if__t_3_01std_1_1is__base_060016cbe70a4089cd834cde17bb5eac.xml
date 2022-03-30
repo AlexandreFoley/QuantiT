@@ -1,0 +1,115 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="structquantit_1_1dependant__tensor__network_3_01S_00_01std_1_1enable__if__t_3_01std_1_1is__base_060016cbe70a4089cd834cde17bb5eac" kind="struct" language="C++" prot="public">
+    <compoundname>quantit::dependant_tensor_network&lt; S, std::enable_if_t&lt; std::is_base_of_v&lt; vector_lift&lt; S, torch::Tensor &gt;, S &gt; &gt; &gt;</compoundname>
+    <basecompoundref refid="structquantit_1_1dependant__tensor__network_3_01torch_1_1Tensor_01_4" prot="public" virt="non-virtual">quantit::dependant_tensor_network&lt; torch::Tensor &gt;</basecompoundref>
+    <templateparamlist>
+      <param>
+        <type>class S</type>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="structquantit_1_1dependant__tensor__network_3_01torch_1_1Tensor_01_4_1ad9614a1a72b91344019782f2651f8f82" prot="public" static="no">
+        <type><ref refid="classquantit_1_1MPT" kindref="compound">MPT</ref></type>
+        <definition>using quantit::dependant_tensor_network&lt; torch::Tensor &gt;::MPT_type =  MPT</definition>
+        <argsstring></argsstring>
+        <name>MPT_type</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="931" column="1" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="931" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="structquantit_1_1dependant__tensor__network_3_01torch_1_1Tensor_01_4_1af67e9f39f55823b23245b894914dac6e" prot="public" static="no">
+        <type><ref refid="classquantit_1_1MPO" kindref="compound">MPO</ref></type>
+        <definition>using quantit::dependant_tensor_network&lt; torch::Tensor &gt;::MPO_type =  MPO</definition>
+        <argsstring></argsstring>
+        <name>MPO_type</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="932" column="1" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="932" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="structquantit_1_1dependant__tensor__network_3_01torch_1_1Tensor_01_4_1a5004d66b105678c5256ca8f2e9bc91b2" prot="public" static="no">
+        <type><ref refid="classquantit_1_1MPS" kindref="compound">MPS</ref></type>
+        <definition>using quantit::dependant_tensor_network&lt; torch::Tensor &gt;::MPS_type =  MPS</definition>
+        <argsstring></argsstring>
+        <name>MPS_type</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="933" column="1" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="933" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="structquantit_1_1dependant__tensor__network_3_01torch_1_1Tensor_01_4_1a714d3879e88a2b1dae630eb0056ac165" prot="public" static="no">
+        <type>env_holder</type>
+        <definition>using quantit::dependant_tensor_network&lt; torch::Tensor &gt;::env_type =  env_holder</definition>
+        <argsstring></argsstring>
+        <name>env_type</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="934" column="1" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="934" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="structquantit_1_1dependant__tensor__network_3_01torch_1_1Tensor_01_4_1ae43e29ea60f722e2c2aaec2b8fc93710" prot="public" static="no">
+        <type>torch::Tensor</type>
+        <definition>using quantit::dependant_tensor_network&lt; torch::Tensor &gt;::base_tensor_type =  torch::Tensor</definition>
+        <argsstring></argsstring>
+        <name>base_tensor_type</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="935" column="1" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="935" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>quantit::dependant_tensor_network&lt; torch::Tensor &gt;</label>
+        <link refid="structquantit_1_1dependant__tensor__network_3_01torch_1_1Tensor_01_4"/>
+      </node>
+      <node id="1">
+        <label>quantit::dependant_tensor_network&lt; S, std::enable_if_t&lt; std::is_base_of_v&lt; vector_lift&lt; S, torch::Tensor &gt;, S &gt; &gt; &gt;</label>
+        <link refid="structquantit_1_1dependant__tensor__network_3_01S_00_01std_1_1enable__if__t_3_01std_1_1is__base_060016cbe70a4089cd834cde17bb5eac"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>quantit::dependant_tensor_network&lt; torch::Tensor &gt;</label>
+        <link refid="structquantit_1_1dependant__tensor__network_3_01torch_1_1Tensor_01_4"/>
+      </node>
+      <node id="1">
+        <label>quantit::dependant_tensor_network&lt; S, std::enable_if_t&lt; std::is_base_of_v&lt; vector_lift&lt; S, torch::Tensor &gt;, S &gt; &gt; &gt;</label>
+        <link refid="structquantit_1_1dependant__tensor__network_3_01S_00_01std_1_1enable__if__t_3_01std_1_1is__base_060016cbe70a4089cd834cde17bb5eac"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/home/alex/project/quantt/include/MPT.h" line="938" column="1" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="940" bodyend="941"/>
+    <listofallmembers>
+      <member refid="structquantit_1_1dependant__tensor__network_3_01torch_1_1Tensor_01_4_1ae43e29ea60f722e2c2aaec2b8fc93710" prot="public" virt="non-virtual"><scope>quantit::dependant_tensor_network&lt; S, std::enable_if_t&lt; std::is_base_of_v&lt; vector_lift&lt; S, torch::Tensor &gt;, S &gt; &gt; &gt;</scope><name>base_tensor_type</name></member>
+      <member refid="structquantit_1_1dependant__tensor__network_3_01torch_1_1Tensor_01_4_1a714d3879e88a2b1dae630eb0056ac165" prot="public" virt="non-virtual"><scope>quantit::dependant_tensor_network&lt; S, std::enable_if_t&lt; std::is_base_of_v&lt; vector_lift&lt; S, torch::Tensor &gt;, S &gt; &gt; &gt;</scope><name>env_type</name></member>
+      <member refid="structquantit_1_1dependant__tensor__network_3_01torch_1_1Tensor_01_4_1af67e9f39f55823b23245b894914dac6e" prot="public" virt="non-virtual"><scope>quantit::dependant_tensor_network&lt; S, std::enable_if_t&lt; std::is_base_of_v&lt; vector_lift&lt; S, torch::Tensor &gt;, S &gt; &gt; &gt;</scope><name>MPO_type</name></member>
+      <member refid="structquantit_1_1dependant__tensor__network_3_01torch_1_1Tensor_01_4_1a5004d66b105678c5256ca8f2e9bc91b2" prot="public" virt="non-virtual"><scope>quantit::dependant_tensor_network&lt; S, std::enable_if_t&lt; std::is_base_of_v&lt; vector_lift&lt; S, torch::Tensor &gt;, S &gt; &gt; &gt;</scope><name>MPS_type</name></member>
+      <member refid="structquantit_1_1dependant__tensor__network_3_01torch_1_1Tensor_01_4_1ad9614a1a72b91344019782f2651f8f82" prot="public" virt="non-virtual"><scope>quantit::dependant_tensor_network&lt; S, std::enable_if_t&lt; std::is_base_of_v&lt; vector_lift&lt; S, torch::Tensor &gt;, S &gt; &gt; &gt;</scope><name>MPT_type</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

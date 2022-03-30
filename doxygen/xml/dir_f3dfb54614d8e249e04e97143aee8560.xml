@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="dir_f3dfb54614d8e249e04e97143aee8560" kind="dir">
+    <compoundname>/home/alex/project/quantt/include/Conserved/Composite</compoundname>
+    <innerfile refid="cquantity_8h">cquantity.h</innerfile>
+    <innerfile refid="quantity__impl_8h">quantity_impl.h</innerfile>
+    <innerfile refid="quantity__vector_8h">quantity_vector.h</innerfile>
+    <innerfile refid="quantity__vector__impl_8h">quantity_vector_impl.h</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/alex/project/quantt/include/Conserved/Composite/"/>
+  </compounddef>
+</doxygen>

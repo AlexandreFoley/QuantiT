@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="structquantit_1_1dependant__tensor__network" kind="struct" language="C++" prot="public">
+    <compoundname>quantit::dependant_tensor_network</compoundname>
+    <templateparamlist>
+      <param>
+        <type>class T</type>
+      </param>
+      <param>
+        <type>class X</type>
+        <defval>void</defval>
+      </param>
+    </templateparamlist>
+    <briefdescription>
+<para>template struct to determine the correct tensor train network to use given another tensor train network or single tensor </para>
+    </briefdescription>
+    <detaileddescription>
+<para>the struct define 3 dependent typename MPT_type, MPS_type and MPO_type that hold the correct tensor type given another tensor train network. useful for writing templated function on tensor train types: if a <ref refid="classquantit_1_1MPS" kindref="compound">MPS</ref> with the same underlying tensor as some network type T is needed on can write <verbatim>typename dependant_tensor_network&lt;T&gt;::MPS_type x;
+</verbatim> to declare it.</para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>tensor train network or single tensor: <ref refid="classquantit_1_1btensor" kindref="compound">quantit::btensor</ref>, torch::Tensor, <ref refid="classquantit_1_1MPS" kindref="compound">MPS</ref>,<ref refid="classquantit_1_1MPO" kindref="compound">MPO</ref>,<ref refid="classquantit_1_1MPT" kindref="compound">MPT</ref>, <ref refid="classquantit_1_1bMPS" kindref="compound">bMPS</ref>,<ref refid="classquantit_1_1bMPO" kindref="compound">bMPO</ref> or <ref refid="classquantit_1_1bMPT" kindref="compound">bMPT</ref> </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>X</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>void </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+    </detaileddescription>
+    <location file="/home/alex/project/quantt/include/MPT.h" line="917" column="1" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="917" bodyend="-1"/>
+    <listofallmembers>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

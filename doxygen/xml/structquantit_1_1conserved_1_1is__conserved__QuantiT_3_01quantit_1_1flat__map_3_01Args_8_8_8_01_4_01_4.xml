@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="structquantit_1_1conserved_1_1is__conserved__QuantiT_3_01quantit_1_1flat__map_3_01Args_8_8_8_01_4_01_4" kind="struct" language="C++" prot="public">
+    <compoundname>quantit::conserved::is_conserved_QuantiT&lt; quantit::flat_map&lt; Args... &gt; &gt;</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">std::false_type</basecompoundref>
+    <templateparamlist>
+      <param>
+        <type>class...</type>
+        <declname>Args</declname>
+        <defname>Args</defname>
+      </param>
+    </templateparamlist>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>quantit::conserved::is_conserved_QuantiT&lt; quantit::flat_map&lt; Args... &gt; &gt;</label>
+        <link refid="structquantit_1_1conserved_1_1is__conserved__QuantiT_3_01quantit_1_1flat__map_3_01Args_8_8_8_01_4_01_4"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>std::false_type</label>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>quantit::conserved::is_conserved_QuantiT&lt; quantit::flat_map&lt; Args... &gt; &gt;</label>
+        <link refid="structquantit_1_1conserved_1_1is__conserved__QuantiT_3_01quantit_1_1flat__map_3_01Args_8_8_8_01_4_01_4"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>std::false_type</label>
+      </node>
+    </collaborationgraph>
+    <location file="/home/alex/project/quantt/include/Conserved/quantity_utils.h" line="148" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/quantity_utils.h" bodystart="148" bodyend="148"/>
+    <listofallmembers>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

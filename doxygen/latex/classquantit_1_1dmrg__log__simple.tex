@@ -1,0 +1,180 @@
+\hypertarget{classquantit_1_1dmrg__log__simple}{}\doxysection{quantit\+::dmrg\+\_\+log\+\_\+simple Class Reference}
+\label{classquantit_1_1dmrg__log__simple}\index{quantit::dmrg\_log\_simple@{quantit::dmrg\_log\_simple}}
+
+
+Inheritance diagram for quantit\+::dmrg\+\_\+log\+\_\+simple\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=221pt]{classquantit_1_1dmrg__log__simple__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for quantit\+::dmrg\+\_\+log\+\_\+simple\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=221pt]{classquantit_1_1dmrg__log__simple__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classquantit_1_1dmrg__log__simple_a97a573fc095627c512c488942adcfca9}\label{classquantit_1_1dmrg__log__simple_a97a573fc095627c512c488942adcfca9}} 
+void {\bfseries log\+\_\+step} (size\+\_\+t it) override
+\item 
+\mbox{\Hypertarget{classquantit_1_1dmrg__log__simple_afff2dadf5090e7658c6d10a025717d57}\label{classquantit_1_1dmrg__log__simple_afff2dadf5090e7658c6d10a025717d57}} 
+void {\bfseries log\+\_\+bond\+\_\+dims} (const \mbox{\hyperlink{classquantit_1_1bMPS}{quantit\+::b\+MPS}} \&mps) override
+\item 
+\mbox{\Hypertarget{classquantit_1_1dmrg__log__simple_a0ab2fa53e8af659b4f142e264760da18}\label{classquantit_1_1dmrg__log__simple_a0ab2fa53e8af659b4f142e264760da18}} 
+void {\bfseries log\+\_\+bond\+\_\+dims} (const \mbox{\hyperlink{classquantit_1_1MPS}{quantit\+::\+MPS}} \&mps) override
+\item 
+void \mbox{\hyperlink{classquantit_1_1dmrg__log__simple_a474aeafcac00435f639aa70211feed3d}{it\+\_\+log\+\_\+all}} (size\+\_\+t, const torch\+::\+Tensor \&, const \mbox{\hyperlink{classquantit_1_1MPS}{quantit\+::\+MPS}} \&) override
+\item 
+void \mbox{\hyperlink{classquantit_1_1dmrg__log__simple_adc0139d3f688086acdac169e0af2df8b}{it\+\_\+log\+\_\+all}} (size\+\_\+t, const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&, const \mbox{\hyperlink{classquantit_1_1bMPS}{b\+MPS}} \&) override
+\item 
+\mbox{\Hypertarget{classquantit_1_1dmrg__default__logger_a2ca8bec802551042f5faddd2096532b9}\label{classquantit_1_1dmrg__default__logger_a2ca8bec802551042f5faddd2096532b9}} 
+void {\bfseries log\+\_\+energy} (const torch\+::\+Tensor \&) override
+\item 
+\mbox{\Hypertarget{classquantit_1_1dmrg__default__logger_af639c233e813832f6054f8beb93cb4eb}\label{classquantit_1_1dmrg__default__logger_af639c233e813832f6054f8beb93cb4eb}} 
+void {\bfseries log\+\_\+energy} (const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&) override
+\item 
+\mbox{\Hypertarget{classquantit_1_1dmrg__logger_aefeab435b25cd1e822d53d0c01fcf7cc}\label{classquantit_1_1dmrg__logger_aefeab435b25cd1e822d53d0c01fcf7cc}} 
+virtual void {\bfseries init} (const \mbox{\hyperlink{structquantit_1_1dmrg__options}{dmrg\+\_\+options}} \&)
+\item 
+virtual void \mbox{\hyperlink{classquantit_1_1dmrg__logger_a40e35a635a42df1666b452aaaeba3c22}{end\+\_\+log\+\_\+all}} (size\+\_\+t step\+\_\+num, const torch\+::\+Tensor \&E, const \mbox{\hyperlink{classquantit_1_1MPS}{MPS}} \&state)
+\item 
+virtual void \mbox{\hyperlink{classquantit_1_1dmrg__logger_aefe31347ea89511837801ca25bce9c3a}{end\+\_\+log\+\_\+all}} (size\+\_\+t step\+\_\+num, const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&E, const \mbox{\hyperlink{classquantit_1_1bMPS}{b\+MPS}} \&state)
+\item 
+virtual void \mbox{\hyperlink{classquantit_1_1dmrg__logger_a9f638588362a5b58350f5cbbec1b417e}{log\+\_\+all}} (size\+\_\+t step\+\_\+num, const torch\+::\+Tensor \&E, const \mbox{\hyperlink{classquantit_1_1MPS}{MPS}} \&state)
+\item 
+virtual void \mbox{\hyperlink{classquantit_1_1dmrg__logger_ac04464f362a6f8e37b38696ccbcf067a}{log\+\_\+all}} (size\+\_\+t step\+\_\+num, const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&E, const \mbox{\hyperlink{classquantit_1_1bMPS}{b\+MPS}} \&state)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classquantit_1_1dmrg__log__simple_aaf9cddd1984840b633e36c52ff6c1c80}\label{classquantit_1_1dmrg__log__simple_aaf9cddd1984840b633e36c52ff6c1c80}} 
+size\+\_\+t {\bfseries it\+\_\+num}
+\item 
+\mbox{\Hypertarget{classquantit_1_1dmrg__log__simple_aec05ac6076c1601f89539a80f89745af}\label{classquantit_1_1dmrg__log__simple_aec05ac6076c1601f89539a80f89745af}} 
+size\+\_\+t {\bfseries middle\+\_\+bond\+\_\+dim}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classquantit_1_1dmrg__logger_aefe31347ea89511837801ca25bce9c3a}\label{classquantit_1_1dmrg__logger_aefe31347ea89511837801ca25bce9c3a}} 
+\index{quantit::dmrg\_log\_simple@{quantit::dmrg\_log\_simple}!end\_log\_all@{end\_log\_all}}
+\index{end\_log\_all@{end\_log\_all}!quantit::dmrg\_log\_simple@{quantit::dmrg\_log\_simple}}
+\doxysubsubsection{\texorpdfstring{end\_log\_all()}{end\_log\_all()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily virtual void quantit\+::dmrg\+\_\+logger\+::end\+\_\+log\+\_\+all (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{step\+\_\+num,  }\item[{const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&}]{E,  }\item[{const \mbox{\hyperlink{classquantit_1_1bMPS}{b\+MPS}} \&}]{state }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}, {\ttfamily [inherited]}}
+
+Logs the energy and the state of the \mbox{\hyperlink{classquantit_1_1MPS}{MPS}} when the DMRG procedure is done.
+
+
+\begin{DoxyParams}{Parameters}
+{\em step\+\_\+num} & the current step number \\
+\hline
+{\em E} & the energy of the state \\
+\hline
+{\em state} & The \mbox{\hyperlink{classquantit_1_1MPS}{MPS}} state at the end of the step. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classquantit_1_1dmrg__logger_a40e35a635a42df1666b452aaaeba3c22}\label{classquantit_1_1dmrg__logger_a40e35a635a42df1666b452aaaeba3c22}} 
+\index{quantit::dmrg\_log\_simple@{quantit::dmrg\_log\_simple}!end\_log\_all@{end\_log\_all}}
+\index{end\_log\_all@{end\_log\_all}!quantit::dmrg\_log\_simple@{quantit::dmrg\_log\_simple}}
+\doxysubsubsection{\texorpdfstring{end\_log\_all()}{end\_log\_all()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily virtual void quantit\+::dmrg\+\_\+logger\+::end\+\_\+log\+\_\+all (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{step\+\_\+num,  }\item[{const torch\+::\+Tensor \&}]{E,  }\item[{const \mbox{\hyperlink{classquantit_1_1MPS}{MPS}} \&}]{state }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}, {\ttfamily [inherited]}}
+
+Logs the energy and the state of the \mbox{\hyperlink{classquantit_1_1MPS}{MPS}} when the DMRG procedure is done.
+
+
+\begin{DoxyParams}{Parameters}
+{\em step\+\_\+num} & the current step number \\
+\hline
+{\em E} & the energy of the state \\
+\hline
+{\em state} & The \mbox{\hyperlink{classquantit_1_1MPS}{MPS}} state at the end of the step. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classquantit_1_1dmrg__log__simple_adc0139d3f688086acdac169e0af2df8b}\label{classquantit_1_1dmrg__log__simple_adc0139d3f688086acdac169e0af2df8b}} 
+\index{quantit::dmrg\_log\_simple@{quantit::dmrg\_log\_simple}!it\_log\_all@{it\_log\_all}}
+\index{it\_log\_all@{it\_log\_all}!quantit::dmrg\_log\_simple@{quantit::dmrg\_log\_simple}}
+\doxysubsubsection{\texorpdfstring{it\_log\_all()}{it\_log\_all()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily void quantit\+::dmrg\+\_\+log\+\_\+simple\+::it\+\_\+log\+\_\+all (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{step\+\_\+num,  }\item[{const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&}]{E,  }\item[{const \mbox{\hyperlink{classquantit_1_1bMPS}{b\+MPS}} \&}]{state }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+Logs the energy and the state of the \mbox{\hyperlink{classquantit_1_1MPS}{MPS}} during the dmrg iterations.
+
+
+\begin{DoxyParams}{Parameters}
+{\em step\+\_\+num} & the current step number \\
+\hline
+{\em E} & the energy of the state \\
+\hline
+{\em state} & The \mbox{\hyperlink{classquantit_1_1MPS}{MPS}} state at the current step. \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented from \mbox{\hyperlink{classquantit_1_1dmrg__logger_ae174380571b94f642328d02b1ef0e997}{quantit\+::dmrg\+\_\+logger}}.
+
+\mbox{\Hypertarget{classquantit_1_1dmrg__log__simple_a474aeafcac00435f639aa70211feed3d}\label{classquantit_1_1dmrg__log__simple_a474aeafcac00435f639aa70211feed3d}} 
+\index{quantit::dmrg\_log\_simple@{quantit::dmrg\_log\_simple}!it\_log\_all@{it\_log\_all}}
+\index{it\_log\_all@{it\_log\_all}!quantit::dmrg\_log\_simple@{quantit::dmrg\_log\_simple}}
+\doxysubsubsection{\texorpdfstring{it\_log\_all()}{it\_log\_all()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void quantit\+::dmrg\+\_\+log\+\_\+simple\+::it\+\_\+log\+\_\+all (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{step\+\_\+num,  }\item[{const torch\+::\+Tensor \&}]{E,  }\item[{const \mbox{\hyperlink{classquantit_1_1MPS}{quantit\+::\+MPS}} \&}]{state }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+Logs the energy and the state of the \mbox{\hyperlink{classquantit_1_1MPS}{MPS}} during the dmrg iterations.
+
+
+\begin{DoxyParams}{Parameters}
+{\em step\+\_\+num} & the current step number \\
+\hline
+{\em E} & the energy of the state \\
+\hline
+{\em state} & The \mbox{\hyperlink{classquantit_1_1MPS}{MPS}} state at the current step. \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented from \mbox{\hyperlink{classquantit_1_1dmrg__logger_aec679b092519a3b96ca9d4df7b388af5}{quantit\+::dmrg\+\_\+logger}}.
+
+\mbox{\Hypertarget{classquantit_1_1dmrg__logger_ac04464f362a6f8e37b38696ccbcf067a}\label{classquantit_1_1dmrg__logger_ac04464f362a6f8e37b38696ccbcf067a}} 
+\index{quantit::dmrg\_log\_simple@{quantit::dmrg\_log\_simple}!log\_all@{log\_all}}
+\index{log\_all@{log\_all}!quantit::dmrg\_log\_simple@{quantit::dmrg\_log\_simple}}
+\doxysubsubsection{\texorpdfstring{log\_all()}{log\_all()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily virtual void quantit\+::dmrg\+\_\+logger\+::log\+\_\+all (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{step\+\_\+num,  }\item[{const \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&}]{E,  }\item[{const \mbox{\hyperlink{classquantit_1_1bMPS}{b\+MPS}} \&}]{state }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}, {\ttfamily [inherited]}}
+
+Log the current step number, the current energy, and the bond dimensions of the \mbox{\hyperlink{classquantit_1_1MPS}{MPS}}
+
+
+\begin{DoxyParams}{Parameters}
+{\em step\+\_\+num} & the current step number \\
+\hline
+{\em E} & the energy of the state \\
+\hline
+{\em state} & The \mbox{\hyperlink{classquantit_1_1MPS}{MPS}} state to log. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classquantit_1_1dmrg__logger_a9f638588362a5b58350f5cbbec1b417e}\label{classquantit_1_1dmrg__logger_a9f638588362a5b58350f5cbbec1b417e}} 
+\index{quantit::dmrg\_log\_simple@{quantit::dmrg\_log\_simple}!log\_all@{log\_all}}
+\index{log\_all@{log\_all}!quantit::dmrg\_log\_simple@{quantit::dmrg\_log\_simple}}
+\doxysubsubsection{\texorpdfstring{log\_all()}{log\_all()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily virtual void quantit\+::dmrg\+\_\+logger\+::log\+\_\+all (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{step\+\_\+num,  }\item[{const torch\+::\+Tensor \&}]{E,  }\item[{const \mbox{\hyperlink{classquantit_1_1MPS}{MPS}} \&}]{state }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}, {\ttfamily [inherited]}}
+
+Log the current step number, the current energy, and the bond dimensions of the \mbox{\hyperlink{classquantit_1_1MPS}{MPS}}
+
+
+\begin{DoxyParams}{Parameters}
+{\em step\+\_\+num} & the current step number \\
+\hline
+{\em E} & the energy of the state \\
+\hline
+{\em state} & The \mbox{\hyperlink{classquantit_1_1MPS}{MPS}} state to log. \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/alex/project/quantt/include/dmrg\+\_\+logger.\+h\end{DoxyCompactItemize}

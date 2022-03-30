@@ -1,0 +1,388 @@
+\hypertarget{classquantit_1_1flat__map}{}\doxysection{quantit\+::flat\+\_\+map$<$ Key, Value, Comp\+\_\+less, Allocator, Array $>$ Class Template Reference}
+\label{classquantit_1_1flat__map}\index{quantit::flat\_map$<$ Key, Value, Comp\_less, Allocator, Array $>$@{quantit::flat\_map$<$ Key, Value, Comp\_less, Allocator, Array $>$}}
+
+
+Collaboration diagram for quantit\+::flat\+\_\+map$<$ Key, Value, Comp\+\_\+less, Allocator, Array $>$\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=220pt]{classquantit_1_1flat__map__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classquantit_1_1flat__map_1_1const__iterator}{const\+\_\+iterator}}
+\item 
+class \mbox{\hyperlink{classquantit_1_1flat__map_1_1iterator}{iterator}}
+\item 
+class \mbox{\hyperlink{classquantit_1_1flat__map_1_1value__compare}{value\+\_\+compare}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_a61c86e2b7a327c3f8b1a747afd15f1c8}\label{classquantit_1_1flat__map_a61c86e2b7a327c3f8b1a747afd15f1c8}} 
+using {\bfseries key\+\_\+type} = Key
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_ab6aa4c0f705fe4a0b17b23e4a5401327}\label{classquantit_1_1flat__map_ab6aa4c0f705fe4a0b17b23e4a5401327}} 
+using {\bfseries mapped\+\_\+type} = Value
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_af1f82c5a04925d41101b71d7e2f2e09e}\label{classquantit_1_1flat__map_af1f82c5a04925d41101b71d7e2f2e09e}} 
+using {\bfseries value\+\_\+type} = std\+::pair$<$ Key, Value $>$
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_a2f0467895086a554aa5939e4f0ec9938}\label{classquantit_1_1flat__map_a2f0467895086a554aa5939e4f0ec9938}} 
+using {\bfseries content\+\_\+t} = Array$<$ std\+::pair$<$ Key, Value $>$, Allocator $>$
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_af21be53720e63fa33fcb884e931c189e}\label{classquantit_1_1flat__map_af21be53720e63fa33fcb884e931c189e}} 
+using {\bfseries size\+\_\+type} = typename content\+\_\+t\+::size\+\_\+type
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_aae00c285b82f1e32fab780dcd7aad779}\label{classquantit_1_1flat__map_aae00c285b82f1e32fab780dcd7aad779}} 
+using {\bfseries difference\+\_\+type} = typename content\+\_\+t\+::difference\+\_\+type
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_af8b71efbadcfd64db07bda5f08339a51}\label{classquantit_1_1flat__map_af8b71efbadcfd64db07bda5f08339a51}} 
+using {\bfseries key\+\_\+compare} = Comp\+\_\+less
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_aaf00a0578112f58fd21c450ca79d8a2f}\label{classquantit_1_1flat__map_aaf00a0578112f58fd21c450ca79d8a2f}} 
+using {\bfseries allocator\+\_\+type} = Allocator
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_af6d4167f604e11c4d38aec7df9fc3fe7}\label{classquantit_1_1flat__map_af6d4167f604e11c4d38aec7df9fc3fe7}} 
+using {\bfseries reference} = typename content\+\_\+t\+::reference
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_ada2868a4d43ee6b0355c7751e700ed45}\label{classquantit_1_1flat__map_ada2868a4d43ee6b0355c7751e700ed45}} 
+using {\bfseries const\+\_\+reference} = typename content\+\_\+t\+::const\+\_\+reference
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_a9540ed70fc0b1e1d2c1b929a5c6982f4}\label{classquantit_1_1flat__map_a9540ed70fc0b1e1d2c1b929a5c6982f4}} 
+using {\bfseries pointer} = typename content\+\_\+t\+::pointer
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_ab05ea3505691055a2ba402e0e1bc4112}\label{classquantit_1_1flat__map_ab05ea3505691055a2ba402e0e1bc4112}} 
+using {\bfseries const\+\_\+pointer} = typename content\+\_\+t\+::const\+\_\+pointer
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_a40e38eb87383401408fd639b78fd7525}\label{classquantit_1_1flat__map_a40e38eb87383401408fd639b78fd7525}} 
+using {\bfseries iterator\+\_\+tag} = typename std\+::iterator\+\_\+traits$<$ typename content\+\_\+t\+::iterator $>$\+::iterator\+\_\+category
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_a3d873bf5dcb12422dce3cceeb6ca0f63}\label{classquantit_1_1flat__map_a3d873bf5dcb12422dce3cceeb6ca0f63}} 
+using {\bfseries const\+\_\+iterator\+\_\+tag} = typename std\+::iterator\+\_\+traits$<$ typename content\+\_\+t\+::const\+\_\+iterator $>$\+::iterator\+\_\+category
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_afa2228f09f7b6d9072be0e64e817ff2c}\label{classquantit_1_1flat__map_afa2228f09f7b6d9072be0e64e817ff2c}} 
+using {\bfseries reverse\+\_\+iterator} = std\+::reverse\+\_\+iterator$<$ \mbox{\hyperlink{classquantit_1_1flat__map_1_1iterator}{iterator}} $>$
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_adcb446f07e24a2a2e5f047ac5bfdff8b}\label{classquantit_1_1flat__map_adcb446f07e24a2a2e5f047ac5bfdff8b}} 
+using {\bfseries const\+\_\+reverse\+\_\+iterator} = std\+::reverse\+\_\+iterator$<$ \mbox{\hyperlink{classquantit_1_1flat__map_1_1const__iterator}{const\+\_\+iterator}} $>$
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_af76083a4c424694ccf2608c77dc48199}\label{classquantit_1_1flat__map_af76083a4c424694ccf2608c77dc48199}} 
+{\bfseries flat\+\_\+map} (size\+\_\+type capacity, const key\+\_\+compare \&\+\_\+comp=key\+\_\+compare(), const allocator\+\_\+type \&\+\_\+alloc=allocator\+\_\+type())
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_a174576c3e796254c53af8dee63c89626}\label{classquantit_1_1flat__map_a174576c3e796254c53af8dee63c89626}} 
+{\bfseries flat\+\_\+map} (const key\+\_\+compare \&\+\_\+comp, const allocator\+\_\+type \&\+\_\+alloc=allocator\+\_\+type())
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_afa2e96c73bbf546889a60fb008f85562}\label{classquantit_1_1flat__map_afa2e96c73bbf546889a60fb008f85562}} 
+{\bfseries flat\+\_\+map} (const allocator\+\_\+type \&\+\_\+alloc=allocator\+\_\+type())
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_a8fa0376a1285dc81ee68049e5ff3e06a}\label{classquantit_1_1flat__map_a8fa0376a1285dc81ee68049e5ff3e06a}} 
+{\bfseries flat\+\_\+map} (content\+\_\+t \&\&in)
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_a234d484d1caf195d32d4465dcd3ea97c}\label{classquantit_1_1flat__map_a234d484d1caf195d32d4465dcd3ea97c}} 
+{\bfseries flat\+\_\+map} (const content\+\_\+t \&in)
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_a2f64039c4b0c9b16b79c2a2c87413f9c}\label{classquantit_1_1flat__map_a2f64039c4b0c9b16b79c2a2c87413f9c}} 
+{\footnotesize template$<$class Input\+It $>$ }\\{\bfseries flat\+\_\+map} (Input\+It first, Input\+It last, const key\+\_\+compare \&\+\_\+comp=key\+\_\+compare(), const allocator\+\_\+type \&\+\_\+alloc=allocator\+\_\+type())
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_ad4d0a7b08ce0db07b2abc258fdeee5e8}\label{classquantit_1_1flat__map_ad4d0a7b08ce0db07b2abc258fdeee5e8}} 
+{\footnotesize template$<$class Input\+It $>$ }\\{\bfseries flat\+\_\+map} (Input\+It first, Input\+It last, const allocator\+\_\+type \&\+\_\+alloc)
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_ac50cfc983c3a85e82d16c0d51e6903ba}\label{classquantit_1_1flat__map_ac50cfc983c3a85e82d16c0d51e6903ba}} 
+{\bfseries flat\+\_\+map} (const \mbox{\hyperlink{classquantit_1_1flat__map}{flat\+\_\+map}} \&other)
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_ab3041cde614314873e5e0442b1d78982}\label{classquantit_1_1flat__map_ab3041cde614314873e5e0442b1d78982}} 
+{\bfseries flat\+\_\+map} (const \mbox{\hyperlink{classquantit_1_1flat__map}{flat\+\_\+map}} \&other, const allocator\+\_\+type \&alloc)
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_a2e481996e9c11b5a5b205d9719f49f92}\label{classquantit_1_1flat__map_a2e481996e9c11b5a5b205d9719f49f92}} 
+{\bfseries flat\+\_\+map} (\mbox{\hyperlink{classquantit_1_1flat__map}{flat\+\_\+map}} \&\&other)
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_aa2ff62bd61643ed1e084ad0936f76246}\label{classquantit_1_1flat__map_aa2ff62bd61643ed1e084ad0936f76246}} 
+{\bfseries flat\+\_\+map} (\mbox{\hyperlink{classquantit_1_1flat__map}{flat\+\_\+map}} \&\&other, const allocator\+\_\+type \&alloc)
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_aaca08058122af8222d506ef7b6e04bb3}\label{classquantit_1_1flat__map_aaca08058122af8222d506ef7b6e04bb3}} 
+{\bfseries flat\+\_\+map} (std\+::initializer\+\_\+list$<$ value\+\_\+type $>$ init)
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_ac6d5e3780a769f1aaefa007d47973a14}\label{classquantit_1_1flat__map_ac6d5e3780a769f1aaefa007d47973a14}} 
+{\bfseries flat\+\_\+map} (std\+::initializer\+\_\+list$<$ value\+\_\+type $>$ init, const \mbox{\hyperlink{classquantit_1_1flat__map_1_1value__compare}{value\+\_\+compare}} \&\+\_\+comp, const allocator\+\_\+type \&alloc)
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_a06234a924af62dfcc26ba6567c4c76e7}\label{classquantit_1_1flat__map_a06234a924af62dfcc26ba6567c4c76e7}} 
+{\bfseries flat\+\_\+map} (std\+::initializer\+\_\+list$<$ value\+\_\+type $>$ init, const allocator\+\_\+type \&alloc)
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_ada2034e516500aba0063b76565f1fb94}\label{classquantit_1_1flat__map_ada2034e516500aba0063b76565f1fb94}} 
+\mbox{\hyperlink{classquantit_1_1flat__map}{flat\+\_\+map}} \& {\bfseries operator=} (const \mbox{\hyperlink{classquantit_1_1flat__map}{flat\+\_\+map}} \&other)
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_ac67bec2043ef710809ac7d8ba53b9423}\label{classquantit_1_1flat__map_ac67bec2043ef710809ac7d8ba53b9423}} 
+\mbox{\hyperlink{classquantit_1_1flat__map}{flat\+\_\+map}} \& {\bfseries operator=} (\mbox{\hyperlink{classquantit_1_1flat__map}{flat\+\_\+map}} \&\&other) noexcept
+\item 
+\mbox{\hyperlink{classquantit_1_1flat__map}{flat\+\_\+map}} \& \mbox{\hyperlink{classquantit_1_1flat__map_a2415fa448fed8e388ded97f1148bf3cb}{operator=}} (std\+::initializer\+\_\+list$<$ value\+\_\+type $>$ ilist)
+\begin{DoxyCompactList}\small\item\em set the content of the \mbox{\hyperlink{classquantit_1_1flat__map}{flat\+\_\+map}} to that of the arguement. Does not sort if input isn\textquotesingle{}t already sorted. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_a4c64019e40fb99774e385aff2635c822}\label{classquantit_1_1flat__map_a4c64019e40fb99774e385aff2635c822}} 
+allocator\+\_\+type {\bfseries get\+\_\+allocator} () const noexcept
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_ae5e702f638180606320d38e4dd148f1f}\label{classquantit_1_1flat__map_ae5e702f638180606320d38e4dd148f1f}} 
+mapped\+\_\+type \& {\bfseries at} (const key\+\_\+type \&key)
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_aa9114b135752479f68d342bfd052b7e4}\label{classquantit_1_1flat__map_aa9114b135752479f68d342bfd052b7e4}} 
+const mapped\+\_\+type \& {\bfseries at} (const key\+\_\+type \&key) const
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_acfc98f6235d888a160fac9f435b3a464}\label{classquantit_1_1flat__map_acfc98f6235d888a160fac9f435b3a464}} 
+mapped\+\_\+type \& {\bfseries operator\mbox{[}$\,$\mbox{]}} (const key\+\_\+type key)
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_a56bdc057f8341cd7fa0ea0991c818cf8}\label{classquantit_1_1flat__map_a56bdc057f8341cd7fa0ea0991c818cf8}} 
+\mbox{\hyperlink{classquantit_1_1flat__map_1_1iterator}{iterator}} {\bfseries begin} ()
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_a3b4dc7ac5c86be826859b87fec52dbd5}\label{classquantit_1_1flat__map_a3b4dc7ac5c86be826859b87fec52dbd5}} 
+\mbox{\hyperlink{classquantit_1_1flat__map_1_1iterator}{iterator}} {\bfseries end} ()
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_a88d1879b5301d40d8e83a43ae6274a73}\label{classquantit_1_1flat__map_a88d1879b5301d40d8e83a43ae6274a73}} 
+\mbox{\hyperlink{classquantit_1_1flat__map_1_1const__iterator}{const\+\_\+iterator}} {\bfseries cbegin} () const
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_a6728459195664fb7d51fe62242a04b91}\label{classquantit_1_1flat__map_a6728459195664fb7d51fe62242a04b91}} 
+\mbox{\hyperlink{classquantit_1_1flat__map_1_1const__iterator}{const\+\_\+iterator}} {\bfseries begin} () const
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_af97983fdf6dce08d01aeac845b88a8ea}\label{classquantit_1_1flat__map_af97983fdf6dce08d01aeac845b88a8ea}} 
+\mbox{\hyperlink{classquantit_1_1flat__map_1_1const__iterator}{const\+\_\+iterator}} {\bfseries cend} () const
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_a5183ada1941c09fcde68bba0bd576a7d}\label{classquantit_1_1flat__map_a5183ada1941c09fcde68bba0bd576a7d}} 
+\mbox{\hyperlink{classquantit_1_1flat__map_1_1const__iterator}{const\+\_\+iterator}} {\bfseries end} () const
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_a08eeb2bae9d9f2b34db6b758696aa2ed}\label{classquantit_1_1flat__map_a08eeb2bae9d9f2b34db6b758696aa2ed}} 
+reverse\+\_\+iterator {\bfseries rbegin} ()
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_a7373c283f9f188ad943555ad9182b7f6}\label{classquantit_1_1flat__map_a7373c283f9f188ad943555ad9182b7f6}} 
+reverse\+\_\+iterator {\bfseries rend} ()
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_ac4c7607ae547d431098e653bdf186eeb}\label{classquantit_1_1flat__map_ac4c7607ae547d431098e653bdf186eeb}} 
+const\+\_\+reverse\+\_\+iterator {\bfseries crbegin} () const
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_aa7a70af48b760ae12400a5cd1feff3a7}\label{classquantit_1_1flat__map_aa7a70af48b760ae12400a5cd1feff3a7}} 
+const\+\_\+reverse\+\_\+iterator {\bfseries rbegin} () const
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_afa44f6ed339456605fbe989efb853fc9}\label{classquantit_1_1flat__map_afa44f6ed339456605fbe989efb853fc9}} 
+const\+\_\+reverse\+\_\+iterator {\bfseries crend} () const
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_a944fc066f85b13dc8bcfeb0eb998a8c1}\label{classquantit_1_1flat__map_a944fc066f85b13dc8bcfeb0eb998a8c1}} 
+const\+\_\+reverse\+\_\+iterator {\bfseries rend} () const
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_a3b43ddf8ccd2fcea3cfb5d15c1ea6ca7}\label{classquantit_1_1flat__map_a3b43ddf8ccd2fcea3cfb5d15c1ea6ca7}} 
+bool {\bfseries empty} () const
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_ac12ba7c587def914c32a3c34b4813ffc}\label{classquantit_1_1flat__map_ac12ba7c587def914c32a3c34b4813ffc}} 
+size\+\_\+type {\bfseries size} () const
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_a8a10e6a13024ff9d45128bd37d4af9f0}\label{classquantit_1_1flat__map_a8a10e6a13024ff9d45128bd37d4af9f0}} 
+size\+\_\+type {\bfseries capacity} () const
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_af3b9c7f1c7a0d0f4e6402c42608472ac}\label{classquantit_1_1flat__map_af3b9c7f1c7a0d0f4e6402c42608472ac}} 
+size\+\_\+type {\bfseries max\+\_\+size} () const
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_a0814930b88d32e75e068c40417c65803}\label{classquantit_1_1flat__map_a0814930b88d32e75e068c40417c65803}} 
+void {\bfseries reserve} (size\+\_\+type new\+\_\+cap)
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_a971211d92cc239dc9ceb8493b5376ac2}\label{classquantit_1_1flat__map_a971211d92cc239dc9ceb8493b5376ac2}} 
+void {\bfseries resize} (size\+\_\+type new\+\_\+size)
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_a6c8a4748213047b384eb2224bb0eb1a2}\label{classquantit_1_1flat__map_a6c8a4748213047b384eb2224bb0eb1a2}} 
+void {\bfseries shrink\+\_\+to\+\_\+fit} ()
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_a8b85832e53905aa7640bbe937a288007}\label{classquantit_1_1flat__map_a8b85832e53905aa7640bbe937a288007}} 
+void {\bfseries clear} ()
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_af026d716b65aee454dee42f2cfbb32f9}\label{classquantit_1_1flat__map_af026d716b65aee454dee42f2cfbb32f9}} 
+std\+::pair$<$ \mbox{\hyperlink{classquantit_1_1flat__map_1_1iterator}{iterator}}, bool $>$ {\bfseries insert} (const value\+\_\+type \&value)
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_a4f5bb273d00895e0812729e1074fa6d3}\label{classquantit_1_1flat__map_a4f5bb273d00895e0812729e1074fa6d3}} 
+std\+::pair$<$ \mbox{\hyperlink{classquantit_1_1flat__map_1_1iterator}{iterator}}, bool $>$ {\bfseries insert} (value\+\_\+type \&\&value)
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_a4f232088f8aa2f5e443afa3a669df92d}\label{classquantit_1_1flat__map_a4f232088f8aa2f5e443afa3a669df92d}} 
+{\footnotesize template$<$class P , class  = std\+::enable\+\_\+if\+\_\+t$<$std\+::is\+\_\+constructible\+\_\+v$<$value\+\_\+type, P\&\&$>$$>$$>$ }\\std\+::pair$<$ \mbox{\hyperlink{classquantit_1_1flat__map_1_1iterator}{iterator}}, bool $>$ {\bfseries insert} (P \&\&value)
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_adde51c2a8f382009243c5d1ce817318c}\label{classquantit_1_1flat__map_adde51c2a8f382009243c5d1ce817318c}} 
+\mbox{\hyperlink{classquantit_1_1flat__map_1_1iterator}{iterator}} {\bfseries insert} (\mbox{\hyperlink{classquantit_1_1flat__map_1_1const__iterator}{const\+\_\+iterator}} hint, const value\+\_\+type \&value)
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_a2c15ef78619c2433ce405bef25c6db45}\label{classquantit_1_1flat__map_a2c15ef78619c2433ce405bef25c6db45}} 
+\mbox{\hyperlink{classquantit_1_1flat__map_1_1iterator}{iterator}} {\bfseries insert} (\mbox{\hyperlink{classquantit_1_1flat__map_1_1const__iterator}{const\+\_\+iterator}} hint, value\+\_\+type \&\&value)
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_ae34591c805da9393172f21df210d344a}\label{classquantit_1_1flat__map_ae34591c805da9393172f21df210d344a}} 
+{\footnotesize template$<$class P , class  = std\+::enable\+\_\+if\+\_\+t$<$std\+::is\+\_\+constructible\+\_\+v$<$value\+\_\+type, P\&\&$>$ $>$$>$ }\\\mbox{\hyperlink{classquantit_1_1flat__map_1_1iterator}{iterator}} {\bfseries insert} (\mbox{\hyperlink{classquantit_1_1flat__map_1_1const__iterator}{const\+\_\+iterator}} hint, P \&\&value)
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_aeb6e3e216b0e1585e9b07136d0bcb86e}\label{classquantit_1_1flat__map_aeb6e3e216b0e1585e9b07136d0bcb86e}} 
+{\footnotesize template$<$class Input\+It $>$ }\\void {\bfseries insert} (Input\+It first, Input\+It last)
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_ab532d6d4719279cd2a3ff1416003d0ee}\label{classquantit_1_1flat__map_ab532d6d4719279cd2a3ff1416003d0ee}} 
+{\footnotesize template$<$class Input\+It , class Collision , class  = std\+::enable\+\_\+if\+\_\+t$<$!std\+::is\+\_\+convertible\+\_\+v$<$\+Input\+It, const\+\_\+iterator$>$$>$$>$ }\\void {\bfseries insert} (Input\+It first, Input\+It last, Collision \&\&collision)
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_ac2a6f3d4ffbe074667c64eaa2ac5ca98}\label{classquantit_1_1flat__map_ac2a6f3d4ffbe074667c64eaa2ac5ca98}} 
+{\footnotesize template$<$class Collision $>$ }\\void {\bfseries insert} (\mbox{\hyperlink{classquantit_1_1flat__map_1_1const__iterator}{const\+\_\+iterator}} first, \mbox{\hyperlink{classquantit_1_1flat__map_1_1const__iterator}{const\+\_\+iterator}} last, Collision \&\&collision)
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_a53a5eac00f28783c2b2f580d5e9ca3b1}\label{classquantit_1_1flat__map_a53a5eac00f28783c2b2f580d5e9ca3b1}} 
+{\footnotesize template$<$class Collision , class No\+Collision $>$ }\\void {\bfseries insert} (\mbox{\hyperlink{classquantit_1_1flat__map_1_1const__iterator}{const\+\_\+iterator}} first, \mbox{\hyperlink{classquantit_1_1flat__map_1_1const__iterator}{const\+\_\+iterator}} last, Collision \&\&collision, No\+Collision \&\&nocollision)
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_ac53274716106103e841a5eafb222e130}\label{classquantit_1_1flat__map_ac53274716106103e841a5eafb222e130}} 
+{\footnotesize template$<$class M $>$ }\\std\+::pair$<$ \mbox{\hyperlink{classquantit_1_1flat__map_1_1iterator}{iterator}}, bool $>$ {\bfseries insert\+\_\+or\+\_\+assign} (const key\+\_\+type \&k, M \&\&obj)
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_a49be2b1d241a7ff21ff7c5352732f8c8}\label{classquantit_1_1flat__map_a49be2b1d241a7ff21ff7c5352732f8c8}} 
+{\footnotesize template$<$class M $>$ }\\std\+::pair$<$ \mbox{\hyperlink{classquantit_1_1flat__map_1_1iterator}{iterator}}, bool $>$ {\bfseries insert\+\_\+or\+\_\+assign} (key\+\_\+type \&\&k, M \&\&obj)
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_aa7125f1fa6ff750b0adeb4597d0a30bb}\label{classquantit_1_1flat__map_aa7125f1fa6ff750b0adeb4597d0a30bb}} 
+{\footnotesize template$<$class M $>$ }\\\mbox{\hyperlink{classquantit_1_1flat__map_1_1iterator}{iterator}} {\bfseries insert\+\_\+or\+\_\+assign} (\mbox{\hyperlink{classquantit_1_1flat__map_1_1const__iterator}{const\+\_\+iterator}} hint, const key\+\_\+type \&k, M \&\&obj)
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_a26bcf08cdac189a5d1a2d00eef810c22}\label{classquantit_1_1flat__map_a26bcf08cdac189a5d1a2d00eef810c22}} 
+{\footnotesize template$<$class M $>$ }\\\mbox{\hyperlink{classquantit_1_1flat__map_1_1iterator}{iterator}} {\bfseries insert\+\_\+or\+\_\+assign} (\mbox{\hyperlink{classquantit_1_1flat__map_1_1const__iterator}{const\+\_\+iterator}} hint, key\+\_\+type \&\&k, M \&\&obj)
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_a7dce9694cbd952d77110f81a92a690e6}\label{classquantit_1_1flat__map_a7dce9694cbd952d77110f81a92a690e6}} 
+{\footnotesize template$<$class... Args$>$ }\\std\+::pair$<$ \mbox{\hyperlink{classquantit_1_1flat__map_1_1iterator}{iterator}}, bool $>$ {\bfseries emplace} (Args \&\&... args)
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_a6cc6814b6d4896cebacee4b04b7de703}\label{classquantit_1_1flat__map_a6cc6814b6d4896cebacee4b04b7de703}} 
+{\footnotesize template$<$class... Args$>$ }\\std\+::pair$<$ \mbox{\hyperlink{classquantit_1_1flat__map_1_1iterator}{iterator}}, bool $>$ {\bfseries emplace} (\mbox{\hyperlink{classquantit_1_1flat__map_1_1const__iterator}{const\+\_\+iterator}} hint, Args \&\&... args)
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_a706455a8bfd282e63bf81bb44f8183d8}\label{classquantit_1_1flat__map_a706455a8bfd282e63bf81bb44f8183d8}} 
+{\footnotesize template$<$class... Args$>$ }\\std\+::pair$<$ \mbox{\hyperlink{classquantit_1_1flat__map_1_1iterator}{iterator}}, bool $>$ {\bfseries emplace} (\mbox{\hyperlink{classquantit_1_1flat__map_1_1iterator}{iterator}} hint, Args \&\&... args)
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_a4bbaafaafbecc29c23d0ae57bd25cc8d}\label{classquantit_1_1flat__map_a4bbaafaafbecc29c23d0ae57bd25cc8d}} 
+{\footnotesize template$<$class... Args$>$ }\\std\+::pair$<$ \mbox{\hyperlink{classquantit_1_1flat__map_1_1iterator}{iterator}}, bool $>$ {\bfseries try\+\_\+emplace} (const key\+\_\+type \&k, Args \&\&... args)
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_a102f9980eca2ee5c5c787c2385b80060}\label{classquantit_1_1flat__map_a102f9980eca2ee5c5c787c2385b80060}} 
+{\footnotesize template$<$class... Args$>$ }\\std\+::pair$<$ \mbox{\hyperlink{classquantit_1_1flat__map_1_1iterator}{iterator}}, bool $>$ {\bfseries try\+\_\+emplace} (key\+\_\+type \&\&k, Args \&\&... args)
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_a2328b592092830bf3ea7f2ee94fc7eb9}\label{classquantit_1_1flat__map_a2328b592092830bf3ea7f2ee94fc7eb9}} 
+{\footnotesize template$<$class... Args$>$ }\\std\+::pair$<$ \mbox{\hyperlink{classquantit_1_1flat__map_1_1iterator}{iterator}}, bool $>$ {\bfseries try\+\_\+emplace} (\mbox{\hyperlink{classquantit_1_1flat__map_1_1const__iterator}{const\+\_\+iterator}} hint, const key\+\_\+type \&k, Args \&\&... args)
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_ab5db6f1ec3ab3749f4c5959d217206d0}\label{classquantit_1_1flat__map_ab5db6f1ec3ab3749f4c5959d217206d0}} 
+{\footnotesize template$<$class... Args$>$ }\\std\+::pair$<$ \mbox{\hyperlink{classquantit_1_1flat__map_1_1iterator}{iterator}}, bool $>$ {\bfseries try\+\_\+emplace} (\mbox{\hyperlink{classquantit_1_1flat__map_1_1const__iterator}{const\+\_\+iterator}} hint, key\+\_\+type \&\&k, Args \&\&... args)
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_ae6445fbb2513fbb1a17c9dd64f9fcc31}\label{classquantit_1_1flat__map_ae6445fbb2513fbb1a17c9dd64f9fcc31}} 
+\mbox{\hyperlink{classquantit_1_1flat__map_1_1iterator}{iterator}} {\bfseries erase} (\mbox{\hyperlink{classquantit_1_1flat__map_1_1const__iterator}{const\+\_\+iterator}} pos)
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_a338836e0d7daeef7511da2970e98b37f}\label{classquantit_1_1flat__map_a338836e0d7daeef7511da2970e98b37f}} 
+\mbox{\hyperlink{classquantit_1_1flat__map_1_1iterator}{iterator}} {\bfseries erase} (\mbox{\hyperlink{classquantit_1_1flat__map_1_1iterator}{iterator}} pos)
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_a9ddc600731c07023d0b78277e25d8708}\label{classquantit_1_1flat__map_a9ddc600731c07023d0b78277e25d8708}} 
+\mbox{\hyperlink{classquantit_1_1flat__map_1_1iterator}{iterator}} {\bfseries erase} (\mbox{\hyperlink{classquantit_1_1flat__map_1_1const__iterator}{const\+\_\+iterator}} first, \mbox{\hyperlink{classquantit_1_1flat__map_1_1const__iterator}{const\+\_\+iterator}} last)
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_a8caefdd48bd38de00ac5fdeca600449a}\label{classquantit_1_1flat__map_a8caefdd48bd38de00ac5fdeca600449a}} 
+size\+\_\+type {\bfseries erase} (const key\+\_\+type \&k)
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_a81cf3cb065666c65e323532c36ac5269}\label{classquantit_1_1flat__map_a81cf3cb065666c65e323532c36ac5269}} 
+void {\bfseries swap} (\mbox{\hyperlink{classquantit_1_1flat__map}{flat\+\_\+map}} \&other) noexcept
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_a2967027b9b0957ae069901893b27ddf7}\label{classquantit_1_1flat__map_a2967027b9b0957ae069901893b27ddf7}} 
+{\footnotesize template$<$class C2 , class Collision $>$ }\\void {\bfseries merge} (const \mbox{\hyperlink{classquantit_1_1flat__map}{flat\+\_\+map}}$<$ key\+\_\+type, mapped\+\_\+type, C2, allocator\+\_\+type $>$ \&source, Collision \&\&collision)
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_ac8b96d1f54680af16235cbdb76765220}\label{classquantit_1_1flat__map_ac8b96d1f54680af16235cbdb76765220}} 
+{\footnotesize template$<$class C2 , class Collision , class No\+Collision $>$ }\\void {\bfseries merge} (const \mbox{\hyperlink{classquantit_1_1flat__map}{flat\+\_\+map}}$<$ key\+\_\+type, mapped\+\_\+type, C2, allocator\+\_\+type $>$ \&source, Collision \&\&collision, No\+Collision \&\&nocollision)
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_a31172f77ae6a689d054e5a5e96e9c5bf}\label{classquantit_1_1flat__map_a31172f77ae6a689d054e5a5e96e9c5bf}} 
+{\footnotesize template$<$class C2 , class Collision $>$ }\\void {\bfseries merge} (\mbox{\hyperlink{classquantit_1_1flat__map}{flat\+\_\+map}}$<$ key\+\_\+type, mapped\+\_\+type, C2, allocator\+\_\+type $>$ \&\&source, Collision \&\&collision)
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_a81d2224bd93e2785157e4c505275fbe8}\label{classquantit_1_1flat__map_a81d2224bd93e2785157e4c505275fbe8}} 
+{\footnotesize template$<$class C2 , class Collision , class No\+Collision $>$ }\\void {\bfseries merge} (\mbox{\hyperlink{classquantit_1_1flat__map}{flat\+\_\+map}}$<$ key\+\_\+type, mapped\+\_\+type, C2, allocator\+\_\+type $>$ \&\&source, Collision \&\&collision, No\+Collision \&\&nocollision)
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_a87fabd149d7fd12310555aee3d386caa}\label{classquantit_1_1flat__map_a87fabd149d7fd12310555aee3d386caa}} 
+{\footnotesize template$<$class C2 $>$ }\\void {\bfseries merge} (const \mbox{\hyperlink{classquantit_1_1flat__map}{flat\+\_\+map}}$<$ key\+\_\+type, mapped\+\_\+type, C2, allocator\+\_\+type $>$ \&source)
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_af6343afe1a0d38bb9ec75e1f1a6ebc53}\label{classquantit_1_1flat__map_af6343afe1a0d38bb9ec75e1f1a6ebc53}} 
+{\footnotesize template$<$class C2 $>$ }\\void {\bfseries merge} (\mbox{\hyperlink{classquantit_1_1flat__map}{flat\+\_\+map}}$<$ key\+\_\+type, mapped\+\_\+type, C2, allocator\+\_\+type $>$ \&\&source)
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_a7fee025a2e137c6a27468ca81046f3e1}\label{classquantit_1_1flat__map_a7fee025a2e137c6a27468ca81046f3e1}} 
+\mbox{\hyperlink{classquantit_1_1flat__map_1_1iterator}{iterator}} {\bfseries find} (const key\+\_\+type \&k)
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_a7299d7958c581329511f907b46dca2ab}\label{classquantit_1_1flat__map_a7299d7958c581329511f907b46dca2ab}} 
+\mbox{\hyperlink{classquantit_1_1flat__map_1_1const__iterator}{const\+\_\+iterator}} {\bfseries find} (const key\+\_\+type \&k) const
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_aa73e3c3632e2767ca76d7cea1759eedf}\label{classquantit_1_1flat__map_aa73e3c3632e2767ca76d7cea1759eedf}} 
+size\+\_\+type {\bfseries count} (const key\+\_\+type \&k) const
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_aa9fb39db1cce7bfd783e03b6f991b0f8}\label{classquantit_1_1flat__map_aa9fb39db1cce7bfd783e03b6f991b0f8}} 
+bool {\bfseries contains} (const key\+\_\+type \&k) const
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_a5ddc6f5816a680e68d56782290c2ade6}\label{classquantit_1_1flat__map_a5ddc6f5816a680e68d56782290c2ade6}} 
+std\+::pair$<$ \mbox{\hyperlink{classquantit_1_1flat__map_1_1iterator}{iterator}}, \mbox{\hyperlink{classquantit_1_1flat__map_1_1iterator}{iterator}} $>$ {\bfseries equal\+\_\+range} (const key\+\_\+type \&k)
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_aa0d6ac635e857be07683264c6bda4b3e}\label{classquantit_1_1flat__map_aa0d6ac635e857be07683264c6bda4b3e}} 
+std\+::pair$<$ \mbox{\hyperlink{classquantit_1_1flat__map_1_1const__iterator}{const\+\_\+iterator}}, \mbox{\hyperlink{classquantit_1_1flat__map_1_1const__iterator}{const\+\_\+iterator}} $>$ {\bfseries equal\+\_\+range} (const key\+\_\+type \&k) const
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_ad8287c3206eff3540821fc6dabf873d4}\label{classquantit_1_1flat__map_ad8287c3206eff3540821fc6dabf873d4}} 
+\mbox{\hyperlink{classquantit_1_1flat__map_1_1iterator}{iterator}} {\bfseries lower\+\_\+bound} (const key\+\_\+type \&k)
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_acbfdac5d8fbd755438a3266073991483}\label{classquantit_1_1flat__map_acbfdac5d8fbd755438a3266073991483}} 
+\mbox{\hyperlink{classquantit_1_1flat__map_1_1const__iterator}{const\+\_\+iterator}} {\bfseries lower\+\_\+bound} (const key\+\_\+type \&k) const
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_a0c19e1a87e12718bec1af4915704c3f2}\label{classquantit_1_1flat__map_a0c19e1a87e12718bec1af4915704c3f2}} 
+\mbox{\hyperlink{classquantit_1_1flat__map_1_1iterator}{iterator}} {\bfseries upper\+\_\+bound} (const key\+\_\+type \&k)
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_a282a4e5e28b8c6373604cde224bc31ff}\label{classquantit_1_1flat__map_a282a4e5e28b8c6373604cde224bc31ff}} 
+\mbox{\hyperlink{classquantit_1_1flat__map_1_1const__iterator}{const\+\_\+iterator}} {\bfseries upper\+\_\+bound} (const key\+\_\+type \&k) const
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_aea4e6986c5755060b3f520667a5c54e7}\label{classquantit_1_1flat__map_aea4e6986c5755060b3f520667a5c54e7}} 
+key\+\_\+compare {\bfseries key\+\_\+comp} () const
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_a84bc6d3dc5394ba6981d89b33215b651}\label{classquantit_1_1flat__map_a84bc6d3dc5394ba6981d89b33215b651}} 
+\mbox{\hyperlink{classquantit_1_1flat__map_1_1value__compare}{value\+\_\+compare}} {\bfseries value\+\_\+comp} () const
+\item 
+void \mbox{\hyperlink{classquantit_1_1flat__map_ab86eb4f76adb14729dbfe27d84c4b7d8}{sort}} (\mbox{\hyperlink{classquantit_1_1flat__map_1_1iterator}{iterator}} first, \mbox{\hyperlink{classquantit_1_1flat__map_1_1iterator}{iterator}} last)
+\begin{DoxyCompactList}\small\item\em sort the \mbox{\hyperlink{classquantit_1_1flat__map}{flat\+\_\+map}}. So long as you only manipulate the content of the map using it\textquotesingle{}s methods, you do not need to reorder it. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_acd7f718e1a6cba2cd759028041bee84e}\label{classquantit_1_1flat__map_acd7f718e1a6cba2cd759028041bee84e}} 
+void {\bfseries sort} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classquantit_1_1flat__map_a34689aebcaa8296c9f3cc5cb8cf26888}\label{classquantit_1_1flat__map_a34689aebcaa8296c9f3cc5cb8cf26888}} 
+\mbox{\hyperlink{classquantit_1_1flat__map_1_1value__compare}{value\+\_\+compare}} {\bfseries comp}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classquantit_1_1flat__map_a2415fa448fed8e388ded97f1148bf3cb}\label{classquantit_1_1flat__map_a2415fa448fed8e388ded97f1148bf3cb}} 
+\index{quantit::flat\_map$<$ Key, Value, Comp\_less, Allocator, Array $>$@{quantit::flat\_map$<$ Key, Value, Comp\_less, Allocator, Array $>$}!operator=@{operator=}}
+\index{operator=@{operator=}!quantit::flat\_map$<$ Key, Value, Comp\_less, Allocator, Array $>$@{quantit::flat\_map$<$ Key, Value, Comp\_less, Allocator, Array $>$}}
+\doxysubsubsection{\texorpdfstring{operator=()}{operator=()}}
+{\footnotesize\ttfamily template$<$class Key , class Value , class Comp\+\_\+less  = std\+::less$<$\+Key$>$, class Allocator  = std\+::allocator$<$std\+::pair$<$\+Key, Value$>$$>$, template$<$ class... $>$ class Array = std\+::vector$>$ \\
+\mbox{\hyperlink{classquantit_1_1flat__map}{flat\+\_\+map}}\& \mbox{\hyperlink{classquantit_1_1flat__map}{quantit\+::flat\+\_\+map}}$<$ Key, Value, Comp\+\_\+less, Allocator, Array $>$\+::operator= (\begin{DoxyParamCaption}\item[{std\+::initializer\+\_\+list$<$ value\+\_\+type $>$}]{ilist }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+set the content of the \mbox{\hyperlink{classquantit_1_1flat__map}{flat\+\_\+map}} to that of the arguement. Does not sort if input isn\textquotesingle{}t already sorted. 
+
+TODO\+: add a call to sort?
+
+
+\begin{DoxyParams}{Parameters}
+{\em ilist} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\mbox{\hyperlink{classquantit_1_1flat__map}{flat\+\_\+map}}\& 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classquantit_1_1flat__map_ab86eb4f76adb14729dbfe27d84c4b7d8}\label{classquantit_1_1flat__map_ab86eb4f76adb14729dbfe27d84c4b7d8}} 
+\index{quantit::flat\_map$<$ Key, Value, Comp\_less, Allocator, Array $>$@{quantit::flat\_map$<$ Key, Value, Comp\_less, Allocator, Array $>$}!sort@{sort}}
+\index{sort@{sort}!quantit::flat\_map$<$ Key, Value, Comp\_less, Allocator, Array $>$@{quantit::flat\_map$<$ Key, Value, Comp\_less, Allocator, Array $>$}}
+\doxysubsubsection{\texorpdfstring{sort()}{sort()}}
+{\footnotesize\ttfamily template$<$class Key , class Value , class Comp\+\_\+less  = std\+::less$<$\+Key$>$, class Allocator  = std\+::allocator$<$std\+::pair$<$\+Key, Value$>$$>$, template$<$ class... $>$ class Array = std\+::vector$>$ \\
+void \mbox{\hyperlink{classquantit_1_1flat__map}{quantit\+::flat\+\_\+map}}$<$ Key, Value, Comp\+\_\+less, Allocator, Array $>$\+::sort (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classquantit_1_1flat__map_1_1iterator}{iterator}}}]{first,  }\item[{\mbox{\hyperlink{classquantit_1_1flat__map_1_1iterator}{iterator}}}]{last }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+sort the \mbox{\hyperlink{classquantit_1_1flat__map}{flat\+\_\+map}}. So long as you only manipulate the content of the map using it\textquotesingle{}s methods, you do not need to reorder it. 
+
+for the block tensor class, some manipulation of the index could be necessary. If the transformation on the index changes the ordering, call sort afterward. Or face the consequences. All the method of this class are UB if it is not sorted.
+
+
+\begin{DoxyParams}{Parameters}
+{\em first} & iterator to the first element of the range to sort \\
+\hline
+{\em last} & iterator to the element after the range to sort \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/alex/project/quantt/include/block\+Tensor/flat\+\_\+map.\+h\end{DoxyCompactItemize}

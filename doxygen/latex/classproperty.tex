@@ -1,0 +1,71 @@
+\hypertarget{classproperty}{}\doxysection{property$<$ content, owner, cref\+\_\+type, unique\+\_\+type $>$ Class Template Reference}
+\label{classproperty}\index{property$<$ content, owner, cref\_type, unique\_type $>$@{property$<$ content, owner, cref\_type, unique\_type $>$}}
+
+
+{\ttfamily \#include $<$property.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classproperty_a308a846b142d1e4287c4d0202db8f33e}\label{classproperty_a308a846b142d1e4287c4d0202db8f33e}} 
+{\bfseries operator cref\+\_\+type} () const noexcept
+\item 
+\mbox{\hyperlink{classproperty}{property}} \& \mbox{\hyperlink{classproperty_adb58f3ae45996edceb8fa1fcecd9b1bc}{operator=}} (cref\+\_\+type new\+\_\+value)
+\begin{DoxyCompactList}\small\item\em read access through implicit conversion \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classproperty}{property}} \& \mbox{\hyperlink{classproperty_aed01b27239420a0c08a49d7df6f4c9f8}{operator=}} (content \&\&new\+\_\+value)
+\begin{DoxyCompactList}\small\item\em move assignment operator Define it to give public write access to value, with any and all checks necessary. Do not define assignement operators to keep the value private. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classproperty_a058c3e1632a91b77ada3d87b435ceea1}\label{classproperty_a058c3e1632a91b77ada3d87b435ceea1}} 
+const content $\ast$ \mbox{\hyperlink{classproperty_a058c3e1632a91b77ada3d87b435ceea1}{operator-\/$>$}} () const
+\begin{DoxyCompactList}\small\item\em Arrow dereferencing operator. Let you call the members const without going through the conversion operator first. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$class content, class owner, class cref\+\_\+type = const content \&, class unique\+\_\+type = owner$>$\newline
+class property$<$ content, owner, cref\+\_\+type, unique\+\_\+type $>$}
+
+wrapper for properties, allow direct access to users with checks without an explicit setter and getter. for cheap to copy type, one can use the value itself for the ref\+\_\+type. Usage of property is incompatible with the keyword auto. if you use auto, you will either get an error. If you use auto\& you get a reference to the wrapper type. This is because the auto keyword doesn\textquotesingle{}t do conversions and the magic of this class wrapper is in the fact that it does implicit conversions. unique\+\_\+type is for the situation where it is desirable to have a different type (setter and getter) for a property with the same owning class and content type. if a completly unique type is necessary the type of an empty lambda \mbox{[}\mbox{]}\{\} can be used for unique\+\_\+type, because all lambda have a unique type. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classproperty_aed01b27239420a0c08a49d7df6f4c9f8}\label{classproperty_aed01b27239420a0c08a49d7df6f4c9f8}} 
+\index{property$<$ content, owner, cref\_type, unique\_type $>$@{property$<$ content, owner, cref\_type, unique\_type $>$}!operator=@{operator=}}
+\index{operator=@{operator=}!property$<$ content, owner, cref\_type, unique\_type $>$@{property$<$ content, owner, cref\_type, unique\_type $>$}}
+\doxysubsubsection{\texorpdfstring{operator=()}{operator=()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$class content , class owner , class cref\+\_\+type  = const content \&, class unique\+\_\+type  = owner$>$ \\
+\mbox{\hyperlink{classproperty}{property}}\& \mbox{\hyperlink{classproperty}{property}}$<$ content, owner, cref\+\_\+type, unique\+\_\+type $>$\+::operator= (\begin{DoxyParamCaption}\item[{content \&\&}]{new\+\_\+value }\end{DoxyParamCaption})}
+
+
+
+move assignment operator Define it to give public write access to value, with any and all checks necessary. Do not define assignement operators to keep the value private. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em new\+\_\+value} & new value \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+property\& $\ast$this 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classproperty_adb58f3ae45996edceb8fa1fcecd9b1bc}\label{classproperty_adb58f3ae45996edceb8fa1fcecd9b1bc}} 
+\index{property$<$ content, owner, cref\_type, unique\_type $>$@{property$<$ content, owner, cref\_type, unique\_type $>$}!operator=@{operator=}}
+\index{operator=@{operator=}!property$<$ content, owner, cref\_type, unique\_type $>$@{property$<$ content, owner, cref\_type, unique\_type $>$}}
+\doxysubsubsection{\texorpdfstring{operator=()}{operator=()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$class content , class owner , class cref\+\_\+type  = const content \&, class unique\+\_\+type  = owner$>$ \\
+\mbox{\hyperlink{classproperty}{property}}\& \mbox{\hyperlink{classproperty}{property}}$<$ content, owner, cref\+\_\+type, unique\+\_\+type $>$\+::operator= (\begin{DoxyParamCaption}\item[{cref\+\_\+type}]{new\+\_\+value }\end{DoxyParamCaption})}
+
+
+
+read access through implicit conversion 
+
+Value or ref assignment operator Define it to give public write access to value, with any and all checks necessary. Do not define assignement operators to keep the value private. 
+\begin{DoxyParams}{Parameters}
+{\em new\+\_\+value} & new value \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+property\& $\ast$this 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/alex/project/quantt/include/property.\+h\end{DoxyCompactItemize}

@@ -1,0 +1,421 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="operators_8h" kind="file" language="C++">
+    <compoundname>operators.h</compoundname>
+    <includes local="no">torch/torch.h</includes>
+    <includes refid="quantity_8h" local="yes">Conserved/quantity.h</includes>
+    <includes refid="btensor_8h" local="yes">blockTensor/btensor.h</includes>
+    <includes local="yes">doctest/doctest_proxy.h</includes>
+    <includes local="no">fmt/core.h</includes>
+    <incdepgraph>
+      <node id="12">
+        <label>functional</label>
+      </node>
+      <node id="21">
+        <label>fmt/format.h</label>
+      </node>
+      <node id="13">
+        <label>iterator</label>
+      </node>
+      <node id="20">
+        <label>cstdint</label>
+      </node>
+      <node id="34">
+        <label>charconv</label>
+      </node>
+      <node id="28">
+        <label>Conserved/Composite/quantity_vector.h</label>
+        <link refid="quantity__vector_8h_source"/>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>boost/stl_interfaces/iterator_interface.hpp</label>
+      </node>
+      <node id="31">
+        <label>property.h</label>
+        <link refid="property_8h_source"/>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>cassert</label>
+      </node>
+      <node id="33">
+        <label>fmt/ostream.h</label>
+      </node>
+      <node id="37">
+        <label>stdexcept</label>
+      </node>
+      <node id="14">
+        <label>numeric</label>
+      </node>
+      <node id="1">
+        <label>/home/alex/project/quantt/include/operators.h</label>
+        <link refid="operators_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="35">
+        <label>ATen/Functions.h</label>
+      </node>
+      <node id="36">
+        <label>exception</label>
+      </node>
+      <node id="30">
+        <label>boost/stl_interfaces/view_interface.hpp</label>
+      </node>
+      <node id="25">
+        <label>Conserved/Composite/quantity_impl.h</label>
+        <link refid="quantity__impl_8h_source"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="22">
+        <label>ostream</label>
+      </node>
+      <node id="32">
+        <label>torch_formatter.h</label>
+        <link refid="torch__formatter_8h_source"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>fmt/core.h</label>
+      </node>
+      <node id="17">
+        <label>templateMeta.h</label>
+        <link refid="templateMeta_8h_source"/>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+      </node>
+      <node id="24">
+        <label>Conserved/Composite/cquantity.h</label>
+        <link refid="cquantity_8h_source"/>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="26">
+        <label>ios</label>
+      </node>
+      <node id="5">
+        <label>blockTensor/flat_map.h</label>
+        <link refid="flat__map_8h_source"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>Conserved/quantity.h</label>
+        <link refid="quantity_8h_source"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="18">
+        <label>tuple</label>
+      </node>
+      <node id="38">
+        <label>torch/csrc/utils/variadic.h</label>
+      </node>
+      <node id="11">
+        <label>fmt/ranges.h</label>
+      </node>
+      <node id="16">
+        <label>vector</label>
+      </node>
+      <node id="15">
+        <label>utility</label>
+      </node>
+      <node id="23">
+        <label>blockTensor/btensor.h</label>
+        <link refid="btensor_8h_source"/>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>torch/torch.h</label>
+      </node>
+      <node id="4">
+        <label>Conserved/quantity_utils.h</label>
+        <link refid="quantity__utils_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="19">
+        <label>type_traits</label>
+      </node>
+      <node id="7">
+        <label>algorithm</label>
+      </node>
+      <node id="29">
+        <label>Conserved/Composite/quantity_vector_impl.h</label>
+        <link refid="quantity__vector__impl_8h_source"/>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="27">
+        <label>memory</label>
+      </node>
+      <node id="6">
+        <label>doctest/doctest_proxy.h</label>
+      </node>
+    </incdepgraph>
+    <innernamespace refid="namespacequantit">quantit</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>File:<sp/>operators.h</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>Project:<sp/>QuantiT</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>File<sp/>Created:<sp/>Monday,<sp/>17th<sp/>August<sp/>2020<sp/>9:16:18<sp/>am</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>Author:<sp/>Alexandre<sp/>Foley<sp/>(Alexandre.foley@usherbrooke.ca)</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>-----</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>Last<sp/>Modified:<sp/>Monday,<sp/>17th<sp/>August<sp/>2020<sp/>9:16:18<sp/>am</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>Modified<sp/>By:<sp/>Alexandre<sp/>Foley<sp/>(Alexandre.foley@usherbrooke.ca&gt;)</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>-----</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>Copyright<sp/>(c)<sp/>2020<sp/>Alexandre<sp/>Foley</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>Licensed<sp/>under<sp/>GPL<sp/>v3</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>A4334AE3_0ED7_40A8_999C_F388D4675687</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>A4334AE3_0ED7_40A8_999C_F388D4675687</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;torch/torch.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;Conserved/quantity.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;blockTensor/btensor.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;doctest/doctest_proxy.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;fmt/core.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">quantit</highlight></codeline>
+<codeline lineno="25"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="keyword">namespace</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>tens<sp/>=<sp/>torch::Tensor;</highlight></codeline>
+<codeline lineno="30"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal">std::tuple&lt;tens,<sp/>tens,<sp/>tens,<sp/>tens&gt;<sp/>fermions();</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal">std::tuple&lt;btensor,<sp/>btensor,<sp/>btensor,<sp/>btensor&gt;<sp/>fermions(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>btensor<sp/>&amp;shape);</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight></codeline>
+<codeline lineno="54"><highlight class="normal">std::tuple&lt;tens,<sp/>tens,<sp/>tens,<sp/>tens,<sp/>tens&gt;<sp/>pauli();</highlight></codeline>
+<codeline lineno="62"><highlight class="normal">std::tuple&lt;btensor,<sp/>btensor,<sp/>btensor&gt;<sp/>pauli(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>btensor<sp/>&amp;shape);</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"></highlight></codeline>
+<codeline lineno="64"><highlight class="normal">qtt_TEST_CASE(</highlight><highlight class="stringliteral">&quot;half<sp/>spin<sp/>fermions&quot;</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="65"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>[c_up,<sp/>c_dn,<sp/>F,<sp/>id]<sp/>=<sp/>fermions();</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"></highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>cd_up<sp/>=<sp/>c_up.conj().t();</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>cd_dn<sp/>=<sp/>c_dn.conj().t();</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>The<sp/>specific<sp/>content<sp/>of<sp/>those<sp/>matrices<sp/>isn&apos;t<sp/>all<sp/>that<sp/>important,<sp/>so<sp/>long<sp/>as<sp/>they<sp/>have<sp/>the<sp/>following<sp/>properties</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>anticommutation</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/>qtt_CHECK(torch::equal(torch::matmul(cd_up,<sp/>c_up),<sp/></highlight><highlight class="keywordtype">id</highlight><highlight class="normal"><sp/>-<sp/>torch::matmul(c_up,<sp/>cd_up)));</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/>qtt_CHECK(torch::equal(torch::matmul(cd_dn,<sp/>c_dn),<sp/></highlight><highlight class="keywordtype">id</highlight><highlight class="normal"><sp/>-<sp/>torch::matmul(c_dn,<sp/>cd_dn)));</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"></highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/>qtt_CHECK(torch::equal(torch::matmul(cd_up,<sp/>c_dn),<sp/>-1<sp/>*<sp/>torch::matmul(c_dn,<sp/>cd_up)));</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/>qtt_CHECK(torch::equal(torch::matmul(cd_dn,<sp/>c_up),<sp/>-1<sp/>*<sp/>torch::matmul(c_up,<sp/>cd_dn)));</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"></highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/>qtt_CHECK(torch::equal(torch::matmul(c_up,<sp/>c_dn),<sp/>-1<sp/>*<sp/>torch::matmul(c_dn,<sp/>c_up)));</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/>qtt_CHECK(torch::equal(torch::matmul(c_up,<sp/>c_up),<sp/>-1<sp/>*<sp/>torch::matmul(c_up,<sp/>c_up)));</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/>qtt_CHECK(torch::equal(torch::matmul(c_dn,<sp/>c_dn),<sp/>-1<sp/>*<sp/>torch::matmul(c_dn,<sp/>c_dn)));</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"></highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/>qtt_CHECK(torch::equal(torch::matmul(c_up,<sp/>F),<sp/>-1<sp/>*<sp/>torch::matmul(F,<sp/>c_up)));</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/>qtt_CHECK(torch::equal(torch::matmul(c_dn,<sp/>F),<sp/>-1<sp/>*<sp/>torch::matmul(F,<sp/>c_dn)));</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>F^2<sp/>=<sp/>1</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/>qtt_CHECK(torch::equal(torch::matmul(F,<sp/>F),<sp/></highlight><highlight class="keywordtype">id</highlight><highlight class="normal">));</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>identity</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/>qtt_CHECK(torch::equal(torch::matmul(</highlight><highlight class="keywordtype">id</highlight><highlight class="normal">,<sp/></highlight><highlight class="keywordtype">id</highlight><highlight class="normal">),<sp/></highlight><highlight class="keywordtype">id</highlight><highlight class="normal">));</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/>qtt_CHECK(torch::equal(torch::matmul(</highlight><highlight class="keywordtype">id</highlight><highlight class="normal">,<sp/>c_up),<sp/>c_up));</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/>qtt_CHECK(torch::equal(torch::matmul(</highlight><highlight class="keywordtype">id</highlight><highlight class="normal">,<sp/>F),<sp/>F));</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/>qtt_CHECK(torch::equal(torch::matmul(</highlight><highlight class="keywordtype">id</highlight><highlight class="normal">,<sp/>c_dn),<sp/>c_dn));</highlight></codeline>
+<codeline lineno="91"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="92"><highlight class="normal">qtt_TEST_CASE(</highlight><highlight class="stringliteral">&quot;Pauli<sp/>matrices&quot;</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="93"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>[sx,<sp/>isy,<sp/>sz,<sp/>lo,<sp/>id]<sp/>=<sp/>pauli();</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"></highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/>qtt_CHECK(torch::equal(torch::matmul(lo,<sp/>lo),<sp/>torch::zeros({2,<sp/>2},<sp/>torch::kInt8)));</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/>qtt_CHECK(torch::equal(torch::matmul(sx,<sp/>sx),<sp/></highlight><highlight class="keywordtype">id</highlight><highlight class="normal">));</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/>qtt_CHECK(torch::equal(torch::matmul(isy,<sp/>isy),<sp/>-1<sp/>*<sp/></highlight><highlight class="keywordtype">id</highlight><highlight class="normal">));</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/>qtt_CHECK(torch::equal(torch::matmul(sz,<sp/>sz),<sp/></highlight><highlight class="keywordtype">id</highlight><highlight class="normal">));</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/>qtt_CHECK(torch::equal(torch::matmul(sx,<sp/>torch::matmul(isy,<sp/>sz)),<sp/>-1<sp/>*<sp/></highlight><highlight class="keywordtype">id</highlight><highlight class="normal">));</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>fmt::print(&quot;size<sp/>of<sp/>torch<sp/>tensor<sp/>{}\n&quot;,sizeof(sx));</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="102"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="103"><highlight class="normal">qtt_TEST_CASE(</highlight><highlight class="stringliteral">&quot;conserved<sp/>quantities<sp/>fermions&quot;</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="104"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>cvals<sp/>=<sp/>quantity&lt;conserved::Z&gt;;</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>shape<sp/>=<sp/>btensor({{{1,<sp/>cvals(0)},<sp/>{2,<sp/>cvals(1)},<sp/>{1,<sp/>cvals(2)}}},<sp/>cvals(0));</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>op_shape<sp/>=<sp/>shape_from(shape,<sp/>shape.conj());</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"></highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>[c_up,<sp/>c_dn,<sp/>F,<sp/>id]<sp/>=<sp/>fermions(op_shape);</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/>qtt_CHECK(c_up.selection_rule-&gt;get()<sp/>==<sp/>cvals(-1));</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/>qtt_CHECK(c_dn.selection_rule-&gt;get()<sp/>==<sp/>cvals(-1));</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"></highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/>qtt_SUBCASE(</highlight><highlight class="stringliteral">&quot;insertion<sp/>into<sp/>MPO<sp/>tensor&quot;</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>U<sp/>=<sp/>full({},<sp/>cvals(0),<sp/>6);</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>mu<sp/>=<sp/>full({},<sp/>cvals(0),<sp/>3);</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>t<sp/>=<sp/>full({},<sp/>cvals(0),<sp/>1);</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>c_dag_up<sp/>=<sp/>c_up.<ref refid="classquantit_1_1btensor_1a7ecbb590915372481349263bcc60cfd8" kindref="member">conj</ref>().permute({1,<sp/>0});</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>c_dag_dn<sp/>=<sp/>c_dn.<ref refid="classquantit_1_1btensor_1a7ecbb590915372481349263bcc60cfd8" kindref="member">conj</ref>().permute({1,<sp/>0});</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>leftbond<sp/>=<sp/>btensor(</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{{{1,<sp/>cvals(0)},<sp/>{1,<sp/>cvals(1)},<sp/>{1,<sp/>cvals(1)},<sp/>{1,<sp/>cvals(-1)},<sp/>{1,<sp/>cvals(-1)},<sp/>{1,<sp/>cvals(0)}}},<sp/>cvals(0));</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>T<sp/>=<sp/>shape_from(leftbond,<sp/>shape,<sp/>leftbond.conj(),<sp/>shape.conj());</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"></highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>n_up<sp/>=<sp/>c_dag_up.bmm(c_up);</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>n_dn<sp/>=<sp/>c_dag_dn.bmm(c_dn);</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"></highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>H_l<sp/>=<sp/>-mu<sp/>*<sp/>(n_up<sp/>+<sp/>n_dn)<sp/>+<sp/>U<sp/>*<sp/>(n_up.bmm(n_dn));</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"></highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>T.basic_index_put_({0,<sp/>-1,<sp/>0,<sp/>-1},<sp/>id);</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>T.basic_index_put_({1,<sp/>-1,<sp/>0,<sp/>-1},<sp/>c_up);</highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>T.basic_index_put_({2,<sp/>-1,<sp/>0,<sp/>-1},<sp/>c_dn);</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>T.basic_index_put_({<sp/>3,<sp/>-1,<sp/>0,<sp/>-1<sp/>},<sp/>c_dag_up);</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>T.basic_index_put_({<sp/>4,<sp/>-1,<sp/>0,<sp/>-1<sp/>},<sp/>c_dag_dn);</highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>T.basic_index_put_({<sp/>5,<sp/>-1,<sp/>0,<sp/>-1<sp/>},<sp/>H_l);</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>T.basic_index_put_({<sp/>5,<sp/>-1,<sp/>1,<sp/>-1<sp/>},<sp/>t<sp/>*<sp/>F.bmm(c_dag_up));</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>T.basic_index_put_({<sp/>5,<sp/>-1,<sp/>2,<sp/>-1<sp/>},<sp/>t<sp/>*<sp/>F.bmm(c_dag_dn));</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>T.basic_index_put_({<sp/>5,<sp/>-1,<sp/>3,<sp/>-1<sp/>},<sp/>t<sp/>*<sp/>c_up.bmm(<sp/>F));</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>T.basic_index_put_({<sp/>5,<sp/>-1,<sp/>4,<sp/>-1<sp/>},<sp/>t<sp/>*<sp/>c_dn.bmm(<sp/>F));</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>T.basic_index_put_({<sp/>5,<sp/>-1,<sp/>5,<sp/>-1<sp/>},<sp/>id);</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="141"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"></highlight></codeline>
+<codeline lineno="143"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>quantit</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="144"><highlight class="normal"></highlight></codeline>
+<codeline lineno="145"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>A4334AE3_0ED7_40A8_999C_F388D4675687<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
+    </programlisting>
+    <location file="/home/alex/project/quantt/include/operators.h"/>
+  </compounddef>
+</doxygen>

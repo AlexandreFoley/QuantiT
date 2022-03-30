@@ -1,0 +1,1207 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classquantit_1_1bMPT" kind="class" language="C++" prot="public" final="yes">
+    <compoundname>quantit::bMPT</compoundname>
+    <basecompoundref refid="classquantit_1_1vector__lift" prot="public" virt="non-virtual">quantit::vector_lift&lt; bMPT, btensor &gt;</basecompoundref>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classquantit_1_1bMPT_1a2b633b38eef79c2a64b9af33b94a2068" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual quantit::bMPT::~bMPT</definition>
+        <argsstring>()=default</argsstring>
+        <name>~bMPT</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="497" column="9"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1bMPT_1ae03c5f36afdfa9d4108a8585b9d7d0fc" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void quantit::bMPT::swap</definition>
+        <argsstring>(bMPT &amp;other)</argsstring>
+        <name>swap</name>
+        <param>
+          <type><ref refid="classquantit_1_1bMPT" kindref="compound">bMPT</ref> &amp;</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="499" column="6" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="499" bodyend="499"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1bMPT_1a5867fa6380437a90a3d59126bc314b42" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classquantit_1_1bMPT" kindref="compound">bMPT</ref> &amp;</type>
+        <definition>bMPT&amp; quantit::bMPT::operator=</definition>
+        <argsstring>(bMPT other)</argsstring>
+        <name>operator=</name>
+        <param>
+          <type><ref refid="classquantit_1_1bMPT" kindref="compound">bMPT</ref></type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="502" column="6" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="502" bodyend="506"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vector__lift_1a84cb551c61497288e7843feed0b3b721" prot="public" static="no" const="no" explicit="yes" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>quantit::vector_lift&lt; bMPT , btensor  &gt;::operator bMPT</definition>
+        <argsstring>()</argsstring>
+        <name>operator bMPT</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="127" column="10" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="127" bodyend="133"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vector__lift_1a7342e772fe3690acb188e125fc344d5f" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void quantit::vector_lift&lt; bMPT , btensor  &gt;::swap</definition>
+        <argsstring>(vector_lift &amp;other) noexcept</argsstring>
+        <name>swap</name>
+        <param>
+          <type><ref refid="classquantit_1_1vector__lift" kindref="compound">vector_lift</ref> &amp;</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="135" column="6" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="135" bodyend="135"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vector__lift_1a0c2c2ba4b3ad03ddde07fb9c70b53f11" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>reference</type>
+        <definition>reference quantit::vector_lift&lt; bMPT , btensor  &gt;::at</definition>
+        <argsstring>(size_t i)</argsstring>
+        <name>at</name>
+        <param>
+          <type>size_t</type>
+          <declname>i</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="144" column="11" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="144" bodyend="144"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vector__lift_1a3d8a0350129264205d3015ca9cf34b9c" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const_reference</type>
+        <definition>const_reference quantit::vector_lift&lt; bMPT , btensor  &gt;::at</definition>
+        <argsstring>(size_t i) const</argsstring>
+        <name>at</name>
+        <param>
+          <type>size_t</type>
+          <declname>i</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="145" column="17" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="145" bodyend="145"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vector__lift_1a425eaa4e4f7916a82cce013f2326aa5d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>reference</type>
+        <definition>reference quantit::vector_lift&lt; bMPT , btensor  &gt;::operator[]</definition>
+        <argsstring>(size_t i)</argsstring>
+        <name>operator[]</name>
+        <param>
+          <type>size_t</type>
+          <declname>i</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="146" column="11" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="146" bodyend="146"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vector__lift_1a68a57ec836b4682f46a76628c95cd578" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const_reference</type>
+        <definition>const_reference quantit::vector_lift&lt; bMPT , btensor  &gt;::operator[]</definition>
+        <argsstring>(size_t i) const</argsstring>
+        <name>operator[]</name>
+        <param>
+          <type>size_t</type>
+          <declname>i</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="147" column="17" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="147" bodyend="147"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vector__lift_1aa3bd63ea81a34f5ee3fa71fce489a175" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>reference</type>
+        <definition>reference quantit::vector_lift&lt; bMPT , btensor  &gt;::front</definition>
+        <argsstring>()</argsstring>
+        <name>front</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="148" column="11" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="148" bodyend="148"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vector__lift_1a060ed759f9e5dc16fd6203ed368c0270" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const_reference</type>
+        <definition>const_reference quantit::vector_lift&lt; bMPT , btensor  &gt;::front</definition>
+        <argsstring>() const</argsstring>
+        <name>front</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="149" column="17" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="149" bodyend="149"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vector__lift_1a772b9530f48687cd7fb535096f3ce26b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>reference</type>
+        <definition>reference quantit::vector_lift&lt; bMPT , btensor  &gt;::back</definition>
+        <argsstring>()</argsstring>
+        <name>back</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="150" column="11" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="150" bodyend="150"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vector__lift_1ab4db3513ed7825e45b3406cfdc7da875" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const_reference</type>
+        <definition>const_reference quantit::vector_lift&lt; bMPT , btensor  &gt;::back</definition>
+        <argsstring>() const</argsstring>
+        <name>back</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="151" column="17" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="151" bodyend="151"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vector__lift_1a0224c7c93d21a5ba0569f610bd255c63" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type><ref refid="classquantit_1_1btensor" kindref="compound">Tens</ref> *</type>
+        <definition>Tens* quantit::vector_lift&lt; bMPT , btensor  &gt;::data</definition>
+        <argsstring>() noexcept</argsstring>
+        <name>data</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="152" column="6" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="152" bodyend="152"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vector__lift_1a5f18c716ca86473b5b812b06353be923" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>const <ref refid="classquantit_1_1btensor" kindref="compound">Tens</ref> *</type>
+        <definition>const Tens* quantit::vector_lift&lt; bMPT , btensor  &gt;::data</definition>
+        <argsstring>() const noexcept</argsstring>
+        <name>data</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="153" column="12" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="153" bodyend="153"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vector__lift_1a1deeecee80d8abeda4eac94db68a2ad1" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>iterator</type>
+        <definition>iterator quantit::vector_lift&lt; bMPT , btensor  &gt;::begin</definition>
+        <argsstring>() noexcept</argsstring>
+        <name>begin</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="155" column="10" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="155" bodyend="155"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vector__lift_1aa5911d3b655feb2144e112b3e9e84ec8" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>const_iterator</type>
+        <definition>const_iterator quantit::vector_lift&lt; bMPT , btensor  &gt;::begin</definition>
+        <argsstring>() const noexcept</argsstring>
+        <name>begin</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="156" column="16" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="156" bodyend="156"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vector__lift_1ac016b067a7fa102613a6a74e5ff90426" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>const_iterator</type>
+        <definition>const_iterator quantit::vector_lift&lt; bMPT , btensor  &gt;::cbegin</definition>
+        <argsstring>() const noexcept</argsstring>
+        <name>cbegin</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="157" column="16" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="157" bodyend="157"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vector__lift_1a8fe08c939748a75779b92a72bcc22f6b" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>iterator</type>
+        <definition>iterator quantit::vector_lift&lt; bMPT , btensor  &gt;::end</definition>
+        <argsstring>() noexcept</argsstring>
+        <name>end</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="158" column="10" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="158" bodyend="158"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vector__lift_1a587ab8175a47d2af0fc40489f3765a9e" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>const_iterator</type>
+        <definition>const_iterator quantit::vector_lift&lt; bMPT , btensor  &gt;::end</definition>
+        <argsstring>() const noexcept</argsstring>
+        <name>end</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="159" column="16" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="159" bodyend="159"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vector__lift_1aea239fb31a5660eb18c79cde67b677ac" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>const_iterator</type>
+        <definition>const_iterator quantit::vector_lift&lt; bMPT , btensor  &gt;::cend</definition>
+        <argsstring>() const noexcept</argsstring>
+        <name>cend</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="160" column="16" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="160" bodyend="160"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vector__lift_1a3cf5b4780aa2e6f57356314d3964d2e6" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>reverse_iterator</type>
+        <definition>reverse_iterator quantit::vector_lift&lt; bMPT , btensor  &gt;::rbegin</definition>
+        <argsstring>() noexcept</argsstring>
+        <name>rbegin</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="161" column="18" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="161" bodyend="161"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vector__lift_1afc4aa1b9321982066adde405295bc43c" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>const_reverse_iterator</type>
+        <definition>const_reverse_iterator quantit::vector_lift&lt; bMPT , btensor  &gt;::rbegin</definition>
+        <argsstring>() const noexcept</argsstring>
+        <name>rbegin</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="162" column="24" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="162" bodyend="162"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vector__lift_1a6ce4e97c324ec1ec6a65c1eb7bbe32ea" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>const_reverse_iterator</type>
+        <definition>const_reverse_iterator quantit::vector_lift&lt; bMPT , btensor  &gt;::crbegin</definition>
+        <argsstring>() const noexcept</argsstring>
+        <name>crbegin</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="163" column="24" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="163" bodyend="163"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vector__lift_1a291e908c3205f95cf581809317f5fe46" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>reverse_iterator</type>
+        <definition>reverse_iterator quantit::vector_lift&lt; bMPT , btensor  &gt;::rend</definition>
+        <argsstring>() noexcept</argsstring>
+        <name>rend</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="164" column="18" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="164" bodyend="164"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vector__lift_1a7536dda8a7b23fd261d6bda7c27776cb" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>const_reverse_iterator</type>
+        <definition>const_reverse_iterator quantit::vector_lift&lt; bMPT , btensor  &gt;::rend</definition>
+        <argsstring>() const noexcept</argsstring>
+        <name>rend</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="165" column="24" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="165" bodyend="165"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vector__lift_1a08392d8d4aef61f39510004ca280cf52" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>const_reverse_iterator</type>
+        <definition>const_reverse_iterator quantit::vector_lift&lt; bMPT , btensor  &gt;::crend</definition>
+        <argsstring>() const noexcept</argsstring>
+        <name>crend</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="166" column="24" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="166" bodyend="166"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vector__lift_1a8745b99fad2af212589ee49df5a69012" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto quantit::vector_lift&lt; bMPT , btensor  &gt;::empty</definition>
+        <argsstring>() const noexcept</argsstring>
+        <name>empty</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="168" column="7" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="168" bodyend="168"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vector__lift_1ad878af4ca8650de9eceff7e380b8ae4e" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto quantit::vector_lift&lt; bMPT , btensor  &gt;::size</definition>
+        <argsstring>() const noexcept</argsstring>
+        <name>size</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="169" column="7" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="169" bodyend="169"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vector__lift_1a9a3ba903e635bdd9c17c00c3d6577ff6" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto quantit::vector_lift&lt; bMPT , btensor  &gt;::max_size</definition>
+        <argsstring>() const noexcept</argsstring>
+        <name>max_size</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="170" column="7" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="170" bodyend="170"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vector__lift_1afd332192732cc9139b409ba205b0d825" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void quantit::vector_lift&lt; bMPT , btensor  &gt;::reserve</definition>
+        <argsstring>(size_t new_cap)</argsstring>
+        <name>reserve</name>
+        <param>
+          <type>size_t</type>
+          <declname>new_cap</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="171" column="6" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="171" bodyend="171"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vector__lift_1a91f3daf5c44bb8d5fe10f182f6abea67" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto quantit::vector_lift&lt; bMPT , btensor  &gt;::capacity</definition>
+        <argsstring>() const noexcept</argsstring>
+        <name>capacity</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="172" column="7" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="172" bodyend="172"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vector__lift_1a304415454d09c0705d2f6015afe505fa" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void quantit::vector_lift&lt; bMPT , btensor  &gt;::shrink_to_fit</definition>
+        <argsstring>()</argsstring>
+        <name>shrink_to_fit</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="173" column="6" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="173" bodyend="173"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vector__lift_1aca4d0987de2f20030aabd50a36b6f6fa" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void quantit::vector_lift&lt; bMPT , btensor  &gt;::clear</definition>
+        <argsstring>() noexcept</argsstring>
+        <name>clear</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="175" column="6" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="175" bodyend="175"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vector__lift_1ad4f63687789e500c54d4da041dce7d6b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>iterator</type>
+        <definition>iterator quantit::vector_lift&lt; bMPT , btensor  &gt;::insert</definition>
+        <argsstring>(const_iterator pos, const Tens &amp;val)</argsstring>
+        <name>insert</name>
+        <param>
+          <type>const_iterator</type>
+          <declname>pos</declname>
+        </param>
+        <param>
+          <type>const <ref refid="classquantit_1_1btensor" kindref="compound">Tens</ref> &amp;</type>
+          <declname>val</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="176" column="10" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="176" bodyend="176"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vector__lift_1a25a3654b7a751703e3cbbd16f19177ef" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>iterator</type>
+        <definition>iterator quantit::vector_lift&lt; bMPT , btensor  &gt;::insert</definition>
+        <argsstring>(const_iterator pos, Tens &amp;&amp;val)</argsstring>
+        <name>insert</name>
+        <param>
+          <type>const_iterator</type>
+          <declname>pos</declname>
+        </param>
+        <param>
+          <type><ref refid="classquantit_1_1btensor" kindref="compound">Tens</ref> &amp;&amp;</type>
+          <declname>val</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="177" column="10" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="177" bodyend="177"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vector__lift_1a75f79572ff8f0695d23201582996b906" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>iterator</type>
+        <definition>iterator quantit::vector_lift&lt; bMPT , btensor  &gt;::insert</definition>
+        <argsstring>(const_iterator pos, size_type count, Tens &amp;&amp;val)</argsstring>
+        <name>insert</name>
+        <param>
+          <type>const_iterator</type>
+          <declname>pos</declname>
+        </param>
+        <param>
+          <type>size_type</type>
+          <declname>count</declname>
+        </param>
+        <param>
+          <type><ref refid="classquantit_1_1btensor" kindref="compound">Tens</ref> &amp;&amp;</type>
+          <declname>val</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="178" column="10" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="178" bodyend="178"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vector__lift_1ac860ab8f995ca814daef39a09f861572" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>iterator</type>
+        <definition>iterator quantit::vector_lift&lt; bMPT , btensor  &gt;::insert</definition>
+        <argsstring>(const_iterator pos, InputIT first, InputIT last)</argsstring>
+        <name>insert</name>
+        <param>
+          <type>const_iterator</type>
+          <declname>pos</declname>
+        </param>
+        <param>
+          <type>InputIT</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>InputIT</type>
+          <declname>last</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="180" column="10" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="180" bodyend="183"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vector__lift_1a6662a0c02ce9e07b0e2a81b4fde48674" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>iterator</type>
+        <definition>iterator quantit::vector_lift&lt; bMPT , btensor  &gt;::insert</definition>
+        <argsstring>(const_iterator pos, std::initializer_list&lt; Tens &gt; list)</argsstring>
+        <name>insert</name>
+        <param>
+          <type>const_iterator</type>
+          <declname>pos</declname>
+        </param>
+        <param>
+          <type>std::initializer_list&lt; <ref refid="classquantit_1_1btensor" kindref="compound">Tens</ref> &gt;</type>
+          <declname>list</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="184" column="10" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="184" bodyend="184"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vector__lift_1a14c3993765ca99ae4ca3beb2e6455fe6" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>iterator</type>
+        <definition>iterator quantit::vector_lift&lt; bMPT , btensor  &gt;::emplace</definition>
+        <argsstring>(const_iterator pos, Args &amp;&amp;...args)</argsstring>
+        <name>emplace</name>
+        <param>
+          <type>const_iterator</type>
+          <declname>pos</declname>
+        </param>
+        <param>
+          <type>Args &amp;&amp;...</type>
+          <declname>args</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="186" column="10" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="186" bodyend="189"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vector__lift_1a0f316c8d93098a029935aa60d8b850ce" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>iterator</type>
+        <definition>iterator quantit::vector_lift&lt; bMPT , btensor  &gt;::erase</definition>
+        <argsstring>(const_iterator pos)</argsstring>
+        <name>erase</name>
+        <param>
+          <type>const_iterator</type>
+          <declname>pos</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="190" column="10" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="190" bodyend="190"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vector__lift_1a6b2cb538b63a2d398ee8169045ccc93f" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>iterator</type>
+        <definition>iterator quantit::vector_lift&lt; bMPT , btensor  &gt;::erase</definition>
+        <argsstring>(const_iterator first, const_iterator last)</argsstring>
+        <name>erase</name>
+        <param>
+          <type>const_iterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>const_iterator</type>
+          <declname>last</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="191" column="10" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="191" bodyend="191"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vector__lift_1afb68adc182c0a25b422e7dff3cdcbde2" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void quantit::vector_lift&lt; bMPT , btensor  &gt;::push_back</definition>
+        <argsstring>(const Tens &amp;val)</argsstring>
+        <name>push_back</name>
+        <param>
+          <type>const <ref refid="classquantit_1_1btensor" kindref="compound">Tens</ref> &amp;</type>
+          <declname>val</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="192" column="6" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="192" bodyend="192"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vector__lift_1ab3e23728d13dc8bb3cf494a20c99a809" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void quantit::vector_lift&lt; bMPT , btensor  &gt;::push_back</definition>
+        <argsstring>(Tens &amp;&amp;val)</argsstring>
+        <name>push_back</name>
+        <param>
+          <type><ref refid="classquantit_1_1btensor" kindref="compound">Tens</ref> &amp;&amp;</type>
+          <declname>val</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="193" column="6" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="193" bodyend="193"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vector__lift_1aa0170758a7b359bc1f6c3f116c4ef8f4" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto quantit::vector_lift&lt; bMPT , btensor  &gt;::emplace_back</definition>
+        <argsstring>(Args &amp;&amp;...args)</argsstring>
+        <name>emplace_back</name>
+        <param>
+          <type>Args &amp;&amp;...</type>
+          <declname>args</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="195" column="6" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="195" bodyend="198"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vector__lift_1a828e4fde579fc2392e7f9691271266b4" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void quantit::vector_lift&lt; bMPT , btensor  &gt;::pop_back</definition>
+        <argsstring>()</argsstring>
+        <name>pop_back</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="199" column="6" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="199" bodyend="199"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vector__lift_1aa38d33276c29f0ce13024699e40253f4" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void quantit::vector_lift&lt; bMPT , btensor  &gt;::resize</definition>
+        <argsstring>(size_type count)</argsstring>
+        <name>resize</name>
+        <param>
+          <type>size_type</type>
+          <declname>count</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="200" column="6" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="200" bodyend="200"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vector__lift_1a537084285b6501165e50a3565c9a7d19" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void quantit::vector_lift&lt; bMPT , btensor  &gt;::resize</definition>
+        <argsstring>(size_type count, const Tens &amp;value)</argsstring>
+        <name>resize</name>
+        <param>
+          <type>size_type</type>
+          <declname>count</declname>
+        </param>
+        <param>
+          <type>const <ref refid="classquantit_1_1btensor" kindref="compound">Tens</ref> &amp;</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="201" column="6" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="201" bodyend="201"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vector__lift_1ac8dbb3c3520d908dac38494187bdc0cb" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classquantit_1_1bMPT" kindref="compound">bMPT</ref></type>
+        <definition>bMPT  quantit::vector_lift&lt; bMPT , btensor  &gt;::to</definition>
+        <argsstring>(const torch::TensorOptions &amp;options={}, bool non_blocking=false, bool copy=false, c10::optional&lt; c10::MemoryFormat &gt; memory_format=c10::nullopt) const</argsstring>
+        <name>to</name>
+        <param>
+          <type>const torch::TensorOptions &amp;</type>
+          <declname>options</declname>
+          <defval>{}</defval>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>non_blocking</declname>
+          <defval>false</defval>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>copy</declname>
+          <defval>false</defval>
+        </param>
+        <param>
+          <type>c10::optional&lt; c10::MemoryFormat &gt;</type>
+          <declname>memory_format</declname>
+          <defval>c10::nullopt</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="204" column="3" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="204" bodyend="214"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vector__lift_1ad8a66d5449ae3316b828fe7c491e151f" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classquantit_1_1bMPT" kindref="compound">bMPT</ref></type>
+        <definition>bMPT  quantit::vector_lift&lt; bMPT , btensor  &gt;::to</definition>
+        <argsstring>(torch::Device device, torch::ScalarType dtype, bool non_blocking=false, bool copy=false, c10::optional&lt; c10::MemoryFormat &gt; memory_format=c10::nullopt) const</argsstring>
+        <name>to</name>
+        <param>
+          <type>torch::Device</type>
+          <declname>device</declname>
+        </param>
+        <param>
+          <type>torch::ScalarType</type>
+          <declname>dtype</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>non_blocking</declname>
+          <defval>false</defval>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>copy</declname>
+          <defval>false</defval>
+        </param>
+        <param>
+          <type>c10::optional&lt; c10::MemoryFormat &gt;</type>
+          <declname>memory_format</declname>
+          <defval>c10::nullopt</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="215" column="3" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="215" bodyend="224"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vector__lift_1a9f5fd7e554f2e4c804a7ac55e8b79c05" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classquantit_1_1bMPT" kindref="compound">bMPT</ref></type>
+        <definition>bMPT  quantit::vector_lift&lt; bMPT , btensor  &gt;::to</definition>
+        <argsstring>(torch::ScalarType dtype, bool non_blocking=false, bool copy=false, c10::optional&lt; c10::MemoryFormat &gt; memory_format=c10::nullopt) const</argsstring>
+        <name>to</name>
+        <param>
+          <type>torch::ScalarType</type>
+          <declname>dtype</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>non_blocking</declname>
+          <defval>false</defval>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>copy</declname>
+          <defval>false</defval>
+        </param>
+        <param>
+          <type>c10::optional&lt; c10::MemoryFormat &gt;</type>
+          <declname>memory_format</declname>
+          <defval>c10::nullopt</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="225" column="3" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="225" bodyend="234"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vector__lift_1a7429cdaf9d908a06767666fca723101e" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classquantit_1_1bMPT" kindref="compound">bMPT</ref></type>
+        <definition>bMPT  quantit::vector_lift&lt; bMPT , btensor  &gt;::to</definition>
+        <argsstring>(caffe2::TypeMeta type_meta, bool non_blocking=false, bool copy=false, c10::optional&lt; c10::MemoryFormat &gt; memory_format=c10::nullopt) const</argsstring>
+        <name>to</name>
+        <param>
+          <type>caffe2::TypeMeta</type>
+          <declname>type_meta</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>non_blocking</declname>
+          <defval>false</defval>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>copy</declname>
+          <defval>false</defval>
+        </param>
+        <param>
+          <type>c10::optional&lt; c10::MemoryFormat &gt;</type>
+          <declname>memory_format</declname>
+          <defval>c10::nullopt</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="235" column="3" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="235" bodyend="244"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vector__lift_1aa15da92b21438c52be24d3e88551e81e" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classquantit_1_1bMPT" kindref="compound">bMPT</ref></type>
+        <definition>bMPT  quantit::vector_lift&lt; bMPT , btensor  &gt;::to</definition>
+        <argsstring>(const btensor &amp;other, bool non_blocking=false, bool copy=false, c10::optional&lt; c10::MemoryFormat &gt; memory_format=c10::nullopt) const</argsstring>
+        <name>to</name>
+        <param>
+          <type>const <ref refid="classquantit_1_1btensor" kindref="compound">btensor</ref> &amp;</type>
+          <declname>other</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>non_blocking</declname>
+          <defval>false</defval>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>copy</declname>
+          <defval>false</defval>
+        </param>
+        <param>
+          <type>c10::optional&lt; c10::MemoryFormat &gt;</type>
+          <declname>memory_format</declname>
+          <defval>c10::nullopt</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="245" column="3" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="245" bodyend="254"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vector__lift_1a6cffef995a9f020e4f07e5a55595b875" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classquantit_1_1bMPT" kindref="compound">bMPT</ref> &amp;</type>
+        <definition>bMPT &amp; quantit::vector_lift&lt; bMPT , btensor  &gt;::to_</definition>
+        <argsstring>(Args &amp;&amp;...args)</argsstring>
+        <name>to_</name>
+        <param>
+          <type>Args &amp;&amp;...</type>
+          <declname>args</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="257" column="3" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="257" bodyend="266"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="friend">
+      <memberdef kind="friend" id="classquantit_1_1bMPT_1a45776d14111c58317933b0f94342d5f2" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void swap</definition>
+        <argsstring>(bMPT &amp;lhs, bMPT &amp;rhs)</argsstring>
+        <name>swap</name>
+        <param>
+          <type><ref refid="classquantit_1_1bMPT" kindref="compound">bMPT</ref> &amp;</type>
+          <declname>lhs</declname>
+        </param>
+        <param>
+          <type><ref refid="classquantit_1_1bMPT" kindref="compound">bMPT</ref> &amp;</type>
+          <declname>rhs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="501" column="13" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="501" bodyend="501"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="classquantit_1_1bMPT_1ab1dc6a22482984d0712d4746e28e8cf3" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classquantit_1_1bMPT" kindref="compound">bMPT</ref></type>
+        <definition>static bMPT quantit::bMPT::empty_copy</definition>
+        <argsstring>(const bMPT &amp;in)</argsstring>
+        <name>empty_copy</name>
+        <param>
+          <type>const <ref refid="classquantit_1_1bMPT" kindref="compound">bMPT</ref> &amp;</type>
+          <declname>in</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="508" column="13" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="508" bodyend="508"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="classquantit_1_1vector__lift_1a4dfa9ff1e27b8a910ac5b234cba6e706" prot="public" static="no">
+        <type><ref refid="classquantit_1_1btensor" kindref="compound">btensor</ref></type>
+        <definition>using quantit::vector_lift&lt; bMPT , btensor  &gt;::Tens =  btensor</definition>
+        <argsstring></argsstring>
+        <name>Tens</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="96" column="1" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="96" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classquantit_1_1vector__lift_1a5adbd470520fc9b5fe634a52f9acfaec" prot="public" static="no">
+        <type>std::vector&lt; <ref refid="classquantit_1_1btensor" kindref="compound">Tens</ref> &gt;</type>
+        <definition>using quantit::vector_lift&lt; bMPT , btensor  &gt;::VTens =  std::vector&lt;Tens&gt;</definition>
+        <argsstring></argsstring>
+        <name>VTens</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="97" column="1" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="97" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classquantit_1_1vector__lift_1a4b667b1852ca1b7a29537e981e57200c" prot="public" static="no">
+        <type>typename VTens::size_type</type>
+        <definition>using quantit::vector_lift&lt; bMPT , btensor  &gt;::size_type =  typename VTens::size_type</definition>
+        <argsstring></argsstring>
+        <name>size_type</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="98" column="1" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="98" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classquantit_1_1vector__lift_1a22bfa093a70400986edf9a8a955ac2dd" prot="public" static="no">
+        <type>typename VTens::iterator</type>
+        <definition>using quantit::vector_lift&lt; bMPT , btensor  &gt;::iterator =  typename VTens::iterator</definition>
+        <argsstring></argsstring>
+        <name>iterator</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="99" column="1" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="99" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classquantit_1_1vector__lift_1ad909e815b6f898bff49f3ee486fecebb" prot="public" static="no">
+        <type>typename VTens::const_iterator</type>
+        <definition>using quantit::vector_lift&lt; bMPT , btensor  &gt;::const_iterator =  typename VTens::const_iterator</definition>
+        <argsstring></argsstring>
+        <name>const_iterator</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="100" column="1" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="100" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classquantit_1_1vector__lift_1a626a11de2e6bda79ab46e1a77edc2f2b" prot="public" static="no">
+        <type>typename VTens::reverse_iterator</type>
+        <definition>using quantit::vector_lift&lt; bMPT , btensor  &gt;::reverse_iterator =  typename VTens::reverse_iterator</definition>
+        <argsstring></argsstring>
+        <name>reverse_iterator</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="101" column="1" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="101" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classquantit_1_1vector__lift_1a010c9ed3c923579de934ffff451ca7c4" prot="public" static="no">
+        <type>typename VTens::const_reverse_iterator</type>
+        <definition>using quantit::vector_lift&lt; bMPT , btensor  &gt;::const_reverse_iterator =  typename VTens::const_reverse_iterator</definition>
+        <argsstring></argsstring>
+        <name>const_reverse_iterator</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="102" column="1" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="102" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classquantit_1_1vector__lift_1ac3d6a73e33d5cbcca35eb30c2adc7a2e" prot="public" static="no">
+        <type>typename VTens::const_reference</type>
+        <definition>using quantit::vector_lift&lt; bMPT , btensor  &gt;::const_reference =  typename VTens::const_reference</definition>
+        <argsstring></argsstring>
+        <name>const_reference</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="103" column="1" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="103" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classquantit_1_1vector__lift_1a222022770001c4c0d304f96e74550044" prot="public" static="no">
+        <type>typename VTens::reference</type>
+        <definition>using quantit::vector_lift&lt; bMPT , btensor  &gt;::reference =  typename VTens::reference</definition>
+        <argsstring></argsstring>
+        <name>reference</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/MPT.h" line="104" column="1" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="104" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>quantit::vector_lift&lt; bMPT, btensor &gt;</label>
+        <link refid="classquantit_1_1vector__lift"/>
+      </node>
+      <node id="1">
+        <label>quantit::bMPT</label>
+        <link refid="classquantit_1_1bMPT"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>quantit::vector_lift&lt; bMPT, btensor &gt;</label>
+        <link refid="classquantit_1_1vector__lift"/>
+      </node>
+      <node id="1">
+        <label>quantit::bMPT</label>
+        <link refid="classquantit_1_1bMPT"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/home/alex/project/quantt/include/MPT.h" line="485" column="1" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="486" bodyend="509"/>
+    <listofallmembers>
+      <member refid="classquantit_1_1vector__lift_1a0c2c2ba4b3ad03ddde07fb9c70b53f11" prot="public" virt="non-virtual"><scope>quantit::bMPT</scope><name>at</name></member>
+      <member refid="classquantit_1_1vector__lift_1a3d8a0350129264205d3015ca9cf34b9c" prot="public" virt="non-virtual"><scope>quantit::bMPT</scope><name>at</name></member>
+      <member refid="classquantit_1_1vector__lift_1a772b9530f48687cd7fb535096f3ce26b" prot="public" virt="non-virtual"><scope>quantit::bMPT</scope><name>back</name></member>
+      <member refid="classquantit_1_1vector__lift_1ab4db3513ed7825e45b3406cfdc7da875" prot="public" virt="non-virtual"><scope>quantit::bMPT</scope><name>back</name></member>
+      <member refid="classquantit_1_1vector__lift_1a1deeecee80d8abeda4eac94db68a2ad1" prot="public" virt="non-virtual"><scope>quantit::bMPT</scope><name>begin</name></member>
+      <member refid="classquantit_1_1vector__lift_1aa5911d3b655feb2144e112b3e9e84ec8" prot="public" virt="non-virtual"><scope>quantit::bMPT</scope><name>begin</name></member>
+      <member refid="classquantit_1_1vector__lift_1a91f3daf5c44bb8d5fe10f182f6abea67" prot="public" virt="non-virtual"><scope>quantit::bMPT</scope><name>capacity</name></member>
+      <member refid="classquantit_1_1vector__lift_1ac016b067a7fa102613a6a74e5ff90426" prot="public" virt="non-virtual"><scope>quantit::bMPT</scope><name>cbegin</name></member>
+      <member refid="classquantit_1_1vector__lift_1aea239fb31a5660eb18c79cde67b677ac" prot="public" virt="non-virtual"><scope>quantit::bMPT</scope><name>cend</name></member>
+      <member refid="classquantit_1_1vector__lift_1aca4d0987de2f20030aabd50a36b6f6fa" prot="public" virt="non-virtual"><scope>quantit::bMPT</scope><name>clear</name></member>
+      <member refid="classquantit_1_1vector__lift_1ad909e815b6f898bff49f3ee486fecebb" prot="public" virt="non-virtual"><scope>quantit::bMPT</scope><name>const_iterator</name></member>
+      <member refid="classquantit_1_1vector__lift_1ac3d6a73e33d5cbcca35eb30c2adc7a2e" prot="public" virt="non-virtual"><scope>quantit::bMPT</scope><name>const_reference</name></member>
+      <member refid="classquantit_1_1vector__lift_1a010c9ed3c923579de934ffff451ca7c4" prot="public" virt="non-virtual"><scope>quantit::bMPT</scope><name>const_reverse_iterator</name></member>
+      <member refid="classquantit_1_1vector__lift_1a6ce4e97c324ec1ec6a65c1eb7bbe32ea" prot="public" virt="non-virtual"><scope>quantit::bMPT</scope><name>crbegin</name></member>
+      <member refid="classquantit_1_1vector__lift_1a08392d8d4aef61f39510004ca280cf52" prot="public" virt="non-virtual"><scope>quantit::bMPT</scope><name>crend</name></member>
+      <member refid="classquantit_1_1vector__lift_1a0224c7c93d21a5ba0569f610bd255c63" prot="public" virt="non-virtual"><scope>quantit::bMPT</scope><name>data</name></member>
+      <member refid="classquantit_1_1vector__lift_1a5f18c716ca86473b5b812b06353be923" prot="public" virt="non-virtual"><scope>quantit::bMPT</scope><name>data</name></member>
+      <member refid="classquantit_1_1vector__lift_1a14c3993765ca99ae4ca3beb2e6455fe6" prot="public" virt="non-virtual"><scope>quantit::bMPT</scope><name>emplace</name></member>
+      <member refid="classquantit_1_1vector__lift_1aa0170758a7b359bc1f6c3f116c4ef8f4" prot="public" virt="non-virtual"><scope>quantit::bMPT</scope><name>emplace_back</name></member>
+      <member refid="classquantit_1_1vector__lift_1a8745b99fad2af212589ee49df5a69012" prot="public" virt="non-virtual"><scope>quantit::bMPT</scope><name>empty</name></member>
+      <member refid="classquantit_1_1bMPT_1ab1dc6a22482984d0712d4746e28e8cf3" prot="public" virt="non-virtual"><scope>quantit::bMPT</scope><name>empty_copy</name></member>
+      <member refid="classquantit_1_1vector__lift_1a8fe08c939748a75779b92a72bcc22f6b" prot="public" virt="non-virtual"><scope>quantit::bMPT</scope><name>end</name></member>
+      <member refid="classquantit_1_1vector__lift_1a587ab8175a47d2af0fc40489f3765a9e" prot="public" virt="non-virtual"><scope>quantit::bMPT</scope><name>end</name></member>
+      <member refid="classquantit_1_1vector__lift_1a0f316c8d93098a029935aa60d8b850ce" prot="public" virt="non-virtual"><scope>quantit::bMPT</scope><name>erase</name></member>
+      <member refid="classquantit_1_1vector__lift_1a6b2cb538b63a2d398ee8169045ccc93f" prot="public" virt="non-virtual"><scope>quantit::bMPT</scope><name>erase</name></member>
+      <member refid="classquantit_1_1vector__lift_1aa3bd63ea81a34f5ee3fa71fce489a175" prot="public" virt="non-virtual"><scope>quantit::bMPT</scope><name>front</name></member>
+      <member refid="classquantit_1_1vector__lift_1a060ed759f9e5dc16fd6203ed368c0270" prot="public" virt="non-virtual"><scope>quantit::bMPT</scope><name>front</name></member>
+      <member refid="classquantit_1_1vector__lift_1ad4f63687789e500c54d4da041dce7d6b" prot="public" virt="non-virtual"><scope>quantit::bMPT</scope><name>insert</name></member>
+      <member refid="classquantit_1_1vector__lift_1a25a3654b7a751703e3cbbd16f19177ef" prot="public" virt="non-virtual"><scope>quantit::bMPT</scope><name>insert</name></member>
+      <member refid="classquantit_1_1vector__lift_1a75f79572ff8f0695d23201582996b906" prot="public" virt="non-virtual"><scope>quantit::bMPT</scope><name>insert</name></member>
+      <member refid="classquantit_1_1vector__lift_1ac860ab8f995ca814daef39a09f861572" prot="public" virt="non-virtual"><scope>quantit::bMPT</scope><name>insert</name></member>
+      <member refid="classquantit_1_1vector__lift_1a6662a0c02ce9e07b0e2a81b4fde48674" prot="public" virt="non-virtual"><scope>quantit::bMPT</scope><name>insert</name></member>
+      <member refid="classquantit_1_1vector__lift_1a22bfa093a70400986edf9a8a955ac2dd" prot="public" virt="non-virtual"><scope>quantit::bMPT</scope><name>iterator</name></member>
+      <member refid="classquantit_1_1vector__lift_1a9a3ba903e635bdd9c17c00c3d6577ff6" prot="public" virt="non-virtual"><scope>quantit::bMPT</scope><name>max_size</name></member>
+      <member refid="classquantit_1_1vector__lift_1a84cb551c61497288e7843feed0b3b721" prot="public" virt="non-virtual"><scope>quantit::bMPT</scope><name>operator bMPT</name></member>
+      <member refid="classquantit_1_1bMPT_1a5867fa6380437a90a3d59126bc314b42" prot="public" virt="non-virtual"><scope>quantit::bMPT</scope><name>operator=</name></member>
+      <member refid="classquantit_1_1vector__lift_1a8928f80bfc596c08eed2abf30745f02b" prot="public" virt="non-virtual" ambiguityscope="vector_lift&lt; bMPT, btensor &gt;::"><scope>quantit::bMPT</scope><name>operator=</name></member>
+      <member refid="classquantit_1_1vector__lift_1a425eaa4e4f7916a82cce013f2326aa5d" prot="public" virt="non-virtual"><scope>quantit::bMPT</scope><name>operator[]</name></member>
+      <member refid="classquantit_1_1vector__lift_1a68a57ec836b4682f46a76628c95cd578" prot="public" virt="non-virtual"><scope>quantit::bMPT</scope><name>operator[]</name></member>
+      <member refid="classquantit_1_1vector__lift_1a828e4fde579fc2392e7f9691271266b4" prot="public" virt="non-virtual"><scope>quantit::bMPT</scope><name>pop_back</name></member>
+      <member refid="classquantit_1_1vector__lift_1afb68adc182c0a25b422e7dff3cdcbde2" prot="public" virt="non-virtual"><scope>quantit::bMPT</scope><name>push_back</name></member>
+      <member refid="classquantit_1_1vector__lift_1ab3e23728d13dc8bb3cf494a20c99a809" prot="public" virt="non-virtual"><scope>quantit::bMPT</scope><name>push_back</name></member>
+      <member refid="classquantit_1_1vector__lift_1a3cf5b4780aa2e6f57356314d3964d2e6" prot="public" virt="non-virtual"><scope>quantit::bMPT</scope><name>rbegin</name></member>
+      <member refid="classquantit_1_1vector__lift_1afc4aa1b9321982066adde405295bc43c" prot="public" virt="non-virtual"><scope>quantit::bMPT</scope><name>rbegin</name></member>
+      <member refid="classquantit_1_1vector__lift_1a222022770001c4c0d304f96e74550044" prot="public" virt="non-virtual"><scope>quantit::bMPT</scope><name>reference</name></member>
+      <member refid="classquantit_1_1vector__lift_1a291e908c3205f95cf581809317f5fe46" prot="public" virt="non-virtual"><scope>quantit::bMPT</scope><name>rend</name></member>
+      <member refid="classquantit_1_1vector__lift_1a7536dda8a7b23fd261d6bda7c27776cb" prot="public" virt="non-virtual"><scope>quantit::bMPT</scope><name>rend</name></member>
+      <member refid="classquantit_1_1vector__lift_1afd332192732cc9139b409ba205b0d825" prot="public" virt="non-virtual"><scope>quantit::bMPT</scope><name>reserve</name></member>
+      <member refid="classquantit_1_1vector__lift_1aa38d33276c29f0ce13024699e40253f4" prot="public" virt="non-virtual"><scope>quantit::bMPT</scope><name>resize</name></member>
+      <member refid="classquantit_1_1vector__lift_1a537084285b6501165e50a3565c9a7d19" prot="public" virt="non-virtual"><scope>quantit::bMPT</scope><name>resize</name></member>
+      <member refid="classquantit_1_1vector__lift_1a626a11de2e6bda79ab46e1a77edc2f2b" prot="public" virt="non-virtual"><scope>quantit::bMPT</scope><name>reverse_iterator</name></member>
+      <member refid="classquantit_1_1vector__lift_1a304415454d09c0705d2f6015afe505fa" prot="public" virt="non-virtual"><scope>quantit::bMPT</scope><name>shrink_to_fit</name></member>
+      <member refid="classquantit_1_1vector__lift_1ad878af4ca8650de9eceff7e380b8ae4e" prot="public" virt="non-virtual"><scope>quantit::bMPT</scope><name>size</name></member>
+      <member refid="classquantit_1_1vector__lift_1a4b667b1852ca1b7a29537e981e57200c" prot="public" virt="non-virtual"><scope>quantit::bMPT</scope><name>size_type</name></member>
+      <member refid="classquantit_1_1bMPT_1ae03c5f36afdfa9d4108a8585b9d7d0fc" prot="public" virt="non-virtual"><scope>quantit::bMPT</scope><name>swap</name></member>
+      <member refid="classquantit_1_1bMPT_1a45776d14111c58317933b0f94342d5f2" prot="public" virt="non-virtual"><scope>quantit::bMPT</scope><name>swap</name></member>
+      <member refid="classquantit_1_1vector__lift_1a7342e772fe3690acb188e125fc344d5f" prot="public" virt="non-virtual" ambiguityscope="vector_lift&lt; bMPT, btensor &gt;::"><scope>quantit::bMPT</scope><name>swap</name></member>
+      <member refid="classquantit_1_1vector__lift_1a4dfa9ff1e27b8a910ac5b234cba6e706" prot="public" virt="non-virtual"><scope>quantit::bMPT</scope><name>Tens</name></member>
+      <member refid="classquantit_1_1vector__lift_1ac8dbb3c3520d908dac38494187bdc0cb" prot="public" virt="non-virtual"><scope>quantit::bMPT</scope><name>to</name></member>
+      <member refid="classquantit_1_1vector__lift_1ad8a66d5449ae3316b828fe7c491e151f" prot="public" virt="non-virtual"><scope>quantit::bMPT</scope><name>to</name></member>
+      <member refid="classquantit_1_1vector__lift_1a9f5fd7e554f2e4c804a7ac55e8b79c05" prot="public" virt="non-virtual"><scope>quantit::bMPT</scope><name>to</name></member>
+      <member refid="classquantit_1_1vector__lift_1a7429cdaf9d908a06767666fca723101e" prot="public" virt="non-virtual"><scope>quantit::bMPT</scope><name>to</name></member>
+      <member refid="classquantit_1_1vector__lift_1aa15da92b21438c52be24d3e88551e81e" prot="public" virt="non-virtual"><scope>quantit::bMPT</scope><name>to</name></member>
+      <member refid="classquantit_1_1vector__lift_1a6cffef995a9f020e4f07e5a55595b875" prot="public" virt="non-virtual"><scope>quantit::bMPT</scope><name>to_</name></member>
+      <member refid="classquantit_1_1vector__lift_1a2e6a6e5a1b1b8cf835663d0d23830aa6" prot="public" virt="non-virtual"><scope>quantit::bMPT</scope><name>vector_lift</name></member>
+      <member refid="classquantit_1_1vector__lift_1a27401dbbe9eded9a3bea6878ed4d9336" prot="public" virt="non-virtual"><scope>quantit::bMPT</scope><name>vector_lift</name></member>
+      <member refid="classquantit_1_1vector__lift_1ae9306516c3a4653566a88ca2c2df856f" prot="public" virt="non-virtual"><scope>quantit::bMPT</scope><name>vector_lift</name></member>
+      <member refid="classquantit_1_1vector__lift_1a94270ac59be8af2fdc95d9fb2155c625" prot="public" virt="non-virtual"><scope>quantit::bMPT</scope><name>vector_lift</name></member>
+      <member refid="classquantit_1_1vector__lift_1a6672e6e5f68adddb5c26def466774c86" prot="public" virt="non-virtual"><scope>quantit::bMPT</scope><name>vector_lift</name></member>
+      <member refid="classquantit_1_1vector__lift_1aeb6b71be2805d4d29cd6663e64e99280" prot="public" virt="non-virtual"><scope>quantit::bMPT</scope><name>vector_lift</name></member>
+      <member refid="classquantit_1_1vector__lift_1af30ef26aed99e9b19774b93ebf351838" prot="public" virt="non-virtual"><scope>quantit::bMPT</scope><name>vector_lift</name></member>
+      <member refid="classquantit_1_1vector__lift_1a50fe3d42cb44e23f694885d6e4c64319" prot="public" virt="non-virtual"><scope>quantit::bMPT</scope><name>vector_lift</name></member>
+      <member refid="classquantit_1_1vector__lift_1a490c4483a0e44965a7b0e53ef16a99fb" prot="public" virt="non-virtual"><scope>quantit::bMPT</scope><name>vector_lift</name></member>
+      <member refid="classquantit_1_1vector__lift_1a5adbd470520fc9b5fe634a52f9acfaec" prot="public" virt="non-virtual"><scope>quantit::bMPT</scope><name>VTens</name></member>
+      <member refid="classquantit_1_1bMPT_1a2b633b38eef79c2a64b9af33b94a2068" prot="public" virt="virtual"><scope>quantit::bMPT</scope><name>~bMPT</name></member>
+      <member refid="classquantit_1_1vector__lift_1a87720a50724d5f828d5d396f33628790" prot="public" virt="virtual"><scope>quantit::bMPT</scope><name>~vector_lift</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

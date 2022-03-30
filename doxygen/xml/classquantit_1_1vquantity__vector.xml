@@ -1,0 +1,951 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="classquantit_1_1vquantity__vector" kind="class" language="C++" prot="public" abstract="yes">
+    <compoundname>quantit::vquantity_vector</compoundname>
+    <derivedcompoundref refid="classquantit_1_1quantity__vector" prot="public" virt="non-virtual">quantit::quantity_vector&lt; S, Allocator, class &gt;</derivedcompoundref>
+    <includes refid="quantity__vector__impl_8h" local="no">quantity_vector_impl.h</includes>
+      <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="classquantit_1_1vquantity__vector_1a946ec9f720e87ec900292468816bb044" prot="public" static="no">
+        <type><ref refid="structquantit_1_1vQuantiT__iterator_1_1cgroup__iterator" kindref="compound">vQuantiT_iterator::cgroup_iterator</ref></type>
+        <definition>using quantit::vquantity_vector::iterator =  vQuantiT_iterator::cgroup_iterator</definition>
+        <argsstring></argsstring>
+        <name>iterator</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" line="167" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" bodystart="167" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classquantit_1_1vquantity__vector_1aa20d70726c7434d60d0466eadf3996f2" prot="public" static="no">
+        <type><ref refid="structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator" kindref="compound">vQuantiT_iterator::const_cgroup_iterator</ref></type>
+        <definition>using quantit::vquantity_vector::const_iterator =  vQuantiT_iterator::const_cgroup_iterator</definition>
+        <argsstring></argsstring>
+        <name>const_iterator</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" line="168" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" bodystart="168" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classquantit_1_1vquantity__vector_1a5f2dcc3b3ff780fb8495b21b3f11e355" prot="public" static="no">
+        <type>std::reverse_iterator&lt; <ref refid="structquantit_1_1vQuantiT__iterator_1_1cgroup__iterator" kindref="compound">iterator</ref> &gt;</type>
+        <definition>using quantit::vquantity_vector::reverse_iterator =  std::reverse_iterator&lt;iterator&gt;</definition>
+        <argsstring></argsstring>
+        <name>reverse_iterator</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" line="169" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" bodystart="169" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classquantit_1_1vquantity__vector_1a7571e8b722803d5b45b011146ed6bc53" prot="public" static="no">
+        <type>std::reverse_iterator&lt; <ref refid="structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator" kindref="compound">const_iterator</ref> &gt;</type>
+        <definition>using quantit::vquantity_vector::const_reverse_iterator =  std::reverse_iterator&lt;const_iterator&gt;</definition>
+        <argsstring></argsstring>
+        <name>const_reverse_iterator</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" line="170" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" bodystart="170" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classquantit_1_1vquantity__vector_1a46871e2051374c1d8e2b9933934c5d0b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type></type>
+        <definition>virtual quantit::vquantity_vector::~vquantity_vector</definition>
+        <argsstring>()</argsstring>
+        <name>~vquantity_vector</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" line="172" column="9" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" bodystart="172" bodyend="172"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vquantity__vector_1a77f6fe8a0a1d5e41b77174618f57ba39" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type><ref refid="classquantit_1_1blocklist" kindref="compound">blocklist</ref></type>
+        <definition>virtual blocklist quantit::vquantity_vector::identify_blocks</definition>
+        <argsstring>(const btensor &amp;) const =0</argsstring>
+        <name>identify_blocks</name>
+        <reimplementedby refid="classquantit_1_1quantity__vector_1a4228a8769a31108b1904fe08467e2477">identify_blocks</reimplementedby>
+        <param>
+          <type>const <ref refid="classquantit_1_1btensor" kindref="compound">btensor</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" line="174" column="19"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vquantity__vector_1a18e79812033d7d9a7dd22c6882d3f019" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>std::unique_ptr&lt; <ref refid="classquantit_1_1vquantity__vector" kindref="compound">vquantity_vector</ref> &gt;</type>
+        <definition>virtual std::unique_ptr&lt;vquantity_vector&gt; quantit::vquantity_vector::clone</definition>
+        <argsstring>() const =0</argsstring>
+        <name>clone</name>
+        <reimplementedby refid="classquantit_1_1quantity__vector_1a646ba43b5a05bc83d8b77961f4c42598">clone</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" line="175" column="25"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vquantity__vector_1a73daccea7b560113dda1bdd131f3039e" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type><ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref> &amp;</type>
+        <definition>virtual vquantity&amp; quantit::vquantity_vector::operator[]</definition>
+        <argsstring>(size_t)=0</argsstring>
+        <name>operator[]</name>
+        <reimplementedby refid="classquantit_1_1quantity__vector_1af184f0e8a275938590a86d252abb2f24">operator[]</reimplementedby>
+        <param>
+          <type>size_t</type>
+        </param>
+        <briefdescription>
+<para>accessors. can be implemented as virtual, by exploiting the covariant return type. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>vquantity&amp; </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" line="183" column="19"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vquantity__vector_1a997b905b69599a02e29d41356505cfd0" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>const <ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref> &amp;</type>
+        <definition>virtual const vquantity&amp; quantit::vquantity_vector::operator[]</definition>
+        <argsstring>(size_t) const =0</argsstring>
+        <name>operator[]</name>
+        <reimplementedby refid="classquantit_1_1quantity__vector_1aa52d76b43296c46470da6c3f6713e1a0">operator[]</reimplementedby>
+        <param>
+          <type>size_t</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" line="184" column="25"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vquantity__vector_1afd248e370daef3c0d26b80d884304f63" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type><ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref> &amp;</type>
+        <definition>virtual vquantity&amp; quantit::vquantity_vector::at</definition>
+        <argsstring>(size_t)=0</argsstring>
+        <name>at</name>
+        <reimplementedby refid="classquantit_1_1quantity__vector_1ab248b6e11441dc30a81b127a33292e26">at</reimplementedby>
+        <param>
+          <type>size_t</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" line="185" column="19"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vquantity__vector_1a34c96411f0a5e14b1a5d6081d4f635f8" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>const <ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref> &amp;</type>
+        <definition>virtual const vquantity&amp; quantit::vquantity_vector::at</definition>
+        <argsstring>(size_t) const =0</argsstring>
+        <name>at</name>
+        <reimplementedby refid="classquantit_1_1quantity__vector_1ae9353b24a57b4d5799cfa925e7191108">at</reimplementedby>
+        <param>
+          <type>size_t</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" line="186" column="25"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vquantity__vector_1a04a7768802fa80d76c28c7187db8d264" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type><ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref> &amp;</type>
+        <definition>virtual vquantity&amp; quantit::vquantity_vector::front</definition>
+        <argsstring>()=0</argsstring>
+        <name>front</name>
+        <reimplementedby refid="classquantit_1_1quantity__vector_1a498656cf25966371de68e3b8b8c359ea">front</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" line="188" column="19"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vquantity__vector_1ab72f7597d4361dfb3c906c26a67bc74c" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>const <ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref> &amp;</type>
+        <definition>virtual const vquantity&amp; quantit::vquantity_vector::front</definition>
+        <argsstring>() const =0</argsstring>
+        <name>front</name>
+        <reimplementedby refid="classquantit_1_1quantity__vector_1a3d47a825311409b7506c920ac4665de3">front</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" line="189" column="25"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vquantity__vector_1a92b88aff7bf42d9661679ec072f67a70" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type><ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref> &amp;</type>
+        <definition>virtual vquantity&amp; quantit::vquantity_vector::back</definition>
+        <argsstring>()=0</argsstring>
+        <name>back</name>
+        <reimplementedby refid="classquantit_1_1quantity__vector_1ab940d7355adddf9281c63ff907e991f7">back</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" line="190" column="19"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vquantity__vector_1a360483dd1dc03b9761247516039344a7" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>const <ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref> &amp;</type>
+        <definition>virtual const vquantity&amp; quantit::vquantity_vector::back</definition>
+        <argsstring>() const =0</argsstring>
+        <name>back</name>
+        <reimplementedby refid="classquantit_1_1quantity__vector_1a8cd869e7ba1d5ec57886bea0d7be6764">back</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" line="191" column="25"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vquantity__vector_1a29cccb929ad613842006d1e6087c86cd" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type><ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref> *</type>
+        <definition>virtual vquantity* quantit::vquantity_vector::data</definition>
+        <argsstring>()=0</argsstring>
+        <name>data</name>
+        <reimplementedby refid="classquantit_1_1quantity__vector_1a62c57834987c8001ac669d67c4a68893">data</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" line="192" column="19"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vquantity__vector_1a5e9e43b98609ed47cb180e8d41ea93df" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>const <ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref> *</type>
+        <definition>virtual const vquantity* quantit::vquantity_vector::data</definition>
+        <argsstring>() const =0</argsstring>
+        <name>data</name>
+        <reimplementedby refid="classquantit_1_1quantity__vector_1aca2fbb4cc7717c285eabf6cc0558aa2e">data</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" line="193" column="25"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vquantity__vector_1aff064f8d23aaa065ed1c222af5c1f2a2" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>bool</type>
+        <definition>virtual bool quantit::vquantity_vector::operator==</definition>
+        <argsstring>(const vquantity_vector &amp;) const =0</argsstring>
+        <name>operator==</name>
+        <reimplementedby refid="classquantit_1_1quantity__vector_1ab3fadec86ec1b60c22bc8409acaf0b9c">operator==</reimplementedby>
+        <param>
+          <type>const <ref refid="classquantit_1_1vquantity__vector" kindref="compound">vquantity_vector</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" line="195" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vquantity__vector_1a33b381fe4009e3fc7e6ad309ee8a95d6" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>bool</type>
+        <definition>virtual bool quantit::vquantity_vector::operator!=</definition>
+        <argsstring>(const vquantity_vector &amp;) const =0</argsstring>
+        <name>operator!=</name>
+        <reimplementedby refid="classquantit_1_1quantity__vector_1a25a084819eade4d7c5ad9d4014964f63">operator!=</reimplementedby>
+        <param>
+          <type>const <ref refid="classquantit_1_1vquantity__vector" kindref="compound">vquantity_vector</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" line="196" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vquantity__vector_1aafc7b8ab227c73b493feda9ec90e6b63" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>bool</type>
+        <definition>virtual bool quantit::vquantity_vector::empty</definition>
+        <argsstring>() const =0</argsstring>
+        <name>empty</name>
+        <reimplementedby refid="classquantit_1_1quantity__vector_1a678b0676c57c5d543a14f0378d160295">empty</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" line="198" column="15"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vquantity__vector_1a8941926772b526e5b4d2d05bab99c2ed" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>size_t</type>
+        <definition>virtual size_t quantit::vquantity_vector::size</definition>
+        <argsstring>() const =0</argsstring>
+        <name>size</name>
+        <reimplementedby refid="classquantit_1_1quantity__vector_1a6f762a6a3db5a19fbca387226ddfdd41">size</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" line="199" column="17"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vquantity__vector_1a8f426866d12fa1216c081004c695f483" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>size_t</type>
+        <definition>virtual size_t quantit::vquantity_vector::max_size</definition>
+        <argsstring>() const =0</argsstring>
+        <name>max_size</name>
+        <reimplementedby refid="classquantit_1_1quantity__vector_1a3bf186deb8a2e980f3842725408dc2d3">max_size</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" line="200" column="17"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vquantity__vector_1a2d08327aa3d410e7f26b9e96d9cbdc71" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void quantit::vquantity_vector::reserve</definition>
+        <argsstring>(size_t)=0</argsstring>
+        <name>reserve</name>
+        <reimplementedby refid="classquantit_1_1quantity__vector_1a775e482397a9268f066a2631884e990b">reserve</reimplementedby>
+        <param>
+          <type>size_t</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" line="201" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vquantity__vector_1a0eee00f5aa5dd4022f8d4cb0f4d907c3" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>size_t</type>
+        <definition>virtual size_t quantit::vquantity_vector::capacity</definition>
+        <argsstring>() const =0</argsstring>
+        <name>capacity</name>
+        <reimplementedby refid="classquantit_1_1quantity__vector_1a979164d702a0cf8bc62516a426328586">capacity</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" line="202" column="17"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vquantity__vector_1af024c17b6c31a99894544f054d6c5c36" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void quantit::vquantity_vector::shrink_to_fit</definition>
+        <argsstring>()=0</argsstring>
+        <name>shrink_to_fit</name>
+        <reimplementedby refid="classquantit_1_1quantity__vector_1a0dc5f19e7a753c541055c9b87ef8377a">shrink_to_fit</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" line="203" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vquantity__vector_1afcb9a8a6a3f02d71589ae2e72cb2b22a" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void quantit::vquantity_vector::clear</definition>
+        <argsstring>()=0</argsstring>
+        <name>clear</name>
+        <reimplementedby refid="classquantit_1_1quantity__vector_1aef35fb791b961bb2c1eeef61d3a290d4">clear</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" line="205" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vquantity__vector_1abe8a98e329314ec79fe05bdc8c568984" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type><ref refid="structquantit_1_1vQuantiT__iterator_1_1cgroup__iterator" kindref="compound">iterator</ref></type>
+        <definition>virtual iterator quantit::vquantity_vector::insert</definition>
+        <argsstring>(const_iterator pos, const vquantity &amp;Val)=0</argsstring>
+        <name>insert</name>
+        <reimplementedby refid="classquantit_1_1quantity__vector_1a29bf8880a9f9aa23b881731c9bec391a">insert</reimplementedby>
+        <param>
+          <type><ref refid="structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator" kindref="compound">const_iterator</ref></type>
+          <declname>pos</declname>
+        </param>
+        <param>
+          <type>const <ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref> &amp;</type>
+          <declname>Val</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" line="206" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vquantity__vector_1a3cb6eef84ec3f2065005f6ddb946f60b" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type><ref refid="structquantit_1_1vQuantiT__iterator_1_1cgroup__iterator" kindref="compound">iterator</ref></type>
+        <definition>virtual iterator quantit::vquantity_vector::insert</definition>
+        <argsstring>(const_iterator pos, size_t count, const vquantity &amp;Val)=0</argsstring>
+        <name>insert</name>
+        <reimplementedby refid="classquantit_1_1quantity__vector_1ab395b4aff3831dcddeb39da861675b80">insert</reimplementedby>
+        <param>
+          <type><ref refid="structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator" kindref="compound">const_iterator</ref></type>
+          <declname>pos</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>count</declname>
+        </param>
+        <param>
+          <type>const <ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref> &amp;</type>
+          <declname>Val</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" line="207" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vquantity__vector_1a5581ae3f32cd537f3321adffb708862a" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type><ref refid="structquantit_1_1vQuantiT__iterator_1_1cgroup__iterator" kindref="compound">iterator</ref></type>
+        <definition>virtual iterator quantit::vquantity_vector::insert</definition>
+        <argsstring>(const_iterator pos, const_iterator first, const_iterator last)=0</argsstring>
+        <name>insert</name>
+        <reimplementedby refid="classquantit_1_1quantity__vector_1a9806a808d4a6737cf54efd20fd991033">insert</reimplementedby>
+        <param>
+          <type><ref refid="structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator" kindref="compound">const_iterator</ref></type>
+          <declname>pos</declname>
+        </param>
+        <param>
+          <type><ref refid="structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator" kindref="compound">const_iterator</ref></type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type><ref refid="structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator" kindref="compound">const_iterator</ref></type>
+          <declname>last</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" line="208" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vquantity__vector_1a3d59afa4aaa4a655a567e74a2c72d72c" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type><ref refid="structquantit_1_1vQuantiT__iterator_1_1cgroup__iterator" kindref="compound">iterator</ref></type>
+        <definition>virtual iterator quantit::vquantity_vector::insert</definition>
+        <argsstring>(const_iterator pos, const_reverse_iterator first, const_reverse_iterator last)=0</argsstring>
+        <name>insert</name>
+        <reimplementedby refid="classquantit_1_1quantity__vector_1a8a03c4a3a80b421819be125357e2c00e">insert</reimplementedby>
+        <param>
+          <type><ref refid="structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator" kindref="compound">const_iterator</ref></type>
+          <declname>pos</declname>
+        </param>
+        <param>
+          <type>const_reverse_iterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>const_reverse_iterator</type>
+          <declname>last</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" line="209" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vquantity__vector_1a3493a3a5a45b47a5b33e527aaced2a8d" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type><ref refid="structquantit_1_1vQuantiT__iterator_1_1cgroup__iterator" kindref="compound">iterator</ref></type>
+        <definition>virtual iterator quantit::vquantity_vector::erase</definition>
+        <argsstring>(const_iterator pos)=0</argsstring>
+        <name>erase</name>
+        <reimplementedby refid="classquantit_1_1quantity__vector_1a8c99ad9bd6708b110ba5b6c0bf4bc527">erase</reimplementedby>
+        <param>
+          <type><ref refid="structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator" kindref="compound">const_iterator</ref></type>
+          <declname>pos</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" line="210" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vquantity__vector_1ab7bae266a780d5bff2291743280ac704" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type><ref refid="structquantit_1_1vQuantiT__iterator_1_1cgroup__iterator" kindref="compound">iterator</ref></type>
+        <definition>virtual iterator quantit::vquantity_vector::erase</definition>
+        <argsstring>(const_iterator first, const_iterator last)=0</argsstring>
+        <name>erase</name>
+        <reimplementedby refid="classquantit_1_1quantity__vector_1a8ac0c54bbed0106df3cf55bc55c99287">erase</reimplementedby>
+        <param>
+          <type><ref refid="structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator" kindref="compound">const_iterator</ref></type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type><ref refid="structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator" kindref="compound">const_iterator</ref></type>
+          <declname>last</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" line="211" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vquantity__vector_1a064c74e3e9223a1ad8353753fc4df280" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void quantit::vquantity_vector::push_back</definition>
+        <argsstring>(const vquantity &amp;value)=0</argsstring>
+        <name>push_back</name>
+        <reimplementedby refid="classquantit_1_1quantity__vector_1ae6c5c6c65cee7602c7a864ff0582908d">push_back</reimplementedby>
+        <param>
+          <type>const <ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref> &amp;</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" line="212" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vquantity__vector_1a722218e879940de100e01086795c09f1" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void quantit::vquantity_vector::pop_back</definition>
+        <argsstring>()=0</argsstring>
+        <name>pop_back</name>
+        <reimplementedby refid="classquantit_1_1quantity__vector_1ac5d3eb99e2586ba1d131336604733a75">pop_back</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" line="213" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vquantity__vector_1a8c21333a4dec94f5a9ffbfacd2e2495d" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void quantit::vquantity_vector::resize</definition>
+        <argsstring>(size_t count)=0</argsstring>
+        <name>resize</name>
+        <reimplementedby refid="classquantit_1_1quantity__vector_1aa1de6f6c0cb16d471805f914e63d367d">resize</reimplementedby>
+        <param>
+          <type>size_t</type>
+          <declname>count</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" line="214" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vquantity__vector_1ad5ea413797a1f890a354ff2624227da4" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void quantit::vquantity_vector::resize</definition>
+        <argsstring>(size_t count, const vquantity &amp;val)=0</argsstring>
+        <name>resize</name>
+        <reimplementedby refid="classquantit_1_1quantity__vector_1ac12b008ece8daaf139325dd299b81049">resize</reimplementedby>
+        <param>
+          <type>size_t</type>
+          <declname>count</declname>
+        </param>
+        <param>
+          <type>const <ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref> &amp;</type>
+          <declname>val</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" line="215" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vquantity__vector_1af4c01c756e8afbaa5d74cafa4705e7bc" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void quantit::vquantity_vector::swap</definition>
+        <argsstring>(vquantity_vector &amp;other)=0</argsstring>
+        <name>swap</name>
+        <reimplementedby refid="classquantit_1_1quantity__vector_1a879ccb5b05f34be095fb3f8890fffe43">swap</reimplementedby>
+        <param>
+          <type><ref refid="classquantit_1_1vquantity__vector" kindref="compound">vquantity_vector</ref> &amp;</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" line="216" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vquantity__vector_1a80e4943f08ef31e54d41dd42c15e08b0" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>std::unique_ptr&lt; <ref refid="classquantit_1_1vquantity__vector" kindref="compound">vquantity_vector</ref> &gt;</type>
+        <definition>virtual std::unique_ptr&lt;vquantity_vector&gt; quantit::vquantity_vector::virtual_permute</definition>
+        <argsstring>(const int64_t *permute_begin, const int64_t *permute_end, const std::vector&lt; int64_t &gt; &amp;repetition) const =0</argsstring>
+        <name>virtual_permute</name>
+        <reimplementedby refid="classquantit_1_1quantity__vector_1a1b9cb75399fbceadb5354ae560dd6305">virtual_permute</reimplementedby>
+        <param>
+          <type>const int64_t *</type>
+          <declname>permute_begin</declname>
+        </param>
+        <param>
+          <type>const int64_t *</type>
+          <declname>permute_end</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; int64_t &gt; &amp;</type>
+          <declname>repetition</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" line="217" column="25"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vquantity__vector_1a10c05ab658c6fdffaec35bb5e983d773" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="structquantit_1_1vQuantiT__iterator_1_1cgroup__iterator" kindref="compound">iterator</ref></type>
+        <definition>iterator quantit::vquantity_vector::begin</definition>
+        <argsstring>()</argsstring>
+        <name>begin</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" line="236" column="10" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" bodystart="236" bodyend="236"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vquantity__vector_1a528eb166ff41dd6215074af4089b770e" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="structquantit_1_1vQuantiT__iterator_1_1cgroup__iterator" kindref="compound">iterator</ref></type>
+        <definition>iterator quantit::vquantity_vector::end</definition>
+        <argsstring>()</argsstring>
+        <name>end</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" line="237" column="10" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" bodystart="237" bodyend="237"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vquantity__vector_1af5c3faa025c6d6422c3eadd9ba8dc74b" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator" kindref="compound">const_iterator</ref></type>
+        <definition>const_iterator quantit::vquantity_vector::cbegin</definition>
+        <argsstring>() const</argsstring>
+        <name>cbegin</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" line="238" column="16" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" bodystart="238" bodyend="238"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vquantity__vector_1ae500f61ebb2dbebe4098fa97f9e6f208" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator" kindref="compound">const_iterator</ref></type>
+        <definition>const_iterator quantit::vquantity_vector::cend</definition>
+        <argsstring>() const</argsstring>
+        <name>cend</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" line="239" column="16" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" bodystart="239" bodyend="239"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vquantity__vector_1a6c6fdf66d6eae6220e4f94b7619889f9" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>reverse_iterator</type>
+        <definition>reverse_iterator quantit::vquantity_vector::rbegin</definition>
+        <argsstring>()</argsstring>
+        <name>rbegin</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" line="241" column="18" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" bodystart="241" bodyend="241"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vquantity__vector_1af5186aac793bc795bb1befe20f97898d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>reverse_iterator</type>
+        <definition>reverse_iterator quantit::vquantity_vector::rend</definition>
+        <argsstring>()</argsstring>
+        <name>rend</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" line="242" column="18" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" bodystart="242" bodyend="242"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vquantity__vector_1a3ec2400ab909861ef65b7553d710aef3" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator" kindref="compound">const_iterator</ref></type>
+        <definition>const_iterator quantit::vquantity_vector::begin</definition>
+        <argsstring>() const</argsstring>
+        <name>begin</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" line="243" column="16" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" bodystart="243" bodyend="243"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vquantity__vector_1a71a9311fca6466186c042d27bbba19e1" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator" kindref="compound">const_iterator</ref></type>
+        <definition>const_iterator quantit::vquantity_vector::end</definition>
+        <argsstring>() const</argsstring>
+        <name>end</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" line="244" column="16" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" bodystart="244" bodyend="244"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vquantity__vector_1a3a0e26b88d5991f4fdc9f7fa0343f4e2" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const_reverse_iterator</type>
+        <definition>const_reverse_iterator quantit::vquantity_vector::crbegin</definition>
+        <argsstring>() const</argsstring>
+        <name>crbegin</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" line="245" column="24" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" bodystart="245" bodyend="245"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vquantity__vector_1a8a9027bc60195c173dd63a880e949b02" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const_reverse_iterator</type>
+        <definition>const_reverse_iterator quantit::vquantity_vector::crend</definition>
+        <argsstring>() const</argsstring>
+        <name>crend</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" line="246" column="24" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" bodystart="246" bodyend="246"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vquantity__vector_1ad80da9905a8dd945f8424988366845ae" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const_reverse_iterator</type>
+        <definition>const_reverse_iterator quantit::vquantity_vector::rbegin</definition>
+        <argsstring>() const</argsstring>
+        <name>rbegin</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" line="247" column="24" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" bodystart="247" bodyend="247"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vquantity__vector_1a8e5045d8032d3b8ed89688c2d2493ddd" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const_reverse_iterator</type>
+        <definition>const_reverse_iterator quantit::vquantity_vector::rend</definition>
+        <argsstring>() const</argsstring>
+        <name>rend</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" line="248" column="24" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" bodystart="248" bodyend="248"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-func">
+      <memberdef kind="function" id="classquantit_1_1vquantity__vector_1a76b68788a483ed33e4889c116cee46fc" prot="private" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type><ref refid="structquantit_1_1vQuantiT__iterator_1_1cgroup__iterator" kindref="compound">iterator</ref></type>
+        <definition>virtual iterator quantit::vquantity_vector::begin_impl</definition>
+        <argsstring>()=0</argsstring>
+        <name>begin_impl</name>
+        <reimplementedby refid="classquantit_1_1quantity__vector_1ae6f51cbf0f7ce283774eb462275b260f">begin_impl</reimplementedby>
+        <briefdescription>
+<para>virtual implementation of the begin and end functions </para>
+        </briefdescription>
+        <detaileddescription>
+<para>necessary to use a different function name to allow override by child class while allowing those child class to have optimized begin and end functions (that return an incompatible type.).</para>
+<para><simplesect kind="return"><para>iterator </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" line="230" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vquantity__vector_1a0a65a19a1e9c67de7048f9a643ea3a67" prot="private" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type><ref refid="structquantit_1_1vQuantiT__iterator_1_1cgroup__iterator" kindref="compound">iterator</ref></type>
+        <definition>virtual iterator quantit::vquantity_vector::end_impl</definition>
+        <argsstring>()=0</argsstring>
+        <name>end_impl</name>
+        <reimplementedby refid="classquantit_1_1quantity__vector_1ae7e929d16c6759fd8c62f3867e0f05b1">end_impl</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" line="231" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vquantity__vector_1a520444863929535bb00d1c7c256e0c65" prot="private" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type><ref refid="structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator" kindref="compound">const_iterator</ref></type>
+        <definition>virtual const_iterator quantit::vquantity_vector::cbegin_impl</definition>
+        <argsstring>() const =0</argsstring>
+        <name>cbegin_impl</name>
+        <reimplementedby refid="classquantit_1_1quantity__vector_1a2a1ca0fe5ae5ac7d7af96aea430e482b">cbegin_impl</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" line="232" column="24"/>
+      </memberdef>
+      <memberdef kind="function" id="classquantit_1_1vquantity__vector_1ae296477a436eea7494dbfca7b7da658c" prot="private" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type><ref refid="structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator" kindref="compound">const_iterator</ref></type>
+        <definition>virtual const_iterator quantit::vquantity_vector::cend_impl</definition>
+        <argsstring>() const =0</argsstring>
+        <name>cend_impl</name>
+        <reimplementedby refid="classquantit_1_1quantity__vector_1a8faeeeaaeea743ef49c94eb0cebb1dd6">cend_impl</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" line="233" column="24"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>polymorphic (type-erased?) container of <ref refid="classquantit_1_1any__quantity" kindref="compound">any_quantity</ref>. All the element in the container are of the same concrete type, but the concrete type doesn&apos;t change the type of the container. Implement most of the interface of std::vector (some parts are templates that can&apos;t be replaced with run time polymorphism). </para>
+    </briefdescription>
+    <detaileddescription>
+<para>While iterating on the polymorphic container is possible, and useful for prototyping, doing so will incur a significant cost due to virtual calls. <bold>For perfomance critical operations on the whole collection, it is necessary to implement the loop as polymorphic function that will resolve in O(1) polymorphic call/dynamic_cast.</bold></para>
+<para>The visitor pattern could also be used to accomplish efficient iteration on the vector, but a visitor cannot be made to work with all the types in an open set of types.</para>
+<para>Note: I can&apos;t help but feel there&apos;s one too many inderection level necessary here (pointer to conc_vect.data, data is a pointer to the actual data) There&apos;s almost certainly a design without this extra indirection and the same interface. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>quantit::quantity_vector&lt; S, Allocator, class &gt;</label>
+        <link refid="classquantit_1_1quantity__vector"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>quantit::vquantity_vector</label>
+        <link refid="classquantit_1_1vquantity__vector"/>
+      </node>
+    </inheritancegraph>
+    <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" line="164" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" bodystart="165" bodyend="249"/>
+    <listofallmembers>
+      <member refid="classquantit_1_1vquantity__vector_1afd248e370daef3c0d26b80d884304f63" prot="public" virt="pure-virtual"><scope>quantit::vquantity_vector</scope><name>at</name></member>
+      <member refid="classquantit_1_1vquantity__vector_1a34c96411f0a5e14b1a5d6081d4f635f8" prot="public" virt="pure-virtual"><scope>quantit::vquantity_vector</scope><name>at</name></member>
+      <member refid="classquantit_1_1vquantity__vector_1a92b88aff7bf42d9661679ec072f67a70" prot="public" virt="pure-virtual"><scope>quantit::vquantity_vector</scope><name>back</name></member>
+      <member refid="classquantit_1_1vquantity__vector_1a360483dd1dc03b9761247516039344a7" prot="public" virt="pure-virtual"><scope>quantit::vquantity_vector</scope><name>back</name></member>
+      <member refid="classquantit_1_1vquantity__vector_1a10c05ab658c6fdffaec35bb5e983d773" prot="public" virt="non-virtual"><scope>quantit::vquantity_vector</scope><name>begin</name></member>
+      <member refid="classquantit_1_1vquantity__vector_1a3ec2400ab909861ef65b7553d710aef3" prot="public" virt="non-virtual"><scope>quantit::vquantity_vector</scope><name>begin</name></member>
+      <member refid="classquantit_1_1vquantity__vector_1a76b68788a483ed33e4889c116cee46fc" prot="private" virt="pure-virtual"><scope>quantit::vquantity_vector</scope><name>begin_impl</name></member>
+      <member refid="classquantit_1_1vquantity__vector_1a0eee00f5aa5dd4022f8d4cb0f4d907c3" prot="public" virt="pure-virtual"><scope>quantit::vquantity_vector</scope><name>capacity</name></member>
+      <member refid="classquantit_1_1vquantity__vector_1af5c3faa025c6d6422c3eadd9ba8dc74b" prot="public" virt="non-virtual"><scope>quantit::vquantity_vector</scope><name>cbegin</name></member>
+      <member refid="classquantit_1_1vquantity__vector_1a520444863929535bb00d1c7c256e0c65" prot="private" virt="pure-virtual"><scope>quantit::vquantity_vector</scope><name>cbegin_impl</name></member>
+      <member refid="classquantit_1_1vquantity__vector_1ae500f61ebb2dbebe4098fa97f9e6f208" prot="public" virt="non-virtual"><scope>quantit::vquantity_vector</scope><name>cend</name></member>
+      <member refid="classquantit_1_1vquantity__vector_1ae296477a436eea7494dbfca7b7da658c" prot="private" virt="pure-virtual"><scope>quantit::vquantity_vector</scope><name>cend_impl</name></member>
+      <member refid="classquantit_1_1vquantity__vector_1afcb9a8a6a3f02d71589ae2e72cb2b22a" prot="public" virt="pure-virtual"><scope>quantit::vquantity_vector</scope><name>clear</name></member>
+      <member refid="classquantit_1_1vquantity__vector_1a18e79812033d7d9a7dd22c6882d3f019" prot="public" virt="pure-virtual"><scope>quantit::vquantity_vector</scope><name>clone</name></member>
+      <member refid="classquantit_1_1vquantity__vector_1aa20d70726c7434d60d0466eadf3996f2" prot="public" virt="non-virtual"><scope>quantit::vquantity_vector</scope><name>const_iterator</name></member>
+      <member refid="classquantit_1_1vquantity__vector_1a7571e8b722803d5b45b011146ed6bc53" prot="public" virt="non-virtual"><scope>quantit::vquantity_vector</scope><name>const_reverse_iterator</name></member>
+      <member refid="classquantit_1_1vquantity__vector_1a3a0e26b88d5991f4fdc9f7fa0343f4e2" prot="public" virt="non-virtual"><scope>quantit::vquantity_vector</scope><name>crbegin</name></member>
+      <member refid="classquantit_1_1vquantity__vector_1a8a9027bc60195c173dd63a880e949b02" prot="public" virt="non-virtual"><scope>quantit::vquantity_vector</scope><name>crend</name></member>
+      <member refid="classquantit_1_1vquantity__vector_1a29cccb929ad613842006d1e6087c86cd" prot="public" virt="pure-virtual"><scope>quantit::vquantity_vector</scope><name>data</name></member>
+      <member refid="classquantit_1_1vquantity__vector_1a5e9e43b98609ed47cb180e8d41ea93df" prot="public" virt="pure-virtual"><scope>quantit::vquantity_vector</scope><name>data</name></member>
+      <member refid="classquantit_1_1vquantity__vector_1aafc7b8ab227c73b493feda9ec90e6b63" prot="public" virt="pure-virtual"><scope>quantit::vquantity_vector</scope><name>empty</name></member>
+      <member refid="classquantit_1_1vquantity__vector_1a528eb166ff41dd6215074af4089b770e" prot="public" virt="non-virtual"><scope>quantit::vquantity_vector</scope><name>end</name></member>
+      <member refid="classquantit_1_1vquantity__vector_1a71a9311fca6466186c042d27bbba19e1" prot="public" virt="non-virtual"><scope>quantit::vquantity_vector</scope><name>end</name></member>
+      <member refid="classquantit_1_1vquantity__vector_1a0a65a19a1e9c67de7048f9a643ea3a67" prot="private" virt="pure-virtual"><scope>quantit::vquantity_vector</scope><name>end_impl</name></member>
+      <member refid="classquantit_1_1vquantity__vector_1a3493a3a5a45b47a5b33e527aaced2a8d" prot="public" virt="pure-virtual"><scope>quantit::vquantity_vector</scope><name>erase</name></member>
+      <member refid="classquantit_1_1vquantity__vector_1ab7bae266a780d5bff2291743280ac704" prot="public" virt="pure-virtual"><scope>quantit::vquantity_vector</scope><name>erase</name></member>
+      <member refid="classquantit_1_1vquantity__vector_1a04a7768802fa80d76c28c7187db8d264" prot="public" virt="pure-virtual"><scope>quantit::vquantity_vector</scope><name>front</name></member>
+      <member refid="classquantit_1_1vquantity__vector_1ab72f7597d4361dfb3c906c26a67bc74c" prot="public" virt="pure-virtual"><scope>quantit::vquantity_vector</scope><name>front</name></member>
+      <member refid="classquantit_1_1vquantity__vector_1a77f6fe8a0a1d5e41b77174618f57ba39" prot="public" virt="pure-virtual"><scope>quantit::vquantity_vector</scope><name>identify_blocks</name></member>
+      <member refid="classquantit_1_1vquantity__vector_1abe8a98e329314ec79fe05bdc8c568984" prot="public" virt="pure-virtual"><scope>quantit::vquantity_vector</scope><name>insert</name></member>
+      <member refid="classquantit_1_1vquantity__vector_1a3cb6eef84ec3f2065005f6ddb946f60b" prot="public" virt="pure-virtual"><scope>quantit::vquantity_vector</scope><name>insert</name></member>
+      <member refid="classquantit_1_1vquantity__vector_1a5581ae3f32cd537f3321adffb708862a" prot="public" virt="pure-virtual"><scope>quantit::vquantity_vector</scope><name>insert</name></member>
+      <member refid="classquantit_1_1vquantity__vector_1a3d59afa4aaa4a655a567e74a2c72d72c" prot="public" virt="pure-virtual"><scope>quantit::vquantity_vector</scope><name>insert</name></member>
+      <member refid="classquantit_1_1vquantity__vector_1a946ec9f720e87ec900292468816bb044" prot="public" virt="non-virtual"><scope>quantit::vquantity_vector</scope><name>iterator</name></member>
+      <member refid="classquantit_1_1vquantity__vector_1a8f426866d12fa1216c081004c695f483" prot="public" virt="pure-virtual"><scope>quantit::vquantity_vector</scope><name>max_size</name></member>
+      <member refid="classquantit_1_1vquantity__vector_1a33b381fe4009e3fc7e6ad309ee8a95d6" prot="public" virt="pure-virtual"><scope>quantit::vquantity_vector</scope><name>operator!=</name></member>
+      <member refid="classquantit_1_1vquantity__vector_1aff064f8d23aaa065ed1c222af5c1f2a2" prot="public" virt="pure-virtual"><scope>quantit::vquantity_vector</scope><name>operator==</name></member>
+      <member refid="classquantit_1_1vquantity__vector_1a73daccea7b560113dda1bdd131f3039e" prot="public" virt="pure-virtual"><scope>quantit::vquantity_vector</scope><name>operator[]</name></member>
+      <member refid="classquantit_1_1vquantity__vector_1a997b905b69599a02e29d41356505cfd0" prot="public" virt="pure-virtual"><scope>quantit::vquantity_vector</scope><name>operator[]</name></member>
+      <member refid="classquantit_1_1vquantity__vector_1a722218e879940de100e01086795c09f1" prot="public" virt="pure-virtual"><scope>quantit::vquantity_vector</scope><name>pop_back</name></member>
+      <member refid="classquantit_1_1vquantity__vector_1a064c74e3e9223a1ad8353753fc4df280" prot="public" virt="pure-virtual"><scope>quantit::vquantity_vector</scope><name>push_back</name></member>
+      <member refid="classquantit_1_1vquantity__vector_1a6c6fdf66d6eae6220e4f94b7619889f9" prot="public" virt="non-virtual"><scope>quantit::vquantity_vector</scope><name>rbegin</name></member>
+      <member refid="classquantit_1_1vquantity__vector_1ad80da9905a8dd945f8424988366845ae" prot="public" virt="non-virtual"><scope>quantit::vquantity_vector</scope><name>rbegin</name></member>
+      <member refid="classquantit_1_1vquantity__vector_1af5186aac793bc795bb1befe20f97898d" prot="public" virt="non-virtual"><scope>quantit::vquantity_vector</scope><name>rend</name></member>
+      <member refid="classquantit_1_1vquantity__vector_1a8e5045d8032d3b8ed89688c2d2493ddd" prot="public" virt="non-virtual"><scope>quantit::vquantity_vector</scope><name>rend</name></member>
+      <member refid="classquantit_1_1vquantity__vector_1a2d08327aa3d410e7f26b9e96d9cbdc71" prot="public" virt="pure-virtual"><scope>quantit::vquantity_vector</scope><name>reserve</name></member>
+      <member refid="classquantit_1_1vquantity__vector_1a8c21333a4dec94f5a9ffbfacd2e2495d" prot="public" virt="pure-virtual"><scope>quantit::vquantity_vector</scope><name>resize</name></member>
+      <member refid="classquantit_1_1vquantity__vector_1ad5ea413797a1f890a354ff2624227da4" prot="public" virt="pure-virtual"><scope>quantit::vquantity_vector</scope><name>resize</name></member>
+      <member refid="classquantit_1_1vquantity__vector_1a5f2dcc3b3ff780fb8495b21b3f11e355" prot="public" virt="non-virtual"><scope>quantit::vquantity_vector</scope><name>reverse_iterator</name></member>
+      <member refid="classquantit_1_1vquantity__vector_1af024c17b6c31a99894544f054d6c5c36" prot="public" virt="pure-virtual"><scope>quantit::vquantity_vector</scope><name>shrink_to_fit</name></member>
+      <member refid="classquantit_1_1vquantity__vector_1a8941926772b526e5b4d2d05bab99c2ed" prot="public" virt="pure-virtual"><scope>quantit::vquantity_vector</scope><name>size</name></member>
+      <member refid="classquantit_1_1vquantity__vector_1af4c01c756e8afbaa5d74cafa4705e7bc" prot="public" virt="pure-virtual"><scope>quantit::vquantity_vector</scope><name>swap</name></member>
+      <member refid="classquantit_1_1vquantity__vector_1a80e4943f08ef31e54d41dd42c15e08b0" prot="public" virt="pure-virtual"><scope>quantit::vquantity_vector</scope><name>virtual_permute</name></member>
+      <member refid="classquantit_1_1vquantity__vector_1a46871e2051374c1d8e2b9933934c5d0b" prot="public" virt="virtual"><scope>quantit::vquantity_vector</scope><name>~vquantity_vector</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>
