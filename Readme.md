@@ -16,8 +16,8 @@ Note: if you use vscode to connect to the supercomputer, you might have to erase
 ## Installation
 
 QuantiT builds on pytorch's tensors, so we must install pytorch first.
-To garantee correct compilation in debug mode, we must compile pytorch ourselves. This can take a significant amount of time.
-If compiling in release mode, we could make use of precompiled pytorch for our platform. The project isn't set up for that, you're on your own if you want to do that.
+First step is to correctly install cuda, relevent cuda libraries (if available) and pytorch for your platflorm. To install cuda on your platform, follow nvidia's instruction. Pytorch can be installed following the instruction on its [getting started page](https://pytorch.org/get-started/locally/).
+This project currently target linux and OSX.
 
 This project depends on the {fmt} v7 or v8 library, install it with a package manager. (package often called libfmt)
 You can skip the installation of {fmt}, if you do, the project will pull it from github and bundle it inside quantit's build.
@@ -66,7 +66,7 @@ The project has the following file structure on the top level:
 	└──Readme.md
 
 - Design Document contain a small latex document that aims to explain the rationnal behind's btensor structure.
-- Documentation contain the necessary parts to build the doxygen doc from cmake, and integrate that in a (nicer looking) spinx generated documentation.
+- Documentation contain the necessary parts to build the doxygen doc from cmake, and integrate that in a (nicer looking) sphinx generated documentation.
 - extern contain dependencies in the form of git submodules (only pytorch at this moment).
 - include contains the headers files: files ending in .h or .hpp
 - Notes contain a small latex project documenting facts and thoughts about pytorch relevent to this project.

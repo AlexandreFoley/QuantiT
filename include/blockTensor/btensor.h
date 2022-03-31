@@ -85,21 +85,14 @@ bool any_truth(const T &in)
              ║     │      │      │     ║
             ─╫─────┼──────┼──────┼─────╢
              ║     │      │      │     ║
-             ║     │      │      │     ║
          S1,1║(1,0)│ (1,1)│ (1,2)│(1,3)║
-             ║     │      │      │     ║
-             ║     │      │      │     ║
              ║     │      │      │     ║
             ─╫─────┼──────┼──────┼─────╢
              ║     │      │      │     ║
-             ║     │      │      │     ║
          S1,2║(2,0)│ (2,1)│ (2,2)│(2,3)║
              ║     │      │      │     ║
-             ║     │      │      │     ║
-             ║     │      │      │     ║
              ╚═════╧══════╧══════╧═════╝
-
- * \endverbatim
+ \endverbatim
  * In the preceding exemple, the rows are separated in 4 sections, and the columns in 3 sections.
  * This make up to 12 blocks, that we label by section.
  * Let's consider that the conserved quantity is simply an integer under the addition,that the column sections
@@ -731,7 +724,7 @@ class btensor
 	 */
 	btensor &set_selection_rule_(any_quantity_cref value);
 	btensor &neutral_selection_rule_() { return set_selection_rule_(selection_rule->neutral()); }
-	btensor neutral_selection_rule()
+	btensor neutral_selection_rule() const
 	{
 		btensor out = *this;
 		return out.set_selection_rule_(selection_rule->neutral());
@@ -1347,6 +1340,11 @@ btensor from_basic_tensor_like(const btensor &shape, const torch::Tensor &values
 inline torch::Tensor zeros_like(const torch_shape &shape, c10::TensorOptions opt = {})
 {
 	return torch::zeros(shape._sizes, shape.opt.merge_in(opt));
+}
+inline torch::Tensor eye_like(const torch_shape &shape, c10::TensorOptions opt = {})
+{
+	if (shape._sizes.size() != 2) throw std::invalid_argument("eye_like only accept rank 2 shapes.");
+	return torch::eye(shape._sizes[0],shape._sizes[1], shape.opt.merge_in(opt));
 }
 inline torch::Tensor ones_like(const torch_shape &shape, c10::TensorOptions opt = {})
 {

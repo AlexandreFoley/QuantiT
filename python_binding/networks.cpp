@@ -1,8 +1,8 @@
 
 
 #include "utilities.h"
-#include <torch/extension.h>
 #include <pybind11/pybind11.h>
+#include <torch/extension.h>
 #include <torch/types.h>
 
 #include "MPT.h"
@@ -29,19 +29,51 @@ void common_core(py::class_<S> &pyclass)
 
 	// interface function from std::vector
 	// reference at(size_t i) { return tensors.at(i); }
-	pyclass.def("at", [](S& self, size_t i){return self.at(i);},py::return_value_policy::reference_internal);
-	// reference operator[](size_t i) { return tensors[i]; }
-	pyclass.def("__getitem__",[](S& self, size_t i){return self[i];}
-	, py::return_value_policy::reference_internal);
-	pyclass.def("__setitem__",[](S& self, size_t i,const typename S::Tens& val){self[i] = val;}
-	, py::return_value_policy::reference_internal);
-	// reference front() { return tensors.front(); }
-	pyclass.def("front", [](S& self){return self.front();}, py::return_value_policy::reference_internal);
-	// reference back() { return tensors.back(); }
-	pyclass.def("back", [](S& self){return self.back();}, py::return_value_policy::reference_internal);
-	// iterators
 	pyclass.def(
-	    "__iter__", [](S &obj) { return py::make_iterator(obj.begin(), obj.end()); });
+	    "at", [](S &self, size_t i) { return self.at(i); }, py::return_value_policy::reference_internal);
+	// reference operator[](size_t i) { return tensors[i]; }
+	pyclass.def(
+	    "__getitem__", [](S &self, size_t i) { return self[i]; }, py::return_value_policy::reference_internal);
+	pyclass.def("__getitem__",
+	            [](const S &s, const py::slice &slice) -> S *
+	            {
+		            size_t start = 0, stop = 0, step = 0, slicelength = 0;
+		            if (!slice.compute(s.size(), &start, &stop, &step, &slicelength))
+			            throw py::error_already_set();
+		            auto *seq = new S(slicelength);
+		            for (size_t i = 0; i < slicelength; ++i)
+		            {
+			            (*seq)[i] = s[start];
+			            start += step;
+		            }
+		            return seq;
+	            });
+	pyclass.def("__setitem__",
+	            [](S &s, const py::slice &slice, const S &value)
+	            {
+		            size_t start = 0, stop = 0, step = 0, slicelength = 0;
+		            if (!slice.compute(s.size(), &start, &stop, &step, &slicelength))
+			            throw py::error_already_set();
+		            if (slicelength != value.size())
+			            throw std::runtime_error("Left and right hand size of slice assignment have different sizes!");
+		            for (size_t i = 0; i < slicelength; ++i)
+		            {
+			            s[start] = value[i];
+			            start += step;
+		            }
+	            });
+	pyclass.def(
+	    "__setitem__", [](S &self, size_t i, const typename S::Tens &val) { self[i] = val; },
+	    py::return_value_policy::reference_internal);
+	// reference front() { return tensors.front(); }
+	pyclass.def(
+	    "front", [](S &self) { return self.front(); }, py::return_value_policy::reference_internal);
+	// reference back() { return tensors.back(); }
+	pyclass.def(
+	    "back", [](S &self) { return self.back(); }, py::return_value_policy::reference_internal);
+	// iterators
+	pyclass.def("__len__", &S::size);
+	pyclass.def("__iter__", [](S &obj) { return py::make_iterator(obj.begin(), obj.end()); });
 	// capacity
 	// [[nodiscard]] auto empty() const noexcept { return tensors.empty(); }
 	pyclass.def("empty", &S::empty);
@@ -61,25 +93,24 @@ void common_core(py::class_<S> &pyclass)
 	// iterator insert(const_iterator pos, const Tens &val) { return tensors.insert(pos, val); }
 	// iterator insert(const_iterator pos, Tens &&val) { return tensors.insert(pos, val); }
 	// iterator insert(const_iterator pos, size_type count, Tens &&val) { return tensors.insert(pos, count, val); }
-	pyclass
-	    .def("insert",
-	         [](S &self, size_t index, const typename S::Tens &val)
-	         {
-		         if (index > self.size())
-			         throw std::invalid_argument("index is beyond the end of the list");
-		         self.insert(self.begin() + index, val);
-	         });
-	    // template <class InputIT>
-	    // iterator insert(const_iterator pos, InputIT first, InputIT last)
-	    // iterator insert(const_iterator pos, std::initializer_list<Tens> list) { return tensors.insert(pos, list); }
-	    // iterator erase(const_iterator pos) { return tensors.erase(pos); }
-	    pyclass.def("erase",
-	                [](S &self, size_t index)
-	                {
-		                if (index > self.size())
-			                throw std::invalid_argument("Index is beyond the end of the list");
-		                self.erase(self.begin() + index);
-	                });
+	pyclass.def("insert",
+	            [](S &self, size_t index, const typename S::Tens &val)
+	            {
+		            if (index > self.size())
+			            throw std::invalid_argument("index is beyond the end of the list");
+		            self.insert(self.begin() + index, val);
+	            });
+	// template <class InputIT>
+	// iterator insert(const_iterator pos, InputIT first, InputIT last)
+	// iterator insert(const_iterator pos, std::initializer_list<Tens> list) { return tensors.insert(pos, list); }
+	// iterator erase(const_iterator pos) { return tensors.erase(pos); }
+	pyclass.def("erase",
+	            [](S &self, size_t index)
+	            {
+		            if (index > self.size())
+			            throw std::invalid_argument("Index is beyond the end of the list");
+		            self.erase(self.begin() + index);
+	            });
 	// iterator erase(const_iterator first, const_iterator last) { return tensors.erase(first, last); }
 	pyclass.def("erase",
 	            [](S &self, size_t first, size_t last)
@@ -90,11 +121,11 @@ void common_core(py::class_<S> &pyclass)
 			            throw std::invalid_argument("First index is beyond the end of the list");
 		            if (last > self.size())
 			            throw std::invalid_argument("Last index is beyond the end of the list");
-		            self.erase(self.begin() + first,self.begin()+last);
+		            self.erase(self.begin() + first, self.begin() + last);
 	            });
 	// void push_back(const Tens &val) { tensors.push_back(val); }
 	// void push_back(Tens &&val) { tensors.push_back(val); }
-	pyclass.def("append", [](S& self,const typename S::Tens& tens){return self.push_back(tens);});
+	pyclass.def("append", [](S &self, const typename S::Tens &tens) { return self.push_back(tens); });
 	// void pop_back() { tensors.pop_back(); }
 	pyclass.def("pop", &S::pop_back);
 	pyclass.def("pop",
@@ -124,30 +155,32 @@ void common_core(py::class_<S> &pyclass)
 	    [](S &self, torch::ScalarType dtype, c10::optional<torch::Device> dev, bool non_blocking, bool copy,
 	       c10::MemoryFormat fmt)
 	    { return self.to_(torch::TensorOptions(dtype).device(dev), non_blocking, copy, fmt); },
-	    "perform tensors options conversion", py::arg("dtype")= c10::optional<torch::Dtype>(), py::kw_only(),
+	    "perform tensors options conversion", py::arg("dtype") = c10::optional<torch::Dtype>(), py::kw_only(),
 	    py::arg("device") = c10::optional<torch::Device>(), py::arg("non_blocking") = false, py::arg("copy") = false,
 	    py::arg("memory_format") = c10::MemoryFormat::Preserve, py::return_value_policy::reference_internal);
 	// void print_dims(const T &mps) //T = MPS,MPT,MPO,bMPS,bMPT,bMPO
-	pyclass.def("print_dims",[](const S& self){print_dims(self);},"print the bond dimensions of the tensors in the network");
+	pyclass.def(
+	    "print_dims", [](const S &self) { print_dims(self); },
+	    "print the bond dimensions of the tensors in the network");
 }
-template<class S>
-void MPS_MPO(py::class_<S>& pyclass)
+template <class S>
+void MPS_MPO(py::class_<S> &pyclass)
 {
 	// common to (b)MPS and (b)MPO
 	//  bool check_ranks() const; MPO,MPS
-	pyclass.def("check_ranks",&S::check_ranks);
+	pyclass.def("check_ranks", &S::check_ranks);
 	//  static bool check_one(const Tens &tens);  MPO MPS
 	pyclass.def_static("check_one", &S::check_one);
 }
-template<class S>
-void MPS_only(py::class_<S>& pyclass)
+template <class S>
+void MPS_only(py::class_<S> &pyclass)
 {
 	// (b)MPS
 	// move_oc
-	pyclass.def("move_oc",&S::move_oc);
+	pyclass.def("move_oc", &S::move_oc);
 	// property : orthogonality center.
-	pyclass.def_property_readonly("orthogonality_center",[](const S& self){return static_cast<size_t>(self.orthogonality_center);});
-
+	pyclass.def_property_readonly("orthogonality_center",
+	                              [](const S &self) { return static_cast<size_t>(self.orthogonality_center); });
 }
 
 void init_networks(py::module &m)
@@ -171,101 +204,122 @@ void init_networks(py::module &m)
 	MPS_MPO(pybMPO);
 	MPS_only(pyMPS);
 	MPS_only(pybMPS);
-	//bMPO only.
+	// bMPO only.
 	pybMPO.def("coalesce", wrap_scalar([](bMPO &self, btensor::Scalar cutoff) { return self.coalesce(cutoff); }),
 	           "simplify the block representation of the tensors with a gauge transform. Can introduce an "
 	           "approximation smaller or equal to the cutoff on each tensors",
 	           py::arg("cutoff") = 0);
 
 	// MPS random_MPS(size_t length, size_t bond_dim, size_t phys_dim, torch::TensorOptions opt = {});
-	sub.def("random_MPS", TOPT_binder<size_t, size_t, size_t>::bind(&quantit::random_MPS),
-	      "Generate a random MPS",
-	      py::arg("length"), py::arg("bond_dim"), py::arg("phys_dim"), py::kw_only(),
-	      py::arg("dtype") = opt<stype>(), py::arg("device") = opt<tdev>(), py::arg("requires_grad") = opt<bool>(),
-	      py::arg("pin_memory") = opt<bool>());
+	sub.def("random_MPS", TOPT_binder<size_t, size_t, size_t>::bind(&quantit::random_MPS), "Generate a random MPS",
+	        py::arg("length"), py::arg("bond_dim"), py::arg("phys_dim"), py::kw_only(), py::arg("dtype") = opt<stype>(),
+	        py::arg("device") = opt<tdev>(), py::arg("requires_grad") = opt<bool>(),
+	        py::arg("pin_memory") = opt<bool>());
 	// MPS random_MPS(size_t bond_dim, const MPO &hamil, torch::TensorOptions opt = {});
-	sub.def("random_MPS", TOPT_binder<size_t, const MPO&>::bind(&quantit::random_MPS),
-	      "Generate a random MPS that can be contracted with the given MPO",
-	      py::arg("bond_dim"), py::arg("mpo"), py::kw_only(),
-	      py::arg("dtype") = opt<stype>(), py::arg("device") = opt<tdev>(), py::arg("requires_grad") = opt<bool>(),
-	      py::arg("pin_memory") = opt<bool>());
+	sub.def("random_MPS", TOPT_binder<size_t, const MPO &>::bind(&quantit::random_MPS),
+	        "Generate a random MPS that can be contracted with the given MPO", py::arg("bond_dim"), py::arg("mpo"),
+	        py::kw_only(), py::arg("dtype") = opt<stype>(), py::arg("device") = opt<tdev>(),
+	        py::arg("requires_grad") = opt<bool>(), py::arg("pin_memory") = opt<bool>());
 	// MPS random_MPS(size_t bond_dim, const std::vector<int64_t> &phys_dims,
-	//                torch::TensorOptions opt = {}); 
-	sub.def("random_MPS", TOPT_binder<size_t, const std::vector<int64_t>& >::bind(&quantit::random_MPS),
-	      "Generate a random MPS with the specified physical dimensions",
-	      py::arg("bond_dim"), py::arg("phys_dim_list"), py::kw_only(),
-	      py::arg("dtype") = opt<stype>(), py::arg("device") = opt<tdev>(), py::arg("requires_grad") = opt<bool>(),
-	      py::arg("pin_memory") = opt<bool>());
-
+	//                torch::TensorOptions opt = {});
+	sub.def("random_MPS", TOPT_binder<size_t, const std::vector<int64_t> &>::bind(&quantit::random_MPS),
+	        "Generate a random MPS with the specified physical dimensions", py::arg("bond_dim"),
+	        py::arg("phys_dim_list"), py::kw_only(), py::arg("dtype") = opt<stype>(), py::arg("device") = opt<tdev>(),
+	        py::arg("requires_grad") = opt<bool>(), py::arg("pin_memory") = opt<bool>());
 
 	// torch::Tensor contract(const MPS &a, const MPS &b, const MPO &obs, torch::Tensor left_edge,
 	//    const torch::Tensor &right_edge);
-	sub.def("contract",py::overload_cast<const MPS& , const MPS&, const MPO&,torch::Tensor,const torch::Tensor&>(&quantit::contract),"contract to a scalar the two given MPS with the MPO and edge tensors",py::arg("bra"),py::arg("ket"),py::arg("operator"),py::arg("left_edge"),py::arg("right_edge"));
+	sub.def("contract",
+	        py::overload_cast<const MPS &, const MPS &, const MPO &, torch::Tensor, const torch::Tensor &>(
+	            &quantit::contract),
+	        "contract to a scalar the two given MPS with the MPO and edge tensors", py::arg("bra"), py::arg("ket"),
+	        py::arg("operator"), py::arg("left_edge"), py::arg("right_edge"));
 	// torch::Tensor contract(const MPS &a, const MPS &b, const MPO &obs);
-	sub.def("contract",py::overload_cast<const MPS& , const MPS&, const MPO&>(&quantit::contract),"contract to a scalar the two given MPS with the MPO",py::arg("bra"),py::arg("ket"),py::arg("operator"));
+	sub.def("contract", py::overload_cast<const MPS &, const MPS &, const MPO &>(&quantit::contract),
+	        "contract to a scalar the two given MPS with the MPO", py::arg("bra"), py::arg("ket"), py::arg("operator"));
 	// torch::Tensor contract(const MPS &a, const MPS &b);
-	sub.def("contract",py::overload_cast<const MPS& , const MPS&>(&quantit::contract),"contract to a scalar the two given MPS",py::arg("bra"),py::arg("ket"));
+	sub.def("contract", py::overload_cast<const MPS &, const MPS &>(&quantit::contract),
+	        "contract to a scalar the two given MPS", py::arg("bra"), py::arg("ket"));
 	// torch::Tensor contract(const MPS &a, const MPS &b, torch::Tensor left_edge, const torch::Tensor &right_edge);
-	sub.def("contract",py::overload_cast<const MPS& , const MPS&,torch::Tensor,const torch::Tensor&>(&quantit::contract),"contract to a scalar the two given MPS with the edge tensors",py::arg("bra"),py::arg("ket"),py::arg("left_edge"),py::arg("right_edge"));
+	sub.def("contract",
+	        py::overload_cast<const MPS &, const MPS &, torch::Tensor, const torch::Tensor &>(&quantit::contract),
+	        "contract to a scalar the two given MPS with the edge tensors", py::arg("bra"), py::arg("ket"),
+	        py::arg("left_edge"), py::arg("right_edge"));
 
 	// btensor contract(const bMPS &a, const bMPS &b, const bMPO &obs);
-	sub.def("contract",py::overload_cast<const bMPS& , const bMPS&, const bMPO&>(&quantit::contract),"contract to a scalar the two given MPS with the MPO",py::arg("bra"),py::arg("ket"),py::arg("operator"));
+	sub.def("contract", py::overload_cast<const bMPS &, const bMPS &, const bMPO &>(&quantit::contract),
+	        "contract to a scalar the two given MPS with the MPO", py::arg("bra"), py::arg("ket"), py::arg("operator"));
 	// btensor contract(const bMPS &a, const bMPS &b, const bMPO &obs, btensor left_edge, const btensor &right_edge);
-	sub.def("contract",py::overload_cast<const bMPS& , const bMPS&, const bMPO&,quantit::btensor,const quantit::btensor&>(&quantit::contract),"contract to a scalar the two given MPS with the MPO and edge tensors",py::arg("bra"),py::arg("ket"),py::arg("operator"),py::arg("left_edge"),py::arg("right_edge"));
+	sub.def("contract",
+	        py::overload_cast<const bMPS &, const bMPS &, const bMPO &, quantit::btensor, const quantit::btensor &>(
+	            &quantit::contract),
+	        "contract to a scalar the two given MPS with the MPO and edge tensors", py::arg("bra"), py::arg("ket"),
+	        py::arg("operator"), py::arg("left_edge"), py::arg("right_edge"));
 	// btensor contract(const bMPS &a, const bMPS &b, btensor left_edge, const btensor &right_edge);
-	sub.def("contract",py::overload_cast<const bMPS& , const bMPS&,btensor,const btensor&>(&quantit::contract),"contract to a scalar the two given MPS with the edge tensors",py::arg("bra"),py::arg("ket"),py::arg("left_edge"),py::arg("right_edge"));
+	sub.def("contract", py::overload_cast<const bMPS &, const bMPS &, btensor, const btensor &>(&quantit::contract),
+	        "contract to a scalar the two given MPS with the edge tensors", py::arg("bra"), py::arg("ket"),
+	        py::arg("left_edge"), py::arg("right_edge"));
 	// btensor contract(const bMPS &a, const bMPS &b);
-	sub.def("contract",py::overload_cast<const bMPS& , const bMPS&>(&quantit::contract),"contract to a scalar the two given MPS",py::arg("bra"),py::arg("ket"));
-
+	sub.def("contract", py::overload_cast<const bMPS &, const bMPS &>(&quantit::contract),
+	        "contract to a scalar the two given MPS", py::arg("bra"), py::arg("ket"));
 
 	// bMPS random_bMPS(size_t length, size_t bond_dim, const btensor &phys_dim_spec, any_quantity_cref q_num,
 	//                  unsigned int seed = (std::random_device())(), torch::TensorOptions opt = {});
-	auto bound_randomBMPSA = TOPT_binder<size_t,size_t,const btensor &,any_quantity>::bind_fl([](size_t length, size_t bond_dim, const btensor &phys_dim_spec, any_quantity q_num, torch::TensorOptions opt)
-	{
-		return random_bMPS(length,bond_dim,phys_dim_spec,q_num,std::random_device()(),opt);
-	});
-	sub.def("random_bMPS",bound_randomBMPSA,"generate a MPS constrained by a conservation law, with the specified lenght, bond dimensions, and physical index. The physical index is specified by a rank 1 btensor given in argument",
-	py::arg("length"),py::arg("bond_dim"),py::arg("physical_dim"),py::arg("conservation_law") ,py::kw_only(),
-	      py::arg("dtype") = opt<stype>(), py::arg("device") = opt<tdev>(), py::arg("requires_grad") = opt<bool>(),
-	      py::arg("pin_memory") = opt<bool>());
+	auto bound_randomBMPSA = TOPT_binder<size_t, size_t, const btensor &, any_quantity>::bind_fl(
+	    [](size_t length, size_t bond_dim, const btensor &phys_dim_spec, any_quantity q_num, torch::TensorOptions opt)
+	    { return random_bMPS(length, bond_dim, phys_dim_spec, q_num, std::random_device()(), opt); });
+	sub.def("random_bMPS", bound_randomBMPSA,
+	        "generate a MPS constrained by a conservation law, with the specified lenght, bond dimensions, and "
+	        "physical index. The physical index is specified by a rank 1 btensor given in argument",
+	        py::arg("length"), py::arg("bond_dim"), py::arg("physical_dim"), py::arg("conservation_law"), py::kw_only(),
+	        py::arg("dtype") = opt<stype>(), py::arg("device") = opt<tdev>(), py::arg("requires_grad") = opt<bool>(),
+	        py::arg("pin_memory") = opt<bool>());
 	// bMPS random_bMPS(size_t bond_dim, const bMPO &Hamil, any_quantity_cref q_num,
 	//                  unsigned int seed = (std::random_device())(), torch::TensorOptions opt = {});
-	auto bound_randomBMPSB = TOPT_binder<size_t,const bMPO &,any_quantity>::bind_fl([](size_t bond_dim,  const bMPO &OP, any_quantity q_num, torch::TensorOptions opt)
-	{
-		return random_bMPS(bond_dim,OP,q_num,std::random_device()(),opt);
-	});
-	sub.def("random_bMPS",bound_randomBMPSB,"generate a MPS constrained by a conservation law, with the specified bond dimensions. The physical dimensions are specifed by the index 3 of the tensors in the MPO, the length is the number of tensors in the MPO",
-	py::arg("bond_dim"),py::arg("MPO"),py::arg("conservation_law") ,py::kw_only(),
-	      py::arg("dtype") = opt<stype>(), py::arg("device") = opt<tdev>(), py::arg("requires_grad") = opt<bool>(),
-	      py::arg("pin_memory") = opt<bool>());
+	auto bound_randomBMPSB = TOPT_binder<size_t, const bMPO &, any_quantity>::bind_fl(
+	    [](size_t bond_dim, const bMPO &OP, any_quantity q_num, torch::TensorOptions opt)
+	    { return random_bMPS(bond_dim, OP, q_num, std::random_device()(), opt); });
+	sub.def(
+	    "random_bMPS", bound_randomBMPSB,
+	    "generate a MPS constrained by a conservation law, with the specified bond dimensions. The physical dimensions "
+	    "are specifed by the index 3 of the tensors in the MPO, the length is the number of tensors in the MPO",
+	    py::arg("bond_dim"), py::arg("MPO"), py::arg("conservation_law"), py::kw_only(),
+	    py::arg("dtype") = opt<stype>(), py::arg("device") = opt<tdev>(), py::arg("requires_grad") = opt<bool>(),
+	    py::arg("pin_memory") = opt<bool>());
 	// bMPS random_bMPS(size_t bond_dim, const std::vector<btensor> &phys_dim_spec, any_quantity_cref q_num,
 	//                  unsigned int seed = (std::random_device())(), torch::TensorOptions opt = {});
-	auto bound_randomBMPSC = TOPT_binder<size_t,const std::vector<btensor> &,any_quantity>::bind_fl([]( size_t bond_dim, const std::vector<btensor> &phys_dim_spec, any_quantity q_num, torch::TensorOptions opt)
-	{
-		return random_bMPS(bond_dim,phys_dim_spec,q_num,std::random_device()(),opt);
-	});
-	sub.def("random_bMPS",bound_randomBMPSC,"generate a MPS constrained by a conservation law, with the specified bond dimensions. The physical dimensions are specifed by a list of rank 1 tensors, the length is the number of tensors in the list",
-	py::arg("bond_dim"),py::arg("physical_dims"),py::arg("conservation_law") ,py::kw_only(),
-	      py::arg("dtype") = opt<stype>(), py::arg("device") = opt<tdev>(), py::arg("requires_grad") = opt<bool>(),
-	      py::arg("pin_memory") = opt<bool>());
+	auto bound_randomBMPSC = TOPT_binder<size_t, const std::vector<btensor> &, any_quantity>::bind_fl(
+	    [](size_t bond_dim, const std::vector<btensor> &phys_dim_spec, any_quantity q_num, torch::TensorOptions opt)
+	    { return random_bMPS(bond_dim, phys_dim_spec, q_num, std::random_device()(), opt); });
+	sub.def("random_bMPS", bound_randomBMPSC,
+	        "generate a MPS constrained by a conservation law, with the specified bond dimensions. The physical "
+	        "dimensions are specifed by a list of rank 1 tensors, the length is the number of tensors in the list",
+	        py::arg("bond_dim"), py::arg("physical_dims"), py::arg("conservation_law"), py::kw_only(),
+	        py::arg("dtype") = opt<stype>(), py::arg("device") = opt<tdev>(), py::arg("requires_grad") = opt<bool>(),
+	        py::arg("pin_memory") = opt<bool>());
 	// bMPS random_MPS(size_t length, size_t bond_dim, const btensor &phys_dim_spec, any_quantity_cref q_num,
 	//                 unsigned int seed = (std::random_device())(), torch::TensorOptions opt = {});
-	sub.def("random_MPS",bound_randomBMPSA,"generate a MPS constrained by a conservation law, with the specified lenght, bond dimensions, and physical index. The physical index is specified by a rank 1 btensor given in argument",
-	py::arg("length"),py::arg("bond_dim"),py::arg("physical_dim"),py::arg("conservation_law") ,py::kw_only(),
-	      py::arg("dtype") = opt<stype>(), py::arg("device") = opt<tdev>(), py::arg("requires_grad") = opt<bool>(),
-	      py::arg("pin_memory") = opt<bool>());
+	sub.def("random_MPS", bound_randomBMPSA,
+	        "generate a MPS constrained by a conservation law, with the specified lenght, bond dimensions, and "
+	        "physical index. The physical index is specified by a rank 1 btensor given in argument",
+	        py::arg("length"), py::arg("bond_dim"), py::arg("physical_dim"), py::arg("conservation_law"), py::kw_only(),
+	        py::arg("dtype") = opt<stype>(), py::arg("device") = opt<tdev>(), py::arg("requires_grad") = opt<bool>(),
+	        py::arg("pin_memory") = opt<bool>());
 	// bMPS random_MPS(size_t bond_dim, const bMPO &Hamil, any_quantity_cref q_num,
 	//                 unsigned int seed = (std::random_device())(), torch::TensorOptions opt = {});
-	sub.def("random_MPS",bound_randomBMPSB,"generate a MPS constrained by a conservation law, with the specified bond dimensions. The physical dimensions are specifed by the index 3 of the tensors in the MPO, the length is the number of tensors in the MPO",
-	py::arg("bond_dim"),py::arg("MPO"),py::arg("conservation_law") ,py::kw_only(),
-	      py::arg("dtype") = opt<stype>(), py::arg("device") = opt<tdev>(), py::arg("requires_grad") = opt<bool>(),
-	      py::arg("pin_memory") = opt<bool>());
+	sub.def(
+	    "random_MPS", bound_randomBMPSB,
+	    "generate a MPS constrained by a conservation law, with the specified bond dimensions. The physical dimensions "
+	    "are specifed by the index 3 of the tensors in the MPO, the length is the number of tensors in the MPO",
+	    py::arg("bond_dim"), py::arg("MPO"), py::arg("conservation_law"), py::kw_only(),
+	    py::arg("dtype") = opt<stype>(), py::arg("device") = opt<tdev>(), py::arg("requires_grad") = opt<bool>(),
+	    py::arg("pin_memory") = opt<bool>());
 	// bMPS random_MPS(size_t bond_dim, const std::vector<btensor> &phys_dim_spec, any_quantity_cref q_num,
 	//                 unsigned int seed = (std::random_device())(), torch::TensorOptions opt = {});
-	sub.def("random_MPS",bound_randomBMPSC,"generate a MPS constrained by a conservation law, with the specified bond dimensions. The physical dimensions are specifed by a list of rank 1 tensors, the length is the number of tensors in the list",
-	py::arg("bond_dim"),py::arg("physical_dims"),py::arg("conservation_law") ,py::kw_only(),
-	      py::arg("dtype") = opt<stype>(), py::arg("device") = opt<tdev>(), py::arg("requires_grad") = opt<bool>(),
-	      py::arg("pin_memory") = opt<bool>());
-
-
+	sub.def("random_MPS", bound_randomBMPSC,
+	        "generate a MPS constrained by a conservation law, with the specified bond dimensions. The physical "
+	        "dimensions are specifed by a list of rank 1 tensors, the length is the number of tensors in the list",
+	        py::arg("bond_dim"), py::arg("physical_dims"), py::arg("conservation_law"), py::kw_only(),
+	        py::arg("dtype") = opt<stype>(), py::arg("device") = opt<tdev>(), py::arg("requires_grad") = opt<bool>(),
+	        py::arg("pin_memory") = opt<bool>());
 }

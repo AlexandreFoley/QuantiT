@@ -220,8 +220,10 @@ btensor contract(const bMPS &a, const bMPS &b, const bMPO &obs)
 {
 	// todo:: adapt to work with Btensors.
 	// need a btensor implementation of ones. must be a one_like thing.
-	auto left_edge = ones_like(shape_from(details::edge_shape_prep(a.front(),0),details::edge_shape_prep(obs.front(),0),details::edge_shape_prep(b.front().inverse_cvals(),0)));
-	auto right_edge = ones_like(shape_from(details::edge_shape_prep(a.back(),2),details::edge_shape_prep(obs.back(),2),details::edge_shape_prep(b.back().inverse_cvals(),2)));
+	auto left_edge = eye_like(shape_from(shape_from(a.front(),{-1,0,0}).inverse_cvals_(),shape_from(b.front(),{-1,0,0})));
+	auto right_edge = eye_like(shape_from(shape_from(a.back(),{0,0,-1}).inverse_cvals_(),shape_from(b.back(),{0,0,-1})));
+	left_edge = tensordot(left_edge, ones_like(details::edge_shape_prep(obs.front(),0)),{},{}).permute({0,2,1});
+	right_edge = tensordot(right_edge, ones_like(details::edge_shape_prep(obs.back(),2)),{},{}).permute({0,2,1});
 	return contract(a, b, obs, std::move(left_edge), right_edge);
 }
 torch::Tensor contract(const MPS &a, const MPS &b, const MPO &obs, torch::Tensor left_edge,
@@ -239,12 +241,10 @@ torch::Tensor contract(const MPS &a, const MPS &b, const MPO &obs, torch::Tensor
 
 torch::Tensor contract(const MPS &a, const MPS &b, const MPO &obs)
 {
-	auto left_edge = ones_like(
-	    shape_from(shape_from(a[0], {-1, 0, 0}), shape_from(obs[0], {-1, 0, 0, 0}), shape_from(b[0], {-1, 0, 0}))
-	        .neutral_shape_());
-	auto right_edge = ones_like(shape_from(shape_from(a.back(), {0, 0, -1}), shape_from(obs.back(), {0, 0, -1, 0}),
-	                                       shape_from(b.back(), {0, 0, -1}))
-	                                .neutral_shape_());
+	auto left_edge = eye_like(shape_from(shape_from(a.front(),{-1,0,0}).inverse_cvals_(),shape_from(b.front(),{-1,0,0})));
+	auto right_edge = eye_like(shape_from(shape_from(a.back(),{0,0,-1}).inverse_cvals_(),shape_from(b.back(),{0,0,-1})));
+	left_edge = tensordot(left_edge, ones_like(shape_from(obs[0], {-1, 0, 0, 0})),{},{}).permute({0,2,1});
+	right_edge = tensordot(right_edge, ones_like(shape_from(obs.back(), {0, 0, -1, 0})),{},{}).permute({0,2,1});
 	return contract(a, b, obs, std::move(left_edge), right_edge);
 }
 
@@ -260,10 +260,10 @@ torch::Tensor contract(const MPS &a, const MPS &b, torch::Tensor left_edge, cons
 }
 torch::Tensor contract(const MPS &a, const MPS &b)
 {
-	auto E = ones_like(
-	    shape_from(shape_from(a[0], {-1, 0, 0}), shape_from(inverse_cvals(b[0]), {-1, 0, 0})).neutral_shape_());
-	auto right_edge = ones_like(
-	    shape_from(shape_from(a.back(), {0, 0, -1}), shape_from(inverse_cvals(b.back()), {0, 0, -1})).neutral_shape_());
+	auto E = eye_like(
+	    shape_from(shape_from(a[0], {-1, 0, 0}), shape_from((b[0]), {-1, 0, 0})));
+	auto right_edge = eye_like(
+	    shape_from(shape_from(a.back(), {0, 0, -1}), shape_from((b.back()), {0, 0, -1})));
 	return contract(a, b, E, right_edge);
 }
 
@@ -279,16 +279,16 @@ btensor contract(const bMPS &a, const bMPS &b, btensor left_edge, const btensor 
 }
 btensor contract(const bMPS &a, const bMPS &b)
 {
-	auto left_edge = ones_like(shape_from(details::edge_shape_prep(a.front(),0),details::edge_shape_prep(b.front().inverse_cvals(),0)));
-	auto right_edge = ones_like(shape_from(details::edge_shape_prep(a.back(),2),details::edge_shape_prep(b.back().inverse_cvals(),2)));
+	auto left_edge = eye_like(shape_from(a.front().shape_from({-1,0,0}).inverse_cvals_(),b.front().shape_from({-1,0,0})));
+	auto right_edge = eye_like(shape_from(a.back().shape_from({0,0,-1}).inverse_cvals_(),b.back().shape_from({0,0,-1})));
 	return contract(a, b, left_edge, right_edge);
 }
 
 /**
- * @brief generate a string of index O for phys_dim such that Sum_i { phys_dim[i][O[i]] } == constraint.
+ * @brief generate a string of index O for phys_dim such that Sum_i { phys_dim[i][O][i]] } == constraint.
  *
  * By default, the algorithm attempt to generate a string satisfying the constraint in a single pass. However a greater
- * number of pass can be required when phys_dim doesn't return an identical result for every i. I believe 1 pass for
+ * number of pass can be required when phys_dim doesn't return an identical result for every i. I *believe* 1 pass for
  * every unique physical dimension is enough.
  *
  * Throws if the constraint cannot be satisfied in the number of pass specified, or if the constraint cannot be

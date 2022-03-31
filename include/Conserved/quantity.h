@@ -130,6 +130,7 @@ class C
 		return (*this) += other;
 	}
 	constexpr friend C operator+(C lhs, C rhs) noexcept { return lhs += rhs; }
+	
 	friend constexpr C operator*(C lhs, C rhs) noexcept { return lhs *= rhs; }
 	constexpr C &inverse_() noexcept
 	{

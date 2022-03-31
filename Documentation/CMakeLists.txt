@@ -1,10 +1,11 @@
-
 # Based on Sy Brand tutorial at
 # https://devblogs.microsoft.com/cppblog/clear-functional-c-documentation-with-sphinx-breathe-doxygen-cmake/
 
 find_package(Doxygen)
 
 if(Doxygen_FOUND)
+  set(WEBSITE_DESTINATION "${PROJECT_SOURCE_DIR}/../quantit_website")
+
   get_target_property(QUANTIT_PUBLIC_HEADER_DIR QuantiT
                       INTERFACE_INCLUDE_DIRECTORIES)
   message("header dir ${QUANTIT_PUBLIC_HEADER_DIR}")
@@ -48,10 +49,10 @@ if(Doxygen_FOUND)
     set(SPHINX_BUILD ${CMAKE_CURRENT_BINARY_DIR}/sphinx)
     set(SPHINX_INDEX_FILE ${SPHINX_BUILD}/index.html)
 
-    # Only regenerate Sphinx when: 
-    # - Doxygen has rerun 
-    # - Our doc files have been updated 
-    # - The Sphinx config has been updated
+
+    file(GLOB RST_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/*.rst)
+    # Only regenerate Sphinx when: - Doxygen has rerun - Our doc files have been
+    # updated - The Sphinx config has been updated
     add_custom_command(
       OUTPUT ${SPHINX_INDEX_FILE}
       COMMAND
@@ -62,7 +63,7 @@ if(Doxygen_FOUND)
       WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
       DEPENDS # Other docs files you want to track should go here (or in some
               # variable)
-              ${CMAKE_CURRENT_SOURCE_DIR}/index.rst ${DOXYGEN_INDEX_FILE}
+              ${RST_SOURCES} ${DOXYGEN_INDEX_FILE}
       MAIN_DEPENDENCY ${SPHINX_SOURCE}/conf.py
       COMMENT "Generating documentation with Sphinx")
 
@@ -71,6 +72,15 @@ if(Doxygen_FOUND)
       Documentation
       DEPENDS ${SPHINX_INDEX_FILE}
       COMMENT "build all the documentation you can")
+
+    add_custom_target(
+      export_website
+      DEPENDS ${SPHINX_INDEX_FILE}
+      COMMAND ${CMAKE_COMMAND} -E copy_directory ${SPHINX_BUILD}
+              ${WEBSITE_DESTINATION}/docs
+      COMMAND ${CMAKE_COMMAND} -E copy_directory ${DOXYGEN_OUTPUT_DIR}
+              ${WEBSITE_DESTINATION}/doxygen)
+
   else()
     message(
       WARNING

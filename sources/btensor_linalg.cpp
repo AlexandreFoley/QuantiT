@@ -186,8 +186,13 @@ size_t compact_tensor_count(btensor::block_list_t::content_t &tensor, bool rank_
 /**
  * @brief make a set of full torch tensor from a btensor, removes lines and columns of zeros in the last 2 dimensions
  *
+ * The output contains a list of tuple of torch::tensor, the block index from the first N-2 dimensions, a list
+ * containing a tuple of a block-row and the slice to apply on the N-1 dimension to reobtain the section at that
+ * block-row, and a likewise list for the last dimension.
+
  * @param tensor
- * @return torch::Tensor
+ * @return std::vector<std::tuple<torch::Tensor, btensor::index_list,
+ * std::vector<std::tuple<int,torch::indexing::Slice>>, std::vector<std::tuple<int, torch::indexing::Slice>>>>
  */
 std::vector<std::tuple<torch::Tensor, btensor::index_list, std::vector<std::tuple<int, torch::indexing::Slice>>,
                        std::vector<std::tuple<int, torch::indexing::Slice>>>>
@@ -447,12 +452,12 @@ std::tuple<btensor, btensor, btensor> svd(const btensor &tensor, const BOOL some
 	btensor V = shape_from(tensor.shape_from(to_V_others).neutral_shape_(), tensor.shape_from(to_V_left), leftD_shape);
 	V.set_selection_rule_(V.selection_rule->neutral());
 	// fmt::print("V: \n {}\n",V);
-	int b_i = 0;
 	// preallocate the blocks, with index, so that the SVD calls can be parallelized.
 	U.reserve_space_(U_blocks);
 	V.reserve_space_(V_blocks);
 	d.reserve_space_(d_blocks);
 	// Independent steps if the block list have preallocated blocks
+	int b_i = 0;
 	for (auto &[basictensor, other_indices, rows, cols] : tensors_n_indices)
 	{ // The two inner loops are independent from one another. Their respective steps are also independent if the
 	  // btensor's block_list already has a block there.
@@ -785,15 +790,16 @@ std::tuple<btensor, btensor> truncate(std::tuple<btensor, btensor> &&e_S, size_t
 	    truncate_impl(std::move(std::get<0>(e_S)), std::make_tuple(std::move(std::get<0>(e_S))), max, min, tol, pow);
 	return std::make_tuple(std::move(d), std::move(std::get<0>(unit)));
 }
-std::tuple<btensor,btensor, btensor> truncate(btensor&& U, btensor &&e, btensor &&S, size_t max, size_t min, btensor::Scalar tol,
-                                               btensor::Scalar pow)
+std::tuple<btensor, btensor, btensor> truncate(btensor &&U, btensor &&e, btensor &&S, size_t max, size_t min,
+                                               btensor::Scalar tol, btensor::Scalar pow)
 {
-	return truncate(std::tuple<btensor,btensor,btensor>(std::move(U),std::move(e),std::move(S)),max,min,tol,pow);
+	return truncate(std::tuple<btensor, btensor, btensor>(std::move(U), std::move(e), std::move(S)), max, min, tol,
+	                pow);
 }
 std::tuple<btensor, btensor> truncate(btensor &&e, btensor &&S, size_t max, size_t min, btensor::Scalar tol,
-                                               btensor::Scalar pow)
+                                      btensor::Scalar pow)
 {
-	return truncate(std::tuple<btensor,btensor>(std::move(e),std::move(S)),max,min,tol,pow);
+	return truncate(std::tuple<btensor, btensor>(std::move(e), std::move(S)), max, min, tol, pow);
 }
 
 std::tuple<btensor, btensor, btensor> svd(const btensor &A, size_t split, btensor::Scalar tol, size_t min_size,

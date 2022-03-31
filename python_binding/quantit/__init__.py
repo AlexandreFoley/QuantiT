@@ -1,9 +1,8 @@
 
 
-import pathlib as pl
 
 try:
-	from quantit.quantit import *
+	from .quantit import *
 except ImportError as e:
 	# This might require elevated permission if the site-package is write protected. basically, if elevated permission are required for pip install, elevated permission are required on first run.
 	# This is the post-install script, quantit.so and libQuantit.so aren't expected to be able to find torch's dynamic library 
@@ -12,6 +11,7 @@ except ImportError as e:
 	# if not "cannot open shared object file: No such file or directory" in e.msg:
 	# 	#if the error message doesn't relate to missing shared object there's no point in doing the rest, so we raise the execption to the importer.
 	# 	raise e
+	import pathlib as pl
 	
 	
 	init_path = pl.Path(__file__).resolve()
@@ -25,7 +25,7 @@ except ImportError as e:
 
 	torch_symlink.symlink_to(torch_lib_path,target_is_directory=True)
 
-	from quantit.quantit import *
+	from .quantit import *
 
 def cmake_directory():
 	return pl.Path(__file__).resolve().parent / "share" / "cmake"

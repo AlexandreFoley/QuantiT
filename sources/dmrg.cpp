@@ -244,7 +244,7 @@ btensor details::dmrg_impl(const bMPO &hamiltonian, const bMPT &two_sites_hamil,
 		    sweep(in_out_state, update, step, 2 * N_step, in_out_state.size() - 2); // sweep from the oc and back to it.
 		logger.it_log_all(iteration, E0_tens, in_out_state);
 		swap(E0, E0_tens);
-		if (!((((E0 - E0_tens)/E0).abs() > options.convergence_criterion))
+		if (!((((E0 - E0_tens) / E0).abs() > options.convergence_criterion))
 		         .item()
 		         .toBool()) // looks weird? it's so it stop on nan (nan
 		                    // compare false with everything).
@@ -337,9 +337,9 @@ auto edge_shape_prep_impl(const shape_t &tens, int64_t dim)
 {
 	auto tens_vec = std::vector<int64_t>(tens.dim(), 0);
 	tens_vec[dim] = -1;
-	 auto Shape = shape_from(tens, tens_vec);
+	auto Shape = shape_from(tens, tens_vec);
 	Shape.neutral_selection_rule_();
-	return shape_from(Shape, shape_from(Shape, {0})).inverse_cvals_();
+	return shape_from(Shape.inverse_cvals_(), shape_from(Shape, {0}));
 }
 btensor details::edge_shape_prep(const btensor &tens, int64_t dim) { return edge_shape_prep_impl(tens, dim); }
 torch_shape details::edge_shape_prep(const torch_shape &tens, int64_t dim) { return edge_shape_prep_impl(tens, dim); }

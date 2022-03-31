@@ -20,13 +20,13 @@ void init_algorithms(py::module &m)
 	register_loggers(alg);
 	auto dummy_logger = dmrg_default_logger();
 	py::class_<dmrg_options>(alg, "dmrg_options")
-	    .def_readwrite("cutoff", &dmrg_options::cutoff)
-	    .def_readwrite("convergence_criterion", &dmrg_options::convergence_criterion)
-	    .def_readwrite("maximum_bond", &dmrg_options::maximum_bond)
-	    .def_readwrite("minimum_bond", &dmrg_options::minimum_bond)
-	    .def_readwrite("maximum_iterations", &dmrg_options::maximum_iterations)
-	    .def_readwrite("state_gradient", &dmrg_options::state_gradient)
-	    .def_readwrite("hamil_gradient", &dmrg_options::hamil_gradient)
+	    .def_readwrite("cutoff", &dmrg_options::cutoff, "target precision when moving the orthogonality center")
+	    .def_readwrite("convergence_criterion", &dmrg_options::convergence_criterion,"stopping cirterion on the energy")
+	    .def_readwrite("maximum_bond", &dmrg_options::maximum_bond,"maximum bond dimension allowed")
+	    .def_readwrite("minimum_bond", &dmrg_options::minimum_bond,"minimum bond dimension allowed")
+	    .def_readwrite("maximum_iterations", &dmrg_options::maximum_iterations,"maximum number of sweeps before a hard stop")
+	    .def_readwrite("state_gradient", &dmrg_options::state_gradient,"Wether to allow gradient computation of the state through the DMRG")
+	    .def_readwrite("hamil_gradient", &dmrg_options::hamil_gradient,"Wether to allow gradient computation of the hamiltonian through the DMRG")
 	    .def(py::init<double, double, size_t, size_t, size_t, bool, bool>(),
 	         py::kw_only(),
 	         py::arg("cutoff") = dmrg_options::def_cutoff,
@@ -34,7 +34,7 @@ void init_algorithms(py::module &m)
 	         py::arg("max_bond") = dmrg_options::def_max_bond, py::arg("min_bond") = dmrg_options::def_min_bond,
 	         py::arg("maximum_iterations") = dmrg_options::def_max_it,
 	         py::arg("state_gradient") = dmrg_options::def_pytorch_gradient,
-	         py::arg("hamil_gradient") = dmrg_options::def_pytorch_gradient);
+	         py::arg("hamil_gradient") = dmrg_options::def_pytorch_gradient,"Constructor for dmrg_options");
 
 	/**
 	 * Apply the DMRG algorithm to solve the ground state of the input hamiltonian given as a MPO.

@@ -265,7 +265,8 @@ qtt_TEST_CASE("btensor Linear algebra")
 		A.block({1, 2, 0}) = torch::rand({3, 3, 3});
 		A.block({1, 3, 1}) = torch::rand({3, 1, 2});
 		qtt_REQUIRE_NOTHROW(btensor::throw_bad_tensor(A));
-		auto [U, d, V] = svd(A);
+		btensor U,d,V;
+		qtt_REQUIRE_NOTHROW( std::tie(U, d, V) = svd(A));
 #ifndef NDEBUG
 		// those helpers are not in the header when not in debug mode.
 		qtt_SUBCASE("btensor linear algebra helpers")
