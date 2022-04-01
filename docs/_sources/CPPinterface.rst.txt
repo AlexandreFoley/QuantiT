@@ -1,5 +1,5 @@
 
-Stupid list of everything Doxygen has indexed
+Everything Doxygen has indexed
 =============================================
 
 .. doxygenindex::
