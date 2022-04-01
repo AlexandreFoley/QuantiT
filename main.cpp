@@ -63,7 +63,7 @@ int main()
 	fmt::print("{}\n",grad); // all 50 elements should be 2/50 = 0.04
 
 	using cval = quantit::quantity<quantit::conserved::Z,quantit::conserved::Z>;
-	auto FermionShape = quantit::btensor({{{1,cval(0,0)},{1,cval(1,1)},{1,cval(1,-1)},{1,cval(2,0)}}},cval(0,0));
+	auto FermionShape = quantit::btensor({{{1,cval(0,0)},{1,cval(1,1)},{1,cval(1,-1)},{1,cval(2,0)}}},cval(1,-1));
 	fmt::print("{}\n\n",FermionShape);
 	for(int i=0;i<4;++i)
 	{
@@ -77,6 +77,15 @@ int main()
 		}
 		fmt::print("\n\n");
 	}
+	
+	auto H = quantit::Hubbard(4,2,10,FermionShape);
+	auto XXX = H.to(torch::kCUDA);
+	for(auto& XX:XXX){
+	fmt::print("{}\n",XX.options().device());
+	for (auto& [x,y]:XX)
+	{
+		fmt::print("\t{}\n",y.options().device());
+	}}
 	
 	return 0;
 }

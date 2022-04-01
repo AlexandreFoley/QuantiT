@@ -143,7 +143,7 @@ PYBIND11_MODULE(quantit, m)
 	            "requires_grad", [](const btensor &self) { return self.options().requires_grad(); },
 	            [](btensor &self, bool requires_grad) { self.to(self.options().requires_grad(requires_grad)); })
 	        .def(
-	            "__iter__", [](quantit::btensor &btens) { return py::make_key_iterator(btens.begin(), btens.end()); },
+	            "__iter__", [](quantit::btensor &btens) { return py::make_key_iterator(btens.begin(), btens.end());},
 	            py::keep_alive<0, 1>())
 	        .def(py::self + py::self)
 	        .def(py::self - py::self)

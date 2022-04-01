@@ -31,7 +31,7 @@ auto Heisen_afm_test_bt(size_t size)
 	quantit::dmrg_log_simple logger;
 	auto hamil = quantit::Heisenberg(torch::tensor(J), size, local_heisenberg_shape);
 	hamil.coalesce();
-	quantit::bMPS state = quantit::random_bMPS(4, hamil, cval(size % 2), 0);
+	quantit::bMPS state = quantit::random_bMPS(4, hamil, cval(size % 2), {}, 0);
 	state[0] /= sqrt(contract(state, state));
 	state.move_oc(state.size() - 1);
 	state.move_oc(0);

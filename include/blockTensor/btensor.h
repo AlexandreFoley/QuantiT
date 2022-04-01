@@ -24,6 +24,8 @@
 #include "torch_formatter.h"
 #include <ATen/Functions.h>
 #include <algorithm>
+#include <c10/core/ScalarTypeToTypeMeta.h>
+#include <c10/core/TensorOptions.h>
 #include <cstdint>
 #include <exception>
 #include <stdexcept>
@@ -741,7 +743,7 @@ class btensor
 		    new_block_list_apply_to_all_blocks([&options, non_blocking, copy, memory_format](const auto &atensor)
 		                                       { return atensor.to(options, non_blocking, copy, memory_format); });
 		auto out = btensor(*this, std::move(out_list));
-		out._options = out.begin()->second.options();
+		out._options = out.begin()!= out.end() ? out.begin()->second.options() : torch::empty({},options).options();
 		return out;
 	}
 	btensor to(const btensor &other, bool non_blocking = false, bool copy = false,
@@ -757,7 +759,7 @@ class btensor
 		    [device, dtype, non_blocking, copy, memory_format](const auto &atensor)
 		    { return atensor.to(device, dtype, non_blocking, copy, memory_format); });
 		auto out = btensor(*this, std::move(out_list));
-		out._options = out.begin()->second.options();
+		out._options = out.begin()!= out.end() ? out.begin()->second.options() : torch::empty({},torch::TensorOptions().device(device).dtype(dtype).memory_format(memory_format)).options();
 		return out;
 	}
 	btensor to(torch::ScalarType dtype, bool non_blocking = false, bool copy = false,
@@ -767,7 +769,7 @@ class btensor
 		    new_block_list_apply_to_all_blocks([dtype, non_blocking, copy, memory_format](const auto &atensor)
 		                                       { return atensor.to(dtype, non_blocking, copy, memory_format); });
 		auto out = btensor(*this, std::move(out_list));
-		out._options = out.begin()->second.options();
+		out._options = out.begin()!= out.end() ? out.begin()->second.options() :torch::empty({},torch::TensorOptions().dtype(dtype).memory_format(memory_format)).options();
 		return out;
 	}
 	btensor to(caffe2::TypeMeta type_meta, bool non_blocking = false, bool copy = false,
@@ -777,7 +779,7 @@ class btensor
 		    new_block_list_apply_to_all_blocks([type_meta, non_blocking, copy, memory_format](const auto &atensor)
 		                                       { return atensor.to(type_meta, non_blocking, copy, memory_format); });
 		auto out = btensor(*this, std::move(out_list));
-		out._options = out.begin()->second.options();
+		out._options = out.begin()!= out.end() ? out.begin()->second.options() : torch::empty({},torch::TensorOptions().dtype(torch::typeMetaToScalarType(type_meta)).memory_format(memory_format)).options();
 		return out;
 	}
 	btensor to(const torch::Tensor &other, bool non_blocking = false, bool copy = false,
@@ -787,7 +789,7 @@ class btensor
 		    new_block_list_apply_to_all_blocks([&other, non_blocking, copy, memory_format](const auto &atensor)
 		                                       { return atensor.to(other, non_blocking, copy, memory_format); });
 		auto out = btensor(*this, std::move(out_list));
-		out._options = out.begin()->second.options();
+		out._options = out.begin()!= out.end() ? out.begin()->second.options() : torch::empty_like(other,{},memory_format).options();
 		return out;
 	}
 	c10::TensorOptions options() const { return _options; }

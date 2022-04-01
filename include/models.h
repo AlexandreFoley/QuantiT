@@ -26,6 +26,8 @@ namespace quantit
 	 */
 	MPO Heisenberg(torch::Tensor J,size_t lenght);
 	bMPO Heisenberg(torch::Tensor J, size_t lenght,const btensor& local_shape);
+	inline MPO Heisenberg(torch::Scalar J, size_t lenght) { return Heisenberg(torch::full({},J),lenght); }
+	inline bMPO Heisenberg(torch::Scalar J, size_t lenght,const btensor local_shape) { return Heisenberg(torch::full({},J),lenght,local_shape); }
 	namespace details
 	{
 		MPO Heisenberg_impl(torch::Tensor J,size_t lenght);
@@ -36,7 +38,8 @@ namespace quantit
 	 */
 	MPO Hubbard(torch::Tensor U,torch::Tensor mu,size_t lenght); 
 	bMPO Hubbard(torch::Tensor U,torch::Tensor mu,size_t lenght,const btensor& local_shape); 
-
+	inline bMPO Hubbard(torch::Scalar U, torch::Scalar mu, size_t lenght,const btensor& local_shape){return Hubbard(torch::full({},U),torch::full({},mu),lenght,local_shape);}
+	inline MPO Hubbard(torch::Scalar U, torch::Scalar mu, size_t lenght){return Hubbard(torch::full({},U),torch::full({},mu),lenght);}
 
 qtt_TEST_CASE("Heisenberg")
 {

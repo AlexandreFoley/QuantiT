@@ -890,6 +890,7 @@ void btensor::swap(btensor &other)
 	swap(selection_rule.value, other.selection_rule.value);
 	swap(sections_by_dim, other.sections_by_dim);
 	swap(sections_sizes, other.sections_sizes);
+	swap(_options,other._options);
 }
 btensor &btensor::mul_(Scalar other)
 {

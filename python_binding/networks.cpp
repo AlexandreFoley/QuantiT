@@ -267,7 +267,7 @@ void init_networks(py::module &m)
 	//                  unsigned int seed = (std::random_device())(), torch::TensorOptions opt = {});
 	auto bound_randomBMPSA = TOPT_binder<size_t, size_t, const btensor &, any_quantity>::bind_fl(
 	    [](size_t length, size_t bond_dim, const btensor &phys_dim_spec, any_quantity q_num, torch::TensorOptions opt)
-	    { return random_bMPS(length, bond_dim, phys_dim_spec, q_num, std::random_device()(), opt); });
+	    { return random_bMPS(length, bond_dim, phys_dim_spec, q_num, opt,std::random_device()()); });
 	sub.def("random_bMPS", bound_randomBMPSA,
 	        "generate a MPS constrained by a conservation law, with the specified lenght, bond dimensions, and "
 	        "physical index. The physical index is specified by a rank 1 btensor given in argument",
@@ -278,7 +278,7 @@ void init_networks(py::module &m)
 	//                  unsigned int seed = (std::random_device())(), torch::TensorOptions opt = {});
 	auto bound_randomBMPSB = TOPT_binder<size_t, const bMPO &, any_quantity>::bind_fl(
 	    [](size_t bond_dim, const bMPO &OP, any_quantity q_num, torch::TensorOptions opt)
-	    { return random_bMPS(bond_dim, OP, q_num, std::random_device()(), opt); });
+	    { return random_bMPS(bond_dim, OP, q_num,opt, std::random_device()()); });
 	sub.def(
 	    "random_bMPS", bound_randomBMPSB,
 	    "generate a MPS constrained by a conservation law, with the specified bond dimensions. The physical dimensions "
@@ -290,7 +290,7 @@ void init_networks(py::module &m)
 	//                  unsigned int seed = (std::random_device())(), torch::TensorOptions opt = {});
 	auto bound_randomBMPSC = TOPT_binder<size_t, const std::vector<btensor> &, any_quantity>::bind_fl(
 	    [](size_t bond_dim, const std::vector<btensor> &phys_dim_spec, any_quantity q_num, torch::TensorOptions opt)
-	    { return random_bMPS(bond_dim, phys_dim_spec, q_num, std::random_device()(), opt); });
+	    { return random_bMPS(bond_dim, phys_dim_spec, q_num,opt, std::random_device()()); });
 	sub.def("random_bMPS", bound_randomBMPSC,
 	        "generate a MPS constrained by a conservation law, with the specified bond dimensions. The physical "
 	        "dimensions are specifed by a list of rank 1 tensors, the length is the number of tensors in the list",

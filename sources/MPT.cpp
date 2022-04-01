@@ -12,14 +12,14 @@
  */
 
 #include "MPT.h"
+#include "LinearAlgebra.h"
+#include "blockTensor/LinearAlgebra.h"
+#include "blockTensor/btensor.h"
+#include "dmrg.h"
 #include <exception>
 #include <fmt/core.h>
 #include <fmt/ranges.h>
 #include <random>
-#include "blockTensor/btensor.h"
-#include "blockTensor/LinearAlgebra.h"
-#include "LinearAlgebra.h"
-#include "dmrg.h"
 // TODO: remove all explicit torch:: can ADL be my friend here?
 namespace quantit
 {
@@ -48,11 +48,12 @@ void MPS::move_oc(int i)
 
 		// TODO: rewrite this to use QuantiT's SVD implementation. takes care of the reshaping
 		// auto reshaped = curr_oc.reshape({dims[0], prod(1, dims.size())});
-		auto [u, d, v] = quantit::svd(curr_oc,1);
-		curr_oc = v.permute({2,0,1}).conj(); // needs testing. svd documentation makes no mention of complex numbers case.
-		auto ud = u.mul(d); 
+		auto [u, d, v] = quantit::svd(curr_oc, 1);
+		curr_oc =
+		    v.permute({2, 0, 1}).conj(); // needs testing. svd documentation makes no mention of complex numbers case.
+		auto ud = u.mul(d);
 		next_oc = torch::tensordot(next_oc, ud, {2}, {0});
-		--oc; 
+		--oc;
 	}
 
 	while (i > orthogonality_center)
@@ -63,10 +64,10 @@ void MPS::move_oc(int i)
 		dims = curr_oc.sizes();
 		// TODO: use QuantiT's SVD implementation. takes care of the reshaping
 		// auto reshaped = curr_oc.reshape({prod(0, dims.size() - 1), dims[dims.size() - 1]});
-		auto [u, d, v] = quantit::svd(curr_oc,2);
+		auto [u, d, v] = quantit::svd(curr_oc, 2);
 		curr_oc = u;
 
-		auto dv = v.mul(d).t().conj(); 
+		auto dv = v.mul(d).t().conj();
 		next_oc = torch::tensordot(dv, next_oc, {1}, {0});
 
 		++oc;
@@ -84,8 +85,9 @@ void bMPS::move_oc(int i)
 		auto &curr_oc = (*this)[orthogonality_center];
 		auto &next_oc = (*this)[orthogonality_center - 1];
 
-		auto [u, d, v] = quantit::svd(curr_oc,1);
-		curr_oc = v.conj().permute({2,0,1}); // needs testing. svd documentation makes no mention of complex numbers case.
+		auto [u, d, v] = quantit::svd(curr_oc, 1);
+		curr_oc =
+		    v.conj().permute({2, 0, 1}); // needs testing. svd documentation makes no mention of complex numbers case.
 
 		// testing shows that v is only transposed in the complex number case as well.
 		auto ud = u.mul(d);
@@ -99,10 +101,10 @@ void bMPS::move_oc(int i)
 		auto &curr_oc = (*this)[orthogonality_center];
 		auto &next_oc = (*this)[orthogonality_center + 1];
 		// TODO: use QuantiT's SVD implementation. takes care of the reshaping
-		auto [u, d, v] = svd(curr_oc,2);
+		auto [u, d, v] = svd(curr_oc, 2);
 		curr_oc = u;
 
-		auto dv = v.mul(d).conj(); 
+		auto dv = v.mul(d).conj();
 		next_oc = tensordot(dv, next_oc, {0}, {0});
 
 		++oc;
@@ -140,26 +142,29 @@ bool MPO::check_one(const Tens &tens)
 	return (sizes.size() == 4 and sizes[0] == sizes[2]);
 }
 
-bool bMPS::check_one(const Tens &tens) {
-		// check correctness on fill candidate
-	 return tens.dim() == 3 and Tens::check_product_compat(tens, tens, {0}, {2});
-	  }
-bool bMPO::check_one(const Tens &tens) {
-		// check correctness on fill candidate
-	 return tens.dim() == 4 and Tens::check_product_compat(tens, tens, {0}, {2});
-	  }
+bool bMPS::check_one(const Tens &tens)
+{
+	// check correctness on fill candidate
+	return tens.dim() == 3 and Tens::check_product_compat(tens, tens, {0}, {2});
+}
+bool bMPO::check_one(const Tens &tens)
+{
+	// check correctness on fill candidate
+	return tens.dim() == 4 and Tens::check_product_compat(tens, tens, {0}, {2});
+}
 
-bMPO& bMPO::coalesce(btensor::Scalar cutoff) {
+bMPO &bMPO::coalesce(btensor::Scalar cutoff)
+{
 	auto it = begin();
-	auto next_it = it+1;
-	for(; next_it != end();++it,++next_it)
+	auto next_it = it + 1;
+	for (; next_it != end(); ++it, ++next_it)
 	{
-		auto tens = it->permute({0,1,3,2});
-		auto& next = *next_it;
-		auto [U,d,V] = svd(tens,3,cutoff);
+		auto tens = it->permute({0, 1, 3, 2});
+		auto &next = *next_it;
+		auto [U, d, V] = svd(tens, 3, cutoff);
 		U.mul_(d);
-		next = tensordot(V.conj(),next,{0},{0});
-		*it = U.permute({0,1,3,2});
+		next = tensordot(V.conj(), next, {0}, {0});
+		*it = U.permute({0, 1, 3, 2});
 	}
 	return *this;
 }
@@ -181,7 +186,7 @@ bool MPO::check_ranks() const
 bool bMPO::check_ranks() const
 {
 	auto it = begin();
-	auto next = begin()+1;
+	auto next = begin() + 1;
 	bool all_rank_4 = it->dim() == 4;
 	while (all_rank_4 and it != end() and next != end())
 	{
@@ -193,7 +198,7 @@ bool bMPO::check_ranks() const
 }
 bool bMPS::check_ranks() const
 {
-	auto next = begin()+1;
+	auto next = begin() + 1;
 	auto it = begin();
 	bool all_rank_3 = it->dim() == 3;
 	while (all_rank_3 and it != end() and next != end())
@@ -220,10 +225,12 @@ btensor contract(const bMPS &a, const bMPS &b, const bMPO &obs)
 {
 	// todo:: adapt to work with Btensors.
 	// need a btensor implementation of ones. must be a one_like thing.
-	auto left_edge = eye_like(shape_from(shape_from(a.front(),{-1,0,0}).inverse_cvals_(),shape_from(b.front(),{-1,0,0})));
-	auto right_edge = eye_like(shape_from(shape_from(a.back(),{0,0,-1}).inverse_cvals_(),shape_from(b.back(),{0,0,-1})));
-	left_edge = tensordot(left_edge, ones_like(details::edge_shape_prep(obs.front(),0)),{},{}).permute({0,2,1});
-	right_edge = tensordot(right_edge, ones_like(details::edge_shape_prep(obs.back(),2)),{},{}).permute({0,2,1});
+	auto left_edge =
+	    eye_like(shape_from(shape_from(a.front(), {-1, 0, 0}).inverse_cvals_(), shape_from(b.front(), {-1, 0, 0})));
+	auto right_edge =
+	    eye_like(shape_from(shape_from(a.back(), {0, 0, -1}).inverse_cvals_(), shape_from(b.back(), {0, 0, -1})));
+	left_edge = tensordot(left_edge, ones_like(details::edge_shape_prep(obs.front(), 0)), {}, {}).permute({0, 2, 1});
+	right_edge = tensordot(right_edge, ones_like(details::edge_shape_prep(obs.back(), 2)), {}, {}).permute({0, 2, 1});
 	return contract(a, b, obs, std::move(left_edge), right_edge);
 }
 torch::Tensor contract(const MPS &a, const MPS &b, const MPO &obs, torch::Tensor left_edge,
@@ -241,10 +248,12 @@ torch::Tensor contract(const MPS &a, const MPS &b, const MPO &obs, torch::Tensor
 
 torch::Tensor contract(const MPS &a, const MPS &b, const MPO &obs)
 {
-	auto left_edge = eye_like(shape_from(shape_from(a.front(),{-1,0,0}).inverse_cvals_(),shape_from(b.front(),{-1,0,0})));
-	auto right_edge = eye_like(shape_from(shape_from(a.back(),{0,0,-1}).inverse_cvals_(),shape_from(b.back(),{0,0,-1})));
-	left_edge = tensordot(left_edge, ones_like(shape_from(obs[0], {-1, 0, 0, 0})),{},{}).permute({0,2,1});
-	right_edge = tensordot(right_edge, ones_like(shape_from(obs.back(), {0, 0, -1, 0})),{},{}).permute({0,2,1});
+	auto left_edge =
+	    eye_like(shape_from(shape_from(a.front(), {-1, 0, 0}).inverse_cvals_(), shape_from(b.front(), {-1, 0, 0})));
+	auto right_edge =
+	    eye_like(shape_from(shape_from(a.back(), {0, 0, -1}).inverse_cvals_(), shape_from(b.back(), {0, 0, -1})));
+	left_edge = tensordot(left_edge, ones_like(shape_from(obs[0], {-1, 0, 0, 0})), {}, {}).permute({0, 2, 1});
+	right_edge = tensordot(right_edge, ones_like(shape_from(obs.back(), {0, 0, -1, 0})), {}, {}).permute({0, 2, 1});
 	return contract(a, b, obs, std::move(left_edge), right_edge);
 }
 
@@ -260,10 +269,8 @@ torch::Tensor contract(const MPS &a, const MPS &b, torch::Tensor left_edge, cons
 }
 torch::Tensor contract(const MPS &a, const MPS &b)
 {
-	auto E = eye_like(
-	    shape_from(shape_from(a[0], {-1, 0, 0}), shape_from((b[0]), {-1, 0, 0})));
-	auto right_edge = eye_like(
-	    shape_from(shape_from(a.back(), {0, 0, -1}), shape_from((b.back()), {0, 0, -1})));
+	auto E = eye_like(shape_from(shape_from(a[0], {-1, 0, 0}), shape_from((b[0]), {-1, 0, 0})));
+	auto right_edge = eye_like(shape_from(shape_from(a.back(), {0, 0, -1}), shape_from((b.back()), {0, 0, -1})));
 	return contract(a, b, E, right_edge);
 }
 
@@ -279,8 +286,10 @@ btensor contract(const bMPS &a, const bMPS &b, btensor left_edge, const btensor 
 }
 btensor contract(const bMPS &a, const bMPS &b)
 {
-	auto left_edge = eye_like(shape_from(a.front().shape_from({-1,0,0}).inverse_cvals_(),b.front().shape_from({-1,0,0})));
-	auto right_edge = eye_like(shape_from(a.back().shape_from({0,0,-1}).inverse_cvals_(),b.back().shape_from({0,0,-1})));
+	auto left_edge =
+	    eye_like(shape_from(a.front().shape_from({-1, 0, 0}).inverse_cvals_(), b.front().shape_from({-1, 0, 0})));
+	auto right_edge =
+	    eye_like(shape_from(a.back().shape_from({0, 0, -1}).inverse_cvals_(), b.back().shape_from({0, 0, -1})));
 	return contract(a, b, left_edge, right_edge);
 }
 
@@ -342,7 +351,8 @@ void generate_random_string(std::vector<size_t>::iterator out, size_t L, T &&phy
 			{
 				auto curr_sum = Sum * phys_dim(i)[j];
 				auto new_dist = distance2(curr_sum, constraint);
-				// fmt::print("\tcandidate {}: new Sum {}, new distance {}, candidate value {}\n",j,curr_sum,new_dist, phys_dim(i)[j]);
+				// fmt::print("\tcandidate {}: new Sum {}, new distance {}, candidate value {}\n",j,curr_sum,new_dist,
+				// phys_dim(i)[j]);
 				if (new_dist < curr_dist)
 				// select the candidate in the list that reduce the distance to the target most
 				{
@@ -414,7 +424,7 @@ btensor make_right_side(const std::vector<size_t> &ind, any_quantity_vector &acc
 
 template <class T>
 bMPS random_bMPS_impl(size_t length, int64_t bond_dim, T &&phys_dim, any_quantity_cref constraint, size_t string_N_pass,
-                      torch::TensorOptions opt,std::random_device::result_type seed )
+                      torch::TensorOptions opt, std::random_device::result_type seed)
 {
 	std::mt19937 gen(seed); // Standard mersenne_twister_engine seeded with rd()
 	std::vector<size_t> phys_inds(bond_dim * length);
@@ -439,16 +449,17 @@ bMPS random_bMPS_impl(size_t length, int64_t bond_dim, T &&phys_dim, any_quantit
 		any_quantity_cref local_sel_rule = i == 0 ? any_quantity_cref(constraint) : any_quantity_cref(sel_rule);
 		right_side = make_right_side(phys_inds, accumulate_in_out, local_sel_rule, phys_ind_cvals, i, bond_dim, length);
 		out[i] = rand_like(shape_from(left_side, phys_dim(i), right_side), opt);
-		out[i] /= sqrt((out[i]*out[i].conj()).sum());
+		out[i] /= sqrt((out[i] * out[i].conj()).sum());
 		if (i == 0)
 			right_side.set_selection_rule_(sel_rule);
 		right_side.inverse_cvals_();
 		swap(right_side, left_side);
 	}
-	out.back() =  out.back().basic_create_view({-1,-1,0},true);
-	#ifndef NDEBUG
-	if (! out.check_ranks()) throw std::runtime_error("random MPS generator failed.");
-	#endif
+	out.back() = out.back().basic_create_view({-1, -1, 0}, true);
+#ifndef NDEBUG
+	if (!out.check_ranks())
+		throw std::runtime_error("random MPS generator failed.");
+#endif
 	return out;
 }
 
@@ -462,12 +473,13 @@ MPS random_MPS(size_t length, size_t bond_dim, size_t phys_dim, torch::TensorOpt
 	return random_MPS_impl(
 	    length, bond_dim, [phys_dim](size_t i) { return phys_dim; }, opt);
 }
-MPS random_MPS(size_t bond_dim, const std::vector<int64_t>& phys_dims, torch::TensorOptions opt )
+MPS random_MPS(size_t bond_dim, const std::vector<int64_t> &phys_dims, torch::TensorOptions opt)
 {
 	return random_MPS_impl(
 	    phys_dims.size(), bond_dim, [&phys_dims](size_t i) { return phys_dims[i]; }, opt);
 }
-bMPS random_bMPS(size_t bond_dim, const bMPO &hamil, any_quantity_cref quantum_number, std::random_device::result_type seed, torch::TensorOptions opt)
+bMPS random_bMPS(size_t bond_dim, const bMPO &hamil, any_quantity_cref quantum_number,
+                 torch::TensorOptions opt,std::random_device::result_type seed)
 {
 	auto S = hamil.size();
 	std::vector<btensor> x = [&hamil, S, &quantum_number]()
@@ -480,16 +492,16 @@ bMPS random_bMPS(size_t bond_dim, const bMPO &hamil, any_quantity_cref quantum_n
 		}
 		return out;
 	}();
-	return random_bMPS(bond_dim, x, quantum_number, seed, opt);
+	return random_bMPS(bond_dim, x, quantum_number, opt, seed);
 }
-bMPS random_bMPS(size_t length, size_t bond_dim, const btensor &phys_dim_spec, any_quantity_cref q_num, std::random_device::result_type seed,
-                 torch::TensorOptions opt)
+bMPS random_bMPS(size_t length, size_t bond_dim, const btensor &phys_dim_spec, any_quantity_cref q_num,
+                  torch::TensorOptions opt,std::random_device::result_type seed)
 {
 	return random_bMPS_impl(
-	    length, bond_dim, [&phys_dim_spec](size_t i) { return phys_dim_spec; }, q_num, 1, opt,seed);
+	    length, bond_dim, [&phys_dim_spec](size_t i) { return phys_dim_spec; }, q_num, 1, opt, seed);
 }
-bMPS random_bMPS(size_t bond_dim, const std::vector<btensor> &phys_dim_spec, any_quantity_cref q_num, std::random_device::result_type seed,
-                 torch::TensorOptions opt)
+bMPS random_bMPS(size_t bond_dim, const std::vector<btensor> &phys_dim_spec, any_quantity_cref q_num,
+                  torch::TensorOptions opt,std::random_device::result_type seed)
 {
 	auto S = phys_dim_spec.size();
 	auto phys_dim = [&phys_dim_spec, S](size_t i) { return phys_dim_spec[i]; };
@@ -519,24 +531,24 @@ bMPS random_bMPS(size_t bond_dim, const std::vector<btensor> &phys_dim_spec, any
 		}
 		return count;
 	}();
-	return random_bMPS_impl(S, bond_dim, phys_dim, q_num, N_pass, opt,seed);
+	return random_bMPS_impl(S, bond_dim, phys_dim, q_num, N_pass, phys_dim_spec.front().options().merge_in(opt), seed);
 }
 
-
-bMPS random_MPS(size_t length, size_t bond_dim, const btensor &phys_dim_spec, any_quantity_cref q_num, unsigned int seed,
-                       torch::TensorOptions opt)
+bMPS random_MPS(size_t length, size_t bond_dim, const btensor &phys_dim_spec, any_quantity_cref q_num,
+                torch::TensorOptions opt, unsigned int seed)
 {
-	return random_bMPS(length, bond_dim, phys_dim_spec, q_num,seed,  opt);
+	return random_bMPS(length, bond_dim, phys_dim_spec, q_num, opt, seed);
 }
-bMPS random_MPS(size_t bond_dim, const bMPO &Hamil, any_quantity_cref q_num,unsigned int seed, torch::TensorOptions opt)
+bMPS random_MPS(size_t bond_dim, const bMPO &Hamil, any_quantity_cref q_num, torch::TensorOptions opt,
+                unsigned int seed)
 {
 
-	return random_bMPS(bond_dim, Hamil, q_num,seed, opt);
+	return random_bMPS(bond_dim, Hamil, q_num, opt, seed);
 }
-bMPS random_MPS(size_t bond_dim, const std::vector<btensor> &phys_dim_spec, any_quantity_cref q_num, unsigned int seed,
-                       torch::TensorOptions opt)
+bMPS random_MPS(size_t bond_dim, const std::vector<btensor> &phys_dim_spec, any_quantity_cref q_num,
+                torch::TensorOptions opt, unsigned int seed)
 {
 
-	return random_bMPS(bond_dim, phys_dim_spec, q_num,seed, opt);
+	return random_bMPS(bond_dim, phys_dim_spec, q_num, opt, seed);
 }
 } // namespace quantit

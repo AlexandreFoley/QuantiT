@@ -47,17 +47,17 @@ MPS random_MPS(size_t bond_dim, const std::vector<int64_t> &phys_dims,
                                                // standard c++20 is well supported.
 
 bMPS random_bMPS(size_t length, size_t bond_dim, const btensor &phys_dim_spec, any_quantity_cref q_num,
-                 unsigned int seed = (std::random_device())(), torch::TensorOptions opt = {});
-bMPS random_bMPS(size_t bond_dim, const bMPO &Hamil, any_quantity_cref q_num,
-                 unsigned int seed = (std::random_device())(), torch::TensorOptions opt = {});
+                 torch::TensorOptions opt = {}, unsigned int seed = (std::random_device())());
+bMPS random_bMPS(size_t bond_dim, const bMPO &Hamil, any_quantity_cref q_num, torch::TensorOptions opt = {},
+                 unsigned int seed = (std::random_device())());
 bMPS random_bMPS(size_t bond_dim, const std::vector<btensor> &phys_dim_spec, any_quantity_cref q_num,
-                 unsigned int seed = (std::random_device())(), torch::TensorOptions opt = {});
+                 torch::TensorOptions opt = {}, unsigned int seed = (std::random_device())());
 bMPS random_MPS(size_t length, size_t bond_dim, const btensor &phys_dim_spec, any_quantity_cref q_num,
-                unsigned int seed = (std::random_device())(), torch::TensorOptions opt = {});
-bMPS random_MPS(size_t bond_dim, const bMPO &Hamil, any_quantity_cref q_num,
-                unsigned int seed = (std::random_device())(), torch::TensorOptions opt = {});
+                torch::TensorOptions opt = {}, unsigned int seed = (std::random_device())());
+bMPS random_MPS(size_t bond_dim, const bMPO &Hamil, any_quantity_cref q_num, torch::TensorOptions opt = {},
+                unsigned int seed = (std::random_device())());
 bMPS random_MPS(size_t bond_dim, const std::vector<btensor> &phys_dim_spec, any_quantity_cref q_num,
-                unsigned int seed = (std::random_device())(), torch::TensorOptions opt = {});
+                torch::TensorOptions opt = {}, unsigned int seed = (std::random_device())());
 
 namespace details
 {
@@ -112,9 +112,7 @@ class vector_lift
 	vector_lift(const vector_lift<T, U> &other) : tensors(other.tensors)
 	{
 	}
-	explicit vector_lift(const std::vector<Tens> other) : tensors(std::move(other))
-	{
-	}
+	explicit vector_lift(const std::vector<Tens> other) : tensors(std::move(other)) {}
 	template <class T, class U>
 	vector_lift(vector_lift<T, U> &&other) noexcept : tensors(std::move(other.tensors))
 	{
@@ -209,7 +207,11 @@ class vector_lift
 		auto out_it = out.begin();
 		std::for_each(this->cbegin(), this->cend(),
 		              [&out_it, &options, non_blocking, copy, memory_format](const auto &atensor)
-		              { *(out_it++) = atensor.to(options, non_blocking, copy, memory_format); });
+		              { 
+						  auto& out = *(out_it++);
+						  out = atensor.to(options, non_blocking, copy, memory_format); 
+						
+					});
 		return out;
 	}
 	S to(torch::Device device, torch::ScalarType dtype, bool non_blocking = false, bool copy = false,
@@ -279,7 +281,7 @@ class MPT final : public vector_lift<MPT>
 	// MPT(MPT &&other) noexcept : vector_lift<MPT>(std::move(other)) {}
 	// MPT(std::initializer_list<Tens> initl) : vector_lift<MPT>(initl) {}
 	// MPT(const_iterator begin, const_iterator end) : vector_lift(begin, end) {}
-	using vector_lift<MPT>::vector_lift; //import base class constructors as they are.
+	using vector_lift<MPT>::vector_lift; // import base class constructors as they are.
 
 	virtual ~MPT() = default;
 
@@ -492,7 +494,7 @@ class bMPT final : public vector_lift<bMPT, btensor>
 	// bMPT(bMPT &&other) noexcept : vector_lift(std::move(other)) {}
 	// bMPT(std::initializer_list<Tens> initl) : vector_lift<bMPT, btensor>(initl) {}
 	// bMPT(const_iterator begin, const_iterator end) : vector_lift(begin, end) {}
-	using vector_lift<bMPT,btensor>::vector_lift;
+	using vector_lift<bMPT, btensor>::vector_lift;
 
 	virtual ~bMPT() = default;
 
@@ -529,7 +531,8 @@ class bMPS final : public vector_lift<bMPS, btensor> // specialization for rank 
 	bMPS(size_type size, size_t oc) : vector_lift<bMPS, btensor>(size), orthogonality_center(std::min(oc, size - 1)) {}
 	bMPS(const bMPS &other) : vector_lift(other), orthogonality_center(other.orthogonality_center) {}
 	bMPS(bMPS &&other) noexcept : vector_lift(std::move(other)), orthogonality_center(other.orthogonality_center) {}
-	bMPS(std::vector<Tens> initl, size_t oc = 0) : vector_lift<bMPS, btensor>(std::move(initl)), orthogonality_center(oc)
+	bMPS(std::vector<Tens> initl, size_t oc = 0)
+	    : vector_lift<bMPS, btensor>(std::move(initl)), orthogonality_center(oc)
 	{
 		bool ok = check_ranks();
 		if (not ok)
@@ -693,15 +696,15 @@ class bMPO final : public vector_lift<bMPO, btensor> // specialization for rank 
 	}
 
 	static bMPO empty_copy(const bMPO &in) { return bMPO(in.size()); }
-	bMPO& coalesce(btensor::Scalar cutoff=0);
+	bMPO &coalesce(btensor::Scalar cutoff = 0);
 };
 inline void swap(bMPO &lhs, bMPO &rhs) noexcept { lhs.swap(rhs); }
 
 btensor contract(const bMPS &a, const bMPS &b, const bMPO &obs);
 btensor contract(const bMPS &a, const bMPS &b, const bMPO &obs, btensor left_edge, const btensor &right_edge);
-template <class T,
-          class Z = std::enable_if_t<std::is_base_of_v<vector_lift<T, typename T::Tens>, T>>> // Z only serves to prevent call on
-                                                                               // something else than MPT,MPS and MPO.
+template <class T, class Z = std::enable_if_t<
+                       std::is_base_of_v<vector_lift<T, typename T::Tens>, T>>> // Z only serves to prevent call on
+                                                                                // something else than MPT,MPS and MPO.
 void print_dims(const T &mps)
 {
 	fmt::print("MPN sizes: ");

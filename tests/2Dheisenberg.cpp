@@ -319,7 +319,7 @@ int main()
 	dmrg_opt.maximum_iterations = 50;
 	{
 		quantit::dmrg_log_simple logger;
-		quantit::bMPS state = quantit::random_bMPS(4, bheis, any_quantity(cval(0)), 0);
+		quantit::bMPS state = quantit::random_bMPS(4, bheis, any_quantity(cval(0)), {}, 0);
 		auto start = std::chrono::steady_clock::now();
 		auto E0 = quantit::dmrg(bheis, state, dmrg_opt,logger);
 		auto end = std::chrono::steady_clock::now();
