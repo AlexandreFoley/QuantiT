@@ -1,0 +1,11 @@
+digraph "/Users/alex/Documents/Prog/QuantiT/include/blockTensor"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  compound=true
+  subgraph clusterdir_d44c64559bbebec7f509842c48db8b23 {
+    graph [ bgcolor="#edf0f7", pencolor="grey25", style="filled,dashed,", label="include", fontname="Helvetica", fontsize="10", URL="dir_d44c64559bbebec7f509842c48db8b23.html"]
+  dir_7a13f9132e4f8cac71358e1544611c31 [shape=box, label="blockTensor", style="filled,bold,", fillcolor="#edf0f7", color="grey25", URL="dir_7a13f9132e4f8cac71358e1544611c31.html"];
+  }
+}

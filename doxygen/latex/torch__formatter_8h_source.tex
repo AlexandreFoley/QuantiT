@@ -1,0 +1,95 @@
+\hypertarget{torch__formatter_8h_source}{}\doxysection{torch\+\_\+formatter.\+h}
+\label{torch__formatter_8h_source}\index{/Users/alex/Documents/Prog/QuantiT/include/torch\_formatter.h@{/Users/alex/Documents/Prog/QuantiT/include/torch\_formatter.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * File: tens\_formatter.h}}
+\DoxyCodeLine{3 \textcolor{comment}{ * Project: QuantiT}}
+\DoxyCodeLine{4 \textcolor{comment}{ * File Created: Tuesday, 21st July 2020 6:07:08 pm}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)}}
+\DoxyCodeLine{6 \textcolor{comment}{ * -\/-\/-\/-\/-\/}}
+\DoxyCodeLine{7 \textcolor{comment}{ * Last Modified: Thursday, 23rd July 2020 10:47:14 am}}
+\DoxyCodeLine{8 \textcolor{comment}{ * Modified By: Alexandre Foley (Alexandre.foley@usherbrooke.ca>)}}
+\DoxyCodeLine{9 \textcolor{comment}{ * -\/-\/-\/-\/-\/}}
+\DoxyCodeLine{10 \textcolor{comment}{ * Copyright (c) 2020 Alexandre Foley}}
+\DoxyCodeLine{11 \textcolor{comment}{ * Licensed under GPL v3}}
+\DoxyCodeLine{12 \textcolor{comment}{ */}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#ifndef FD137415\_7533\_4BFF\_A130\_17B4315FE304}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#define FD137415\_7533\_4BFF\_A130\_17B4315FE304}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include <torch/torch.h>}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include <fmt/ostream.h>}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include <fmt/format.h>}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include <charconv>}}
+\DoxyCodeLine{21 \textcolor{keyword}{namespace }quantit}
+\DoxyCodeLine{22 \{}
+\DoxyCodeLine{23     \textcolor{keywordtype}{void} print(\textcolor{keyword}{const} torch::Tensor\& X);}
+\DoxyCodeLine{24 \}}
+\DoxyCodeLine{29 \textcolor{keyword}{template} <>}
+\DoxyCodeLine{30 \textcolor{keyword}{struct }fmt::formatter<torch::Tensor>}
+\DoxyCodeLine{31 \{}
+\DoxyCodeLine{32     uint linelenght = 80;}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34     \textcolor{keyword}{constexpr} \textcolor{keyword}{auto} parse(format\_parse\_context\& ctx)}
+\DoxyCodeLine{35     \{}
+\DoxyCodeLine{36         \textcolor{keyword}{auto} it = ctx.begin(), end = ctx.end();}
+\DoxyCodeLine{37         \textcolor{keywordflow}{if} (it and *it != \textcolor{charliteral}{'\}'})}
+\DoxyCodeLine{38         \{}
+\DoxyCodeLine{39             ++it;}
+\DoxyCodeLine{40             \textcolor{keyword}{auto} first\_pos = it;}
+\DoxyCodeLine{41             \textcolor{keywordflow}{while} (it != end \&\& *it != \textcolor{charliteral}{'\}'})}
+\DoxyCodeLine{42             \{}
+\DoxyCodeLine{43                 ++it;}
+\DoxyCodeLine{44             \}}
+\DoxyCodeLine{45             \textcolor{keyword}{auto} last\_pos = it -\/ 1;}
+\DoxyCodeLine{46             uint width = 80;}
+\DoxyCodeLine{47             \textcolor{keywordflow}{if} (last\_pos > first\_pos)}
+\DoxyCodeLine{48             \{}
+\DoxyCodeLine{49                 \textcolor{keyword}{auto} code = std::from\_chars(first\_pos, last\_pos, width);}
+\DoxyCodeLine{50                 \textcolor{keywordflow}{if} (code.ptr != last\_pos || std::errc::invalid\_argument == code.ec)}
+\DoxyCodeLine{51                     \textcolor{keywordflow}{throw} format\_error(\textcolor{stringliteral}{"{}invalid format, only a single integer supported for torch::Tensor"{}});}
+\DoxyCodeLine{52                 \textcolor{keywordflow}{else}}
+\DoxyCodeLine{53                 \{}
+\DoxyCodeLine{54                     linelenght = width;}
+\DoxyCodeLine{55                 \}}
+\DoxyCodeLine{56             \}}
+\DoxyCodeLine{57         \}}
+\DoxyCodeLine{58         \textcolor{keywordflow}{if} (it and *it != \textcolor{charliteral}{'\}'})}
+\DoxyCodeLine{59             \textcolor{keywordflow}{throw} format\_error(\textcolor{stringliteral}{"{}invalid format,closing brace missing"{}});}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61         \textcolor{comment}{// Return an iterator past the end of the parsed range:}}
+\DoxyCodeLine{62         \textcolor{keywordflow}{return} it;}
+\DoxyCodeLine{63     \}}
+\DoxyCodeLine{64 }
+\DoxyCodeLine{65     \textcolor{keyword}{template} <\textcolor{keyword}{typename} FormatContext>}
+\DoxyCodeLine{66     \textcolor{keyword}{auto} format(\textcolor{keyword}{const} torch::Tensor \&tens, FormatContext \&ctx)\textcolor{keyword}{ const}}
+\DoxyCodeLine{67 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{68         std::stringstream strstr;}
+\DoxyCodeLine{69         at::print(strstr, tens, linelenght);}
+\DoxyCodeLine{70         std::string tens\_string(strstr.str());}
+\DoxyCodeLine{71         \textcolor{keyword}{auto} end = tens\_string.length();}
+\DoxyCodeLine{72         \textcolor{comment}{// find occurences of \{\} and replace with ()}}
+\DoxyCodeLine{73         \textcolor{comment}{// done because fmt use \{\} to mark format section which can lead to weird interactions...}}
+\DoxyCodeLine{74         \textcolor{keyword}{auto} it = tens\_string.find(\textcolor{stringliteral}{"{}\{"{}}, 0);}
+\DoxyCodeLine{75         \textcolor{keywordflow}{while} (it < end)}
+\DoxyCodeLine{76         \{}
+\DoxyCodeLine{77             tens\_string[it] = \textcolor{charliteral}{'('};}
+\DoxyCodeLine{78             ++it;}
+\DoxyCodeLine{79             it = tens\_string.find(\textcolor{stringliteral}{"{}\{"{}}, it);}
+\DoxyCodeLine{80         \}}
+\DoxyCodeLine{81         it = tens\_string.find(\textcolor{stringliteral}{"{}\}"{}}, 0);}
+\DoxyCodeLine{82         \textcolor{keywordflow}{while} (it < end)}
+\DoxyCodeLine{83         \{}
+\DoxyCodeLine{84             tens\_string[it] = \textcolor{charliteral}{')'};}
+\DoxyCodeLine{85             ++it;}
+\DoxyCodeLine{86             it = tens\_string.find(\textcolor{stringliteral}{"{}\}"{}}, it);}
+\DoxyCodeLine{87         \}}
+\DoxyCodeLine{88 }
+\DoxyCodeLine{89         \textcolor{keywordflow}{return} format\_to(ctx.out(), tens\_string);}
+\DoxyCodeLine{90     \}}
+\DoxyCodeLine{91 \};}
+\DoxyCodeLine{92 }
+\DoxyCodeLine{93 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* FD137415\_7533\_4BFF\_A130\_17B4315FE304 */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

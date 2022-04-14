@@ -1,0 +1,15 @@
+digraph "/Users/alex/Documents/Prog/QuantiT/include/Conserved"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  compound=true
+  subgraph clusterdir_d44c64559bbebec7f509842c48db8b23 {
+    graph [ bgcolor="#edf0f7", pencolor="grey25", style="filled,dashed,", label="include", fontname="Helvetica", fontsize="10", URL="dir_d44c64559bbebec7f509842c48db8b23.html"]
+  subgraph clusterdir_5e1df155f8d8ecbed2b2526afe4b577f {
+    graph [ bgcolor="#edf0f7", pencolor="grey25", style="filled,bold,", label="", fontname="Helvetica", fontsize="10", URL="dir_5e1df155f8d8ecbed2b2526afe4b577f.html"]
+    dir_5e1df155f8d8ecbed2b2526afe4b577f [shape=plaintext, label="Conserved"];
+  dir_f3dfb54614d8e249e04e97143aee8560 [shape=box, label="Composite", style="filled,", fillcolor="#a2b4d6", color="grey25", URL="dir_f3dfb54614d8e249e04e97143aee8560.html"];
+  }
+  }
+}

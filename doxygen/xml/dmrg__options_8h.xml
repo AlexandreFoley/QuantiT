@@ -1,26 +1,26 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
   <compounddef id="dmrg__options_8h" kind="file" language="C++">
     <compoundname>dmrg_options.h</compoundname>
-    <includedby refid="dmrg_8h" local="yes">/home/alex/project/quantt/include/dmrg.h</includedby>
-    <includedby refid="dmrg__logger_8h" local="yes">/home/alex/project/quantt/include/dmrg_logger.h</includedby>
+    <includedby refid="dmrg_8h" local="yes">/Users/alex/Documents/Prog/QuantiT/include/dmrg.h</includedby>
+    <includedby refid="dmrg__logger_8h" local="yes">/Users/alex/Documents/Prog/QuantiT/include/dmrg_logger.h</includedby>
     <invincdepgraph>
+      <node id="2">
+        <label>/Users/alex/Documents/Prog/QuantiT/include/dmrg.h</label>
+        <link refid="dmrg_8h_source"/>
+      </node>
+      <node id="3">
+        <label>/Users/alex/Documents/Prog/QuantiT/include/dmrg_logger.h</label>
+        <link refid="dmrg__logger_8h_source"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
       <node id="1">
-        <label>/home/alex/project/quantt/include/dmrg_options.h</label>
+        <label>/Users/alex/Documents/Prog/QuantiT/include/dmrg_options.h</label>
         <link refid="dmrg__options_8h"/>
         <childnode refid="2" relation="include">
         </childnode>
         <childnode refid="3" relation="include">
-        </childnode>
-      </node>
-      <node id="2">
-        <label>/home/alex/project/quantt/include/dmrg.h</label>
-        <link refid="dmrg_8h_source"/>
-      </node>
-      <node id="3">
-        <label>/home/alex/project/quantt/include/dmrg_logger.h</label>
-        <link refid="dmrg__logger_8h_source"/>
-        <childnode refid="2" relation="include">
         </childnode>
       </node>
     </invincdepgraph>
@@ -58,13 +58,13 @@
 <codeline lineno="25"><highlight class="normal"></highlight></codeline>
 <codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>default<sp/>values<sp/>for<sp/>constructors.</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>if<sp/>a<sp/>constructor<sp/>doesn&apos;t<sp/>require<sp/>user<sp/>input<sp/>for<sp/>some<sp/>member,<sp/>it<sp/>use<sp/>the<sp/>values<sp/>found<sp/>in<sp/>the<sp/>following<sp/>definition.</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>def_cutoff<sp/>=<sp/>1e-6;</highlight></codeline>
-<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>def_conv_crit<sp/>=<sp/>1e-5;</highlight></codeline>
-<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>def_max_bond<sp/>=<sp/>std::numeric_limits&lt;size_t&gt;::max();<sp/></highlight><highlight class="comment">//<sp/>a<sp/>rather<sp/>large<sp/>number.</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>def_min_bond<sp/>=</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>def_cutoff<sp/>=<sp/>1e-6;</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>def_conv_crit<sp/>=<sp/>1e-5;</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>def_max_bond<sp/>=<sp/>std::numeric_limits&lt;size_t&gt;::max();<sp/></highlight><highlight class="comment">//<sp/>a<sp/>rather<sp/>large<sp/>number.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>def_min_bond<sp/>=</highlight></codeline>
 <codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>4;<sp/></highlight><highlight class="comment">//<sp/>I<sp/>have<sp/>found<sp/>that<sp/>dmrg<sp/>behave<sp/>better<sp/>if<sp/>we<sp/>prevent<sp/>bond<sp/>dimension<sp/>from<sp/>going<sp/>too<sp/>low.</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>def_max_it<sp/>=<sp/>1000;</highlight></codeline>
-<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>def_pytorch_gradient<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>def_max_it<sp/>=<sp/>1000;</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>def_pytorch_gradient<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
 <codeline lineno="35"><highlight class="normal"></highlight></codeline>
 <codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="structquantit_1_1dmrg__options" kindref="compound">dmrg_options</ref>(</highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>_cutoff,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>_convergence_criterion)</highlight></codeline>
 <codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/>cutoff(_cutoff),<sp/>convergence_criterion(_convergence_criterion),<sp/>maximum_bond(def_max_bond),</highlight></codeline>
@@ -94,6 +94,6 @@
 <codeline lineno="61"><highlight class="normal"></highlight></codeline>
 <codeline lineno="62"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">//<sp/>INCLUDE_DMRG_OPTIONS_H</highlight><highlight class="normal"></highlight></codeline>
     </programlisting>
-    <location file="/home/alex/project/quantt/include/dmrg_options.h"/>
+    <location file="/Users/alex/Documents/Prog/QuantiT/include/dmrg_options.h"/>
   </compounddef>
 </doxygen>

@@ -1,0 +1,109 @@
+\hypertarget{numeric_8h_source}{}\doxysection{numeric.\+h}
+\label{numeric_8h_source}\index{/Users/alex/Documents/Prog/QuantiT/include/numeric.h@{/Users/alex/Documents/Prog/QuantiT/include/numeric.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * File: numeric.h}}
+\DoxyCodeLine{3 \textcolor{comment}{ * Project: QuantiT}}
+\DoxyCodeLine{4 \textcolor{comment}{ * File Created: Thursday, 27th August 2020 10:39:15 am}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)}}
+\DoxyCodeLine{6 \textcolor{comment}{ * -\/-\/-\/-\/-\/}}
+\DoxyCodeLine{7 \textcolor{comment}{ * Last Modified: Thursday, 27th August 2020 10:39:15 am}}
+\DoxyCodeLine{8 \textcolor{comment}{ * Modified By: Alexandre Foley (Alexandre.foley@usherbrooke.ca>)}}
+\DoxyCodeLine{9 \textcolor{comment}{ * -\/-\/-\/-\/-\/}}
+\DoxyCodeLine{10 \textcolor{comment}{ * Copyright (c) 2020 Alexandre Foley}}
+\DoxyCodeLine{11 \textcolor{comment}{ * Licensed under GPL v3}}
+\DoxyCodeLine{12 \textcolor{comment}{ */}}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#ifndef BEAD62BB\_7BE8\_44DB\_9116\_0DFFA7FAB98C}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#define BEAD62BB\_7BE8\_44DB\_9116\_0DFFA7FAB98C}}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include <torch/torch.h>}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include <limits>}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include <type\_traits>}}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{keyword}{namespace }quantit}
+\DoxyCodeLine{22 \{}
+\DoxyCodeLine{23     \textcolor{keyword}{namespace }\textcolor{comment}{// anonymous namespace, this stuff can't be  used from outside this file.}}
+\DoxyCodeLine{24     \{}
+\DoxyCodeLine{25         \textcolor{keyword}{template} <\textcolor{keyword}{class}, \textcolor{keyword}{template} <\textcolor{keyword}{class}...> \textcolor{keyword}{class}>}
+\DoxyCodeLine{26         \textcolor{keyword}{struct }is\_instance : \textcolor{keyword}{public} std::false\_type}
+\DoxyCodeLine{27         \{}
+\DoxyCodeLine{28         \};}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30         \textcolor{keyword}{template} <\textcolor{keyword}{class}... T, \textcolor{keyword}{template} <\textcolor{keyword}{class}> \textcolor{keyword}{class }U>}
+\DoxyCodeLine{31         \textcolor{keyword}{struct }is\_instance<U<T...>, U> : \textcolor{keyword}{public} std::true\_type}
+\DoxyCodeLine{32         \{}
+\DoxyCodeLine{33         \};}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35         \textcolor{keyword}{template} <\textcolor{keyword}{class }T, \textcolor{keyword}{template} <\textcolor{keyword}{class}...> \textcolor{keyword}{class }U>}
+\DoxyCodeLine{36         \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} is\_instance\_v = is\_instance<std::decay\_t<T>, U>::value; \textcolor{comment}{// std::decay remove the const and ref specification from the type. not removing it would lead to false in situation where we expect true}}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{38         \textcolor{keyword}{template} <\textcolor{keyword}{class} T>}
+\DoxyCodeLine{39         \textcolor{keyword}{struct }num\_lim}
+\DoxyCodeLine{40         \{}
+\DoxyCodeLine{41             \textcolor{keyword}{static} \textcolor{keyword}{constexpr} \textcolor{keyword}{auto} eps() noexcept}
+\DoxyCodeLine{42             \{}
+\DoxyCodeLine{43                 \textcolor{keywordflow}{if} \textcolor{keyword}{constexpr} (is\_instance\_v<T, c10::complex>)}
+\DoxyCodeLine{44                 \{}
+\DoxyCodeLine{45                     \textcolor{keywordflow}{return} std::numeric\_limits<typename T::value\_type>::epsilon();}
+\DoxyCodeLine{46                 \}}
+\DoxyCodeLine{47                 \textcolor{keywordflow}{else}}
+\DoxyCodeLine{48                 \{}
+\DoxyCodeLine{49                     \textcolor{keywordflow}{return} std::numeric\_limits<T>::epsilon();}
+\DoxyCodeLine{50                 \}}
+\DoxyCodeLine{51             \}}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53             \textcolor{keyword}{using} real\_type = \textcolor{keyword}{decltype}(eps());}
+\DoxyCodeLine{54 }
+\DoxyCodeLine{55             \textcolor{keyword}{static} \textcolor{keyword}{constexpr} torch::ScalarType enum\_val()}
+\DoxyCodeLine{56             \{}
+\DoxyCodeLine{57                 \textcolor{keywordflow}{return} torch::ScalarType::Undefined;}
+\DoxyCodeLine{58             \}}
+\DoxyCodeLine{59         \};}
+\DoxyCodeLine{60         \textcolor{comment}{// note that it return a real value type. if you need to check for epsilon in a complex number context, make sure that the check is performed on the parts or the absolute value.}}
+\DoxyCodeLine{61 }
+\DoxyCodeLine{62 \textcolor{preprocessor}{\#define ENUMVAL(act\_type, enum)                               \(\backslash\)}}
+\DoxyCodeLine{63 \textcolor{preprocessor}{    template <>                                               \(\backslash\)}}
+\DoxyCodeLine{64 \textcolor{preprocessor}{    constexpr torch::ScalarType num\_lim<act\_type>::enum\_val() \(\backslash\)}}
+\DoxyCodeLine{65 \textcolor{preprocessor}{    \{                                                         \(\backslash\)}}
+\DoxyCodeLine{66 \textcolor{preprocessor}{        return torch::ScalarType::enum;                       \(\backslash\)}}
+\DoxyCodeLine{67 \textcolor{preprocessor}{    \}}}
+\DoxyCodeLine{68 }
+\DoxyCodeLine{69         AT\_FORALL\_SCALAR\_TYPES\_WITH\_COMPLEX\_AND\_QINTS(ENUMVAL)}
+\DoxyCodeLine{70 \textcolor{preprocessor}{\#undef ENUMVAL}}
+\DoxyCodeLine{71     \} \textcolor{comment}{// namespace}}
+\DoxyCodeLine{72 \textcolor{preprocessor}{\#define RET\_EPS(act\_type, Enum\_name)     \(\backslash\)}}
+\DoxyCodeLine{73 \textcolor{preprocessor}{    case torch::ScalarType::Enum\_name:   \(\backslash\)}}
+\DoxyCodeLine{74 \textcolor{preprocessor}{        return num\_lim<act\_type>::eps(); \(\backslash\)}}
+\DoxyCodeLine{75 \textcolor{preprocessor}{        break;}}
+\DoxyCodeLine{76 }
+\DoxyCodeLine{77     \textcolor{keyword}{inline} torch::Scalar eps(torch::ScalarType intype)}
+\DoxyCodeLine{78     \{}
+\DoxyCodeLine{79         \textcolor{keywordflow}{switch} (intype)}
+\DoxyCodeLine{80         \{}
+\DoxyCodeLine{81             AT\_FORALL\_SCALAR\_TYPES\_WITH\_COMPLEX\_EXCEPT\_COMPLEX\_HALF(RET\_EPS)}
+\DoxyCodeLine{82             \textcolor{keywordflow}{default}:}
+\DoxyCodeLine{83                 \textcolor{keywordflow}{return} 0;}
+\DoxyCodeLine{84         \}}
+\DoxyCodeLine{85     \}}
+\DoxyCodeLine{86 \textcolor{preprocessor}{\#undef RET\_EPS}}
+\DoxyCodeLine{87 \textcolor{preprocessor}{\#define RET\_REAL\_TYPE(act\_type, Enum\_name)                        \(\backslash\)}}
+\DoxyCodeLine{88 \textcolor{preprocessor}{    case torch::ScalarType::Enum\_name:                            \(\backslash\)}}
+\DoxyCodeLine{89 \textcolor{preprocessor}{        return num\_lim<num\_lim<act\_type>::real\_type>::enum\_val(); \(\backslash\)}}
+\DoxyCodeLine{90 \textcolor{preprocessor}{        break;}}
+\DoxyCodeLine{91 }
+\DoxyCodeLine{92     \textcolor{keyword}{inline} torch::ScalarType real\_type(torch::ScalarType intype)}
+\DoxyCodeLine{93     \{}
+\DoxyCodeLine{94         \textcolor{keywordflow}{switch} (intype)}
+\DoxyCodeLine{95         \{}
+\DoxyCodeLine{96             AT\_FORALL\_SCALAR\_TYPES\_WITH\_COMPLEX\_AND\_QINTS(RET\_REAL\_TYPE)}
+\DoxyCodeLine{97             \textcolor{keywordflow}{default}:}
+\DoxyCodeLine{98                 \textcolor{keywordflow}{return} torch::ScalarType::Undefined;}
+\DoxyCodeLine{99         \}}
+\DoxyCodeLine{100     \}}
+\DoxyCodeLine{101 \} \textcolor{comment}{// namespace quantit}}
+\DoxyCodeLine{102 }
+\DoxyCodeLine{103 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* BEAD62BB\_7BE8\_44DB\_9116\_0DFFA7FAB98C */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

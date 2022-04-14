@@ -1,0 +1,879 @@
+\hypertarget{MPT_8h_source}{}\doxysection{MPT.\+h}
+\label{MPT_8h_source}\index{/Users/alex/Documents/Prog/QuantiT/include/MPT.h@{/Users/alex/Documents/Prog/QuantiT/include/MPT.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * File: MPT.h}}
+\DoxyCodeLine{3 \textcolor{comment}{ * Project: QuantiT}}
+\DoxyCodeLine{4 \textcolor{comment}{ * File Created: Thursday, 23rd July 2020 9:38:33 am}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)}}
+\DoxyCodeLine{6 \textcolor{comment}{ * -\/-\/-\/-\/-\/}}
+\DoxyCodeLine{7 \textcolor{comment}{ * Last Modified: Thursday, 23rd July 2020 10:46:02 am}}
+\DoxyCodeLine{8 \textcolor{comment}{ * Modified By: Alexandre Foley (Alexandre.foley@usherbrooke.ca>)}}
+\DoxyCodeLine{9 \textcolor{comment}{ * -\/-\/-\/-\/-\/}}
+\DoxyCodeLine{10 \textcolor{comment}{ * Copyright (c) 2020 Alexandre Foley}}
+\DoxyCodeLine{11 \textcolor{comment}{ * Licensed under GPL v3}}
+\DoxyCodeLine{12 \textcolor{comment}{ */}}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#ifndef ADA5A359\_8ACF\_448D\_91BC\_09C085F510CC}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#define ADA5A359\_8ACF\_448D\_91BC\_09C085F510CC}}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}blockTensor/btensor.h"{}}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}property.h"{}}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include <algorithm>}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include <fmt/core.h>}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include <random>}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#include <torch/torch.h>}}
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#include <type\_traits>}}
+\DoxyCodeLine{24 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26 \textcolor{preprocessor}{\#include "{}doctest/doctest\_proxy.h"{}}}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28 \textcolor{keyword}{namespace }quantit}
+\DoxyCodeLine{29 \{}
+\DoxyCodeLine{30 }
+\DoxyCodeLine{31 \textcolor{comment}{// forward declaration for dmrg\_impl.}}
+\DoxyCodeLine{32 \textcolor{keyword}{class }env\_holder;}
+\DoxyCodeLine{33 \textcolor{keyword}{class }benv\_holder;}
+\DoxyCodeLine{34 \textcolor{keyword}{class }dmrg\_options;}
+\DoxyCodeLine{35 \textcolor{keyword}{class }dmrg\_logger;}
+\DoxyCodeLine{36 \textcolor{keyword}{class }MPS;}
+\DoxyCodeLine{37 \textcolor{keyword}{class }MPO;}
+\DoxyCodeLine{38 \textcolor{keyword}{class }MPT;}
+\DoxyCodeLine{39 \textcolor{keyword}{class }bMPS;}
+\DoxyCodeLine{40 \textcolor{keyword}{class }bMPO;}
+\DoxyCodeLine{41 \textcolor{keyword}{class }bMPT;}
+\DoxyCodeLine{42 }
+\DoxyCodeLine{43 MPS random\_MPS(\textcolor{keywordtype}{size\_t} length, \textcolor{keywordtype}{size\_t} bond\_dim, \textcolor{keywordtype}{size\_t} phys\_dim, torch::TensorOptions opt = \{\});}
+\DoxyCodeLine{44 MPS random\_MPS(\textcolor{keywordtype}{size\_t} bond\_dim, \textcolor{keyword}{const} MPO \&hamil, torch::TensorOptions opt = \{\});}
+\DoxyCodeLine{45 MPS random\_MPS(\textcolor{keywordtype}{size\_t} bond\_dim, \textcolor{keyword}{const} std::vector<int64\_t> \&phys\_dims,}
+\DoxyCodeLine{46                torch::TensorOptions opt = \{\}); \textcolor{comment}{// should be done as with a range of sort for the phys\_dim, when the}}
+\DoxyCodeLine{47                                                \textcolor{comment}{// standard c++20 is well supported.}}
+\DoxyCodeLine{48 }
+\DoxyCodeLine{49 bMPS random\_bMPS(\textcolor{keywordtype}{size\_t} length, \textcolor{keywordtype}{size\_t} bond\_dim, \textcolor{keyword}{const} btensor \&phys\_dim\_spec, any\_quantity\_cref q\_num,}
+\DoxyCodeLine{50                  torch::TensorOptions opt = \{\}, \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} seed = (std::random\_device())());}
+\DoxyCodeLine{51 bMPS random\_bMPS(\textcolor{keywordtype}{size\_t} bond\_dim, \textcolor{keyword}{const} bMPO \&Hamil, any\_quantity\_cref q\_num, torch::TensorOptions opt = \{\},}
+\DoxyCodeLine{52                  \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} seed = (std::random\_device())());}
+\DoxyCodeLine{53 bMPS random\_bMPS(\textcolor{keywordtype}{size\_t} bond\_dim, \textcolor{keyword}{const} std::vector<btensor> \&phys\_dim\_spec, any\_quantity\_cref q\_num,}
+\DoxyCodeLine{54                  torch::TensorOptions opt = \{\}, \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} seed = (std::random\_device())());}
+\DoxyCodeLine{55 bMPS random\_MPS(\textcolor{keywordtype}{size\_t} length, \textcolor{keywordtype}{size\_t} bond\_dim, \textcolor{keyword}{const} btensor \&phys\_dim\_spec, any\_quantity\_cref q\_num,}
+\DoxyCodeLine{56                 torch::TensorOptions opt = \{\}, \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} seed = (std::random\_device())());}
+\DoxyCodeLine{57 bMPS random\_MPS(\textcolor{keywordtype}{size\_t} bond\_dim, \textcolor{keyword}{const} bMPO \&Hamil, any\_quantity\_cref q\_num, torch::TensorOptions opt = \{\},}
+\DoxyCodeLine{58                 \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} seed = (std::random\_device())());}
+\DoxyCodeLine{59 bMPS random\_MPS(\textcolor{keywordtype}{size\_t} bond\_dim, \textcolor{keyword}{const} std::vector<btensor> \&phys\_dim\_spec, any\_quantity\_cref q\_num,}
+\DoxyCodeLine{60                 torch::TensorOptions opt = \{\}, \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} seed = (std::random\_device())());}
+\DoxyCodeLine{61 }
+\DoxyCodeLine{62 \textcolor{keyword}{namespace }details}
+\DoxyCodeLine{63 \{}
+\DoxyCodeLine{75 torch::Tensor dmrg\_impl(\textcolor{keyword}{const} MPO \&hamiltonian, \textcolor{keyword}{const} MPT \&two\_sites\_hamil, MPS \&in\_out\_state,}
+\DoxyCodeLine{76                         \textcolor{keyword}{const} dmrg\_options \&options, env\_holder \&Env, dmrg\_logger \&logger);}
+\DoxyCodeLine{77 btensor dmrg\_impl(\textcolor{keyword}{const} bMPO \&hamiltonian, \textcolor{keyword}{const} bMPT \&two\_sites\_hamil, bMPS \&in\_out\_state, \textcolor{keyword}{const} dmrg\_options \&options,}
+\DoxyCodeLine{78                   benv\_holder \&Env, dmrg\_logger \&logger);}
+\DoxyCodeLine{79 \} \textcolor{comment}{// namespace details}}
+\DoxyCodeLine{80 \textcolor{comment}{// matrix product tensors base type. require concrete derived class to implement MPT empty\_copy(const S\&)}}
+\DoxyCodeLine{89 \textcolor{comment}{}\textcolor{keyword}{template} <\textcolor{keyword}{class} S, \textcolor{keyword}{class} tensor = torch::Tensor>}
+\DoxyCodeLine{90 \textcolor{keyword}{class }\mbox{\hyperlink{classquantit_1_1vector__lift}{vector\_lift}}}
+\DoxyCodeLine{91 \{}
+\DoxyCodeLine{92     std::vector<tensor> tensors;}
+\DoxyCodeLine{93 }
+\DoxyCodeLine{94   \textcolor{keyword}{public}:}
+\DoxyCodeLine{95     \textcolor{comment}{// dependent types}}
+\DoxyCodeLine{96     \textcolor{keyword}{using} Tens = tensor;}
+\DoxyCodeLine{97     \textcolor{keyword}{using} VTens = std::vector<Tens>;}
+\DoxyCodeLine{98     \textcolor{keyword}{using} size\_type = \textcolor{keyword}{typename} VTens::size\_type;}
+\DoxyCodeLine{99     \textcolor{keyword}{using} iterator = \textcolor{keyword}{typename} VTens::iterator;}
+\DoxyCodeLine{100     \textcolor{keyword}{using} const\_iterator = \textcolor{keyword}{typename} VTens::const\_iterator;}
+\DoxyCodeLine{101     \textcolor{keyword}{using} reverse\_iterator = \textcolor{keyword}{typename} VTens::reverse\_iterator;}
+\DoxyCodeLine{102     \textcolor{keyword}{using} const\_reverse\_iterator = \textcolor{keyword}{typename} VTens::const\_reverse\_iterator;}
+\DoxyCodeLine{103     \textcolor{keyword}{using} const\_reference = \textcolor{keyword}{typename} VTens::const\_reference;}
+\DoxyCodeLine{104     \textcolor{keyword}{using} reference = \textcolor{keyword}{typename} VTens::reference;}
+\DoxyCodeLine{105     \textcolor{comment}{// constructors}}
+\DoxyCodeLine{106     \mbox{\hyperlink{classquantit_1_1vector__lift}{vector\_lift}}() : tensors() \{\}}
+\DoxyCodeLine{107     \mbox{\hyperlink{classquantit_1_1vector__lift}{vector\_lift}}(size\_type size) : tensors(size) \{\}}
+\DoxyCodeLine{108     \mbox{\hyperlink{classquantit_1_1vector__lift}{vector\_lift}}(size\_type size, \textcolor{keyword}{const} Tens \&val) : tensors(size, val) \{\}}
+\DoxyCodeLine{109     \textcolor{keyword}{template} <\textcolor{keyword}{class} T, \textcolor{keyword}{class} other\_tensor>}
+\DoxyCodeLine{110     \textcolor{keyword}{friend} \textcolor{keyword}{class }\mbox{\hyperlink{classquantit_1_1vector__lift}{vector\_lift}};   \textcolor{comment}{// I don't know of a way to limit template friend to types with the same tensors.}}
+\DoxyCodeLine{111     \textcolor{keyword}{template} <\textcolor{keyword}{class} T, \textcolor{keyword}{class} U> \textcolor{comment}{// can copy and move a vector\_lift no matter the derived class.}}
+\DoxyCodeLine{112     \mbox{\hyperlink{classquantit_1_1vector__lift}{vector\_lift}}(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1vector__lift}{vector\_lift<T, U>}} \&other) : tensors(other.tensors)}
+\DoxyCodeLine{113     \{}
+\DoxyCodeLine{114     \}}
+\DoxyCodeLine{115     \textcolor{keyword}{explicit} \mbox{\hyperlink{classquantit_1_1vector__lift}{vector\_lift}}(\textcolor{keyword}{const} std::vector<Tens> other) : tensors(std::move(other)) \{\}}
+\DoxyCodeLine{116     \textcolor{keyword}{template} <\textcolor{keyword}{class} T, \textcolor{keyword}{class} U>}
+\DoxyCodeLine{117     \mbox{\hyperlink{classquantit_1_1vector__lift}{vector\_lift}}(\mbox{\hyperlink{classquantit_1_1vector__lift}{vector\_lift<T, U>}} \&\&other) noexcept : tensors(std::move(other.tensors))}
+\DoxyCodeLine{118     \{}
+\DoxyCodeLine{119     \}}
+\DoxyCodeLine{120     \mbox{\hyperlink{classquantit_1_1vector__lift}{vector\_lift}}(VTens \&other) : tensors(other) \{\}}
+\DoxyCodeLine{121     \mbox{\hyperlink{classquantit_1_1vector__lift}{vector\_lift}}(std::initializer\_list<Tens> initl) : tensors(initl) \{\}}
+\DoxyCodeLine{122     \mbox{\hyperlink{classquantit_1_1vector__lift}{vector\_lift}}(const\_iterator begin, const\_iterator end) : tensors(begin, end) \{\}}
+\DoxyCodeLine{123     \textcolor{keyword}{virtual} \mbox{\hyperlink{classquantit_1_1vector__lift}{\string~vector\_lift}}() = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{124 }
+\DoxyCodeLine{125     \textcolor{keyword}{explicit} \textcolor{keyword}{operator} S()}
+\DoxyCodeLine{126     \{}
+\DoxyCodeLine{127         S out;}
+\DoxyCodeLine{128         \mbox{\hyperlink{classquantit_1_1vector__lift}{vector\_lift}} *view = \&out;}
+\DoxyCodeLine{129         view-\/>tensors = this-\/>tensors;}
+\DoxyCodeLine{130         \textcolor{keywordflow}{return} out;}
+\DoxyCodeLine{131     \}}
+\DoxyCodeLine{132 }
+\DoxyCodeLine{133     \textcolor{keywordtype}{void} swap(\mbox{\hyperlink{classquantit_1_1vector__lift}{vector\_lift}} \&other) \textcolor{keyword}{noexcept} \{ this-\/>tensors.swap(other.tensors); \}}
+\DoxyCodeLine{134     \textcolor{keyword}{friend} \textcolor{keywordtype}{void} swap(\mbox{\hyperlink{classquantit_1_1vector__lift}{vector\_lift}} \&lhs, \mbox{\hyperlink{classquantit_1_1vector__lift}{vector\_lift}} \&rhs) \textcolor{keyword}{noexcept} \{ lhs.swap(rhs); \}}
+\DoxyCodeLine{135     \mbox{\hyperlink{classquantit_1_1vector__lift}{vector\_lift}} \&operator=(\mbox{\hyperlink{classquantit_1_1vector__lift}{vector\_lift}} other) \textcolor{keyword}{noexcept}}
+\DoxyCodeLine{136     \{}
+\DoxyCodeLine{137         swap(other);}
+\DoxyCodeLine{138         \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{139     \}}
+\DoxyCodeLine{140     \textcolor{comment}{// interface function from std::vector}}
+\DoxyCodeLine{141     \textcolor{comment}{// elements access}}
+\DoxyCodeLine{142     reference at(\textcolor{keywordtype}{size\_t} i) \{ \textcolor{keywordflow}{return} tensors.at(i); \}}
+\DoxyCodeLine{143     const\_reference at(\textcolor{keywordtype}{size\_t} i)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} tensors.at(i); \}}
+\DoxyCodeLine{144     reference operator[](\textcolor{keywordtype}{size\_t} i) \{ \textcolor{keywordflow}{return} tensors[i]; \}}
+\DoxyCodeLine{145     const\_reference operator[](\textcolor{keywordtype}{size\_t} i)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} tensors[i]; \}}
+\DoxyCodeLine{146     reference front() \{ \textcolor{keywordflow}{return} tensors.front(); \}}
+\DoxyCodeLine{147     const\_reference front()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} tensors.front(); \}}
+\DoxyCodeLine{148     reference back() \{ \textcolor{keywordflow}{return} tensors.back(); \}}
+\DoxyCodeLine{149     const\_reference back()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} tensors.back(); \}}
+\DoxyCodeLine{150     Tens *data() \textcolor{keyword}{noexcept} \{ \textcolor{keywordflow}{return} tensors.data(); \}}
+\DoxyCodeLine{151     \textcolor{keyword}{const} Tens *data() \textcolor{keyword}{const} \textcolor{keyword}{noexcept} \{ \textcolor{keywordflow}{return} tensors.data(); \}}
+\DoxyCodeLine{152     \textcolor{comment}{// iterators}}
+\DoxyCodeLine{153     iterator begin() \textcolor{keyword}{noexcept} \{ \textcolor{keywordflow}{return} tensors.begin(); \}}
+\DoxyCodeLine{154     const\_iterator begin() \textcolor{keyword}{const} \textcolor{keyword}{noexcept} \{ \textcolor{keywordflow}{return} tensors.begin(); \}}
+\DoxyCodeLine{155     const\_iterator cbegin() \textcolor{keyword}{const} \textcolor{keyword}{noexcept} \{ \textcolor{keywordflow}{return} tensors.cbegin(); \}}
+\DoxyCodeLine{156     iterator end() \textcolor{keyword}{noexcept} \{ \textcolor{keywordflow}{return} tensors.end(); \}}
+\DoxyCodeLine{157     const\_iterator end() \textcolor{keyword}{const} \textcolor{keyword}{noexcept} \{ \textcolor{keywordflow}{return} tensors.end(); \}}
+\DoxyCodeLine{158     const\_iterator cend() \textcolor{keyword}{const} \textcolor{keyword}{noexcept} \{ \textcolor{keywordflow}{return} tensors.cend(); \}}
+\DoxyCodeLine{159     reverse\_iterator rbegin() \textcolor{keyword}{noexcept} \{ \textcolor{keywordflow}{return} tensors.rbegin(); \}}
+\DoxyCodeLine{160     const\_reverse\_iterator rbegin() \textcolor{keyword}{const} \textcolor{keyword}{noexcept} \{ \textcolor{keywordflow}{return} tensors.rbegin(); \}}
+\DoxyCodeLine{161     const\_reverse\_iterator crbegin() \textcolor{keyword}{const} \textcolor{keyword}{noexcept} \{ \textcolor{keywordflow}{return} tensors.crbegin(); \}}
+\DoxyCodeLine{162     reverse\_iterator rend() \textcolor{keyword}{noexcept} \{ \textcolor{keywordflow}{return} tensors.rend(); \}}
+\DoxyCodeLine{163     const\_reverse\_iterator rend() \textcolor{keyword}{const} \textcolor{keyword}{noexcept} \{ \textcolor{keywordflow}{return} tensors.rend(); \}}
+\DoxyCodeLine{164     const\_reverse\_iterator crend() \textcolor{keyword}{const} \textcolor{keyword}{noexcept} \{ \textcolor{keywordflow}{return} tensors.crend(); \}}
+\DoxyCodeLine{165     \textcolor{comment}{// capacity}}
+\DoxyCodeLine{166     [[nodiscard]] \textcolor{keyword}{auto} empty() \textcolor{keyword}{const} \textcolor{keyword}{noexcept} \{ \textcolor{keywordflow}{return} tensors.empty(); \}}
+\DoxyCodeLine{167     [[nodiscard]] \textcolor{keyword}{auto} size() \textcolor{keyword}{const} \textcolor{keyword}{noexcept} \{ \textcolor{keywordflow}{return} tensors.size(); \}}
+\DoxyCodeLine{168     [[nodiscard]] \textcolor{keyword}{auto} max\_size() \textcolor{keyword}{const} \textcolor{keyword}{noexcept} \{ \textcolor{keywordflow}{return} tensors.max\_size(); \}}
+\DoxyCodeLine{169     \textcolor{keywordtype}{void} reserve(\textcolor{keywordtype}{size\_t} new\_cap) \{ tensors.reserve(new\_cap); \}}
+\DoxyCodeLine{170     [[nodiscard]] \textcolor{keyword}{auto} capacity() \textcolor{keyword}{const} \textcolor{keyword}{noexcept} \{ \textcolor{keywordflow}{return} tensors.capacity(); \}}
+\DoxyCodeLine{171     \textcolor{keywordtype}{void} shrink\_to\_fit() \{ tensors.shrink\_to\_fit(); \}}
+\DoxyCodeLine{172     \textcolor{comment}{// modifiers}}
+\DoxyCodeLine{173     \textcolor{keywordtype}{void} clear() \textcolor{keyword}{noexcept} \{ tensors.clear(); \}}
+\DoxyCodeLine{174     iterator insert(const\_iterator pos, \textcolor{keyword}{const} Tens \&val) \{ \textcolor{keywordflow}{return} tensors.insert(pos, val); \}}
+\DoxyCodeLine{175     iterator insert(const\_iterator pos, Tens \&\&val) \{ \textcolor{keywordflow}{return} tensors.insert(pos, val); \}}
+\DoxyCodeLine{176     iterator insert(const\_iterator pos, size\_type count, Tens \&\&val) \{ \textcolor{keywordflow}{return} tensors.insert(pos, count, val); \}}
+\DoxyCodeLine{177     \textcolor{keyword}{template} <\textcolor{keyword}{class} InputIT>}
+\DoxyCodeLine{178     iterator insert(const\_iterator pos, InputIT first, InputIT last)}
+\DoxyCodeLine{179     \{}
+\DoxyCodeLine{180         \textcolor{keywordflow}{return} tensors.insert(pos, first, last);}
+\DoxyCodeLine{181     \}}
+\DoxyCodeLine{182     iterator insert(const\_iterator pos, std::initializer\_list<Tens> list) \{ \textcolor{keywordflow}{return} tensors.insert(pos, list); \}}
+\DoxyCodeLine{183     \textcolor{keyword}{template} <\textcolor{keyword}{class}... Args>}
+\DoxyCodeLine{184     iterator emplace(const\_iterator pos, Args \&\&...args)}
+\DoxyCodeLine{185     \{}
+\DoxyCodeLine{186         \textcolor{keywordflow}{return} tensors.emplace(pos, std::forward<Args>(args)...);}
+\DoxyCodeLine{187     \}}
+\DoxyCodeLine{188     iterator erase(const\_iterator pos) \{ \textcolor{keywordflow}{return} tensors.erase(pos); \}}
+\DoxyCodeLine{189     iterator erase(const\_iterator first, const\_iterator last) \{ \textcolor{keywordflow}{return} tensors.erase(first, last); \}}
+\DoxyCodeLine{190     \textcolor{keywordtype}{void} push\_back(\textcolor{keyword}{const} Tens \&val) \{ tensors.push\_back(val); \}}
+\DoxyCodeLine{191     \textcolor{keywordtype}{void} push\_back(Tens \&\&val) \{ tensors.push\_back(val); \}}
+\DoxyCodeLine{192     \textcolor{keyword}{template} <\textcolor{keyword}{class}... Args>}
+\DoxyCodeLine{193     \textcolor{keyword}{auto} emplace\_back(Args \&\&...args)}
+\DoxyCodeLine{194     \{}
+\DoxyCodeLine{195         \textcolor{keywordflow}{return} tensors.emplace\_back(std::forward<Args>(args)...);}
+\DoxyCodeLine{196     \}}
+\DoxyCodeLine{197     \textcolor{keywordtype}{void} pop\_back() \{ tensors.pop\_back(); \}}
+\DoxyCodeLine{198     \textcolor{keywordtype}{void} resize(size\_type count) \{ tensors.resize(count); \}}
+\DoxyCodeLine{199     \textcolor{keywordtype}{void} resize(size\_type count, \textcolor{keyword}{const} Tens \&value) \{ tensors.resize(count, value); \}}
+\DoxyCodeLine{200 }
+\DoxyCodeLine{201     \textcolor{comment}{// stuff about the tensors, written as covariant functions}}
+\DoxyCodeLine{202     S to(\textcolor{keyword}{const} torch::TensorOptions \&options = \{\}, \textcolor{keywordtype}{bool} non\_blocking = \textcolor{keyword}{false}, \textcolor{keywordtype}{bool} copy = \textcolor{keyword}{false},}
+\DoxyCodeLine{203          c10::optional<c10::MemoryFormat> memory\_format = c10::nullopt) \textcolor{keyword}{const}}
+\DoxyCodeLine{204     \{ \textcolor{comment}{// those function can't really exist outside the derived class if empty\_copy is private, which it is for MPT, MPS}}
+\DoxyCodeLine{205       \textcolor{comment}{// and MPO.}}
+\DoxyCodeLine{206         S out = S::empty\_copy(\textcolor{keyword}{static\_cast<}S \textcolor{keyword}{const }\&\textcolor{keyword}{>}(*\textcolor{keyword}{this}));}
+\DoxyCodeLine{207         \textcolor{keyword}{auto} out\_it = out.begin();}
+\DoxyCodeLine{208         std::for\_each(this-\/>cbegin(), this-\/>cend(),}
+\DoxyCodeLine{209                       [\&out\_it, \&options, non\_blocking, copy, memory\_format](\textcolor{keyword}{const} \textcolor{keyword}{auto} \&atensor)}
+\DoxyCodeLine{210                       \{ }
+\DoxyCodeLine{211                           \textcolor{keyword}{auto}\& out = *(out\_it++);}
+\DoxyCodeLine{212                           out = atensor.to(options, non\_blocking, copy, memory\_format); }
+\DoxyCodeLine{213                         }
+\DoxyCodeLine{214                     \});}
+\DoxyCodeLine{215         \textcolor{keywordflow}{return} out;}
+\DoxyCodeLine{216     \}}
+\DoxyCodeLine{217     S to(torch::Device device, torch::ScalarType dtype, \textcolor{keywordtype}{bool} non\_blocking = \textcolor{keyword}{false}, \textcolor{keywordtype}{bool} copy = \textcolor{keyword}{false},}
+\DoxyCodeLine{218          c10::optional<c10::MemoryFormat> memory\_format = c10::nullopt)\textcolor{keyword}{ const}}
+\DoxyCodeLine{219 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{220         S out = S::empty\_copy(\textcolor{keyword}{static\_cast<}S \textcolor{keyword}{const }\&\textcolor{keyword}{>}(*\textcolor{keyword}{this}));}
+\DoxyCodeLine{221         \textcolor{keyword}{auto} out\_it = out.begin();}
+\DoxyCodeLine{222         std::for\_each(this-\/>cbegin(), this-\/>cend(),}
+\DoxyCodeLine{223                       [\&out\_it, device, dtype, non\_blocking, copy, memory\_format](\textcolor{keyword}{const} \textcolor{keyword}{auto} \&atensor)}
+\DoxyCodeLine{224                       \{ *(out\_it++) = atensor.to(device, dtype, non\_blocking, copy, memory\_format); \});}
+\DoxyCodeLine{225         \textcolor{keywordflow}{return} out;}
+\DoxyCodeLine{226     \}}
+\DoxyCodeLine{227     S to(torch::ScalarType dtype, \textcolor{keywordtype}{bool} non\_blocking = \textcolor{keyword}{false}, \textcolor{keywordtype}{bool} copy = \textcolor{keyword}{false},}
+\DoxyCodeLine{228          c10::optional<c10::MemoryFormat> memory\_format = c10::nullopt)\textcolor{keyword}{ const}}
+\DoxyCodeLine{229 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{230         S out = S::empty\_copy(\textcolor{keyword}{static\_cast<}S \textcolor{keyword}{const }\&\textcolor{keyword}{>}(*\textcolor{keyword}{this}));}
+\DoxyCodeLine{231         \textcolor{keyword}{auto} out\_it = out.begin();}
+\DoxyCodeLine{232         std::for\_each(this-\/>cbegin(), this-\/>cend(),}
+\DoxyCodeLine{233                       [\&out\_it, dtype, non\_blocking, copy, memory\_format](\textcolor{keyword}{const} \textcolor{keyword}{auto} \&atensor)}
+\DoxyCodeLine{234                       \{ *(out\_it++) = atensor.to(dtype, non\_blocking, copy, memory\_format); \});}
+\DoxyCodeLine{235         \textcolor{keywordflow}{return} out;}
+\DoxyCodeLine{236     \}}
+\DoxyCodeLine{237     S to(caffe2::TypeMeta type\_meta, \textcolor{keywordtype}{bool} non\_blocking = \textcolor{keyword}{false}, \textcolor{keywordtype}{bool} copy = \textcolor{keyword}{false},}
+\DoxyCodeLine{238          c10::optional<c10::MemoryFormat> memory\_format = c10::nullopt)\textcolor{keyword}{ const}}
+\DoxyCodeLine{239 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{240         S out = S::empty\_copy(\textcolor{keyword}{static\_cast<}S \textcolor{keyword}{const }\&\textcolor{keyword}{>}(*\textcolor{keyword}{this}));}
+\DoxyCodeLine{241         \textcolor{keyword}{auto} out\_it = out.begin();}
+\DoxyCodeLine{242         std::for\_each(this-\/>cbegin(), this-\/>cend(),}
+\DoxyCodeLine{243                       [\&out\_it, type\_meta, non\_blocking, copy, memory\_format](\textcolor{keyword}{const} \textcolor{keyword}{auto} \&atensor)}
+\DoxyCodeLine{244                       \{ *(out\_it++) = atensor.to(type\_meta, non\_blocking, copy, memory\_format); \});}
+\DoxyCodeLine{245         \textcolor{keywordflow}{return} out;}
+\DoxyCodeLine{246     \}}
+\DoxyCodeLine{247     S to(\textcolor{keyword}{const} tensor \&other, \textcolor{keywordtype}{bool} non\_blocking = \textcolor{keyword}{false}, \textcolor{keywordtype}{bool} copy = \textcolor{keyword}{false},}
+\DoxyCodeLine{248          c10::optional<c10::MemoryFormat> memory\_format = c10::nullopt)\textcolor{keyword}{ const}}
+\DoxyCodeLine{249 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{250         S out = S::empty\_copy(\textcolor{keyword}{static\_cast<}S \textcolor{keyword}{const }\&\textcolor{keyword}{>}(*\textcolor{keyword}{this}));}
+\DoxyCodeLine{251         \textcolor{keyword}{auto} out\_it = out.begin();}
+\DoxyCodeLine{252         std::for\_each(this-\/>cbegin(), this-\/>cend(),}
+\DoxyCodeLine{253                       [\&out\_it, \&other, non\_blocking, copy, memory\_format](\textcolor{keyword}{const} \textcolor{keyword}{auto} \&atensor)}
+\DoxyCodeLine{254                       \{ *(out\_it++) = atensor.to(other, non\_blocking, copy, memory\_format); \});}
+\DoxyCodeLine{255         \textcolor{keywordflow}{return} out;}
+\DoxyCodeLine{256     \}}
+\DoxyCodeLine{257     \textcolor{comment}{// inplace version of to, will resolve to any equivalent out-\/of-\/place equivalent.}}
+\DoxyCodeLine{258     \textcolor{keyword}{template} <\textcolor{keyword}{class}... Args>}
+\DoxyCodeLine{259     S \&to\_(Args \&\&...args)}
+\DoxyCodeLine{260     \{}
+\DoxyCodeLine{261         \textcolor{comment}{// torch::Tensor is really a pointer type, so copying it is pretty cheap: only the meta data get copied and}}
+\DoxyCodeLine{262         \textcolor{comment}{// shuffled around}}
+\DoxyCodeLine{263         \textcolor{comment}{// perhaps this could be done more efficiently, but the gains would almost certainly be incommensurate to the}}
+\DoxyCodeLine{264         \textcolor{comment}{// efforts.}}
+\DoxyCodeLine{265         \textcolor{keyword}{auto} other = this-\/>to(std::forward<Args>(args)...);}
+\DoxyCodeLine{266         swap(other);}
+\DoxyCodeLine{267         \textcolor{keywordflow}{return} \textcolor{keyword}{static\_cast<}S \&\textcolor{keyword}{>}(*this);}
+\DoxyCodeLine{268     \}}
+\DoxyCodeLine{269 \};}
+\DoxyCodeLine{274 \textcolor{keyword}{class }\mbox{\hyperlink{classquantit_1_1MPT}{MPT}} final : \textcolor{keyword}{public} \mbox{\hyperlink{classquantit_1_1vector__lift}{vector\_lift}}<MPT>}
+\DoxyCodeLine{275 \{}
+\DoxyCodeLine{276   \textcolor{keyword}{public}:}
+\DoxyCodeLine{277     \textcolor{comment}{// MPT() : vector\_lift<MPT>() \{\}}}
+\DoxyCodeLine{278     \textcolor{comment}{// MPT(size\_type size) : vector\_lift<MPT>(size) \{\}}}
+\DoxyCodeLine{279     \textcolor{comment}{// MPT(size\_type size, const Tens \&val) : vector\_lift<MPT>(size, val) \{\}}}
+\DoxyCodeLine{280     \textcolor{comment}{// MPT(const MPT \&other) : vector\_lift<MPT>(other) \{\}}}
+\DoxyCodeLine{281     \textcolor{comment}{// MPT(MPT \&\&other) noexcept : vector\_lift<MPT>(std::move(other)) \{\}}}
+\DoxyCodeLine{282     \textcolor{comment}{// MPT(std::initializer\_list<Tens> initl) : vector\_lift<MPT>(initl) \{\}}}
+\DoxyCodeLine{283     \textcolor{comment}{// MPT(const\_iterator begin, const\_iterator end) : vector\_lift(begin, end) \{\}}}
+\DoxyCodeLine{284     \textcolor{keyword}{using} \mbox{\hyperlink{classquantit_1_1vector__lift}{vector\_lift<MPT>::vector\_lift}}; \textcolor{comment}{// import base class constructors as they are.}}
+\DoxyCodeLine{285 }
+\DoxyCodeLine{286     \textcolor{keyword}{virtual} \mbox{\hyperlink{classquantit_1_1MPT}{\string~MPT}}() = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{287 }
+\DoxyCodeLine{288     \textcolor{keywordtype}{void} swap(\mbox{\hyperlink{classquantit_1_1MPT}{MPT}} \&other) \{ \mbox{\hyperlink{classquantit_1_1vector__lift}{vector\_lift<MPT>::swap}}(other); \}}
+\DoxyCodeLine{289 }
+\DoxyCodeLine{290     \textcolor{keyword}{friend} \textcolor{keywordtype}{void} swap(\mbox{\hyperlink{classquantit_1_1MPT}{MPT}} \&lhs, \mbox{\hyperlink{classquantit_1_1MPT}{MPT}} \&rhs) \{ lhs.swap(rhs); \}}
+\DoxyCodeLine{291     \mbox{\hyperlink{classquantit_1_1MPT}{MPT}} \&operator=(\mbox{\hyperlink{classquantit_1_1MPT}{MPT}} other)}
+\DoxyCodeLine{292     \{}
+\DoxyCodeLine{293         swap(other);}
+\DoxyCodeLine{294         \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{295     \}}
+\DoxyCodeLine{296 }
+\DoxyCodeLine{297     \textcolor{keyword}{static} \mbox{\hyperlink{classquantit_1_1MPT}{MPT}} empty\_copy(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1MPT}{MPT}} \&in) \{ \textcolor{keywordflow}{return} \mbox{\hyperlink{classquantit_1_1MPT}{MPT}}(in.size()); \}}
+\DoxyCodeLine{298 \};}
+\DoxyCodeLine{299 }
+\DoxyCodeLine{305 \textcolor{keyword}{class }\mbox{\hyperlink{classquantit_1_1MPS}{MPS}} final}
+\DoxyCodeLine{306     : \textcolor{keyword}{public} \mbox{\hyperlink{classquantit_1_1vector__lift}{vector\_lift}}<MPS> \textcolor{comment}{// specialization for rank 3 tensors, addionnaly can have an orthogonality center.}}
+\DoxyCodeLine{307 \{}
+\DoxyCodeLine{308   \textcolor{keyword}{public}:}
+\DoxyCodeLine{309     \mbox{\hyperlink{classproperty}{property<size\_t, MPS>}} orthogonality\_center; \textcolor{comment}{// read only for users}}
+\DoxyCodeLine{314 \textcolor{comment}{}    \textcolor{keywordtype}{bool} \mbox{\hyperlink{classquantit_1_1MPS_aa94c7caf5cc9dd3e0680e82047a96093}{check\_ranks}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{315     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} check\_one(\textcolor{keyword}{const} Tens \&tens);}
+\DoxyCodeLine{316     \mbox{\hyperlink{classquantit_1_1MPS}{MPS}}() : \mbox{\hyperlink{classquantit_1_1vector__lift}{vector\_lift}}<\mbox{\hyperlink{classquantit_1_1MPS}{MPS}}>(), orthogonality\_center(0) \{\}}
+\DoxyCodeLine{317     \mbox{\hyperlink{classquantit_1_1MPS}{MPS}}(size\_type size) : \mbox{\hyperlink{classquantit_1_1vector__lift}{vector\_lift}}<\mbox{\hyperlink{classquantit_1_1MPS}{MPS}}>(size), orthogonality\_center(0) \{\}}
+\DoxyCodeLine{318     MPS(size\_type size, \textcolor{keywordtype}{size\_t} oc) : vector\_lift<MPS>(size), orthogonality\_center(oc) \{\}}
+\DoxyCodeLine{319     MPS(\textcolor{keyword}{const} MPS \&other) : vector\_lift(other), orthogonality\_center(other.orthogonality\_center) \{\}}
+\DoxyCodeLine{320     MPS(MPS \&\&other) noexcept : vector\_lift(std::move(other)), orthogonality\_center(other.orthogonality\_center) \{\}}
+\DoxyCodeLine{321     MPS(std::vector<Tens> initl, \textcolor{keywordtype}{size\_t} oc = 0) : vector\_lift<MPS>(std::move(initl)), orthogonality\_center(oc)}
+\DoxyCodeLine{322     \{}
+\DoxyCodeLine{323         \textcolor{keywordtype}{bool} ok = \mbox{\hyperlink{classquantit_1_1MPS_aa94c7caf5cc9dd3e0680e82047a96093}{check\_ranks}}();}
+\DoxyCodeLine{324         \textcolor{keywordflow}{if} (not ok)}
+\DoxyCodeLine{325             \textcolor{keywordflow}{throw} std::invalid\_argument(\textcolor{stringliteral}{"{}one or more input Tensors has rank differing from 3 and/or a bond dimension "{}}}
+\DoxyCodeLine{326                                         \textcolor{stringliteral}{"{}mismatch with its neighbor (dims 0 and 2)."{}});}
+\DoxyCodeLine{327         \textcolor{keywordflow}{if} (oc >= size() and oc != 0)}
+\DoxyCodeLine{328             \textcolor{keywordflow}{throw} std::invalid\_argument(\textcolor{stringliteral}{"{}orthogonality center position greater than the number of defined tensors."{}});}
+\DoxyCodeLine{329     \}}
+\DoxyCodeLine{330     MPS(std::initializer\_list<Tens> initl, \textcolor{keywordtype}{size\_t} oc = 0) : vector\_lift<MPS>(initl), orthogonality\_center(oc)}
+\DoxyCodeLine{331     \{}
+\DoxyCodeLine{332         \textcolor{keywordtype}{bool} ok = \mbox{\hyperlink{classquantit_1_1MPS_aa94c7caf5cc9dd3e0680e82047a96093}{check\_ranks}}();}
+\DoxyCodeLine{333         \textcolor{keywordflow}{if} (not ok)}
+\DoxyCodeLine{334             \textcolor{keywordflow}{throw} std::invalid\_argument(\textcolor{stringliteral}{"{}one or more input Tensors has rank differing from 3 and/or a bond dimension "{}}}
+\DoxyCodeLine{335                                         \textcolor{stringliteral}{"{}mismatch with its neighbor (dims 0 and 2)."{}});}
+\DoxyCodeLine{336         \textcolor{keywordflow}{if} (oc >= size() and oc != 0)}
+\DoxyCodeLine{337             \textcolor{keywordflow}{throw} std::invalid\_argument(\textcolor{stringliteral}{"{}orthogonality center position greater than the number of defined tensors."{}});}
+\DoxyCodeLine{338     \}}
+\DoxyCodeLine{339 }
+\DoxyCodeLine{340     MPS(size\_type lenght, \textcolor{keyword}{const} Tens \&val, \textcolor{keywordtype}{size\_t} oc = 0) : vector\_lift(lenght, val), orthogonality\_center(oc)}
+\DoxyCodeLine{341     \{}
+\DoxyCodeLine{342         \textcolor{keywordtype}{bool} ok = check\_one(val);}
+\DoxyCodeLine{343         \textcolor{keywordflow}{if} (oc >= size() and oc != 0)}
+\DoxyCodeLine{344             \textcolor{keywordflow}{throw} std::invalid\_argument(\textcolor{stringliteral}{"{}orthogonality center position greater than the number of defined tensors."{}});}
+\DoxyCodeLine{345         \textcolor{keywordflow}{if} (not ok)}
+\DoxyCodeLine{346             \textcolor{keywordflow}{throw} std::invalid\_argument(}
+\DoxyCodeLine{347                 \textcolor{stringliteral}{"{}Input tensor must be of rank 3 and have equal bond dimensions (dims 0 and 2)."{}});}
+\DoxyCodeLine{348     \}}
+\DoxyCodeLine{349 }
+\DoxyCodeLine{350     MPS(\textcolor{keyword}{const} MPT \&other, \textcolor{keywordtype}{size\_t} oc = 0) : vector\_lift<MPS>(other), orthogonality\_center(oc)}
+\DoxyCodeLine{351     \{}
+\DoxyCodeLine{352         \textcolor{keywordtype}{bool} ok = \mbox{\hyperlink{classquantit_1_1MPS_aa94c7caf5cc9dd3e0680e82047a96093}{check\_ranks}}();}
+\DoxyCodeLine{353         \textcolor{keywordflow}{if} (not ok)}
+\DoxyCodeLine{354             \textcolor{keywordflow}{throw} std::invalid\_argument(\textcolor{stringliteral}{"{}Input MPT is an invalid MPS: one or more Tensors has rank differing from 3 "{}}}
+\DoxyCodeLine{355                                         \textcolor{stringliteral}{"{}and/or a bond dimension mismatch with its neighbor (dims 0 and 2)."{}});}
+\DoxyCodeLine{356         \textcolor{keywordflow}{if} (oc >= size() and oc != 0)}
+\DoxyCodeLine{357             \textcolor{keywordflow}{throw} std::invalid\_argument(\textcolor{stringliteral}{"{}orthogonality center position greater than the number of defined tensors."{}});}
+\DoxyCodeLine{358     \}}
+\DoxyCodeLine{359     MPS(MPT \&\&other, \textcolor{keywordtype}{size\_t} oc = 0) : vector\_lift<MPS>(std::move(other)), orthogonality\_center(oc)}
+\DoxyCodeLine{360     \{}
+\DoxyCodeLine{361         \textcolor{keywordtype}{bool} ok = \mbox{\hyperlink{classquantit_1_1MPS_aa94c7caf5cc9dd3e0680e82047a96093}{check\_ranks}}();}
+\DoxyCodeLine{362         \textcolor{keywordflow}{if} (not ok)}
+\DoxyCodeLine{363             \textcolor{keywordflow}{throw} std::invalid\_argument(\textcolor{stringliteral}{"{}Input MPT is an invalid MPS: one or more Tensors has rank differing from 3 "{}}}
+\DoxyCodeLine{364                                         \textcolor{stringliteral}{"{}and/or a bond dimension mismatch with its neighbor (dims 0 and 2)."{}});}
+\DoxyCodeLine{365         \textcolor{keywordflow}{if} (oc >= size() and oc != 0)}
+\DoxyCodeLine{366             \textcolor{keywordflow}{throw} std::invalid\_argument(\textcolor{stringliteral}{"{}orthogonality center position greater than the number of defined tensors."{}});}
+\DoxyCodeLine{367     \}}
+\DoxyCodeLine{368     MPS(const\_iterator begin, const\_iterator end) : vector\_lift(begin, end), orthogonality\_center(0) \{\}}
+\DoxyCodeLine{369 }
+\DoxyCodeLine{370     \textcolor{keyword}{virtual} \string~MPS() = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{371 }
+\DoxyCodeLine{372     \textcolor{keywordtype}{void} swap(MPS \&other)}
+\DoxyCodeLine{373     \{}
+\DoxyCodeLine{374         vector\_lift<MPS>::swap(other);}
+\DoxyCodeLine{375         \textcolor{keyword}{using} std::swap;}
+\DoxyCodeLine{376         swap(other.orthogonality\_center.value, orthogonality\_center.value);}
+\DoxyCodeLine{377     \}}
+\DoxyCodeLine{378 }
+\DoxyCodeLine{379     MPS \&operator=(MPS other)}
+\DoxyCodeLine{380     \{}
+\DoxyCodeLine{381         swap(other);}
+\DoxyCodeLine{382         \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{383     \}}
+\DoxyCodeLine{384 }
+\DoxyCodeLine{389     \textcolor{keyword}{explicit} \textcolor{keyword}{operator} \mbox{\hyperlink{classquantit_1_1MPT}{MPT}}()}
+\DoxyCodeLine{390     \{ \textcolor{comment}{// careful! the underlying data is shared.}}
+\DoxyCodeLine{391         \textcolor{keywordflow}{return} \mbox{\hyperlink{classquantit_1_1MPT}{MPT}}(\mbox{\hyperlink{classquantit_1_1vector__lift}{vector\_lift<MPT>}}(\textcolor{keyword}{static\_cast<}\mbox{\hyperlink{classquantit_1_1vector__lift}{vector\_lift<MPS>}} \&\textcolor{keyword}{>}(*\textcolor{keyword}{this})));}
+\DoxyCodeLine{392     \}}
+\DoxyCodeLine{393 }
+\DoxyCodeLine{397     \textcolor{keywordtype}{void} \mbox{\hyperlink{classquantit_1_1MPS_a13ec497de80f22e73b19d727d7db1af0}{move\_oc}}(\textcolor{keywordtype}{int} i);}
+\DoxyCodeLine{398     \textcolor{keyword}{friend} torch::Tensor details::dmrg\_impl(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1MPO}{MPO}} \&hamiltonian, \textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1MPT}{MPT}} \&twosites\_hamil, \mbox{\hyperlink{classquantit_1_1MPS}{MPS}} \&in\_out\_state,}
+\DoxyCodeLine{399                                             \textcolor{keyword}{const} \mbox{\hyperlink{structquantit_1_1dmrg__options}{dmrg\_options}} \&options, env\_holder \&Env,}
+\DoxyCodeLine{400                                             \mbox{\hyperlink{classquantit_1_1dmrg__logger}{dmrg\_logger}} \&logger); \textcolor{comment}{// allow dmrg to manipulate the oc.}}
+\DoxyCodeLine{401     \textcolor{keyword}{static} \mbox{\hyperlink{classquantit_1_1MPS}{MPS}} empty\_copy(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1MPS}{MPS}} \&in) \{ \textcolor{keywordflow}{return} \mbox{\hyperlink{classquantit_1_1MPS}{MPS}}(in.size(), in.oc); \}}
+\DoxyCodeLine{402 }
+\DoxyCodeLine{403   \textcolor{keyword}{private}:}
+\DoxyCodeLine{404     \textcolor{keywordtype}{size\_t} \&oc = orthogonality\_center.value; \textcolor{comment}{// private direct access to the value variable.}}
+\DoxyCodeLine{405 \};}
+\DoxyCodeLine{406 \textcolor{keyword}{inline} \textcolor{keywordtype}{void} swap(MPS \&lhs, MPS \&rhs) \{ lhs.swap(rhs); \}}
+\DoxyCodeLine{407 }
+\DoxyCodeLine{412 \textcolor{keyword}{class }\mbox{\hyperlink{classquantit_1_1MPO}{MPO}} final : \textcolor{keyword}{public} \mbox{\hyperlink{classquantit_1_1vector__lift}{vector\_lift}}<MPO> \textcolor{comment}{// specialization for rank 4 tensors}}
+\DoxyCodeLine{413 \{}
+\DoxyCodeLine{414   \textcolor{keyword}{public}:}
+\DoxyCodeLine{415     \textcolor{keywordtype}{bool} check\_ranks() \textcolor{keyword}{const};}
+\DoxyCodeLine{416     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} check\_one(\textcolor{keyword}{const} Tens \&tens);}
+\DoxyCodeLine{417 }
+\DoxyCodeLine{418     \mbox{\hyperlink{classquantit_1_1MPO}{MPO}}() : \mbox{\hyperlink{classquantit_1_1vector__lift}{vector\_lift<MPO>}}() \{\}}
+\DoxyCodeLine{419     \mbox{\hyperlink{classquantit_1_1MPO}{MPO}}(size\_type size) : \mbox{\hyperlink{classquantit_1_1vector__lift}{vector\_lift<MPO>}}(size) \{\}}
+\DoxyCodeLine{420     \mbox{\hyperlink{classquantit_1_1MPO}{MPO}}(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1MPO}{MPO}} \&other) : \mbox{\hyperlink{classquantit_1_1vector__lift}{vector\_lift<MPO>}}(other) \{\}}
+\DoxyCodeLine{421     \mbox{\hyperlink{classquantit_1_1MPO}{MPO}}(\mbox{\hyperlink{classquantit_1_1MPO}{MPO}} \&\&other) noexcept : \mbox{\hyperlink{classquantit_1_1vector__lift}{vector\_lift<MPO>}}(std::move(other)) \{\}}
+\DoxyCodeLine{422     \mbox{\hyperlink{classquantit_1_1MPO}{MPO}}(std::vector<Tens> initl) : \mbox{\hyperlink{classquantit_1_1vector__lift}{vector\_lift<MPO>}}(std::move(initl))}
+\DoxyCodeLine{423     \{}
+\DoxyCodeLine{424         \textcolor{keywordtype}{bool} ok = check\_ranks();}
+\DoxyCodeLine{425         \textcolor{comment}{// @cond}}
+\DoxyCodeLine{426         \textcolor{keywordflow}{if} (not ok)}
+\DoxyCodeLine{427         \{}
+\DoxyCodeLine{428             \textcolor{keywordflow}{throw} std::invalid\_argument(\textcolor{stringliteral}{"{}one or more input Tensors has rank differing from 4 and/or a bond dimension "{}}}
+\DoxyCodeLine{429                                         \textcolor{stringliteral}{"{}mismatch with its neighbor (dims 0 and 2)."{}});}
+\DoxyCodeLine{430         \}}
+\DoxyCodeLine{431         \textcolor{comment}{// @endcond}}
+\DoxyCodeLine{432     \}}
+\DoxyCodeLine{433     \mbox{\hyperlink{classquantit_1_1MPO}{MPO}}(std::initializer\_list<Tens> initl) : \mbox{\hyperlink{classquantit_1_1vector__lift}{vector\_lift<MPO>}}(initl)}
+\DoxyCodeLine{434     \{}
+\DoxyCodeLine{435         \textcolor{keywordtype}{bool} ok = check\_ranks();}
+\DoxyCodeLine{436         \textcolor{comment}{// @cond}}
+\DoxyCodeLine{437         \textcolor{keywordflow}{if} (not ok)}
+\DoxyCodeLine{438         \{}
+\DoxyCodeLine{439             \textcolor{keywordflow}{throw} std::invalid\_argument(\textcolor{stringliteral}{"{}one or more input Tensors has rank differing from 4 and/or a bond dimension "{}}}
+\DoxyCodeLine{440                                         \textcolor{stringliteral}{"{}mismatch with its neighbor (dims 0 and 2)."{}});}
+\DoxyCodeLine{441         \}}
+\DoxyCodeLine{442         \textcolor{comment}{// @endcond}}
+\DoxyCodeLine{443     \}}
+\DoxyCodeLine{444 }
+\DoxyCodeLine{445     \mbox{\hyperlink{classquantit_1_1MPO}{MPO}}(size\_type size, \textcolor{keyword}{const} Tens \&val) : \mbox{\hyperlink{classquantit_1_1vector__lift}{vector\_lift<MPO>}}(size, val)}
+\DoxyCodeLine{446     \{}
+\DoxyCodeLine{447         \textcolor{keywordtype}{bool} ok = check\_one(val);}
+\DoxyCodeLine{448         \textcolor{keywordflow}{if} (not ok)}
+\DoxyCodeLine{449             \textcolor{keywordflow}{throw} std::invalid\_argument(}
+\DoxyCodeLine{450                 \textcolor{stringliteral}{"{}Input tensor must be of rank 4 and have equal bond dimensions (dims 0 and 2)."{}});}
+\DoxyCodeLine{451     \}}
+\DoxyCodeLine{452 }
+\DoxyCodeLine{453     \mbox{\hyperlink{classquantit_1_1MPO}{MPO}}(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1MPT}{MPT}} \&other) : \mbox{\hyperlink{classquantit_1_1vector__lift}{vector\_lift<MPO>}}(other)}
+\DoxyCodeLine{454     \{}
+\DoxyCodeLine{455         \textcolor{keywordtype}{bool} ok = check\_ranks();}
+\DoxyCodeLine{456         \textcolor{keywordflow}{if} (not ok)}
+\DoxyCodeLine{457             \textcolor{keywordflow}{throw} std::invalid\_argument(\textcolor{stringliteral}{"{}Input MPT is an invalid MPO: one or more Tensors has rank differing from 4 "{}}}
+\DoxyCodeLine{458                                         \textcolor{stringliteral}{"{}and/or a bond dimension mismatch with its neighbor (dims 0 and 2)."{}});}
+\DoxyCodeLine{459     \}}
+\DoxyCodeLine{460     \mbox{\hyperlink{classquantit_1_1MPO}{MPO}}(\mbox{\hyperlink{classquantit_1_1MPT}{MPT}} \&\&other) : \mbox{\hyperlink{classquantit_1_1vector__lift}{vector\_lift<MPO>}}(std::move(other))}
+\DoxyCodeLine{461     \{}
+\DoxyCodeLine{462         \textcolor{keywordtype}{bool} ok = check\_ranks();}
+\DoxyCodeLine{463         \textcolor{keywordflow}{if} (not ok)}
+\DoxyCodeLine{464             \textcolor{keywordflow}{throw} std::invalid\_argument(\textcolor{stringliteral}{"{}Input MPT is an invalid MPO: one or more Tensors has rank differing from 4 "{}}}
+\DoxyCodeLine{465                                         \textcolor{stringliteral}{"{}and/or a bond dimension mismatch with its neighbor (dims 0 and 2)."{}});}
+\DoxyCodeLine{466     \}}
+\DoxyCodeLine{467     \mbox{\hyperlink{classquantit_1_1MPO}{MPO}}(const\_iterator begin, const\_iterator end) : \mbox{\hyperlink{classquantit_1_1vector__lift}{vector\_lift<MPO>}}(begin, end) \{\}}
+\DoxyCodeLine{468 }
+\DoxyCodeLine{469     \textcolor{keyword}{virtual} \mbox{\hyperlink{classquantit_1_1MPO}{\string~MPO}}() = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{470 }
+\DoxyCodeLine{471     \textcolor{keywordtype}{void} swap(\mbox{\hyperlink{classquantit_1_1MPO}{MPO}} \&other) \textcolor{keyword}{noexcept} \{ \mbox{\hyperlink{classquantit_1_1vector__lift}{vector\_lift<MPO>::swap}}(other); \}}
+\DoxyCodeLine{472 }
+\DoxyCodeLine{473     \textcolor{keyword}{explicit} \textcolor{keyword}{operator} \mbox{\hyperlink{classquantit_1_1MPT}{MPT}}()}
+\DoxyCodeLine{474     \{ \textcolor{comment}{// careful! the underlying data is shared.}}
+\DoxyCodeLine{475         \textcolor{keywordflow}{return} \mbox{\hyperlink{classquantit_1_1MPT}{MPT}}(\mbox{\hyperlink{classquantit_1_1vector__lift}{vector\_lift<MPT>}}(\textcolor{keyword}{static\_cast<}\mbox{\hyperlink{classquantit_1_1vector__lift}{vector\_lift<MPO>}} \&\textcolor{keyword}{>}(*\textcolor{keyword}{this})));}
+\DoxyCodeLine{476     \}}
+\DoxyCodeLine{477 }
+\DoxyCodeLine{478     \mbox{\hyperlink{classquantit_1_1MPO}{MPO}} \&operator=(\mbox{\hyperlink{classquantit_1_1MPO}{MPO}} other) \textcolor{keyword}{noexcept}}
+\DoxyCodeLine{479     \{}
+\DoxyCodeLine{480         swap(other);}
+\DoxyCodeLine{481         \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{482     \}}
+\DoxyCodeLine{483 }
+\DoxyCodeLine{484     \textcolor{keyword}{static} \mbox{\hyperlink{classquantit_1_1MPO}{MPO}} empty\_copy(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1MPO}{MPO}} \&in) \{ \textcolor{keywordflow}{return} \mbox{\hyperlink{classquantit_1_1MPO}{MPO}}(in.size()); \}}
+\DoxyCodeLine{485 \};}
+\DoxyCodeLine{486 \textcolor{keyword}{inline} \textcolor{keywordtype}{void} swap(\mbox{\hyperlink{classquantit_1_1MPO}{MPO}} \&lhs, \mbox{\hyperlink{classquantit_1_1MPO}{MPO}} \&rhs) \textcolor{keyword}{noexcept} \{ lhs.swap(rhs); \}}
+\DoxyCodeLine{487 \textcolor{keyword}{class }\mbox{\hyperlink{classquantit_1_1bMPT}{bMPT}} final : \textcolor{keyword}{public} \mbox{\hyperlink{classquantit_1_1vector__lift}{vector\_lift}}<bMPT, btensor>}
+\DoxyCodeLine{488 \{}
+\DoxyCodeLine{489   \textcolor{keyword}{public}:}
+\DoxyCodeLine{490     \textcolor{comment}{// bMPT() : vector\_lift<bMPT, btensor>() \{\}}}
+\DoxyCodeLine{491     \textcolor{comment}{// bMPT(size\_type size) : vector\_lift<bMPT, btensor>(size) \{\}}}
+\DoxyCodeLine{492     \textcolor{comment}{// bMPT(size\_type size, const Tens \&val) : vector\_lift<bMPT, btensor>(size, val) \{\}}}
+\DoxyCodeLine{493     \textcolor{comment}{// bMPT(const bMPT \&other) : vector\_lift(other) \{\}}}
+\DoxyCodeLine{494     \textcolor{comment}{// bMPT(bMPT \&\&other) noexcept : vector\_lift(std::move(other)) \{\}}}
+\DoxyCodeLine{495     \textcolor{comment}{// bMPT(std::initializer\_list<Tens> initl) : vector\_lift<bMPT, btensor>(initl) \{\}}}
+\DoxyCodeLine{496     \textcolor{comment}{// bMPT(const\_iterator begin, const\_iterator end) : vector\_lift(begin, end) \{\}}}
+\DoxyCodeLine{497     \textcolor{keyword}{using} \mbox{\hyperlink{classquantit_1_1vector__lift}{vector\_lift<bMPT, btensor>::vector\_lift}};}
+\DoxyCodeLine{498 }
+\DoxyCodeLine{499     \textcolor{keyword}{virtual} \mbox{\hyperlink{classquantit_1_1bMPT}{\string~bMPT}}() = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{500 }
+\DoxyCodeLine{501     \textcolor{keywordtype}{void} swap(\mbox{\hyperlink{classquantit_1_1bMPT}{bMPT}} \&other) \{ \mbox{\hyperlink{classquantit_1_1vector__lift}{vector\_lift<bMPT, btensor>::swap}}(other); \}}
+\DoxyCodeLine{502 }
+\DoxyCodeLine{503     \textcolor{keyword}{friend} \textcolor{keywordtype}{void} swap(\mbox{\hyperlink{classquantit_1_1bMPT}{bMPT}} \&lhs, \mbox{\hyperlink{classquantit_1_1bMPT}{bMPT}} \&rhs) \{ lhs.swap(rhs); \}}
+\DoxyCodeLine{504     \mbox{\hyperlink{classquantit_1_1bMPT}{bMPT}} \&operator=(\mbox{\hyperlink{classquantit_1_1bMPT}{bMPT}} other)}
+\DoxyCodeLine{505     \{}
+\DoxyCodeLine{506         swap(other);}
+\DoxyCodeLine{507         \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{508     \}}
+\DoxyCodeLine{509 }
+\DoxyCodeLine{510     \textcolor{keyword}{static} \mbox{\hyperlink{classquantit_1_1bMPT}{bMPT}} empty\_copy(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1bMPT}{bMPT}} \&in) \{ \textcolor{keywordflow}{return} \mbox{\hyperlink{classquantit_1_1bMPT}{bMPT}}(in.size()); \}}
+\DoxyCodeLine{511 \};}
+\DoxyCodeLine{512 }
+\DoxyCodeLine{518 \textcolor{keyword}{class }\mbox{\hyperlink{classquantit_1_1bMPS}{bMPS}} final : \textcolor{keyword}{public} \mbox{\hyperlink{classquantit_1_1vector__lift}{vector\_lift}}<bMPS, btensor> \textcolor{comment}{// specialization for rank 3 tensors, addionnaly can have an}}
+\DoxyCodeLine{519                                                      \textcolor{comment}{// orthogonality center.}}
+\DoxyCodeLine{520 \{}
+\DoxyCodeLine{521   \textcolor{keyword}{public}:}
+\DoxyCodeLine{522     \mbox{\hyperlink{classproperty}{property<size\_t, bMPS>}} orthogonality\_center; \textcolor{comment}{// read only for users}}
+\DoxyCodeLine{527 \textcolor{comment}{}    \textcolor{keywordtype}{bool} \mbox{\hyperlink{classquantit_1_1bMPS_a2bfe618dc0f729574e85e4730d26e352}{check\_ranks}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{528     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} check\_one(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1btensor}{Tens}} \&tens);}
+\DoxyCodeLine{529     \mbox{\hyperlink{classquantit_1_1bMPS}{bMPS}}() : \mbox{\hyperlink{classquantit_1_1vector__lift}{vector\_lift}}<\mbox{\hyperlink{classquantit_1_1bMPS}{bMPS}}, \mbox{\hyperlink{classquantit_1_1btensor}{btensor}}>(), orthogonality\_center(0) \{\}}
+\DoxyCodeLine{530     \mbox{\hyperlink{classquantit_1_1bMPS}{bMPS}}(size\_type size) : \mbox{\hyperlink{classquantit_1_1vector__lift}{vector\_lift}}<\mbox{\hyperlink{classquantit_1_1bMPS}{bMPS}}, \mbox{\hyperlink{classquantit_1_1btensor}{btensor}}>(size), orthogonality\_center(0) \{\}}
+\DoxyCodeLine{531     bMPS(size\_type size, \textcolor{keywordtype}{size\_t} oc) : vector\_lift<bMPS, btensor>(size), orthogonality\_center(std::min(oc, size -\/ 1)) \{\}}
+\DoxyCodeLine{532     bMPS(\textcolor{keyword}{const} bMPS \&other) : vector\_lift(other), orthogonality\_center(other.orthogonality\_center) \{\}}
+\DoxyCodeLine{533     bMPS(bMPS \&\&other) noexcept : vector\_lift(std::move(other)), orthogonality\_center(other.orthogonality\_center) \{\}}
+\DoxyCodeLine{534     bMPS(std::vector<Tens> initl, \textcolor{keywordtype}{size\_t} oc = 0)}
+\DoxyCodeLine{535         : vector\_lift<bMPS, btensor>(std::move(initl)), orthogonality\_center(oc)}
+\DoxyCodeLine{536     \{}
+\DoxyCodeLine{537         \textcolor{keywordtype}{bool} ok = \mbox{\hyperlink{classquantit_1_1bMPS_a2bfe618dc0f729574e85e4730d26e352}{check\_ranks}}();}
+\DoxyCodeLine{538         \textcolor{keywordflow}{if} (not ok)}
+\DoxyCodeLine{539             \textcolor{keywordflow}{throw} std::invalid\_argument(\textcolor{stringliteral}{"{}one or more input Tensors has rank differing from 3 and/or a bond dimension "{}}}
+\DoxyCodeLine{540                                         \textcolor{stringliteral}{"{}mismatch with its neighbor (dims 0 and 2)."{}});}
+\DoxyCodeLine{541         \textcolor{keywordflow}{if} (oc >= size() and oc != 0)}
+\DoxyCodeLine{542             \textcolor{keywordflow}{throw} std::invalid\_argument(\textcolor{stringliteral}{"{}orthogonality center position greater than the number of defined tensors."{}});}
+\DoxyCodeLine{543     \}}
+\DoxyCodeLine{544     bMPS(std::initializer\_list<Tens> initl, \textcolor{keywordtype}{size\_t} oc = 0) : vector\_lift<bMPS, btensor>(initl), orthogonality\_center(oc)}
+\DoxyCodeLine{545     \{}
+\DoxyCodeLine{546         \textcolor{keywordtype}{bool} ok = \mbox{\hyperlink{classquantit_1_1bMPS_a2bfe618dc0f729574e85e4730d26e352}{check\_ranks}}();}
+\DoxyCodeLine{547         \textcolor{keywordflow}{if} (not ok)}
+\DoxyCodeLine{548             \textcolor{keywordflow}{throw} std::invalid\_argument(\textcolor{stringliteral}{"{}one or more input Tensors has rank differing from 3 and/or a bond dimension "{}}}
+\DoxyCodeLine{549                                         \textcolor{stringliteral}{"{}mismatch with its neighbor (dims 0 and 2)."{}});}
+\DoxyCodeLine{550         \textcolor{keywordflow}{if} (oc >= size() and oc != 0)}
+\DoxyCodeLine{551             \textcolor{keywordflow}{throw} std::invalid\_argument(\textcolor{stringliteral}{"{}orthogonality center position greater than the number of defined tensors."{}});}
+\DoxyCodeLine{552     \}}
+\DoxyCodeLine{553 }
+\DoxyCodeLine{554     bMPS(size\_type lenght, \textcolor{keyword}{const} Tens \&val, \textcolor{keywordtype}{size\_t} oc = 0) : vector\_lift(lenght, val), orthogonality\_center(oc)}
+\DoxyCodeLine{555     \{}
+\DoxyCodeLine{556         \textcolor{keywordtype}{bool} ok = check\_one(val);}
+\DoxyCodeLine{557         \textcolor{keywordflow}{if} (oc >= size() and oc != 0)}
+\DoxyCodeLine{558             \textcolor{keywordflow}{throw} std::invalid\_argument(\textcolor{stringliteral}{"{}orthogonality center position greater than the number of defined tensors."{}});}
+\DoxyCodeLine{559         \textcolor{keywordflow}{if} (not ok)}
+\DoxyCodeLine{560             \textcolor{keywordflow}{throw} std::invalid\_argument(}
+\DoxyCodeLine{561                 \textcolor{stringliteral}{"{}Input tensor must be of rank 3 and have equal bond dimensions (dims 0 and 2)."{}});}
+\DoxyCodeLine{562     \}}
+\DoxyCodeLine{563 }
+\DoxyCodeLine{564     bMPS(\textcolor{keyword}{const} bMPT \&other, \textcolor{keywordtype}{size\_t} oc = 0) : vector\_lift(other), orthogonality\_center(oc)}
+\DoxyCodeLine{565     \{}
+\DoxyCodeLine{566         \textcolor{keywordtype}{bool} ok = \mbox{\hyperlink{classquantit_1_1bMPS_a2bfe618dc0f729574e85e4730d26e352}{check\_ranks}}();}
+\DoxyCodeLine{567         \textcolor{keywordflow}{if} (not ok)}
+\DoxyCodeLine{568             \textcolor{keywordflow}{throw} std::invalid\_argument(\textcolor{stringliteral}{"{}Input bMPT is an invalid bMPS: one or more Tensors has rank differing from 3 "{}}}
+\DoxyCodeLine{569                                         \textcolor{stringliteral}{"{}and/or a bond dimension mismatch with its neighbor (dims 0 and 2)."{}});}
+\DoxyCodeLine{570         \textcolor{keywordflow}{if} (oc >= size() and oc != 0)}
+\DoxyCodeLine{571             \textcolor{keywordflow}{throw} std::invalid\_argument(\textcolor{stringliteral}{"{}orthogonality center position greater than the number of defined tensors."{}});}
+\DoxyCodeLine{572     \}}
+\DoxyCodeLine{573     bMPS(bMPT \&\&other, \textcolor{keywordtype}{size\_t} oc = 0) : vector\_lift(std::move(other)), orthogonality\_center(oc)}
+\DoxyCodeLine{574     \{}
+\DoxyCodeLine{575         \textcolor{keywordtype}{bool} ok = \mbox{\hyperlink{classquantit_1_1bMPS_a2bfe618dc0f729574e85e4730d26e352}{check\_ranks}}();}
+\DoxyCodeLine{576         \textcolor{keywordflow}{if} (not ok)}
+\DoxyCodeLine{577             \textcolor{keywordflow}{throw} std::invalid\_argument(\textcolor{stringliteral}{"{}Input bMPT is an invalid bMPS: one or more Tensors has rank differing from 3 "{}}}
+\DoxyCodeLine{578                                         \textcolor{stringliteral}{"{}and/or a bond dimension mismatch with its neighbor (dims 0 and 2)."{}});}
+\DoxyCodeLine{579         \textcolor{keywordflow}{if} (oc >= size() and oc != 0)}
+\DoxyCodeLine{580             \textcolor{keywordflow}{throw} std::invalid\_argument(\textcolor{stringliteral}{"{}orthogonality center position greater than the number of defined tensors."{}});}
+\DoxyCodeLine{581     \}}
+\DoxyCodeLine{582     bMPS(const\_iterator begin, const\_iterator end) : vector\_lift(begin, end) \{\}}
+\DoxyCodeLine{583 }
+\DoxyCodeLine{584     \textcolor{keyword}{virtual} \string~bMPS() = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{585 }
+\DoxyCodeLine{586     \textcolor{keywordtype}{void} swap(bMPS \&other)}
+\DoxyCodeLine{587     \{}
+\DoxyCodeLine{588         vector\_lift<bMPS, btensor>::swap(other);}
+\DoxyCodeLine{589         \textcolor{keyword}{using} std::swap;}
+\DoxyCodeLine{590         swap(other.orthogonality\_center.value, orthogonality\_center.value);}
+\DoxyCodeLine{591     \}}
+\DoxyCodeLine{592 }
+\DoxyCodeLine{593     bMPS \&operator=(bMPS other)}
+\DoxyCodeLine{594     \{}
+\DoxyCodeLine{595         swap(other);}
+\DoxyCodeLine{596         \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{597     \}}
+\DoxyCodeLine{598 }
+\DoxyCodeLine{603     \textcolor{keyword}{explicit} \textcolor{keyword}{operator} \mbox{\hyperlink{classquantit_1_1bMPT}{bMPT}}()}
+\DoxyCodeLine{604     \{ \textcolor{comment}{// careful! the underlying data is shared.}}
+\DoxyCodeLine{605         \textcolor{keywordflow}{return} \mbox{\hyperlink{classquantit_1_1bMPT}{bMPT}}(\mbox{\hyperlink{classquantit_1_1vector__lift}{vector\_lift<bMPT, btensor>}}(\textcolor{keyword}{static\_cast<}\mbox{\hyperlink{classquantit_1_1vector__lift}{vector\_lift<bMPS, btensor>}} \&\textcolor{keyword}{>}(*\textcolor{keyword}{this})));}
+\DoxyCodeLine{606     \}}
+\DoxyCodeLine{607 }
+\DoxyCodeLine{611     \textcolor{keywordtype}{void} \mbox{\hyperlink{classquantit_1_1bMPS_aec3eec819f40f05589f5e35a1b14bb08}{move\_oc}}(\textcolor{keywordtype}{int} i);}
+\DoxyCodeLine{612     \textcolor{keyword}{friend} \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} details::dmrg\_impl(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1bMPO}{bMPO}} \&hamiltonian, \textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1bMPT}{bMPT}} \&two\_sites\_hamil, \mbox{\hyperlink{classquantit_1_1bMPS}{bMPS}} \&in\_out\_state,}
+\DoxyCodeLine{613                                       \textcolor{keyword}{const} \mbox{\hyperlink{structquantit_1_1dmrg__options}{dmrg\_options}} \&options, benv\_holder \&Env,}
+\DoxyCodeLine{614                                       \mbox{\hyperlink{classquantit_1_1dmrg__logger}{dmrg\_logger}} \&logger); \textcolor{comment}{// allow dmrg to manipulate the oc.}}
+\DoxyCodeLine{615     \textcolor{keyword}{static} \mbox{\hyperlink{classquantit_1_1bMPS}{bMPS}} empty\_copy(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1bMPS}{bMPS}} \&in) \{ \textcolor{keywordflow}{return} \mbox{\hyperlink{classquantit_1_1bMPS}{bMPS}}(in.size(), in.oc); \}}
+\DoxyCodeLine{616 }
+\DoxyCodeLine{617   \textcolor{keyword}{private}:}
+\DoxyCodeLine{618     \textcolor{keywordtype}{size\_t} \&oc = orthogonality\_center.value; \textcolor{comment}{// private direct access to the value variable.}}
+\DoxyCodeLine{619 \};}
+\DoxyCodeLine{620 \textcolor{keyword}{inline} \textcolor{keywordtype}{void} swap(bMPS \&lhs, bMPS \&rhs) \{ lhs.swap(rhs); \}}
+\DoxyCodeLine{621 }
+\DoxyCodeLine{626 \textcolor{keyword}{class }\mbox{\hyperlink{classquantit_1_1bMPO}{bMPO}} final : \textcolor{keyword}{public} \mbox{\hyperlink{classquantit_1_1vector__lift}{vector\_lift}}<bMPO, btensor> \textcolor{comment}{// specialization for rank 4 tensors}}
+\DoxyCodeLine{627 \{}
+\DoxyCodeLine{628   \textcolor{keyword}{public}:}
+\DoxyCodeLine{629     \textcolor{keywordtype}{bool} check\_ranks() \textcolor{keyword}{const};}
+\DoxyCodeLine{630     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} check\_one(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1btensor}{Tens}} \&tens);}
+\DoxyCodeLine{631 }
+\DoxyCodeLine{632     \mbox{\hyperlink{classquantit_1_1bMPO}{bMPO}}() : \mbox{\hyperlink{classquantit_1_1vector__lift}{vector\_lift<bMPO, btensor>}}() \{\}}
+\DoxyCodeLine{633     \mbox{\hyperlink{classquantit_1_1bMPO}{bMPO}}(size\_type size) : \mbox{\hyperlink{classquantit_1_1vector__lift}{vector\_lift<bMPO, btensor>}}(size) \{\}}
+\DoxyCodeLine{634     \mbox{\hyperlink{classquantit_1_1bMPO}{bMPO}}(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1bMPO}{bMPO}} \&other) : \mbox{\hyperlink{classquantit_1_1vector__lift}{vector\_lift}}(other) \{\}}
+\DoxyCodeLine{635     \mbox{\hyperlink{classquantit_1_1bMPO}{bMPO}}(\mbox{\hyperlink{classquantit_1_1bMPO}{bMPO}} \&\&other) noexcept : \mbox{\hyperlink{classquantit_1_1vector__lift}{vector\_lift}}(std::move(other)) \{\}}
+\DoxyCodeLine{636     \mbox{\hyperlink{classquantit_1_1bMPO}{bMPO}}(std::initializer\_list<Tens> initl) : \mbox{\hyperlink{classquantit_1_1vector__lift}{vector\_lift<bMPO, btensor>}}(initl)}
+\DoxyCodeLine{637     \{}
+\DoxyCodeLine{638         \textcolor{keywordtype}{bool} ok = check\_ranks();}
+\DoxyCodeLine{639         \textcolor{comment}{// @cond}}
+\DoxyCodeLine{640         \textcolor{keywordflow}{if} (not ok)}
+\DoxyCodeLine{641         \{}
+\DoxyCodeLine{642             \textcolor{keywordflow}{throw} std::invalid\_argument(\textcolor{stringliteral}{"{}one or more input Tensors has rank differing from 4 and/or a bond dimension "{}}}
+\DoxyCodeLine{643                                         \textcolor{stringliteral}{"{}mismatch with its neighbor (dims 0 and 2)."{}});}
+\DoxyCodeLine{644         \}}
+\DoxyCodeLine{645         \textcolor{comment}{// @endcond}}
+\DoxyCodeLine{646     \}}
+\DoxyCodeLine{647     \mbox{\hyperlink{classquantit_1_1bMPO}{bMPO}}(std::vector<Tens> initl) : \mbox{\hyperlink{classquantit_1_1vector__lift}{vector\_lift<bMPO, btensor>}}(std::move(initl))}
+\DoxyCodeLine{648     \{}
+\DoxyCodeLine{649         \textcolor{keywordtype}{bool} ok = check\_ranks();}
+\DoxyCodeLine{650         \textcolor{comment}{// @cond}}
+\DoxyCodeLine{651         \textcolor{keywordflow}{if} (not ok)}
+\DoxyCodeLine{652         \{}
+\DoxyCodeLine{653             \textcolor{keywordflow}{throw} std::invalid\_argument(\textcolor{stringliteral}{"{}one or more input Tensors has rank differing from 4 and/or a bond dimension "{}}}
+\DoxyCodeLine{654                                         \textcolor{stringliteral}{"{}mismatch with its neighbor (dims 0 and 2)."{}});}
+\DoxyCodeLine{655         \}}
+\DoxyCodeLine{656         \textcolor{comment}{// @endcond}}
+\DoxyCodeLine{657     \}}
+\DoxyCodeLine{658 }
+\DoxyCodeLine{659     \mbox{\hyperlink{classquantit_1_1bMPO}{bMPO}}(size\_type size, \textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1btensor}{Tens}} \&val) : \mbox{\hyperlink{classquantit_1_1vector__lift}{vector\_lift<bMPO, btensor>}}(size, val)}
+\DoxyCodeLine{660     \{}
+\DoxyCodeLine{661         \textcolor{keywordtype}{bool} ok = check\_one(val);}
+\DoxyCodeLine{662         \textcolor{keywordflow}{if} (not ok)}
+\DoxyCodeLine{663             \textcolor{keywordflow}{throw} std::invalid\_argument(}
+\DoxyCodeLine{664                 \textcolor{stringliteral}{"{}Input tensor must be of rank 4 and have equal bond dimensions (dims 0 and 2)."{}});}
+\DoxyCodeLine{665     \}}
+\DoxyCodeLine{666 }
+\DoxyCodeLine{667     \mbox{\hyperlink{classquantit_1_1bMPO}{bMPO}}(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1bMPT}{bMPT}} \&other) : \mbox{\hyperlink{classquantit_1_1vector__lift}{vector\_lift}}(other)}
+\DoxyCodeLine{668     \{}
+\DoxyCodeLine{669         \textcolor{keywordtype}{bool} ok = check\_ranks();}
+\DoxyCodeLine{670         \textcolor{keywordflow}{if} (not ok)}
+\DoxyCodeLine{671             \textcolor{keywordflow}{throw} std::invalid\_argument(\textcolor{stringliteral}{"{}Input bMPT is an invalid bMPO: one or more Tensors has rank differing from 4 "{}}}
+\DoxyCodeLine{672                                         \textcolor{stringliteral}{"{}and/or a bond dimension mismatch with its neighbor (dims 0 and 2)."{}});}
+\DoxyCodeLine{673     \}}
+\DoxyCodeLine{674     \mbox{\hyperlink{classquantit_1_1bMPO}{bMPO}}(\mbox{\hyperlink{classquantit_1_1bMPT}{bMPT}} \&\&other) : \mbox{\hyperlink{classquantit_1_1vector__lift}{vector\_lift}}(std::move(other))}
+\DoxyCodeLine{675     \{}
+\DoxyCodeLine{676         \textcolor{keywordtype}{bool} ok = check\_ranks();}
+\DoxyCodeLine{677         \textcolor{keywordflow}{if} (not ok)}
+\DoxyCodeLine{678             \textcolor{keywordflow}{throw} std::invalid\_argument(\textcolor{stringliteral}{"{}Input bMPT is an invalid bMPO: one or more Tensors has rank differing from 4 "{}}}
+\DoxyCodeLine{679                                         \textcolor{stringliteral}{"{}and/or a bond dimension mismatch with its neighbor (dims 0 and 2)."{}});}
+\DoxyCodeLine{680     \}}
+\DoxyCodeLine{681     \mbox{\hyperlink{classquantit_1_1bMPO}{bMPO}}(const\_iterator begin, const\_iterator end) : \mbox{\hyperlink{classquantit_1_1vector__lift}{vector\_lift}}(begin, end) \{\}}
+\DoxyCodeLine{682 }
+\DoxyCodeLine{683     \textcolor{keyword}{virtual} \mbox{\hyperlink{classquantit_1_1bMPO}{\string~bMPO}}() = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{684 }
+\DoxyCodeLine{685     \textcolor{keywordtype}{void} swap(\mbox{\hyperlink{classquantit_1_1bMPO}{bMPO}} \&other) \textcolor{keyword}{noexcept} \{ \mbox{\hyperlink{classquantit_1_1vector__lift}{vector\_lift<bMPO, btensor>::swap}}(other); \}}
+\DoxyCodeLine{686 }
+\DoxyCodeLine{687     \textcolor{keyword}{explicit} \textcolor{keyword}{operator} \mbox{\hyperlink{classquantit_1_1bMPT}{bMPT}}()}
+\DoxyCodeLine{688     \{ \textcolor{comment}{// careful! the underlying data is shared.}}
+\DoxyCodeLine{689         \textcolor{keywordflow}{return} \mbox{\hyperlink{classquantit_1_1bMPT}{bMPT}}(\mbox{\hyperlink{classquantit_1_1vector__lift}{vector\_lift<bMPT, btensor>}}(\textcolor{keyword}{static\_cast<}\mbox{\hyperlink{classquantit_1_1vector__lift}{vector\_lift<bMPO, btensor>}} \&\textcolor{keyword}{>}(*\textcolor{keyword}{this})));}
+\DoxyCodeLine{690     \}}
+\DoxyCodeLine{691 }
+\DoxyCodeLine{692     \mbox{\hyperlink{classquantit_1_1bMPO}{bMPO}} \&operator=(\mbox{\hyperlink{classquantit_1_1bMPO}{bMPO}} other) \textcolor{keyword}{noexcept}}
+\DoxyCodeLine{693     \{}
+\DoxyCodeLine{694         swap(other);}
+\DoxyCodeLine{695         \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{696     \}}
+\DoxyCodeLine{697 }
+\DoxyCodeLine{698     \textcolor{keyword}{static} \mbox{\hyperlink{classquantit_1_1bMPO}{bMPO}} empty\_copy(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1bMPO}{bMPO}} \&in) \{ \textcolor{keywordflow}{return} \mbox{\hyperlink{classquantit_1_1bMPO}{bMPO}}(in.size()); \}}
+\DoxyCodeLine{699     \mbox{\hyperlink{classquantit_1_1bMPO}{bMPO}} \&coalesce(btensor::Scalar cutoff = 0);}
+\DoxyCodeLine{700 \};}
+\DoxyCodeLine{701 \textcolor{keyword}{inline} \textcolor{keywordtype}{void} swap(\mbox{\hyperlink{classquantit_1_1bMPO}{bMPO}} \&lhs, \mbox{\hyperlink{classquantit_1_1bMPO}{bMPO}} \&rhs) \textcolor{keyword}{noexcept} \{ lhs.swap(rhs); \}}
+\DoxyCodeLine{702 }
+\DoxyCodeLine{703 btensor contract(\textcolor{keyword}{const} bMPS \&a, \textcolor{keyword}{const} bMPS \&b, \textcolor{keyword}{const} bMPO \&obs);}
+\DoxyCodeLine{704 btensor contract(\textcolor{keyword}{const} bMPS \&a, \textcolor{keyword}{const} bMPS \&b, \textcolor{keyword}{const} bMPO \&obs, btensor left\_edge, \textcolor{keyword}{const} btensor \&right\_edge);}
+\DoxyCodeLine{705 \textcolor{keyword}{template} <\textcolor{keyword}{class }T, \textcolor{keyword}{class }Z = std::enable\_if\_t<}
+\DoxyCodeLine{706                        std::is\_base\_of\_v<vector\_lift<T, typename T::Tens>, T>>> \textcolor{comment}{// Z only serves to prevent call on}}
+\DoxyCodeLine{707                                                                                 \textcolor{comment}{// something else than MPT,MPS and MPO.}}
+\DoxyCodeLine{708 \textcolor{keywordtype}{void} print\_dims(\textcolor{keyword}{const} T \&mps)}
+\DoxyCodeLine{709 \{}
+\DoxyCodeLine{710     fmt::print(\textcolor{stringliteral}{"{}MPN sizes: "{}});}
+\DoxyCodeLine{711     \textcolor{keywordflow}{for} (\textcolor{keyword}{const} \textcolor{keyword}{auto} \&i : mps)}
+\DoxyCodeLine{712     \{}
+\DoxyCodeLine{713         fmt::print(\textcolor{stringliteral}{"{}\{\},"{}}, i.sizes());}
+\DoxyCodeLine{714     \}}
+\DoxyCodeLine{715     fmt::print(\textcolor{stringliteral}{"{}\(\backslash\)n"{}});}
+\DoxyCodeLine{716 \}}
+\DoxyCodeLine{717 }
+\DoxyCodeLine{718 torch::Tensor contract(\textcolor{keyword}{const} MPS \&a, \textcolor{keyword}{const} MPS \&b, \textcolor{keyword}{const} MPO \&obs, torch::Tensor left\_edge,}
+\DoxyCodeLine{719                        \textcolor{keyword}{const} torch::Tensor \&right\_edge);}
+\DoxyCodeLine{720 torch::Tensor contract(\textcolor{keyword}{const} MPS \&a, \textcolor{keyword}{const} MPS \&b, \textcolor{keyword}{const} MPO \&obs);}
+\DoxyCodeLine{721 torch::Tensor contract(\textcolor{keyword}{const} MPS \&a, \textcolor{keyword}{const} MPS \&b);}
+\DoxyCodeLine{722 torch::Tensor contract(\textcolor{keyword}{const} MPS \&a, \textcolor{keyword}{const} MPS \&b, torch::Tensor left\_edge, \textcolor{keyword}{const} torch::Tensor \&right\_edge);}
+\DoxyCodeLine{723 }
+\DoxyCodeLine{724 btensor contract(\textcolor{keyword}{const} bMPS \&a, \textcolor{keyword}{const} bMPS \&b, \textcolor{keyword}{const} bMPO \&obs);}
+\DoxyCodeLine{725 btensor contract(\textcolor{keyword}{const} bMPS \&a, \textcolor{keyword}{const} bMPS \&b, \textcolor{keyword}{const} bMPO \&obs, btensor left\_edge, \textcolor{keyword}{const} btensor \&right\_edge);}
+\DoxyCodeLine{726 btensor contract(\textcolor{keyword}{const} bMPS \&a, \textcolor{keyword}{const} bMPS \&b, btensor left\_edge, \textcolor{keyword}{const} btensor \&right\_edge);}
+\DoxyCodeLine{727 btensor contract(\textcolor{keyword}{const} bMPS \&a, \textcolor{keyword}{const} bMPS \&b);}
+\DoxyCodeLine{728 }
+\DoxyCodeLine{729 qtt\_TEST\_CASE(\textcolor{stringliteral}{"{}MPT manipulations"{}})}
+\DoxyCodeLine{730 \{}
+\DoxyCodeLine{731     MPT amps(\{torch::rand(\{1, 2, 3\}), torch::rand(\{3, 2, 6\}), torch::rand(\{6, 2, 4\})\});}
+\DoxyCodeLine{732     MPT ampo(\{torch::rand(\{1, 2, 3, 2\}), torch::rand(\{3, 2, 6, 2\}), torch::rand(\{6, 2, 4, 2\})\});}
+\DoxyCodeLine{733 }
+\DoxyCodeLine{734     qtt\_REQUIRE(amps.size() == 3);}
+\DoxyCodeLine{735     qtt\_REQUIRE(amps.capacity() >= 3);}
+\DoxyCodeLine{736     qtt\_REQUIRE(ampo.size() == 3);}
+\DoxyCodeLine{737     qtt\_REQUIRE(ampo.capacity() >= 3);}
+\DoxyCodeLine{738 }
+\DoxyCodeLine{739     qtt\_CHECK\_NOTHROW(\textcolor{keyword}{auto} M1 = MPS(amps)); \textcolor{comment}{// must assign somewhere so the optimizer doesn't play tricks on us.}}
+\DoxyCodeLine{740     qtt\_CHECK\_NOTHROW(\textcolor{keyword}{auto} M2 = MPO(ampo));}
+\DoxyCodeLine{741     qtt\_CHECK\_THROWS\_AS(\textcolor{keyword}{auto} M3 = MPS(ampo), std::invalid\_argument);}
+\DoxyCodeLine{742     qtt\_CHECK\_THROWS\_AS(\textcolor{keyword}{auto} M4 = MPO(amps), std::invalid\_argument);}
+\DoxyCodeLine{743     qtt\_CHECK\_THROWS\_AS(\textcolor{keyword}{auto} M5 = MPS(amps, -\/1), std::invalid\_argument);}
+\DoxyCodeLine{744 \}}
+\DoxyCodeLine{745 }
+\DoxyCodeLine{746 qtt\_TEST\_CASE(\textcolor{stringliteral}{"{}MPS basic manipulation"{}})}
+\DoxyCodeLine{747 \{}
+\DoxyCodeLine{748     torch::set\_default\_dtype(torch::scalarTypeToTypeMeta(}
+\DoxyCodeLine{749         torch::kFloat64)); \textcolor{comment}{// otherwise the type promotion always goes to floats when promoting a tensor}}
+\DoxyCodeLine{750                            \textcolor{comment}{// we must make sure side effects don't leak out of the test when compiling executable other}}
+\DoxyCodeLine{751                            \textcolor{comment}{// than the test itself.}}
+\DoxyCodeLine{752 }
+\DoxyCodeLine{753     qtt\_SUBCASE(\textcolor{stringliteral}{"{}Bad constructions"{}})}
+\DoxyCodeLine{754     \{}
+\DoxyCodeLine{755         qtt\_CHECK\_THROWS\_AS(MPS(5, torch::rand(\{1, 3, 1\}), 10), std::invalid\_argument);}
+\DoxyCodeLine{756         qtt\_CHECK\_THROWS\_AS(MPS(5, torch::rand(\{1, 3, 5\}), 1), std::invalid\_argument);}
+\DoxyCodeLine{757     \}}
+\DoxyCodeLine{758     qtt\_SUBCASE(\textcolor{stringliteral}{"{}Construction"{}})}
+\DoxyCodeLine{759     \{}
+\DoxyCodeLine{760         MPS A(\{torch::rand(\{1, 4, 3\}), torch::rand(\{3, 4, 1\})\});}
+\DoxyCodeLine{761 }
+\DoxyCodeLine{762         qtt\_REQUIRE(A.size() == 2);}
+\DoxyCodeLine{763         qtt\_REQUIRE(A.capacity() >= 2);}
+\DoxyCodeLine{764         qtt\_CHECK(A.orthogonality\_center == 0);}
+\DoxyCodeLine{765         \textcolor{keyword}{auto} size\_0 = std::vector<int64\_t>\{1, 4, 3\};}
+\DoxyCodeLine{766         \textcolor{keyword}{auto} size\_1 = std::vector<int64\_t>\{3, 4, 1\};}
+\DoxyCodeLine{767         qtt\_CHECK(A[0].sizes() == size\_0);}
+\DoxyCodeLine{768         qtt\_CHECK(A[1].sizes() == size\_1);}
+\DoxyCodeLine{769         \textcolor{comment}{// size\_0 = A[0].sizes().vec(); //copy the current size of A[0];}}
+\DoxyCodeLine{770         qtt\_SUBCASE(\textcolor{stringliteral}{"{}moving orthogonality center"{}})}
+\DoxyCodeLine{771         \{}
+\DoxyCodeLine{772             \textcolor{keyword}{auto} norm2 =}
+\DoxyCodeLine{773                 torch::tensordot(torch::tensordot(torch::tensordot(A[0], A[0].conj(), \{0, 1\}, \{0, 1\}), A[1], \{0\}, \{0\}),}
+\DoxyCodeLine{774                                  A[1].conj(), \{0, 1, 2\}, \{0, 1, 2\});}
+\DoxyCodeLine{775             \textcolor{comment}{// qtt\_REQUIRE(norm2.sizes().size()==1);}}
+\DoxyCodeLine{776             \textcolor{comment}{// qtt\_REQUIRE(norm2.sizes()[0] == 1);}}
+\DoxyCodeLine{777             qtt\_CHECK\_THROWS\_AS(A.move\_oc(2), std::invalid\_argument);}
+\DoxyCodeLine{778             A.move\_oc(1);}
+\DoxyCodeLine{779             qtt\_CHECK(A.orthogonality\_center == 1);}
+\DoxyCodeLine{780             qtt\_CHECK(A[0].sizes() == size\_0);}
+\DoxyCodeLine{781             qtt\_CHECK(A[1].sizes() == size\_1);}
+\DoxyCodeLine{782             \textcolor{keyword}{auto} CC = torch::tensordot(A[0], A[0].conj(), \{0, 1\}, \{0, 1\});}
+\DoxyCodeLine{783             qtt\_CHECK(torch::allclose(CC, torch::eye(3)));}
+\DoxyCodeLine{784             \textcolor{comment}{// the default tolerances for the close() familly of function is strange. It's too low for float comparison,}}
+\DoxyCodeLine{785             \textcolor{comment}{// but very high for double comparison.}}
+\DoxyCodeLine{786             \textcolor{keyword}{auto} canon\_norm2 = torch::tensordot(A[1], A[1].conj(), \{0, 1, 2\}, \{0, 1, 2\});}
+\DoxyCodeLine{787             \textcolor{comment}{// qtt\_REQUIRE(canon\_norm2.sizes().size()==1);}}
+\DoxyCodeLine{788             \textcolor{comment}{// qtt\_REQUIRE(canon\_norm2.sizes()[0] == 1);}}
+\DoxyCodeLine{789             qtt\_CHECK(}
+\DoxyCodeLine{790                 norm2.item().to<\textcolor{keywordtype}{double}>() ==}
+\DoxyCodeLine{791                 doctest::Approx(canon\_norm2.item().to<\textcolor{keywordtype}{double}>())); \textcolor{comment}{// the dynamical nature of the type make extracting a}}
+\DoxyCodeLine{792                                                                    \textcolor{comment}{// concrete value a bit complicated.}}
+\DoxyCodeLine{793         \}}
+\DoxyCodeLine{794         qtt\_SUBCASE(\textcolor{stringliteral}{"{}conversion to MPT"{}})}
+\DoxyCodeLine{795         \{}
+\DoxyCodeLine{796             \textcolor{keyword}{auto} B = MPT(A);}
+\DoxyCodeLine{797             qtt\_CHECK(torch::equal(B[0], A[0]));}
+\DoxyCodeLine{798         \}}
+\DoxyCodeLine{799     \}}
+\DoxyCodeLine{800 \}}
+\DoxyCodeLine{801 qtt\_TEST\_CASE(\textcolor{stringliteral}{"{}MPO basic manipulation"{}})}
+\DoxyCodeLine{802 \{}
+\DoxyCodeLine{803     qtt\_SUBCASE(\textcolor{stringliteral}{"{}Bad constructions"{}}) \{ qtt\_CHECK\_THROWS\_AS(MPO(5, torch::rand(\{1, 3, 5, 3\})), std::invalid\_argument); \}}
+\DoxyCodeLine{804     qtt\_SUBCASE(\textcolor{stringliteral}{"{}Construction"{}})}
+\DoxyCodeLine{805     \{}
+\DoxyCodeLine{806         MPO A(\{torch::rand(\{1, 4, 3, 4\}), torch::rand(\{3, 4, 1, 4\})\});}
+\DoxyCodeLine{807 }
+\DoxyCodeLine{808         qtt\_REQUIRE(A.size() == 2);}
+\DoxyCodeLine{809         qtt\_REQUIRE(A.capacity() >= 2);}
+\DoxyCodeLine{810 }
+\DoxyCodeLine{811         \textcolor{keyword}{auto} size\_0 = std::vector<int64\_t>\{1, 4, 3, 4\};}
+\DoxyCodeLine{812         \textcolor{keyword}{auto} size\_1 = std::vector<int64\_t>\{3, 4, 1, 4\};}
+\DoxyCodeLine{813         qtt\_CHECK(A[0].sizes() == size\_0);}
+\DoxyCodeLine{814         qtt\_CHECK(A[1].sizes() == size\_1);}
+\DoxyCodeLine{815         size\_0 = A[0].sizes().vec(); \textcolor{comment}{// copy the current size of A[0];}}
+\DoxyCodeLine{816         qtt\_SUBCASE(\textcolor{stringliteral}{"{}conversion to MPT"{}})}
+\DoxyCodeLine{817         \{}
+\DoxyCodeLine{818             \textcolor{keyword}{auto} B = MPT(A);}
+\DoxyCodeLine{819             qtt\_CHECK(torch::equal(B[0], A[0]));}
+\DoxyCodeLine{820             qtt\_CHECK(torch::equal(B[1], A[1]));}
+\DoxyCodeLine{821         \}}
+\DoxyCodeLine{822     \}}
+\DoxyCodeLine{823 \}}
+\DoxyCodeLine{824 qtt\_TEST\_CASE(\textcolor{stringliteral}{"{}btensor networks"{}})}
+\DoxyCodeLine{825 \{}
+\DoxyCodeLine{826     \textcolor{keyword}{using} cval = quantity<conserved::Z, conserved::Z>;}
+\DoxyCodeLine{827     \textcolor{keyword}{auto} phys\_ind = sparse\_zeros(\{\{\{1, cval(0, 0)\}, \{1, cval(1, -\/1)\}, \{1, cval(1, 1)\}, \{1, cval(2, 0)\}\}\},}
+\DoxyCodeLine{828                                  cval(0, 0)); \textcolor{comment}{// physical index for electrons}}
+\DoxyCodeLine{829     \textcolor{keyword}{auto} inv\_phys\_ind = phys\_ind.\mbox{\hyperlink{classquantit_1_1btensor_a1742f2450d18a58b0508799e9d48c469}{inverse\_cvals}}();}
+\DoxyCodeLine{830     qtt\_SUBCASE(\textcolor{stringliteral}{"{}random MPS uniform physical index"{}})}
+\DoxyCodeLine{831     \{}
+\DoxyCodeLine{832         \textcolor{keyword}{auto} X = random\_MPS(4, 4, phys\_ind, cval(4, 0)); \textcolor{comment}{// random MPS with 4 electrons, and bond dimension of 4.}}
+\DoxyCodeLine{833         qtt\_CHECK(X.check\_ranks());}
+\DoxyCodeLine{834     \}}
+\DoxyCodeLine{835     qtt\_SUBCASE(\textcolor{stringliteral}{"{}bMPO"{}})}
+\DoxyCodeLine{836     \{}
+\DoxyCodeLine{837         btensor rside(\{\{\{1, cval(0, 0)\},}
+\DoxyCodeLine{838                         \{1, cval(1, 1)\},}
+\DoxyCodeLine{839                         \{1, cval(1, -\/1)\},}
+\DoxyCodeLine{840                         \{1, cval(-\/1, -\/1)\},}
+\DoxyCodeLine{841                         \{1, cval(-\/1, 1)\},}
+\DoxyCodeLine{842                         \{1, cval(0, 0)\}\}\},}
+\DoxyCodeLine{843                       cval(0, 0));}
+\DoxyCodeLine{844         \textcolor{keyword}{auto} lside = rside.inverse\_cvals();}
+\DoxyCodeLine{845         \textcolor{keyword}{auto} T\_shape = shape\_from(lside, phys\_ind, rside, inv\_phys\_ind);}
+\DoxyCodeLine{846         \textcolor{keyword}{auto} T = rand\_like(T\_shape);}
+\DoxyCodeLine{847         bMPO H(4, T);}
+\DoxyCodeLine{848         qtt\_CHECK(H.check\_ranks());}
+\DoxyCodeLine{849         \textcolor{comment}{// adjusting edges to bond dimension 1}}
+\DoxyCodeLine{850         H[0] = H[0].basic\_create\_view(\{5, -\/1, -\/1, -\/1\});}
+\DoxyCodeLine{851         qtt\_REQUIRE\_NOTHROW(\mbox{\hyperlink{classquantit_1_1btensor_a5d8897e8e51c880654c5d467b2b0a8bc}{btensor::throw\_bad\_tensor}}(H[0]));}
+\DoxyCodeLine{852         H[0] = H[0].reshape\_as(shape\_from(btensor(\{\{\{1, cval(0, 0)\}\}\}, cval(0, 0)), H[0]));}
+\DoxyCodeLine{853         H[3] = H[3].basic\_create\_view(\{-\/1, -\/1, 0, -\/1\});}
+\DoxyCodeLine{854         qtt\_REQUIRE\_NOTHROW(\mbox{\hyperlink{classquantit_1_1btensor_a5d8897e8e51c880654c5d467b2b0a8bc}{btensor::throw\_bad\_tensor}}(H[3]));}
+\DoxyCodeLine{855         \textcolor{keyword}{auto} last\_shape = shape\_from(H[3].shape\_from(\{-\/1, -\/1, 0\}).set\_selection\_rule\_(H[3].selection\_rule),}
+\DoxyCodeLine{856                                      btensor(\{\{\{1, cval(0, 0)\}\}\}, cval(0, 0)),}
+\DoxyCodeLine{857                                      H[3].shape\_from(\{0, 0, -\/1\}).set\_selection\_rule\_(cval(0, 0)));}
+\DoxyCodeLine{858         H[3] = H[3].reshape\_as(last\_shape);}
+\DoxyCodeLine{859 }
+\DoxyCodeLine{860         qtt\_SUBCASE(\textcolor{stringliteral}{"{}random MPS from MPO"{}})}
+\DoxyCodeLine{861         \{}
+\DoxyCodeLine{862             \textcolor{keyword}{auto} X = random\_MPS(4, H, cval(4, 0)); \textcolor{comment}{// random MPS with 4 electrons, and bond dimension of 4.}}
+\DoxyCodeLine{863             qtt\_CHECK(X.check\_ranks());}
+\DoxyCodeLine{864         \}}
+\DoxyCodeLine{865     \}}
+\DoxyCodeLine{866 \}}
+\DoxyCodeLine{867 qtt\_TEST\_CASE(\textcolor{stringliteral}{"{}contraction equivalence tests"{}})}
+\DoxyCodeLine{868 \{}
+\DoxyCodeLine{869     torch::set\_default\_dtype(torch::scalarTypeToTypeMeta(}
+\DoxyCodeLine{870         torch::kFloat64)); \textcolor{comment}{// otherwise the type promotion always goes to floats when promoting a tensor}}
+\DoxyCodeLine{871     MPS state(2, torch::rand(\{2, 2, 2\}));}
+\DoxyCodeLine{872     state[0] = state[0].reshape(\{1, 4, 2\});}
+\DoxyCodeLine{873     state[1] = state[1].reshape(\{2, 4, 1\});}
+\DoxyCodeLine{874     MPO op(2, torch::rand(\{2, 4, 2, 4\}));}
+\DoxyCodeLine{875     op[0] = op[0].reshape(\{1, 4, 4, 4\});}
+\DoxyCodeLine{876     op[1] = op[1].reshape(\{4, 4, 1, 4\});}
+\DoxyCodeLine{877 }
+\DoxyCodeLine{878     MPO idtt(2, torch::diag(torch::ones(\{4\})).reshape(\{1, 4, 1, 4\}));}
+\DoxyCodeLine{879 }
+\DoxyCodeLine{880     \textcolor{keyword}{auto} conc\_idtt = torch::tensordot(idtt[0], idtt[1], \{2\}, \{0\}).permute(\{0, 1, 3, 4, 2, 5\}).reshape(\{16, 16\});}
+\DoxyCodeLine{881     qtt\_REQUIRE(torch::allclose(conc\_idtt, torch::diag(torch::ones(\{16\}))));}
+\DoxyCodeLine{882     \textcolor{keyword}{auto} conc\_op = torch::tensordot(op[0], op[1], \{2\}, \{0\}).permute(\{0, 1, 3, 4, 2, 5\}).reshape(\{16, 16\});}
+\DoxyCodeLine{883     \textcolor{keyword}{auto} conc\_state = torch::tensordot(state[0], state[1], \{2\}, \{0\}).reshape(\{16\});}
+\DoxyCodeLine{884 }
+\DoxyCodeLine{885     \textcolor{keyword}{auto} norm2 = torch::tensordot(conc\_state, conc\_state, \{0\}, \{0\});}
+\DoxyCodeLine{886     \textcolor{keyword}{auto} norm2\_test = contract(state, state);}
+\DoxyCodeLine{887     \textcolor{keyword}{auto} norm2\_idtt = contract(state, state, idtt);}
+\DoxyCodeLine{888     \textcolor{comment}{// fmt::print("{}\{\}\(\backslash\)n"{},norm2);}}
+\DoxyCodeLine{889     \textcolor{comment}{// fmt::print("{}\{\}\(\backslash\)n"{},norm2\_test);}}
+\DoxyCodeLine{890     \textcolor{comment}{// fmt::print("{}\{\}\(\backslash\)n"{},norm2\_idtt);}}
+\DoxyCodeLine{891     qtt\_CHECK(torch::allclose(norm2, norm2\_test));}
+\DoxyCodeLine{892     qtt\_CHECK(torch::allclose(norm2, norm2\_idtt));}
+\DoxyCodeLine{893 }
+\DoxyCodeLine{894     \textcolor{keyword}{auto} aver = torch::tensordot(conc\_state, torch::tensordot(conc\_op, conc\_state, \{1\}, \{0\}), \{0\}, \{0\});}
+\DoxyCodeLine{895     \textcolor{keyword}{auto} aver\_norm2 = torch::tensordot(conc\_state, torch::tensordot(conc\_idtt, conc\_state, \{1\}, \{0\}), \{0\}, \{0\});}
+\DoxyCodeLine{896 }
+\DoxyCodeLine{897     \textcolor{keyword}{auto} aver\_test = contract(state, state, op);}
+\DoxyCodeLine{898     \textcolor{comment}{// fmt::print("{}\{\}\(\backslash\)n"{}, aver);}}
+\DoxyCodeLine{899     \textcolor{comment}{// fmt::print("{}\{\}\(\backslash\)n"{}, aver\_test);}}
+\DoxyCodeLine{900     \textcolor{comment}{// fmt::print("{}\{\}\(\backslash\)n"{}, aver\_norm2);}}
+\DoxyCodeLine{901     qtt\_CHECK(torch::allclose(aver, aver\_test));}
+\DoxyCodeLine{902 \}}
+\DoxyCodeLine{903 }
+\DoxyCodeLine{919 \textcolor{keyword}{template} <\textcolor{keyword}{class} T, \textcolor{keyword}{class} X = \textcolor{keywordtype}{void}>}
+\DoxyCodeLine{920 \textcolor{keyword}{struct }\mbox{\hyperlink{structquantit_1_1dependant__tensor__network}{dependant\_tensor\_network}};}
+\DoxyCodeLine{921 }
+\DoxyCodeLine{922 \textcolor{keyword}{template} <>}
+\DoxyCodeLine{923 \textcolor{keyword}{struct }\mbox{\hyperlink{structquantit_1_1dependant__tensor__network}{dependant\_tensor\_network}}<\mbox{\hyperlink{classquantit_1_1btensor}{btensor}}>}
+\DoxyCodeLine{924 \{}
+\DoxyCodeLine{925     \textcolor{keyword}{using} \mbox{\hyperlink{classquantit_1_1bMPT}{MPT\_type}} = \mbox{\hyperlink{classquantit_1_1bMPT}{bMPT}};}
+\DoxyCodeLine{926     \textcolor{keyword}{using} \mbox{\hyperlink{classquantit_1_1bMPO}{MPO\_type}} = \mbox{\hyperlink{classquantit_1_1bMPO}{bMPO}};}
+\DoxyCodeLine{927     \textcolor{keyword}{using} \mbox{\hyperlink{classquantit_1_1bMPS}{MPS\_type}} = \mbox{\hyperlink{classquantit_1_1bMPS}{bMPS}};}
+\DoxyCodeLine{928     \textcolor{keyword}{using} env\_type = benv\_holder;}
+\DoxyCodeLine{929     \textcolor{keyword}{using} \mbox{\hyperlink{classquantit_1_1btensor}{base\_tensor\_type}} = \mbox{\hyperlink{classquantit_1_1btensor}{btensor}};}
+\DoxyCodeLine{930 \};}
+\DoxyCodeLine{931 \textcolor{keyword}{template} <>}
+\DoxyCodeLine{932 \textcolor{keyword}{struct }\mbox{\hyperlink{structquantit_1_1dependant__tensor__network}{dependant\_tensor\_network}}<torch::Tensor>}
+\DoxyCodeLine{933 \{}
+\DoxyCodeLine{934     \textcolor{keyword}{using} \mbox{\hyperlink{classquantit_1_1MPT}{MPT\_type}} = \mbox{\hyperlink{classquantit_1_1MPT}{MPT}};}
+\DoxyCodeLine{935     \textcolor{keyword}{using} \mbox{\hyperlink{classquantit_1_1MPO}{MPO\_type}} = \mbox{\hyperlink{classquantit_1_1MPO}{MPO}};}
+\DoxyCodeLine{936     \textcolor{keyword}{using} \mbox{\hyperlink{classquantit_1_1MPS}{MPS\_type}} = \mbox{\hyperlink{classquantit_1_1MPS}{MPS}};}
+\DoxyCodeLine{937     \textcolor{keyword}{using} env\_type = env\_holder;}
+\DoxyCodeLine{938     \textcolor{keyword}{using} base\_tensor\_type = torch::Tensor;}
+\DoxyCodeLine{939 \};}
+\DoxyCodeLine{940 \textcolor{keyword}{template} <\textcolor{keyword}{class} S>}
+\DoxyCodeLine{941 \textcolor{keyword}{struct }\mbox{\hyperlink{structquantit_1_1dependant__tensor__network}{dependant\_tensor\_network}}<S, std::enable\_if\_t<std::is\_base\_of\_v<vector\_lift<S, torch::Tensor>, S>>>}
+\DoxyCodeLine{942     : \mbox{\hyperlink{structquantit_1_1dependant__tensor__network}{dependant\_tensor\_network}}<torch::Tensor>}
+\DoxyCodeLine{943 \{}
+\DoxyCodeLine{944 \};}
+\DoxyCodeLine{945 \textcolor{keyword}{template} <\textcolor{keyword}{class} S>}
+\DoxyCodeLine{946 \textcolor{keyword}{struct }\mbox{\hyperlink{structquantit_1_1dependant__tensor__network}{dependant\_tensor\_network}}<S, std::enable\_if\_t<std::is\_base\_of\_v<vector\_lift<S, btensor>, S>>>}
+\DoxyCodeLine{947     : \mbox{\hyperlink{structquantit_1_1dependant__tensor__network}{dependant\_tensor\_network}}<btensor>}
+\DoxyCodeLine{948 \{}
+\DoxyCodeLine{949 \};}
+\DoxyCodeLine{950 \} \textcolor{comment}{// namespace quantit}}
+\DoxyCodeLine{951 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* ADA5A359\_8ACF\_448D\_91BC\_09C085F510CC */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

@@ -1,0 +1,83 @@
+\hypertarget{tensorgdot_8h_source}{}\doxysection{tensorgdot.\+h}
+\label{tensorgdot_8h_source}\index{/Users/alex/Documents/Prog/QuantiT/include/tensorgdot.h@{/Users/alex/Documents/Prog/QuantiT/include/tensorgdot.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * File: tensorgdot.h}}
+\DoxyCodeLine{3 \textcolor{comment}{ * Project: QuantiT}}
+\DoxyCodeLine{4 \textcolor{comment}{ * File Created: Tuesday, 10th November 2020 10:58:58 am}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)}}
+\DoxyCodeLine{6 \textcolor{comment}{ * -\/-\/-\/-\/-\/}}
+\DoxyCodeLine{7 \textcolor{comment}{ * Last Modified: Tuesday, 10th November 2020 10:58:58 am}}
+\DoxyCodeLine{8 \textcolor{comment}{ * Modified By: Alexandre Foley (Alexandre.foley@usherbrooke.ca>)}}
+\DoxyCodeLine{9 \textcolor{comment}{ * -\/-\/-\/-\/-\/}}
+\DoxyCodeLine{10 \textcolor{comment}{ * Copyright (c) 2020 Alexandre Foley}}
+\DoxyCodeLine{11 \textcolor{comment}{ * Licensed under GPL v3}}
+\DoxyCodeLine{12 \textcolor{comment}{ */}}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#ifndef BD5A9C21\_B42C\_4168\_AD9F\_A788AD4621C8}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#define BD5A9C21\_B42C\_4168\_AD9F\_A788AD4621C8}}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}doctest/doctest\_proxy.h"{}}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include <torch/torch.h>}}
+\DoxyCodeLine{19 \textcolor{keyword}{namespace }quantit}
+\DoxyCodeLine{20 \{}
+\DoxyCodeLine{34 torch::Tensor tensorgdot(\textcolor{keyword}{const} torch::Tensor\& add, \textcolor{keyword}{const} torch::Tensor\& mul1, \textcolor{keyword}{const} torch::Tensor\& mul2,}
+\DoxyCodeLine{35                          torch::IntArrayRef dims1, torch::IntArrayRef dims2,}
+\DoxyCodeLine{36                          torch::Scalar beta = 1, torch::Scalar alpha = 1);}
+\DoxyCodeLine{51 torch::Tensor\& tensorgdot\_(torch::Tensor\& output, \textcolor{keyword}{const} torch::Tensor\& mul1, \textcolor{keyword}{const} torch::Tensor\& mul2,}
+\DoxyCodeLine{52                            torch::IntArrayRef dims1, torch::IntArrayRef dims2,}
+\DoxyCodeLine{53                            torch::Scalar beta = 1, torch::Scalar alpha = 1);}
+\DoxyCodeLine{54 }
+\DoxyCodeLine{69 torch::Tensor\& tensorgdot\_out(torch::Tensor\& output, \textcolor{keyword}{const} torch::Tensor\& add, \textcolor{keyword}{const} torch::Tensor\& mul1, \textcolor{keyword}{const} torch::Tensor\& mul2,}
+\DoxyCodeLine{70                               torch::IntArrayRef dims1, torch::IntArrayRef dims2,}
+\DoxyCodeLine{71                               torch::Scalar beta = 1, torch::Scalar alpha = 1);}
+\DoxyCodeLine{84 torch::Tensor\& tensorgdot\_(torch::Tensor\& output, \textcolor{keyword}{const} torch::Tensor\& input1, \textcolor{keyword}{const} torch::Tensor\& input2,}
+\DoxyCodeLine{85                            \textcolor{keywordtype}{int} dims,}
+\DoxyCodeLine{86                            torch::Scalar beta = 1, torch::Scalar alpha = 1);}
+\DoxyCodeLine{87 qtt\_TEST\_CASE(\textcolor{stringliteral}{"{}generalized tensor dot product"{}})}
+\DoxyCodeLine{88 \{}
+\DoxyCodeLine{89     \textcolor{keyword}{using namespace }torch;}
+\DoxyCodeLine{90     Tensor A = torch::rand(\{5, 7, 6\});}
+\DoxyCodeLine{91     Tensor B = torch::rand(\{5, 6, 7\});}
+\DoxyCodeLine{92     Tensor out = torch::rand(\{5, 5\});}
+\DoxyCodeLine{93     Tensor out\_copy = clone(out);}
+\DoxyCodeLine{94     std::vector<int64\_t> dims1 = \{1, 2\};}
+\DoxyCodeLine{95     std::vector<int64\_t> dims2 = \{2, 1\};}
+\DoxyCodeLine{96     out += tensordot(A, B, dims1, dims2);}
+\DoxyCodeLine{97     qtt\_SUBCASE(\textcolor{stringliteral}{"{}tensorgdot"{}})}
+\DoxyCodeLine{98     \{}
+\DoxyCodeLine{99         \textcolor{keyword}{auto} new\_out = tensorgdot(out\_copy, A, B, dims1, dims2);}
+\DoxyCodeLine{100         qtt\_CHECK(allclose(new\_out, out));}
+\DoxyCodeLine{101     \}}
+\DoxyCodeLine{102     qtt\_SUBCASE(\textcolor{stringliteral}{"{}tensorgdot"{}})}
+\DoxyCodeLine{103     \{}
+\DoxyCodeLine{104         tensorgdot\_(out\_copy, A, B, dims1, dims2);}
+\DoxyCodeLine{105         qtt\_CHECK(allclose(out\_copy, out));}
+\DoxyCodeLine{106     \}}
+\DoxyCodeLine{107     qtt\_SUBCASE(\textcolor{stringliteral}{"{}tensorgdot\_out"{}})}
+\DoxyCodeLine{108     \{}
+\DoxyCodeLine{109         Tensor out\_copy2 = clone(out\_copy);}
+\DoxyCodeLine{110         tensorgdot\_out(out\_copy, out\_copy2, A, B, dims1, dims2);}
+\DoxyCodeLine{111         qtt\_CHECK(allclose(out\_copy, out));}
+\DoxyCodeLine{112     \}}
+\DoxyCodeLine{113     qtt\_SUBCASE(\textcolor{stringliteral}{"{}tensorgdot\_out v2"{}})}
+\DoxyCodeLine{114     \{}
+\DoxyCodeLine{115         \textcolor{comment}{//this usage is equivalent to a call to tensordot\_}}
+\DoxyCodeLine{116         tensorgdot\_out(out\_copy, out\_copy, A, B, dims1, dims2);}
+\DoxyCodeLine{117         qtt\_CHECK(allclose(out\_copy, out));}
+\DoxyCodeLine{118     \}}
+\DoxyCodeLine{119     qtt\_SUBCASE(\textcolor{stringliteral}{"{}tensorgdot no permutation"{}})}
+\DoxyCodeLine{120     \{}
+\DoxyCodeLine{121         \textcolor{keyword}{auto} B2 = B.permute(\{2, 1, 0\});}
+\DoxyCodeLine{122         tensorgdot\_(out\_copy, A, B2, 2);}
+\DoxyCodeLine{123         qtt\_CHECK(allclose(out\_copy, out));}
+\DoxyCodeLine{124         qtt\_CHECK\_THROWS(tensorgdot\_(out\_copy, A, B, 2));}
+\DoxyCodeLine{125     \}}
+\DoxyCodeLine{126 \}}
+\DoxyCodeLine{127 }
+\DoxyCodeLine{128 \} \textcolor{comment}{// namespace quantit}}
+\DoxyCodeLine{129 }
+\DoxyCodeLine{130 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* BD5A9C21\_B42C\_4168\_AD9F\_A788AD4621C8 */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

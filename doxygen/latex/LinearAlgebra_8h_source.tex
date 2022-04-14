@@ -1,0 +1,97 @@
+\hypertarget{LinearAlgebra_8h_source}{}\doxysection{Linear\+Algebra.\+h}
+\label{LinearAlgebra_8h_source}\index{/Users/alex/Documents/Prog/QuantiT/include/LinearAlgebra.h@{/Users/alex/Documents/Prog/QuantiT/include/LinearAlgebra.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * File: LinearAlgebra.h}}
+\DoxyCodeLine{3 \textcolor{comment}{ * Project: QuantiT}}
+\DoxyCodeLine{4 \textcolor{comment}{ * File Created: Wednesday, 5th August 2020 11:38:57 am}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)}}
+\DoxyCodeLine{6 \textcolor{comment}{ * -\/-\/-\/-\/-\/}}
+\DoxyCodeLine{7 \textcolor{comment}{ * Last Modified: Wednesday, 5th August 2020 3:34:16 pm}}
+\DoxyCodeLine{8 \textcolor{comment}{ * Modified By: Alexandre Foley (Alexandre.foley@usherbrooke.ca>)}}
+\DoxyCodeLine{9 \textcolor{comment}{ * -\/-\/-\/-\/-\/}}
+\DoxyCodeLine{10 \textcolor{comment}{ * Copyright (c) 2020 Alexandre Foley}}
+\DoxyCodeLine{11 \textcolor{comment}{ * Licensed under GPL v3}}
+\DoxyCodeLine{12 \textcolor{comment}{ */}}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#ifndef C5116C03\_2050\_4F3F\_8DCF\_C1C103E0B22A}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#define C5116C03\_2050\_4F3F\_8DCF\_C1C103E0B22A}}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include <cstdint>}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include <torch/torch.h>}}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include <fmt/core.h>}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include <fmt/ostream.h>}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#include "{}torch\_formatter.h"{}}}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24 \textcolor{preprocessor}{\#include "{}doctest/doctest\_proxy.h"{}}}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26 \textcolor{comment}{// //doctest always last. its' macro must work and conflict with pytorch's.}}
+\DoxyCodeLine{27 \textcolor{comment}{// \#include "{}doctest\_redef.h"{} // makes the redefinition appear without compiler warnings.}}
+\DoxyCodeLine{28 \textcolor{comment}{// // we don't use pytorch's macro so its fine to redefine them. }}
+\DoxyCodeLine{29 \textcolor{comment}{// \#include "{}doctest.h"{}}}
+\DoxyCodeLine{30 }
+\DoxyCodeLine{31 \textcolor{keyword}{namespace }quantit}
+\DoxyCodeLine{32 \{}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{46 int64\_t compute\_first\_index\_ascending(torch::Tensor d,torch::Scalar tol,torch::Scalar pow,\textcolor{keywordtype}{size\_t} min\_size, \textcolor{keywordtype}{size\_t} max\_size);}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{60 int64\_t compute\_last\_index(torch::Tensor d,torch::Scalar tol,torch::Scalar pow,\textcolor{keywordtype}{size\_t} min\_size, \textcolor{keywordtype}{size\_t} max\_size);}
+\DoxyCodeLine{61 \textcolor{comment}{//TODO: add possibility of pre-\/allocated output, and the possibility not to compute the eigen/singular vectors.}}
+\DoxyCodeLine{62  }
+\DoxyCodeLine{70 std::tuple<torch::Tensor,torch::Tensor,torch::Tensor> truncate(torch::Tensor u,torch::Tensor d, torch::Tensor v, torch::Scalar tol=0,\textcolor{keywordtype}{size\_t} min\_size=1,\textcolor{keywordtype}{size\_t} max\_size=-\/1, torch::Scalar pow=2);}
+\DoxyCodeLine{71 std::tuple<torch::Tensor,torch::Tensor,torch::Tensor> truncate(std::tuple<torch::Tensor,torch::Tensor,torch::Tensor>\& tensors, torch::Scalar tol=0,\textcolor{keywordtype}{size\_t} min\_size=1,\textcolor{keywordtype}{size\_t} max\_size=-\/1, torch::Scalar pow=2);}
+\DoxyCodeLine{72 }
+\DoxyCodeLine{80 std::tuple<torch::Tensor,torch::Tensor> truncate(torch::Tensor u,torch::Tensor e, torch::Scalar tol=0,\textcolor{keywordtype}{size\_t} min\_size=1,\textcolor{keywordtype}{size\_t} max\_size=-\/1, torch::Scalar pow=1);}
+\DoxyCodeLine{95 std::tuple<torch::Tensor,torch::Tensor> truncate(std::tuple<torch::Tensor,torch::Tensor>\& tensors, torch::Scalar tol=0,\textcolor{keywordtype}{size\_t} min\_size=1,\textcolor{keywordtype}{size\_t} max\_size=-\/1, torch::Scalar pow=1);}
+\DoxyCodeLine{96 }
+\DoxyCodeLine{104 std::tuple<torch::Tensor,torch::Tensor,torch::Tensor> svd(torch::Tensor A, \textcolor{keywordtype}{size\_t} split,torch::Scalar tol,\textcolor{keywordtype}{size\_t} min\_size,\textcolor{keywordtype}{size\_t} max\_size, torch::Scalar pow = 2);}
+\DoxyCodeLine{105 std::tuple<torch::Tensor,torch::Tensor,torch::Tensor> svd(torch::Tensor A, \textcolor{keywordtype}{size\_t} split,torch::Scalar tol, torch::Scalar pow = 2);}
+\DoxyCodeLine{106 std::tuple<torch::Tensor,torch::Tensor,torch::Tensor> svd(torch::Tensor A, \textcolor{keywordtype}{size\_t} split);}
+\DoxyCodeLine{107 \textcolor{keyword}{inline} std::tuple<torch::Tensor,torch::Tensor,torch::Tensor> svd(torch::Tensor A, \textcolor{keywordtype}{int} split)\{\textcolor{keywordflow}{return} quantit::svd(A,\textcolor{keywordtype}{size\_t}(split) );\}}
+\DoxyCodeLine{108 }
+\DoxyCodeLine{109 std::tuple<torch::Tensor,torch::Tensor> eig(torch::Tensor A, \textcolor{keywordtype}{size\_t} split);}
+\DoxyCodeLine{110 \textcolor{keyword}{inline} std::tuple<torch::Tensor,torch::Tensor> eig(torch::Tensor A, \textcolor{keywordtype}{int} split)\{\textcolor{keywordflow}{return} quantit::eig(A,\textcolor{keywordtype}{size\_t}(split) );\}}
+\DoxyCodeLine{111 std::tuple<torch::Tensor,torch::Tensor> eig(torch::Tensor A, \textcolor{keywordtype}{size\_t} split,torch::Scalar tol, torch::Scalar pow = 1);}
+\DoxyCodeLine{112 std::tuple<torch::Tensor,torch::Tensor> eig(torch::Tensor A, \textcolor{keywordtype}{size\_t} split,torch::Scalar tol,\textcolor{keywordtype}{size\_t} min\_size,\textcolor{keywordtype}{size\_t} max\_size, torch::Scalar pow = 1);}
+\DoxyCodeLine{113 }
+\DoxyCodeLine{114 std::tuple<torch::Tensor,torch::Tensor> eigh(torch::Tensor A, \textcolor{keywordtype}{size\_t} split);}
+\DoxyCodeLine{115 \textcolor{keyword}{inline} std::tuple<torch::Tensor,torch::Tensor> eigh(torch::Tensor A, \textcolor{keywordtype}{int} split)\{\textcolor{keywordflow}{return} quantit::eigh(A,\textcolor{keywordtype}{size\_t}(split) );\}}
+\DoxyCodeLine{116 std::tuple<torch::Tensor,torch::Tensor> eigh(torch::Tensor A, \textcolor{keywordtype}{size\_t} split,torch::Scalar tol, torch::Scalar pow = 1);}
+\DoxyCodeLine{117 std::tuple<torch::Tensor,torch::Tensor> eigh(torch::Tensor A, \textcolor{keywordtype}{size\_t} split,torch::Scalar tol, \textcolor{keywordtype}{size\_t} min\_size,\textcolor{keywordtype}{size\_t} max\_size,torch::Scalar pow = 1);}
+\DoxyCodeLine{118 }
+\DoxyCodeLine{119 qtt\_TEST\_CASE(\textcolor{stringliteral}{"{}Linear Algebra for Tensor network"{}})}
+\DoxyCodeLine{120 \{}
+\DoxyCodeLine{121     torch::set\_default\_dtype(torch::scalarTypeToTypeMeta(torch::kFloat64)); \textcolor{comment}{//otherwise the type promotion always goes to floats when promoting a tensor}}
+\DoxyCodeLine{122     \textcolor{keyword}{auto} split = 2;}
+\DoxyCodeLine{123     \textcolor{keyword}{auto} tensor\_shape = std::vector<int64\_t>\{10,3,10,3\};}
+\DoxyCodeLine{124     \textcolor{keyword}{auto} matrix\_shape = std::vector<int64\_t>\{30,30\};}
+\DoxyCodeLine{125     \textcolor{keyword}{auto} u\_shape = std::vector<int64\_t>\{10,3,30\};}
+\DoxyCodeLine{126     \textcolor{keyword}{auto} A = torch::rand(tensor\_shape);}
+\DoxyCodeLine{127     \textcolor{keyword}{auto} ra = A.reshape(matrix\_shape);}
+\DoxyCodeLine{128     \textcolor{keyword}{auto} [u\_o,d\_o,v\_o] = ra.svd();}
+\DoxyCodeLine{129     \textcolor{keyword}{auto} [u,d,v] = svd(A,2);}
+\DoxyCodeLine{130 }
+\DoxyCodeLine{131     qtt\_CHECK(u\_o.sizes() == std::vector<int64\_t>(matrix\_shape));}
+\DoxyCodeLine{132     qtt\_REQUIRE(u.sizes() == std::vector<int64\_t>(u\_shape));}
+\DoxyCodeLine{133 }
+\DoxyCodeLine{134     qtt\_REQUIRE\_NOTHROW(\textcolor{keyword}{auto} ru\_o = u\_o.reshape(u\_shape));}
+\DoxyCodeLine{135     \textcolor{keyword}{auto} ru\_o = u\_o.reshape(u\_shape);}
+\DoxyCodeLine{136 }
+\DoxyCodeLine{137     qtt\_CHECK(torch::allclose(ru\_o, u));}
+\DoxyCodeLine{138 }
+\DoxyCodeLine{139     \textcolor{keyword}{auto} [e\_o,s\_o] = torch::linalg::eigh(ra,\textcolor{stringliteral}{"{}L"{}}); }
+\DoxyCodeLine{140     \textcolor{keyword}{auto} rs\_o = s\_o.reshape(u\_shape);}
+\DoxyCodeLine{141     \textcolor{keyword}{auto} [e,s] = eigh(A,2);}
+\DoxyCodeLine{142 }
+\DoxyCodeLine{143     qtt\_REQUIRE(s.sizes() == std::vector<int64\_t>(u\_shape));}
+\DoxyCodeLine{144     \textcolor{comment}{// fmt::print("{}s \{\}\(\backslash\)n"{},s);}}
+\DoxyCodeLine{145     \textcolor{comment}{// fmt::print("{}s\_o \{\}\(\backslash\)n"{},rs\_o);}}
+\DoxyCodeLine{146     qtt\_CHECK(torch::allclose(rs\_o, s));}
+\DoxyCodeLine{147 \}}
+\DoxyCodeLine{148 }
+\DoxyCodeLine{149 \}\textcolor{comment}{//namespace quantit}}
+\DoxyCodeLine{150 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* C5116C03\_2050\_4F3F\_8DCF\_C1C103E0B22A */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
   <compounddef id="structquantit_1_1btensor_1_1block__prop__view" kind="struct" language="C++" prot="public">
     <compoundname>quantit::btensor::block_prop_view</compoundname>
     <basecompoundref prot="public" virt="non-virtual">boost::stl_interfaces::view_interface&lt; block_prop_view&lt; iterator &gt; &gt;</basecompoundref>
@@ -14,39 +14,42 @@
         <definition>btensor::index_list quantit::btensor::block_prop_view&lt; iterator &gt;::block_index</definition>
         <argsstring></argsstring>
         <name>block_index</name>
+        <qualifiedname>quantit::btensor::block_prop_view::block_index</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/blockTensor/btensor.h" line="1205" column="21" bodyfile="/home/alex/project/quantt/include/blockTensor/btensor.h" bodystart="1205" bodyend="-1"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/blockTensor/btensor.h" line="1207" column="21" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/blockTensor/btensor.h" bodystart="1207" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="structquantit_1_1btensor_1_1block__prop__view_1aa966181968aae29b4c7cd6ea1ea361a4" prot="private" static="no" mutable="no">
         <type>iterator</type>
         <definition>iterator quantit::btensor::block_prop_view&lt; iterator &gt;::first</definition>
         <argsstring></argsstring>
         <name>first</name>
+        <qualifiedname>quantit::btensor::block_prop_view::first</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/blockTensor/btensor.h" line="1206" column="10" bodyfile="/home/alex/project/quantt/include/blockTensor/btensor.h" bodystart="1206" bodyend="-1"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/blockTensor/btensor.h" line="1208" column="10" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/blockTensor/btensor.h" bodystart="1208" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="structquantit_1_1btensor_1_1block__prop__view_1a1401a36b479f408ee15bc8edb85d78af" prot="private" static="no" mutable="no">
         <type>iterator</type>
         <definition>iterator quantit::btensor::block_prop_view&lt; iterator &gt;::last</definition>
         <argsstring></argsstring>
         <name>last</name>
+        <qualifiedname>quantit::btensor::block_prop_view::last</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/blockTensor/btensor.h" line="1207" column="10" bodyfile="/home/alex/project/quantt/include/blockTensor/btensor.h" bodystart="1207" bodyend="-1"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/blockTensor/btensor.h" line="1209" column="10" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/blockTensor/btensor.h" bodystart="1209" bodyend="-1"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="public-func">
@@ -55,19 +58,21 @@
         <definition>quantit::btensor::block_prop_view&lt; iterator &gt;::block_prop_view</definition>
         <argsstring>()=default</argsstring>
         <name>block_prop_view</name>
+        <qualifiedname>quantit::btensor::block_prop_view::block_prop_view</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/blockTensor/btensor.h" line="1185" column="1"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/blockTensor/btensor.h" line="1187" column="1"/>
       </memberdef>
       <memberdef kind="function" id="structquantit_1_1btensor_1_1block__prop__view_1ad3b3c9cc2ab6716899af936d22bb48d3" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type></type>
         <definition>quantit::btensor::block_prop_view&lt; iterator &gt;::block_prop_view</definition>
         <argsstring>(typename iterator::ValueIterator val_first, typename iterator::ValueIterator val_last, index_list::const_iterator section_by_dim_begin, index_list::const_iterator section_by_dim_end, index_list _block_index)</argsstring>
         <name>block_prop_view</name>
+        <qualifiedname>quantit::btensor::block_prop_view::block_prop_view</qualifiedname>
         <param>
           <type>typename iterator::ValueIterator</type>
           <declname>val_first</declname>
@@ -94,13 +99,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/blockTensor/btensor.h" line="1186" column="1" bodyfile="/home/alex/project/quantt/include/blockTensor/btensor.h" bodystart="1186" bodyend="1192"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/blockTensor/btensor.h" line="1188" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/blockTensor/btensor.h" bodystart="1188" bodyend="1194"/>
       </memberdef>
       <memberdef kind="function" id="structquantit_1_1btensor_1_1block__prop__view_1ad2455faf752e2d8216ebcfcf9e1ef480" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type></type>
         <definition>quantit::btensor::block_prop_view&lt; iterator &gt;::block_prop_view</definition>
         <argsstring>(typename iterator::ValueIterator val_first, typename iterator::ValueIterator val_last, const index_list &amp;section_by_dim, index_list _block_index)</argsstring>
         <name>block_prop_view</name>
+        <qualifiedname>quantit::btensor::block_prop_view::block_prop_view</qualifiedname>
         <param>
           <type>typename iterator::ValueIterator</type>
           <declname>val_first</declname>
@@ -123,46 +129,49 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/blockTensor/btensor.h" line="1193" column="1" bodyfile="/home/alex/project/quantt/include/blockTensor/btensor.h" bodystart="1193" bodyend="1198"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/blockTensor/btensor.h" line="1195" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/blockTensor/btensor.h" bodystart="1195" bodyend="1200"/>
       </memberdef>
       <memberdef kind="function" id="structquantit_1_1btensor_1_1block__prop__view_1a0b21dee8298f71386e73ab84e07e004e" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>auto</type>
         <definition>auto quantit::btensor::block_prop_view&lt; iterator &gt;::begin</definition>
         <argsstring>() const</argsstring>
         <name>begin</name>
+        <qualifiedname>quantit::btensor::block_prop_view::begin</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/blockTensor/btensor.h" line="1199" column="6" bodyfile="/home/alex/project/quantt/include/blockTensor/btensor.h" bodystart="1199" bodyend="1199"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/blockTensor/btensor.h" line="1201" column="6" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/blockTensor/btensor.h" bodystart="1201" bodyend="1201"/>
       </memberdef>
       <memberdef kind="function" id="structquantit_1_1btensor_1_1block__prop__view_1af4b25c73be7393534863b2812508d145" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>auto</type>
         <definition>auto quantit::btensor::block_prop_view&lt; iterator &gt;::end</definition>
         <argsstring>() const</argsstring>
         <name>end</name>
+        <qualifiedname>quantit::btensor::block_prop_view::end</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/blockTensor/btensor.h" line="1200" column="6" bodyfile="/home/alex/project/quantt/include/blockTensor/btensor.h" bodystart="1200" bodyend="1200"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/blockTensor/btensor.h" line="1202" column="6" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/blockTensor/btensor.h" bodystart="1202" bodyend="1202"/>
       </memberdef>
-      <memberdef kind="function" id="structquantit_1_1btensor_1_1block__prop__view_1a710e876c37a339581d87f5dcae03602d" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+      <memberdef kind="function" id="structquantit_1_1btensor_1_1block__prop__view_1aa497c1f34c65392db5102619a0dd8a0f" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>const index_list &amp;</type>
-        <definition>const index_list&amp; quantit::btensor::block_prop_view&lt; iterator &gt;::get_index</definition>
+        <definition>const index_list &amp; quantit::btensor::block_prop_view&lt; iterator &gt;::get_index</definition>
         <argsstring>() const</argsstring>
         <name>get_index</name>
+        <qualifiedname>quantit::btensor::block_prop_view::get_index</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/blockTensor/btensor.h" line="1202" column="18" bodyfile="/home/alex/project/quantt/include/blockTensor/btensor.h" bodystart="1202" bodyend="1202"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/blockTensor/btensor.h" line="1204" column="18" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/blockTensor/btensor.h" bodystart="1204" bodyend="1204"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
@@ -170,28 +179,28 @@
     <detaileddescription>
     </detaileddescription>
     <inheritancegraph>
+      <node id="2">
+        <label>boost::stl_interfaces::view_interface&lt; block_prop_view&lt; iterator &gt; &gt;</label>
+      </node>
       <node id="1">
         <label>quantit::btensor::block_prop_view&lt; iterator &gt;</label>
         <link refid="structquantit_1_1btensor_1_1block__prop__view"/>
         <childnode refid="2" relation="public-inheritance">
         </childnode>
-      </node>
-      <node id="2">
-        <label>boost::stl_interfaces::view_interface&lt; block_prop_view&lt; iterator &gt; &gt;</label>
       </node>
     </inheritancegraph>
     <collaborationgraph>
+      <node id="2">
+        <label>boost::stl_interfaces::view_interface&lt; block_prop_view&lt; iterator &gt; &gt;</label>
+      </node>
       <node id="1">
         <label>quantit::btensor::block_prop_view&lt; iterator &gt;</label>
         <link refid="structquantit_1_1btensor_1_1block__prop__view"/>
         <childnode refid="2" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="2">
-        <label>boost::stl_interfaces::view_interface&lt; block_prop_view&lt; iterator &gt; &gt;</label>
-      </node>
     </collaborationgraph>
-    <location file="/home/alex/project/quantt/include/blockTensor/btensor.h" line="1183" column="1" bodyfile="/home/alex/project/quantt/include/blockTensor/btensor.h" bodystart="1184" bodyend="1208"/>
+    <location file="/Users/alex/Documents/Prog/QuantiT/include/blockTensor/btensor.h" line="1185" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/blockTensor/btensor.h" bodystart="1186" bodyend="1210"/>
     <listofallmembers>
       <member refid="structquantit_1_1btensor_1_1block__prop__view_1a0b21dee8298f71386e73ab84e07e004e" prot="public" virt="non-virtual"><scope>quantit::btensor::block_prop_view</scope><name>begin</name></member>
       <member refid="structquantit_1_1btensor_1_1block__prop__view_1a12d661779fefae7a9a0f673b5eb8587e" prot="private" virt="non-virtual"><scope>quantit::btensor::block_prop_view</scope><name>block_index</name></member>
@@ -200,7 +209,7 @@
       <member refid="structquantit_1_1btensor_1_1block__prop__view_1ad2455faf752e2d8216ebcfcf9e1ef480" prot="public" virt="non-virtual"><scope>quantit::btensor::block_prop_view</scope><name>block_prop_view</name></member>
       <member refid="structquantit_1_1btensor_1_1block__prop__view_1af4b25c73be7393534863b2812508d145" prot="public" virt="non-virtual"><scope>quantit::btensor::block_prop_view</scope><name>end</name></member>
       <member refid="structquantit_1_1btensor_1_1block__prop__view_1aa966181968aae29b4c7cd6ea1ea361a4" prot="private" virt="non-virtual"><scope>quantit::btensor::block_prop_view</scope><name>first</name></member>
-      <member refid="structquantit_1_1btensor_1_1block__prop__view_1a710e876c37a339581d87f5dcae03602d" prot="public" virt="non-virtual"><scope>quantit::btensor::block_prop_view</scope><name>get_index</name></member>
+      <member refid="structquantit_1_1btensor_1_1block__prop__view_1aa497c1f34c65392db5102619a0dd8a0f" prot="public" virt="non-virtual"><scope>quantit::btensor::block_prop_view</scope><name>get_index</name></member>
       <member refid="structquantit_1_1btensor_1_1block__prop__view_1a1401a36b479f408ee15bc8edb85d78af" prot="private" virt="non-virtual"><scope>quantit::btensor::block_prop_view</scope><name>last</name></member>
     </listofallmembers>
   </compounddef>

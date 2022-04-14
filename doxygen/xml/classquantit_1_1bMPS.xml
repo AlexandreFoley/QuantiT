@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
   <compounddef id="classquantit_1_1bMPS" kind="class" language="C++" prot="public" final="yes">
     <compoundname>quantit::bMPS</compoundname>
     <basecompoundref refid="classquantit_1_1vector__lift" prot="public" virt="non-virtual">quantit::vector_lift&lt; bMPS, btensor &gt;</basecompoundref>
@@ -10,13 +10,14 @@
         <definition>property&lt;size_t, bMPS&gt; quantit::bMPS::orthogonality_center</definition>
         <argsstring></argsstring>
         <name>orthogonality_center</name>
+        <qualifiedname>quantit::bMPS::orthogonality_center</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="520" column="10" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="520" bodyend="-1"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="522" column="10" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="522" bodyend="-1"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="private-attrib">
@@ -25,6 +26,7 @@
         <definition>size_t&amp; quantit::bMPS::oc</definition>
         <argsstring></argsstring>
         <name>oc</name>
+        <qualifiedname>quantit::bMPS::oc</qualifiedname>
         <initializer>= orthogonality_center.value</initializer>
         <briefdescription>
         </briefdescription>
@@ -32,7 +34,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="615" column="8" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="615" bodyend="-1"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="618" column="8" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="618" bodyend="-1"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="public-func">
@@ -41,6 +43,7 @@
         <definition>bool quantit::bMPS::check_ranks</definition>
         <argsstring>() const</argsstring>
         <name>check_ranks</name>
+        <qualifiedname>quantit::bMPS::check_ranks</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
@@ -48,26 +51,28 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="525" column="6"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="527" column="6"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1bMPS_1aea385780f5ca48643603e5a724795ac7" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type></type>
         <definition>quantit::bMPS::bMPS</definition>
         <argsstring>()</argsstring>
         <name>bMPS</name>
+        <qualifiedname>quantit::bMPS::bMPS</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="527" column="1" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="527" bodyend="527"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="529" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="529" bodyend="529"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1bMPS_1a2d6355e4fa3adfe43d9fa84378be74ab" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type></type>
         <definition>quantit::bMPS::bMPS</definition>
         <argsstring>(size_type size)</argsstring>
         <name>bMPS</name>
+        <qualifiedname>quantit::bMPS::bMPS</qualifiedname>
         <param>
           <type>size_type</type>
           <declname>size</declname>
@@ -78,13 +83,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="528" column="1" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="528" bodyend="528"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="530" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="530" bodyend="530"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1bMPS_1a392751914c2a95a645bd57b25e26d7f2" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type></type>
         <definition>quantit::bMPS::bMPS</definition>
         <argsstring>(size_type size, size_t oc)</argsstring>
         <name>bMPS</name>
+        <qualifiedname>quantit::bMPS::bMPS</qualifiedname>
         <param>
           <type>size_type</type>
           <declname>size</declname>
@@ -99,13 +105,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="529" column="1" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="529" bodyend="529"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="531" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="531" bodyend="531"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1bMPS_1af6a00c8fd61876640bedabea56e00fcc" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type></type>
         <definition>quantit::bMPS::bMPS</definition>
         <argsstring>(const bMPS &amp;other)</argsstring>
         <name>bMPS</name>
+        <qualifiedname>quantit::bMPS::bMPS</qualifiedname>
         <param>
           <type>const <ref refid="classquantit_1_1bMPS" kindref="compound">bMPS</ref> &amp;</type>
           <declname>other</declname>
@@ -116,13 +123,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="530" column="1" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="530" bodyend="530"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="532" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="532" bodyend="532"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1bMPS_1a88da63f344b48758430c232d4f45243f" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
         <type></type>
         <definition>quantit::bMPS::bMPS</definition>
         <argsstring>(bMPS &amp;&amp;other) noexcept</argsstring>
         <name>bMPS</name>
+        <qualifiedname>quantit::bMPS::bMPS</qualifiedname>
         <param>
           <type><ref refid="classquantit_1_1bMPS" kindref="compound">bMPS</ref> &amp;&amp;</type>
           <declname>other</declname>
@@ -133,13 +141,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="531" column="1" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="531" bodyend="531"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="533" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="533" bodyend="533"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1bMPS_1a8ac9fbf791c92efa9be0866295adbc79" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type></type>
         <definition>quantit::bMPS::bMPS</definition>
         <argsstring>(std::vector&lt; Tens &gt; initl, size_t oc=0)</argsstring>
         <name>bMPS</name>
+        <qualifiedname>quantit::bMPS::bMPS</qualifiedname>
         <param>
           <type>std::vector&lt; <ref refid="classquantit_1_1btensor" kindref="compound">Tens</ref> &gt;</type>
           <declname>initl</declname>
@@ -155,13 +164,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="532" column="1" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="532" bodyend="540"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="534" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="534" bodyend="543"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1bMPS_1a26930e104dba8015fbbac86e00b3699f" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type></type>
         <definition>quantit::bMPS::bMPS</definition>
         <argsstring>(std::initializer_list&lt; Tens &gt; initl, size_t oc=0)</argsstring>
         <name>bMPS</name>
+        <qualifiedname>quantit::bMPS::bMPS</qualifiedname>
         <param>
           <type>std::initializer_list&lt; <ref refid="classquantit_1_1btensor" kindref="compound">Tens</ref> &gt;</type>
           <declname>initl</declname>
@@ -177,13 +187,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="541" column="1" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="541" bodyend="549"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="544" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="544" bodyend="552"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1bMPS_1ae55a73b99e34814de8e81e326a515db4" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type></type>
         <definition>quantit::bMPS::bMPS</definition>
         <argsstring>(size_type lenght, const Tens &amp;val, size_t oc=0)</argsstring>
         <name>bMPS</name>
+        <qualifiedname>quantit::bMPS::bMPS</qualifiedname>
         <param>
           <type>size_type</type>
           <declname>lenght</declname>
@@ -203,13 +214,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="551" column="1" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="551" bodyend="559"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="554" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="554" bodyend="562"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1bMPS_1a31e9f7e32a9c319d73e3e14864088caa" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type></type>
         <definition>quantit::bMPS::bMPS</definition>
         <argsstring>(const bMPT &amp;other, size_t oc=0)</argsstring>
         <name>bMPS</name>
+        <qualifiedname>quantit::bMPS::bMPS</qualifiedname>
         <param>
           <type>const <ref refid="classquantit_1_1bMPT" kindref="compound">bMPT</ref> &amp;</type>
           <declname>other</declname>
@@ -225,13 +237,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="561" column="1" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="561" bodyend="569"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="564" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="564" bodyend="572"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1bMPS_1a6f4f5f8060fe6d74b25c687455e05b6a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type></type>
         <definition>quantit::bMPS::bMPS</definition>
         <argsstring>(bMPT &amp;&amp;other, size_t oc=0)</argsstring>
         <name>bMPS</name>
+        <qualifiedname>quantit::bMPS::bMPS</qualifiedname>
         <param>
           <type><ref refid="classquantit_1_1bMPT" kindref="compound">bMPT</ref> &amp;&amp;</type>
           <declname>other</declname>
@@ -247,13 +260,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="570" column="1" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="570" bodyend="578"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="573" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="573" bodyend="581"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1bMPS_1a10321d6aa7f22b6d88da088bd5df4815" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type></type>
         <definition>quantit::bMPS::bMPS</definition>
         <argsstring>(const_iterator begin, const_iterator end)</argsstring>
         <name>bMPS</name>
+        <qualifiedname>quantit::bMPS::bMPS</qualifiedname>
         <param>
           <type>const_iterator</type>
           <declname>begin</declname>
@@ -268,26 +282,28 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="579" column="1" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="579" bodyend="579"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="582" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="582" bodyend="582"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1bMPS_1a8bbece87a433501b86b83853b9afcf09" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type></type>
         <definition>virtual quantit::bMPS::~bMPS</definition>
         <argsstring>()=default</argsstring>
         <name>~bMPS</name>
+        <qualifiedname>quantit::bMPS::~bMPS</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="581" column="9"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="584" column="9"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1bMPS_1a9f8879fec0dc0ada5c6ce11d58c2a21f" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
         <definition>void quantit::bMPS::swap</definition>
         <argsstring>(bMPS &amp;other)</argsstring>
         <name>swap</name>
+        <qualifiedname>quantit::bMPS::swap</qualifiedname>
         <param>
           <type><ref refid="classquantit_1_1bMPS" kindref="compound">bMPS</ref> &amp;</type>
           <declname>other</declname>
@@ -298,13 +314,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="583" column="6" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="583" bodyend="588"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="586" column="6" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="586" bodyend="591"/>
       </memberdef>
-      <memberdef kind="function" id="classquantit_1_1bMPS_1acec7a3edb93cc87b17d4b3e4659fa352" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+      <memberdef kind="function" id="classquantit_1_1bMPS_1a7ce23a3bcc5ffcd725a6b637eb3fd8e2" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type><ref refid="classquantit_1_1bMPS" kindref="compound">bMPS</ref> &amp;</type>
-        <definition>bMPS&amp; quantit::bMPS::operator=</definition>
+        <definition>bMPS &amp; quantit::bMPS::operator=</definition>
         <argsstring>(bMPS other)</argsstring>
         <name>operator=</name>
+        <qualifiedname>quantit::bMPS::operator=</qualifiedname>
         <param>
           <type><ref refid="classquantit_1_1bMPS" kindref="compound">bMPS</ref></type>
           <declname>other</declname>
@@ -315,13 +332,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="590" column="6" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="590" bodyend="594"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="593" column="6" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="593" bodyend="597"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1bMPS_1ae3d2499aaed0d88589f7545bf43e38a1" prot="public" static="no" const="no" explicit="yes" inline="yes" virt="non-virtual">
         <type></type>
         <definition>quantit::bMPS::operator bMPT</definition>
         <argsstring>()</argsstring>
         <name>operator bMPT</name>
+        <qualifiedname>quantit::bMPS::operator bMPT</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
@@ -329,13 +347,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="600" column="10" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="600" bodyend="603"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="603" column="10" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="603" bodyend="606"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1bMPS_1aec3eec819f40f05589f5e35a1b14bb08" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
         <definition>void quantit::bMPS::move_oc</definition>
         <argsstring>(int i)</argsstring>
         <name>move_oc</name>
+        <qualifiedname>quantit::bMPS::move_oc</qualifiedname>
         <param>
           <type>int</type>
           <declname>i</declname>
@@ -347,26 +366,28 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="608" column="6"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="611" column="6"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1vector__lift_1a84cb551c61497288e7843feed0b3b721" prot="public" static="no" const="no" explicit="yes" inline="yes" virt="non-virtual">
         <type></type>
         <definition>quantit::vector_lift&lt; bMPS , btensor  &gt;::operator bMPS</definition>
         <argsstring>()</argsstring>
         <name>operator bMPS</name>
+        <qualifiedname>quantit::vector_lift&lt; bMPS, btensor &gt;::operator bMPS</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="127" column="10" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="127" bodyend="133"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="125" column="10" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="125" bodyend="131"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1vector__lift_1a7342e772fe3690acb188e125fc344d5f" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
         <type>void</type>
         <definition>void quantit::vector_lift&lt; bMPS , btensor  &gt;::swap</definition>
         <argsstring>(vector_lift &amp;other) noexcept</argsstring>
         <name>swap</name>
+        <qualifiedname>quantit::vector_lift&lt; bMPS, btensor &gt;::swap</qualifiedname>
         <param>
           <type><ref refid="classquantit_1_1vector__lift" kindref="compound">vector_lift</ref> &amp;</type>
           <declname>other</declname>
@@ -377,13 +398,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="135" column="6" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="135" bodyend="135"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="133" column="6" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="133" bodyend="133"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1vector__lift_1a0c2c2ba4b3ad03ddde07fb9c70b53f11" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>reference</type>
         <definition>reference quantit::vector_lift&lt; bMPS , btensor  &gt;::at</definition>
         <argsstring>(size_t i)</argsstring>
         <name>at</name>
+        <qualifiedname>quantit::vector_lift&lt; bMPS, btensor &gt;::at</qualifiedname>
         <param>
           <type>size_t</type>
           <declname>i</declname>
@@ -394,13 +416,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="144" column="11" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="144" bodyend="144"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="142" column="11" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="142" bodyend="142"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1vector__lift_1a3d8a0350129264205d3015ca9cf34b9c" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>const_reference</type>
         <definition>const_reference quantit::vector_lift&lt; bMPS , btensor  &gt;::at</definition>
         <argsstring>(size_t i) const</argsstring>
         <name>at</name>
+        <qualifiedname>quantit::vector_lift&lt; bMPS, btensor &gt;::at</qualifiedname>
         <param>
           <type>size_t</type>
           <declname>i</declname>
@@ -411,13 +434,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="145" column="17" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="145" bodyend="145"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="143" column="17" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="143" bodyend="143"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1vector__lift_1a425eaa4e4f7916a82cce013f2326aa5d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>reference</type>
         <definition>reference quantit::vector_lift&lt; bMPS , btensor  &gt;::operator[]</definition>
         <argsstring>(size_t i)</argsstring>
         <name>operator[]</name>
+        <qualifiedname>quantit::vector_lift&lt; bMPS, btensor &gt;::operator[]</qualifiedname>
         <param>
           <type>size_t</type>
           <declname>i</declname>
@@ -428,13 +452,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="146" column="11" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="146" bodyend="146"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="144" column="11" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="144" bodyend="144"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1vector__lift_1a68a57ec836b4682f46a76628c95cd578" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>const_reference</type>
         <definition>const_reference quantit::vector_lift&lt; bMPS , btensor  &gt;::operator[]</definition>
         <argsstring>(size_t i) const</argsstring>
         <name>operator[]</name>
+        <qualifiedname>quantit::vector_lift&lt; bMPS, btensor &gt;::operator[]</qualifiedname>
         <param>
           <type>size_t</type>
           <declname>i</declname>
@@ -445,286 +470,308 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="147" column="17" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="147" bodyend="147"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="145" column="17" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="145" bodyend="145"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1vector__lift_1aa3bd63ea81a34f5ee3fa71fce489a175" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>reference</type>
         <definition>reference quantit::vector_lift&lt; bMPS , btensor  &gt;::front</definition>
         <argsstring>()</argsstring>
         <name>front</name>
+        <qualifiedname>quantit::vector_lift&lt; bMPS, btensor &gt;::front</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="148" column="11" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="148" bodyend="148"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="146" column="11" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="146" bodyend="146"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1vector__lift_1a060ed759f9e5dc16fd6203ed368c0270" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>const_reference</type>
         <definition>const_reference quantit::vector_lift&lt; bMPS , btensor  &gt;::front</definition>
         <argsstring>() const</argsstring>
         <name>front</name>
+        <qualifiedname>quantit::vector_lift&lt; bMPS, btensor &gt;::front</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="149" column="17" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="149" bodyend="149"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="147" column="17" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="147" bodyend="147"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1vector__lift_1a772b9530f48687cd7fb535096f3ce26b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>reference</type>
         <definition>reference quantit::vector_lift&lt; bMPS , btensor  &gt;::back</definition>
         <argsstring>()</argsstring>
         <name>back</name>
+        <qualifiedname>quantit::vector_lift&lt; bMPS, btensor &gt;::back</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="150" column="11" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="150" bodyend="150"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="148" column="11" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="148" bodyend="148"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1vector__lift_1ab4db3513ed7825e45b3406cfdc7da875" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>const_reference</type>
         <definition>const_reference quantit::vector_lift&lt; bMPS , btensor  &gt;::back</definition>
         <argsstring>() const</argsstring>
         <name>back</name>
+        <qualifiedname>quantit::vector_lift&lt; bMPS, btensor &gt;::back</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="151" column="17" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="151" bodyend="151"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="149" column="17" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="149" bodyend="149"/>
       </memberdef>
-      <memberdef kind="function" id="classquantit_1_1vector__lift_1a0224c7c93d21a5ba0569f610bd255c63" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+      <memberdef kind="function" id="classquantit_1_1vector__lift_1ab0af6e916fa18833330271af0f15051a" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
         <type><ref refid="classquantit_1_1btensor" kindref="compound">Tens</ref> *</type>
-        <definition>Tens* quantit::vector_lift&lt; bMPS , btensor  &gt;::data</definition>
+        <definition>Tens * quantit::vector_lift&lt; bMPS , btensor  &gt;::data</definition>
         <argsstring>() noexcept</argsstring>
         <name>data</name>
+        <qualifiedname>quantit::vector_lift&lt; bMPS, btensor &gt;::data</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="152" column="6" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="152" bodyend="152"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="150" column="6" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="150" bodyend="150"/>
       </memberdef>
-      <memberdef kind="function" id="classquantit_1_1vector__lift_1a5f18c716ca86473b5b812b06353be923" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+      <memberdef kind="function" id="classquantit_1_1vector__lift_1a2f152f3f695ad7075146da9f2d535638" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
         <type>const <ref refid="classquantit_1_1btensor" kindref="compound">Tens</ref> *</type>
-        <definition>const Tens* quantit::vector_lift&lt; bMPS , btensor  &gt;::data</definition>
+        <definition>const Tens * quantit::vector_lift&lt; bMPS , btensor  &gt;::data</definition>
         <argsstring>() const noexcept</argsstring>
         <name>data</name>
+        <qualifiedname>quantit::vector_lift&lt; bMPS, btensor &gt;::data</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="153" column="12" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="153" bodyend="153"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="151" column="12" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="151" bodyend="151"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1vector__lift_1a1deeecee80d8abeda4eac94db68a2ad1" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
         <type>iterator</type>
         <definition>iterator quantit::vector_lift&lt; bMPS , btensor  &gt;::begin</definition>
         <argsstring>() noexcept</argsstring>
         <name>begin</name>
+        <qualifiedname>quantit::vector_lift&lt; bMPS, btensor &gt;::begin</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="155" column="10" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="155" bodyend="155"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="153" column="10" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="153" bodyend="153"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1vector__lift_1aa5911d3b655feb2144e112b3e9e84ec8" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
         <type>const_iterator</type>
         <definition>const_iterator quantit::vector_lift&lt; bMPS , btensor  &gt;::begin</definition>
         <argsstring>() const noexcept</argsstring>
         <name>begin</name>
+        <qualifiedname>quantit::vector_lift&lt; bMPS, btensor &gt;::begin</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="156" column="16" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="156" bodyend="156"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="154" column="16" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="154" bodyend="154"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1vector__lift_1ac016b067a7fa102613a6a74e5ff90426" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
         <type>const_iterator</type>
         <definition>const_iterator quantit::vector_lift&lt; bMPS , btensor  &gt;::cbegin</definition>
         <argsstring>() const noexcept</argsstring>
         <name>cbegin</name>
+        <qualifiedname>quantit::vector_lift&lt; bMPS, btensor &gt;::cbegin</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="157" column="16" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="157" bodyend="157"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="155" column="16" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="155" bodyend="155"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1vector__lift_1a8fe08c939748a75779b92a72bcc22f6b" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
         <type>iterator</type>
         <definition>iterator quantit::vector_lift&lt; bMPS , btensor  &gt;::end</definition>
         <argsstring>() noexcept</argsstring>
         <name>end</name>
+        <qualifiedname>quantit::vector_lift&lt; bMPS, btensor &gt;::end</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="158" column="10" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="158" bodyend="158"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="156" column="10" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="156" bodyend="156"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1vector__lift_1a587ab8175a47d2af0fc40489f3765a9e" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
         <type>const_iterator</type>
         <definition>const_iterator quantit::vector_lift&lt; bMPS , btensor  &gt;::end</definition>
         <argsstring>() const noexcept</argsstring>
         <name>end</name>
+        <qualifiedname>quantit::vector_lift&lt; bMPS, btensor &gt;::end</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="159" column="16" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="159" bodyend="159"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="157" column="16" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="157" bodyend="157"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1vector__lift_1aea239fb31a5660eb18c79cde67b677ac" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
         <type>const_iterator</type>
         <definition>const_iterator quantit::vector_lift&lt; bMPS , btensor  &gt;::cend</definition>
         <argsstring>() const noexcept</argsstring>
         <name>cend</name>
+        <qualifiedname>quantit::vector_lift&lt; bMPS, btensor &gt;::cend</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="160" column="16" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="160" bodyend="160"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="158" column="16" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="158" bodyend="158"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1vector__lift_1a3cf5b4780aa2e6f57356314d3964d2e6" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
         <type>reverse_iterator</type>
         <definition>reverse_iterator quantit::vector_lift&lt; bMPS , btensor  &gt;::rbegin</definition>
         <argsstring>() noexcept</argsstring>
         <name>rbegin</name>
+        <qualifiedname>quantit::vector_lift&lt; bMPS, btensor &gt;::rbegin</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="161" column="18" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="161" bodyend="161"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="159" column="18" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="159" bodyend="159"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1vector__lift_1afc4aa1b9321982066adde405295bc43c" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
         <type>const_reverse_iterator</type>
         <definition>const_reverse_iterator quantit::vector_lift&lt; bMPS , btensor  &gt;::rbegin</definition>
         <argsstring>() const noexcept</argsstring>
         <name>rbegin</name>
+        <qualifiedname>quantit::vector_lift&lt; bMPS, btensor &gt;::rbegin</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="162" column="24" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="162" bodyend="162"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="160" column="24" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="160" bodyend="160"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1vector__lift_1a6ce4e97c324ec1ec6a65c1eb7bbe32ea" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
         <type>const_reverse_iterator</type>
         <definition>const_reverse_iterator quantit::vector_lift&lt; bMPS , btensor  &gt;::crbegin</definition>
         <argsstring>() const noexcept</argsstring>
         <name>crbegin</name>
+        <qualifiedname>quantit::vector_lift&lt; bMPS, btensor &gt;::crbegin</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="163" column="24" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="163" bodyend="163"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="161" column="24" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="161" bodyend="161"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1vector__lift_1a291e908c3205f95cf581809317f5fe46" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
         <type>reverse_iterator</type>
         <definition>reverse_iterator quantit::vector_lift&lt; bMPS , btensor  &gt;::rend</definition>
         <argsstring>() noexcept</argsstring>
         <name>rend</name>
+        <qualifiedname>quantit::vector_lift&lt; bMPS, btensor &gt;::rend</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="164" column="18" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="164" bodyend="164"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="162" column="18" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="162" bodyend="162"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1vector__lift_1a7536dda8a7b23fd261d6bda7c27776cb" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
         <type>const_reverse_iterator</type>
         <definition>const_reverse_iterator quantit::vector_lift&lt; bMPS , btensor  &gt;::rend</definition>
         <argsstring>() const noexcept</argsstring>
         <name>rend</name>
+        <qualifiedname>quantit::vector_lift&lt; bMPS, btensor &gt;::rend</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="165" column="24" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="165" bodyend="165"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="163" column="24" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="163" bodyend="163"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1vector__lift_1a08392d8d4aef61f39510004ca280cf52" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
         <type>const_reverse_iterator</type>
         <definition>const_reverse_iterator quantit::vector_lift&lt; bMPS , btensor  &gt;::crend</definition>
         <argsstring>() const noexcept</argsstring>
         <name>crend</name>
+        <qualifiedname>quantit::vector_lift&lt; bMPS, btensor &gt;::crend</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="166" column="24" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="166" bodyend="166"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="164" column="24" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="164" bodyend="164"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1vector__lift_1a8745b99fad2af212589ee49df5a69012" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
         <type>auto</type>
         <definition>auto quantit::vector_lift&lt; bMPS , btensor  &gt;::empty</definition>
         <argsstring>() const noexcept</argsstring>
         <name>empty</name>
+        <qualifiedname>quantit::vector_lift&lt; bMPS, btensor &gt;::empty</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="168" column="7" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="168" bodyend="168"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="166" column="7" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="166" bodyend="166"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1vector__lift_1ad878af4ca8650de9eceff7e380b8ae4e" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
         <type>auto</type>
         <definition>auto quantit::vector_lift&lt; bMPS , btensor  &gt;::size</definition>
         <argsstring>() const noexcept</argsstring>
         <name>size</name>
+        <qualifiedname>quantit::vector_lift&lt; bMPS, btensor &gt;::size</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="169" column="7" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="169" bodyend="169"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="167" column="7" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="167" bodyend="167"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1vector__lift_1a9a3ba903e635bdd9c17c00c3d6577ff6" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
         <type>auto</type>
         <definition>auto quantit::vector_lift&lt; bMPS , btensor  &gt;::max_size</definition>
         <argsstring>() const noexcept</argsstring>
         <name>max_size</name>
+        <qualifiedname>quantit::vector_lift&lt; bMPS, btensor &gt;::max_size</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="170" column="7" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="170" bodyend="170"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="168" column="7" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="168" bodyend="168"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1vector__lift_1afd332192732cc9139b409ba205b0d825" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
         <definition>void quantit::vector_lift&lt; bMPS , btensor  &gt;::reserve</definition>
         <argsstring>(size_t new_cap)</argsstring>
         <name>reserve</name>
+        <qualifiedname>quantit::vector_lift&lt; bMPS, btensor &gt;::reserve</qualifiedname>
         <param>
           <type>size_t</type>
           <declname>new_cap</declname>
@@ -735,52 +782,56 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="171" column="6" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="171" bodyend="171"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="169" column="6" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="169" bodyend="169"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1vector__lift_1a91f3daf5c44bb8d5fe10f182f6abea67" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
         <type>auto</type>
         <definition>auto quantit::vector_lift&lt; bMPS , btensor  &gt;::capacity</definition>
         <argsstring>() const noexcept</argsstring>
         <name>capacity</name>
+        <qualifiedname>quantit::vector_lift&lt; bMPS, btensor &gt;::capacity</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="172" column="7" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="172" bodyend="172"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="170" column="7" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="170" bodyend="170"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1vector__lift_1a304415454d09c0705d2f6015afe505fa" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
         <definition>void quantit::vector_lift&lt; bMPS , btensor  &gt;::shrink_to_fit</definition>
         <argsstring>()</argsstring>
         <name>shrink_to_fit</name>
+        <qualifiedname>quantit::vector_lift&lt; bMPS, btensor &gt;::shrink_to_fit</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="173" column="6" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="173" bodyend="173"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="171" column="6" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="171" bodyend="171"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1vector__lift_1aca4d0987de2f20030aabd50a36b6f6fa" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
         <type>void</type>
         <definition>void quantit::vector_lift&lt; bMPS , btensor  &gt;::clear</definition>
         <argsstring>() noexcept</argsstring>
         <name>clear</name>
+        <qualifiedname>quantit::vector_lift&lt; bMPS, btensor &gt;::clear</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="175" column="6" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="175" bodyend="175"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="173" column="6" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="173" bodyend="173"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1vector__lift_1ad4f63687789e500c54d4da041dce7d6b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>iterator</type>
         <definition>iterator quantit::vector_lift&lt; bMPS , btensor  &gt;::insert</definition>
         <argsstring>(const_iterator pos, const Tens &amp;val)</argsstring>
         <name>insert</name>
+        <qualifiedname>quantit::vector_lift&lt; bMPS, btensor &gt;::insert</qualifiedname>
         <param>
           <type>const_iterator</type>
           <declname>pos</declname>
@@ -795,13 +846,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="176" column="10" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="176" bodyend="176"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="174" column="10" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="174" bodyend="174"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1vector__lift_1a25a3654b7a751703e3cbbd16f19177ef" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>iterator</type>
         <definition>iterator quantit::vector_lift&lt; bMPS , btensor  &gt;::insert</definition>
         <argsstring>(const_iterator pos, Tens &amp;&amp;val)</argsstring>
         <name>insert</name>
+        <qualifiedname>quantit::vector_lift&lt; bMPS, btensor &gt;::insert</qualifiedname>
         <param>
           <type>const_iterator</type>
           <declname>pos</declname>
@@ -816,13 +868,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="177" column="10" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="177" bodyend="177"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="175" column="10" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="175" bodyend="175"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1vector__lift_1a75f79572ff8f0695d23201582996b906" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>iterator</type>
         <definition>iterator quantit::vector_lift&lt; bMPS , btensor  &gt;::insert</definition>
         <argsstring>(const_iterator pos, size_type count, Tens &amp;&amp;val)</argsstring>
         <name>insert</name>
+        <qualifiedname>quantit::vector_lift&lt; bMPS, btensor &gt;::insert</qualifiedname>
         <param>
           <type>const_iterator</type>
           <declname>pos</declname>
@@ -841,13 +894,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="178" column="10" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="178" bodyend="178"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="176" column="10" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="176" bodyend="176"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1vector__lift_1ac860ab8f995ca814daef39a09f861572" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>iterator</type>
         <definition>iterator quantit::vector_lift&lt; bMPS , btensor  &gt;::insert</definition>
         <argsstring>(const_iterator pos, InputIT first, InputIT last)</argsstring>
         <name>insert</name>
+        <qualifiedname>quantit::vector_lift&lt; bMPS, btensor &gt;::insert</qualifiedname>
         <param>
           <type>const_iterator</type>
           <declname>pos</declname>
@@ -866,13 +920,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="180" column="10" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="180" bodyend="183"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="178" column="10" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="178" bodyend="181"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1vector__lift_1a6662a0c02ce9e07b0e2a81b4fde48674" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>iterator</type>
         <definition>iterator quantit::vector_lift&lt; bMPS , btensor  &gt;::insert</definition>
         <argsstring>(const_iterator pos, std::initializer_list&lt; Tens &gt; list)</argsstring>
         <name>insert</name>
+        <qualifiedname>quantit::vector_lift&lt; bMPS, btensor &gt;::insert</qualifiedname>
         <param>
           <type>const_iterator</type>
           <declname>pos</declname>
@@ -887,13 +942,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="184" column="10" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="184" bodyend="184"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="182" column="10" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="182" bodyend="182"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1vector__lift_1a14c3993765ca99ae4ca3beb2e6455fe6" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>iterator</type>
         <definition>iterator quantit::vector_lift&lt; bMPS , btensor  &gt;::emplace</definition>
         <argsstring>(const_iterator pos, Args &amp;&amp;...args)</argsstring>
         <name>emplace</name>
+        <qualifiedname>quantit::vector_lift&lt; bMPS, btensor &gt;::emplace</qualifiedname>
         <param>
           <type>const_iterator</type>
           <declname>pos</declname>
@@ -908,13 +964,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="186" column="10" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="186" bodyend="189"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="184" column="10" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="184" bodyend="187"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1vector__lift_1a0f316c8d93098a029935aa60d8b850ce" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>iterator</type>
         <definition>iterator quantit::vector_lift&lt; bMPS , btensor  &gt;::erase</definition>
         <argsstring>(const_iterator pos)</argsstring>
         <name>erase</name>
+        <qualifiedname>quantit::vector_lift&lt; bMPS, btensor &gt;::erase</qualifiedname>
         <param>
           <type>const_iterator</type>
           <declname>pos</declname>
@@ -925,13 +982,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="190" column="10" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="190" bodyend="190"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="188" column="10" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="188" bodyend="188"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1vector__lift_1a6b2cb538b63a2d398ee8169045ccc93f" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>iterator</type>
         <definition>iterator quantit::vector_lift&lt; bMPS , btensor  &gt;::erase</definition>
         <argsstring>(const_iterator first, const_iterator last)</argsstring>
         <name>erase</name>
+        <qualifiedname>quantit::vector_lift&lt; bMPS, btensor &gt;::erase</qualifiedname>
         <param>
           <type>const_iterator</type>
           <declname>first</declname>
@@ -946,13 +1004,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="191" column="10" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="191" bodyend="191"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="189" column="10" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="189" bodyend="189"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1vector__lift_1afb68adc182c0a25b422e7dff3cdcbde2" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
         <definition>void quantit::vector_lift&lt; bMPS , btensor  &gt;::push_back</definition>
         <argsstring>(const Tens &amp;val)</argsstring>
         <name>push_back</name>
+        <qualifiedname>quantit::vector_lift&lt; bMPS, btensor &gt;::push_back</qualifiedname>
         <param>
           <type>const <ref refid="classquantit_1_1btensor" kindref="compound">Tens</ref> &amp;</type>
           <declname>val</declname>
@@ -963,13 +1022,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="192" column="6" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="192" bodyend="192"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="190" column="6" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="190" bodyend="190"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1vector__lift_1ab3e23728d13dc8bb3cf494a20c99a809" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
         <definition>void quantit::vector_lift&lt; bMPS , btensor  &gt;::push_back</definition>
         <argsstring>(Tens &amp;&amp;val)</argsstring>
         <name>push_back</name>
+        <qualifiedname>quantit::vector_lift&lt; bMPS, btensor &gt;::push_back</qualifiedname>
         <param>
           <type><ref refid="classquantit_1_1btensor" kindref="compound">Tens</ref> &amp;&amp;</type>
           <declname>val</declname>
@@ -980,13 +1040,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="193" column="6" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="193" bodyend="193"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="191" column="6" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="191" bodyend="191"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1vector__lift_1aa0170758a7b359bc1f6c3f116c4ef8f4" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>auto</type>
         <definition>auto quantit::vector_lift&lt; bMPS , btensor  &gt;::emplace_back</definition>
         <argsstring>(Args &amp;&amp;...args)</argsstring>
         <name>emplace_back</name>
+        <qualifiedname>quantit::vector_lift&lt; bMPS, btensor &gt;::emplace_back</qualifiedname>
         <param>
           <type>Args &amp;&amp;...</type>
           <declname>args</declname>
@@ -997,26 +1058,28 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="195" column="6" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="195" bodyend="198"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="193" column="6" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="193" bodyend="196"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1vector__lift_1a828e4fde579fc2392e7f9691271266b4" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
         <definition>void quantit::vector_lift&lt; bMPS , btensor  &gt;::pop_back</definition>
         <argsstring>()</argsstring>
         <name>pop_back</name>
+        <qualifiedname>quantit::vector_lift&lt; bMPS, btensor &gt;::pop_back</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="199" column="6" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="199" bodyend="199"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="197" column="6" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="197" bodyend="197"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1vector__lift_1aa38d33276c29f0ce13024699e40253f4" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
         <definition>void quantit::vector_lift&lt; bMPS , btensor  &gt;::resize</definition>
         <argsstring>(size_type count)</argsstring>
         <name>resize</name>
+        <qualifiedname>quantit::vector_lift&lt; bMPS, btensor &gt;::resize</qualifiedname>
         <param>
           <type>size_type</type>
           <declname>count</declname>
@@ -1027,13 +1090,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="200" column="6" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="200" bodyend="200"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="198" column="6" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="198" bodyend="198"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1vector__lift_1a537084285b6501165e50a3565c9a7d19" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
         <definition>void quantit::vector_lift&lt; bMPS , btensor  &gt;::resize</definition>
         <argsstring>(size_type count, const Tens &amp;value)</argsstring>
         <name>resize</name>
+        <qualifiedname>quantit::vector_lift&lt; bMPS, btensor &gt;::resize</qualifiedname>
         <param>
           <type>size_type</type>
           <declname>count</declname>
@@ -1048,13 +1112,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="201" column="6" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="201" bodyend="201"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="199" column="6" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="199" bodyend="199"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1vector__lift_1ac8dbb3c3520d908dac38494187bdc0cb" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type><ref refid="classquantit_1_1bMPS" kindref="compound">bMPS</ref></type>
         <definition>bMPS  quantit::vector_lift&lt; bMPS , btensor  &gt;::to</definition>
         <argsstring>(const torch::TensorOptions &amp;options={}, bool non_blocking=false, bool copy=false, c10::optional&lt; c10::MemoryFormat &gt; memory_format=c10::nullopt) const</argsstring>
         <name>to</name>
+        <qualifiedname>quantit::vector_lift&lt; bMPS, btensor &gt;::to</qualifiedname>
         <param>
           <type>const torch::TensorOptions &amp;</type>
           <declname>options</declname>
@@ -1081,13 +1146,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="204" column="3" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="204" bodyend="214"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="202" column="3" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="202" bodyend="216"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1vector__lift_1ad8a66d5449ae3316b828fe7c491e151f" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type><ref refid="classquantit_1_1bMPS" kindref="compound">bMPS</ref></type>
         <definition>bMPS  quantit::vector_lift&lt; bMPS , btensor  &gt;::to</definition>
         <argsstring>(torch::Device device, torch::ScalarType dtype, bool non_blocking=false, bool copy=false, c10::optional&lt; c10::MemoryFormat &gt; memory_format=c10::nullopt) const</argsstring>
         <name>to</name>
+        <qualifiedname>quantit::vector_lift&lt; bMPS, btensor &gt;::to</qualifiedname>
         <param>
           <type>torch::Device</type>
           <declname>device</declname>
@@ -1117,13 +1183,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="215" column="3" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="215" bodyend="224"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="217" column="3" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="217" bodyend="226"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1vector__lift_1a9f5fd7e554f2e4c804a7ac55e8b79c05" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type><ref refid="classquantit_1_1bMPS" kindref="compound">bMPS</ref></type>
         <definition>bMPS  quantit::vector_lift&lt; bMPS , btensor  &gt;::to</definition>
         <argsstring>(torch::ScalarType dtype, bool non_blocking=false, bool copy=false, c10::optional&lt; c10::MemoryFormat &gt; memory_format=c10::nullopt) const</argsstring>
         <name>to</name>
+        <qualifiedname>quantit::vector_lift&lt; bMPS, btensor &gt;::to</qualifiedname>
         <param>
           <type>torch::ScalarType</type>
           <declname>dtype</declname>
@@ -1149,13 +1216,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="225" column="3" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="225" bodyend="234"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="227" column="3" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="227" bodyend="236"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1vector__lift_1a7429cdaf9d908a06767666fca723101e" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type><ref refid="classquantit_1_1bMPS" kindref="compound">bMPS</ref></type>
         <definition>bMPS  quantit::vector_lift&lt; bMPS , btensor  &gt;::to</definition>
         <argsstring>(caffe2::TypeMeta type_meta, bool non_blocking=false, bool copy=false, c10::optional&lt; c10::MemoryFormat &gt; memory_format=c10::nullopt) const</argsstring>
         <name>to</name>
+        <qualifiedname>quantit::vector_lift&lt; bMPS, btensor &gt;::to</qualifiedname>
         <param>
           <type>caffe2::TypeMeta</type>
           <declname>type_meta</declname>
@@ -1181,13 +1249,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="235" column="3" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="235" bodyend="244"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="237" column="3" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="237" bodyend="246"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1vector__lift_1aa15da92b21438c52be24d3e88551e81e" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type><ref refid="classquantit_1_1bMPS" kindref="compound">bMPS</ref></type>
         <definition>bMPS  quantit::vector_lift&lt; bMPS , btensor  &gt;::to</definition>
         <argsstring>(const btensor &amp;other, bool non_blocking=false, bool copy=false, c10::optional&lt; c10::MemoryFormat &gt; memory_format=c10::nullopt) const</argsstring>
         <name>to</name>
+        <qualifiedname>quantit::vector_lift&lt; bMPS, btensor &gt;::to</qualifiedname>
         <param>
           <type>const <ref refid="classquantit_1_1btensor" kindref="compound">btensor</ref> &amp;</type>
           <declname>other</declname>
@@ -1213,13 +1282,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="245" column="3" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="245" bodyend="254"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="247" column="3" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="247" bodyend="256"/>
       </memberdef>
-      <memberdef kind="function" id="classquantit_1_1vector__lift_1a6cffef995a9f020e4f07e5a55595b875" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+      <memberdef kind="function" id="classquantit_1_1vector__lift_1acf800f7152708c60399b3eaeee815a15" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type><ref refid="classquantit_1_1bMPS" kindref="compound">bMPS</ref> &amp;</type>
-        <definition>bMPS &amp; quantit::vector_lift&lt; bMPS , btensor  &gt;::to_</definition>
+        <definition>bMPS  &amp; quantit::vector_lift&lt; bMPS , btensor  &gt;::to_</definition>
         <argsstring>(Args &amp;&amp;...args)</argsstring>
         <name>to_</name>
+        <qualifiedname>quantit::vector_lift&lt; bMPS, btensor &gt;::to_</qualifiedname>
         <param>
           <type>Args &amp;&amp;...</type>
           <declname>args</declname>
@@ -1230,7 +1300,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="257" column="3" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="257" bodyend="266"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="259" column="3" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="259" bodyend="268"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="public-static-func">
@@ -1239,6 +1309,7 @@
         <definition>static bool quantit::bMPS::check_one</definition>
         <argsstring>(const Tens &amp;tens)</argsstring>
         <name>check_one</name>
+        <qualifiedname>quantit::bMPS::check_one</qualifiedname>
         <param>
           <type>const <ref refid="classquantit_1_1btensor" kindref="compound">Tens</ref> &amp;</type>
           <declname>tens</declname>
@@ -1249,13 +1320,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="526" column="13"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="528" column="13"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1bMPS_1a63e01e1b71c2dfdf059c18e699ce2f4a" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type><ref refid="classquantit_1_1bMPS" kindref="compound">bMPS</ref></type>
         <definition>static bMPS quantit::bMPS::empty_copy</definition>
         <argsstring>(const bMPS &amp;in)</argsstring>
         <name>empty_copy</name>
+        <qualifiedname>quantit::bMPS::empty_copy</qualifiedname>
         <param>
           <type>const <ref refid="classquantit_1_1bMPS" kindref="compound">bMPS</ref> &amp;</type>
           <declname>in</declname>
@@ -1266,7 +1338,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="612" column="13" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="612" bodyend="612"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="615" column="13" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="615" bodyend="615"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="friend">
@@ -1275,6 +1347,7 @@
         <definition>btensor details::dmrg_impl</definition>
         <argsstring>(const bMPO &amp;hamiltonian, const bMPT &amp;two_sites_hamil, bMPS &amp;in_out_state, const dmrg_options &amp;options, benv_holder &amp;Env, dmrg_logger &amp;logger)</argsstring>
         <name>details::dmrg_impl</name>
+        <qualifiedname>quantit::bMPS::dmrg_impl</qualifiedname>
         <param>
           <type>const <ref refid="classquantit_1_1bMPO" kindref="compound">bMPO</ref> &amp;</type>
           <declname>hamiltonian</declname>
@@ -1305,7 +1378,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="609" column="16"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="612" column="16"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="public-type">
@@ -1314,117 +1387,126 @@
         <definition>using quantit::vector_lift&lt; bMPS , btensor  &gt;::Tens =  btensor</definition>
         <argsstring></argsstring>
         <name>Tens</name>
+        <qualifiedname>quantit::vector_lift&lt; bMPS, btensor &gt;::Tens</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="96" column="1" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="96" bodyend="-1"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="96" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="96" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="classquantit_1_1vector__lift_1a5adbd470520fc9b5fe634a52f9acfaec" prot="public" static="no">
         <type>std::vector&lt; <ref refid="classquantit_1_1btensor" kindref="compound">Tens</ref> &gt;</type>
         <definition>using quantit::vector_lift&lt; bMPS , btensor  &gt;::VTens =  std::vector&lt;Tens&gt;</definition>
         <argsstring></argsstring>
         <name>VTens</name>
+        <qualifiedname>quantit::vector_lift&lt; bMPS, btensor &gt;::VTens</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="97" column="1" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="97" bodyend="-1"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="97" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="97" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="classquantit_1_1vector__lift_1a4b667b1852ca1b7a29537e981e57200c" prot="public" static="no">
         <type>typename VTens::size_type</type>
         <definition>using quantit::vector_lift&lt; bMPS , btensor  &gt;::size_type =  typename VTens::size_type</definition>
         <argsstring></argsstring>
         <name>size_type</name>
+        <qualifiedname>quantit::vector_lift&lt; bMPS, btensor &gt;::size_type</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="98" column="1" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="98" bodyend="-1"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="98" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="98" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="classquantit_1_1vector__lift_1a22bfa093a70400986edf9a8a955ac2dd" prot="public" static="no">
         <type>typename VTens::iterator</type>
         <definition>using quantit::vector_lift&lt; bMPS , btensor  &gt;::iterator =  typename VTens::iterator</definition>
         <argsstring></argsstring>
         <name>iterator</name>
+        <qualifiedname>quantit::vector_lift&lt; bMPS, btensor &gt;::iterator</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="99" column="1" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="99" bodyend="-1"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="99" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="99" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="classquantit_1_1vector__lift_1ad909e815b6f898bff49f3ee486fecebb" prot="public" static="no">
         <type>typename VTens::const_iterator</type>
         <definition>using quantit::vector_lift&lt; bMPS , btensor  &gt;::const_iterator =  typename VTens::const_iterator</definition>
         <argsstring></argsstring>
         <name>const_iterator</name>
+        <qualifiedname>quantit::vector_lift&lt; bMPS, btensor &gt;::const_iterator</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="100" column="1" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="100" bodyend="-1"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="100" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="100" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="classquantit_1_1vector__lift_1a626a11de2e6bda79ab46e1a77edc2f2b" prot="public" static="no">
         <type>typename VTens::reverse_iterator</type>
         <definition>using quantit::vector_lift&lt; bMPS , btensor  &gt;::reverse_iterator =  typename VTens::reverse_iterator</definition>
         <argsstring></argsstring>
         <name>reverse_iterator</name>
+        <qualifiedname>quantit::vector_lift&lt; bMPS, btensor &gt;::reverse_iterator</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="101" column="1" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="101" bodyend="-1"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="101" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="101" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="classquantit_1_1vector__lift_1a010c9ed3c923579de934ffff451ca7c4" prot="public" static="no">
         <type>typename VTens::const_reverse_iterator</type>
         <definition>using quantit::vector_lift&lt; bMPS , btensor  &gt;::const_reverse_iterator =  typename VTens::const_reverse_iterator</definition>
         <argsstring></argsstring>
         <name>const_reverse_iterator</name>
+        <qualifiedname>quantit::vector_lift&lt; bMPS, btensor &gt;::const_reverse_iterator</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="102" column="1" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="102" bodyend="-1"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="102" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="102" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="classquantit_1_1vector__lift_1ac3d6a73e33d5cbcca35eb30c2adc7a2e" prot="public" static="no">
         <type>typename VTens::const_reference</type>
         <definition>using quantit::vector_lift&lt; bMPS , btensor  &gt;::const_reference =  typename VTens::const_reference</definition>
         <argsstring></argsstring>
         <name>const_reference</name>
+        <qualifiedname>quantit::vector_lift&lt; bMPS, btensor &gt;::const_reference</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="103" column="1" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="103" bodyend="-1"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="103" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="103" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="classquantit_1_1vector__lift_1a222022770001c4c0d304f96e74550044" prot="public" static="no">
         <type>typename VTens::reference</type>
         <definition>using quantit::vector_lift&lt; bMPS , btensor  &gt;::reference =  typename VTens::reference</definition>
         <argsstring></argsstring>
         <name>reference</name>
+        <qualifiedname>quantit::vector_lift&lt; bMPS, btensor &gt;::reference</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/MPT.h" line="104" column="1" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="104" bodyend="-1"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="104" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="104" bodyend="-1"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
@@ -1434,21 +1516,21 @@
 <para>Class for the matrix product state. A tensor train of rank three tensors, with an orthogonality center. </para>
     </detaileddescription>
     <inheritancegraph>
-      <node id="2">
-        <label>quantit::vector_lift&lt; bMPS, btensor &gt;</label>
-        <link refid="classquantit_1_1vector__lift"/>
-      </node>
       <node id="1">
         <label>quantit::bMPS</label>
         <link refid="classquantit_1_1bMPS"/>
         <childnode refid="2" relation="public-inheritance">
         </childnode>
       </node>
-    </inheritancegraph>
-    <collaborationgraph>
       <node id="2">
         <label>quantit::vector_lift&lt; bMPS, btensor &gt;</label>
         <link refid="classquantit_1_1vector__lift"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="3">
+        <label>property&lt; size_t, quantit::bMPS &gt;</label>
+        <link refid="classproperty"/>
       </node>
       <node id="1">
         <label>quantit::bMPS</label>
@@ -1459,12 +1541,12 @@
           <edgelabel>orthogonality_center</edgelabel>
         </childnode>
       </node>
-      <node id="3">
-        <label>property&lt; size_t, quantit::bMPS &gt;</label>
-        <link refid="classproperty"/>
+      <node id="2">
+        <label>quantit::vector_lift&lt; bMPS, btensor &gt;</label>
+        <link refid="classquantit_1_1vector__lift"/>
       </node>
     </collaborationgraph>
-    <location file="/home/alex/project/quantt/include/MPT.h" line="516" column="1" bodyfile="/home/alex/project/quantt/include/MPT.h" bodystart="518" bodyend="616"/>
+    <location file="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" line="518" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/MPT.h" bodystart="520" bodyend="619"/>
     <listofallmembers>
       <member refid="classquantit_1_1vector__lift_1a0c2c2ba4b3ad03ddde07fb9c70b53f11" prot="public" virt="non-virtual"><scope>quantit::bMPS</scope><name>at</name></member>
       <member refid="classquantit_1_1vector__lift_1a3d8a0350129264205d3015ca9cf34b9c" prot="public" virt="non-virtual"><scope>quantit::bMPS</scope><name>at</name></member>
@@ -1494,8 +1576,8 @@
       <member refid="classquantit_1_1vector__lift_1a010c9ed3c923579de934ffff451ca7c4" prot="public" virt="non-virtual"><scope>quantit::bMPS</scope><name>const_reverse_iterator</name></member>
       <member refid="classquantit_1_1vector__lift_1a6ce4e97c324ec1ec6a65c1eb7bbe32ea" prot="public" virt="non-virtual"><scope>quantit::bMPS</scope><name>crbegin</name></member>
       <member refid="classquantit_1_1vector__lift_1a08392d8d4aef61f39510004ca280cf52" prot="public" virt="non-virtual"><scope>quantit::bMPS</scope><name>crend</name></member>
-      <member refid="classquantit_1_1vector__lift_1a0224c7c93d21a5ba0569f610bd255c63" prot="public" virt="non-virtual"><scope>quantit::bMPS</scope><name>data</name></member>
-      <member refid="classquantit_1_1vector__lift_1a5f18c716ca86473b5b812b06353be923" prot="public" virt="non-virtual"><scope>quantit::bMPS</scope><name>data</name></member>
+      <member refid="classquantit_1_1vector__lift_1ab0af6e916fa18833330271af0f15051a" prot="public" virt="non-virtual"><scope>quantit::bMPS</scope><name>data</name></member>
+      <member refid="classquantit_1_1vector__lift_1a2f152f3f695ad7075146da9f2d535638" prot="public" virt="non-virtual"><scope>quantit::bMPS</scope><name>data</name></member>
       <member refid="classquantit_1_1bMPS_1aa13673c0eaf6848666c1253fc1db80bc" prot="public" virt="non-virtual"><scope>quantit::bMPS</scope><name>details::dmrg_impl</name></member>
       <member refid="classquantit_1_1vector__lift_1a14c3993765ca99ae4ca3beb2e6455fe6" prot="public" virt="non-virtual"><scope>quantit::bMPS</scope><name>emplace</name></member>
       <member refid="classquantit_1_1vector__lift_1aa0170758a7b359bc1f6c3f116c4ef8f4" prot="public" virt="non-virtual"><scope>quantit::bMPS</scope><name>emplace_back</name></member>
@@ -1518,8 +1600,8 @@
       <member refid="classquantit_1_1bMPS_1a13ecbccebe03cc272686866cc6fedbda" prot="private" virt="non-virtual"><scope>quantit::bMPS</scope><name>oc</name></member>
       <member refid="classquantit_1_1vector__lift_1a84cb551c61497288e7843feed0b3b721" prot="public" virt="non-virtual"><scope>quantit::bMPS</scope><name>operator bMPS</name></member>
       <member refid="classquantit_1_1bMPS_1ae3d2499aaed0d88589f7545bf43e38a1" prot="public" virt="non-virtual"><scope>quantit::bMPS</scope><name>operator bMPT</name></member>
-      <member refid="classquantit_1_1bMPS_1acec7a3edb93cc87b17d4b3e4659fa352" prot="public" virt="non-virtual"><scope>quantit::bMPS</scope><name>operator=</name></member>
-      <member refid="classquantit_1_1vector__lift_1a8928f80bfc596c08eed2abf30745f02b" prot="public" virt="non-virtual" ambiguityscope="vector_lift&lt; bMPS, btensor &gt;::"><scope>quantit::bMPS</scope><name>operator=</name></member>
+      <member refid="classquantit_1_1bMPS_1a7ce23a3bcc5ffcd725a6b637eb3fd8e2" prot="public" virt="non-virtual"><scope>quantit::bMPS</scope><name>operator=</name></member>
+      <member refid="classquantit_1_1vector__lift_1aa5443aeae322ce1e1925a24f67724568" prot="public" virt="non-virtual" ambiguityscope="vector_lift&lt; bMPS, btensor &gt;::"><scope>quantit::bMPS</scope><name>operator=</name></member>
       <member refid="classquantit_1_1vector__lift_1a425eaa4e4f7916a82cce013f2326aa5d" prot="public" virt="non-virtual"><scope>quantit::bMPS</scope><name>operator[]</name></member>
       <member refid="classquantit_1_1vector__lift_1a68a57ec836b4682f46a76628c95cd578" prot="public" virt="non-virtual"><scope>quantit::bMPS</scope><name>operator[]</name></member>
       <member refid="classquantit_1_1bMPS_1ac6bea9cba7a42a633597184f390d3f85" prot="public" virt="non-virtual"><scope>quantit::bMPS</scope><name>orthogonality_center</name></member>
@@ -1546,7 +1628,7 @@
       <member refid="classquantit_1_1vector__lift_1a9f5fd7e554f2e4c804a7ac55e8b79c05" prot="public" virt="non-virtual"><scope>quantit::bMPS</scope><name>to</name></member>
       <member refid="classquantit_1_1vector__lift_1a7429cdaf9d908a06767666fca723101e" prot="public" virt="non-virtual"><scope>quantit::bMPS</scope><name>to</name></member>
       <member refid="classquantit_1_1vector__lift_1aa15da92b21438c52be24d3e88551e81e" prot="public" virt="non-virtual"><scope>quantit::bMPS</scope><name>to</name></member>
-      <member refid="classquantit_1_1vector__lift_1a6cffef995a9f020e4f07e5a55595b875" prot="public" virt="non-virtual"><scope>quantit::bMPS</scope><name>to_</name></member>
+      <member refid="classquantit_1_1vector__lift_1acf800f7152708c60399b3eaeee815a15" prot="public" virt="non-virtual"><scope>quantit::bMPS</scope><name>to_</name></member>
       <member refid="classquantit_1_1vector__lift_1a2e6a6e5a1b1b8cf835663d0d23830aa6" prot="public" virt="non-virtual"><scope>quantit::bMPS</scope><name>vector_lift</name></member>
       <member refid="classquantit_1_1vector__lift_1a27401dbbe9eded9a3bea6878ed4d9336" prot="public" virt="non-virtual"><scope>quantit::bMPS</scope><name>vector_lift</name></member>
       <member refid="classquantit_1_1vector__lift_1ae9306516c3a4653566a88ca2c2df856f" prot="public" virt="non-virtual"><scope>quantit::bMPS</scope><name>vector_lift</name></member>

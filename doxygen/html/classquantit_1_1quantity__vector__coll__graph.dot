@@ -1,0 +1,18 @@
+digraph "quantit::quantity_vector&lt; S, Allocator, class &gt;"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="quantit::quantity_vector\l\< S, Allocator, class \>",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node2 -> Node1 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="quantit::vquantity\l_vector",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classquantit_1_1vquantity__vector.html",tooltip="polymorphic (type-erased?) container of any_quantity. All the element in the container are of the sam..."];
+  Node3 -> Node1 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="std::vector\< T \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",tooltip=" "];
+  Node4 -> Node3 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" elements" ,fontname="Helvetica"];
+  Node4 [label="T",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node5 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" ar" ,fontname="Helvetica"];
+  Node5 [label="quantit::quantity_vector\l\< S, Allocator, class \>\l::ptr_aritmetic_t",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",URL="$structquantit_1_1quantity__vector_1_1ptr__aritmetic__t.html",tooltip=" "];
+  Node6 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="quantit::vQuantiT_iterator\l::virt_ptr_aritmetic",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structquantit_1_1vQuantiT__iterator_1_1virt__ptr__aritmetic.html",tooltip="A class to to pointer arithmetic on a virtual pointer."];
+}

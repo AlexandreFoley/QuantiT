@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
   <compounddef id="dmrg_8h" kind="file" language="C++">
     <compoundname>dmrg.h</compoundname>
     <includes refid="MPT_8h" local="yes">MPT.h</includes>
@@ -10,92 +10,25 @@
     <includes local="no">torch/torch.h</includes>
     <includes local="yes">doctest/doctest_proxy.h</includes>
     <incdepgraph>
-      <node id="14">
-        <label>functional</label>
-      </node>
-      <node id="22">
-        <label>fmt/format.h</label>
-      </node>
-      <node id="44">
-        <label>limits</label>
-      </node>
-      <node id="15">
-        <label>iterator</label>
-      </node>
-      <node id="26">
-        <label>cstdint</label>
-      </node>
-      <node id="35">
-        <label>charconv</label>
-      </node>
-      <node id="42">
-        <label>dmrg_options.h</label>
-        <link refid="dmrg__options_8h_source"/>
-      </node>
-      <node id="1">
-        <label>/home/alex/project/quantt/include/dmrg.h</label>
-        <link refid="dmrg_8h"/>
-        <childnode refid="2" relation="include">
-        </childnode>
-        <childnode refid="41" relation="include">
-        </childnode>
-        <childnode refid="42" relation="include">
-        </childnode>
-        <childnode refid="43" relation="include">
-        </childnode>
-        <childnode refid="44" relation="include">
-        </childnode>
-        <childnode refid="33" relation="include">
-        </childnode>
-        <childnode refid="8" relation="include">
-        </childnode>
-      </node>
-      <node id="28">
-        <label>Conserved/Composite/quantity_vector.h</label>
-        <link refid="quantity__vector_8h_source"/>
-        <childnode refid="29" relation="include">
+      <node id="4">
+        <label>Conserved/Composite/cquantity.h</label>
+        <link refid="cquantity_8h_source"/>
+        <childnode refid="5" relation="include">
         </childnode>
         <childnode refid="25" relation="include">
         </childnode>
-        <childnode refid="18" relation="include">
+        <childnode refid="19" relation="include">
         </childnode>
-        <childnode refid="8" relation="include">
+        <childnode refid="26" relation="include">
         </childnode>
-      </node>
-      <node id="10">
-        <label>boost/stl_interfaces/iterator_interface.hpp</label>
-      </node>
-      <node id="31">
-        <label>property.h</label>
-        <link refid="property_8h_source"/>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
         <childnode refid="21" relation="include">
         </childnode>
         <childnode refid="17" relation="include">
         </childnode>
-      </node>
-      <node id="43">
-        <label>cmath</label>
-      </node>
-      <node id="11">
-        <label>cassert</label>
-      </node>
-      <node id="34">
-        <label>fmt/ostream.h</label>
-      </node>
-      <node id="38">
-        <label>stdexcept</label>
-      </node>
-      <node id="16">
-        <label>numeric</label>
-      </node>
-      <node id="36">
-        <label>ATen/Functions.h</label>
-      </node>
-      <node id="37">
-        <label>exception</label>
-      </node>
-      <node id="30">
-        <label>boost/stl_interfaces/view_interface.hpp</label>
       </node>
       <node id="5">
         <label>Conserved/Composite/quantity_impl.h</label>
@@ -117,41 +50,34 @@
         <childnode refid="18" relation="include">
         </childnode>
       </node>
-      <node id="27">
-        <label>ostream</label>
-      </node>
-      <node id="32">
-        <label>torch_formatter.h</label>
-        <link refid="torch__formatter_8h_source"/>
-        <childnode refid="33" relation="include">
-        </childnode>
-        <childnode refid="34" relation="include">
-        </childnode>
-        <childnode refid="22" relation="include">
-        </childnode>
-        <childnode refid="35" relation="include">
-        </childnode>
-      </node>
-      <node id="12">
-        <label>fmt/core.h</label>
-      </node>
-      <node id="19">
-        <label>templateMeta.h</label>
-        <link refid="templateMeta_8h_source"/>
-        <childnode refid="20" relation="include">
-        </childnode>
-        <childnode refid="21" relation="include">
-        </childnode>
-      </node>
-      <node id="40">
-        <label>random</label>
-      </node>
-      <node id="4">
-        <label>Conserved/Composite/cquantity.h</label>
-        <link refid="cquantity_8h_source"/>
-        <childnode refid="5" relation="include">
+      <node id="28">
+        <label>Conserved/Composite/quantity_vector.h</label>
+        <link refid="quantity__vector_8h_source"/>
+        <childnode refid="29" relation="include">
         </childnode>
         <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="29">
+        <label>Conserved/Composite/quantity_vector_impl.h</label>
+        <link refid="quantity__vector__impl_8h_source"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+      </node>
+      <node id="25">
+        <label>Conserved/quantity.h</label>
+        <link refid="quantity_8h_source"/>
+        <childnode refid="6" relation="include">
         </childnode>
         <childnode refid="19" relation="include">
         </childnode>
@@ -159,15 +85,24 @@
         </childnode>
         <childnode refid="12" relation="include">
         </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
         <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>Conserved/quantity_utils.h</label>
+        <link refid="quantity__utils_8h_source"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
         </childnode>
         <childnode refid="21" relation="include">
         </childnode>
         <childnode refid="17" relation="include">
         </childnode>
-      </node>
-      <node id="23">
-        <label>ios</label>
       </node>
       <node id="2">
         <label>MPT.h</label>
@@ -180,7 +115,51 @@
         </childnode>
         <childnode refid="12" relation="include">
         </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>blockTensor/btensor.h</label>
+        <link refid="btensor_8h_source"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
         <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
         </childnode>
         <childnode refid="33" relation="include">
         </childnode>
@@ -217,129 +196,160 @@
         <childnode refid="18" relation="include">
         </childnode>
       </node>
-      <node id="25">
-        <label>Conserved/quantity.h</label>
-        <link refid="quantity_8h_source"/>
-        <childnode refid="6" relation="include">
+      <node id="1">
+        <label>/Users/alex/Documents/Prog/QuantiT/include/dmrg.h</label>
+        <link refid="dmrg_8h"/>
+        <childnode refid="2" relation="include">
         </childnode>
-        <childnode refid="19" relation="include">
+        <childnode refid="43" relation="include">
         </childnode>
-        <childnode refid="26" relation="include">
+        <childnode refid="44" relation="include">
         </childnode>
-        <childnode refid="12" relation="include">
+        <childnode refid="45" relation="include">
         </childnode>
-        <childnode refid="22" relation="include">
-        </childnode>
-        <childnode refid="27" relation="include">
-        </childnode>
-        <childnode refid="8" relation="include">
-        </childnode>
-      </node>
-      <node id="20">
-        <label>tuple</label>
-      </node>
-      <node id="39">
-        <label>torch/csrc/utils/variadic.h</label>
-      </node>
-      <node id="13">
-        <label>fmt/ranges.h</label>
-      </node>
-      <node id="18">
-        <label>vector</label>
-      </node>
-      <node id="17">
-        <label>utility</label>
-      </node>
-      <node id="3">
-        <label>blockTensor/btensor.h</label>
-        <link refid="btensor_8h_source"/>
-        <childnode refid="4" relation="include">
-        </childnode>
-        <childnode refid="28" relation="include">
-        </childnode>
-        <childnode refid="25" relation="include">
-        </childnode>
-        <childnode refid="7" relation="include">
-        </childnode>
-        <childnode refid="10" relation="include">
-        </childnode>
-        <childnode refid="30" relation="include">
-        </childnode>
-        <childnode refid="31" relation="include">
-        </childnode>
-        <childnode refid="32" relation="include">
-        </childnode>
-        <childnode refid="36" relation="include">
-        </childnode>
-        <childnode refid="9" relation="include">
-        </childnode>
-        <childnode refid="26" relation="include">
-        </childnode>
-        <childnode refid="37" relation="include">
-        </childnode>
-        <childnode refid="38" relation="include">
-        </childnode>
-        <childnode refid="39" relation="include">
+        <childnode refid="46" relation="include">
         </childnode>
         <childnode refid="33" relation="include">
         </childnode>
-        <childnode refid="21" relation="include">
-        </childnode>
-        <childnode refid="18" relation="include">
-        </childnode>
         <childnode refid="8" relation="include">
         </childnode>
       </node>
-      <node id="33">
-        <label>torch/torch.h</label>
-      </node>
-      <node id="6">
-        <label>Conserved/quantity_utils.h</label>
-        <link refid="quantity__utils_8h_source"/>
-        <childnode refid="7" relation="include">
-        </childnode>
-        <childnode refid="19" relation="include">
-        </childnode>
-        <childnode refid="21" relation="include">
-        </childnode>
-        <childnode refid="17" relation="include">
-        </childnode>
-      </node>
-      <node id="41">
+      <node id="43">
         <label>dmrg_logger.h</label>
         <link refid="dmrg__logger_8h_source"/>
         <childnode refid="2" relation="include">
         </childnode>
         <childnode refid="3" relation="include">
         </childnode>
-        <childnode refid="42" relation="include">
+        <childnode refid="44" relation="include">
         </childnode>
         <childnode refid="33" relation="include">
         </childnode>
       </node>
-      <node id="21">
-        <label>type_traits</label>
+      <node id="44">
+        <label>dmrg_options.h</label>
+        <link refid="dmrg__options_8h_source"/>
+      </node>
+      <node id="31">
+        <label>property.h</label>
+        <link refid="property_8h_source"/>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+      </node>
+      <node id="19">
+        <label>templateMeta.h</label>
+        <link refid="templateMeta_8h_source"/>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+      </node>
+      <node id="32">
+        <label>torch_formatter.h</label>
+        <link refid="torch__formatter_8h_source"/>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+      </node>
+      <node id="36">
+        <label>ATen/Functions.h</label>
       </node>
       <node id="9">
         <label>algorithm</label>
       </node>
-      <node id="29">
-        <label>Conserved/Composite/quantity_vector_impl.h</label>
-        <link refid="quantity__vector__impl_8h_source"/>
-        <childnode refid="4" relation="include">
-        </childnode>
-        <childnode refid="10" relation="include">
-        </childnode>
-        <childnode refid="16" relation="include">
-        </childnode>
-        <childnode refid="18" relation="include">
-        </childnode>
+      <node id="10">
+        <label>boost/stl_interfaces/iterator_interface.hpp</label>
+      </node>
+      <node id="30">
+        <label>boost/stl_interfaces/view_interface.hpp</label>
+      </node>
+      <node id="37">
+        <label>c10/core/ScalarTypeToTypeMeta.h</label>
+      </node>
+      <node id="38">
+        <label>c10/core/TensorOptions.h</label>
+      </node>
+      <node id="11">
+        <label>cassert</label>
+      </node>
+      <node id="35">
+        <label>charconv</label>
+      </node>
+      <node id="45">
+        <label>cmath</label>
+      </node>
+      <node id="26">
+        <label>cstdint</label>
+      </node>
+      <node id="8">
+        <label>doctest/doctest_proxy.h</label>
+      </node>
+      <node id="39">
+        <label>exception</label>
+      </node>
+      <node id="12">
+        <label>fmt/core.h</label>
+      </node>
+      <node id="22">
+        <label>fmt/format.h</label>
+      </node>
+      <node id="34">
+        <label>fmt/ostream.h</label>
+      </node>
+      <node id="13">
+        <label>fmt/ranges.h</label>
+      </node>
+      <node id="14">
+        <label>functional</label>
+      </node>
+      <node id="23">
+        <label>ios</label>
+      </node>
+      <node id="15">
+        <label>iterator</label>
+      </node>
+      <node id="46">
+        <label>limits</label>
       </node>
       <node id="24">
         <label>memory</label>
       </node>
-      <node id="8">
-        <label>doctest/doctest_proxy.h</label>
+      <node id="16">
+        <label>numeric</label>
+      </node>
+      <node id="27">
+        <label>ostream</label>
+      </node>
+      <node id="42">
+        <label>random</label>
+      </node>
+      <node id="40">
+        <label>stdexcept</label>
+      </node>
+      <node id="41">
+        <label>torch/csrc/utils/variadic.h</label>
+      </node>
+      <node id="33">
+        <label>torch/torch.h</label>
+      </node>
+      <node id="20">
+        <label>tuple</label>
+      </node>
+      <node id="21">
+        <label>type_traits</label>
+      </node>
+      <node id="17">
+        <label>utility</label>
+      </node>
+      <node id="18">
+        <label>vector</label>
       </node>
     </incdepgraph>
     <innernamespace refid="namespacequantit">quantit</innernamespace>
@@ -633,6 +643,6 @@
 <codeline lineno="292"><highlight class="normal"></highlight></codeline>
 <codeline lineno="293"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>E8650E72_8C05_4D74_98C7_61F4FD428B39<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
     </programlisting>
-    <location file="/home/alex/project/quantt/include/dmrg.h"/>
+    <location file="/Users/alex/Documents/Prog/QuantiT/include/dmrg.h"/>
   </compounddef>
 </doxygen>

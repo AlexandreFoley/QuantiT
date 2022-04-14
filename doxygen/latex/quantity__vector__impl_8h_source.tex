@@ -1,0 +1,482 @@
+\hypertarget{quantity__vector__impl_8h_source}{}\doxysection{quantity\+\_\+vector\+\_\+impl.\+h}
+\label{quantity__vector__impl_8h_source}\index{/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity\_vector\_impl.h@{/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity\_vector\_impl.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * File: quantity\_vector\_impl.h}}
+\DoxyCodeLine{3 \textcolor{comment}{ * Project: QuantiT}}
+\DoxyCodeLine{4 \textcolor{comment}{ * File Created: Monday, 28th September 2020 1:46:36 pm}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)}}
+\DoxyCodeLine{6 \textcolor{comment}{ * -\/-\/-\/-\/-\/}}
+\DoxyCodeLine{7 \textcolor{comment}{ * Last Modified: Monday, 28th September 2020 1:46:36 pm}}
+\DoxyCodeLine{8 \textcolor{comment}{ * Modified By: Alexandre Foley (Alexandre.foley@usherbrooke.ca>)}}
+\DoxyCodeLine{9 \textcolor{comment}{ * -\/-\/-\/-\/-\/}}
+\DoxyCodeLine{10 \textcolor{comment}{ * Copyright (c) 2020 Alexandre Foley}}
+\DoxyCodeLine{11 \textcolor{comment}{ * Licensed under GPL v3}}
+\DoxyCodeLine{12 \textcolor{comment}{ */}}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#ifndef BBF1F73E\_87CC\_4C69\_9CCC\_5D2526535A4F}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#define BBF1F73E\_87CC\_4C69\_9CCC\_5D2526535A4F}}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}Conserved/Composite/cquantity.h"{}}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}boost/stl\_interfaces/iterator\_interface.hpp"{}}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include <numeric>}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#ifdef QTT\_APPLE}}
+\DoxyCodeLine{23 \textcolor{keyword}{namespace }quantit}
+\DoxyCodeLine{24 \{}
+\DoxyCodeLine{25 \textcolor{keyword}{namespace}}
+\DoxyCodeLine{26 \{}
+\DoxyCodeLine{27 \textcolor{keyword}{class }DUMMY}
+\DoxyCodeLine{28 \{}
+\DoxyCodeLine{29 \};}
+\DoxyCodeLine{30 }
+\DoxyCodeLine{31 \} \textcolor{comment}{// namespace}}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33 \} \textcolor{comment}{// namespace quantit}}
+\DoxyCodeLine{34 \textcolor{keyword}{namespace }std}
+\DoxyCodeLine{35 \{}
+\DoxyCodeLine{36 \textcolor{keyword}{template} <>}
+\DoxyCodeLine{37 \textcolor{keyword}{class }vector<quantit::DUMMY, std::allocator<quantit::DUMMY>>}
+\DoxyCodeLine{38 \{}
+\DoxyCodeLine{39   \textcolor{keyword}{public}:}
+\DoxyCodeLine{40     \textcolor{comment}{// This is pure trickery to do forbiden operation on iterators. all template of vector are declared friend to all}}
+\DoxyCodeLine{41     \textcolor{comment}{// iterator used by any vector in \_\_wrap\_iterator on the mac. hopefully this is portable. This is way more open than}}
+\DoxyCodeLine{42     \textcolor{comment}{// it strictly need to be and clearly an implementation detail.}}
+\DoxyCodeLine{43     \textcolor{comment}{//  it is entirely possible that some implementation of vector's iterator are not as wide open to (template) abuse.}}
+\DoxyCodeLine{44     \textcolor{keyword}{template} <\textcolor{keyword}{class} U, \textcolor{keyword}{class} T, \textcolor{keyword}{class} po\textcolor{keywordtype}{int}er\_type>}
+\DoxyCodeLine{45     \textcolor{keyword}{static} U convert\_iterator(\textcolor{keyword}{const} T \&t)}
+\DoxyCodeLine{46     \{}
+\DoxyCodeLine{47         \textcolor{keywordflow}{return} U(\textcolor{keyword}{static\_cast<}pointer\_type\textcolor{keyword}{>}(t.base()));}
+\DoxyCodeLine{48     \}}
+\DoxyCodeLine{49 \};}
+\DoxyCodeLine{50 \} \textcolor{comment}{// namespace std}}
+\DoxyCodeLine{51 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{52 \textcolor{keyword}{namespace }quantit}
+\DoxyCodeLine{53 \{}
+\DoxyCodeLine{54 }
+\DoxyCodeLine{55 \textcolor{keyword}{class }\mbox{\hyperlink{classquantit_1_1blocklist}{blocklist}}}
+\DoxyCodeLine{56 \{}
+\DoxyCodeLine{57 \};}
+\DoxyCodeLine{58 \textcolor{keyword}{class }\mbox{\hyperlink{classquantit_1_1btensor}{btensor}};}
+\DoxyCodeLine{59 }
+\DoxyCodeLine{60 \textcolor{keyword}{namespace }vQuantiT\_iterator}
+\DoxyCodeLine{61 \{}
+\DoxyCodeLine{66 \textcolor{keyword}{struct }\mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1virt__ptr__aritmetic}{virt\_ptr\_aritmetic}}}
+\DoxyCodeLine{67 \{}
+\DoxyCodeLine{68     \textcolor{keyword}{virtual} std::ptrdiff\_t ptr\_diff(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} *lhs, \textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} *rhs) \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{69     \textcolor{keyword}{virtual} \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} *ptr\_add(\mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} *ptr, std::ptrdiff\_t n) \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{70     \textcolor{keyword}{virtual} \textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} *ptr\_add(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} *ptr, std::ptrdiff\_t n) \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{71     \textcolor{comment}{// virtual \string~virt\_ptr\_aritmetic() \{\} //this thing is a virtual base class, but cannot have a virtual destructor.}}
+\DoxyCodeLine{72     \textcolor{comment}{// This severly limit scope of use. The derived type cannot be owned through a pointer to base and be correctly}}
+\DoxyCodeLine{73     \textcolor{comment}{// destroyed. All base type pointer MUST be non-\/owning. (no unique\_ptr<virt\_ptr\_arithmetic> without specifying a}}
+\DoxyCodeLine{74     \textcolor{comment}{// deleter ever)}}
+\DoxyCodeLine{75 }
+\DoxyCodeLine{76     \textcolor{comment}{// A virtual destructor is not possible in this case because the derived type of this class are constexpr, it is}}
+\DoxyCodeLine{77     \textcolor{comment}{// only meant to do the correct casts for the pointer arithmetic of the quantity\_vector<quantity<...>>}}
+\DoxyCodeLine{78 \};}
+\DoxyCodeLine{79 }
+\DoxyCodeLine{80 \textcolor{keyword}{struct }\mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator}{const\_cgroup\_iterator}}}
+\DoxyCodeLine{81     : \textcolor{keyword}{public} boost::stl\_interfaces::iterator\_interface<const\_cgroup\_iterator, std::random\_access\_iterator\_tag,}
+\DoxyCodeLine{82                                                        any\_quantity, any\_quantity\_cref, const vquantity *>}
+\DoxyCodeLine{83 \{}
+\DoxyCodeLine{84   \textcolor{keyword}{private}:}
+\DoxyCodeLine{85     \textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} *it;}
+\DoxyCodeLine{86     \textcolor{keyword}{const} \mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1virt__ptr__aritmetic}{virt\_ptr\_aritmetic}} *ar;}
+\DoxyCodeLine{87     \textcolor{keyword}{friend} boost::stl\_interfaces::access;}
+\DoxyCodeLine{88 }
+\DoxyCodeLine{89     \textcolor{comment}{// const vquantity *\&base\_reference() noexcept \{ return it; \}}}
+\DoxyCodeLine{90     \textcolor{comment}{// const vquantity *base\_reference() const noexcept \{ return it; \}}}
+\DoxyCodeLine{91   \textcolor{keyword}{public}:}
+\DoxyCodeLine{92     \textcolor{keyword}{constexpr} \mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator}{const\_cgroup\_iterator}}() : it(\textcolor{keyword}{nullptr}), ar(\textcolor{keyword}{nullptr}) \{\}}
+\DoxyCodeLine{93     \textcolor{keyword}{constexpr} \mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator}{const\_cgroup\_iterator}}(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} *\_it, \textcolor{keyword}{const} \mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1virt__ptr__aritmetic}{virt\_ptr\_aritmetic}} *\_ar) : it(\_it), ar(\_ar) \{\}}
+\DoxyCodeLine{94     \textcolor{keyword}{using} base\_type = boost::stl\_interfaces::iterator\_interface<\mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator}{const\_cgroup\_iterator}}, std::random\_access\_iterator\_tag,}
+\DoxyCodeLine{95                                                                 \mbox{\hyperlink{classquantit_1_1any__quantity}{any\_quantity}}, \mbox{\hyperlink{classquantit_1_1vquantity}{any\_quantity\_cref}}, \textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} *>;}
+\DoxyCodeLine{96     \mbox{\hyperlink{classquantit_1_1vquantity}{any\_quantity\_cref}} operator*()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} *it; \}}
+\DoxyCodeLine{97     \textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} *operator-\/>()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} it; \}}
+\DoxyCodeLine{98     base\_type::difference\_type operator-\/(\mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator}{const\_cgroup\_iterator}} rhs)}
+\DoxyCodeLine{99     \{}
+\DoxyCodeLine{100         \textcolor{keywordflow}{if} (ar)}
+\DoxyCodeLine{101             \textcolor{keywordflow}{return} ar-\/>ptr\_diff(it, rhs.it);}
+\DoxyCodeLine{102         \textcolor{keywordflow}{else}}
+\DoxyCodeLine{103             \textcolor{keywordflow}{return} 0;}
+\DoxyCodeLine{104     \}}
+\DoxyCodeLine{105     \mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator}{const\_cgroup\_iterator}} \&operator+=(base\_type::difference\_type n)}
+\DoxyCodeLine{106     \{}
+\DoxyCodeLine{107         it = ar-\/>ptr\_add(it, n);}
+\DoxyCodeLine{108         \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{109     \}}
+\DoxyCodeLine{110     \textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} *base()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} it; \}}
+\DoxyCodeLine{111     \textcolor{keyword}{const} \mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1virt__ptr__aritmetic}{virt\_ptr\_aritmetic}} *vt()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} ar; \}}
+\DoxyCodeLine{112 \};}
+\DoxyCodeLine{113 \textcolor{keyword}{struct }\mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1cgroup__iterator}{cgroup\_iterator}}}
+\DoxyCodeLine{114     : \textcolor{keyword}{public} boost::stl\_interfaces::iterator\_interface<cgroup\_iterator, std::random\_access\_iterator\_tag, any\_quantity,}
+\DoxyCodeLine{115                                                        any\_quantity\_ref, vquantity *, std::ptrdiff\_t>}
+\DoxyCodeLine{116 \{}
+\DoxyCodeLine{117   \textcolor{keyword}{private}:}
+\DoxyCodeLine{118     \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} *it;}
+\DoxyCodeLine{119     \textcolor{keyword}{const} \mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1virt__ptr__aritmetic}{virt\_ptr\_aritmetic}} *ar;}
+\DoxyCodeLine{120     \textcolor{keyword}{friend} boost::stl\_interfaces::access;}
+\DoxyCodeLine{121 }
+\DoxyCodeLine{122     \textcolor{comment}{// vquantity *\&base\_reference() noexcept \{ return it; \}}}
+\DoxyCodeLine{123     \textcolor{comment}{// vquantity *base\_reference() const noexcept \{ return it; \}}}
+\DoxyCodeLine{124 }
+\DoxyCodeLine{125   \textcolor{keyword}{public}:}
+\DoxyCodeLine{126     \textcolor{keyword}{constexpr} \mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1cgroup__iterator}{cgroup\_iterator}}() : it(\textcolor{keyword}{nullptr}), ar(\textcolor{keyword}{nullptr}) \{\}}
+\DoxyCodeLine{127     \textcolor{keyword}{constexpr} \mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1cgroup__iterator}{cgroup\_iterator}}(\mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} *\_it, \textcolor{keyword}{const} \mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1virt__ptr__aritmetic}{virt\_ptr\_aritmetic}} *\_ar) : it(\_it), ar(\_ar) \{\}}
+\DoxyCodeLine{128     \textcolor{keyword}{using} base\_type =}
+\DoxyCodeLine{129         \textcolor{keyword}{typename} boost::stl\_interfaces::iterator\_interface<\mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1cgroup__iterator}{cgroup\_iterator}}, std::random\_access\_iterator\_tag,}
+\DoxyCodeLine{130                                                            \mbox{\hyperlink{classquantit_1_1any__quantity}{any\_quantity}}, \mbox{\hyperlink{classquantit_1_1vquantity}{any\_quantity\_ref}}, \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} *, std::ptrdiff\_t>;}
+\DoxyCodeLine{131     \mbox{\hyperlink{classquantit_1_1vquantity}{any\_quantity\_ref}} operator*()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} *it; \}}
+\DoxyCodeLine{132     \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} *operator-\/>()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} it; \}}
+\DoxyCodeLine{133     base\_type::difference\_type operator-\/(\mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1cgroup__iterator}{cgroup\_iterator}} rhs) \{ \textcolor{keywordflow}{return} ar-\/>ptr\_diff(it, rhs.it); \}}
+\DoxyCodeLine{134     \mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1cgroup__iterator}{cgroup\_iterator}} \&operator+=(base\_type::difference\_type n)}
+\DoxyCodeLine{135     \{}
+\DoxyCodeLine{136         it = ar-\/>ptr\_add(it, n);}
+\DoxyCodeLine{137         \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{138     \}}
+\DoxyCodeLine{139     \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} *base() \{ \textcolor{keywordflow}{return} it; \}}
+\DoxyCodeLine{140     \textcolor{keyword}{operator} \mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator}{const\_cgroup\_iterator}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator}{const\_cgroup\_iterator}}(it, ar); \}}
+\DoxyCodeLine{141     \textcolor{keyword}{const} \mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1virt__ptr__aritmetic}{virt\_ptr\_aritmetic}} *vt() \{ \textcolor{keywordflow}{return} ar; \}}
+\DoxyCodeLine{142 \};}
+\DoxyCodeLine{143 }
+\DoxyCodeLine{144 \} \textcolor{comment}{// namespace vQuantiT\_iterator}}
+\DoxyCodeLine{145 \textcolor{comment}{// so that different vector type have a different base type}}
+\DoxyCodeLine{164 \textcolor{comment}{}\textcolor{keyword}{class }\mbox{\hyperlink{classquantit_1_1vquantity__vector}{vquantity\_vector}}}
+\DoxyCodeLine{165 \{}
+\DoxyCodeLine{166   \textcolor{keyword}{public}:}
+\DoxyCodeLine{167     \textcolor{keyword}{using} \mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1cgroup__iterator}{iterator}} = \mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1cgroup__iterator}{vQuantiT\_iterator::cgroup\_iterator}};}
+\DoxyCodeLine{168     \textcolor{keyword}{using} \mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator}{const\_iterator}} = \mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator}{vQuantiT\_iterator::const\_cgroup\_iterator}};}
+\DoxyCodeLine{169     \textcolor{keyword}{using} reverse\_iterator = std::reverse\_iterator<iterator>;}
+\DoxyCodeLine{170     \textcolor{keyword}{using} const\_reverse\_iterator = std::reverse\_iterator<const\_iterator>;}
+\DoxyCodeLine{171 }
+\DoxyCodeLine{172     \textcolor{keyword}{virtual} \mbox{\hyperlink{classquantit_1_1vquantity__vector}{\string~vquantity\_vector}}() \{\}}
+\DoxyCodeLine{173 }
+\DoxyCodeLine{174     \textcolor{keyword}{virtual} \mbox{\hyperlink{classquantit_1_1blocklist}{blocklist}} identify\_blocks(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&) \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{175     \textcolor{keyword}{virtual} std::unique\_ptr<vquantity\_vector> clone() \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{176 }
+\DoxyCodeLine{183     \textcolor{keyword}{virtual} \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \&\mbox{\hyperlink{classquantit_1_1vquantity__vector_a84aeb9157de3f3cd981b8c2eb35b284b}{operator[]}}(\textcolor{keywordtype}{size\_t}) = 0;}
+\DoxyCodeLine{184     \textcolor{keyword}{virtual} \textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \&\mbox{\hyperlink{classquantit_1_1vquantity__vector_a84aeb9157de3f3cd981b8c2eb35b284b}{operator[]}}(\textcolor{keywordtype}{size\_t}) \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{185     \textcolor{keyword}{virtual} \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \&at(\textcolor{keywordtype}{size\_t}) = 0;}
+\DoxyCodeLine{186     \textcolor{keyword}{virtual} \textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \&at(\textcolor{keywordtype}{size\_t}) \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{187 }
+\DoxyCodeLine{188     \textcolor{keyword}{virtual} \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \&front() = 0;}
+\DoxyCodeLine{189     \textcolor{keyword}{virtual} \textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \&front() \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{190     \textcolor{keyword}{virtual} \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \&back() = 0;}
+\DoxyCodeLine{191     \textcolor{keyword}{virtual} \textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \&back() \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{192     \textcolor{keyword}{virtual} \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} *data() = 0;}
+\DoxyCodeLine{193     \textcolor{keyword}{virtual} \textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} *data() \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{194     \textcolor{comment}{// comparator}}
+\DoxyCodeLine{195     \textcolor{keyword}{virtual} \textcolor{keywordtype}{bool} operator==(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1vquantity__vector}{vquantity\_vector}} \&) \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{196     \textcolor{keyword}{virtual} \textcolor{keywordtype}{bool} operator!=(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1vquantity__vector}{vquantity\_vector}} \&) \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{197     \textcolor{comment}{// capacity}}
+\DoxyCodeLine{198     [[nodiscard]] \textcolor{keyword}{virtual} \textcolor{keywordtype}{bool} empty() \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{199     [[nodiscard]] \textcolor{keyword}{virtual} \textcolor{keywordtype}{size\_t} size() \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{200     [[nodiscard]] \textcolor{keyword}{virtual} \textcolor{keywordtype}{size\_t} max\_size() \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{201     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} reserve(\textcolor{keywordtype}{size\_t}) = 0;}
+\DoxyCodeLine{202     [[nodiscard]] \textcolor{keyword}{virtual} \textcolor{keywordtype}{size\_t} capacity() \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{203     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} shrink\_to\_fit() = 0;}
+\DoxyCodeLine{204     \textcolor{comment}{// modifiers}}
+\DoxyCodeLine{205     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} clear() = 0;}
+\DoxyCodeLine{206     \textcolor{keyword}{virtual} \mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1cgroup__iterator}{iterator}} insert(\mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator}{const\_iterator}} pos, \textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \&Val) = 0;}
+\DoxyCodeLine{207     \textcolor{keyword}{virtual} \mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1cgroup__iterator}{iterator}} insert(\mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator}{const\_iterator}} pos, \textcolor{keywordtype}{size\_t} count, \textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \&Val) = 0;}
+\DoxyCodeLine{208     \textcolor{keyword}{virtual} \mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1cgroup__iterator}{iterator}} insert(\mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator}{const\_iterator}} pos, \mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator}{const\_iterator}} first, \mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator}{const\_iterator}} last) = 0;}
+\DoxyCodeLine{209     \textcolor{keyword}{virtual} \mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1cgroup__iterator}{iterator}} insert(\mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator}{const\_iterator}} pos, const\_reverse\_iterator first, const\_reverse\_iterator last) = 0;}
+\DoxyCodeLine{210     \textcolor{keyword}{virtual} \mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1cgroup__iterator}{iterator}} erase(\mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator}{const\_iterator}} pos) = 0;}
+\DoxyCodeLine{211     \textcolor{keyword}{virtual} \mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1cgroup__iterator}{iterator}} erase(\mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator}{const\_iterator}} first, \mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator}{const\_iterator}} last) = 0;}
+\DoxyCodeLine{212     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} push\_back(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \&value) = 0;}
+\DoxyCodeLine{213     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} pop\_back() = 0;}
+\DoxyCodeLine{214     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} resize(\textcolor{keywordtype}{size\_t} count) = 0;}
+\DoxyCodeLine{215     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} resize(\textcolor{keywordtype}{size\_t} count, \textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \&val) = 0;}
+\DoxyCodeLine{216     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} swap(\mbox{\hyperlink{classquantit_1_1vquantity__vector}{vquantity\_vector}} \&other) = 0;}
+\DoxyCodeLine{217     \textcolor{keyword}{virtual} std::unique\_ptr<vquantity\_vector> virtual\_permute(\textcolor{keyword}{const} int64\_t *permute\_begin, \textcolor{keyword}{const} int64\_t *permute\_end,}
+\DoxyCodeLine{218                                                               \textcolor{keyword}{const} std::vector<int64\_t> \&repetition) \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{219 }
+\DoxyCodeLine{220   \textcolor{keyword}{private}:}
+\DoxyCodeLine{230     \textcolor{keyword}{virtual} \mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1cgroup__iterator}{iterator}} begin\_impl() = 0;}
+\DoxyCodeLine{231     \textcolor{keyword}{virtual} \mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1cgroup__iterator}{iterator}} end\_impl() = 0;}
+\DoxyCodeLine{232     \textcolor{keyword}{virtual} \mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator}{const\_iterator}} cbegin\_impl() \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{233     \textcolor{keyword}{virtual} \mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator}{const\_iterator}} cend\_impl() \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{234 }
+\DoxyCodeLine{235   \textcolor{keyword}{public}:}
+\DoxyCodeLine{236     \mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1cgroup__iterator}{iterator}} begin() \{ \textcolor{keywordflow}{return} begin\_impl(); \}}
+\DoxyCodeLine{237     iterator end() \{ \textcolor{keywordflow}{return} end\_impl(); \}}
+\DoxyCodeLine{238     const\_iterator cbegin()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} cbegin\_impl(); \}}
+\DoxyCodeLine{239     const\_iterator cend()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} cend\_impl(); \}}
+\DoxyCodeLine{240 }
+\DoxyCodeLine{241     reverse\_iterator rbegin() \{ \textcolor{keywordflow}{return} reverse\_iterator(end()); \}}
+\DoxyCodeLine{242     reverse\_iterator rend() \{ \textcolor{keywordflow}{return} reverse\_iterator(begin()); \}}
+\DoxyCodeLine{243     const\_iterator begin()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} cbegin(); \};}
+\DoxyCodeLine{244     const\_iterator end()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} cend(); \};}
+\DoxyCodeLine{245     const\_reverse\_iterator crbegin()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} const\_reverse\_iterator(cend()); \}}
+\DoxyCodeLine{246     const\_reverse\_iterator crend()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} const\_reverse\_iterator(cbegin()); \}}
+\DoxyCodeLine{247     const\_reverse\_iterator rbegin()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} (crbegin()); \}}
+\DoxyCodeLine{248     const\_reverse\_iterator rend()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} (crend()); \}}
+\DoxyCodeLine{249 \};}
+\DoxyCodeLine{250 }
+\DoxyCodeLine{251 \textcolor{keyword}{template} <\textcolor{keyword}{class} S, \textcolor{keyword}{class} Allocator = std::allocator<S>, \textcolor{keyword}{class} = std::enable\_if\_t<std::is\_base\_of\_v<vquantity, S>>>}
+\DoxyCodeLine{252 \textcolor{keyword}{class }\mbox{\hyperlink{classquantit_1_1quantity__vector}{quantity\_vector}} final : \textcolor{keyword}{public} \mbox{\hyperlink{classquantit_1_1vquantity__vector}{vquantity\_vector}}, \textcolor{keyword}{public} std::vector<S, Allocator>}
+\DoxyCodeLine{253 \{}
+\DoxyCodeLine{254   \textcolor{keyword}{public}:}
+\DoxyCodeLine{255     \textcolor{keyword}{using} base\_vector = std::vector<S, Allocator>;}
+\DoxyCodeLine{256     \textcolor{keyword}{using} \mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1cgroup__iterator}{iterator}} = \textcolor{keyword}{typename} base\_vector::iterator;}
+\DoxyCodeLine{257     \textcolor{keyword}{using} \mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator}{const\_iterator}} = \textcolor{keyword}{typename} base\_vector::const\_iterator;}
+\DoxyCodeLine{258     \textcolor{keyword}{using} reverse\_iterator = \textcolor{keyword}{typename} base\_vector::reverse\_iterator;}
+\DoxyCodeLine{259     \textcolor{keyword}{using} const\_reverse\_iterator = \textcolor{keyword}{typename} base\_vector::const\_reverse\_iterator;}
+\DoxyCodeLine{260     \textcolor{keyword}{using} value\_type = \textcolor{keyword}{typename} base\_vector::value\_type;}
+\DoxyCodeLine{261     \textcolor{keyword}{using} allocator\_type = \textcolor{keyword}{typename} base\_vector::allocator\_type;}
+\DoxyCodeLine{262     \textcolor{keyword}{using} size\_type = \textcolor{keyword}{typename} base\_vector::size\_type;}
+\DoxyCodeLine{263     \textcolor{keyword}{using} difference\_type = \textcolor{keyword}{typename} base\_vector::difference\_type;}
+\DoxyCodeLine{264     \textcolor{keyword}{using} reference = \textcolor{keyword}{typename} base\_vector::reference;}
+\DoxyCodeLine{265     \textcolor{keyword}{using} const\_reference = \textcolor{keyword}{typename} base\_vector::const\_reference;}
+\DoxyCodeLine{266     \textcolor{keyword}{using} pointer = \textcolor{keyword}{typename} base\_vector::pointer;}
+\DoxyCodeLine{267     \textcolor{keyword}{using} const\_pointer = \textcolor{keyword}{typename} base\_vector::const\_pointer;}
+\DoxyCodeLine{268 }
+\DoxyCodeLine{269     \textcolor{keyword}{using} std::vector<S, Allocator>::vector; \textcolor{comment}{// so we have all of vector's constructors as well as the rest of its}}
+\DoxyCodeLine{270                                              \textcolor{comment}{// interface.}}
+\DoxyCodeLine{271     \mbox{\hyperlink{classquantit_1_1quantity__vector}{quantity\_vector}}(\textcolor{keyword}{const} std::vector<S, Allocator> \&other)}
+\DoxyCodeLine{272         : \mbox{\hyperlink{classquantit_1_1quantity__vector}{quantity\_vector}}(\textcolor{keyword}{static\_cast<}\textcolor{keyword}{const }\mbox{\hyperlink{classquantit_1_1quantity__vector}{quantity\_vector}} \&\textcolor{keyword}{>}(other))}
+\DoxyCodeLine{273     \{}
+\DoxyCodeLine{274     \}}
+\DoxyCodeLine{275     \mbox{\hyperlink{classquantit_1_1quantity__vector}{quantity\_vector}}(std::vector<S, Allocator> \&\&other) : \mbox{\hyperlink{classquantit_1_1quantity__vector}{quantity\_vector}}(\textcolor{keyword}{static\_cast<}\mbox{\hyperlink{classquantit_1_1quantity__vector}{quantity\_vector}} \&\&\textcolor{keyword}{>}(other)) \{\}}
+\DoxyCodeLine{276 }
+\DoxyCodeLine{277     \mbox{\hyperlink{classquantit_1_1blocklist}{blocklist}} identify\_blocks(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&)\textcolor{keyword}{ const override}}
+\DoxyCodeLine{278 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{279         \textcolor{comment}{// dummy implementation so that the template instantiation is concrete.}}
+\DoxyCodeLine{280         \textcolor{keywordflow}{return} \mbox{\hyperlink{classquantit_1_1blocklist}{blocklist}}();}
+\DoxyCodeLine{281     \}}
+\DoxyCodeLine{282     \textcolor{comment}{// since both parent class define those functions, we have to disambiguate which to use or override.}}
+\DoxyCodeLine{283     S \&\mbox{\hyperlink{classquantit_1_1quantity__vector_a48919579edbd88731d59a37ccf184a64}{operator[]}}(\textcolor{keywordtype}{size\_t} n)\textcolor{keyword}{ override }\{ \textcolor{keywordflow}{return} base\_vector::operator[](n); \}}
+\DoxyCodeLine{284     \textcolor{keyword}{const} S \&\mbox{\hyperlink{classquantit_1_1quantity__vector_a48919579edbd88731d59a37ccf184a64}{operator[]}}(\textcolor{keywordtype}{size\_t} n)\textcolor{keyword}{ const override }\{ \textcolor{keywordflow}{return} base\_vector::operator[](n); \}}
+\DoxyCodeLine{285     S \&at(\textcolor{keywordtype}{size\_t} n)\textcolor{keyword}{ override }\{ \textcolor{keywordflow}{return} base\_vector::at(n); \}}
+\DoxyCodeLine{286     \textcolor{keyword}{const} S \&at(\textcolor{keywordtype}{size\_t} n)\textcolor{keyword}{ const override }\{ \textcolor{keywordflow}{return} base\_vector::at(n); \}}
+\DoxyCodeLine{287     \textcolor{comment}{// iterators}}
+\DoxyCodeLine{288     \textcolor{keyword}{using} base\_vector::begin;   \textcolor{comment}{// ok}}
+\DoxyCodeLine{289     \textcolor{keyword}{using} base\_vector::cbegin;  \textcolor{comment}{// ok}}
+\DoxyCodeLine{290     \textcolor{keyword}{using} base\_vector::cend;    \textcolor{comment}{// ok}}
+\DoxyCodeLine{291     \textcolor{keyword}{using} base\_vector::crbegin; \textcolor{comment}{// ok}}
+\DoxyCodeLine{292     \textcolor{keyword}{using} base\_vector::crend;   \textcolor{comment}{// ok}}
+\DoxyCodeLine{293     \textcolor{keyword}{using} base\_vector::end;     \textcolor{comment}{// ok}}
+\DoxyCodeLine{294     \textcolor{keyword}{using} base\_vector::rbegin;  \textcolor{comment}{// ok}}
+\DoxyCodeLine{295     \textcolor{keyword}{using} base\_vector::rend;    \textcolor{comment}{// ok}}
+\DoxyCodeLine{296     S \&front()\textcolor{keyword}{ override}}
+\DoxyCodeLine{297 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{298         \textcolor{keywordflow}{return} base\_vector::front(); \textcolor{comment}{// covriant -\/> virtualize}}
+\DoxyCodeLine{299     \}}
+\DoxyCodeLine{300     \textcolor{keyword}{const} S \&front()\textcolor{keyword}{ const override}}
+\DoxyCodeLine{301 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{302         \textcolor{keywordflow}{return} base\_vector::front(); \textcolor{comment}{// covriant -\/> virtualize}}
+\DoxyCodeLine{303     \}}
+\DoxyCodeLine{304     S \&back()\textcolor{keyword}{ override}}
+\DoxyCodeLine{305 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{306         \textcolor{keywordflow}{return} base\_vector::back(); \textcolor{comment}{// covariant -\/> virtualize}}
+\DoxyCodeLine{307     \}}
+\DoxyCodeLine{308     \textcolor{keyword}{const} S \&back()\textcolor{keyword}{ const override}}
+\DoxyCodeLine{309 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{310         \textcolor{keywordflow}{return} base\_vector::back(); \textcolor{comment}{// covariant -\/> virtualize}}
+\DoxyCodeLine{311     \}}
+\DoxyCodeLine{312     S *data()\textcolor{keyword}{ override }\{ \textcolor{keywordflow}{return} base\_vector::data(); \}             \textcolor{comment}{// covariant -\/> virtualize}}
+\DoxyCodeLine{313     \textcolor{keyword}{const} S *data()\textcolor{keyword}{ const override }\{ \textcolor{keywordflow}{return} base\_vector::data(); \} \textcolor{comment}{// covariant -\/> virtualize}}
+\DoxyCodeLine{314     \textcolor{comment}{// capacity}}
+\DoxyCodeLine{315     \textcolor{keywordtype}{bool} empty()\textcolor{keyword}{ const override}}
+\DoxyCodeLine{316 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{317         \textcolor{keywordflow}{return} base\_vector::empty(); \textcolor{comment}{// virtualize}}
+\DoxyCodeLine{318     \}}
+\DoxyCodeLine{319     \textcolor{keywordtype}{size\_t} size()\textcolor{keyword}{ const override}}
+\DoxyCodeLine{320 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{321         \textcolor{keywordflow}{return} base\_vector::size(); \textcolor{comment}{// virtualize}}
+\DoxyCodeLine{322     \}}
+\DoxyCodeLine{323     \textcolor{keywordtype}{size\_t} max\_size()\textcolor{keyword}{ const override}}
+\DoxyCodeLine{324 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{325         \textcolor{keywordflow}{return} base\_vector::max\_size(); \textcolor{comment}{// virtualize}}
+\DoxyCodeLine{326     \}}
+\DoxyCodeLine{327     \textcolor{keywordtype}{void} reserve(\textcolor{keywordtype}{size\_t} n)\textcolor{keyword}{ override}}
+\DoxyCodeLine{328 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{329         \textcolor{keywordflow}{return} base\_vector::reserve(n); \textcolor{comment}{// virtualize}}
+\DoxyCodeLine{330     \}}
+\DoxyCodeLine{331     \textcolor{keywordtype}{size\_t} capacity()\textcolor{keyword}{ const override}}
+\DoxyCodeLine{332 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{333         \textcolor{keywordflow}{return} base\_vector::capacity(); \textcolor{comment}{// virtualize}}
+\DoxyCodeLine{334     \}}
+\DoxyCodeLine{335     \textcolor{keywordtype}{void} shrink\_to\_fit()\textcolor{keyword}{ override}}
+\DoxyCodeLine{336 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{337         \textcolor{keywordflow}{return} base\_vector::shrink\_to\_fit(); \textcolor{comment}{// virtualize}}
+\DoxyCodeLine{338     \}                                        \textcolor{comment}{// modifiers}}
+\DoxyCodeLine{339     \textcolor{keywordtype}{void} clear()\textcolor{keyword}{ override}}
+\DoxyCodeLine{340 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{341         \textcolor{keywordflow}{return} base\_vector::clear(); \textcolor{comment}{// virtualize}}
+\DoxyCodeLine{342     \}}
+\DoxyCodeLine{343     \textcolor{keyword}{struct }\mbox{\hyperlink{structquantit_1_1quantity__vector_1_1ptr__aritmetic__t}{ptr\_aritmetic\_t}} : \mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1virt__ptr__aritmetic}{vQuantiT\_iterator::virt\_ptr\_aritmetic}}}
+\DoxyCodeLine{344     \{}
+\DoxyCodeLine{345         std::ptrdiff\_t ptr\_diff(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} *lhs, \textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} *rhs)\textcolor{keyword}{ const override}}
+\DoxyCodeLine{346 \textcolor{keyword}{        }\{}
+\DoxyCodeLine{347             \textcolor{keywordflow}{return} \textcolor{keyword}{static\_cast<}\textcolor{keyword}{const }S *\textcolor{keyword}{>}(lhs) -\/ \textcolor{keyword}{static\_cast<}\textcolor{keyword}{const }S *\textcolor{keyword}{>}(rhs);}
+\DoxyCodeLine{348         \}}
+\DoxyCodeLine{349         \textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} *ptr\_add(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} *ptr, std::ptrdiff\_t n)\textcolor{keyword}{ const override}}
+\DoxyCodeLine{350 \textcolor{keyword}{        }\{}
+\DoxyCodeLine{351             \textcolor{keywordflow}{return} \textcolor{keyword}{static\_cast<}\textcolor{keyword}{const }S *\textcolor{keyword}{>}(ptr) + n;}
+\DoxyCodeLine{352         \}}
+\DoxyCodeLine{353         \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} *ptr\_add(\mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} *ptr, std::ptrdiff\_t n)\textcolor{keyword}{ const override }\{ \textcolor{keywordflow}{return} \textcolor{keyword}{static\_cast<}S *\textcolor{keyword}{>}(ptr) + n; \}}
+\DoxyCodeLine{354     \};}
+\DoxyCodeLine{355     \textcolor{keyword}{constexpr} \textcolor{keyword}{static} \mbox{\hyperlink{structquantit_1_1quantity__vector_1_1ptr__aritmetic__t}{ptr\_aritmetic\_t}} ar = \mbox{\hyperlink{structquantit_1_1quantity__vector_1_1ptr__aritmetic__t}{ptr\_aritmetic\_t}}();}
+\DoxyCodeLine{356 }
+\DoxyCodeLine{357     \textcolor{keyword}{using} base\_vector::insert;}
+\DoxyCodeLine{358     \mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1cgroup__iterator}{vquantity\_vector::iterator}} insert(\mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator}{vquantity\_vector::const\_iterator}} pos, \textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \&Val)\textcolor{keyword}{ override}}
+\DoxyCodeLine{359 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{360         \textcolor{keywordflow}{return} \mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1cgroup__iterator}{vquantity\_vector::iterator}}(insert(to\_S\_iterator(pos), \textcolor{keyword}{dynamic\_cast<}\textcolor{keyword}{const }S \&\textcolor{keyword}{>}(Val)).base(), \&ar);}
+\DoxyCodeLine{361     \}}
+\DoxyCodeLine{362     \mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1cgroup__iterator}{vquantity\_vector::iterator}} insert(\mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator}{vquantity\_vector::const\_iterator}} pos, \textcolor{keywordtype}{size\_t} count, \textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \&Val)\textcolor{keyword}{ override}}
+\DoxyCodeLine{363 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{364         \textcolor{keywordflow}{return} \mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1cgroup__iterator}{vquantity\_vector::iterator}}(insert(to\_S\_iterator(pos), count, \textcolor{keyword}{dynamic\_cast<}\textcolor{keyword}{const }S \&\textcolor{keyword}{>}(Val)).base(), \&ar);}
+\DoxyCodeLine{365     \}}
+\DoxyCodeLine{366     vquantity\_vector::iterator insert(vquantity\_vector::const\_iterator pos, vquantity\_vector::const\_iterator first,}
+\DoxyCodeLine{367                                       vquantity\_vector::const\_iterator last)\textcolor{keyword}{ override}}
+\DoxyCodeLine{368 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{369         \textcolor{keywordflow}{return} vquantity\_vector::iterator(insert(to\_S\_iterator(pos), to\_S\_iterator(first), to\_S\_iterator(last)).base(),}
+\DoxyCodeLine{370                                           \&ar);}
+\DoxyCodeLine{371     \}}
+\DoxyCodeLine{372     vquantity\_vector::iterator insert(vquantity\_vector::const\_iterator pos,}
+\DoxyCodeLine{373                                       vquantity\_vector::const\_reverse\_iterator first,}
+\DoxyCodeLine{374                                       vquantity\_vector::const\_reverse\_iterator last)\textcolor{keyword}{ override}}
+\DoxyCodeLine{375 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{376         \textcolor{keywordflow}{return} vquantity\_vector::iterator(insert(to\_S\_iterator(pos), to\_S\_iterator(first), to\_S\_iterator(last)).base(),}
+\DoxyCodeLine{377                                           \&ar);}
+\DoxyCodeLine{378     \}}
+\DoxyCodeLine{379     \textcolor{keyword}{using} base\_vector::emplace; \textcolor{comment}{// can't virtualize (template)}}
+\DoxyCodeLine{380     \textcolor{keyword}{using} base\_vector::erase;   \textcolor{comment}{// virtual proxy}}
+\DoxyCodeLine{381     vquantity\_vector::iterator erase(vquantity\_vector::const\_iterator pos)\textcolor{keyword}{ override}}
+\DoxyCodeLine{382 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{383         \textcolor{keywordflow}{return} vquantity\_vector::iterator(erase(to\_S\_iterator(pos)).base(), \&ar);}
+\DoxyCodeLine{384     \}}
+\DoxyCodeLine{385     vquantity\_vector::iterator erase(vquantity\_vector::const\_iterator first,}
+\DoxyCodeLine{386                                      vquantity\_vector::const\_iterator last)\textcolor{keyword}{ override}}
+\DoxyCodeLine{387 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{388         \textcolor{keywordflow}{return} vquantity\_vector::iterator(erase(to\_S\_iterator(first), to\_S\_iterator(last)).base(), \&ar);}
+\DoxyCodeLine{389     \}}
+\DoxyCodeLine{390     \textcolor{keyword}{using} base\_vector::push\_back; \textcolor{comment}{// virtual proxy}}
+\DoxyCodeLine{391     \textcolor{keywordtype}{void} push\_back(\textcolor{keyword}{const} vquantity \&val)\textcolor{keyword}{ override }\{ \textcolor{keywordflow}{return} push\_back(\textcolor{keyword}{dynamic\_cast<}\textcolor{keyword}{const }S \&\textcolor{keyword}{>}(val)); \}}
+\DoxyCodeLine{392     \textcolor{keyword}{using} base\_vector::emplace\_back; \textcolor{comment}{// can't virtualize (template)}}
+\DoxyCodeLine{393     \textcolor{keywordtype}{void} pop\_back()\textcolor{keyword}{ override }\{ \textcolor{keywordflow}{return} base\_vector::pop\_back(); \}}
+\DoxyCodeLine{394     \textcolor{keywordtype}{void} resize(\textcolor{keywordtype}{size\_t} count)\textcolor{keyword}{ override}}
+\DoxyCodeLine{395 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{396         \textcolor{comment}{// fmt::print("{}resizing cval list!\(\backslash\)n"{});}}
+\DoxyCodeLine{397         \textcolor{keywordflow}{return} base\_vector::resize(count); \textcolor{comment}{// virtualize\}}}
+\DoxyCodeLine{398     \}}
+\DoxyCodeLine{399     \textcolor{keywordtype}{void} resize(\textcolor{keywordtype}{size\_t} count, \textcolor{keyword}{const} vquantity \&val)\textcolor{keyword}{ override}}
+\DoxyCodeLine{400 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{401         \textcolor{keywordflow}{return} base\_vector::resize(count, \textcolor{keyword}{dynamic\_cast<}\textcolor{keyword}{const }S \&\textcolor{keyword}{>}(val));}
+\DoxyCodeLine{402     \}}
+\DoxyCodeLine{403     \textcolor{keyword}{using} base\_vector::resize;}
+\DoxyCodeLine{404     \textcolor{keyword}{using} base\_vector::swap; \textcolor{comment}{// virtualize}}
+\DoxyCodeLine{405     \textcolor{keywordtype}{void} swap(vquantity\_vector \&other)\textcolor{keyword}{ override }\{ base\_vector::swap(\textcolor{keyword}{dynamic\_cast<}quantity\_vector \&\textcolor{keyword}{>}(other)); \}}
+\DoxyCodeLine{406 }
+\DoxyCodeLine{407     quantity\_vector permute(\textcolor{keyword}{const} int64\_t *permute\_begin, \textcolor{keyword}{const} int64\_t *permute\_end,}
+\DoxyCodeLine{408                             \textcolor{keyword}{const} std::vector<int64\_t> repetition)\textcolor{keyword}{ const}}
+\DoxyCodeLine{409 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{410         quantity\_vector out(size());}
+\DoxyCodeLine{411         \textcolor{keywordtype}{size\_t} p = 0;}
+\DoxyCodeLine{412         \textcolor{keywordflow}{for} (; permute\_begin != permute\_end;}
+\DoxyCodeLine{413              ++permute\_begin) \textcolor{comment}{// to properly break this up would while reusing the s value would require a coroutine. or}}
+\DoxyCodeLine{414                               \textcolor{comment}{// lazy algorithm (i.e. range)}}
+\DoxyCodeLine{415         \{}
+\DoxyCodeLine{416             \textcolor{keyword}{auto} rep = repetition[*permute\_begin];}
+\DoxyCodeLine{417             \textcolor{keyword}{auto} s = std::reduce(repetition.begin(), repetition.begin() + *permute\_begin, 0);}
+\DoxyCodeLine{418             \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} i = 0; i < rep; ++i, ++p)}
+\DoxyCodeLine{419             \{}
+\DoxyCodeLine{420                 out[p] = (*this)[s + i];}
+\DoxyCodeLine{421             \}}
+\DoxyCodeLine{422         \}}
+\DoxyCodeLine{423         \textcolor{keywordflow}{return} out;}
+\DoxyCodeLine{424     \}}
+\DoxyCodeLine{425     \textcolor{keywordtype}{bool} operator==(\textcolor{keyword}{const} quantity\_vector \&other)\textcolor{keyword}{ const}}
+\DoxyCodeLine{426 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{427         \textcolor{keywordflow}{return} \textcolor{keyword}{static\_cast<}\textcolor{keyword}{const }base\_vector \&\textcolor{keyword}{>}(*this) == \textcolor{keyword}{static\_cast<}\textcolor{keyword}{const }base\_vector \&\textcolor{keyword}{>}(other);}
+\DoxyCodeLine{428     \}}
+\DoxyCodeLine{429     \textcolor{keywordtype}{bool} operator!=(\textcolor{keyword}{const} quantity\_vector \&other)\textcolor{keyword}{ const}}
+\DoxyCodeLine{430 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{431         \textcolor{keywordflow}{return} \textcolor{keyword}{static\_cast<}\textcolor{keyword}{const }base\_vector \&\textcolor{keyword}{>}(*this) != \textcolor{keyword}{static\_cast<}\textcolor{keyword}{const }base\_vector \&\textcolor{keyword}{>}(other);}
+\DoxyCodeLine{432     \}}
+\DoxyCodeLine{433     \textcolor{keywordtype}{bool} operator==(\textcolor{keyword}{const} vquantity\_vector \&other)\textcolor{keyword}{ const override}}
+\DoxyCodeLine{434 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{435         \textcolor{keywordflow}{return} operator==(\textcolor{keyword}{dynamic\_cast<}\textcolor{keyword}{const }quantity\_vector \&\textcolor{keyword}{>}(other));}
+\DoxyCodeLine{436     \}}
+\DoxyCodeLine{437     \textcolor{keywordtype}{bool} operator!=(\textcolor{keyword}{const} vquantity\_vector \&other)\textcolor{keyword}{ const override}}
+\DoxyCodeLine{438 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{439         \textcolor{keywordflow}{return} operator!=(\textcolor{keyword}{dynamic\_cast<}\textcolor{keyword}{const }quantity\_vector \&\textcolor{keyword}{>}(other));}
+\DoxyCodeLine{440     \}}
+\DoxyCodeLine{441 }
+\DoxyCodeLine{442   \textcolor{keyword}{private}:}
+\DoxyCodeLine{443     std::unique\_ptr<vquantity\_vector> virtual\_permute(\textcolor{keyword}{const} int64\_t *permute\_begin, \textcolor{keyword}{const} int64\_t *permute\_end,}
+\DoxyCodeLine{444                                                       \textcolor{keyword}{const} std::vector<int64\_t> \&repetition)\textcolor{keyword}{ const override}}
+\DoxyCodeLine{445 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{446         \textcolor{keywordflow}{return} std::make\_unique<quantity\_vector>(permute(permute\_begin, permute\_end, repetition));}
+\DoxyCodeLine{447     \}}
+\DoxyCodeLine{448     \textcolor{keyword}{typename} vquantity\_vector::iterator begin\_impl()\textcolor{keyword}{ override}}
+\DoxyCodeLine{449 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{450         \textcolor{keywordflow}{return} vquantity\_vector::iterator(begin().base(), \&ar);}
+\DoxyCodeLine{451     \}}
+\DoxyCodeLine{452     \textcolor{keyword}{typename} vquantity\_vector::iterator end\_impl()\textcolor{keyword}{ override }\{ \textcolor{keywordflow}{return} vquantity\_vector::iterator(end().base(), \&ar); \}}
+\DoxyCodeLine{453 }
+\DoxyCodeLine{454     \textcolor{keyword}{typename} vquantity\_vector::const\_iterator cbegin\_impl()\textcolor{keyword}{ const override}}
+\DoxyCodeLine{455 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{456         \textcolor{keywordflow}{return} vquantity\_vector::const\_iterator(cbegin().base(), \&ar);}
+\DoxyCodeLine{457     \}}
+\DoxyCodeLine{458     \textcolor{keyword}{typename} vquantity\_vector::const\_iterator cend\_impl()\textcolor{keyword}{ const override}}
+\DoxyCodeLine{459 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{460         \textcolor{keywordflow}{return} vquantity\_vector::const\_iterator(cend().base(), \&ar);}
+\DoxyCodeLine{461     \}}
+\DoxyCodeLine{462     \textcolor{keyword}{static} const\_iterator to\_S\_iterator(vquantity\_vector::const\_iterator in)}
+\DoxyCodeLine{463     \{}
+\DoxyCodeLine{464         \textcolor{keywordflow}{if} (in.vt() != \&ar)}
+\DoxyCodeLine{465             \textcolor{keywordflow}{throw} std::bad\_cast();}
+\DoxyCodeLine{466 \textcolor{preprocessor}{\#ifdef QTT\_APPLE}}
+\DoxyCodeLine{467         \textcolor{keywordflow}{return} std::vector<DUMMY>::convert\_iterator<const\_iterator, vquantity\_vector::const\_iterator, const S *>(in);}
+\DoxyCodeLine{468 \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{469         const\_iterator out;}
+\DoxyCodeLine{470         \textcolor{comment}{// this silly fidling is only ok with random access iterators. we don't know what the operator +-\/ do in general}}
+\DoxyCodeLine{471         \textcolor{comment}{// otherwise}}
+\DoxyCodeLine{472         \textcolor{keyword}{auto} \_diff = out.base() -\/ \textcolor{keyword}{static\_cast<}\textcolor{keyword}{const }S *\textcolor{keyword}{>}(in.base());}
+\DoxyCodeLine{473         \textcolor{keywordflow}{return} out -\/= \_diff;}
+\DoxyCodeLine{474 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{475     \}}
+\DoxyCodeLine{476     \textcolor{keyword}{static} reverse\_iterator to\_S\_iterator(std::reverse\_iterator<vquantity\_vector::iterator> in)}
+\DoxyCodeLine{477     \{}
+\DoxyCodeLine{478         \textcolor{keywordflow}{return} reverse\_iterator(to\_S\_iterator(in.base()));}
+\DoxyCodeLine{479         \textcolor{comment}{// base() of reverse\_iterator<base\_iterator> is of type base\_iterator}}
+\DoxyCodeLine{480     \}}
+\DoxyCodeLine{481     \textcolor{keyword}{static} const\_reverse\_iterator to\_S\_iterator(std::reverse\_iterator<vquantity\_vector::const\_iterator> in)}
+\DoxyCodeLine{482     \{}
+\DoxyCodeLine{483         \textcolor{keywordflow}{return} const\_reverse\_iterator(to\_S\_iterator(in.base()));}
+\DoxyCodeLine{484         \textcolor{comment}{// base() of reverse\_iterator<base\_iterator> is of type base\_iterator}}
+\DoxyCodeLine{485     \}}
+\DoxyCodeLine{486     \textcolor{keyword}{static} iterator to\_S\_iterator(vquantity\_vector::iterator in)}
+\DoxyCodeLine{487     \{}
+\DoxyCodeLine{488         \textcolor{keywordflow}{if} (in.vt() != \&ar)}
+\DoxyCodeLine{489         \{}
+\DoxyCodeLine{490             \textcolor{keywordflow}{throw} std::bad\_cast();}
+\DoxyCodeLine{491         \}}
+\DoxyCodeLine{492 \textcolor{preprocessor}{\#ifdef QTT\_APPLE}}
+\DoxyCodeLine{493         \textcolor{keywordflow}{return} std::vector<DUMMY>::convert\_iterator<iterator, vquantity\_vector::iterator, S *>(in);}
+\DoxyCodeLine{494 \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{495         iterator out;}
+\DoxyCodeLine{496         \textcolor{comment}{// this silly fidling is only ok with random access iterator}}
+\DoxyCodeLine{497         \textcolor{keyword}{auto} \_diff = out.base() -\/ \textcolor{keyword}{static\_cast<}S *\textcolor{keyword}{>}(in.base());}
+\DoxyCodeLine{498         \textcolor{keywordflow}{return} out -\/= \_diff;}
+\DoxyCodeLine{499 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{500     \}}
+\DoxyCodeLine{501 }
+\DoxyCodeLine{502     std::unique\_ptr<vquantity\_vector> clone()\textcolor{keyword}{ const override }\{ \textcolor{keywordflow}{return} std::make\_unique<quantity\_vector>(*\textcolor{keyword}{this}); \}}
+\DoxyCodeLine{503 \};}
+\DoxyCodeLine{504 }
+\DoxyCodeLine{505 \textcolor{keyword}{template} <\textcolor{keyword}{class}... T>}
+\DoxyCodeLine{506 std::unique\_ptr<vquantity\_vector> quantity<T...>::make\_vector(\textcolor{keywordtype}{size\_t} cnt)\textcolor{keyword}{ const}}
+\DoxyCodeLine{507 \textcolor{keyword}{}\{}
+\DoxyCodeLine{508     \textcolor{keywordflow}{return} std::make\_unique<quantity\_vector<quantity<T...>>>(cnt, *\textcolor{keyword}{this});}
+\DoxyCodeLine{509 \}}
+\DoxyCodeLine{510 }
+\DoxyCodeLine{511 \} \textcolor{comment}{// namespace quantit}}
+\DoxyCodeLine{512 }
+\DoxyCodeLine{513 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* BBF1F73E\_87CC\_4C69\_9CCC\_5D2526535A4F */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

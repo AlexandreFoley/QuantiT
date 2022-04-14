@@ -1,0 +1,404 @@
+\hypertarget{quantity__impl_8h_source}{}\doxysection{quantity\+\_\+impl.\+h}
+\label{quantity__impl_8h_source}\index{/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity\_impl.h@{/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity\_impl.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * File: vquantity.h}}
+\DoxyCodeLine{3 \textcolor{comment}{ * Project: QuantiT}}
+\DoxyCodeLine{4 \textcolor{comment}{ * File Created: Tuesday, 15th September 2020 2:56:09 pm}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)}}
+\DoxyCodeLine{6 \textcolor{comment}{ * -\/-\/-\/-\/-\/}}
+\DoxyCodeLine{7 \textcolor{comment}{ * Last Modified: Tuesday, 15th September 2020 2:56:09 pm}}
+\DoxyCodeLine{8 \textcolor{comment}{ * Modified By: Alexandre Foley (Alexandre.foley@usherbrooke.ca>)}}
+\DoxyCodeLine{9 \textcolor{comment}{ * -\/-\/-\/-\/-\/}}
+\DoxyCodeLine{10 \textcolor{comment}{ * Copyright (c) 2020 Alexandre Foley}}
+\DoxyCodeLine{11 \textcolor{comment}{ * Licensed under GPL v3}}
+\DoxyCodeLine{12 \textcolor{comment}{ */}}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#ifndef F2547C1C\_9177\_4373\_9C66\_8D4C8621C7CC}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#define F2547C1C\_9177\_4373\_9C66\_8D4C8621C7CC}}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}Conserved/quantity\_utils.h"{}}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}templateMeta.h"{}}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include <fmt/format.h>}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include <fmt/ranges.h>}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include <ios>}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#include <memory>}}
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#include <type\_traits>}}
+\DoxyCodeLine{24 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26 \textcolor{keyword}{namespace }quantit}
+\DoxyCodeLine{27 \{}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{33 \textcolor{keyword}{struct }cgroup\_iterator;}
+\DoxyCodeLine{34 \textcolor{keyword}{struct }const\_cgroup\_iterator;}
+\DoxyCodeLine{35 \textcolor{keyword}{class }vquantity\_vector;}
+\DoxyCodeLine{36 \textcolor{keyword}{class }any\_quantity;}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{45 \textcolor{keyword}{class }\mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}}}
+\DoxyCodeLine{46 \{}
+\DoxyCodeLine{47     \textcolor{keyword}{friend} \textcolor{keyword}{struct }cgroup\_iterator;}
+\DoxyCodeLine{48     \textcolor{keyword}{friend} \textcolor{keyword}{struct }const\_cgroup\_iterator;}
+\DoxyCodeLine{49 }
+\DoxyCodeLine{50   \textcolor{keyword}{public}:}
+\DoxyCodeLine{56     \textcolor{keyword}{virtual} \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \&\mbox{\hyperlink{classquantit_1_1vquantity_a18b07748f79d061f88dd654e3dcfa649}{op}}(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \&) = 0;}
+\DoxyCodeLine{63     \textcolor{keyword}{virtual} \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \&\mbox{\hyperlink{classquantit_1_1vquantity_a69fce57cac4dffcc81835873a412deae}{op}}(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \&, \textcolor{keywordtype}{bool} cond) = 0;}
+\DoxyCodeLine{69     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} \mbox{\hyperlink{classquantit_1_1vquantity_a1b9d16298426bdf26b63d3f248b06e45}{op\_to}}(\mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \&) \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{75     \textcolor{keyword}{virtual} \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \&\mbox{\hyperlink{classquantit_1_1vquantity_a4f83f301617d71c928821df9b3ace621}{inverse\_}}() = 0;}
+\DoxyCodeLine{76     \mbox{\hyperlink{classquantit_1_1any__quantity}{any\_quantity}} \mbox{\hyperlink{classquantit_1_1vquantity_a3625d2f986585bb6ba22fc09c845bd64}{inverse}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{77     \mbox{\hyperlink{classquantit_1_1any__quantity}{any\_quantity}} inv() \textcolor{keyword}{const};}
+\DoxyCodeLine{78     \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \&inv\_() \{ \textcolor{keywordflow}{return} \mbox{\hyperlink{classquantit_1_1vquantity_a4f83f301617d71c928821df9b3ace621}{inverse\_}}(); \}}
+\DoxyCodeLine{79     \textcolor{keyword}{virtual} std::unique\_ptr<vquantity> clone() \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{80     \textcolor{keyword}{virtual} std::unique\_ptr<vquantity\_vector> make\_vector(\textcolor{keywordtype}{size\_t} cnt) \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{81 }
+\DoxyCodeLine{82     \mbox{\hyperlink{classquantit_1_1any__quantity}{any\_quantity}} neutral() \textcolor{keyword}{const};}
+\DoxyCodeLine{83     \textcolor{keyword}{virtual} \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \&operator=(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \&) = 0;}
+\DoxyCodeLine{84     \textcolor{keyword}{virtual} \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \&operator*=(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \&) = 0;}
+\DoxyCodeLine{85     \textcolor{keyword}{virtual} \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \&operator+=(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \&) = 0;}
+\DoxyCodeLine{86     \textcolor{keyword}{virtual} \textcolor{keywordtype}{bool} is\_equal(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \&) \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{87     \textcolor{keyword}{virtual} \textcolor{keywordtype}{bool} is\_different(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \&) \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{88     \textcolor{keyword}{virtual} \textcolor{keywordtype}{bool} is\_lesser(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \&) \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{89     \textcolor{keyword}{virtual} \textcolor{keywordtype}{bool} is\_greater(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \&) \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{90     \textcolor{keyword}{virtual} \textcolor{keywordtype}{bool} same\_type(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \&other) \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{91     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} swap(\mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \&) = 0;}
+\DoxyCodeLine{92     \textcolor{keyword}{virtual} \textcolor{keyword}{auto} format\_to(fmt::format\_context \&ctx) \textcolor{keyword}{const} -\/> \textcolor{keyword}{decltype}(ctx.out()) = 0;}
+\DoxyCodeLine{93     \textcolor{keyword}{virtual} \textcolor{keywordtype}{double} distance(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \&) \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{94     \textcolor{keyword}{virtual} int64\_t distance2(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \&) \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{95     \textcolor{keyword}{virtual} \mbox{\hyperlink{classquantit_1_1vquantity}{\string~vquantity}}() \{\}}
+\DoxyCodeLine{96 }
+\DoxyCodeLine{97   \textcolor{keyword}{protected}:}
+\DoxyCodeLine{103     \textcolor{keyword}{virtual} std::unique\_ptr<vquantity> \mbox{\hyperlink{classquantit_1_1vquantity_aee42fc46e47dc7e87974ccb3dcba8a0d}{make\_neutral}}() \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{104 \};}
+\DoxyCodeLine{105 \textcolor{keyword}{inline} \textcolor{keywordtype}{bool} operator==(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \&left, \textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \&right) \{ \textcolor{keywordflow}{return} left.is\_equal(right); \}}
+\DoxyCodeLine{106 \textcolor{keyword}{inline} \textcolor{keywordtype}{bool} operator!=(\textcolor{keyword}{const} vquantity \&left, \textcolor{keyword}{const} vquantity \&right) \{ \textcolor{keywordflow}{return} left.is\_different(right); \}}
+\DoxyCodeLine{107 \textcolor{keyword}{inline} \textcolor{keywordtype}{bool} operator<(\textcolor{keyword}{const} vquantity \&left, \textcolor{keyword}{const} vquantity \&right) \{ \textcolor{keywordflow}{return} left.is\_lesser(right); \}}
+\DoxyCodeLine{108 \textcolor{keyword}{inline} \textcolor{keywordtype}{bool} operator>(\textcolor{keyword}{const} vquantity \&left, \textcolor{keyword}{const} vquantity \&right) \{ \textcolor{keywordflow}{return} left.is\_greater(right); \}}
+\DoxyCodeLine{109 }
+\DoxyCodeLine{116 \textcolor{keyword}{template} <\textcolor{keyword}{class}... Groups>}
+\DoxyCodeLine{117 \textcolor{keyword}{class }\mbox{\hyperlink{classquantit_1_1quantity}{quantity}} final : \textcolor{keyword}{public} \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}}}
+\DoxyCodeLine{118 \{}
+\DoxyCodeLine{119   \textcolor{keyword}{public}:}
+\DoxyCodeLine{120     \textcolor{comment}{// has default constructor and assigment operator as well.}}
+\DoxyCodeLine{121     \textcolor{keyword}{static\_assert}(quantit::conserved::all\_group\_v<Groups...>,}
+\DoxyCodeLine{122                   \textcolor{stringliteral}{"{}all template argument must statisfy the constraints of a group. See QuantiT/Conserved/quantity.h for "{}}}
+\DoxyCodeLine{123                   \textcolor{stringliteral}{"{}2 working exemples: C<N> and Z"{}});}
+\DoxyCodeLine{124     \mbox{\hyperlink{classquantit_1_1quantity}{quantity}}(Groups... grp) : val(grp...) \{\}}
+\DoxyCodeLine{125     \mbox{\hyperlink{classquantit_1_1quantity}{quantity}}() = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{126     \mbox{\hyperlink{classquantit_1_1quantity}{quantity}}(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1quantity}{quantity}} \&) = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{127     \mbox{\hyperlink{classquantit_1_1quantity}{quantity}}(\mbox{\hyperlink{classquantit_1_1quantity}{quantity}} \&\&) = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{128     \mbox{\hyperlink{classquantit_1_1quantity}{\string~quantity}}()\textcolor{keyword}{ override}\{\};}
+\DoxyCodeLine{129     \mbox{\hyperlink{classquantit_1_1quantity}{quantity}} \&operator=(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1quantity}{quantity}} \&other) \textcolor{keyword}{noexcept};}
+\DoxyCodeLine{130 }
+\DoxyCodeLine{131     \mbox{\hyperlink{classquantit_1_1quantity}{quantity}} operator*(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1quantity}{quantity}} \&);}
+\DoxyCodeLine{132     \mbox{\hyperlink{classquantit_1_1quantity}{quantity}} operator*(\mbox{\hyperlink{classquantit_1_1quantity}{quantity}} \&\&);}
+\DoxyCodeLine{133     \mbox{\hyperlink{classquantit_1_1quantity}{quantity}} operator*=(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1quantity}{quantity}} \&);}
+\DoxyCodeLine{134     \mbox{\hyperlink{classquantit_1_1quantity}{quantity}} operator+(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1quantity}{quantity}} \&);}
+\DoxyCodeLine{135     \mbox{\hyperlink{classquantit_1_1quantity}{quantity}} operator+(\mbox{\hyperlink{classquantit_1_1quantity}{quantity}} \&\&);}
+\DoxyCodeLine{136     \mbox{\hyperlink{classquantit_1_1quantity}{quantity}} operator+=(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1quantity}{quantity}} \&);}
+\DoxyCodeLine{137     \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \&operator*=(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \&) \textcolor{keyword}{override};}
+\DoxyCodeLine{138     \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \&operator+=(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \&) \textcolor{keyword}{override};}
+\DoxyCodeLine{139     \textcolor{keywordtype}{void} swap(\mbox{\hyperlink{classquantit_1_1quantity}{quantity}} \&other);}
+\DoxyCodeLine{140 }
+\DoxyCodeLine{141     std::unique\_ptr<vquantity> clone() \textcolor{keyword}{const override};}
+\DoxyCodeLine{142     std::unique\_ptr<vquantity> \mbox{\hyperlink{classquantit_1_1quantity_a2bdd89bb923fbd8669d3f805dd457bda}{make\_neutral}}() \textcolor{keyword}{const override};}
+\DoxyCodeLine{143 }
+\DoxyCodeLine{144     \mbox{\hyperlink{classquantit_1_1quantity}{quantity}} \&op(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1quantity}{quantity}} \&other);}
+\DoxyCodeLine{145     \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \&op(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \&other) \textcolor{keyword}{override};}
+\DoxyCodeLine{146     \mbox{\hyperlink{classquantit_1_1quantity}{quantity}} \&op(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1quantity}{quantity}} \&other, \textcolor{keywordtype}{bool} cond);}
+\DoxyCodeLine{147     \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \&op(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \&other, \textcolor{keywordtype}{bool} cond) \textcolor{keyword}{override};}
+\DoxyCodeLine{148     \textcolor{keywordtype}{void} op\_to(\mbox{\hyperlink{classquantit_1_1quantity}{quantity}} \&other) \textcolor{keyword}{const};}
+\DoxyCodeLine{149     \textcolor{keywordtype}{void} op\_to(\mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \&other) \textcolor{keyword}{const override};}
+\DoxyCodeLine{150     \mbox{\hyperlink{classquantit_1_1quantity}{quantity}} \&\mbox{\hyperlink{classquantit_1_1quantity_a77525a487ba70963a63825ba407b4125}{inverse\_}}() \textcolor{keyword}{override};}
+\DoxyCodeLine{151     \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \&operator=(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \&other) \textcolor{keyword}{override};}
+\DoxyCodeLine{152     \textcolor{keywordtype}{bool} operator==(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1quantity}{quantity}} \&other) \textcolor{keyword}{const};}
+\DoxyCodeLine{153     \textcolor{keywordtype}{bool} is\_equal(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \&other) \textcolor{keyword}{const override};}
+\DoxyCodeLine{154     \textcolor{keywordtype}{bool} operator!=(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1quantity}{quantity}} \&other) \textcolor{keyword}{const};}
+\DoxyCodeLine{155     \textcolor{keywordtype}{bool} is\_different(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \&other) \textcolor{keyword}{const override};}
+\DoxyCodeLine{156     \textcolor{keywordtype}{bool} same\_type(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \&other) \textcolor{keyword}{const override};}
+\DoxyCodeLine{157     \textcolor{keywordtype}{bool} is\_lesser(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \&) \textcolor{keyword}{const override};}
+\DoxyCodeLine{158     \textcolor{keywordtype}{bool} operator<(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1quantity}{quantity}} \&other) \textcolor{keyword}{const};}
+\DoxyCodeLine{159     \textcolor{keywordtype}{bool} is\_greater(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \&) \textcolor{keyword}{const override};}
+\DoxyCodeLine{160     \textcolor{keywordtype}{bool} operator>(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1quantity}{quantity}} \&other) \textcolor{keyword}{const};}
+\DoxyCodeLine{161     \textcolor{keywordtype}{void} swap(\mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \&other) \textcolor{keyword}{override};}
+\DoxyCodeLine{162 }
+\DoxyCodeLine{163     std::unique\_ptr<vquantity\_vector> make\_vector(\textcolor{keywordtype}{size\_t} cnt) \textcolor{keyword}{const override};}
+\DoxyCodeLine{164 }
+\DoxyCodeLine{165     \textcolor{keywordtype}{double} distance(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \&) \textcolor{keyword}{const override};}
+\DoxyCodeLine{166     \textcolor{keywordtype}{double} distance(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1quantity}{quantity}} \&) \textcolor{keyword}{const};}
+\DoxyCodeLine{167     int64\_t distance2(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \&) \textcolor{keyword}{const override};}
+\DoxyCodeLine{168     int64\_t distance2(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1quantity}{quantity}} \&) \textcolor{keyword}{const};}
+\DoxyCodeLine{169     \textcolor{keyword}{friend} \textcolor{keyword}{struct }fmt::formatter<quantit::\mbox{\hyperlink{classquantit_1_1quantity}{quantity}}<Groups...>>;}
+\DoxyCodeLine{170     auto format\_to(fmt::format\_context \&ctx) const -\/> decltype(ctx.out()) override}
+\DoxyCodeLine{171     \{}
+\DoxyCodeLine{172         \textcolor{keywordflow}{return} fmt::formatter<\mbox{\hyperlink{classquantit_1_1quantity}{quantit::quantity}}<Groups...>>().format(*\textcolor{keyword}{this}, ctx);}
+\DoxyCodeLine{173     \}}
+\DoxyCodeLine{174 }
+\DoxyCodeLine{175   \textcolor{keyword}{private}:}
+\DoxyCodeLine{182     std::tuple<Groups...> val;}
+\DoxyCodeLine{183 \};}
+\DoxyCodeLine{184 \textcolor{keyword}{template} <\textcolor{keyword}{class}... Qts>}
+\DoxyCodeLine{185 \textcolor{keywordtype}{bool} \mbox{\hyperlink{classquantit_1_1quantity}{quantity<Qts...>::same\_type}}(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \&other)\textcolor{keyword}{ const}}
+\DoxyCodeLine{186 \textcolor{keyword}{}\{ \textcolor{comment}{// dynamic cast on pointers return a null pointer which convert to false when the types are incompatible.}}
+\DoxyCodeLine{187     \textcolor{keywordflow}{return} \textcolor{keyword}{dynamic\_cast<}\textcolor{keyword}{const }\mbox{\hyperlink{classquantit_1_1quantity}{quantity}}<Qts...\textcolor{keyword}{>} *>(\&other);}
+\DoxyCodeLine{188 \}}
+\DoxyCodeLine{189 \textcolor{keyword}{template} <\textcolor{keyword}{class}... Qts>}
+\DoxyCodeLine{190 quantity<Qts...> quantity<Qts...>::operator*(\textcolor{keyword}{const} quantity<Qts...> \&other)}
+\DoxyCodeLine{191 \{}
+\DoxyCodeLine{192     \textcolor{keywordflow}{return} quantity<Qts...>(*this).op(other);}
+\DoxyCodeLine{193 \}}
+\DoxyCodeLine{194 \textcolor{keyword}{template} <\textcolor{keyword}{class}... Qts>}
+\DoxyCodeLine{195 quantity<Qts...> quantity<Qts...>::operator*(quantity<Qts...> \&\&other)}
+\DoxyCodeLine{196 \{}
+\DoxyCodeLine{197     op\_to(other);}
+\DoxyCodeLine{198     \textcolor{keywordflow}{return} other;}
+\DoxyCodeLine{199 \}}
+\DoxyCodeLine{200 \textcolor{keyword}{template} <\textcolor{keyword}{class}... Qts>}
+\DoxyCodeLine{201 quantity<Qts...> quantity<Qts...>::operator*=(\textcolor{keyword}{const} quantity<Qts...> \&other)}
+\DoxyCodeLine{202 \{}
+\DoxyCodeLine{203     op(other);}
+\DoxyCodeLine{204     \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{205 \}}
+\DoxyCodeLine{206 \textcolor{keyword}{template} <\textcolor{keyword}{class}... Qts>}
+\DoxyCodeLine{207 quantity<Qts...> quantity<Qts...>::operator+(\textcolor{keyword}{const} quantity<Qts...> \&other)}
+\DoxyCodeLine{208 \{}
+\DoxyCodeLine{209     \textcolor{keywordflow}{return} *\textcolor{keyword}{this} * other;}
+\DoxyCodeLine{210 \}}
+\DoxyCodeLine{211 \textcolor{keyword}{template} <\textcolor{keyword}{class}... Qts>}
+\DoxyCodeLine{212 quantity<Qts...> quantity<Qts...>::operator+(quantity<Qts...> \&\&other)}
+\DoxyCodeLine{213 \{}
+\DoxyCodeLine{214     \textcolor{keywordflow}{return} *\textcolor{keyword}{this} * std::move(other);}
+\DoxyCodeLine{215 \}}
+\DoxyCodeLine{216 \textcolor{keyword}{template} <\textcolor{keyword}{class}... Qts>}
+\DoxyCodeLine{217 quantity<Qts...> quantity<Qts...>::operator+=(\textcolor{keyword}{const} quantity<Qts...> \&other)}
+\DoxyCodeLine{218 \{}
+\DoxyCodeLine{219     \textcolor{keywordflow}{return} *\textcolor{keyword}{this} *= other;}
+\DoxyCodeLine{220 \}}
+\DoxyCodeLine{221 \textcolor{keyword}{template} <\textcolor{keyword}{class}... T>}
+\DoxyCodeLine{222 quantity<T...> \&quantity<T...>::operator=(\textcolor{keyword}{const} quantity \&other) \textcolor{keyword}{noexcept}}
+\DoxyCodeLine{223 \{}
+\DoxyCodeLine{224     val = other.val;}
+\DoxyCodeLine{225     \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{226 \}}
+\DoxyCodeLine{227 \textcolor{keyword}{template} <\textcolor{keyword}{class}... T>}
+\DoxyCodeLine{228 int64\_t quantity<T...>::distance2(\textcolor{keyword}{const} quantity<T...> \&other)\textcolor{keyword}{ const}}
+\DoxyCodeLine{229 \textcolor{keyword}{}\{}
+\DoxyCodeLine{230     int64\_t out = 0;}
+\DoxyCodeLine{231     for\_each2(val, other.val, [\&out](\textcolor{keyword}{auto} \&\&vl, \textcolor{keyword}{auto} \&\&ovl) \{ out += vl.distance2(ovl); \});}
+\DoxyCodeLine{232     \textcolor{keywordflow}{return} out;}
+\DoxyCodeLine{233 \}}
+\DoxyCodeLine{234 \textcolor{keyword}{template} <\textcolor{keyword}{class}... T>}
+\DoxyCodeLine{235 int64\_t quantity<T...>::distance2(\textcolor{keyword}{const} vquantity \&other)\textcolor{keyword}{ const}}
+\DoxyCodeLine{236 \textcolor{keyword}{}\{}
+\DoxyCodeLine{237     \textcolor{keywordflow}{return} distance2(\textcolor{keyword}{dynamic\_cast<}\textcolor{keyword}{const }quantity<T...\textcolor{keyword}{>} \&>(other));}
+\DoxyCodeLine{238 \}}
+\DoxyCodeLine{239 \textcolor{keyword}{template} <\textcolor{keyword}{class}... T>}
+\DoxyCodeLine{240 \textcolor{keywordtype}{double} quantity<T...>::distance(\textcolor{keyword}{const} quantity<T...> \&other)\textcolor{keyword}{ const}}
+\DoxyCodeLine{241 \textcolor{keyword}{}\{}
+\DoxyCodeLine{242     \textcolor{keywordflow}{return} std::sqrt(distance2(other));}
+\DoxyCodeLine{243 \}}
+\DoxyCodeLine{244 \textcolor{keyword}{template} <\textcolor{keyword}{class}... T>}
+\DoxyCodeLine{245 \textcolor{keywordtype}{double} quantity<T...>::distance(\textcolor{keyword}{const} vquantity \&other)\textcolor{keyword}{ const}}
+\DoxyCodeLine{246 \textcolor{keyword}{}\{}
+\DoxyCodeLine{247     \textcolor{keywordflow}{return} distance(\textcolor{keyword}{dynamic\_cast<}\textcolor{keyword}{const }quantity<T...\textcolor{keyword}{>} \&>(other));}
+\DoxyCodeLine{248 \}}
+\DoxyCodeLine{249 \textcolor{keyword}{template} <\textcolor{keyword}{class}... T>}
+\DoxyCodeLine{250 quantity<T...> \&quantity<T...>::op(\textcolor{keyword}{const} quantity<T...> \&other)}
+\DoxyCodeLine{251 \{}
+\DoxyCodeLine{252     for\_each2(val, other.val, [](\textcolor{keyword}{auto} \&\&vl, \textcolor{keyword}{auto} \&\&ovl) \{ vl.op(ovl); \});}
+\DoxyCodeLine{253     \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{254 \}}
+\DoxyCodeLine{255 \textcolor{keyword}{template} <\textcolor{keyword}{class}... T>}
+\DoxyCodeLine{256 quantity<T...> \&quantity<T...>::op(\textcolor{keyword}{const} quantity<T...> \&other, \textcolor{keywordtype}{bool} cond)}
+\DoxyCodeLine{257 \{}
+\DoxyCodeLine{258     for\_each2(val, other.val, [cond](\textcolor{keyword}{auto} \&\&vl, \textcolor{keyword}{auto} \&\&ovl) \{ vl.op(ovl, cond); \});}
+\DoxyCodeLine{259     \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{260 \}}
+\DoxyCodeLine{261 \textcolor{keyword}{template} <\textcolor{keyword}{class}... T>}
+\DoxyCodeLine{262 \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \&\mbox{\hyperlink{classquantit_1_1quantity}{quantity<T...>::op}}(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \&other, \textcolor{keywordtype}{bool} cond)}
+\DoxyCodeLine{263 \{}
+\DoxyCodeLine{264     \textcolor{keywordflow}{return} op(\textcolor{keyword}{dynamic\_cast<}\textcolor{keyword}{const }\mbox{\hyperlink{classquantit_1_1quantity}{quantity}} \&\textcolor{keyword}{>}(other), cond);}
+\DoxyCodeLine{265 \}}
+\DoxyCodeLine{266 }
+\DoxyCodeLine{267 \textcolor{keyword}{template} <\textcolor{keyword}{class}... T>}
+\DoxyCodeLine{268 \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \&\mbox{\hyperlink{classquantit_1_1quantity}{quantity<T...>::op}}(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \&other)}
+\DoxyCodeLine{269 \{}
+\DoxyCodeLine{270     \textcolor{keywordflow}{return} op(\textcolor{keyword}{dynamic\_cast<}\textcolor{keyword}{const }\mbox{\hyperlink{classquantit_1_1quantity}{quantity}} \&\textcolor{keyword}{>}(other));}
+\DoxyCodeLine{271 \}}
+\DoxyCodeLine{272 }
+\DoxyCodeLine{273 \textcolor{keyword}{template} <\textcolor{keyword}{class}... T>}
+\DoxyCodeLine{274 std::unique\_ptr<vquantity> \mbox{\hyperlink{classquantit_1_1quantity_a2bdd89bb923fbd8669d3f805dd457bda}{quantity<T...>::make\_neutral}}()\textcolor{keyword}{ const}}
+\DoxyCodeLine{275 \textcolor{keyword}{}\{}
+\DoxyCodeLine{276     \textcolor{keywordflow}{return} std::make\_unique<\mbox{\hyperlink{classquantit_1_1quantity}{quantity}}<T...>>();}
+\DoxyCodeLine{277 \}}
+\DoxyCodeLine{278 }
+\DoxyCodeLine{279 \textcolor{keyword}{template} <\textcolor{keyword}{class}... T>}
+\DoxyCodeLine{280 std::unique\_ptr<vquantity> \mbox{\hyperlink{classquantit_1_1quantity}{quantity<T...>::clone}}()\textcolor{keyword}{ const}}
+\DoxyCodeLine{281 \textcolor{keyword}{}\{}
+\DoxyCodeLine{282     \textcolor{keywordflow}{return} std::make\_unique<\mbox{\hyperlink{classquantit_1_1quantity}{quantity}}<T...>>(*this);}
+\DoxyCodeLine{283 \}}
+\DoxyCodeLine{284 \textcolor{keyword}{template} <\textcolor{keyword}{class}... T>}
+\DoxyCodeLine{285 \textcolor{keywordtype}{void} quantity<T...>::op\_to(quantity<T...> \&other)\textcolor{keyword}{ const}}
+\DoxyCodeLine{286 \textcolor{keyword}{}\{}
+\DoxyCodeLine{287     for\_each2(val, other.val, [](\textcolor{keyword}{auto} \&\&vl, \textcolor{keyword}{auto} \&\&ovl) \{ ovl = conserved::op(vl, ovl); \});}
+\DoxyCodeLine{288 \}}
+\DoxyCodeLine{289 \textcolor{keyword}{template} <\textcolor{keyword}{class}... T>}
+\DoxyCodeLine{290 \textcolor{keywordtype}{void} \mbox{\hyperlink{classquantit_1_1quantity}{quantity<T...>::op\_to}}(\mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \&other)\textcolor{keyword}{ const}}
+\DoxyCodeLine{291 \textcolor{keyword}{}\{}
+\DoxyCodeLine{292     \textcolor{keywordflow}{return} op\_to(\textcolor{keyword}{dynamic\_cast<}\mbox{\hyperlink{classquantit_1_1quantity}{quantity}}<T...\textcolor{keyword}{>} \&>(other));}
+\DoxyCodeLine{293 \}}
+\DoxyCodeLine{294 \textcolor{keyword}{template} <\textcolor{keyword}{class}... T>}
+\DoxyCodeLine{295 \mbox{\hyperlink{classquantit_1_1quantity}{quantity}}<T...> \&\mbox{\hyperlink{classquantit_1_1quantity_a77525a487ba70963a63825ba407b4125}{quantity<T...>::inverse\_}}()}
+\DoxyCodeLine{296 \{}
+\DoxyCodeLine{297     for\_each(val, [](\textcolor{keyword}{auto} \&\&vl) \{ vl.inverse\_(); \});}
+\DoxyCodeLine{298     \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{299 \}}
+\DoxyCodeLine{300 \textcolor{keyword}{template} <\textcolor{keyword}{class}... T>}
+\DoxyCodeLine{301 \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \&\mbox{\hyperlink{classquantit_1_1quantity}{quantity<T...>::operator=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \&other)}
+\DoxyCodeLine{302 \{}
+\DoxyCodeLine{303     \textcolor{keywordflow}{return} this-\/>operator=(\textcolor{keyword}{dynamic\_cast<}\textcolor{keyword}{const }\mbox{\hyperlink{classquantit_1_1quantity}{quantity}}<T...\textcolor{keyword}{>} \&>(other));}
+\DoxyCodeLine{304 \}}
+\DoxyCodeLine{305 \textcolor{keyword}{template} <\textcolor{keyword}{class}... T>}
+\DoxyCodeLine{306 \textcolor{keywordtype}{bool} quantity<T...>::operator==(\textcolor{keyword}{const} quantity<T...> \&other)\textcolor{keyword}{ const}}
+\DoxyCodeLine{307 \textcolor{keyword}{}\{}
+\DoxyCodeLine{308     \textcolor{keywordflow}{return} val == other.val;}
+\DoxyCodeLine{309 \}}
+\DoxyCodeLine{310 \textcolor{keyword}{template} <\textcolor{keyword}{class}... T>}
+\DoxyCodeLine{311 \textcolor{keywordtype}{bool} quantity<T...>::is\_equal(\textcolor{keyword}{const} vquantity \&other)\textcolor{keyword}{ const}}
+\DoxyCodeLine{312 \textcolor{keyword}{}\{}
+\DoxyCodeLine{313     \textcolor{keywordflow}{return} operator==(\textcolor{keyword}{dynamic\_cast<}\textcolor{keyword}{const }quantity<T...\textcolor{keyword}{>} \&>(other));}
+\DoxyCodeLine{314 \}}
+\DoxyCodeLine{315 \textcolor{keyword}{template} <\textcolor{keyword}{class}... T>}
+\DoxyCodeLine{316 \textcolor{keywordtype}{bool} quantity<T...>::operator!=(\textcolor{keyword}{const} quantity<T...> \&other)\textcolor{keyword}{ const}}
+\DoxyCodeLine{317 \textcolor{keyword}{}\{}
+\DoxyCodeLine{318     \textcolor{keywordflow}{return} val != other.val;}
+\DoxyCodeLine{319 \}}
+\DoxyCodeLine{320 \textcolor{keyword}{template} <\textcolor{keyword}{class}... T>}
+\DoxyCodeLine{321 \textcolor{keywordtype}{bool} quantity<T...>::is\_different(\textcolor{keyword}{const} vquantity \&other)\textcolor{keyword}{ const}}
+\DoxyCodeLine{322 \textcolor{keyword}{}\{}
+\DoxyCodeLine{323     \textcolor{keywordflow}{return} operator!=(\textcolor{keyword}{dynamic\_cast<}\textcolor{keyword}{const }quantity<T...\textcolor{keyword}{>} \&>(other));}
+\DoxyCodeLine{324 \}}
+\DoxyCodeLine{325 \textcolor{keyword}{template} <\textcolor{keyword}{class}... T>}
+\DoxyCodeLine{326 \textcolor{keywordtype}{bool} quantity<T...>::operator<(\textcolor{keyword}{const} quantity<T...> \&other)\textcolor{keyword}{ const}}
+\DoxyCodeLine{327 \textcolor{keyword}{}\{}
+\DoxyCodeLine{328     \textcolor{keywordflow}{return} val < other.val;}
+\DoxyCodeLine{329 \}}
+\DoxyCodeLine{330 \textcolor{keyword}{template} <\textcolor{keyword}{class}... T>}
+\DoxyCodeLine{331 \textcolor{keywordtype}{bool} quantity<T...>::is\_lesser(\textcolor{keyword}{const} vquantity \&other)\textcolor{keyword}{ const}}
+\DoxyCodeLine{332 \textcolor{keyword}{}\{}
+\DoxyCodeLine{333     \textcolor{keywordflow}{return} operator<(\textcolor{keyword}{dynamic\_cast<}\textcolor{keyword}{const }quantity<T...\textcolor{keyword}{>} \&>(other));}
+\DoxyCodeLine{334 \}}
+\DoxyCodeLine{335 }
+\DoxyCodeLine{336 \textcolor{keyword}{template} <\textcolor{keyword}{class}... T>}
+\DoxyCodeLine{337 \textcolor{keywordtype}{bool} quantity<T...>::operator>(\textcolor{keyword}{const} quantity<T...> \&other)\textcolor{keyword}{ const}}
+\DoxyCodeLine{338 \textcolor{keyword}{}\{}
+\DoxyCodeLine{339     \textcolor{keywordflow}{return} val > other.val;}
+\DoxyCodeLine{340 \}}
+\DoxyCodeLine{341 \textcolor{keyword}{template} <\textcolor{keyword}{class}... T>}
+\DoxyCodeLine{342 \textcolor{keywordtype}{bool} quantity<T...>::is\_greater(\textcolor{keyword}{const} vquantity \&other)\textcolor{keyword}{ const}}
+\DoxyCodeLine{343 \textcolor{keyword}{}\{}
+\DoxyCodeLine{344     \textcolor{keywordflow}{return} operator>(\textcolor{keyword}{dynamic\_cast<}\textcolor{keyword}{const }quantity<T...\textcolor{keyword}{>} \&>(other));}
+\DoxyCodeLine{345 \}}
+\DoxyCodeLine{346 \textcolor{keyword}{template} <\textcolor{keyword}{class}... T>}
+\DoxyCodeLine{347 \textcolor{keywordtype}{void} quantity<T...>::swap(quantity<T...> \&other)}
+\DoxyCodeLine{348 \{}
+\DoxyCodeLine{349     \textcolor{keyword}{using} std::swap;}
+\DoxyCodeLine{350     swap(val, other.val);}
+\DoxyCodeLine{351 \}}
+\DoxyCodeLine{352 \textcolor{keyword}{template} <\textcolor{keyword}{class}... T>}
+\DoxyCodeLine{353 \textcolor{keywordtype}{void} quantity<T...>::swap(vquantity \&other)}
+\DoxyCodeLine{354 \{}
+\DoxyCodeLine{355     swap(\textcolor{keyword}{dynamic\_cast<}quantity<T...\textcolor{keyword}{>} \&>(other));}
+\DoxyCodeLine{356 \}}
+\DoxyCodeLine{357 }
+\DoxyCodeLine{358 \textcolor{keyword}{template} <\textcolor{keyword}{class}>}
+\DoxyCodeLine{359 \textcolor{keyword}{struct }\mbox{\hyperlink{structquantit_1_1is__conc__cgroup__impl}{is\_conc\_cgroup\_impl}} : \textcolor{keyword}{public} std::false\_type}
+\DoxyCodeLine{360 \{}
+\DoxyCodeLine{361 \};}
+\DoxyCodeLine{362 \textcolor{keyword}{template} <\textcolor{keyword}{class}... S>}
+\DoxyCodeLine{363 \textcolor{keyword}{struct }\mbox{\hyperlink{structquantit_1_1is__conc__cgroup__impl}{is\_conc\_cgroup\_impl}}<\mbox{\hyperlink{classquantit_1_1quantity}{quantity}}<S...>> : \textcolor{keyword}{public} \mbox{\hyperlink{structquantit_1_1and__}{conserved::all\_conserved\_QuantiT}}<S...>}
+\DoxyCodeLine{364 \{}
+\DoxyCodeLine{365 \};}
+\DoxyCodeLine{366 }
+\DoxyCodeLine{367 \textcolor{keyword}{template} <\textcolor{keyword}{class}... Groups>}
+\DoxyCodeLine{368 \textcolor{keyword}{inline} \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \&\mbox{\hyperlink{classquantit_1_1quantity}{quantity<Groups...>::operator*=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \&other)}
+\DoxyCodeLine{369 \{}
+\DoxyCodeLine{370     \textcolor{keywordflow}{return} op(other);}
+\DoxyCodeLine{371 \}}
+\DoxyCodeLine{372 }
+\DoxyCodeLine{373 \textcolor{keyword}{template} <\textcolor{keyword}{class}... Groups>}
+\DoxyCodeLine{374 \textcolor{keyword}{inline} vquantity \&quantity<Groups...>::operator+=(\textcolor{keyword}{const} vquantity \&other)}
+\DoxyCodeLine{375 \{}
+\DoxyCodeLine{376     \textcolor{keywordflow}{return} op(other);}
+\DoxyCodeLine{377 \}}
+\DoxyCodeLine{378 }
+\DoxyCodeLine{379 \} \textcolor{comment}{// namespace quantit}}
+\DoxyCodeLine{380 }
+\DoxyCodeLine{381 \textcolor{keyword}{template} <\textcolor{keyword}{class}... Groups>}
+\DoxyCodeLine{382 \textcolor{keyword}{struct }fmt::formatter<quantit::quantity<Groups...>>}
+\DoxyCodeLine{383 \{}
+\DoxyCodeLine{384     \textcolor{keyword}{constexpr} \textcolor{keyword}{auto} parse(format\_parse\_context \&ctx)}
+\DoxyCodeLine{385     \{}
+\DoxyCodeLine{386         \textcolor{keyword}{auto} it = ctx.begin(), end = ctx.end();}
+\DoxyCodeLine{387         \textcolor{keywordflow}{if} (it and it != end and *it != \textcolor{charliteral}{'\}'})}
+\DoxyCodeLine{388             \textcolor{keywordflow}{throw} format\_error(\textcolor{stringliteral}{"{}invalid format, no formatting option for quantit::quantity"{}});}
+\DoxyCodeLine{389         \textcolor{comment}{// if (*it != '\}')}}
+\DoxyCodeLine{390         \textcolor{comment}{// \{}}
+\DoxyCodeLine{391         \textcolor{comment}{//  ++it;}}
+\DoxyCodeLine{392         \textcolor{comment}{//  auto first\_pos = it;}}
+\DoxyCodeLine{393         \textcolor{comment}{//  while (it != end \&\& *it != '\}')}}
+\DoxyCodeLine{394         \textcolor{comment}{//  \{}}
+\DoxyCodeLine{395         \textcolor{comment}{//      ++it;}}
+\DoxyCodeLine{396         \textcolor{comment}{//  \}}}
+\DoxyCodeLine{397         \textcolor{comment}{//  auto last\_pos = it -\/ 1;}}
+\DoxyCodeLine{398         \textcolor{comment}{//  uint width = 80;}}
+\DoxyCodeLine{399         \textcolor{comment}{//  if (last\_pos > first\_pos)}}
+\DoxyCodeLine{400         \textcolor{comment}{//  \{}}
+\DoxyCodeLine{401         \textcolor{comment}{//      auto code = std::from\_chars(first\_pos, last\_pos, width);}}
+\DoxyCodeLine{402         \textcolor{comment}{//      if (code.ptr != last\_pos || std::errc::invalid\_argument == code.ec)}}
+\DoxyCodeLine{403         \textcolor{comment}{//          throw format\_error("{}invalid format, no formatting option for quatt::quantity"{});}}
+\DoxyCodeLine{404         \textcolor{comment}{//      else}}
+\DoxyCodeLine{405         \textcolor{comment}{//      \{}}
+\DoxyCodeLine{406         \textcolor{comment}{//          linelenght = width;}}
+\DoxyCodeLine{407         \textcolor{comment}{//      \}}}
+\DoxyCodeLine{408         \textcolor{comment}{//  \}}}
+\DoxyCodeLine{409         \textcolor{comment}{// \}}}
+\DoxyCodeLine{410         \textcolor{keywordflow}{if} (it and *it != \textcolor{charliteral}{'\}'})}
+\DoxyCodeLine{411             \textcolor{keywordflow}{throw} format\_error(\textcolor{stringliteral}{"{}invalid format,closing brace missing"{}});}
+\DoxyCodeLine{412 }
+\DoxyCodeLine{413         \textcolor{comment}{// Return an iterator past the end of the parsed range:}}
+\DoxyCodeLine{414         \textcolor{keywordflow}{return} it;}
+\DoxyCodeLine{415     \}}
+\DoxyCodeLine{416 }
+\DoxyCodeLine{417     \textcolor{keyword}{template} <\textcolor{keyword}{typename} FormatContext>}
+\DoxyCodeLine{418     \textcolor{keyword}{auto} format(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1quantity}{quantit::quantity<Groups...>}} \&qt, FormatContext \&ctx)}
+\DoxyCodeLine{419     \{}
+\DoxyCodeLine{420         \textcolor{keywordflow}{return} format\_to(ctx.out(), \textcolor{stringliteral}{"{}[\{\}]"{}}, fmt::join(qt.val, \textcolor{stringliteral}{"{},"{}}));}
+\DoxyCodeLine{421     \}}
+\DoxyCodeLine{422 \};}
+\DoxyCodeLine{423 }
+\DoxyCodeLine{424 \textcolor{keyword}{template} <>}
+\DoxyCodeLine{425 \textcolor{keyword}{struct }fmt::formatter<quantit::vquantity>}
+\DoxyCodeLine{426 \{}
+\DoxyCodeLine{427     \textcolor{keyword}{constexpr} \textcolor{keyword}{auto} parse(format\_parse\_context \&ctx)}
+\DoxyCodeLine{428     \{}
+\DoxyCodeLine{429         \textcolor{keyword}{auto} it = ctx.begin(), end = ctx.end();}
+\DoxyCodeLine{430         \textcolor{keywordflow}{if} (it and it != end and *it != \textcolor{charliteral}{'\}'})}
+\DoxyCodeLine{431             \textcolor{keywordflow}{throw} format\_error(\textcolor{stringliteral}{"{}invalid format, no formatting option for quantit::quantity"{}});}
+\DoxyCodeLine{432         \textcolor{keywordflow}{if} (it and *it != \textcolor{charliteral}{'\}'})}
+\DoxyCodeLine{433             \textcolor{keywordflow}{throw} format\_error(\textcolor{stringliteral}{"{}invalid format,closing brace missing"{}});}
+\DoxyCodeLine{434 }
+\DoxyCodeLine{435         \textcolor{comment}{// Return an iterator past the end of the parsed range:}}
+\DoxyCodeLine{436         \textcolor{keywordflow}{return} it;}
+\DoxyCodeLine{437     \}}
+\DoxyCodeLine{438 }
+\DoxyCodeLine{439     \textcolor{keyword}{template} <\textcolor{keyword}{class} FormatContext>}
+\DoxyCodeLine{440     \textcolor{keyword}{auto} format(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1vquantity}{quantit::vquantity}} \&qt, FormatContext \&ctx)\textcolor{keyword}{ const}}
+\DoxyCodeLine{441 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{442         \textcolor{keywordflow}{return} qt.format\_to(}
+\DoxyCodeLine{443             ctx); \textcolor{comment}{// right now qt.format\_to is only defined for fmt::format\_context. Should work for any output stream.}}
+\DoxyCodeLine{444     \}}
+\DoxyCodeLine{445 \};}
+\DoxyCodeLine{446 }
+\DoxyCodeLine{447 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* F2547C1C\_9177\_4373\_9C66\_8D4C8621C7CC */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

@@ -1,31 +1,32 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
   <compounddef id="structquantit_1_1conserved_1_1constexprequal__test_3_01quantit_1_1vquantity_01_4" kind="struct" language="C++" prot="public">
     <compoundname>quantit::conserved::constexprequal_test&lt; quantit::vquantity &gt;</compoundname>
     <templateparamlist>
     </templateparamlist>
       <sectiondef kind="public-static-func">
-      <memberdef kind="function" id="structquantit_1_1conserved_1_1constexprequal__test_3_01quantit_1_1vquantity_01_4_1a77ab998555823fa7e9a0669ce18a8b36" prot="public" static="yes" constexpr="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
-        <type>constexpr static bool</type>
-        <definition>constexpr static bool quantit::conserved::constexprequal_test&lt; quantit::vquantity &gt;::call</definition>
+      <memberdef kind="function" id="structquantit_1_1conserved_1_1constexprequal__test_3_01quantit_1_1vquantity_01_4_1a05984722a4c9eed2b6be0df71862b451" prot="public" static="yes" constexpr="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>constexpr bool</type>
+        <definition>static constexpr bool quantit::conserved::constexprequal_test&lt; quantit::vquantity &gt;::call</definition>
         <argsstring>()</argsstring>
         <name>call</name>
+        <qualifiedname>quantit::conserved::constexprequal_test&lt; quantit::vquantity &gt;::call</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/quantity_utils.h" line="99" column="23" bodyfile="/home/alex/project/quantt/include/Conserved/quantity_utils.h" bodystart="99" bodyend="99"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity_utils.h" line="99" column="23" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity_utils.h" bodystart="99" bodyend="99"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/alex/project/quantt/include/Conserved/quantity_utils.h" line="96" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/quantity_utils.h" bodystart="97" bodyend="100"/>
+    <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity_utils.h" line="96" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity_utils.h" bodystart="97" bodyend="100"/>
     <listofallmembers>
-      <member refid="structquantit_1_1conserved_1_1constexprequal__test_3_01quantit_1_1vquantity_01_4_1a77ab998555823fa7e9a0669ce18a8b36" prot="public" virt="non-virtual"><scope>quantit::conserved::constexprequal_test&lt; quantit::vquantity &gt;</scope><name>call</name></member>
+      <member refid="structquantit_1_1conserved_1_1constexprequal__test_3_01quantit_1_1vquantity_01_4_1a05984722a4c9eed2b6be0df71862b451" prot="public" virt="non-virtual"><scope>quantit::conserved::constexprequal_test&lt; quantit::vquantity &gt;</scope><name>call</name></member>
     </listofallmembers>
   </compounddef>
 </doxygen>

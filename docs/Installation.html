@@ -1,73 +1,34 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
-  
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
   <title>Installation &mdash; QuantiT 0.1 documentation</title>
-  
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-
-  
-  
-
-  
-  
-
-  
-
-  
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
-    
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-
-    
+    <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="List of members of pyQuantit" href="Pythoninterface.html" />
+    <link rel="next" title="Roadmap to version 1.0" href="Roadmap1.html" />
     <link rel="prev" title="Welcome to QuantiT’s documentation!" href="index.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
-
-          
             <a href="index.html" class="icon icon-home"> QuantiT
-          
-
-          
           </a>
-
-          
-            
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -75,102 +36,51 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#on-compute-canada-hardware">On compute canada hardware</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="Roadmap1.html">Roadmap to version 1.0</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Pythoninterface.html">List of members of pyQuantit</a></li>
-<li class="toctree-l1"><a class="reference internal" href="CPPinterface.html">Everything Doxygen has indexed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CPPinterface.html">Stupid list of everything Doxygen has indexed</a></li>
 <li class="toctree-l1"><a class="reference external" href="../doxygen/html/index.html#http://">Doxygen</a></li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">QuantiT</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-        
       <li>Installation</li>
-    
-    
       <li class="wy-breadcrumbs-aside">
-        
-          
             <a href="_sources/Installation.rst.txt" rel="nofollow"> View page source</a>
-          
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
-  <div class="section" id="installation">
-<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+             
+  <section id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline"></a></h1>
 <p>Installation of QuantiT itself should be fairly easy. What you need for it is a compiler and C++ standard library with support for C++17, such as G++-9 or more recent.
 Assuming you have torch correctly installed with its dependencies (or you’re on OSX), you can ‘pip install &lt;link to a release&gt;’ or ‘pip install git+&lt;link to the git repo&gt;’.
 The first option will install a precompiled version of QuantiT that you selected from the release ressources, the second option will compile from the source. If your platform isn’t among the precompiled choice, you have to compile from source using the second option.</p>
 <p>If you want to use GPU computation you must make sure <a class="reference external" href="https://developer.nvidia.com/cuda-downloads">Nvidia’s CUDA</a> or <a class="reference external" href="https://rocmdocs.amd.com/en/latest/Installation_Guide/Installation-Guide.html">AMD ROCm</a> is installed on your computer and that <a class="reference external" href="https://pytorch.org/get-started/locally/">torch</a> is correctly installed for the available GPU backend.</p>
-<div class="section" id="on-compute-canada-hardware">
-<h2>On compute canada hardware<a class="headerlink" href="#on-compute-canada-hardware" title="Permalink to this headline">¶</a></h2>
+<section id="on-compute-canada-hardware">
+<h2>On compute canada hardware<a class="headerlink" href="#on-compute-canada-hardware" title="Permalink to this headline"></a></h2>
 <p>The following procedure has been tested on the Beluga Supercomputer.</p>
 <ul class="simple">
 <li><p>add python 3.7+.</p></li>
@@ -183,55 +93,38 @@ The first option will install a precompiled version of QuantiT that you selected
 <li><p>install quantit in your userspace (pip install –user git+https://github.com/AlexandreFoley/QuantiT)</p></li>
 </ul>
 <p>Note: if you use vscode to connect to the supercomputer, you might have to erase your vscode setting (~/.vscode-server) anytime you change your default module list in order for it to be loaded when you connect through vscode. VScode seem to reload whatever the default module list was at the first connetion. This is possibly related to .bashrc not being loaded by the vs-code server.</p>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>
-           
           </div>
-          <footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="Pythoninterface.html" class="btn btn-neutral float-right" title="List of members of pyQuantit" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="index.html" class="btn btn-neutral float-left" title="Welcome to QuantiT’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Roadmap1.html" class="btn btn-neutral float-right" title="Roadmap to version 1.0" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &#169; Copyright 2021, Alexandre Foley.
-
-    </p>
+    <p>&#169; Copyright 2021, Alexandre Foley.</p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>

@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
   <compounddef id="classquantit_1_1any__quantity__vector" kind="class" language="C++" prot="public" final="yes">
     <compoundname>quantit::any_quantity_vector</compoundname>
       <sectiondef kind="public-type">
@@ -8,143 +8,154 @@
         <definition>using quantit::any_quantity_vector::iterator =  vquantity_vector::iterator</definition>
         <argsstring></argsstring>
         <name>iterator</name>
+        <qualifiedname>quantit::any_quantity_vector::iterator</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" line="31" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" bodystart="31" bodyend="-1"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" line="31" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" bodystart="31" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="classquantit_1_1any__quantity__vector_1afbd989bbb0727d7e0ac30354795f31e9" prot="public" static="no">
         <type><ref refid="structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator" kindref="compound">vquantity_vector::const_iterator</ref></type>
         <definition>using quantit::any_quantity_vector::const_iterator =  vquantity_vector::const_iterator</definition>
         <argsstring></argsstring>
         <name>const_iterator</name>
+        <qualifiedname>quantit::any_quantity_vector::const_iterator</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" line="32" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" bodystart="32" bodyend="-1"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" line="32" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" bodystart="32" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="classquantit_1_1any__quantity__vector_1a3a91fe56bd692894a9ed8ad6ad982268" prot="public" static="no">
         <type>std::reverse_iterator&lt; <ref refid="structquantit_1_1vQuantiT__iterator_1_1cgroup__iterator" kindref="compound">iterator</ref> &gt;</type>
         <definition>using quantit::any_quantity_vector::reverse_iterator =  std::reverse_iterator&lt;iterator&gt;</definition>
         <argsstring></argsstring>
         <name>reverse_iterator</name>
+        <qualifiedname>quantit::any_quantity_vector::reverse_iterator</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" line="33" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" bodystart="33" bodyend="-1"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" line="33" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" bodystart="33" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="classquantit_1_1any__quantity__vector_1af87b9ad435de3c1cbf897f73066284da" prot="public" static="no">
         <type>std::reverse_iterator&lt; <ref refid="structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator" kindref="compound">const_iterator</ref> &gt;</type>
         <definition>using quantit::any_quantity_vector::const_reverse_iterator =  std::reverse_iterator&lt;const_iterator&gt;</definition>
         <argsstring></argsstring>
         <name>const_reverse_iterator</name>
+        <qualifiedname>quantit::any_quantity_vector::const_reverse_iterator</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" line="34" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" bodystart="34" bodyend="-1"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" line="34" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" bodystart="34" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="classquantit_1_1any__quantity__vector_1a6a6ee2f0dc7602aa6461ca7820a80a4d" prot="public" static="no">
         <type><ref refid="classquantit_1_1any__quantity" kindref="compound">any_quantity</ref></type>
         <definition>using quantit::any_quantity_vector::value_type =  any_quantity</definition>
         <argsstring></argsstring>
         <name>value_type</name>
+        <qualifiedname>quantit::any_quantity_vector::value_type</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" line="35" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" bodystart="35" bodyend="-1"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" line="35" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" bodystart="35" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="classquantit_1_1any__quantity__vector_1a9492a478ab8abde72389a46709b9d48a" prot="public" static="no">
         <type>size_t</type>
         <definition>using quantit::any_quantity_vector::size_type =  size_t</definition>
         <argsstring></argsstring>
         <name>size_type</name>
+        <qualifiedname>quantit::any_quantity_vector::size_type</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" line="36" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" bodystart="36" bodyend="-1"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" line="36" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" bodystart="36" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="classquantit_1_1any__quantity__vector_1a5f9a5a3fc413ae3141593c1683955b1d" prot="public" static="no">
         <type>std::ptrdiff_t</type>
         <definition>using quantit::any_quantity_vector::difference_type =  std::ptrdiff_t</definition>
         <argsstring></argsstring>
         <name>difference_type</name>
+        <qualifiedname>quantit::any_quantity_vector::difference_type</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" line="37" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" bodystart="37" bodyend="-1"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" line="37" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" bodystart="37" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="classquantit_1_1any__quantity__vector_1a3480810c42cdc81eb7b45a2b745a2368" prot="public" static="no">
         <type><ref refid="classquantit_1_1vquantity" kindref="compound">any_quantity_ref</ref></type>
         <definition>using quantit::any_quantity_vector::reference =  any_quantity_ref</definition>
         <argsstring></argsstring>
         <name>reference</name>
+        <qualifiedname>quantit::any_quantity_vector::reference</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" line="38" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" bodystart="38" bodyend="-1"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" line="38" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" bodystart="38" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="classquantit_1_1any__quantity__vector_1aa6eb979ee84c4702d822af941e9ff113" prot="public" static="no">
         <type><ref refid="classquantit_1_1vquantity" kindref="compound">any_quantity_cref</ref></type>
         <definition>using quantit::any_quantity_vector::const_reference =  any_quantity_cref</definition>
         <argsstring></argsstring>
         <name>const_reference</name>
+        <qualifiedname>quantit::any_quantity_vector::const_reference</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" line="39" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" bodystart="39" bodyend="-1"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" line="39" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" bodystart="39" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="classquantit_1_1any__quantity__vector_1a396212f1259799f83de836777c01f812" prot="public" static="no">
         <type>typename iterator::pointer</type>
         <definition>using quantit::any_quantity_vector::pointer =  typename iterator::pointer</definition>
         <argsstring></argsstring>
         <name>pointer</name>
+        <qualifiedname>quantit::any_quantity_vector::pointer</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" line="40" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" bodystart="40" bodyend="-1"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" line="40" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" bodystart="40" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="classquantit_1_1any__quantity__vector_1a3205c011956b0e086468c4c42875a3f2" prot="public" static="no">
         <type>typename const_iterator::pointer</type>
         <definition>using quantit::any_quantity_vector::const_pointer =  typename const_iterator::pointer</definition>
         <argsstring></argsstring>
         <name>const_pointer</name>
+        <qualifiedname>quantit::any_quantity_vector::const_pointer</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" line="41" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" bodystart="41" bodyend="-1"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" line="41" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" bodystart="41" bodyend="-1"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="private-attrib">
@@ -153,13 +164,14 @@
         <definition>std::unique_ptr&lt;vquantity_vector&gt; quantit::any_quantity_vector::ptr</definition>
         <argsstring></argsstring>
         <name>ptr</name>
+        <qualifiedname>quantit::any_quantity_vector::ptr</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" line="28" column="17" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" bodystart="28" bodyend="-1"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" line="28" column="17" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" bodystart="28" bodyend="-1"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="public-func">
@@ -168,6 +180,7 @@
         <definition>quantit::any_quantity_vector::any_quantity_vector</definition>
         <argsstring>(std::unique_ptr&lt; vquantity_vector &gt; &amp;&amp;_ptr)</argsstring>
         <name>any_quantity_vector</name>
+        <qualifiedname>quantit::any_quantity_vector::any_quantity_vector</qualifiedname>
         <param>
           <type>std::unique_ptr&lt; <ref refid="classquantit_1_1vquantity__vector" kindref="compound">vquantity_vector</ref> &gt; &amp;&amp;</type>
           <declname>_ptr</declname>
@@ -178,26 +191,28 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" line="43" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" bodystart="43" bodyend="43"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" line="43" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" bodystart="43" bodyend="43"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity__vector_1a54358c13d7e3405d89399f770cb108de" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type></type>
         <definition>quantit::any_quantity_vector::any_quantity_vector</definition>
         <argsstring>()=default</argsstring>
         <name>any_quantity_vector</name>
+        <qualifiedname>quantit::any_quantity_vector::any_quantity_vector</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" line="44" column="1"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" line="44" column="1"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity__vector_1a076b6e18464ae47e176c649ecbe5e702" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type></type>
         <definition>quantit::any_quantity_vector::any_quantity_vector</definition>
         <argsstring>(const any_quantity_vector &amp;other)</argsstring>
         <name>any_quantity_vector</name>
+        <qualifiedname>quantit::any_quantity_vector::any_quantity_vector</qualifiedname>
         <param>
           <type>const <ref refid="classquantit_1_1any__quantity__vector" kindref="compound">any_quantity_vector</ref> &amp;</type>
           <declname>other</declname>
@@ -208,13 +223,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" line="45" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" bodystart="45" bodyend="45"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" line="45" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" bodystart="45" bodyend="45"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity__vector_1a6b8fe6e4da308bb0bc2aec6a2f38ae2e" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type></type>
         <definition>quantit::any_quantity_vector::any_quantity_vector</definition>
         <argsstring>(any_quantity_vector &amp;&amp;other)</argsstring>
         <name>any_quantity_vector</name>
+        <qualifiedname>quantit::any_quantity_vector::any_quantity_vector</qualifiedname>
         <param>
           <type><ref refid="classquantit_1_1any__quantity__vector" kindref="compound">any_quantity_vector</ref> &amp;&amp;</type>
           <declname>other</declname>
@@ -225,13 +241,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" line="46" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" bodystart="46" bodyend="46"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" line="46" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" bodystart="46" bodyend="46"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity__vector_1a09619cffe947566156b700be288a1eb1" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type></type>
         <definition>quantit::any_quantity_vector::any_quantity_vector</definition>
         <argsstring>(size_t cnt, any_quantity_cref val)</argsstring>
         <name>any_quantity_vector</name>
+        <qualifiedname>quantit::any_quantity_vector::any_quantity_vector</qualifiedname>
         <param>
           <type>size_t</type>
           <declname>cnt</declname>
@@ -246,13 +263,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" line="47" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" bodystart="47" bodyend="47"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" line="47" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" bodystart="47" bodyend="47"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity__vector_1a8eedb671b67536fc16f29f6ad3fadb9f" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type></type>
         <definition>quantit::any_quantity_vector::any_quantity_vector</definition>
         <argsstring>(std::initializer_list&lt; any_quantity &gt; list)</argsstring>
         <name>any_quantity_vector</name>
+        <qualifiedname>quantit::any_quantity_vector::any_quantity_vector</qualifiedname>
         <param>
           <type>std::initializer_list&lt; <ref refid="classquantit_1_1any__quantity" kindref="compound">any_quantity</ref> &gt;</type>
           <declname>list</declname>
@@ -274,13 +292,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" line="52" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" bodystart="52" bodyend="59"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" line="52" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" bodystart="52" bodyend="59"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity__vector_1a21f2aa95074a5977b0217629b101154b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type></type>
         <definition>quantit::any_quantity_vector::any_quantity_vector</definition>
         <argsstring>(const vquantity_vector &amp;other)</argsstring>
         <name>any_quantity_vector</name>
+        <qualifiedname>quantit::any_quantity_vector::any_quantity_vector</qualifiedname>
         <param>
           <type>const <ref refid="classquantit_1_1vquantity__vector" kindref="compound">vquantity_vector</ref> &amp;</type>
           <declname>other</declname>
@@ -291,7 +310,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" line="60" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" bodystart="60" bodyend="60"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" line="60" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" bodystart="60" bodyend="60"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity__vector_1a311b83311e612eb6fc0f48c76f7b4c9c" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <templateparamlist>
@@ -307,6 +326,7 @@
         <definition>quantit::any_quantity_vector::any_quantity_vector</definition>
         <argsstring>(std::initializer_list&lt; Conc_cgroup &gt; list)</argsstring>
         <name>any_quantity_vector</name>
+        <qualifiedname>quantit::any_quantity_vector::any_quantity_vector</qualifiedname>
         <param>
           <type>std::initializer_list&lt; Conc_cgroup &gt;</type>
           <declname>list</declname>
@@ -317,7 +337,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" line="62" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" bodystart="62" bodyend="62"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" line="62" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" bodystart="62" bodyend="62"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity__vector_1af993de5552f06ad7a70c9598d0188f25" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <templateparamlist>
@@ -336,6 +356,7 @@
         <definition>quantit::any_quantity_vector::any_quantity_vector</definition>
         <argsstring>(const quantity_vector&lt; Conc_cgroup, Allocator &gt; &amp;other)</argsstring>
         <name>any_quantity_vector</name>
+        <qualifiedname>quantit::any_quantity_vector::any_quantity_vector</qualifiedname>
         <param>
           <type>const <ref refid="classquantit_1_1quantity__vector" kindref="compound">quantity_vector</ref>&lt; Conc_cgroup, Allocator &gt; &amp;</type>
           <declname>other</declname>
@@ -346,7 +367,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" line="64" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" bodystart="64" bodyend="64"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" line="64" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" bodystart="64" bodyend="64"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity__vector_1ac84348030938294800fc22f5dddb96fa" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <templateparamlist>
@@ -365,6 +386,7 @@
         <definition>quantit::any_quantity_vector::any_quantity_vector</definition>
         <argsstring>(quantity_vector&lt; Conc_cgroup, Allocator &gt; &amp;&amp;other)</argsstring>
         <name>any_quantity_vector</name>
+        <qualifiedname>quantit::any_quantity_vector::any_quantity_vector</qualifiedname>
         <param>
           <type><ref refid="classquantit_1_1quantity__vector" kindref="compound">quantity_vector</ref>&lt; Conc_cgroup, Allocator &gt; &amp;&amp;</type>
           <declname>other</declname>
@@ -375,13 +397,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" line="66" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" bodystart="66" bodyend="69"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" line="66" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" bodystart="66" bodyend="69"/>
       </memberdef>
-      <memberdef kind="function" id="classquantit_1_1any__quantity__vector_1af9a0e31bcbf756bd98be52849cc8fd93" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+      <memberdef kind="function" id="classquantit_1_1any__quantity__vector_1aae0c25bf47caf9734cb03fcf6d5919a7" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type><ref refid="classquantit_1_1any__quantity__vector" kindref="compound">any_quantity_vector</ref> &amp;</type>
-        <definition>any_quantity_vector&amp; quantit::any_quantity_vector::operator=</definition>
+        <definition>any_quantity_vector &amp; quantit::any_quantity_vector::operator=</definition>
         <argsstring>(any_quantity_vector other)</argsstring>
         <name>operator=</name>
+        <qualifiedname>quantit::any_quantity_vector::operator=</qualifiedname>
         <param>
           <type><ref refid="classquantit_1_1any__quantity__vector" kindref="compound">any_quantity_vector</ref></type>
           <declname>other</declname>
@@ -392,13 +415,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" line="71" column="21" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" bodystart="71" bodyend="75"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" line="71" column="21" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" bodystart="71" bodyend="75"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity__vector_1a0770591ea9c0c321a60d89808a181736" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>bool</type>
         <definition>bool quantit::any_quantity_vector::operator==</definition>
         <argsstring>(const any_quantity_vector &amp;other) const</argsstring>
         <name>operator==</name>
+        <qualifiedname>quantit::any_quantity_vector::operator==</qualifiedname>
         <param>
           <type>const <ref refid="classquantit_1_1any__quantity__vector" kindref="compound">any_quantity_vector</ref> &amp;</type>
           <declname>other</declname>
@@ -409,13 +433,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" line="77" column="6" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" bodystart="77" bodyend="80"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" line="77" column="6" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" bodystart="77" bodyend="80"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity__vector_1ac524a7e4ebbb6771f5e846735993d8f3" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>bool</type>
         <definition>bool quantit::any_quantity_vector::operator!=</definition>
         <argsstring>(const any_quantity_vector &amp;other) const</argsstring>
         <name>operator!=</name>
+        <qualifiedname>quantit::any_quantity_vector::operator!=</qualifiedname>
         <param>
           <type>const <ref refid="classquantit_1_1any__quantity__vector" kindref="compound">any_quantity_vector</ref> &amp;</type>
           <declname>other</declname>
@@ -426,13 +451,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" line="81" column="6" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" bodystart="81" bodyend="84"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" line="81" column="6" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" bodystart="81" bodyend="84"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity__vector_1a74adf3e56b5b02250549733a22175881" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type><ref refid="classquantit_1_1vquantity" kindref="compound">reference</ref></type>
         <definition>reference quantit::any_quantity_vector::operator[]</definition>
         <argsstring>(size_t n)</argsstring>
         <name>operator[]</name>
+        <qualifiedname>quantit::any_quantity_vector::operator[]</qualifiedname>
         <param>
           <type>size_t</type>
           <declname>n</declname>
@@ -443,13 +469,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" line="86" column="11" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" bodystart="86" bodyend="89"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" line="86" column="11" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" bodystart="86" bodyend="89"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity__vector_1a782c48550a94866d7fa44b321b6af1b4" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type><ref refid="classquantit_1_1vquantity" kindref="compound">const_reference</ref></type>
         <definition>const_reference quantit::any_quantity_vector::operator[]</definition>
         <argsstring>(size_t n) const</argsstring>
         <name>operator[]</name>
+        <qualifiedname>quantit::any_quantity_vector::operator[]</qualifiedname>
         <param>
           <type>size_t</type>
           <declname>n</declname>
@@ -460,13 +487,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" line="90" column="17" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" bodystart="90" bodyend="94"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" line="90" column="17" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" bodystart="90" bodyend="94"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity__vector_1a4de15f75755aa9d044f3405ad4cbe3eb" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type><ref refid="classquantit_1_1vquantity" kindref="compound">reference</ref></type>
         <definition>reference quantit::any_quantity_vector::at</definition>
         <argsstring>(size_t n)</argsstring>
         <name>at</name>
+        <qualifiedname>quantit::any_quantity_vector::at</qualifiedname>
         <param>
           <type>size_t</type>
           <declname>n</declname>
@@ -477,13 +505,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" line="95" column="11" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" bodystart="95" bodyend="99"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" line="95" column="11" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" bodystart="95" bodyend="99"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity__vector_1a61ba90c9e58522d14cc5980c2748bddf" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type><ref refid="classquantit_1_1vquantity" kindref="compound">const_reference</ref></type>
         <definition>const_reference quantit::any_quantity_vector::at</definition>
         <argsstring>(size_t n) const</argsstring>
         <name>at</name>
+        <qualifiedname>quantit::any_quantity_vector::at</qualifiedname>
         <param>
           <type>size_t</type>
           <declname>n</declname>
@@ -494,130 +523,140 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" line="100" column="17" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" bodystart="100" bodyend="104"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" line="100" column="17" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" bodystart="100" bodyend="104"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity__vector_1a32129f14f53b6a8e661f376a685a55e2" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type><ref refid="classquantit_1_1vquantity" kindref="compound">reference</ref></type>
         <definition>reference quantit::any_quantity_vector::front</definition>
         <argsstring>()</argsstring>
         <name>front</name>
+        <qualifiedname>quantit::any_quantity_vector::front</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" line="106" column="11" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" bodystart="106" bodyend="110"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" line="106" column="11" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" bodystart="106" bodyend="110"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity__vector_1a4950eaee4a7a79f532bd690b181e5e60" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type><ref refid="classquantit_1_1vquantity" kindref="compound">const_reference</ref></type>
         <definition>const_reference quantit::any_quantity_vector::front</definition>
         <argsstring>() const</argsstring>
         <name>front</name>
+        <qualifiedname>quantit::any_quantity_vector::front</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" line="111" column="17" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" bodystart="111" bodyend="116"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" line="111" column="17" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" bodystart="111" bodyend="116"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity__vector_1a342587eddc1125134b5edbd8a6544fef" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type><ref refid="classquantit_1_1vquantity" kindref="compound">reference</ref></type>
         <definition>reference quantit::any_quantity_vector::back</definition>
         <argsstring>()</argsstring>
         <name>back</name>
+        <qualifiedname>quantit::any_quantity_vector::back</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" line="117" column="11" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" bodystart="117" bodyend="121"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" line="117" column="11" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" bodystart="117" bodyend="121"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity__vector_1af0f5483abe2dff11b21c2f6222666fe5" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type><ref refid="classquantit_1_1vquantity" kindref="compound">const_reference</ref></type>
         <definition>const_reference quantit::any_quantity_vector::back</definition>
         <argsstring>() const</argsstring>
         <name>back</name>
+        <qualifiedname>quantit::any_quantity_vector::back</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" line="122" column="17" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" bodystart="122" bodyend="126"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" line="122" column="17" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" bodystart="122" bodyend="126"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity__vector_1aeb10f7e4acbdf6fdda8172e342a87c19" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>pointer</type>
         <definition>pointer quantit::any_quantity_vector::data</definition>
         <argsstring>()</argsstring>
         <name>data</name>
+        <qualifiedname>quantit::any_quantity_vector::data</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" line="127" column="9" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" bodystart="127" bodyend="131"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" line="127" column="9" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" bodystart="127" bodyend="131"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity__vector_1a973c2e5b2c3c32bb8d0f150253a45070" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>const_pointer</type>
         <definition>const_pointer quantit::any_quantity_vector::data</definition>
         <argsstring>() const</argsstring>
         <name>data</name>
+        <qualifiedname>quantit::any_quantity_vector::data</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" line="132" column="15" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" bodystart="132" bodyend="136"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" line="132" column="15" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" bodystart="132" bodyend="136"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity__vector_1a2277da6678d0a942377f2ae17b76b61d" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>bool</type>
         <definition>bool quantit::any_quantity_vector::empty</definition>
         <argsstring>() const</argsstring>
         <name>empty</name>
+        <qualifiedname>quantit::any_quantity_vector::empty</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" line="138" column="7" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" bodystart="138" bodyend="141"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" line="138" column="7" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" bodystart="138" bodyend="141"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity__vector_1a2b836564ee308a343bfbb9f9e02d48f0" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>size_t</type>
         <definition>size_t quantit::any_quantity_vector::size</definition>
         <argsstring>() const</argsstring>
         <name>size</name>
+        <qualifiedname>quantit::any_quantity_vector::size</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" line="142" column="9" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" bodystart="142" bodyend="145"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" line="142" column="9" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" bodystart="142" bodyend="145"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity__vector_1a6679c4fc52e9304e027b68fcffd21b27" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>size_t</type>
         <definition>size_t quantit::any_quantity_vector::max_size</definition>
         <argsstring>() const</argsstring>
         <name>max_size</name>
+        <qualifiedname>quantit::any_quantity_vector::max_size</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" line="146" column="9" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" bodystart="146" bodyend="149"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" line="146" column="9" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" bodystart="146" bodyend="149"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity__vector_1ae0d0d662ea570094f90ffbf4ebbb6ebb" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
         <definition>void quantit::any_quantity_vector::reserve</definition>
         <argsstring>(size_t n)</argsstring>
         <name>reserve</name>
+        <qualifiedname>quantit::any_quantity_vector::reserve</qualifiedname>
         <param>
           <type>size_t</type>
           <declname>n</declname>
@@ -628,52 +667,56 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" line="150" column="6" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" bodystart="150" bodyend="153"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" line="150" column="6" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" bodystart="150" bodyend="153"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity__vector_1aa9324cfd9e59afe6aee96ec9630ff038" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>size_t</type>
         <definition>size_t quantit::any_quantity_vector::capacity</definition>
         <argsstring>() const</argsstring>
         <name>capacity</name>
+        <qualifiedname>quantit::any_quantity_vector::capacity</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" line="154" column="9" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" bodystart="154" bodyend="157"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" line="154" column="9" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" bodystart="154" bodyend="157"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity__vector_1acb175b9c57130328b871848b0b6584cc" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
         <definition>void quantit::any_quantity_vector::shrink_to_fit</definition>
         <argsstring>()</argsstring>
         <name>shrink_to_fit</name>
+        <qualifiedname>quantit::any_quantity_vector::shrink_to_fit</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" line="158" column="6" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" bodystart="158" bodyend="162"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" line="158" column="6" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" bodystart="158" bodyend="162"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity__vector_1a6f86bdb532641c999506f938a0e0ed92" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
         <definition>void quantit::any_quantity_vector::clear</definition>
         <argsstring>()</argsstring>
         <name>clear</name>
+        <qualifiedname>quantit::any_quantity_vector::clear</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" line="164" column="6" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" bodystart="164" bodyend="168"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" line="164" column="6" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" bodystart="164" bodyend="168"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity__vector_1a6b224cb5f79338bd1248036478b3b37a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type><ref refid="structquantit_1_1vQuantiT__iterator_1_1cgroup__iterator" kindref="compound">iterator</ref></type>
         <definition>iterator quantit::any_quantity_vector::insert</definition>
         <argsstring>(const_iterator pos, const_reference Val)</argsstring>
         <name>insert</name>
+        <qualifiedname>quantit::any_quantity_vector::insert</qualifiedname>
         <param>
           <type><ref refid="structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator" kindref="compound">const_iterator</ref></type>
           <declname>pos</declname>
@@ -688,13 +731,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" line="169" column="10" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" bodystart="169" bodyend="173"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" line="169" column="10" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" bodystart="169" bodyend="173"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity__vector_1a73df2f3f55756d04997c688092970fe3" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type><ref refid="structquantit_1_1vQuantiT__iterator_1_1cgroup__iterator" kindref="compound">iterator</ref></type>
         <definition>iterator quantit::any_quantity_vector::insert</definition>
         <argsstring>(const_iterator pos, size_t count, const_reference Val)</argsstring>
         <name>insert</name>
+        <qualifiedname>quantit::any_quantity_vector::insert</qualifiedname>
         <param>
           <type><ref refid="structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator" kindref="compound">const_iterator</ref></type>
           <declname>pos</declname>
@@ -713,13 +757,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" line="174" column="10" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" bodystart="174" bodyend="178"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" line="174" column="10" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" bodystart="174" bodyend="178"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity__vector_1a18cf17e49aaa9cc739efde6d391b2811" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type><ref refid="structquantit_1_1vQuantiT__iterator_1_1cgroup__iterator" kindref="compound">iterator</ref></type>
         <definition>iterator quantit::any_quantity_vector::insert</definition>
         <argsstring>(const_iterator pos, const_iterator first, const_iterator last)</argsstring>
         <name>insert</name>
+        <qualifiedname>quantit::any_quantity_vector::insert</qualifiedname>
         <param>
           <type><ref refid="structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator" kindref="compound">const_iterator</ref></type>
           <declname>pos</declname>
@@ -738,13 +783,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" line="179" column="10" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" bodystart="179" bodyend="183"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" line="179" column="10" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" bodystart="179" bodyend="183"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity__vector_1a35f16b99d25a0edbab7007e429100b2e" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type><ref refid="structquantit_1_1vQuantiT__iterator_1_1cgroup__iterator" kindref="compound">iterator</ref></type>
         <definition>iterator quantit::any_quantity_vector::insert</definition>
         <argsstring>(const_iterator pos, const_reverse_iterator first, const_reverse_iterator last)</argsstring>
         <name>insert</name>
+        <qualifiedname>quantit::any_quantity_vector::insert</qualifiedname>
         <param>
           <type><ref refid="structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator" kindref="compound">const_iterator</ref></type>
           <declname>pos</declname>
@@ -763,13 +809,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" line="184" column="10" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" bodystart="184" bodyend="188"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" line="184" column="10" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" bodystart="184" bodyend="188"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity__vector_1af8100b11c5c132c28482d14b0a6435fb" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type><ref refid="structquantit_1_1vQuantiT__iterator_1_1cgroup__iterator" kindref="compound">iterator</ref></type>
         <definition>iterator quantit::any_quantity_vector::erase</definition>
         <argsstring>(const_iterator pos)</argsstring>
         <name>erase</name>
+        <qualifiedname>quantit::any_quantity_vector::erase</qualifiedname>
         <param>
           <type><ref refid="structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator" kindref="compound">const_iterator</ref></type>
           <declname>pos</declname>
@@ -780,13 +827,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" line="189" column="10" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" bodystart="189" bodyend="193"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" line="189" column="10" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" bodystart="189" bodyend="193"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity__vector_1a785c7867b5c9d4f3625eb0b868d2e133" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type><ref refid="structquantit_1_1vQuantiT__iterator_1_1cgroup__iterator" kindref="compound">iterator</ref></type>
         <definition>iterator quantit::any_quantity_vector::erase</definition>
         <argsstring>(const_iterator first, const_iterator last)</argsstring>
         <name>erase</name>
+        <qualifiedname>quantit::any_quantity_vector::erase</qualifiedname>
         <param>
           <type><ref refid="structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator" kindref="compound">const_iterator</ref></type>
           <declname>first</declname>
@@ -801,13 +849,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" line="194" column="10" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" bodystart="194" bodyend="198"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" line="194" column="10" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" bodystart="194" bodyend="198"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity__vector_1ab8a9220c7a16722a0bc8562b98f6b2fb" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
         <definition>void quantit::any_quantity_vector::push_back</definition>
         <argsstring>(const_reference value)</argsstring>
         <name>push_back</name>
+        <qualifiedname>quantit::any_quantity_vector::push_back</qualifiedname>
         <param>
           <type><ref refid="classquantit_1_1vquantity" kindref="compound">const_reference</ref></type>
           <declname>value</declname>
@@ -818,26 +867,28 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" line="199" column="6" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" bodystart="199" bodyend="206"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" line="199" column="6" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" bodystart="199" bodyend="206"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity__vector_1a31b9628956187066be2c6a146530a390" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
         <definition>void quantit::any_quantity_vector::pop_back</definition>
         <argsstring>()</argsstring>
         <name>pop_back</name>
+        <qualifiedname>quantit::any_quantity_vector::pop_back</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" line="207" column="6" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" bodystart="207" bodyend="211"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" line="207" column="6" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" bodystart="207" bodyend="211"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity__vector_1aecf2aad487a3cf0ec069fa42f2a4d87f" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
         <definition>void quantit::any_quantity_vector::resize</definition>
         <argsstring>(size_t count)</argsstring>
         <name>resize</name>
+        <qualifiedname>quantit::any_quantity_vector::resize</qualifiedname>
         <param>
           <type>size_t</type>
           <declname>count</declname>
@@ -848,13 +899,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" line="212" column="6" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" bodystart="212" bodyend="216"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" line="212" column="6" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" bodystart="212" bodyend="216"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity__vector_1a962137697a8435f7858d7b25d65fb221" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
         <definition>void quantit::any_quantity_vector::resize</definition>
         <argsstring>(size_t count, const_reference val)</argsstring>
         <name>resize</name>
+        <qualifiedname>quantit::any_quantity_vector::resize</qualifiedname>
         <param>
           <type>size_t</type>
           <declname>count</declname>
@@ -869,13 +921,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" line="217" column="6" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" bodystart="217" bodyend="223"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" line="217" column="6" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" bodystart="217" bodyend="223"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity__vector_1ab2c3a03a75d066fa83aaf1e95175d870" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
         <definition>void quantit::any_quantity_vector::swap</definition>
         <argsstring>(any_quantity_vector &amp;other)</argsstring>
         <name>swap</name>
+        <qualifiedname>quantit::any_quantity_vector::swap</qualifiedname>
         <param>
           <type><ref refid="classquantit_1_1any__quantity__vector" kindref="compound">any_quantity_vector</ref> &amp;</type>
           <declname>other</declname>
@@ -886,169 +939,182 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" line="224" column="6" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" bodystart="224" bodyend="228"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" line="224" column="6" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" bodystart="224" bodyend="228"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity__vector_1a9ceb8257be4cd9d100ee13a1bc12c4f3" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type><ref refid="structquantit_1_1vQuantiT__iterator_1_1cgroup__iterator" kindref="compound">iterator</ref></type>
         <definition>iterator quantit::any_quantity_vector::begin</definition>
         <argsstring>()</argsstring>
         <name>begin</name>
+        <qualifiedname>quantit::any_quantity_vector::begin</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" line="229" column="10" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" bodystart="229" bodyend="233"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" line="229" column="10" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" bodystart="229" bodyend="233"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity__vector_1aeb8a7fd244e93dc88ebbb0438992a9af" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type><ref refid="structquantit_1_1vQuantiT__iterator_1_1cgroup__iterator" kindref="compound">iterator</ref></type>
         <definition>iterator quantit::any_quantity_vector::end</definition>
         <argsstring>()</argsstring>
         <name>end</name>
+        <qualifiedname>quantit::any_quantity_vector::end</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" line="234" column="10" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" bodystart="234" bodyend="238"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" line="234" column="10" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" bodystart="234" bodyend="238"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity__vector_1a78f100334cbcddf32b1fb92d9dc909c9" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type><ref refid="structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator" kindref="compound">const_iterator</ref></type>
         <definition>const_iterator quantit::any_quantity_vector::cbegin</definition>
         <argsstring>() const</argsstring>
         <name>cbegin</name>
+        <qualifiedname>quantit::any_quantity_vector::cbegin</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" line="239" column="16" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" bodystart="239" bodyend="244"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" line="239" column="16" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" bodystart="239" bodyend="244"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity__vector_1aaa0d2568f4f90193547800ee9fc6b3f8" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type><ref refid="structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator" kindref="compound">const_iterator</ref></type>
         <definition>const_iterator quantit::any_quantity_vector::cend</definition>
         <argsstring>() const</argsstring>
         <name>cend</name>
+        <qualifiedname>quantit::any_quantity_vector::cend</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" line="245" column="16" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" bodystart="245" bodyend="249"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" line="245" column="16" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" bodystart="245" bodyend="249"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity__vector_1a442f821537fbf8144594aaf854c4d339" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>reverse_iterator</type>
         <definition>reverse_iterator quantit::any_quantity_vector::rbegin</definition>
         <argsstring>()</argsstring>
         <name>rbegin</name>
+        <qualifiedname>quantit::any_quantity_vector::rbegin</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" line="251" column="18" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" bodystart="251" bodyend="255"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" line="251" column="18" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" bodystart="251" bodyend="255"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity__vector_1ae97a4876e72f8377680d2451f610f113" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>reverse_iterator</type>
         <definition>reverse_iterator quantit::any_quantity_vector::rend</definition>
         <argsstring>()</argsstring>
         <name>rend</name>
+        <qualifiedname>quantit::any_quantity_vector::rend</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" line="256" column="18" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" bodystart="256" bodyend="260"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" line="256" column="18" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" bodystart="256" bodyend="260"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity__vector_1affaee5a3cba432d30725da9419b8f9d0" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type><ref refid="structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator" kindref="compound">const_iterator</ref></type>
         <definition>const_iterator quantit::any_quantity_vector::begin</definition>
         <argsstring>() const</argsstring>
         <name>begin</name>
+        <qualifiedname>quantit::any_quantity_vector::begin</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" line="261" column="16" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" bodystart="261" bodyend="264"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" line="261" column="16" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" bodystart="261" bodyend="264"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity__vector_1a29aea47c58875cbf4a7aef5425b08697" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type><ref refid="structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator" kindref="compound">const_iterator</ref></type>
         <definition>const_iterator quantit::any_quantity_vector::end</definition>
         <argsstring>() const</argsstring>
         <name>end</name>
+        <qualifiedname>quantit::any_quantity_vector::end</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" line="265" column="16" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" bodystart="265" bodyend="268"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" line="265" column="16" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" bodystart="265" bodyend="268"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity__vector_1a5b8a9b78e8f1277f1f46e873c46c59b1" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>const_reverse_iterator</type>
         <definition>const_reverse_iterator quantit::any_quantity_vector::crbegin</definition>
         <argsstring>() const</argsstring>
         <name>crbegin</name>
+        <qualifiedname>quantit::any_quantity_vector::crbegin</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" line="269" column="24" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" bodystart="269" bodyend="273"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" line="269" column="24" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" bodystart="269" bodyend="273"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity__vector_1a19ea0fb44594de582c50eaa3e2d473e8" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>const_reverse_iterator</type>
         <definition>const_reverse_iterator quantit::any_quantity_vector::crend</definition>
         <argsstring>() const</argsstring>
         <name>crend</name>
+        <qualifiedname>quantit::any_quantity_vector::crend</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" line="274" column="24" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" bodystart="274" bodyend="278"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" line="274" column="24" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" bodystart="274" bodyend="278"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity__vector_1a29382b1e5936db48fd31112499400384" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>const_reverse_iterator</type>
         <definition>const_reverse_iterator quantit::any_quantity_vector::rbegin</definition>
         <argsstring>() const</argsstring>
         <name>rbegin</name>
+        <qualifiedname>quantit::any_quantity_vector::rbegin</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" line="279" column="24" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" bodystart="279" bodyend="282"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" line="279" column="24" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" bodystart="279" bodyend="282"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity__vector_1ace4c6baf5d5039210d5d4f08a48ad13e" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>const_reverse_iterator</type>
         <definition>const_reverse_iterator quantit::any_quantity_vector::rend</definition>
         <argsstring>() const</argsstring>
         <name>rend</name>
+        <qualifiedname>quantit::any_quantity_vector::rend</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" line="283" column="24" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" bodystart="283" bodyend="286"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" line="283" column="24" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" bodystart="283" bodyend="286"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity__vector_1aa76ba09dcba88a584a0bdda8c46e906c" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type><ref refid="classquantit_1_1any__quantity__vector" kindref="compound">any_quantity_vector</ref></type>
         <definition>any_quantity_vector quantit::any_quantity_vector::permute</definition>
         <argsstring>(const int64_t *permute_begin, const int64_t *permute_end, const std::vector&lt; int64_t &gt; repetition) const</argsstring>
         <name>permute</name>
+        <qualifiedname>quantit::any_quantity_vector::permute</qualifiedname>
         <param>
           <type>const int64_t *</type>
           <declname>permute_begin</declname>
@@ -1067,14 +1133,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" line="288" column="21" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" bodystart="288" bodyend="292"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" line="288" column="21" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" bodystart="288" bodyend="292"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" line="26" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h" bodystart="27" bodyend="293"/>
+    <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" line="26" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h" bodystart="27" bodyend="293"/>
     <listofallmembers>
       <member refid="classquantit_1_1any__quantity__vector_1addeb4c11d0085c091ce6d98c65ac49fc" prot="public" virt="non-virtual"><scope>quantit::any_quantity_vector</scope><name>any_quantity_vector</name></member>
       <member refid="classquantit_1_1any__quantity__vector_1a54358c13d7e3405d89399f770cb108de" prot="public" virt="non-virtual"><scope>quantit::any_quantity_vector</scope><name>any_quantity_vector</name></member>
@@ -1119,7 +1185,7 @@
       <member refid="classquantit_1_1any__quantity__vector_1ae7a48f0d3c97c64a1736a8198758fcef" prot="public" virt="non-virtual"><scope>quantit::any_quantity_vector</scope><name>iterator</name></member>
       <member refid="classquantit_1_1any__quantity__vector_1a6679c4fc52e9304e027b68fcffd21b27" prot="public" virt="non-virtual"><scope>quantit::any_quantity_vector</scope><name>max_size</name></member>
       <member refid="classquantit_1_1any__quantity__vector_1ac524a7e4ebbb6771f5e846735993d8f3" prot="public" virt="non-virtual"><scope>quantit::any_quantity_vector</scope><name>operator!=</name></member>
-      <member refid="classquantit_1_1any__quantity__vector_1af9a0e31bcbf756bd98be52849cc8fd93" prot="public" virt="non-virtual"><scope>quantit::any_quantity_vector</scope><name>operator=</name></member>
+      <member refid="classquantit_1_1any__quantity__vector_1aae0c25bf47caf9734cb03fcf6d5919a7" prot="public" virt="non-virtual"><scope>quantit::any_quantity_vector</scope><name>operator=</name></member>
       <member refid="classquantit_1_1any__quantity__vector_1a0770591ea9c0c321a60d89808a181736" prot="public" virt="non-virtual"><scope>quantit::any_quantity_vector</scope><name>operator==</name></member>
       <member refid="classquantit_1_1any__quantity__vector_1a74adf3e56b5b02250549733a22175881" prot="public" virt="non-virtual"><scope>quantit::any_quantity_vector</scope><name>operator[]</name></member>
       <member refid="classquantit_1_1any__quantity__vector_1a782c48550a94866d7fa44b321b6af1b4" prot="public" virt="non-virtual"><scope>quantit::any_quantity_vector</scope><name>operator[]</name></member>

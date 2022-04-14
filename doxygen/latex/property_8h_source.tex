@@ -1,0 +1,68 @@
+\hypertarget{property_8h_source}{}\doxysection{property.\+h}
+\label{property_8h_source}\index{/Users/alex/Documents/Prog/QuantiT/include/property.h@{/Users/alex/Documents/Prog/QuantiT/include/property.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * File: property.h}}
+\DoxyCodeLine{3 \textcolor{comment}{ * Project: QuantiT}}
+\DoxyCodeLine{4 \textcolor{comment}{ * File Created: Thursday, 23rd July 2020 11:30:55 am}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)}}
+\DoxyCodeLine{6 \textcolor{comment}{ * -\/-\/-\/-\/-\/}}
+\DoxyCodeLine{7 \textcolor{comment}{ * Last Modified: Thursday, 23rd July 2020 11:30:55 am}}
+\DoxyCodeLine{8 \textcolor{comment}{ * Modified By: Alexandre Foley (Alexandre.foley@usherbrooke.ca>)}}
+\DoxyCodeLine{9 \textcolor{comment}{ * -\/-\/-\/-\/-\/}}
+\DoxyCodeLine{10 \textcolor{comment}{ * Copyright (c) 2020 Alexandre Foley}}
+\DoxyCodeLine{11 \textcolor{comment}{ * Licensed under GPL v3}}
+\DoxyCodeLine{12 \textcolor{comment}{ */}}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#ifndef A0DBDDD7\_5F5B\_48D3\_A287\_E11E64C8B84C}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#define A0DBDDD7\_5F5B\_48D3\_A287\_E11E64C8B84C}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include <type\_traits>}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include <utility>}}
+\DoxyCodeLine{18 \textcolor{comment}{// with c++20, we can use unique\_type = decltype([]\{\}), to get a completly unique type, even if all the other}}
+\DoxyCodeLine{19 \textcolor{comment}{// template argument are identical. Doing that mean that every time the template is explicitly written, a new type is}}
+\DoxyCodeLine{20 \textcolor{comment}{// generated.}}
+\DoxyCodeLine{21 }
+\DoxyCodeLine{32 \textcolor{keyword}{template} <\textcolor{keyword}{class} content, \textcolor{keyword}{class} owner, \textcolor{keyword}{class} cref\_type = const content \&, \textcolor{keyword}{class} unique\_type = owner> \textcolor{keyword}{class }\mbox{\hyperlink{classproperty}{property}} final}
+\DoxyCodeLine{33 \{}
+\DoxyCodeLine{34     \textcolor{comment}{// @cond}}
+\DoxyCodeLine{35     \textcolor{keyword}{friend} owner;}
+\DoxyCodeLine{36     \textcolor{comment}{// @endcond}}
+\DoxyCodeLine{37     content value;}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39     \mbox{\hyperlink{classproperty}{property}}() = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{40     \mbox{\hyperlink{classproperty}{property}}(cref\_type val)}
+\DoxyCodeLine{41         : value(val) \{\} \textcolor{comment}{// private constructor, allows owning class to construct without check if wanted.}}
+\DoxyCodeLine{42     \textcolor{keyword}{template}<\textcolor{keyword}{class}... Args,\textcolor{keyword}{class }E = std::enable\_if\_t<std::is\_constructible\_v<content, Args...>> >}
+\DoxyCodeLine{43     \mbox{\hyperlink{classproperty}{property}}(Args... args):value(std::forward<Args>(args)...) \{\}}
+\DoxyCodeLine{44 }
+\DoxyCodeLine{45     \mbox{\hyperlink{classproperty}{property}}(content \&\&val)}
+\DoxyCodeLine{46         : value(std::move(val)) \{\} \textcolor{comment}{// private constructor, allows owning class to construct without check if wanted.}}
+\DoxyCodeLine{47     \textcolor{comment}{// basically, the only thing to do with this for non-\/friend is to look at or copy the content.}}
+\DoxyCodeLine{48     \mbox{\hyperlink{classproperty}{property}}(\mbox{\hyperlink{classproperty}{property}} \&\&) = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{49     \mbox{\hyperlink{classproperty}{property}}(\textcolor{keyword}{const} \mbox{\hyperlink{classproperty}{property}} \&) = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{50     \mbox{\hyperlink{classproperty}{property}} \&operator=(\textcolor{keyword}{const} \mbox{\hyperlink{classproperty}{property}} \&) = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{51     \mbox{\hyperlink{classproperty}{property}} \&operator=(\mbox{\hyperlink{classproperty}{property}} \&\&) = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{52     \textcolor{comment}{// redefine if necessary}}
+\DoxyCodeLine{53   \textcolor{keyword}{public}:}
+\DoxyCodeLine{54     \textcolor{keyword}{operator} cref\_type() \textcolor{keyword}{const} \textcolor{keyword}{noexcept} \{ \textcolor{keywordflow}{return} value; \} }
+\DoxyCodeLine{55 }
+\DoxyCodeLine{63     \mbox{\hyperlink{classproperty}{property}} \&\mbox{\hyperlink{classproperty_a9fe732c02d12627d095acfa835e770fc}{operator=}}(cref\_type new\_value);}
+\DoxyCodeLine{71     \mbox{\hyperlink{classproperty}{property}} \&\mbox{\hyperlink{classproperty_a102a0797b24657ef94ae491d190f5ec6}{operator=}}(content \&\&new\_value);}
+\DoxyCodeLine{72 }
+\DoxyCodeLine{78     \textcolor{keyword}{const} content *\mbox{\hyperlink{classproperty_a9c1aec2f8f85ced317cd116f594a8f8c}{operator-\/>}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \&value; \}}
+\DoxyCodeLine{79 }
+\DoxyCodeLine{80     \mbox{\hyperlink{classproperty}{\string~property}}()\{\};}
+\DoxyCodeLine{81 \};}
+\DoxyCodeLine{82 }
+\DoxyCodeLine{83 \textcolor{preprocessor}{\#if \_\_has\_include(<fmt/format.h>)}}
+\DoxyCodeLine{84 \textcolor{preprocessor}{\#include <fmt/format.h>}}
+\DoxyCodeLine{91 \textcolor{keyword}{template} <\textcolor{keyword}{class} content, \textcolor{keyword}{class} owner, \textcolor{keyword}{class} cref\_type, \textcolor{keyword}{class} unique\_type>}
+\DoxyCodeLine{92 \textcolor{keyword}{struct }fmt::formatter<property<content, owner, cref\_type, unique\_type>> : fmt::formatter<content>}
+\DoxyCodeLine{93 \{}
+\DoxyCodeLine{94 \};}
+\DoxyCodeLine{95 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{96 }
+\DoxyCodeLine{97 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* A0DBDDD7\_5F5B\_48D3\_A287\_E11E64C8B84C */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

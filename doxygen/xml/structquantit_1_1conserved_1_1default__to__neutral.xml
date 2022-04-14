@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
   <compounddef id="structquantit_1_1conserved_1_1default__to__neutral" kind="struct" language="C++" prot="public">
     <compoundname>quantit::conserved::default_to_neutral</compoundname>
     <basecompoundref prot="public" virt="non-virtual">std::false_type</basecompoundref>
@@ -38,7 +38,7 @@
         <label>std::false_type</label>
       </node>
     </collaborationgraph>
-    <location file="/home/alex/project/quantt/include/Conserved/quantity_utils.h" line="120" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/quantity_utils.h" bodystart="121" bodyend="122"/>
+    <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity_utils.h" line="120" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity_utils.h" bodystart="121" bodyend="122"/>
     <listofallmembers>
     </listofallmembers>
   </compounddef>

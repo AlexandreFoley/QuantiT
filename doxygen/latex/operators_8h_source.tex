@@ -1,0 +1,126 @@
+\hypertarget{operators_8h_source}{}\doxysection{operators.\+h}
+\label{operators_8h_source}\index{/Users/alex/Documents/Prog/QuantiT/include/operators.h@{/Users/alex/Documents/Prog/QuantiT/include/operators.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * File: operators.h}}
+\DoxyCodeLine{3 \textcolor{comment}{ * Project: QuantiT}}
+\DoxyCodeLine{4 \textcolor{comment}{ * File Created: Monday, 17th August 2020 9:16:18 am}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)}}
+\DoxyCodeLine{6 \textcolor{comment}{ * -\/-\/-\/-\/-\/}}
+\DoxyCodeLine{7 \textcolor{comment}{ * Last Modified: Monday, 17th August 2020 9:16:18 am}}
+\DoxyCodeLine{8 \textcolor{comment}{ * Modified By: Alexandre Foley (Alexandre.foley@usherbrooke.ca>)}}
+\DoxyCodeLine{9 \textcolor{comment}{ * -\/-\/-\/-\/-\/}}
+\DoxyCodeLine{10 \textcolor{comment}{ * Copyright (c) 2020 Alexandre Foley}}
+\DoxyCodeLine{11 \textcolor{comment}{ * Licensed under GPL v3}}
+\DoxyCodeLine{12 \textcolor{comment}{ */}}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#ifndef A4334AE3\_0ED7\_40A8\_999C\_F388D4675687}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#define A4334AE3\_0ED7\_40A8\_999C\_F388D4675687}}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include <torch/torch.h>}}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include "{}Conserved/quantity.h"{}}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include "{}blockTensor/btensor.h"{}}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include "{}doctest/doctest\_proxy.h"{}}}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#include <fmt/core.h>}}
+\DoxyCodeLine{24 \textcolor{keyword}{namespace }quantit}
+\DoxyCodeLine{25 \{}
+\DoxyCodeLine{26 }
+\DoxyCodeLine{27 \textcolor{keyword}{namespace}}
+\DoxyCodeLine{28 \{}
+\DoxyCodeLine{29 \textcolor{keyword}{using} tens = torch::Tensor;}
+\DoxyCodeLine{30 \}}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{39 std::tuple<tens, tens, tens, tens> fermions();}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{41 std::tuple<btensor, btensor, btensor, btensor> fermions(\textcolor{keyword}{const} btensor \&shape);}
+\DoxyCodeLine{42 }
+\DoxyCodeLine{54 std::tuple<tens, tens, tens, tens, tens> pauli();}
+\DoxyCodeLine{62 std::tuple<btensor, btensor, btensor> pauli(\textcolor{keyword}{const} btensor \&shape);}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{64 qtt\_TEST\_CASE(\textcolor{stringliteral}{"{}half spin fermions"{}})}
+\DoxyCodeLine{65 \{}
+\DoxyCodeLine{66     \textcolor{keyword}{auto} [c\_up, c\_dn, F, id] = fermions();}
+\DoxyCodeLine{67 }
+\DoxyCodeLine{68     \textcolor{keyword}{auto} cd\_up = c\_up.conj().t();}
+\DoxyCodeLine{69     \textcolor{keyword}{auto} cd\_dn = c\_dn.conj().t();}
+\DoxyCodeLine{70     \textcolor{comment}{// The specific content of those matrices isn't all that important, so long as they have the following properties}}
+\DoxyCodeLine{71     \textcolor{comment}{// anticommutation}}
+\DoxyCodeLine{72     qtt\_CHECK(torch::equal(torch::matmul(cd\_up, c\_up), \textcolor{keywordtype}{id} -\/ torch::matmul(c\_up, cd\_up)));}
+\DoxyCodeLine{73     qtt\_CHECK(torch::equal(torch::matmul(cd\_dn, c\_dn), \textcolor{keywordtype}{id} -\/ torch::matmul(c\_dn, cd\_dn)));}
+\DoxyCodeLine{74 }
+\DoxyCodeLine{75     qtt\_CHECK(torch::equal(torch::matmul(cd\_up, c\_dn), -\/1 * torch::matmul(c\_dn, cd\_up)));}
+\DoxyCodeLine{76     qtt\_CHECK(torch::equal(torch::matmul(cd\_dn, c\_up), -\/1 * torch::matmul(c\_up, cd\_dn)));}
+\DoxyCodeLine{77 }
+\DoxyCodeLine{78     qtt\_CHECK(torch::equal(torch::matmul(c\_up, c\_dn), -\/1 * torch::matmul(c\_dn, c\_up)));}
+\DoxyCodeLine{79     qtt\_CHECK(torch::equal(torch::matmul(c\_up, c\_up), -\/1 * torch::matmul(c\_up, c\_up)));}
+\DoxyCodeLine{80     qtt\_CHECK(torch::equal(torch::matmul(c\_dn, c\_dn), -\/1 * torch::matmul(c\_dn, c\_dn)));}
+\DoxyCodeLine{81 }
+\DoxyCodeLine{82     qtt\_CHECK(torch::equal(torch::matmul(c\_up, F), -\/1 * torch::matmul(F, c\_up)));}
+\DoxyCodeLine{83     qtt\_CHECK(torch::equal(torch::matmul(c\_dn, F), -\/1 * torch::matmul(F, c\_dn)));}
+\DoxyCodeLine{84     \textcolor{comment}{// F\string^2 = 1}}
+\DoxyCodeLine{85     qtt\_CHECK(torch::equal(torch::matmul(F, F), \textcolor{keywordtype}{id}));}
+\DoxyCodeLine{86     \textcolor{comment}{// identity}}
+\DoxyCodeLine{87     qtt\_CHECK(torch::equal(torch::matmul(\textcolor{keywordtype}{id}, \textcolor{keywordtype}{id}), \textcolor{keywordtype}{id}));}
+\DoxyCodeLine{88     qtt\_CHECK(torch::equal(torch::matmul(\textcolor{keywordtype}{id}, c\_up), c\_up));}
+\DoxyCodeLine{89     qtt\_CHECK(torch::equal(torch::matmul(\textcolor{keywordtype}{id}, F), F));}
+\DoxyCodeLine{90     qtt\_CHECK(torch::equal(torch::matmul(\textcolor{keywordtype}{id}, c\_dn), c\_dn));}
+\DoxyCodeLine{91 \}}
+\DoxyCodeLine{92 qtt\_TEST\_CASE(\textcolor{stringliteral}{"{}Pauli matrices"{}})}
+\DoxyCodeLine{93 \{}
+\DoxyCodeLine{94     \textcolor{keyword}{auto} [sx, isy, sz, lo, id] = pauli();}
+\DoxyCodeLine{95 }
+\DoxyCodeLine{96     qtt\_CHECK(torch::equal(torch::matmul(lo, lo), torch::zeros(\{2, 2\}, torch::kInt8)));}
+\DoxyCodeLine{97     qtt\_CHECK(torch::equal(torch::matmul(sx, sx), \textcolor{keywordtype}{id}));}
+\DoxyCodeLine{98     qtt\_CHECK(torch::equal(torch::matmul(isy, isy), -\/1 * \textcolor{keywordtype}{id}));}
+\DoxyCodeLine{99     qtt\_CHECK(torch::equal(torch::matmul(sz, sz), \textcolor{keywordtype}{id}));}
+\DoxyCodeLine{100     qtt\_CHECK(torch::equal(torch::matmul(sx, torch::matmul(isy, sz)), -\/1 * \textcolor{keywordtype}{id}));}
+\DoxyCodeLine{101     \textcolor{comment}{// fmt::print("{}size of torch tensor \{\}\(\backslash\)n"{},sizeof(sx));}}
+\DoxyCodeLine{102 \}}
+\DoxyCodeLine{103 qtt\_TEST\_CASE(\textcolor{stringliteral}{"{}conserved quantities fermions"{}})}
+\DoxyCodeLine{104 \{}
+\DoxyCodeLine{105     \textcolor{keyword}{using} cvals = quantity<conserved::Z>;}
+\DoxyCodeLine{106     \textcolor{keyword}{auto} shape = btensor(\{\{\{1, cvals(0)\}, \{2, cvals(1)\}, \{1, cvals(2)\}\}\}, cvals(0));}
+\DoxyCodeLine{107     \textcolor{keyword}{auto} op\_shape = shape\_from(shape, shape.conj());}
+\DoxyCodeLine{108 }
+\DoxyCodeLine{109     \textcolor{keyword}{auto} [c\_up, c\_dn, F, id] = fermions(op\_shape);}
+\DoxyCodeLine{110     qtt\_CHECK(c\_up.selection\_rule-\/>get() == cvals(-\/1));}
+\DoxyCodeLine{111     qtt\_CHECK(c\_dn.selection\_rule-\/>get() == cvals(-\/1));}
+\DoxyCodeLine{112 }
+\DoxyCodeLine{113     qtt\_SUBCASE(\textcolor{stringliteral}{"{}insertion into MPO tensor"{}})}
+\DoxyCodeLine{114     \{}
+\DoxyCodeLine{115         \textcolor{keyword}{auto} U = full(\{\}, cvals(0), 6);}
+\DoxyCodeLine{116         \textcolor{keyword}{auto} mu = full(\{\}, cvals(0), 3);}
+\DoxyCodeLine{117         \textcolor{keyword}{auto} t = full(\{\}, cvals(0), 1);}
+\DoxyCodeLine{118         \textcolor{keyword}{auto} c\_dag\_up = c\_up.\mbox{\hyperlink{classquantit_1_1btensor_a7ecbb590915372481349263bcc60cfd8}{conj}}().permute(\{1, 0\});}
+\DoxyCodeLine{119         \textcolor{keyword}{auto} c\_dag\_dn = c\_dn.\mbox{\hyperlink{classquantit_1_1btensor_a7ecbb590915372481349263bcc60cfd8}{conj}}().permute(\{1, 0\});}
+\DoxyCodeLine{120         \textcolor{keyword}{auto} leftbond = btensor(}
+\DoxyCodeLine{121             \{\{\{1, cvals(0)\}, \{1, cvals(1)\}, \{1, cvals(1)\}, \{1, cvals(-\/1)\}, \{1, cvals(-\/1)\}, \{1, cvals(0)\}\}\}, cvals(0));}
+\DoxyCodeLine{122         \textcolor{keyword}{auto} T = shape\_from(leftbond, shape, leftbond.conj(), shape.conj());}
+\DoxyCodeLine{123 }
+\DoxyCodeLine{124         \textcolor{keyword}{auto} n\_up = c\_dag\_up.bmm(c\_up);}
+\DoxyCodeLine{125         \textcolor{keyword}{auto} n\_dn = c\_dag\_dn.bmm(c\_dn);}
+\DoxyCodeLine{126 }
+\DoxyCodeLine{127         \textcolor{keyword}{auto} H\_l = -\/mu * (n\_up + n\_dn) + U * (n\_up.bmm(n\_dn));}
+\DoxyCodeLine{128 }
+\DoxyCodeLine{129         T.basic\_index\_put\_(\{0, -\/1, 0, -\/1\}, id);}
+\DoxyCodeLine{130         T.basic\_index\_put\_(\{1, -\/1, 0, -\/1\}, c\_up);}
+\DoxyCodeLine{131         T.basic\_index\_put\_(\{2, -\/1, 0, -\/1\}, c\_dn);}
+\DoxyCodeLine{132         T.basic\_index\_put\_(\{ 3, -\/1, 0, -\/1 \}, c\_dag\_up);}
+\DoxyCodeLine{133         T.basic\_index\_put\_(\{ 4, -\/1, 0, -\/1 \}, c\_dag\_dn);}
+\DoxyCodeLine{134         T.basic\_index\_put\_(\{ 5, -\/1, 0, -\/1 \}, H\_l);}
+\DoxyCodeLine{135         T.basic\_index\_put\_(\{ 5, -\/1, 1, -\/1 \}, t * F.bmm(c\_dag\_up));}
+\DoxyCodeLine{136         T.basic\_index\_put\_(\{ 5, -\/1, 2, -\/1 \}, t * F.bmm(c\_dag\_dn));}
+\DoxyCodeLine{137         T.basic\_index\_put\_(\{ 5, -\/1, 3, -\/1 \}, t * c\_up.bmm( F));}
+\DoxyCodeLine{138         T.basic\_index\_put\_(\{ 5, -\/1, 4, -\/1 \}, t * c\_dn.bmm( F));}
+\DoxyCodeLine{139         T.basic\_index\_put\_(\{ 5, -\/1, 5, -\/1 \}, id);}
+\DoxyCodeLine{140     \}}
+\DoxyCodeLine{141 \}}
+\DoxyCodeLine{142 }
+\DoxyCodeLine{143 \} \textcolor{comment}{// namespace quantit}}
+\DoxyCodeLine{144 }
+\DoxyCodeLine{145 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* A4334AE3\_0ED7\_40A8\_999C\_F388D4675687 */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

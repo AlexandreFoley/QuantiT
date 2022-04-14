@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
   <compounddef id="structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator" kind="struct" language="C++" prot="public">
     <compoundname>quantit::vQuantiT_iterator::const_cgroup_iterator</compoundname>
     <basecompoundref prot="public" virt="non-virtual">boost::stl_interfaces::iterator_interface&lt; const_cgroup_iterator, std::random_access_iterator_tag, any_quantity, any_quantity_cref, const vquantity * &gt;</basecompoundref>
@@ -9,13 +9,14 @@
         <definition>using quantit::vQuantiT_iterator::const_cgroup_iterator::base_type =  boost::stl_interfaces::iterator_interface&lt;const_cgroup_iterator, std::random_access_iterator_tag, any_quantity, any_quantity_cref, const vquantity *&gt;</definition>
         <argsstring></argsstring>
         <name>base_type</name>
+        <qualifiedname>quantit::vQuantiT_iterator::const_cgroup_iterator::base_type</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" line="94" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" bodystart="95" bodyend="-1"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector_impl.h" line="94" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector_impl.h" bodystart="95" bodyend="-1"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="private-attrib">
@@ -24,26 +25,28 @@
         <definition>const vquantity* quantit::vQuantiT_iterator::const_cgroup_iterator::it</definition>
         <argsstring></argsstring>
         <name>it</name>
+        <qualifiedname>quantit::vQuantiT_iterator::const_cgroup_iterator::it</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" line="85" column="17" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" bodystart="85" bodyend="-1"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector_impl.h" line="85" column="17" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector_impl.h" bodystart="85" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator_1a18a30fdffcac26fdc74dcc93f4475267" prot="private" static="no" mutable="no">
         <type>const <ref refid="structquantit_1_1vQuantiT__iterator_1_1virt__ptr__aritmetic" kindref="compound">virt_ptr_aritmetic</ref> *</type>
         <definition>const virt_ptr_aritmetic* quantit::vQuantiT_iterator::const_cgroup_iterator::ar</definition>
         <argsstring></argsstring>
         <name>ar</name>
+        <qualifiedname>quantit::vQuantiT_iterator::const_cgroup_iterator::ar</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" line="86" column="26" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" bodystart="86" bodyend="-1"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector_impl.h" line="86" column="26" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector_impl.h" bodystart="86" bodyend="-1"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="public-func">
@@ -52,19 +55,21 @@
         <definition>constexpr quantit::vQuantiT_iterator::const_cgroup_iterator::const_cgroup_iterator</definition>
         <argsstring>()</argsstring>
         <name>const_cgroup_iterator</name>
+        <qualifiedname>quantit::vQuantiT_iterator::const_cgroup_iterator::const_cgroup_iterator</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" line="92" column="11" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" bodystart="92" bodyend="92"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector_impl.h" line="92" column="11" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector_impl.h" bodystart="92" bodyend="92"/>
       </memberdef>
       <memberdef kind="function" id="structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator_1aed83b19e223c83aac93e186bd6103073" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>constexpr</type>
         <definition>constexpr quantit::vQuantiT_iterator::const_cgroup_iterator::const_cgroup_iterator</definition>
         <argsstring>(const vquantity *_it, const virt_ptr_aritmetic *_ar)</argsstring>
         <name>const_cgroup_iterator</name>
+        <qualifiedname>quantit::vQuantiT_iterator::const_cgroup_iterator::const_cgroup_iterator</qualifiedname>
         <param>
           <type>const <ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref> *</type>
           <declname>_it</declname>
@@ -79,39 +84,42 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" line="93" column="11" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" bodystart="93" bodyend="93"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector_impl.h" line="93" column="11" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector_impl.h" bodystart="93" bodyend="93"/>
       </memberdef>
       <memberdef kind="function" id="structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator_1ab4d58a3bfbd9840c64c9492983325b6d" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type><ref refid="classquantit_1_1vquantity" kindref="compound">any_quantity_cref</ref></type>
         <definition>any_quantity_cref quantit::vQuantiT_iterator::const_cgroup_iterator::operator*</definition>
         <argsstring>() const</argsstring>
         <name>operator*</name>
+        <qualifiedname>quantit::vQuantiT_iterator::const_cgroup_iterator::operator*</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" line="96" column="19" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" bodystart="96" bodyend="96"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector_impl.h" line="96" column="19" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector_impl.h" bodystart="96" bodyend="96"/>
       </memberdef>
-      <memberdef kind="function" id="structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator_1ad68bf3fbc698d613a3292ebfa6e25f4c" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+      <memberdef kind="function" id="structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator_1aa9248a173241c1ef428c162e8a729ea6" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>const <ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref> *</type>
-        <definition>const vquantity* quantit::vQuantiT_iterator::const_cgroup_iterator::operator-&gt;</definition>
+        <definition>const vquantity * quantit::vQuantiT_iterator::const_cgroup_iterator::operator-&gt;</definition>
         <argsstring>() const</argsstring>
         <name>operator-&gt;</name>
+        <qualifiedname>quantit::vQuantiT_iterator::const_cgroup_iterator::operator-&gt;</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" line="97" column="17" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" bodystart="97" bodyend="97"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector_impl.h" line="97" column="17" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector_impl.h" bodystart="97" bodyend="97"/>
       </memberdef>
       <memberdef kind="function" id="structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator_1a32a27ae58082ef8cdddaccf4be97e9bf" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>base_type::difference_type</type>
         <definition>base_type::difference_type quantit::vQuantiT_iterator::const_cgroup_iterator::operator-</definition>
         <argsstring>(const_cgroup_iterator rhs)</argsstring>
         <name>operator-</name>
+        <qualifiedname>quantit::vQuantiT_iterator::const_cgroup_iterator::operator-</qualifiedname>
         <param>
           <type><ref refid="structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator" kindref="compound">const_cgroup_iterator</ref></type>
           <declname>rhs</declname>
@@ -122,13 +130,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" line="98" column="28" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" bodystart="98" bodyend="104"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector_impl.h" line="98" column="28" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector_impl.h" bodystart="98" bodyend="104"/>
       </memberdef>
-      <memberdef kind="function" id="structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator_1a0776a2a947b5ee8764f3abb2655e51fb" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+      <memberdef kind="function" id="structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator_1a73337b901711ee4aa864fd838de73560" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type><ref refid="structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator" kindref="compound">const_cgroup_iterator</ref> &amp;</type>
-        <definition>const_cgroup_iterator&amp; quantit::vQuantiT_iterator::const_cgroup_iterator::operator+=</definition>
+        <definition>const_cgroup_iterator &amp; quantit::vQuantiT_iterator::const_cgroup_iterator::operator+=</definition>
         <argsstring>(base_type::difference_type n)</argsstring>
         <name>operator+=</name>
+        <qualifiedname>quantit::vQuantiT_iterator::const_cgroup_iterator::operator+=</qualifiedname>
         <param>
           <type>base_type::difference_type</type>
           <declname>n</declname>
@@ -139,33 +148,35 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" line="105" column="23" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" bodystart="105" bodyend="109"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector_impl.h" line="105" column="23" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector_impl.h" bodystart="105" bodyend="109"/>
       </memberdef>
-      <memberdef kind="function" id="structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator_1a7618795a7538f8f8e9555875bc43abd5" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+      <memberdef kind="function" id="structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator_1aa5b9528286d94d91f6a6c7bbfbac8799" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>const <ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref> *</type>
-        <definition>const vquantity* quantit::vQuantiT_iterator::const_cgroup_iterator::base</definition>
+        <definition>const vquantity * quantit::vQuantiT_iterator::const_cgroup_iterator::base</definition>
         <argsstring>() const</argsstring>
         <name>base</name>
+        <qualifiedname>quantit::vQuantiT_iterator::const_cgroup_iterator::base</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" line="110" column="17" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" bodystart="110" bodyend="110"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector_impl.h" line="110" column="17" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector_impl.h" bodystart="110" bodyend="110"/>
       </memberdef>
-      <memberdef kind="function" id="structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator_1aa0a9181fdaf8817f8e463dfb6a7bf826" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+      <memberdef kind="function" id="structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator_1a9a7c88f28aae1256aafa8cc2db19f7f3" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>const <ref refid="structquantit_1_1vQuantiT__iterator_1_1virt__ptr__aritmetic" kindref="compound">virt_ptr_aritmetic</ref> *</type>
-        <definition>const virt_ptr_aritmetic* quantit::vQuantiT_iterator::const_cgroup_iterator::vt</definition>
+        <definition>const virt_ptr_aritmetic * quantit::vQuantiT_iterator::const_cgroup_iterator::vt</definition>
         <argsstring>() const</argsstring>
         <name>vt</name>
+        <qualifiedname>quantit::vQuantiT_iterator::const_cgroup_iterator::vt</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" line="111" column="26" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" bodystart="111" bodyend="111"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector_impl.h" line="111" column="26" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector_impl.h" bodystart="111" bodyend="111"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
@@ -194,19 +205,19 @@
         </childnode>
       </node>
     </collaborationgraph>
-    <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" line="80" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" bodystart="83" bodyend="112"/>
+    <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector_impl.h" line="80" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector_impl.h" bodystart="83" bodyend="112"/>
     <listofallmembers>
       <member refid="structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator_1a18a30fdffcac26fdc74dcc93f4475267" prot="private" virt="non-virtual"><scope>quantit::vQuantiT_iterator::const_cgroup_iterator</scope><name>ar</name></member>
-      <member refid="structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator_1a7618795a7538f8f8e9555875bc43abd5" prot="public" virt="non-virtual"><scope>quantit::vQuantiT_iterator::const_cgroup_iterator</scope><name>base</name></member>
+      <member refid="structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator_1aa5b9528286d94d91f6a6c7bbfbac8799" prot="public" virt="non-virtual"><scope>quantit::vQuantiT_iterator::const_cgroup_iterator</scope><name>base</name></member>
       <member refid="structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator_1afffbae53db2684af8de691c4eb5284cf" prot="public" virt="non-virtual"><scope>quantit::vQuantiT_iterator::const_cgroup_iterator</scope><name>base_type</name></member>
       <member refid="structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator_1a9cafd1aeb3cb9f99bbd277e8ac70d901" prot="public" virt="non-virtual"><scope>quantit::vQuantiT_iterator::const_cgroup_iterator</scope><name>const_cgroup_iterator</name></member>
       <member refid="structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator_1aed83b19e223c83aac93e186bd6103073" prot="public" virt="non-virtual"><scope>quantit::vQuantiT_iterator::const_cgroup_iterator</scope><name>const_cgroup_iterator</name></member>
       <member refid="structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator_1a08119ef1e85dbbb4af999d1792e32ab0" prot="private" virt="non-virtual"><scope>quantit::vQuantiT_iterator::const_cgroup_iterator</scope><name>it</name></member>
       <member refid="structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator_1ab4d58a3bfbd9840c64c9492983325b6d" prot="public" virt="non-virtual"><scope>quantit::vQuantiT_iterator::const_cgroup_iterator</scope><name>operator*</name></member>
-      <member refid="structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator_1a0776a2a947b5ee8764f3abb2655e51fb" prot="public" virt="non-virtual"><scope>quantit::vQuantiT_iterator::const_cgroup_iterator</scope><name>operator+=</name></member>
+      <member refid="structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator_1a73337b901711ee4aa864fd838de73560" prot="public" virt="non-virtual"><scope>quantit::vQuantiT_iterator::const_cgroup_iterator</scope><name>operator+=</name></member>
       <member refid="structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator_1a32a27ae58082ef8cdddaccf4be97e9bf" prot="public" virt="non-virtual"><scope>quantit::vQuantiT_iterator::const_cgroup_iterator</scope><name>operator-</name></member>
-      <member refid="structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator_1ad68bf3fbc698d613a3292ebfa6e25f4c" prot="public" virt="non-virtual"><scope>quantit::vQuantiT_iterator::const_cgroup_iterator</scope><name>operator-&gt;</name></member>
-      <member refid="structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator_1aa0a9181fdaf8817f8e463dfb6a7bf826" prot="public" virt="non-virtual"><scope>quantit::vQuantiT_iterator::const_cgroup_iterator</scope><name>vt</name></member>
+      <member refid="structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator_1aa9248a173241c1ef428c162e8a729ea6" prot="public" virt="non-virtual"><scope>quantit::vQuantiT_iterator::const_cgroup_iterator</scope><name>operator-&gt;</name></member>
+      <member refid="structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator_1a9a7c88f28aae1256aafa8cc2db19f7f3" prot="public" virt="non-virtual"><scope>quantit::vQuantiT_iterator::const_cgroup_iterator</scope><name>vt</name></member>
     </listofallmembers>
   </compounddef>
 </doxygen>

@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
   <compounddef id="structquantit_1_1conserved_1_1is__conserved__QuantiT" kind="struct" language="C++" prot="public">
     <compoundname>quantit::conserved::is_conserved_QuantiT</compoundname>
     <basecompoundref refid="structquantit_1_1and__" prot="public" virt="non-virtual">quantit::and_&lt; is_Abelian&lt; T &gt;, default_to_neutral&lt; T &gt;, has_op&lt; T &gt;, has_inverse_&lt; T &gt;, has_comparatorequal&lt; T &gt;, has_comparatornotequal&lt; T &gt; &gt;</basecompoundref>
@@ -13,8 +13,11 @@
     <detaileddescription>
     </detaileddescription>
     <inheritancegraph>
-      <node id="3">
-        <label>std::true_type</label>
+      <node id="2">
+        <label>quantit::and_&lt; is_Abelian&lt; T &gt;, default_to_neutral&lt; T &gt;, has_op&lt; T &gt;, has_inverse_&lt; T &gt;, has_comparatorequal&lt; T &gt;, has_comparatornotequal&lt; T &gt; &gt;</label>
+        <link refid="structquantit_1_1and__"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
       </node>
       <node id="1">
         <label>quantit::conserved::is_conserved_QuantiT&lt; T &gt;</label>
@@ -22,16 +25,16 @@
         <childnode refid="2" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="2">
-        <label>quantit::and_&lt; is_Abelian&lt; T &gt;, default_to_neutral&lt; T &gt;, has_op&lt; T &gt;, has_inverse_&lt; T &gt;, has_comparatorequal&lt; T &gt;, has_comparatornotequal&lt; T &gt; &gt;</label>
-        <link refid="structquantit_1_1and__"/>
-        <childnode refid="3" relation="public-inheritance">
-        </childnode>
+      <node id="3">
+        <label>std::true_type</label>
       </node>
     </inheritancegraph>
     <collaborationgraph>
-      <node id="3">
-        <label>std::true_type</label>
+      <node id="2">
+        <label>quantit::and_&lt; is_Abelian&lt; T &gt;, default_to_neutral&lt; T &gt;, has_op&lt; T &gt;, has_inverse_&lt; T &gt;, has_comparatorequal&lt; T &gt;, has_comparatornotequal&lt; T &gt; &gt;</label>
+        <link refid="structquantit_1_1and__"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
       </node>
       <node id="1">
         <label>quantit::conserved::is_conserved_QuantiT&lt; T &gt;</label>
@@ -39,14 +42,11 @@
         <childnode refid="2" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="2">
-        <label>quantit::and_&lt; is_Abelian&lt; T &gt;, default_to_neutral&lt; T &gt;, has_op&lt; T &gt;, has_inverse_&lt; T &gt;, has_comparatorequal&lt; T &gt;, has_comparatornotequal&lt; T &gt; &gt;</label>
-        <link refid="structquantit_1_1and__"/>
-        <childnode refid="3" relation="public-inheritance">
-        </childnode>
+      <node id="3">
+        <label>std::true_type</label>
       </node>
     </collaborationgraph>
-    <location file="/home/alex/project/quantt/include/Conserved/quantity_utils.h" line="143" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/quantity_utils.h" bodystart="145" bodyend="145"/>
+    <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity_utils.h" line="143" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity_utils.h" bodystart="145" bodyend="145"/>
     <listofallmembers>
     </listofallmembers>
   </compounddef>

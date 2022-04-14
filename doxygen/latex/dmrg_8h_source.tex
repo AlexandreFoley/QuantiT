@@ -1,0 +1,289 @@
+\hypertarget{dmrg_8h_source}{}\doxysection{dmrg.\+h}
+\label{dmrg_8h_source}\index{/Users/alex/Documents/Prog/QuantiT/include/dmrg.h@{/Users/alex/Documents/Prog/QuantiT/include/dmrg.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * File: dmrg.h}}
+\DoxyCodeLine{3 \textcolor{comment}{ * Project: QuantiT}}
+\DoxyCodeLine{4 \textcolor{comment}{ * File Created: Tuesday, 11th August 2020 9:46:51 am}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)}}
+\DoxyCodeLine{6 \textcolor{comment}{ * -\/-\/-\/-\/-\/}}
+\DoxyCodeLine{7 \textcolor{comment}{ * Last Modified: Tuesday, 11th August 2020 9:46:52 am}}
+\DoxyCodeLine{8 \textcolor{comment}{ * Modified By: Alexandre Foley (Alexandre.foley@usherbrooke.ca>)}}
+\DoxyCodeLine{9 \textcolor{comment}{ * -\/-\/-\/-\/-\/}}
+\DoxyCodeLine{10 \textcolor{comment}{ * Copyright (c) 2020 Alexandre Foley}}
+\DoxyCodeLine{11 \textcolor{comment}{ * Licensed under GPL v3}}
+\DoxyCodeLine{12 \textcolor{comment}{ */}}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#ifndef E8650E72\_8C05\_4D74\_98C7\_61F4FD428B39}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#define E8650E72\_8C05\_4D74\_98C7\_61F4FD428B39}}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}MPT.h"{}}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}dmrg\_logger.h"{}}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include "{}dmrg\_options.h"{}}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include <cmath>}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include <limits>}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#include <torch/torch.h>}}
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#include "{}doctest/doctest\_proxy.h"{}}}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25 \textcolor{keyword}{namespace }quantit}
+\DoxyCodeLine{26 \{}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28 \textcolor{keyword}{namespace}}
+\DoxyCodeLine{29 \{}
+\DoxyCodeLine{30 dmrg\_default\_logger dummy\_logger;}
+\DoxyCodeLine{31 \}}
+\DoxyCodeLine{37 torch::Tensor dmrg( MPO \&hamiltonian, MPS \&in\_out\_state, \textcolor{keyword}{const} dmrg\_options \&options,}
+\DoxyCodeLine{38                    dmrg\_logger \&logger = dummy\_logger);}
+\DoxyCodeLine{39 btensor dmrg( bMPO \&hamiltonian, bMPS \&in\_out\_state, \textcolor{keyword}{const} dmrg\_options \&options,}
+\DoxyCodeLine{40                    dmrg\_logger \&logger = dummy\_logger);}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{47 std::tuple<torch::Tensor, MPS> dmrg( MPO \&hamiltonian, \textcolor{keyword}{const} dmrg\_options \&options,}
+\DoxyCodeLine{48                                     dmrg\_logger \&logger = dummy\_logger);}
+\DoxyCodeLine{49 std::tuple<btensor, bMPS> dmrg( bMPO \&hamiltonian, any\_quantity\_cref state\_constraint , \textcolor{keyword}{const} dmrg\_options \&options,}
+\DoxyCodeLine{50                                     dmrg\_logger \&logger = dummy\_logger);}
+\DoxyCodeLine{51 }
+\DoxyCodeLine{52 \textcolor{keyword}{namespace }details}
+\DoxyCodeLine{53 \{}
+\DoxyCodeLine{54 }
+\DoxyCodeLine{55 btensor dmrg\_impl(\textcolor{keyword}{const} bMPO \&hamiltonian, \textcolor{keyword}{const} bMPT \&two\_sites\_hamil, bMPS \&in\_out\_state, \textcolor{keyword}{const} dmrg\_options \&options,}
+\DoxyCodeLine{56                   benv\_holder \&Env, dmrg\_logger \&logger);}
+\DoxyCodeLine{57 torch::Tensor dmrg\_impl(\textcolor{keyword}{const} MPO \&hamiltonian, \textcolor{keyword}{const} MPT \&twosites\_hamil, MPS \&in\_out\_state,}
+\DoxyCodeLine{58                         \textcolor{keyword}{const} dmrg\_options \&options, env\_holder \&Env, dmrg\_logger \&logger);}
+\DoxyCodeLine{59 std::tuple<torch::Tensor, torch::Tensor, torch::Tensor> eig2x2Mat(\textcolor{keyword}{const} torch::Tensor \&a0, \textcolor{keyword}{const} torch::Tensor \&a1,}
+\DoxyCodeLine{60                                                                   \textcolor{keyword}{const} torch::Tensor \&b);}
+\DoxyCodeLine{61 std::tuple<btensor, btensor, btensor> eig2x2Mat(\textcolor{keyword}{const} btensor \&a0, \textcolor{keyword}{const} btensor \&a1, \textcolor{keyword}{const} btensor \&b);}
+\DoxyCodeLine{62 torch::Tensor hamil2site\_times\_state(\textcolor{keyword}{const} torch::Tensor \&state, \textcolor{keyword}{const} torch::Tensor \&hamil, \textcolor{keyword}{const} torch::Tensor \&Lenv,}
+\DoxyCodeLine{63                                      \textcolor{keyword}{const} torch::Tensor \&Renv);}
+\DoxyCodeLine{64 btensor hamil2site\_times\_state(\textcolor{keyword}{const} btensor \&state, \textcolor{keyword}{const} btensor \&hamil, \textcolor{keyword}{const} btensor \&Lenv, \textcolor{keyword}{const} btensor \&Renv);}
+\DoxyCodeLine{65 MPT compute\_2sitesHamil(\textcolor{keyword}{const} MPO \&hamil);}
+\DoxyCodeLine{66 bMPT compute\_2sitesHamil(\textcolor{keyword}{const} bMPO \&hamil);}
+\DoxyCodeLine{67 std::tuple<torch::Tensor, torch::Tensor, torch::Tensor, torch::Tensor> one\_step\_lanczos(\textcolor{keyword}{const} torch::Tensor \&state,}
+\DoxyCodeLine{68                                                                                         \textcolor{keyword}{const} torch::Tensor \&hamil,}
+\DoxyCodeLine{69                                                                                         \textcolor{keyword}{const} torch::Tensor \&Lenv,}
+\DoxyCodeLine{70                                                                                         \textcolor{keyword}{const} torch::Tensor \&Renv);}
+\DoxyCodeLine{71 std::tuple<btensor, btensor, btensor, btensor> one\_step\_lanczos(\textcolor{keyword}{const} btensor \&state, \textcolor{keyword}{const} btensor \&hamil,}
+\DoxyCodeLine{72                                                                 \textcolor{keyword}{const} btensor \&Lenv, \textcolor{keyword}{const} btensor \&Renv);}
+\DoxyCodeLine{73 btensor edge\_shape\_prep(\textcolor{keyword}{const} btensor \&tens,int64\_t dim);}
+\DoxyCodeLine{74 torch\_shape edge\_shape\_prep(\textcolor{keyword}{const} torch\_shape \&tens, int64\_t dim);}
+\DoxyCodeLine{75 torch::Tensor trivial\_edge(\textcolor{keyword}{const} torch::Tensor \&lower\_state, \textcolor{keyword}{const} torch::Tensor \&Hamil, \textcolor{keyword}{const} torch::Tensor \&upper\_state,}
+\DoxyCodeLine{76                               int64\_t index\_low, int64\_t index\_op, int64\_t index\_up);}
+\DoxyCodeLine{77 btensor trivial\_edge(\textcolor{keyword}{const} btensor \&lower\_state, \textcolor{keyword}{const} btensor \&Hamil, \textcolor{keyword}{const} btensor \&upper\_state, int64\_t index\_low,}
+\DoxyCodeLine{78                      int64\_t index\_op, int64\_t index\_up);}
+\DoxyCodeLine{79 \} \textcolor{comment}{// namespace details}}
+\DoxyCodeLine{80 qtt\_TEST\_CASE(\textcolor{stringliteral}{"{}btensor dmrg run test"{}})}
+\DoxyCodeLine{81 \{   }
+\DoxyCodeLine{82     \textcolor{comment}{//TODO: make it so dmrg run with silly target cval (like 0 particles) behave in a more graceful (e.g. finnish quickly) manner than currently(crash)}}
+\DoxyCodeLine{83     \textcolor{keyword}{using} cval = quantity<conserved::Z>;}
+\DoxyCodeLine{84     \textcolor{keyword}{auto} T = quantit::rand(\{\{\{1,cval(1)\},\{1,cval(-\/1)\}\}, \{\{3,cval(-\/1)\},\{2,cval(1)\}\}, \{\{1,cval(-\/1)\},\{1,cval(1)\}\}, \{\{3,cval(1)\},\{2,cval(-\/1)\}\}\},cval(0));}
+\DoxyCodeLine{85     bMPO Hamil(5, T);}
+\DoxyCodeLine{86     dmrg\_options opt;}
+\DoxyCodeLine{87     opt.maximum\_iterations = 10;}
+\DoxyCodeLine{88     \{}
+\DoxyCodeLine{89         Hamil[0] = Hamil[0].basic\_create\_view(\{0,-\/1,-\/1,-\/1\},\textcolor{keyword}{true});}
+\DoxyCodeLine{90         Hamil[Hamil.size() -\/ 1] = Hamil[Hamil.size() -\/ 1].basic\_create\_view(\{-\/1,-\/1, 0,-\/1\},\textcolor{keyword}{true});}
+\DoxyCodeLine{91     \}}
+\DoxyCodeLine{92     qtt\_REQUIRE(Hamil.check\_ranks());}
+\DoxyCodeLine{93     btensor E;}
+\DoxyCodeLine{94     bMPS state;}
+\DoxyCodeLine{95     \textcolor{comment}{// std::tie(E,state) = dmrg(Hamil,opt);}}
+\DoxyCodeLine{96     qtt\_CHECK\_NOTHROW(std::tie(E, state) = dmrg(Hamil, cval(1), opt));}
+\DoxyCodeLine{97     \textcolor{comment}{// fmt::print("{}E \{\}\(\backslash\)n\(\backslash\)n"{},E);}}
+\DoxyCodeLine{98 \}}
+\DoxyCodeLine{99 qtt\_TEST\_CASE(\textcolor{stringliteral}{"{}dmrg run test"{}})}
+\DoxyCodeLine{100 \{}
+\DoxyCodeLine{101     \textcolor{keyword}{auto} T = torch::rand(\{2, 5, 2, 5\});}
+\DoxyCodeLine{102     MPO Hamil(5, T);}
+\DoxyCodeLine{103     dmrg\_options opt;}
+\DoxyCodeLine{104     opt.maximum\_iterations = 10;}
+\DoxyCodeLine{105     \{}
+\DoxyCodeLine{106         \textcolor{keyword}{using namespace }torch::indexing;}
+\DoxyCodeLine{107         Hamil[0] = Hamil[0].index(\{Slice(0, 1), Ellipsis\});}
+\DoxyCodeLine{108         Hamil[Hamil.size() -\/ 1] = Hamil[Hamil.size() -\/ 1].index(\{Ellipsis, Slice(0, 1), Slice()\});}
+\DoxyCodeLine{109     \}}
+\DoxyCodeLine{110     torch::Tensor E;}
+\DoxyCodeLine{111     MPS state;}
+\DoxyCodeLine{112     \textcolor{comment}{// std::tie(E,state) = dmrg(Hamil,opt);}}
+\DoxyCodeLine{113     qtt\_CHECK\_NOTHROW(std::tie(E, state) = dmrg(Hamil, opt));}
+\DoxyCodeLine{114 \}}
+\DoxyCodeLine{115 qtt\_TEST\_CASE(\textcolor{stringliteral}{"{}2x2 eigen value problem"{}})}
+\DoxyCodeLine{116 \{}
+\DoxyCodeLine{117     \textcolor{comment}{// setup: a random answer from which we construct a matrix}}
+\DoxyCodeLine{118     \textcolor{keyword}{auto} angle = torch::rand(\{\}, torch::kFloat64) * 2 * M\_PI;}
+\DoxyCodeLine{119     \textcolor{keyword}{auto} E0 = torch::rand(\{\}, torch::kFloat64) * -\/1;}
+\DoxyCodeLine{120     \textcolor{keyword}{auto} E1 = torch::rand(\{\}, torch::kFloat64);}
+\DoxyCodeLine{121     \textcolor{keyword}{auto} psi00 = torch::zeros(\{\}, torch::kFloat64);}
+\DoxyCodeLine{122     \textcolor{keyword}{auto} psi01 = torch::zeros(\{\}, torch::kFloat64);}
+\DoxyCodeLine{123     psi00 = cos(angle);}
+\DoxyCodeLine{124     psi01 = sin(angle);}
+\DoxyCodeLine{125     \textcolor{keyword}{auto} psi10 = torch::zeros(\{\}, torch::kFloat64);}
+\DoxyCodeLine{126     \textcolor{keyword}{auto} psi11 = torch::zeros(\{\}, torch::kFloat64);}
+\DoxyCodeLine{127     psi10 = sin(angle);}
+\DoxyCodeLine{128     psi11 = -\/cos(angle);}
+\DoxyCodeLine{129     \textcolor{keyword}{auto} a0 = psi00.pow(2) * E0 + psi10.pow(2) * E1;  \textcolor{comment}{// matrix element}}
+\DoxyCodeLine{130     \textcolor{keyword}{auto} a1 = psi01.pow(2) * E0 + psi11.pow(2) * E1;  \textcolor{comment}{// matrix element}}
+\DoxyCodeLine{131     \textcolor{keyword}{auto} b = psi01 * psi00 * E0 + psi11 * psi10 * E1; \textcolor{comment}{// matrix element}}
+\DoxyCodeLine{132 }
+\DoxyCodeLine{133     \textcolor{keyword}{auto} [T\_E0, T\_psi00, T\_psi01] = details::eig2x2Mat(a0, a1, b);}
+\DoxyCodeLine{134     \textcolor{comment}{// for the phase gauge freedom.}}
+\DoxyCodeLine{135     \textcolor{keywordtype}{bool} state\_check = (torch::allclose(psi00, T\_psi00) and torch::allclose(psi01, T\_psi01)) or}
+\DoxyCodeLine{136                        (torch::allclose(-\/1 * psi00, T\_psi00) and torch::allclose(-\/1 * psi01, T\_psi01));}
+\DoxyCodeLine{137     qtt\_CHECK(state\_check);}
+\DoxyCodeLine{138     qtt\_CHECK(torch::allclose(T\_E0, E0));}
+\DoxyCodeLine{139 \}}
+\DoxyCodeLine{140 }
+\DoxyCodeLine{141 qtt\_TEST\_CASE(\textcolor{stringliteral}{"{}Btensor two sites MPO"{}})}
+\DoxyCodeLine{142 \{}
+\DoxyCodeLine{143     torch::set\_default\_dtype(torch::scalarTypeToTypeMeta(}
+\DoxyCodeLine{144         torch::kFloat64)); \textcolor{comment}{// otherwise the type promotion always goes to floats when promoting a tensor}}
+\DoxyCodeLine{145     \textcolor{keyword}{using namespace }torch::indexing;}
+\DoxyCodeLine{146     \textcolor{keyword}{using namespace }details;}
+\DoxyCodeLine{147     \textcolor{keyword}{auto} l\_ising = torch::zeros(\{3, 2, 3, 2\});}
+\DoxyCodeLine{148     \{}
+\DoxyCodeLine{149         \textcolor{comment}{//only the Sz spin model can be written in MPO form with conservation laws.}}
+\DoxyCodeLine{150         \textcolor{keyword}{auto} acc = l\_ising.accessor<double, 4>();}
+\DoxyCodeLine{151         acc[1][0][0][0] = acc[2][0][1][0] = 1;}
+\DoxyCodeLine{152         acc[1][1][0][1] = acc[2][1][1][1] = -\/1;}
+\DoxyCodeLine{153         \textcolor{comment}{//Identities}}
+\DoxyCodeLine{154         acc[0][0][0][0] = acc[0][1][0][1] = 1;}
+\DoxyCodeLine{155         acc[2][0][2][0] = acc[2][1][2][1] = 1;}
+\DoxyCodeLine{156     \}}
+\DoxyCodeLine{157     \textcolor{keyword}{using} cval = quantity<conserved::Z>;}
+\DoxyCodeLine{158     \textcolor{keyword}{auto} bl\_ising = btensor(\{\{\{3,cval(0)\}\},\{\{1,cval(1)\},\{1,cval(-\/1)\}\},\{\{3,cval(0)\}\},\{\{1,cval(-\/1)\},\{1,cval(1)\}\}\},cval(0));}
+\DoxyCodeLine{159     bl\_ising = from\_basic\_tensor\_like(bl\_ising,l\_ising);}
+\DoxyCodeLine{160     bMPO ising(2, bl\_ising);}
+\DoxyCodeLine{161     ising[0] = ising[0].basic\_create\_view(\{2, -\/1,-\/1,-\/1\},\textcolor{keyword}{true});\textcolor{comment}{//preserve the rank when creating the view}}
+\DoxyCodeLine{162     ising[1] = ising[1].basic\_create\_view(\{-\/1, -\/1, 0,-\/1\},\textcolor{keyword}{true});\textcolor{comment}{//preserve the rank when create the view.}}
+\DoxyCodeLine{163 }
+\DoxyCodeLine{164     \textcolor{keyword}{auto} two\_s\_ising = details::compute\_2sitesHamil(ising);}
+\DoxyCodeLine{165 }
+\DoxyCodeLine{166     bMPS rstate = random\_bMPS(4,ising,cval(0));\textcolor{comment}{//edges have bond dimension 1. if you want a uniform bond dimenison, ask for a MPS longer than you need, and chop off the edges.}}
+\DoxyCodeLine{167 }
+\DoxyCodeLine{168     \textcolor{comment}{// fmt::print("{}Norm2 \(\backslash\)n\{\}\(\backslash\)n"{},contract(rstate,rstate));}}
+\DoxyCodeLine{169     \textcolor{comment}{// fmt::print("{}state\(\backslash\)n\{\}\(\backslash\)n\{\}\(\backslash\)n"{},rstate[0].reshape(\{4\}),rstate[1].reshape(\{4\}));}}
+\DoxyCodeLine{170     rstate[0] = rstate[0] / sqrt(contract(rstate, rstate)); \textcolor{comment}{// normalize}}
+\DoxyCodeLine{171     \textcolor{comment}{// fmt::print("{}normed state\(\backslash\)n\{\}\(\backslash\)n\{\}\(\backslash\)n"{},rstate[0].reshape(\{4\}),rstate[1].reshape(\{4\}));}}
+\DoxyCodeLine{172     \textcolor{keyword}{auto} norm = contract(rstate,rstate);}
+\DoxyCodeLine{173     qtt\_CHECK(allclose(norm, quantit::ones(\{\},cval(0))));}
+\DoxyCodeLine{174     \textcolor{comment}{// fmt::print("{}Norm2 \(\backslash\)n\{\}\(\backslash\)n"{},contract(rstate,rstate));}}
+\DoxyCodeLine{175     \textcolor{comment}{// fmt::print("{}MPS \(\backslash\)n\{\}\(\backslash\)n\(\backslash\)n"{},squeeze(rstate[0])); }}
+\DoxyCodeLine{176     \textcolor{comment}{// fmt::print("{}\{\}\(\backslash\)n\(\backslash\)n"{},squeeze(rstate[1]));}}
+\DoxyCodeLine{177     \textcolor{keyword}{auto} two\_s\_state = tensordot(rstate[0], rstate[1], \{2\}, \{0\});}
+\DoxyCodeLine{178     \textcolor{comment}{// fmt::print("{}\{\}\(\backslash\)n\(\backslash\)n"{},two\_s\_state);}}
+\DoxyCodeLine{179     \textcolor{keyword}{auto} avg = tensordot(two\_s\_state, two\_s\_state.conj(), \{0, 1, 2, 3\}, \{0, 1, 2, 3\});}
+\DoxyCodeLine{180     \textcolor{comment}{// fmt::print("{}avg \{\}\(\backslash\)n\(\backslash\)n"{},avg);}}
+\DoxyCodeLine{181     qtt\_CHECK(allclose(avg,ones\_like(avg) ));}
+\DoxyCodeLine{182 }
+\DoxyCodeLine{183     \textcolor{keyword}{auto} H\_av = contract(rstate, rstate, ising);}
+\DoxyCodeLine{184     \textcolor{keyword}{auto} H\_av\_2s = squeeze(tensordot(two\_s\_state.conj(), tensordot(two\_s\_ising[0], two\_s\_state, \{4, 5\}, \{1, 2\}), \{1, 2\}, \{1, 2\}));}
+\DoxyCodeLine{185     \textcolor{keyword}{auto} Lenv = trivial\_edge(two\_s\_state,two\_s\_ising[0],two\_s\_state.inverse\_cvals(),0,0,0);}
+\DoxyCodeLine{186     \textcolor{keyword}{auto} Renv = trivial\_edge(two\_s\_state,two\_s\_ising[0],two\_s\_state.inverse\_cvals(),3,3,3);}
+\DoxyCodeLine{187     \textcolor{keyword}{auto} H\_av\_upd = tensordot(}
+\DoxyCodeLine{188         two\_s\_state.conj(), quantit::details::hamil2site\_times\_state(two\_s\_state, two\_s\_ising[0], Lenv, Renv),}
+\DoxyCodeLine{189         \{0, 1, 2, 3\}, \{0, 1, 2, 3\});}
+\DoxyCodeLine{190     \textcolor{comment}{// fmt::print("{}H\_av \{\}\(\backslash\)n\(\backslash\)nH\_av\_2s \{\}\(\backslash\)n\(\backslash\)n H\_av\_upd \{\}\(\backslash\)n\(\backslash\)n"{},H\_av,H\_av\_2s,H\_av\_upd);}}
+\DoxyCodeLine{191     qtt\_CHECK(allclose(H\_av, H\_av\_2s));}
+\DoxyCodeLine{192     qtt\_CHECK(allclose(H\_av, H\_av\_upd));}
+\DoxyCodeLine{193     \textcolor{comment}{// fmt::print("{}Correct value: \(\backslash\)n\{\}\(\backslash\)n"{},H\_av);}}
+\DoxyCodeLine{194     \textcolor{comment}{// fmt::print("{}from two sites: \(\backslash\)n\{\}\(\backslash\)n"{},H\_av\_2s);}}
+\DoxyCodeLine{195     \textcolor{comment}{// fmt::print("{}from two sites update: \(\backslash\)n\{\}\(\backslash\)n"{},H\_av\_upd);}}
+\DoxyCodeLine{196     \textcolor{keyword}{auto} [Hpsi, a0, a1, b] = details::one\_step\_lanczos(two\_s\_state, two\_s\_ising[0], Lenv, Renv);}
+\DoxyCodeLine{197     \textcolor{comment}{// fmt::print("{}Ising Hamil: \{\} \(\backslash\)n\(\backslash\)n"{}, squeeze(two\_s\_ising[0]).reshape(\{2\}) );}}
+\DoxyCodeLine{198     \textcolor{comment}{// fmt::print("{}state: \{\} \(\backslash\)n\(\backslash\)n"{}, squeeze(two\_s\_state).reshape(\{\}) );}}
+\DoxyCodeLine{199     \textcolor{comment}{// fmt::print("{}one step lanczos: \(\backslash\)n\{\}\(\backslash\)n"{},a0);}}
+\DoxyCodeLine{200     \textcolor{keyword}{auto} [E, o\_coeff, n\_coeff] = details::eig2x2Mat(a0, a1, b);}
+\DoxyCodeLine{201     qtt\_CHECK(allclose(o\_coeff.pow(2) + n\_coeff.pow(2), ones\_like(o\_coeff)));}
+\DoxyCodeLine{202     \textcolor{keyword}{auto} psi\_update = o\_coeff * two\_s\_state + n\_coeff * Hpsi;}
+\DoxyCodeLine{203     \textcolor{keyword}{auto} test = tensordot(psi\_update.conj(), psi\_update, \{0, 1, 2, 3\}, \{0, 1, 2, 3\});}
+\DoxyCodeLine{204     qtt\_CHECK(allclose(test, ones\_like(test)));}
+\DoxyCodeLine{205     test = tensordot(two\_s\_state.conj(), two\_s\_state, \{0, 1, 2, 3\}, \{0, 1, 2, 3\});}
+\DoxyCodeLine{206     qtt\_CHECK(allclose(test, ones\_like(test)));}
+\DoxyCodeLine{207     test =tensordot(Hpsi, two\_s\_state.conj(), \{0, 1, 2, 3\}, \{0, 1, 2, 3\});}
+\DoxyCodeLine{208     qtt\_CHECK(allclose(test, zeros\_like(test)));}
+\DoxyCodeLine{209     test = tensordot(Hpsi.conj(), Hpsi, \{0, 1, 2, 3\}, \{0, 1, 2, 3\});}
+\DoxyCodeLine{210     qtt\_CHECK(allclose(test, zeros\_like(test)));\textcolor{comment}{// the input random state is always an eigenstate (in a degenerate manifold), the model is that simple.}}
+\DoxyCodeLine{211     \textcolor{keyword}{auto} a1\_test =}
+\DoxyCodeLine{212         tensordot(Hpsi.conj(), quantit::details::hamil2site\_times\_state(Hpsi, two\_s\_ising[0], Lenv, Renv),}
+\DoxyCodeLine{213                          \{0, 1, 2, 3\}, \{0, 1, 2, 3\});}
+\DoxyCodeLine{214     qtt\_CHECK(allclose(a1, a1\_test));}
+\DoxyCodeLine{215     \textcolor{comment}{// fmt::print("{}a1 \(\backslash\)n\{\}\(\backslash\)na1\_test\(\backslash\)n\{\}\(\backslash\)n"{},a1,a1\_test);}}
+\DoxyCodeLine{216     \textcolor{keyword}{auto} H\_av\_Pupd = tensordot(}
+\DoxyCodeLine{217         psi\_update.conj(), quantit::details::hamil2site\_times\_state(psi\_update, two\_s\_ising[0], Lenv, Renv),}
+\DoxyCodeLine{218         \{0, 1, 2, 3\}, \{0, 1, 2, 3\});}
+\DoxyCodeLine{219     \textcolor{comment}{// fmt::print("{}actual update energie: \(\backslash\)n\{\}\(\backslash\)n"{}, H\_av\_Pupd);}}
+\DoxyCodeLine{220     \textcolor{comment}{// fmt::print("{}predicted update energie: \(\backslash\)n\{\}\(\backslash\)n"{}, E);}}
+\DoxyCodeLine{221 \}}
+\DoxyCodeLine{222 qtt\_TEST\_CASE(\textcolor{stringliteral}{"{}Two sites MPO"{}})}
+\DoxyCodeLine{223 \{}
+\DoxyCodeLine{224     torch::set\_default\_dtype(torch::scalarTypeToTypeMeta(}
+\DoxyCodeLine{225         torch::kFloat64)); \textcolor{comment}{// otherwise the type promotion always goes to floats when promoting a tensor}}
+\DoxyCodeLine{226     \textcolor{keyword}{using namespace }torch::indexing;}
+\DoxyCodeLine{227     \textcolor{comment}{//Sx *Sx version}}
+\DoxyCodeLine{228     \textcolor{keyword}{auto} l\_ising = torch::zeros(\{3, 2, 3, 2\});}
+\DoxyCodeLine{229     \{}
+\DoxyCodeLine{230         \textcolor{keyword}{auto} acc = l\_ising.accessor<double, 4>();}
+\DoxyCodeLine{231         \textcolor{comment}{//Sx}}
+\DoxyCodeLine{232         acc[1][0][0][1] = acc[1][1][0][0] = 1;}
+\DoxyCodeLine{233         acc[2][0][1][1] = acc[2][1][1][0] = 1;}
+\DoxyCodeLine{234 }
+\DoxyCodeLine{235         \textcolor{comment}{//corner identities}}
+\DoxyCodeLine{236         acc[0][0][0][0] = acc[0][1][0][1] = 1;}
+\DoxyCodeLine{237         acc[2][0][2][0] = acc[2][1][2][1] = 1;}
+\DoxyCodeLine{238     \}}
+\DoxyCodeLine{239     MPO ising(2, l\_ising);}
+\DoxyCodeLine{240     ising[0] = ising[0].index(\{Slice(2, 3), Ellipsis\});}
+\DoxyCodeLine{241     ising[1] = ising[1].index(\{Slice(), Slice(), Slice(0, 1), Slice()\});}
+\DoxyCodeLine{242 }
+\DoxyCodeLine{243     \textcolor{keyword}{auto} two\_s\_ising = details::compute\_2sitesHamil(ising);}
+\DoxyCodeLine{244 }
+\DoxyCodeLine{245     MPS rstate(2, torch::rand(\{2, 2, 2\}));}
+\DoxyCodeLine{246     rstate[0] = rstate[0].index(\{Slice(0, 1), Ellipsis\});}
+\DoxyCodeLine{247     rstate[1] = rstate[1].index(\{Ellipsis, Slice(1, 2)\});}
+\DoxyCodeLine{248 }
+\DoxyCodeLine{249     \textcolor{comment}{// fmt::print("{}Norm2 \(\backslash\)n\{\}\(\backslash\)n"{},contract(rstate,rstate));}}
+\DoxyCodeLine{250     \textcolor{comment}{// fmt::print("{}state\(\backslash\)n\{\}\(\backslash\)n\{\}\(\backslash\)n"{},rstate[0].reshape(\{4\}),rstate[1].reshape(\{4\}));}}
+\DoxyCodeLine{251     rstate[0] = rstate[0] / torch::sqrt(contract(rstate, rstate)); \textcolor{comment}{// normalize}}
+\DoxyCodeLine{252     \textcolor{comment}{// fmt::print("{}normed state\(\backslash\)n\{\}\(\backslash\)n\{\}\(\backslash\)n"{},rstate[0].reshape(\{4\}),rstate[1].reshape(\{4\}));}}
+\DoxyCodeLine{253     qtt\_CHECK(torch::allclose(contract(rstate, rstate), torch::ones(\{\})));}
+\DoxyCodeLine{254     \textcolor{comment}{// fmt::print("{}Norm2 \(\backslash\)n\{\}\(\backslash\)n"{},contract(rstate,rstate));}}
+\DoxyCodeLine{255     \textcolor{keyword}{auto} two\_s\_state = torch::tensordot(rstate[0], rstate[1], \{2\}, \{0\});}
+\DoxyCodeLine{256     qtt\_CHECK(torch::allclose(tensordot(two\_s\_state, two\_s\_state, \{0, 1, 2, 3\}, \{0, 1, 2, 3\}), torch::ones(\{\})));}
+\DoxyCodeLine{257 }
+\DoxyCodeLine{258     \textcolor{keyword}{auto} H\_av = contract(rstate, rstate, ising);}
+\DoxyCodeLine{259     \textcolor{keyword}{auto} H\_av\_2s = torch::squeeze(}
+\DoxyCodeLine{260         torch::tensordot(two\_s\_state, torch::tensordot(two\_s\_ising[0], two\_s\_state, \{4, 5\}, \{1, 2\}), \{1, 2\}, \{1, 2\}));}
+\DoxyCodeLine{261     \textcolor{keyword}{auto} triv\_env = torch::ones(\{1, 1, 1\});}
+\DoxyCodeLine{262     \textcolor{keyword}{auto} H\_av\_upd = torch::tensordot(}
+\DoxyCodeLine{263         two\_s\_state, quantit::details::hamil2site\_times\_state(two\_s\_state, two\_s\_ising[0], triv\_env, triv\_env),}
+\DoxyCodeLine{264         \{0, 1, 2, 3\}, \{0, 1, 2, 3\});}
+\DoxyCodeLine{265 }
+\DoxyCodeLine{266     qtt\_CHECK(torch::allclose(H\_av, H\_av\_2s));}
+\DoxyCodeLine{267     qtt\_CHECK(torch::allclose(H\_av, H\_av\_upd));}
+\DoxyCodeLine{268     \textcolor{comment}{// fmt::print("{}Correct value: \(\backslash\)n\{\}\(\backslash\)n"{},H\_av);}}
+\DoxyCodeLine{269     \textcolor{comment}{// fmt::print("{}from two sites: \(\backslash\)n\{\}\(\backslash\)n"{},H\_av\_2s);}}
+\DoxyCodeLine{270     \textcolor{comment}{// fmt::print("{}from two sites update: \(\backslash\)n\{\}\(\backslash\)n"{},H\_av\_upd);}}
+\DoxyCodeLine{271     \textcolor{keyword}{auto} [Hpsi, a0, a1, b] = details::one\_step\_lanczos(two\_s\_state, two\_s\_ising[0], triv\_env, triv\_env);}
+\DoxyCodeLine{272     \textcolor{comment}{// fmt::print("{}one step lanczos: \(\backslash\)n\{\}\(\backslash\)n"{},a0);}}
+\DoxyCodeLine{273     \textcolor{keyword}{auto} [E, o\_coeff, n\_coeff] = details::eig2x2Mat(a0, a1, b);}
+\DoxyCodeLine{274     qtt\_CHECK(torch::allclose(o\_coeff.pow(2) + n\_coeff.pow(2), torch::ones(\{\})));}
+\DoxyCodeLine{275     \textcolor{keyword}{auto} psi\_update = o\_coeff * two\_s\_state + n\_coeff * Hpsi;}
+\DoxyCodeLine{276     qtt\_CHECK(torch::allclose(tensordot(psi\_update, psi\_update, \{0, 1, 2, 3\}, \{0, 1, 2, 3\}), torch::ones(\{\})));}
+\DoxyCodeLine{277     qtt\_CHECK(torch::allclose(tensordot(two\_s\_state, two\_s\_state, \{0, 1, 2, 3\}, \{0, 1, 2, 3\}), torch::ones(\{\})));}
+\DoxyCodeLine{278     qtt\_CHECK(torch::allclose(tensordot(Hpsi, two\_s\_state, \{0, 1, 2, 3\}, \{0, 1, 2, 3\}), torch::zeros(\{\})));}
+\DoxyCodeLine{279     qtt\_CHECK(torch::allclose(tensordot(Hpsi, Hpsi, \{0, 1, 2, 3\}, \{0, 1, 2, 3\}), torch::ones(\{\})));}
+\DoxyCodeLine{280     \textcolor{keyword}{auto} a1\_test =}
+\DoxyCodeLine{281         torch::tensordot(Hpsi, quantit::details::hamil2site\_times\_state(Hpsi, two\_s\_ising[0], triv\_env, triv\_env),}
+\DoxyCodeLine{282                          \{0, 1, 2, 3\}, \{0, 1, 2, 3\});}
+\DoxyCodeLine{283     qtt\_CHECK(torch::allclose(a1, a1\_test));}
+\DoxyCodeLine{284     \textcolor{comment}{// fmt::print("{}a1 \(\backslash\)n\{\}\(\backslash\)na1\_test\(\backslash\)n\{\}\(\backslash\)n"{},a1,a1\_test);}}
+\DoxyCodeLine{285     \textcolor{keyword}{auto} H\_av\_Pupd = torch::tensordot(}
+\DoxyCodeLine{286         psi\_update, quantit::details::hamil2site\_times\_state(psi\_update, two\_s\_ising[0], triv\_env, triv\_env),}
+\DoxyCodeLine{287         \{0, 1, 2, 3\}, \{0, 1, 2, 3\});}
+\DoxyCodeLine{288     \textcolor{comment}{// fmt::print("{}actual update energie: \(\backslash\)n\{\}\(\backslash\)n"{}, H\_av\_Pupd);}}
+\DoxyCodeLine{289     \textcolor{comment}{// fmt::print("{}predicted update energie: \(\backslash\)n\{\}\(\backslash\)n"{}, E);}}
+\DoxyCodeLine{290 \}}
+\DoxyCodeLine{291 \} \textcolor{comment}{// namespace quantit}}
+\DoxyCodeLine{292 }
+\DoxyCodeLine{293 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* E8650E72\_8C05\_4D74\_98C7\_61F4FD428B39 */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

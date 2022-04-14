@@ -1,78 +1,78 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
   <compounddef id="property_8h" kind="file" language="C++">
     <compoundname>property.h</compoundname>
     <includes local="no">type_traits</includes>
     <includes local="no">utility</includes>
-    <includedby refid="btensor_8h" local="yes">/home/alex/project/quantt/include/blockTensor/btensor.h</includedby>
-    <includedby refid="MPT_8h" local="yes">/home/alex/project/quantt/include/MPT.h</includedby>
+    <includedby refid="MPT_8h" local="yes">/Users/alex/Documents/Prog/QuantiT/include/MPT.h</includedby>
+    <includedby refid="btensor_8h" local="yes">/Users/alex/Documents/Prog/QuantiT/include/blockTensor/btensor.h</includedby>
     <incdepgraph>
       <node id="1">
-        <label>/home/alex/project/quantt/include/property.h</label>
+        <label>/Users/alex/Documents/Prog/QuantiT/include/property.h</label>
         <link refid="property_8h"/>
         <childnode refid="2" relation="include">
         </childnode>
         <childnode refid="3" relation="include">
         </childnode>
-      </node>
-      <node id="3">
-        <label>utility</label>
       </node>
       <node id="2">
         <label>type_traits</label>
       </node>
+      <node id="3">
+        <label>utility</label>
+      </node>
     </incdepgraph>
     <invincdepgraph>
-      <node id="5">
-        <label>/home/alex/project/quantt/include/dmrg.h</label>
-        <link refid="dmrg_8h_source"/>
-      </node>
-      <node id="1">
-        <label>/home/alex/project/quantt/include/property.h</label>
-        <link refid="property_8h"/>
-        <childnode refid="2" relation="include">
-        </childnode>
-        <childnode refid="6" relation="include">
-        </childnode>
-      </node>
-      <node id="8">
-        <label>/home/alex/project/quantt/include/operators.h</label>
-        <link refid="operators_8h_source"/>
-      </node>
-      <node id="6">
-        <label>/home/alex/project/quantt/include/MPT.h</label>
-        <link refid="MPT_8h_source"/>
-        <childnode refid="5" relation="include">
-        </childnode>
-        <childnode refid="4" relation="include">
-        </childnode>
-        <childnode refid="7" relation="include">
-        </childnode>
-      </node>
-      <node id="3">
-        <label>/home/alex/project/quantt/include/blockTensor/LinearAlgebra.h</label>
-        <link refid="blockTensor_2LinearAlgebra_8h_source"/>
-      </node>
       <node id="2">
-        <label>/home/alex/project/quantt/include/blockTensor/btensor.h</label>
-        <link refid="btensor_8h_source"/>
+        <label>/Users/alex/Documents/Prog/QuantiT/include/MPT.h</label>
+        <link refid="MPT_8h_source"/>
         <childnode refid="3" relation="include">
         </childnode>
         <childnode refid="4" relation="include">
         </childnode>
-        <childnode refid="6" relation="include">
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>/Users/alex/Documents/Prog/QuantiT/include/blockTensor/LinearAlgebra.h</label>
+        <link refid="blockTensor_2LinearAlgebra_8h_source"/>
+      </node>
+      <node id="6">
+        <label>/Users/alex/Documents/Prog/QuantiT/include/blockTensor/btensor.h</label>
+        <link refid="btensor_8h_source"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
         </childnode>
         <childnode refid="8" relation="include">
         </childnode>
       </node>
-      <node id="7">
-        <label>/home/alex/project/quantt/include/models.h</label>
-        <link refid="models_8h_source"/>
+      <node id="3">
+        <label>/Users/alex/Documents/Prog/QuantiT/include/dmrg.h</label>
+        <link refid="dmrg_8h_source"/>
       </node>
       <node id="4">
-        <label>/home/alex/project/quantt/include/dmrg_logger.h</label>
+        <label>/Users/alex/Documents/Prog/QuantiT/include/dmrg_logger.h</label>
         <link refid="dmrg__logger_8h_source"/>
-        <childnode refid="5" relation="include">
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>/Users/alex/Documents/Prog/QuantiT/include/models.h</label>
+        <link refid="models_8h_source"/>
+      </node>
+      <node id="8">
+        <label>/Users/alex/Documents/Prog/QuantiT/include/operators.h</label>
+        <link refid="operators_8h_source"/>
+      </node>
+      <node id="1">
+        <label>/Users/alex/Documents/Prog/QuantiT/include/property.h</label>
+        <link refid="property_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
         </childnode>
       </node>
     </invincdepgraph>
@@ -125,14 +125,14 @@
 <codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classproperty" kindref="compound">property</ref><sp/>&amp;operator=(<ref refid="classproperty" kindref="compound">property</ref><sp/>&amp;&amp;)<sp/>=<sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">;</highlight></codeline>
 <codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>redefine<sp/>if<sp/>necessary</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="53"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
-<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">operator</highlight><highlight class="normal"><sp/>cref_type()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>noexcept<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>value;<sp/>}<sp/></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">operator</highlight><highlight class="normal"><sp/>cref_type()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">noexcept</highlight><highlight class="normal"><sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>value;<sp/>}<sp/></highlight></codeline>
 <codeline lineno="55"><highlight class="normal"></highlight></codeline>
-<codeline lineno="63" refid="classproperty_1adb58f3ae45996edceb8fa1fcecd9b1bc" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classproperty" kindref="compound">property</ref><sp/>&amp;<ref refid="classproperty_1adb58f3ae45996edceb8fa1fcecd9b1bc" kindref="member">operator=</ref>(cref_type<sp/>new_value);</highlight></codeline>
-<codeline lineno="71" refid="classproperty_1aed01b27239420a0c08a49d7df6f4c9f8" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classproperty" kindref="compound">property</ref><sp/>&amp;<ref refid="classproperty_1aed01b27239420a0c08a49d7df6f4c9f8" kindref="member">operator=</ref>(content<sp/>&amp;&amp;new_value);</highlight></codeline>
+<codeline lineno="63" refid="classproperty_1a9fe732c02d12627d095acfa835e770fc" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classproperty" kindref="compound">property</ref><sp/>&amp;<ref refid="classproperty_1a9fe732c02d12627d095acfa835e770fc" kindref="member">operator=</ref>(cref_type<sp/>new_value);</highlight></codeline>
+<codeline lineno="71" refid="classproperty_1a102a0797b24657ef94ae491d190f5ec6" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classproperty" kindref="compound">property</ref><sp/>&amp;<ref refid="classproperty_1a102a0797b24657ef94ae491d190f5ec6" kindref="member">operator=</ref>(content<sp/>&amp;&amp;new_value);</highlight></codeline>
 <codeline lineno="72"><highlight class="normal"></highlight></codeline>
-<codeline lineno="78" refid="classproperty_1a058c3e1632a91b77ada3d87b435ceea1" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>content<sp/>*<ref refid="classproperty_1a058c3e1632a91b77ada3d87b435ceea1" kindref="member">operator-&gt;</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>&amp;value;<sp/>}</highlight></codeline>
+<codeline lineno="78" refid="classproperty_1a9c1aec2f8f85ced317cd116f594a8f8c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>content<sp/>*<ref refid="classproperty_1a9c1aec2f8f85ced317cd116f594a8f8c" kindref="member">operator-&gt;</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>&amp;value;<sp/>}</highlight></codeline>
 <codeline lineno="79"><highlight class="normal"></highlight></codeline>
-<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/>~<ref refid="classproperty" kindref="compound">property</ref>(){};</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classproperty" kindref="compound">~property</ref>(){};</highlight></codeline>
 <codeline lineno="81"><highlight class="normal">};</highlight></codeline>
 <codeline lineno="82"><highlight class="normal"></highlight></codeline>
 <codeline lineno="83"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>__has_include(&lt;fmt/format.h&gt;)</highlight><highlight class="normal"></highlight></codeline>
@@ -145,6 +145,6 @@
 <codeline lineno="96"><highlight class="normal"></highlight></codeline>
 <codeline lineno="97"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>A0DBDDD7_5F5B_48D3_A287_E11E64C8B84C<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
     </programlisting>
-    <location file="/home/alex/project/quantt/include/property.h"/>
+    <location file="/Users/alex/Documents/Prog/QuantiT/include/property.h"/>
   </compounddef>
 </doxygen>

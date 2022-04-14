@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
   <compounddef id="cquantity_8h" kind="file" language="C++">
     <compoundname>cquantity.h</compoundname>
     <includes refid="quantity__impl_8h" local="yes">Conserved/Composite/quantity_impl.h</includes>
@@ -10,29 +10,28 @@
     <includes local="no">ostream</includes>
     <includes local="no">type_traits</includes>
     <includes local="no">utility</includes>
-    <includedby refid="btensor_8h" local="yes">/home/alex/project/quantt/include/blockTensor/btensor.h</includedby>
-    <includedby refid="quantity__vector__impl_8h" local="yes">/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h</includedby>
+    <includedby refid="quantity__vector__impl_8h" local="yes">/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector_impl.h</includedby>
+    <includedby refid="btensor_8h" local="yes">/Users/alex/Documents/Prog/QuantiT/include/blockTensor/btensor.h</includedby>
     <incdepgraph>
-      <node id="11">
-        <label>functional</label>
-      </node>
-      <node id="19">
-        <label>fmt/format.h</label>
-      </node>
-      <node id="12">
-        <label>iterator</label>
-      </node>
-      <node id="23">
-        <label>cstdint</label>
-      </node>
-      <node id="7">
-        <label>boost/stl_interfaces/iterator_interface.hpp</label>
-      </node>
-      <node id="8">
-        <label>cassert</label>
-      </node>
-      <node id="13">
-        <label>numeric</label>
+      <node id="1">
+        <label>/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h</label>
+        <link refid="cquantity_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
       </node>
       <node id="2">
         <label>Conserved/Composite/quantity_impl.h</label>
@@ -54,26 +53,10 @@
         <childnode refid="15" relation="include">
         </childnode>
       </node>
-      <node id="24">
-        <label>ostream</label>
-      </node>
-      <node id="9">
-        <label>fmt/core.h</label>
-      </node>
-      <node id="16">
-        <label>templateMeta.h</label>
-        <link refid="templateMeta_8h_source"/>
-        <childnode refid="17" relation="include">
-        </childnode>
-        <childnode refid="18" relation="include">
-        </childnode>
-      </node>
-      <node id="1">
-        <label>/home/alex/project/quantt/include/Conserved/Composite/cquantity.h</label>
-        <link refid="cquantity_8h"/>
-        <childnode refid="2" relation="include">
-        </childnode>
-        <childnode refid="22" relation="include">
+      <node id="22">
+        <label>Conserved/quantity.h</label>
+        <link refid="quantity_8h_source"/>
+        <childnode refid="3" relation="include">
         </childnode>
         <childnode refid="16" relation="include">
         </childnode>
@@ -81,15 +64,24 @@
         </childnode>
         <childnode refid="9" relation="include">
         </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
         <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>Conserved/quantity_utils.h</label>
+        <link refid="quantity__utils_8h_source"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
         </childnode>
         <childnode refid="18" relation="include">
         </childnode>
         <childnode refid="14" relation="include">
         </childnode>
-      </node>
-      <node id="20">
-        <label>ios</label>
       </node>
       <node id="4">
         <label>blockTensor/flat_map.h</label>
@@ -117,125 +109,133 @@
         <childnode refid="15" relation="include">
         </childnode>
       </node>
-      <node id="22">
-        <label>Conserved/quantity.h</label>
-        <link refid="quantity_8h_source"/>
-        <childnode refid="3" relation="include">
-        </childnode>
-        <childnode refid="16" relation="include">
-        </childnode>
-        <childnode refid="23" relation="include">
-        </childnode>
-        <childnode refid="9" relation="include">
-        </childnode>
-        <childnode refid="19" relation="include">
-        </childnode>
-        <childnode refid="24" relation="include">
-        </childnode>
-        <childnode refid="5" relation="include">
-        </childnode>
-      </node>
-      <node id="17">
-        <label>tuple</label>
-      </node>
-      <node id="10">
-        <label>fmt/ranges.h</label>
-      </node>
-      <node id="15">
-        <label>vector</label>
-      </node>
-      <node id="14">
-        <label>utility</label>
-      </node>
-      <node id="3">
-        <label>Conserved/quantity_utils.h</label>
-        <link refid="quantity__utils_8h_source"/>
-        <childnode refid="4" relation="include">
-        </childnode>
-        <childnode refid="16" relation="include">
+      <node id="16">
+        <label>templateMeta.h</label>
+        <link refid="templateMeta_8h_source"/>
+        <childnode refid="17" relation="include">
         </childnode>
         <childnode refid="18" relation="include">
         </childnode>
-        <childnode refid="14" relation="include">
-        </childnode>
-      </node>
-      <node id="18">
-        <label>type_traits</label>
       </node>
       <node id="6">
         <label>algorithm</label>
       </node>
-      <node id="21">
-        <label>memory</label>
+      <node id="7">
+        <label>boost/stl_interfaces/iterator_interface.hpp</label>
+      </node>
+      <node id="8">
+        <label>cassert</label>
+      </node>
+      <node id="23">
+        <label>cstdint</label>
       </node>
       <node id="5">
         <label>doctest/doctest_proxy.h</label>
       </node>
-    </incdepgraph>
-    <invincdepgraph>
-      <node id="5">
-        <label>/home/alex/project/quantt/include/dmrg.h</label>
-        <link refid="dmrg_8h_source"/>
+      <node id="9">
+        <label>fmt/core.h</label>
+      </node>
+      <node id="19">
+        <label>fmt/format.h</label>
       </node>
       <node id="10">
-        <label>/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h</label>
-        <link refid="quantity__vector_8h_source"/>
-        <childnode refid="2" relation="include">
-        </childnode>
+        <label>fmt/ranges.h</label>
       </node>
-      <node id="8">
-        <label>/home/alex/project/quantt/include/operators.h</label>
-        <link refid="operators_8h_source"/>
+      <node id="11">
+        <label>functional</label>
       </node>
+      <node id="20">
+        <label>ios</label>
+      </node>
+      <node id="12">
+        <label>iterator</label>
+      </node>
+      <node id="21">
+        <label>memory</label>
+      </node>
+      <node id="13">
+        <label>numeric</label>
+      </node>
+      <node id="24">
+        <label>ostream</label>
+      </node>
+      <node id="17">
+        <label>tuple</label>
+      </node>
+      <node id="18">
+        <label>type_traits</label>
+      </node>
+      <node id="14">
+        <label>utility</label>
+      </node>
+      <node id="15">
+        <label>vector</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
       <node id="1">
-        <label>/home/alex/project/quantt/include/Conserved/Composite/cquantity.h</label>
+        <label>/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h</label>
         <link refid="cquantity_8h"/>
         <childnode refid="2" relation="include">
         </childnode>
-        <childnode refid="9" relation="include">
-        </childnode>
-      </node>
-      <node id="6">
-        <label>/home/alex/project/quantt/include/MPT.h</label>
-        <link refid="MPT_8h_source"/>
-        <childnode refid="5" relation="include">
-        </childnode>
         <childnode refid="4" relation="include">
-        </childnode>
-        <childnode refid="7" relation="include">
         </childnode>
       </node>
       <node id="3">
-        <label>/home/alex/project/quantt/include/blockTensor/LinearAlgebra.h</label>
-        <link refid="blockTensor_2LinearAlgebra_8h_source"/>
-      </node>
-      <node id="2">
-        <label>/home/alex/project/quantt/include/blockTensor/btensor.h</label>
-        <link refid="btensor_8h_source"/>
-        <childnode refid="3" relation="include">
-        </childnode>
+        <label>/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h</label>
+        <link refid="quantity__vector_8h_source"/>
         <childnode refid="4" relation="include">
         </childnode>
+      </node>
+      <node id="2">
+        <label>/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector_impl.h</label>
+        <link refid="quantity__vector__impl_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>/Users/alex/Documents/Prog/QuantiT/include/MPT.h</label>
+        <link refid="MPT_8h_source"/>
         <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
         </childnode>
         <childnode refid="8" relation="include">
         </childnode>
       </node>
-      <node id="7">
-        <label>/home/alex/project/quantt/include/models.h</label>
-        <link refid="models_8h_source"/>
+      <node id="9">
+        <label>/Users/alex/Documents/Prog/QuantiT/include/blockTensor/LinearAlgebra.h</label>
+        <link refid="blockTensor_2LinearAlgebra_8h_source"/>
       </node>
       <node id="4">
-        <label>/home/alex/project/quantt/include/dmrg_logger.h</label>
-        <link refid="dmrg__logger_8h_source"/>
+        <label>/Users/alex/Documents/Prog/QuantiT/include/blockTensor/btensor.h</label>
+        <link refid="btensor_8h_source"/>
         <childnode refid="5" relation="include">
         </childnode>
-      </node>
-      <node id="9">
-        <label>/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h</label>
-        <link refid="quantity__vector__impl_8h_source"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
         <childnode refid="10" relation="include">
         </childnode>
+      </node>
+      <node id="6">
+        <label>/Users/alex/Documents/Prog/QuantiT/include/dmrg.h</label>
+        <link refid="dmrg_8h_source"/>
+      </node>
+      <node id="7">
+        <label>/Users/alex/Documents/Prog/QuantiT/include/dmrg_logger.h</label>
+        <link refid="dmrg__logger_8h_source"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>/Users/alex/Documents/Prog/QuantiT/include/models.h</label>
+        <link refid="models_8h_source"/>
+      </node>
+      <node id="10">
+        <label>/Users/alex/Documents/Prog/QuantiT/include/operators.h</label>
+        <link refid="operators_8h_source"/>
       </node>
     </invincdepgraph>
     <innerclass refid="classquantit_1_1any__quantity" prot="public">quantit::any_quantity</innerclass>
@@ -259,7 +259,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/cquantity.h" line="448" column="13" declfile="/home/alex/project/quantt/include/Conserved/Composite/cquantity.h" declline="448" declcolumn="13"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h" line="448" column="13" declfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h" declline="448" declcolumn="13"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
@@ -322,7 +322,7 @@
 <codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>and<sp/>conserved::all_group_v&lt;Groups...&gt;&gt;&gt;<sp/></highlight><highlight class="comment">//<sp/>all<sp/>element<sp/>satisfy<sp/>the<sp/>constraint<sp/>of<sp/>an<sp/>abelian<sp/>group</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="68" refid="classquantit_1_1any__quantity_1a0d55a33316ff6b8caf4ed91fcaa98496" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classquantit_1_1any__quantity_1a0d55a33316ff6b8caf4ed91fcaa98496" kindref="member">any_quantity</ref>(Groups...<sp/>grps)<sp/>:<sp/>impl(std::make_unique&lt;<ref refid="classquantit_1_1quantity" kindref="compound">quantity</ref>&lt;Groups...&gt;&gt;(grps...))</highlight></codeline>
 <codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
-<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>static_assert(conserved::all_group_v&lt;Groups...&gt;<sp/>and</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static_assert</highlight><highlight class="normal">(conserved::all_group_v&lt;Groups...&gt;<sp/>and</highlight></codeline>
 <codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>not<sp/>std::disjunction_v&lt;std::is_same&lt;Groups,<sp/>any_quantity_cref&gt;...,</highlight></codeline>
 <codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::is_same&lt;Groups,<sp/>any_quantity_ref&gt;...,</highlight></codeline>
 <codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::is_same&lt;Groups,<sp/>any_quantity&gt;...&gt;,</highlight></codeline>
@@ -341,7 +341,7 @@
 <codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref><sp/>&amp;get();</highlight></codeline>
 <codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref><sp/>&amp;get()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
 <codeline lineno="92"><highlight class="normal"></highlight></codeline>
-<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classquantit_1_1any__quantity_1ad0d315c7b2da8a1328e2b902835f22d4" kindref="member">swap</ref>(<ref refid="classquantit_1_1any__quantity" kindref="compound">any_quantity</ref><sp/>&amp;other)<sp/>noexcept;</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classquantit_1_1any__quantity_1ad0d315c7b2da8a1328e2b902835f22d4" kindref="member">swap</ref>(<ref refid="classquantit_1_1any__quantity" kindref="compound">any_quantity</ref><sp/>&amp;other)<sp/></highlight><highlight class="keyword">noexcept</highlight><highlight class="normal">;</highlight></codeline>
 <codeline lineno="99"><highlight class="normal"></highlight></codeline>
 <codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classquantit_1_1any__quantity_1ad0d315c7b2da8a1328e2b902835f22d4" kindref="member">swap</ref>(<ref refid="classquantit_1_1vquantity" kindref="compound">any_quantity_ref</ref><sp/>other);<sp/></highlight><highlight class="comment">//<sp/>only<sp/>work<sp/>if<sp/>the<sp/>underlying<sp/>types<sp/>ARE<sp/>the<sp/>same.</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="101"><highlight class="normal"></highlight></codeline>
@@ -353,7 +353,7 @@
 <codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">operator</highlight><highlight class="normal"><sp/><ref refid="classquantit_1_1vquantity" kindref="compound">any_quantity_cref</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
 <codeline lineno="130"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">operator</highlight><highlight class="normal"><sp/><ref refid="classquantit_1_1vquantity" kindref="compound">any_quantity_ref</ref>();</highlight></codeline>
 <codeline lineno="131"><highlight class="normal"></highlight></codeline>
-<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/>~<ref refid="classquantit_1_1any__quantity" kindref="compound">any_quantity</ref>()<sp/>{}</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classquantit_1_1any__quantity" kindref="compound">~any_quantity</ref>()<sp/>{}</highlight></codeline>
 <codeline lineno="140"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classquantit_1_1vquantity" kindref="compound">any_quantity_ref</ref><sp/><ref refid="classquantit_1_1any__quantity_1a9c54f38103926637b9d7717c4ccd3398" kindref="member">operator*=</ref>(<ref refid="classquantit_1_1vquantity" kindref="compound">any_quantity_cref</ref><sp/>other);</highlight></codeline>
 <codeline lineno="141"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classquantit_1_1vquantity" kindref="compound">any_quantity_ref</ref><sp/>operator+=(<ref refid="classquantit_1_1vquantity" kindref="compound">any_quantity_cref</ref><sp/>other);</highlight></codeline>
 <codeline lineno="142"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classquantit_1_1vquantity" kindref="compound">any_quantity_ref</ref><sp/>op(<ref refid="classquantit_1_1vquantity" kindref="compound">any_quantity_cref</ref><sp/>other,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>cond);</highlight></codeline>
@@ -381,7 +381,7 @@
 <codeline lineno="215"><highlight class="normal">{</highlight></codeline>
 <codeline lineno="216"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>a.distance(b);</highlight></codeline>
 <codeline lineno="217"><highlight class="normal">}</highlight></codeline>
-<codeline lineno="218" refid="classquantit_1_1any__quantity_1ad0d315c7b2da8a1328e2b902835f22d4" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classquantit_1_1any__quantity_1ad0d315c7b2da8a1328e2b902835f22d4" kindref="member">any_quantity::swap</ref>(<ref refid="classquantit_1_1any__quantity" kindref="compound">any_quantity</ref><sp/>&amp;other)<sp/>noexcept</highlight></codeline>
+<codeline lineno="218" refid="classquantit_1_1any__quantity_1ad0d315c7b2da8a1328e2b902835f22d4" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classquantit_1_1any__quantity_1ad0d315c7b2da8a1328e2b902835f22d4" kindref="member">any_quantity::swap</ref>(<ref refid="classquantit_1_1any__quantity" kindref="compound">any_quantity</ref><sp/>&amp;other)<sp/></highlight><highlight class="keyword">noexcept</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="219"><highlight class="normal">{</highlight></codeline>
 <codeline lineno="220"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>std::swap;</highlight></codeline>
 <codeline lineno="221"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classquantit_1_1any__quantity_1ad0d315c7b2da8a1328e2b902835f22d4" kindref="member">swap</ref>(other.impl,<sp/>impl);</highlight></codeline>
@@ -394,7 +394,7 @@
 <codeline lineno="228"><highlight class="normal">}</highlight></codeline>
 <codeline lineno="229" refid="classquantit_1_1any__quantity_1a547346ca6b62b9c7ef8da68c5f5d2f2b" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/><ref refid="classquantit_1_1vquantity" kindref="compound">any_quantity_ref</ref><sp/><ref refid="classquantit_1_1any__quantity_1a547346ca6b62b9c7ef8da68c5f5d2f2b" kindref="member">any_quantity::inverse_</ref>()</highlight></codeline>
 <codeline lineno="230"><highlight class="normal">{</highlight></codeline>
-<codeline lineno="231"><highlight class="normal"><sp/><sp/><sp/><sp/>impl-&gt;<ref refid="classquantit_1_1vquantity_1a34f22b1d9b0cc1b50c055a279ecdc2fe" kindref="member">inverse_</ref>();</highlight></codeline>
+<codeline lineno="231"><highlight class="normal"><sp/><sp/><sp/><sp/>impl-&gt;<ref refid="classquantit_1_1vquantity_1a4f83f301617d71c928821df9b3ace621" kindref="member">inverse_</ref>();</highlight></codeline>
 <codeline lineno="232"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>*</highlight><highlight class="keyword">this</highlight><highlight class="normal">;</highlight></codeline>
 <codeline lineno="233"><highlight class="normal">}</highlight></codeline>
 <codeline lineno="234" refid="classquantit_1_1any__quantity_1acc3573b702443d7407650cd46ff4befe" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/><ref refid="classquantit_1_1any__quantity" kindref="compound">any_quantity</ref><sp/><ref refid="classquantit_1_1any__quantity_1acc3573b702443d7407650cd46ff4befe" kindref="member">any_quantity::inverse</ref>()<sp/>const<sp/>&amp;<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="classquantit_1_1any__quantity_1a00bc0f329e8f9bb6c20a4736bd214400" kindref="member">any_quantity</ref>(*this).inverse_();<sp/>}</highlight></codeline>
@@ -415,13 +415,13 @@
 <codeline lineno="249" refid="classquantit_1_1any__quantity_1a890408ca918ea9cb0de2e36b5323d282" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/>any_quantity::operator<sp/><ref refid="classquantit_1_1vquantity" kindref="compound">any_quantity_ref</ref>()<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="classquantit_1_1vquantity" kindref="compound">any_quantity_ref</ref>(*impl.get());<sp/>}</highlight></codeline>
 <codeline lineno="250" refid="classquantit_1_1any__quantity_1a9c54f38103926637b9d7717c4ccd3398" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/><ref refid="classquantit_1_1vquantity" kindref="compound">any_quantity_ref</ref><sp/><ref refid="classquantit_1_1any__quantity_1a9c54f38103926637b9d7717c4ccd3398" kindref="member">any_quantity::operator*=</ref>(<ref refid="classquantit_1_1vquantity" kindref="compound">any_quantity_cref</ref><sp/>other)</highlight></codeline>
 <codeline lineno="251"><highlight class="normal">{</highlight></codeline>
-<codeline lineno="252"><highlight class="normal"><sp/><sp/><sp/><sp/>impl-&gt;<ref refid="classquantit_1_1vquantity_1a4f7f5a467bb7b33abafbec43ac46065b" kindref="member">op</ref>(other);</highlight></codeline>
+<codeline lineno="252"><highlight class="normal"><sp/><sp/><sp/><sp/>impl-&gt;<ref refid="classquantit_1_1vquantity_1a18b07748f79d061f88dd654e3dcfa649" kindref="member">op</ref>(other);</highlight></codeline>
 <codeline lineno="253"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>*</highlight><highlight class="keyword">this</highlight><highlight class="normal">;</highlight></codeline>
 <codeline lineno="254"><highlight class="normal">}</highlight></codeline>
 <codeline lineno="255" refid="classquantit_1_1any__quantity_1a27770f0b29b8f58e0d4d39c74d93c3fd" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/><ref refid="classquantit_1_1any__quantity" kindref="compound">any_quantity</ref><sp/><ref refid="classquantit_1_1any__quantity_1a27770f0b29b8f58e0d4d39c74d93c3fd" kindref="member">operator*</ref>(<ref refid="classquantit_1_1vquantity" kindref="compound">any_quantity_cref</ref><sp/>lhs,<sp/><ref refid="classquantit_1_1vquantity" kindref="compound">any_quantity_cref</ref><sp/>rhs)<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="classquantit_1_1any__quantity_1a00bc0f329e8f9bb6c20a4736bd214400" kindref="member">any_quantity</ref>(lhs)<sp/>*=<sp/>rhs;<sp/>}</highlight></codeline>
 <codeline lineno="256"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/><ref refid="classquantit_1_1vquantity" kindref="compound">any_quantity_ref</ref><sp/>any_quantity::op(<ref refid="classquantit_1_1vquantity" kindref="compound">any_quantity_cref</ref><sp/>other,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>cond)</highlight></codeline>
 <codeline lineno="257"><highlight class="normal">{</highlight></codeline>
-<codeline lineno="258"><highlight class="normal"><sp/><sp/><sp/><sp/>impl-&gt;<ref refid="classquantit_1_1vquantity_1a4f7f5a467bb7b33abafbec43ac46065b" kindref="member">op</ref>(other,<sp/>cond);</highlight></codeline>
+<codeline lineno="258"><highlight class="normal"><sp/><sp/><sp/><sp/>impl-&gt;<ref refid="classquantit_1_1vquantity_1a18b07748f79d061f88dd654e3dcfa649" kindref="member">op</ref>(other,<sp/>cond);</highlight></codeline>
 <codeline lineno="259"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>*</highlight><highlight class="keyword">this</highlight><highlight class="normal">;</highlight></codeline>
 <codeline lineno="260"><highlight class="normal">}</highlight></codeline>
 <codeline lineno="261"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/><ref refid="classquantit_1_1any__quantity" kindref="compound">any_quantity</ref><sp/>operator+(<ref refid="classquantit_1_1vquantity" kindref="compound">any_quantity_cref</ref><sp/>lhs,<sp/><ref refid="classquantit_1_1vquantity" kindref="compound">any_quantity_cref</ref><sp/>rhs)<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>lhs<sp/>*<sp/>rhs;<sp/>}</highlight></codeline>
@@ -584,7 +584,7 @@
 <codeline lineno="425"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>quantit</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="426"><highlight class="normal"></highlight></codeline>
 <codeline lineno="427"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;&gt;</highlight></codeline>
-<codeline lineno="428" refid="structfmt_1_1formatter_3_01quantit_1_1any__quantity__cref_01_4" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">fmt::formatter&lt;quantit::<ref refid="classquantit_1_1vquantity" kindref="compound">any_quantity_cref</ref>&gt;<sp/>:<sp/>fmt::formatter&lt;quantit::vquantity&gt;</highlight></codeline>
+<codeline lineno="428" refid="structfmt_1_1formatter_3_01quantit_1_1any__quantity__cref_01_4" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structfmt_1_1formatter_3_01quantit_1_1any__quantity__cref_01_4" kindref="compound">fmt::formatter&lt;quantit::any_quantity_cref&gt;</ref><sp/>:<sp/><ref refid="structfmt_1_1formatter_3_01quantit_1_1vquantity_01_4" kindref="compound">fmt::formatter&lt;quantit::vquantity&gt;</ref></highlight></codeline>
 <codeline lineno="429"><highlight class="normal">{</highlight></codeline>
 <codeline lineno="430"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>FormatContext&gt;</highlight></codeline>
 <codeline lineno="431"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>format(<ref refid="classquantit_1_1vquantity" kindref="compound">quantit::any_quantity_cref</ref><sp/>&amp;qt,<sp/>FormatContext<sp/>&amp;ctx)</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
@@ -595,11 +595,11 @@
 <codeline lineno="436"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="437"><highlight class="normal">};</highlight></codeline>
 <codeline lineno="438"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;&gt;</highlight></codeline>
-<codeline lineno="439" refid="structfmt_1_1formatter_3_01quantit_1_1any__quantity__ref_01_4" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">fmt::formatter&lt;quantit::<ref refid="classquantit_1_1vquantity" kindref="compound">any_quantity_ref</ref>&gt;<sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/>fmt::formatter&lt;quantit::any_quantity_cref&gt;</highlight></codeline>
+<codeline lineno="439" refid="structfmt_1_1formatter_3_01quantit_1_1any__quantity__ref_01_4" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structfmt_1_1formatter_3_01quantit_1_1any__quantity__ref_01_4" kindref="compound">fmt::formatter&lt;quantit::any_quantity_ref&gt;</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="structfmt_1_1formatter_3_01quantit_1_1any__quantity__cref_01_4" kindref="compound">fmt::formatter&lt;quantit::any_quantity_cref&gt;</ref></highlight></codeline>
 <codeline lineno="440"><highlight class="normal">{</highlight></codeline>
 <codeline lineno="441"><highlight class="normal">};</highlight></codeline>
 <codeline lineno="442"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;&gt;</highlight></codeline>
-<codeline lineno="443" refid="structfmt_1_1formatter_3_01quantit_1_1any__quantity_01_4" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">fmt::formatter&lt;quantit::<ref refid="classquantit_1_1any__quantity" kindref="compound">any_quantity</ref>&gt;<sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/>fmt::formatter&lt;quantit::any_quantity_cref&gt;</highlight></codeline>
+<codeline lineno="443" refid="structfmt_1_1formatter_3_01quantit_1_1any__quantity_01_4" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structfmt_1_1formatter_3_01quantit_1_1any__quantity_01_4" kindref="compound">fmt::formatter&lt;quantit::any_quantity&gt;</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="structfmt_1_1formatter_3_01quantit_1_1any__quantity__cref_01_4" kindref="compound">fmt::formatter&lt;quantit::any_quantity_cref&gt;</ref></highlight></codeline>
 <codeline lineno="444"><highlight class="normal">{</highlight></codeline>
 <codeline lineno="445"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>exploits<sp/>implicit<sp/>conversion<sp/>to<sp/>get<sp/>the<sp/>job<sp/>done.</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="446"><highlight class="normal">};</highlight></codeline>
@@ -608,6 +608,6 @@
 <codeline lineno="449"><highlight class="normal"></highlight></codeline>
 <codeline lineno="450"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>D56E4C12_98E1_4C9E_B0C4_5B35A5A3CD17<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
     </programlisting>
-    <location file="/home/alex/project/quantt/include/Conserved/Composite/cquantity.h"/>
+    <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h"/>
   </compounddef>
 </doxygen>

@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
   <compounddef id="classquantit_1_1quantity" kind="class" language="C++" prot="public" final="yes">
     <compoundname>quantit::quantity</compoundname>
     <basecompoundref refid="classquantit_1_1vquantity" prot="public" virt="non-virtual">quantit::vquantity</basecompoundref>
@@ -17,6 +17,7 @@
         <definition>friend struct fmt::formatter&lt; quantit::quantity&lt; Groups... &gt; &gt;</definition>
         <argsstring></argsstring>
         <name>fmt::formatter&lt; quantit::quantity&lt; Groups... &gt; &gt;</name>
+        <qualifiedname>quantit::quantity::formatter&lt; quantit::quantity&lt; Groups... &gt; &gt;</qualifiedname>
         <param>
           <type>fmt::formatter&lt; <ref refid="classquantit_1_1quantity" kindref="compound">quantit::quantity</ref>&lt; Groups... &gt; &gt;</type>
         </param>
@@ -26,7 +27,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="168" column="9" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" bodystart="169" bodyend="-1"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" line="168" column="9" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" bodystart="169" bodyend="-1"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="private-attrib">
@@ -35,6 +36,7 @@
         <definition>std::tuple&lt;Groups...&gt; quantit::quantity&lt; Groups &gt;::val</definition>
         <argsstring></argsstring>
         <name>val</name>
+        <qualifiedname>quantit::quantity::val</qualifiedname>
         <briefdescription>
 <para>implementation of the polymophic pointer difference </para>
         </briefdescription>
@@ -43,7 +45,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="182" column="12" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" bodystart="182" bodyend="-1"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" line="182" column="12" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" bodystart="182" bodyend="-1"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="public-func">
@@ -52,6 +54,7 @@
         <definition>quantit::quantity&lt; Groups &gt;::quantity</definition>
         <argsstring>(Groups... grp)</argsstring>
         <name>quantity</name>
+        <qualifiedname>quantit::quantity::quantity</qualifiedname>
         <param>
           <type>Groups...</type>
           <declname>grp</declname>
@@ -62,26 +65,28 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="124" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" bodystart="124" bodyend="124"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" line="124" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" bodystart="124" bodyend="124"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1quantity_1ade6d10d377a6e75b5767139f9e6dc2a6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type></type>
         <definition>quantit::quantity&lt; Groups &gt;::quantity</definition>
         <argsstring>()=default</argsstring>
         <name>quantity</name>
+        <qualifiedname>quantit::quantity::quantity</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="125" column="1"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" line="125" column="1"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1quantity_1a8c8ffadeb9c94e708470f42f024b5765" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type></type>
         <definition>quantit::quantity&lt; Groups &gt;::quantity</definition>
         <argsstring>(const quantity &amp;)=default</argsstring>
         <name>quantity</name>
+        <qualifiedname>quantit::quantity::quantity</qualifiedname>
         <param>
           <type>const <ref refid="classquantit_1_1quantity" kindref="compound">quantity</ref> &amp;</type>
         </param>
@@ -91,13 +96,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="126" column="1"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" line="126" column="1"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1quantity_1a7bcd88eb1a5b82426bdd1a34267a0435" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type></type>
         <definition>quantit::quantity&lt; Groups &gt;::quantity</definition>
         <argsstring>(quantity &amp;&amp;)=default</argsstring>
         <name>quantity</name>
+        <qualifiedname>quantit::quantity::quantity</qualifiedname>
         <param>
           <type><ref refid="classquantit_1_1quantity" kindref="compound">quantity</ref> &amp;&amp;</type>
         </param>
@@ -107,26 +113,28 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="127" column="1"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" line="127" column="1"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1quantity_1aa5c6f99220a5fc7f055beb0be35b60f4" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type></type>
         <definition>quantit::quantity&lt; Groups &gt;::~quantity</definition>
         <argsstring>() override</argsstring>
         <name>~quantity</name>
+        <qualifiedname>quantit::quantity::~quantity</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="128" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" bodystart="128" bodyend="128"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" line="128" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" bodystart="128" bodyend="128"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1quantity_1aa7d43a8fb56c53f89e68c22127c493a1" prot="public" static="no" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
         <type><ref refid="classquantit_1_1quantity" kindref="compound">quantity</ref> &amp;</type>
         <definition>quantity&lt; T... &gt; &amp; quantit::quantity&lt; T &gt;::operator=</definition>
         <argsstring>(const quantity &amp;other) noexcept</argsstring>
         <name>operator=</name>
+        <qualifiedname>quantit::quantity::operator=</qualifiedname>
         <param>
           <type>const <ref refid="classquantit_1_1quantity" kindref="compound">quantity</ref> &amp;</type>
           <declname>other</declname>
@@ -137,13 +145,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="129" column="10" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" bodystart="222" bodyend="226"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" line="129" column="10" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" bodystart="222" bodyend="226"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1quantity_1a3017645c59d169c61df6c5637b8aa10a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type><ref refid="classquantit_1_1quantity" kindref="compound">quantity</ref></type>
         <definition>quantity quantit::quantity&lt; Groups &gt;::operator*</definition>
         <argsstring>(const quantity &amp;)</argsstring>
         <name>operator*</name>
+        <qualifiedname>quantit::quantity::operator*</qualifiedname>
         <param>
           <type>const <ref refid="classquantit_1_1quantity" kindref="compound">quantity</ref> &amp;</type>
         </param>
@@ -153,13 +162,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="131" column="10"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" line="131" column="10"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1quantity_1ad91f060996a3d3c273f39a3b81600bb5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type><ref refid="classquantit_1_1quantity" kindref="compound">quantity</ref></type>
         <definition>quantity quantit::quantity&lt; Groups &gt;::operator*</definition>
         <argsstring>(quantity &amp;&amp;)</argsstring>
         <name>operator*</name>
+        <qualifiedname>quantit::quantity::operator*</qualifiedname>
         <param>
           <type><ref refid="classquantit_1_1quantity" kindref="compound">quantity</ref> &amp;&amp;</type>
         </param>
@@ -169,13 +179,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="132" column="10"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" line="132" column="10"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1quantity_1acc2b7bd6cabe855545ac1003932ee7ea" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type><ref refid="classquantit_1_1quantity" kindref="compound">quantity</ref></type>
         <definition>quantity quantit::quantity&lt; Groups &gt;::operator*=</definition>
         <argsstring>(const quantity &amp;)</argsstring>
         <name>operator*=</name>
+        <qualifiedname>quantit::quantity::operator*=</qualifiedname>
         <param>
           <type>const <ref refid="classquantit_1_1quantity" kindref="compound">quantity</ref> &amp;</type>
         </param>
@@ -185,13 +196,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="133" column="10"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" line="133" column="10"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1quantity_1a3e22cac1763812e381a74158ddfa5a9a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type><ref refid="classquantit_1_1quantity" kindref="compound">quantity</ref></type>
         <definition>quantity quantit::quantity&lt; Groups &gt;::operator+</definition>
         <argsstring>(const quantity &amp;)</argsstring>
         <name>operator+</name>
+        <qualifiedname>quantit::quantity::operator+</qualifiedname>
         <param>
           <type>const <ref refid="classquantit_1_1quantity" kindref="compound">quantity</ref> &amp;</type>
         </param>
@@ -201,13 +213,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="134" column="10"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" line="134" column="10"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1quantity_1a98c296da4e1fa5de308f7ef198009d20" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type><ref refid="classquantit_1_1quantity" kindref="compound">quantity</ref></type>
         <definition>quantity quantit::quantity&lt; Groups &gt;::operator+</definition>
         <argsstring>(quantity &amp;&amp;)</argsstring>
         <name>operator+</name>
+        <qualifiedname>quantit::quantity::operator+</qualifiedname>
         <param>
           <type><ref refid="classquantit_1_1quantity" kindref="compound">quantity</ref> &amp;&amp;</type>
         </param>
@@ -217,13 +230,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="135" column="10"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" line="135" column="10"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1quantity_1a3998af4edcaeea0bf806831c312c5162" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type><ref refid="classquantit_1_1quantity" kindref="compound">quantity</ref></type>
         <definition>quantity quantit::quantity&lt; Groups &gt;::operator+=</definition>
         <argsstring>(const quantity &amp;)</argsstring>
         <name>operator+=</name>
+        <qualifiedname>quantit::quantity::operator+=</qualifiedname>
         <param>
           <type>const <ref refid="classquantit_1_1quantity" kindref="compound">quantity</ref> &amp;</type>
         </param>
@@ -233,14 +247,15 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="136" column="10"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" line="136" column="10"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1quantity_1af1dd0b2f53dcfbb4ad3efc58c4c168a1" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type><ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref> &amp;</type>
         <definition>vquantity &amp; quantit::quantity&lt; Groups &gt;::operator*=</definition>
         <argsstring>(const vquantity &amp;) override</argsstring>
         <name>operator*=</name>
-        <reimplements refid="classquantit_1_1vquantity_1a2438ad6059b5328c86e12fd3b6b282e9">operator*=</reimplements>
+        <qualifiedname>quantit::quantity::operator*=</qualifiedname>
+        <reimplements refid="classquantit_1_1vquantity_1afcd4cd5c9e53bcaf1ba6e28176b4f511">operator*=</reimplements>
         <param>
           <type>const <ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref> &amp;</type>
           <defname>other</defname>
@@ -251,14 +266,15 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="137" column="11" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" bodystart="368" bodyend="371"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" line="137" column="11" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" bodystart="368" bodyend="371"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1quantity_1a22345cc18fce468fdd6f0f1cb3aada3e" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type><ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref> &amp;</type>
         <definition>vquantity &amp; quantit::quantity&lt; Groups &gt;::operator+=</definition>
         <argsstring>(const vquantity &amp;) override</argsstring>
         <name>operator+=</name>
-        <reimplements refid="classquantit_1_1vquantity_1a920a1c02eefb4893decb3a216d2cd83a">operator+=</reimplements>
+        <qualifiedname>quantit::quantity::operator+=</qualifiedname>
+        <reimplements refid="classquantit_1_1vquantity_1a567095f5571292cd0cd8c92832817d8b">operator+=</reimplements>
         <param>
           <type>const <ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref> &amp;</type>
           <defname>other</defname>
@@ -269,13 +285,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="138" column="11" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" bodystart="374" bodyend="377"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" line="138" column="11" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" bodystart="374" bodyend="377"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1quantity_1ab457f5fd7f0ce87161825a662c9330ca" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
         <definition>void quantit::quantity&lt; Groups &gt;::swap</definition>
         <argsstring>(quantity &amp;other)</argsstring>
         <name>swap</name>
+        <qualifiedname>quantit::quantity::swap</qualifiedname>
         <param>
           <type><ref refid="classquantit_1_1quantity" kindref="compound">quantity</ref> &amp;</type>
           <declname>other</declname>
@@ -286,28 +303,30 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="139" column="6"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" line="139" column="6"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1quantity_1ab6214f46d3afc81ba4f64fe7bf4c0eae" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
         <type>std::unique_ptr&lt; <ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref> &gt;</type>
         <definition>std::unique_ptr&lt; vquantity &gt; quantit::quantity&lt; T &gt;::clone</definition>
         <argsstring>() const override</argsstring>
         <name>clone</name>
-        <reimplements refid="classquantit_1_1vquantity_1ac2a4c17bb527e63655ef288a413e29ef">clone</reimplements>
+        <qualifiedname>quantit::quantity::clone</qualifiedname>
+        <reimplements refid="classquantit_1_1vquantity_1a23effeda449b366d86c8bece07a9bf4c">clone</reimplements>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="141" column="17" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" bodystart="280" bodyend="283"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" line="141" column="17" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" bodystart="280" bodyend="283"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1quantity_1a2bdd89bb923fbd8669d3f805dd457bda" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
         <type>std::unique_ptr&lt; <ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref> &gt;</type>
         <definition>std::unique_ptr&lt; vquantity &gt; quantit::quantity&lt; T &gt;::make_neutral</definition>
         <argsstring>() const override</argsstring>
         <name>make_neutral</name>
-        <reimplements refid="classquantit_1_1vquantity_1a3d7d4d4f2a5cd0c3dc26ce422d537072">make_neutral</reimplements>
+        <qualifiedname>quantit::quantity::make_neutral</qualifiedname>
+        <reimplements refid="classquantit_1_1vquantity_1aee42fc46e47dc7e87974ccb3dcba8a0d">make_neutral</reimplements>
         <briefdescription>
 <para>create the neutral element of whatever underlying type </para>
         </briefdescription>
@@ -318,13 +337,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="142" column="17" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" bodystart="274" bodyend="277"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" line="142" column="17" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" bodystart="274" bodyend="277"/>
       </memberdef>
-      <memberdef kind="function" id="classquantit_1_1quantity_1a5047468329dee726247cdc484e2bbf73" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="classquantit_1_1quantity_1ab9c214c0f3e49ddfaa093abf45529608" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type><ref refid="classquantit_1_1quantity" kindref="compound">quantity</ref> &amp;</type>
-        <definition>quantity&amp; quantit::quantity&lt; Groups &gt;::op</definition>
+        <definition>quantity &amp; quantit::quantity&lt; Groups &gt;::op</definition>
         <argsstring>(const quantity &amp;other)</argsstring>
         <name>op</name>
+        <qualifiedname>quantit::quantity::op</qualifiedname>
         <param>
           <type>const <ref refid="classquantit_1_1quantity" kindref="compound">quantity</ref> &amp;</type>
           <declname>other</declname>
@@ -335,14 +355,15 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="144" column="10"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" line="144" column="10"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1quantity_1a7b60ef05dc153e201f6fabc6d3c7f15a" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type><ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref> &amp;</type>
         <definition>vquantity &amp; quantit::quantity&lt; T &gt;::op</definition>
         <argsstring>(const vquantity &amp;other) override</argsstring>
         <name>op</name>
-        <reimplements refid="classquantit_1_1vquantity_1a4f7f5a467bb7b33abafbec43ac46065b">op</reimplements>
+        <qualifiedname>quantit::quantity::op</qualifiedname>
+        <reimplements refid="classquantit_1_1vquantity_1a18b07748f79d061f88dd654e3dcfa649">op</reimplements>
         <param>
           <type>const <ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref> &amp;</type>
         </param>
@@ -356,13 +377,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="145" column="11" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" bodystart="268" bodyend="271"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" line="145" column="11" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" bodystart="268" bodyend="271"/>
       </memberdef>
-      <memberdef kind="function" id="classquantit_1_1quantity_1a2e1f986e8a969bf35ff9f08481840dba" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="classquantit_1_1quantity_1adf764bc26f52fa00f7672a08cf5d29e9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type><ref refid="classquantit_1_1quantity" kindref="compound">quantity</ref> &amp;</type>
-        <definition>quantity&amp; quantit::quantity&lt; Groups &gt;::op</definition>
+        <definition>quantity &amp; quantit::quantity&lt; Groups &gt;::op</definition>
         <argsstring>(const quantity &amp;other, bool cond)</argsstring>
         <name>op</name>
+        <qualifiedname>quantit::quantity::op</qualifiedname>
         <param>
           <type>const <ref refid="classquantit_1_1quantity" kindref="compound">quantity</ref> &amp;</type>
           <declname>other</declname>
@@ -377,14 +399,15 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="146" column="10"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" line="146" column="10"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1quantity_1a382d9877d1f20a2c7177335487fe12d0" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type><ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref> &amp;</type>
         <definition>vquantity &amp; quantit::quantity&lt; T &gt;::op</definition>
         <argsstring>(const vquantity &amp;other, bool cond) override</argsstring>
         <name>op</name>
-        <reimplements refid="classquantit_1_1vquantity_1ab33b83edd8986b9903e691246c54a44d">op</reimplements>
+        <qualifiedname>quantit::quantity::op</qualifiedname>
+        <reimplements refid="classquantit_1_1vquantity_1a69fce57cac4dffcc81835873a412deae">op</reimplements>
         <param>
           <type>const <ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref> &amp;</type>
         </param>
@@ -411,13 +434,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="147" column="11" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" bodystart="262" bodyend="265"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" line="147" column="11" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" bodystart="262" bodyend="265"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1quantity_1a9943092f757c532ca96e697e71f82a63" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
         <definition>void quantit::quantity&lt; Groups &gt;::op_to</definition>
         <argsstring>(quantity &amp;other) const</argsstring>
         <name>op_to</name>
+        <qualifiedname>quantit::quantity::op_to</qualifiedname>
         <param>
           <type><ref refid="classquantit_1_1quantity" kindref="compound">quantity</ref> &amp;</type>
           <declname>other</declname>
@@ -428,13 +452,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="148" column="6"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" line="148" column="6"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1quantity_1acf76334df02c4becbdf269f9b2c0e11a" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
         <type>void</type>
         <definition>void quantit::quantity&lt; T &gt;::op_to</definition>
         <argsstring>(vquantity &amp;other) const override</argsstring>
         <name>op_to</name>
+        <qualifiedname>quantit::quantity::op_to</qualifiedname>
         <reimplements refid="classquantit_1_1vquantity_1a1b9d16298426bdf26b63d3f248b06e45">op_to</reimplements>
         <param>
           <type><ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref> &amp;</type>
@@ -446,14 +471,15 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="149" column="6" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" bodystart="290" bodyend="293"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" line="149" column="6" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" bodystart="290" bodyend="293"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1quantity_1a77525a487ba70963a63825ba407b4125" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type><ref refid="classquantit_1_1quantity" kindref="compound">quantity</ref> &amp;</type>
         <definition>quantity&lt; T... &gt; &amp; quantit::quantity&lt; T &gt;::inverse_</definition>
         <argsstring>() override</argsstring>
         <name>inverse_</name>
-        <reimplements refid="classquantit_1_1vquantity_1a34f22b1d9b0cc1b50c055a279ecdc2fe">inverse_</reimplements>
+        <qualifiedname>quantit::quantity::inverse_</qualifiedname>
+        <reimplements refid="classquantit_1_1vquantity_1a4f83f301617d71c928821df9b3ace621">inverse_</reimplements>
         <briefdescription>
 <para>in place computation of the inverse of *this. </para>
         </briefdescription>
@@ -464,14 +490,15 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="150" column="10" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" bodystart="295" bodyend="299"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" line="150" column="10" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" bodystart="295" bodyend="299"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1quantity_1aa5c1f1fece7948ad080bd7f0344de24c" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type><ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref> &amp;</type>
         <definition>vquantity &amp; quantit::quantity&lt; T &gt;::operator=</definition>
         <argsstring>(const vquantity &amp;other) override</argsstring>
         <name>operator=</name>
-        <reimplements refid="classquantit_1_1vquantity_1aa48ae6a414194af0a1a807ba7e776535">operator=</reimplements>
+        <qualifiedname>quantit::quantity::operator=</qualifiedname>
+        <reimplements refid="classquantit_1_1vquantity_1a73e6413f2b800f2f01439101be6652fb">operator=</reimplements>
         <param>
           <type>const <ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref> &amp;</type>
           <declname>other</declname>
@@ -482,13 +509,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="151" column="11" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" bodystart="301" bodyend="304"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" line="151" column="11" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" bodystart="301" bodyend="304"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1quantity_1adacc03f03ca15a91254806dc05899b2e" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
         <type>bool</type>
         <definition>bool quantit::quantity&lt; T &gt;::operator==</definition>
         <argsstring>(const quantity &amp;other) const</argsstring>
         <name>operator==</name>
+        <qualifiedname>quantit::quantity::operator==</qualifiedname>
         <param>
           <type>const <ref refid="classquantit_1_1quantity" kindref="compound">quantity</ref> &amp;</type>
           <declname>other</declname>
@@ -499,13 +527,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="152" column="6" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" bodystart="306" bodyend="309"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" line="152" column="6" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" bodystart="306" bodyend="309"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1quantity_1adb62605df2f5ee1af51f667c64acc0a6" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
         <type>bool</type>
         <definition>bool quantit::quantity&lt; T &gt;::is_equal</definition>
         <argsstring>(const vquantity &amp;other) const override</argsstring>
         <name>is_equal</name>
+        <qualifiedname>quantit::quantity::is_equal</qualifiedname>
         <reimplements refid="classquantit_1_1vquantity_1a3ca12b964283ebcb323c3b36f87a855b">is_equal</reimplements>
         <param>
           <type>const <ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref> &amp;</type>
@@ -517,13 +546,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="153" column="6" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" bodystart="311" bodyend="314"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" line="153" column="6" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" bodystart="311" bodyend="314"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1quantity_1a222a912e7d54184cf8e95644fd312f6a" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
         <type>bool</type>
         <definition>bool quantit::quantity&lt; T &gt;::operator!=</definition>
         <argsstring>(const quantity &amp;other) const</argsstring>
         <name>operator!=</name>
+        <qualifiedname>quantit::quantity::operator!=</qualifiedname>
         <param>
           <type>const <ref refid="classquantit_1_1quantity" kindref="compound">quantity</ref> &amp;</type>
           <declname>other</declname>
@@ -534,13 +564,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="154" column="6" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" bodystart="316" bodyend="319"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" line="154" column="6" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" bodystart="316" bodyend="319"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1quantity_1a554068ca9f77a173320ea9bcc582cd9e" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
         <type>bool</type>
         <definition>bool quantit::quantity&lt; T &gt;::is_different</definition>
         <argsstring>(const vquantity &amp;other) const override</argsstring>
         <name>is_different</name>
+        <qualifiedname>quantit::quantity::is_different</qualifiedname>
         <reimplements refid="classquantit_1_1vquantity_1a3093b6656ecf9f2c8284a33d53cf0bf8">is_different</reimplements>
         <param>
           <type>const <ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref> &amp;</type>
@@ -552,13 +583,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="155" column="6" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" bodystart="321" bodyend="324"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" line="155" column="6" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" bodystart="321" bodyend="324"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1quantity_1acf491601a9eecb3fffa2d7f22fd10feb" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
         <type>bool</type>
         <definition>bool quantit::quantity&lt; Qts &gt;::same_type</definition>
         <argsstring>(const vquantity &amp;other) const override</argsstring>
         <name>same_type</name>
+        <qualifiedname>quantit::quantity::same_type</qualifiedname>
         <reimplements refid="classquantit_1_1vquantity_1a18bd7957cfa5a8bab168622ae3f5d9ff">same_type</reimplements>
         <param>
           <type>const <ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref> &amp;</type>
@@ -570,13 +602,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="156" column="6" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" bodystart="185" bodyend="188"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" line="156" column="6" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" bodystart="185" bodyend="188"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1quantity_1ad360afb44c9d68ac1f6fc6b1da47efab" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
         <type>bool</type>
         <definition>bool quantit::quantity&lt; T &gt;::is_lesser</definition>
         <argsstring>(const vquantity &amp;) const override</argsstring>
         <name>is_lesser</name>
+        <qualifiedname>quantit::quantity::is_lesser</qualifiedname>
         <reimplements refid="classquantit_1_1vquantity_1a2bf4febec84736a205d70140dcbb97ca">is_lesser</reimplements>
         <param>
           <type>const <ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref> &amp;</type>
@@ -588,13 +621,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="157" column="6" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" bodystart="331" bodyend="334"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" line="157" column="6" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" bodystart="331" bodyend="334"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1quantity_1a6f882bd99be5d28ac3c22160f7ebb49e" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
         <type>bool</type>
         <definition>bool quantit::quantity&lt; T &gt;::operator&lt;</definition>
         <argsstring>(const quantity &amp;other) const</argsstring>
         <name>operator&lt;</name>
+        <qualifiedname>quantit::quantity::operator&lt;</qualifiedname>
         <param>
           <type>const <ref refid="classquantit_1_1quantity" kindref="compound">quantity</ref> &amp;</type>
           <declname>other</declname>
@@ -605,13 +639,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="158" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" bodystart="326" bodyend="329"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" line="158" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" bodystart="326" bodyend="329"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1quantity_1ac1d1117ea827df707578ea8b93b42296" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
         <type>bool</type>
         <definition>bool quantit::quantity&lt; T &gt;::is_greater</definition>
         <argsstring>(const vquantity &amp;) const override</argsstring>
         <name>is_greater</name>
+        <qualifiedname>quantit::quantity::is_greater</qualifiedname>
         <reimplements refid="classquantit_1_1vquantity_1ae8d1fe9e05dbe9ac9108c4dff059ea69">is_greater</reimplements>
         <param>
           <type>const <ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref> &amp;</type>
@@ -623,13 +658,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="159" column="6" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" bodystart="342" bodyend="345"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" line="159" column="6" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" bodystart="342" bodyend="345"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1quantity_1a26d9c15b9ee1b271f800c595817efa0a" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
         <type>bool</type>
         <definition>bool quantit::quantity&lt; T &gt;::operator&gt;</definition>
         <argsstring>(const quantity &amp;other) const</argsstring>
         <name>operator&gt;</name>
+        <qualifiedname>quantit::quantity::operator&gt;</qualifiedname>
         <param>
           <type>const <ref refid="classquantit_1_1quantity" kindref="compound">quantity</ref> &amp;</type>
           <declname>other</declname>
@@ -640,13 +676,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="160" column="6" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" bodystart="337" bodyend="340"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" line="160" column="6" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" bodystart="337" bodyend="340"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1quantity_1a6da7995801c2eccefde9eb53bad19c8a" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
         <definition>void quantit::quantity&lt; T &gt;::swap</definition>
         <argsstring>(vquantity &amp;other) override</argsstring>
         <name>swap</name>
+        <qualifiedname>quantit::quantity::swap</qualifiedname>
         <reimplements refid="classquantit_1_1vquantity_1a0eb99749d6f467642bbb9dd1fca03448">swap</reimplements>
         <param>
           <type><ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref> &amp;</type>
@@ -658,14 +695,15 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="161" column="6" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" bodystart="353" bodyend="356"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" line="161" column="6" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" bodystart="353" bodyend="356"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1quantity_1a002d2eea6406dc64d5a13c138651a608" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
         <type>std::unique_ptr&lt; <ref refid="classquantit_1_1vquantity__vector" kindref="compound">vquantity_vector</ref> &gt;</type>
         <definition>std::unique_ptr&lt; vquantity_vector &gt; quantit::quantity&lt; T &gt;::make_vector</definition>
         <argsstring>(size_t cnt) const override</argsstring>
         <name>make_vector</name>
-        <reimplements refid="classquantit_1_1vquantity_1a9dc7b1ad855b6eaed785be0ed8032ff3">make_vector</reimplements>
+        <qualifiedname>quantit::quantity::make_vector</qualifiedname>
+        <reimplements refid="classquantit_1_1vquantity_1a1927490085e48efb9eaf5131730fa0f0">make_vector</reimplements>
         <param>
           <type>size_t</type>
           <declname>cnt</declname>
@@ -676,13 +714,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="163" column="17" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" bodystart="506" bodyend="509"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" line="163" column="17" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector_impl.h" bodystart="506" bodyend="509"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1quantity_1a633ed75abb9b47372b5b3d30505a1ff6" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
         <type>double</type>
         <definition>double quantit::quantity&lt; T &gt;::distance</definition>
         <argsstring>(const vquantity &amp;) const override</argsstring>
         <name>distance</name>
+        <qualifiedname>quantit::quantity::distance</qualifiedname>
         <reimplements refid="classquantit_1_1vquantity_1a315b374ade4065ae639e5a2f3901baca">distance</reimplements>
         <param>
           <type>const <ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref> &amp;</type>
@@ -694,13 +733,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="165" column="8" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" bodystart="245" bodyend="248"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" line="165" column="8" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" bodystart="245" bodyend="248"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1quantity_1a7ed79489057edc5be922ece0933a0f1b" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
         <type>double</type>
         <definition>double quantit::quantity&lt; Groups &gt;::distance</definition>
         <argsstring>(const quantity &amp;) const</argsstring>
         <name>distance</name>
+        <qualifiedname>quantit::quantity::distance</qualifiedname>
         <param>
           <type>const <ref refid="classquantit_1_1quantity" kindref="compound">quantity</ref> &amp;</type>
         </param>
@@ -710,13 +750,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="166" column="8"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" line="166" column="8"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1quantity_1a1fe57470d9f95531bd71cce620f045ac" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
         <type>int64_t</type>
         <definition>int64_t quantit::quantity&lt; T &gt;::distance2</definition>
         <argsstring>(const vquantity &amp;) const override</argsstring>
         <name>distance2</name>
+        <qualifiedname>quantit::quantity::distance2</qualifiedname>
         <reimplements refid="classquantit_1_1vquantity_1ab63503d752af84a95bc7d4fdc36acb56">distance2</reimplements>
         <param>
           <type>const <ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref> &amp;</type>
@@ -728,13 +769,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="167" column="9" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" bodystart="235" bodyend="238"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" line="167" column="9" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" bodystart="235" bodyend="238"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1quantity_1a402fed3f5dc870506e373c18b3464d80" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
         <type>int64_t</type>
         <definition>int64_t quantit::quantity&lt; Groups &gt;::distance2</definition>
         <argsstring>(const quantity &amp;) const</argsstring>
         <name>distance2</name>
+        <qualifiedname>quantit::quantity::distance2</qualifiedname>
         <param>
           <type>const <ref refid="classquantit_1_1quantity" kindref="compound">quantity</ref> &amp;</type>
         </param>
@@ -744,13 +786,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="168" column="9"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" line="168" column="9"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1quantity_1a602e0eb237c9f6bc64eb13f4ef638211" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
         <type>auto</type>
         <definition>auto quantit::quantity&lt; Groups &gt;::format_to</definition>
         <argsstring>(fmt::format_context &amp;ctx) const -&gt; decltype(ctx.out()) override</argsstring>
         <name>format_to</name>
+        <qualifiedname>quantit::quantity::format_to</qualifiedname>
         <reimplements refid="classquantit_1_1vquantity_1a2fc1eba2cd3fd6d2f63860712562a3a8">format_to</reimplements>
         <param>
           <type>fmt::format_context &amp;</type>
@@ -762,13 +805,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="170" column="6" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" bodystart="170" bodyend="173"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" line="170" column="6" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" bodystart="170" bodyend="173"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1vquantity_1a3625d2f986585bb6ba22fc09c845bd64" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type><ref refid="classquantit_1_1any__quantity" kindref="compound">any_quantity</ref></type>
         <definition>any_quantity quantit::vquantity::inverse</definition>
         <argsstring>() const</argsstring>
         <name>inverse</name>
+        <qualifiedname>quantit::vquantity::inverse</qualifiedname>
         <briefdescription>
 <para>out of place inverse on a reference. return a new <ref refid="classquantit_1_1any__quantity" kindref="compound">any_quantity</ref> object containing the inverse of this. </para>
         </briefdescription>
@@ -779,46 +823,49 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="76" column="14" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/cquantity.h" bodystart="285" bodyend="285"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" line="76" column="14" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h" bodystart="285" bodyend="285"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1vquantity_1a9da713105c05af2f127e09f44e1e9a86" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type><ref refid="classquantit_1_1any__quantity" kindref="compound">any_quantity</ref></type>
         <definition>any_quantity quantit::vquantity::inv</definition>
         <argsstring>() const</argsstring>
         <name>inv</name>
+        <qualifiedname>quantit::vquantity::inv</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="77" column="14" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/cquantity.h" bodystart="286" bodyend="286"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" line="77" column="14" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h" bodystart="286" bodyend="286"/>
       </memberdef>
-      <memberdef kind="function" id="classquantit_1_1vquantity_1a40374252a018c5f909e81dd563c710e5" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+      <memberdef kind="function" id="classquantit_1_1vquantity_1aa9e46e90f48d979c407241c835d97bd2" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type><ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref> &amp;</type>
-        <definition>vquantity&amp; quantit::vquantity::inv_</definition>
+        <definition>vquantity &amp; quantit::vquantity::inv_</definition>
         <argsstring>()</argsstring>
         <name>inv_</name>
+        <qualifiedname>quantit::vquantity::inv_</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="78" column="11" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" bodystart="78" bodyend="78"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" line="78" column="11" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" bodystart="78" bodyend="78"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1vquantity_1a10532e7b14882cddae51182a12a72732" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type><ref refid="classquantit_1_1any__quantity" kindref="compound">any_quantity</ref></type>
         <definition>any_quantity quantit::vquantity::neutral</definition>
         <argsstring>() const</argsstring>
         <name>neutral</name>
+        <qualifiedname>quantit::vquantity::neutral</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="82" column="14" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/cquantity.h" bodystart="287" bodyend="287"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" line="82" column="14" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h" bodystart="287" bodyend="287"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
@@ -837,30 +884,30 @@
 </para>
     </detaileddescription>
     <inheritancegraph>
-      <node id="2">
-        <label>quantit::vquantity</label>
-        <link refid="classquantit_1_1vquantity"/>
-      </node>
       <node id="1">
         <label>quantit::quantity&lt; Groups &gt;</label>
         <link refid="classquantit_1_1quantity"/>
         <childnode refid="2" relation="public-inheritance">
         </childnode>
+      </node>
+      <node id="2">
+        <label>quantit::vquantity</label>
+        <link refid="classquantit_1_1vquantity"/>
       </node>
     </inheritancegraph>
     <collaborationgraph>
-      <node id="2">
-        <label>quantit::vquantity</label>
-        <link refid="classquantit_1_1vquantity"/>
-      </node>
       <node id="1">
         <label>quantit::quantity&lt; Groups &gt;</label>
         <link refid="classquantit_1_1quantity"/>
         <childnode refid="2" relation="public-inheritance">
         </childnode>
       </node>
+      <node id="2">
+        <label>quantit::vquantity</label>
+        <link refid="classquantit_1_1vquantity"/>
+      </node>
     </collaborationgraph>
-    <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" line="117" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h" bodystart="118" bodyend="183"/>
+    <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" line="117" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h" bodystart="118" bodyend="183"/>
     <listofallmembers>
       <member refid="classquantit_1_1quantity_1ab6214f46d3afc81ba4f64fe7bf4c0eae" prot="public" virt="virtual"><scope>quantit::quantity</scope><name>clone</name></member>
       <member refid="classquantit_1_1quantity_1a633ed75abb9b47372b5b3d30505a1ff6" prot="public" virt="virtual"><scope>quantit::quantity</scope><name>distance</name></member>
@@ -870,7 +917,7 @@
       <member refid="classquantit_1_1quantity_1a5b28afa1678e72b60b4b3cf58d25af79" prot="public" virt="non-virtual"><scope>quantit::quantity</scope><name>fmt::formatter&lt; quantit::quantity&lt; Groups... &gt; &gt;</name></member>
       <member refid="classquantit_1_1quantity_1a602e0eb237c9f6bc64eb13f4ef638211" prot="public" virt="virtual"><scope>quantit::quantity</scope><name>format_to</name></member>
       <member refid="classquantit_1_1vquantity_1a9da713105c05af2f127e09f44e1e9a86" prot="public" virt="non-virtual"><scope>quantit::quantity</scope><name>inv</name></member>
-      <member refid="classquantit_1_1vquantity_1a40374252a018c5f909e81dd563c710e5" prot="public" virt="non-virtual"><scope>quantit::quantity</scope><name>inv_</name></member>
+      <member refid="classquantit_1_1vquantity_1aa9e46e90f48d979c407241c835d97bd2" prot="public" virt="non-virtual"><scope>quantit::quantity</scope><name>inv_</name></member>
       <member refid="classquantit_1_1vquantity_1a3625d2f986585bb6ba22fc09c845bd64" prot="public" virt="non-virtual"><scope>quantit::quantity</scope><name>inverse</name></member>
       <member refid="classquantit_1_1quantity_1a77525a487ba70963a63825ba407b4125" prot="public" virt="virtual"><scope>quantit::quantity</scope><name>inverse_</name></member>
       <member refid="classquantit_1_1quantity_1a554068ca9f77a173320ea9bcc582cd9e" prot="public" virt="virtual"><scope>quantit::quantity</scope><name>is_different</name></member>
@@ -880,9 +927,9 @@
       <member refid="classquantit_1_1quantity_1a2bdd89bb923fbd8669d3f805dd457bda" prot="public" virt="virtual"><scope>quantit::quantity</scope><name>make_neutral</name></member>
       <member refid="classquantit_1_1quantity_1a002d2eea6406dc64d5a13c138651a608" prot="public" virt="virtual"><scope>quantit::quantity</scope><name>make_vector</name></member>
       <member refid="classquantit_1_1vquantity_1a10532e7b14882cddae51182a12a72732" prot="public" virt="non-virtual"><scope>quantit::quantity</scope><name>neutral</name></member>
-      <member refid="classquantit_1_1quantity_1a5047468329dee726247cdc484e2bbf73" prot="public" virt="non-virtual"><scope>quantit::quantity</scope><name>op</name></member>
+      <member refid="classquantit_1_1quantity_1ab9c214c0f3e49ddfaa093abf45529608" prot="public" virt="non-virtual"><scope>quantit::quantity</scope><name>op</name></member>
       <member refid="classquantit_1_1quantity_1a7b60ef05dc153e201f6fabc6d3c7f15a" prot="public" virt="virtual"><scope>quantit::quantity</scope><name>op</name></member>
-      <member refid="classquantit_1_1quantity_1a2e1f986e8a969bf35ff9f08481840dba" prot="public" virt="non-virtual"><scope>quantit::quantity</scope><name>op</name></member>
+      <member refid="classquantit_1_1quantity_1adf764bc26f52fa00f7672a08cf5d29e9" prot="public" virt="non-virtual"><scope>quantit::quantity</scope><name>op</name></member>
       <member refid="classquantit_1_1quantity_1a382d9877d1f20a2c7177335487fe12d0" prot="public" virt="virtual"><scope>quantit::quantity</scope><name>op</name></member>
       <member refid="classquantit_1_1quantity_1a9943092f757c532ca96e697e71f82a63" prot="public" virt="non-virtual"><scope>quantit::quantity</scope><name>op_to</name></member>
       <member refid="classquantit_1_1quantity_1acf76334df02c4becbdf269f9b2c0e11a" prot="public" virt="virtual"><scope>quantit::quantity</scope><name>op_to</name></member>

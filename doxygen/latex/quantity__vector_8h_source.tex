@@ -1,0 +1,504 @@
+\hypertarget{quantity__vector_8h_source}{}\doxysection{quantity\+\_\+vector.\+h}
+\label{quantity__vector_8h_source}\index{/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity\_vector.h@{/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity\_vector.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * File: any\_quantity\_vector.h}}
+\DoxyCodeLine{3 \textcolor{comment}{ * Project: QuantiT}}
+\DoxyCodeLine{4 \textcolor{comment}{ * File Created: Friday, 18th September 2020 4:07:41 pm}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)}}
+\DoxyCodeLine{6 \textcolor{comment}{ * -\/-\/-\/-\/-\/}}
+\DoxyCodeLine{7 \textcolor{comment}{ * Last Modified: Friday, 18th September 2020 4:07:41 pm}}
+\DoxyCodeLine{8 \textcolor{comment}{ * Modified By: Alexandre Foley (Alexandre.foley@usherbrooke.ca>)}}
+\DoxyCodeLine{9 \textcolor{comment}{ * -\/-\/-\/-\/-\/}}
+\DoxyCodeLine{10 \textcolor{comment}{ * Copyright (c) 2020 Alexandre Foley}}
+\DoxyCodeLine{11 \textcolor{comment}{ * Licensed under GPL v3}}
+\DoxyCodeLine{12 \textcolor{comment}{ */}}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#ifndef D34E37A6\_732F\_4F45\_9171\_6B931CC1F812}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#define D34E37A6\_732F\_4F45\_9171\_6B931CC1F812}}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}Conserved/Composite/quantity\_vector\_impl.h"{}}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}Conserved/quantity.h"{}}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include "{}doctest/doctest\_proxy.h"{}}}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23 \textcolor{keyword}{namespace }quantit}
+\DoxyCodeLine{24 \{}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26 \textcolor{keyword}{class }\mbox{\hyperlink{classquantit_1_1any__quantity__vector}{any\_quantity\_vector}} final}
+\DoxyCodeLine{27 \{}
+\DoxyCodeLine{28     std::unique\_ptr<vquantity\_vector> ptr;}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30 \textcolor{keyword}{public}:}
+\DoxyCodeLine{31     \textcolor{keyword}{using} \mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1cgroup__iterator}{iterator}} = \mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1cgroup__iterator}{vquantity\_vector::iterator}};}
+\DoxyCodeLine{32     \textcolor{keyword}{using} \mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator}{const\_iterator}} = \mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator}{vquantity\_vector::const\_iterator}};}
+\DoxyCodeLine{33     \textcolor{keyword}{using} reverse\_iterator = std::reverse\_iterator<iterator>;}
+\DoxyCodeLine{34     \textcolor{keyword}{using} const\_reverse\_iterator = std::reverse\_iterator<const\_iterator>;}
+\DoxyCodeLine{35     \textcolor{keyword}{using} \mbox{\hyperlink{classquantit_1_1any__quantity}{value\_type}} = \mbox{\hyperlink{classquantit_1_1any__quantity}{any\_quantity}};}
+\DoxyCodeLine{36     \textcolor{keyword}{using} size\_type = size\_t;}
+\DoxyCodeLine{37     \textcolor{keyword}{using} difference\_type = std::ptrdiff\_t;}
+\DoxyCodeLine{38     \textcolor{keyword}{using} \mbox{\hyperlink{classquantit_1_1vquantity}{reference}} = \mbox{\hyperlink{classquantit_1_1vquantity}{any\_quantity\_ref}};}
+\DoxyCodeLine{39     \textcolor{keyword}{using} \mbox{\hyperlink{classquantit_1_1vquantity}{const\_reference}} = \mbox{\hyperlink{classquantit_1_1vquantity}{any\_quantity\_cref}};}
+\DoxyCodeLine{40     \textcolor{keyword}{using} pointer = \textcolor{keyword}{typename} iterator::pointer;}
+\DoxyCodeLine{41     \textcolor{keyword}{using} const\_pointer = \textcolor{keyword}{typename} const\_iterator::pointer;}
+\DoxyCodeLine{42 }
+\DoxyCodeLine{43     \mbox{\hyperlink{classquantit_1_1any__quantity__vector}{any\_quantity\_vector}}(std::unique\_ptr<vquantity\_vector>\&\& \_ptr) : ptr(std::move(\_ptr)) \{\}}
+\DoxyCodeLine{44     \mbox{\hyperlink{classquantit_1_1any__quantity__vector}{any\_quantity\_vector}}() = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{45     \mbox{\hyperlink{classquantit_1_1any__quantity__vector}{any\_quantity\_vector}}(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1any__quantity__vector}{any\_quantity\_vector}}\& other) : ptr(other.ptr-\/>clone()) \{\}}
+\DoxyCodeLine{46     \mbox{\hyperlink{classquantit_1_1any__quantity__vector}{any\_quantity\_vector}}(\mbox{\hyperlink{classquantit_1_1any__quantity__vector}{any\_quantity\_vector}}\&\& other) : ptr(std::move(other.ptr)) \{\}}
+\DoxyCodeLine{47     \mbox{\hyperlink{classquantit_1_1any__quantity__vector}{any\_quantity\_vector}}(\textcolor{keywordtype}{size\_t} cnt, \mbox{\hyperlink{classquantit_1_1vquantity}{any\_quantity\_cref}} val) : ptr(val.make\_vector(cnt)) \{\}}
+\DoxyCodeLine{52     \mbox{\hyperlink{classquantit_1_1any__quantity__vector_a8eedb671b67536fc16f29f6ad3fadb9f}{any\_quantity\_vector}}(std::initializer\_list<any\_quantity> list) : ptr(list.begin()-\/>get().make\_vector(0))}
+\DoxyCodeLine{53     \{}
+\DoxyCodeLine{54         ptr-\/>reserve(list.end() -\/ list.begin());}
+\DoxyCodeLine{55         \textcolor{keywordflow}{for} (\mbox{\hyperlink{classquantit_1_1vquantity}{const\_reference}} a : list)}
+\DoxyCodeLine{56         \{}
+\DoxyCodeLine{57             push\_back(a);}
+\DoxyCodeLine{58         \}}
+\DoxyCodeLine{59     \}}
+\DoxyCodeLine{60     \mbox{\hyperlink{classquantit_1_1any__quantity__vector}{any\_quantity\_vector}}(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1vquantity__vector}{vquantity\_vector}}\& other) : ptr(other.clone()) \{\}}
+\DoxyCodeLine{61     template <class Conc\_cgroup, class = std::enable\_if\_t<is\_conc\_cgroup\_impl<Conc\_cgroup>::value>>}
+\DoxyCodeLine{62     any\_quantity\_vector(std::initializer\_list<Conc\_cgroup> list) : ptr(std::make\_unique<quantity\_vector<Conc\_cgroup>>(list)) \{\}}
+\DoxyCodeLine{63     template <class Conc\_cgroup, class Allocator, class = std::enable\_if\_t<is\_conc\_cgroup\_impl<Conc\_cgroup>::value>>}
+\DoxyCodeLine{64     any\_quantity\_vector(\textcolor{keyword}{const} quantity\_vector<Conc\_cgroup, Allocator>\& other) : ptr(other.clone()) \{\}}
+\DoxyCodeLine{65     template <class Conc\_cgroup, class Allocator, class = std::enable\_if\_t<is\_conc\_cgroup\_impl<Conc\_cgroup>::value>>}
+\DoxyCodeLine{66     any\_quantity\_vector(quantity\_vector<Conc\_cgroup, Allocator>\&\& other) : ptr(std::make\_unique<quantity\_vector<Conc\_cgroup, Allocator>>())}
+\DoxyCodeLine{67     \{}
+\DoxyCodeLine{68         *ptr = std::move(other);}
+\DoxyCodeLine{69     \}}
+\DoxyCodeLine{70 }
+\DoxyCodeLine{71     any\_quantity\_vector\& operator=(any\_quantity\_vector other)}
+\DoxyCodeLine{72     \{}
+\DoxyCodeLine{73         ptr = std::move(other.ptr);}
+\DoxyCodeLine{74         \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{75     \}}
+\DoxyCodeLine{76 }
+\DoxyCodeLine{77     \textcolor{keywordtype}{bool} operator==(\textcolor{keyword}{const} any\_quantity\_vector\& other)\textcolor{keyword}{ const}}
+\DoxyCodeLine{78 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{79         \textcolor{keywordflow}{return} ptr and *ptr == *(other.ptr);}
+\DoxyCodeLine{80     \}}
+\DoxyCodeLine{81     \textcolor{keywordtype}{bool} operator!=(\textcolor{keyword}{const} any\_quantity\_vector\& other)\textcolor{keyword}{ const}}
+\DoxyCodeLine{82 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{83         \textcolor{keywordflow}{return} not operator==(other);}
+\DoxyCodeLine{84     \}}
+\DoxyCodeLine{85 }
+\DoxyCodeLine{86     reference operator[](\textcolor{keywordtype}{size\_t} n)}
+\DoxyCodeLine{87     \{}
+\DoxyCodeLine{88         \textcolor{keywordflow}{return} any\_quantity\_ref((*ptr)[n]);}
+\DoxyCodeLine{89     \}}
+\DoxyCodeLine{90     const\_reference operator[](\textcolor{keywordtype}{size\_t} n)\textcolor{keyword}{ const}}
+\DoxyCodeLine{91 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{92         \textcolor{keywordflow}{if} (not ptr) \textcolor{keywordflow}{throw} std::runtime\_error( fmt::format(\textcolor{stringliteral}{"{}\{\} cannot be called with unitialized any\_quantity\_vector."{}},\_\_func\_\_ ) );}
+\DoxyCodeLine{93         \textcolor{keywordflow}{return} (*ptr)[n];}
+\DoxyCodeLine{94     \}}
+\DoxyCodeLine{95     reference at(\textcolor{keywordtype}{size\_t} n)}
+\DoxyCodeLine{96     \{}
+\DoxyCodeLine{97         \textcolor{keywordflow}{if} (not ptr) \textcolor{keywordflow}{throw} std::runtime\_error( fmt::format(\textcolor{stringliteral}{"{}\{\} cannot be called with unitialized any\_quantity\_vector."{}},\_\_func\_\_ ) );}
+\DoxyCodeLine{98         \textcolor{keywordflow}{return} ptr-\/>at(n);}
+\DoxyCodeLine{99     \}}
+\DoxyCodeLine{100     const\_reference at(\textcolor{keywordtype}{size\_t} n)\textcolor{keyword}{ const}}
+\DoxyCodeLine{101 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{102         \textcolor{keywordflow}{if} (not ptr) \textcolor{keywordflow}{throw} std::runtime\_error( fmt::format(\textcolor{stringliteral}{"{}\{\} cannot be called with unitialized any\_quantity\_vector."{}},\_\_func\_\_ ) );}
+\DoxyCodeLine{103         \textcolor{keywordflow}{return} ptr-\/>at(n);}
+\DoxyCodeLine{104     \}}
+\DoxyCodeLine{105 }
+\DoxyCodeLine{106     reference front()}
+\DoxyCodeLine{107     \{}
+\DoxyCodeLine{108         \textcolor{keywordflow}{if} (not ptr) \textcolor{keywordflow}{throw} std::runtime\_error( fmt::format(\textcolor{stringliteral}{"{}\{\} cannot be called with unitialized any\_quantity\_vector."{}},\_\_func\_\_ ) );}
+\DoxyCodeLine{109         \textcolor{keywordflow}{return} ptr-\/>front();}
+\DoxyCodeLine{110     \}}
+\DoxyCodeLine{111     const\_reference front()\textcolor{keyword}{ const}}
+\DoxyCodeLine{112 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{113         \textcolor{keywordflow}{if} (not ptr) \textcolor{keywordflow}{throw} std::runtime\_error( fmt::format(\textcolor{stringliteral}{"{}\{\} cannot be called with unitialized any\_quantity\_vector."{}},\_\_func\_\_ ) );}
+\DoxyCodeLine{114 }
+\DoxyCodeLine{115         \textcolor{keywordflow}{return} ptr-\/>front();}
+\DoxyCodeLine{116     \}}
+\DoxyCodeLine{117     reference back()}
+\DoxyCodeLine{118     \{}
+\DoxyCodeLine{119         \textcolor{keywordflow}{if} (not ptr) \textcolor{keywordflow}{throw} std::runtime\_error( fmt::format(\textcolor{stringliteral}{"{}\{\} cannot be called with unitialized any\_quantity\_vector."{}},\_\_func\_\_ ) );}
+\DoxyCodeLine{120         \textcolor{keywordflow}{return} ptr-\/>back();}
+\DoxyCodeLine{121     \}}
+\DoxyCodeLine{122     const\_reference back()\textcolor{keyword}{ const}}
+\DoxyCodeLine{123 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{124         \textcolor{keywordflow}{if} (not ptr) \textcolor{keywordflow}{throw} std::runtime\_error( fmt::format(\textcolor{stringliteral}{"{}\{\} cannot be called with unitialized any\_quantity\_vector."{}},\_\_func\_\_ ) );}
+\DoxyCodeLine{125         \textcolor{keywordflow}{return} ptr-\/>back();}
+\DoxyCodeLine{126     \}}
+\DoxyCodeLine{127     pointer data()}
+\DoxyCodeLine{128     \{}
+\DoxyCodeLine{129         \textcolor{keywordflow}{if} (not ptr) \textcolor{keywordflow}{return} \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{130         \textcolor{keywordflow}{return} (ptr-\/>data());}
+\DoxyCodeLine{131     \}}
+\DoxyCodeLine{132     const\_pointer data()\textcolor{keyword}{ const}}
+\DoxyCodeLine{133 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{134         \textcolor{keywordflow}{if} (not ptr) \textcolor{keywordflow}{return} \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{135         \textcolor{keywordflow}{return} (ptr-\/>data());}
+\DoxyCodeLine{136     \}}
+\DoxyCodeLine{137     \textcolor{comment}{// capacity}}
+\DoxyCodeLine{138     [[nodiscard]] \textcolor{keywordtype}{bool} empty()\textcolor{keyword}{ const}}
+\DoxyCodeLine{139 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{140         \textcolor{keywordflow}{return} ptr-\/>empty();}
+\DoxyCodeLine{141     \}}
+\DoxyCodeLine{142     [[nodiscard]] \textcolor{keywordtype}{size\_t} size()\textcolor{keyword}{ const}}
+\DoxyCodeLine{143 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{144         \textcolor{keywordflow}{return} ptr-\/>size();}
+\DoxyCodeLine{145     \}}
+\DoxyCodeLine{146     [[nodiscard]] \textcolor{keywordtype}{size\_t} max\_size()\textcolor{keyword}{ const}}
+\DoxyCodeLine{147 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{148         \textcolor{keywordflow}{return} ptr-\/>max\_size();}
+\DoxyCodeLine{149     \}}
+\DoxyCodeLine{150     \textcolor{keywordtype}{void} reserve(\textcolor{keywordtype}{size\_t} n)}
+\DoxyCodeLine{151     \{}
+\DoxyCodeLine{152         ptr-\/>reserve(n);}
+\DoxyCodeLine{153     \}}
+\DoxyCodeLine{154     [[nodiscard]] \textcolor{keywordtype}{size\_t} capacity()\textcolor{keyword}{ const}}
+\DoxyCodeLine{155 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{156         \textcolor{keywordflow}{return} ptr-\/>capacity();}
+\DoxyCodeLine{157     \}}
+\DoxyCodeLine{158     \textcolor{keywordtype}{void} shrink\_to\_fit()}
+\DoxyCodeLine{159     \{}
+\DoxyCodeLine{160         \textcolor{keywordflow}{if} (ptr)}
+\DoxyCodeLine{161         ptr-\/>shrink\_to\_fit();}
+\DoxyCodeLine{162     \}}
+\DoxyCodeLine{163     \textcolor{comment}{//modifiers}}
+\DoxyCodeLine{164     \textcolor{keywordtype}{void} clear()}
+\DoxyCodeLine{165     \{}
+\DoxyCodeLine{166         \textcolor{keywordflow}{if} (ptr)}
+\DoxyCodeLine{167         ptr-\/>clear();}
+\DoxyCodeLine{168     \}}
+\DoxyCodeLine{169     iterator insert(const\_iterator pos, const\_reference Val)}
+\DoxyCodeLine{170     \{}
+\DoxyCodeLine{171         \textcolor{keywordflow}{if} (not ptr) \textcolor{keywordflow}{throw} std::runtime\_error( fmt::format(\textcolor{stringliteral}{"{}\{\} cannot be called with unitialized any\_quantity\_vector."{}},\_\_func\_\_ ) );}
+\DoxyCodeLine{172         \textcolor{keywordflow}{return} ptr-\/>insert(pos, Val);}
+\DoxyCodeLine{173     \}}
+\DoxyCodeLine{174     iterator insert(const\_iterator pos, \textcolor{keywordtype}{size\_t} count, const\_reference Val)}
+\DoxyCodeLine{175     \{}
+\DoxyCodeLine{176         \textcolor{keywordflow}{if} (not ptr) \textcolor{keywordflow}{throw} std::runtime\_error( fmt::format(\textcolor{stringliteral}{"{}\{\} cannot be called with unitialized any\_quantity\_vector."{}},\_\_func\_\_ ) );}
+\DoxyCodeLine{177         \textcolor{keywordflow}{return} ptr-\/>insert(pos, count, Val);}
+\DoxyCodeLine{178     \}}
+\DoxyCodeLine{179     iterator insert(const\_iterator pos, const\_iterator first, const\_iterator last)}
+\DoxyCodeLine{180     \{}
+\DoxyCodeLine{181         \textcolor{keywordflow}{if} (not ptr) \textcolor{keywordflow}{throw} std::runtime\_error( fmt::format(\textcolor{stringliteral}{"{}\{\} cannot be called with unitialized any\_quantity\_vector."{}},\_\_func\_\_ ) );}
+\DoxyCodeLine{182         \textcolor{keywordflow}{return} ptr-\/>insert(pos, first, last);}
+\DoxyCodeLine{183     \}}
+\DoxyCodeLine{184     iterator insert(const\_iterator pos, const\_reverse\_iterator first, const\_reverse\_iterator last)}
+\DoxyCodeLine{185     \{}
+\DoxyCodeLine{186         \textcolor{keywordflow}{if} (not ptr) \textcolor{keywordflow}{throw} std::runtime\_error( fmt::format(\textcolor{stringliteral}{"{}\{\} cannot be called with unitialized any\_quantity\_vector."{}},\_\_func\_\_ ) );}
+\DoxyCodeLine{187         \textcolor{keywordflow}{return} ptr-\/>insert(pos, first, last);}
+\DoxyCodeLine{188     \}}
+\DoxyCodeLine{189     iterator erase(const\_iterator pos)}
+\DoxyCodeLine{190     \{}
+\DoxyCodeLine{191         \textcolor{keywordflow}{if} (not ptr) \textcolor{keywordflow}{return} iterator();}
+\DoxyCodeLine{192         \textcolor{keywordflow}{return} ptr-\/>erase(pos);}
+\DoxyCodeLine{193     \}}
+\DoxyCodeLine{194     iterator erase(const\_iterator first, const\_iterator last)}
+\DoxyCodeLine{195     \{}
+\DoxyCodeLine{196         \textcolor{keywordflow}{if} (not ptr) \textcolor{keywordflow}{return} iterator();}
+\DoxyCodeLine{197         \textcolor{keywordflow}{return} ptr-\/>erase(first, last);}
+\DoxyCodeLine{198     \}}
+\DoxyCodeLine{199     \textcolor{keywordtype}{void} push\_back(const\_reference value)}
+\DoxyCodeLine{200     \{}
+\DoxyCodeLine{201         \textcolor{keywordflow}{if} (ptr)}
+\DoxyCodeLine{202             ptr-\/>push\_back(value);}
+\DoxyCodeLine{203         \textcolor{keywordflow}{else}}
+\DoxyCodeLine{204             *\textcolor{keyword}{this} = any\_quantity\_vector(1,value);}
+\DoxyCodeLine{205 }
+\DoxyCodeLine{206     \}}
+\DoxyCodeLine{207     \textcolor{keywordtype}{void} pop\_back()}
+\DoxyCodeLine{208     \{}
+\DoxyCodeLine{209         \textcolor{keywordflow}{if} (not ptr) \textcolor{keywordflow}{throw} std::runtime\_error( fmt::format(\textcolor{stringliteral}{"{}\{\} cannot be called with unitialized any\_quantity\_vector."{}},\_\_func\_\_ ) );}
+\DoxyCodeLine{210         ptr-\/>pop\_back();}
+\DoxyCodeLine{211     \}}
+\DoxyCodeLine{212     \textcolor{keywordtype}{void} resize(\textcolor{keywordtype}{size\_t} count)}
+\DoxyCodeLine{213     \{}
+\DoxyCodeLine{214         \textcolor{keywordflow}{if} (not ptr) \textcolor{keywordflow}{throw} std::runtime\_error(\textcolor{stringliteral}{"{}unitialized any\_quantity\_vector cannot be resized without specifying a fill value."{}});}
+\DoxyCodeLine{215         ptr-\/>resize(count);}
+\DoxyCodeLine{216     \}}
+\DoxyCodeLine{217     \textcolor{keywordtype}{void} resize(\textcolor{keywordtype}{size\_t} count, const\_reference val)}
+\DoxyCodeLine{218     \{}
+\DoxyCodeLine{219         \textcolor{keywordflow}{if} (ptr)}
+\DoxyCodeLine{220             ptr-\/>resize(count, val);}
+\DoxyCodeLine{221         \textcolor{keywordflow}{else}}
+\DoxyCodeLine{222             *\textcolor{keyword}{this} = any\_quantity\_vector(count,val);}
+\DoxyCodeLine{223     \}}
+\DoxyCodeLine{224     \textcolor{keywordtype}{void} swap(any\_quantity\_vector\& other)}
+\DoxyCodeLine{225     \{}
+\DoxyCodeLine{226         \textcolor{keyword}{using} std::swap;}
+\DoxyCodeLine{227         swap(ptr, other.ptr);}
+\DoxyCodeLine{228     \}}
+\DoxyCodeLine{229     iterator begin()}
+\DoxyCodeLine{230     \{}
+\DoxyCodeLine{231         \textcolor{keywordflow}{if} (not ptr) \textcolor{keywordflow}{return} iterator();}
+\DoxyCodeLine{232         \textcolor{keywordflow}{return} ptr-\/>begin();}
+\DoxyCodeLine{233     \}}
+\DoxyCodeLine{234     iterator end()}
+\DoxyCodeLine{235     \{}
+\DoxyCodeLine{236         \textcolor{keywordflow}{if} (not ptr) \textcolor{keywordflow}{return} iterator();}
+\DoxyCodeLine{237         \textcolor{keywordflow}{return} ptr-\/>end();}
+\DoxyCodeLine{238     \}}
+\DoxyCodeLine{239     const\_iterator cbegin()\textcolor{keyword}{ const}}
+\DoxyCodeLine{240 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{241         \textcolor{keywordflow}{if} (not ptr) \textcolor{keywordflow}{return} iterator();}
+\DoxyCodeLine{242 }
+\DoxyCodeLine{243         \textcolor{keywordflow}{return} ptr-\/>cbegin();}
+\DoxyCodeLine{244     \}}
+\DoxyCodeLine{245     const\_iterator cend()\textcolor{keyword}{ const}}
+\DoxyCodeLine{246 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{247         \textcolor{keywordflow}{if} (not ptr) \textcolor{keywordflow}{return} iterator();}
+\DoxyCodeLine{248         \textcolor{keywordflow}{return} ptr-\/>cend();}
+\DoxyCodeLine{249     \}}
+\DoxyCodeLine{250 }
+\DoxyCodeLine{251     reverse\_iterator rbegin()}
+\DoxyCodeLine{252     \{}
+\DoxyCodeLine{253         \textcolor{keywordflow}{if} (not ptr) \textcolor{keywordflow}{return} reverse\_iterator();}
+\DoxyCodeLine{254         \textcolor{keywordflow}{return} ptr-\/>rbegin();}
+\DoxyCodeLine{255     \}}
+\DoxyCodeLine{256     reverse\_iterator rend()}
+\DoxyCodeLine{257     \{}
+\DoxyCodeLine{258         \textcolor{keywordflow}{if} (not ptr) \textcolor{keywordflow}{return} reverse\_iterator();}
+\DoxyCodeLine{259         \textcolor{keywordflow}{return} ptr-\/>rend();}
+\DoxyCodeLine{260     \}}
+\DoxyCodeLine{261     const\_iterator begin()\textcolor{keyword}{ const}}
+\DoxyCodeLine{262 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{263         \textcolor{keywordflow}{return} cbegin();}
+\DoxyCodeLine{264     \};}
+\DoxyCodeLine{265     const\_iterator end()\textcolor{keyword}{ const}}
+\DoxyCodeLine{266 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{267         \textcolor{keywordflow}{return} cend();}
+\DoxyCodeLine{268     \};}
+\DoxyCodeLine{269     const\_reverse\_iterator crbegin()\textcolor{keyword}{ const}}
+\DoxyCodeLine{270 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{271         \textcolor{keywordflow}{if} (not ptr) \textcolor{keywordflow}{return} reverse\_iterator();}
+\DoxyCodeLine{272         \textcolor{keywordflow}{return} ptr-\/>crbegin();}
+\DoxyCodeLine{273     \}}
+\DoxyCodeLine{274     const\_reverse\_iterator crend()\textcolor{keyword}{ const}}
+\DoxyCodeLine{275 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{276         \textcolor{keywordflow}{if} (not ptr) \textcolor{keywordflow}{return} reverse\_iterator();}
+\DoxyCodeLine{277         \textcolor{keywordflow}{return} ptr-\/>crend();}
+\DoxyCodeLine{278     \}}
+\DoxyCodeLine{279     const\_reverse\_iterator rbegin()\textcolor{keyword}{ const}}
+\DoxyCodeLine{280 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{281         \textcolor{keywordflow}{return} (crbegin());}
+\DoxyCodeLine{282     \}}
+\DoxyCodeLine{283     const\_reverse\_iterator rend()\textcolor{keyword}{ const}}
+\DoxyCodeLine{284 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{285         \textcolor{keywordflow}{return} (crend());}
+\DoxyCodeLine{286     \}}
+\DoxyCodeLine{287 }
+\DoxyCodeLine{288     any\_quantity\_vector permute(\textcolor{keyword}{const} int64\_t* permute\_begin, \textcolor{keyword}{const} int64\_t* permute\_end, \textcolor{keyword}{const} std::vector<int64\_t> repetition)\textcolor{keyword}{ const}}
+\DoxyCodeLine{289 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{290         \textcolor{keywordflow}{if} (not ptr) \textcolor{keywordflow}{return} any\_quantity\_vector();}
+\DoxyCodeLine{291         \textcolor{keywordflow}{return} any\_quantity\_vector(ptr-\/>virtual\_permute(permute\_begin, permute\_end, repetition));}
+\DoxyCodeLine{292     \}}
+\DoxyCodeLine{293 \};}
+\DoxyCodeLine{294 }
+\DoxyCodeLine{295 \textcolor{keyword}{inline} \textcolor{keywordtype}{void} swap(any\_quantity\_vector\& a, any\_quantity\_vector\& b)}
+\DoxyCodeLine{296 \{}
+\DoxyCodeLine{297     a.swap(b);}
+\DoxyCodeLine{298 \}}
+\DoxyCodeLine{299 }
+\DoxyCodeLine{300 qtt\_TEST\_CASE(\textcolor{stringliteral}{"{}concrete any\_quantity container implementation"{}})}
+\DoxyCodeLine{301 \{}
+\DoxyCodeLine{302     \textcolor{keyword}{using} ccgroup = quantity<conserved::C<2>, conserved::Z>;}
+\DoxyCodeLine{303     quantity\_vector<ccgroup> t1\{ccgroup(1, 1), ccgroup(0, 0), ccgroup(1, -\/1)\};}
+\DoxyCodeLine{304     \textcolor{keyword}{const} quantity\_vector<ccgroup> t2\{ccgroup(1, 1), ccgroup(0, 0), ccgroup(1, -\/1)\};}
+\DoxyCodeLine{305     qtt\_REQUIRE(t1.size() > 0);}
+\DoxyCodeLine{306     qtt\_REQUIRE(t2.size() > 0);}
+\DoxyCodeLine{307     qtt\_SUBCASE(\textcolor{stringliteral}{"{}Access operator[]"{}})}
+\DoxyCodeLine{308     \{}
+\DoxyCodeLine{309         \textcolor{keyword}{auto}\& a = t1[0];}
+\DoxyCodeLine{310         \textcolor{keyword}{auto}\& b = t2[0];}
+\DoxyCodeLine{311         qtt\_CHECK(std::is\_same\_v<\textcolor{keyword}{decltype}(a), ccgroup\&>);}
+\DoxyCodeLine{312         qtt\_CHECK(std::is\_same\_v<\textcolor{keyword}{decltype}(b), \textcolor{keyword}{const} ccgroup\&>);}
+\DoxyCodeLine{313     \}}
+\DoxyCodeLine{314     qtt\_SUBCASE(\textcolor{stringliteral}{"{}Access method at"{}})}
+\DoxyCodeLine{315     \{}
+\DoxyCodeLine{316         qtt\_REQUIRE\_NOTHROW(t1.at(0));}
+\DoxyCodeLine{317         qtt\_REQUIRE\_NOTHROW(t2.at(0));}
+\DoxyCodeLine{318         \textcolor{keyword}{auto}\& a = t1.at(0);}
+\DoxyCodeLine{319         \textcolor{keyword}{auto}\& b = t2.at(0);}
+\DoxyCodeLine{320         qtt\_CHECK(std::is\_same\_v<\textcolor{keyword}{decltype}(a), ccgroup\&>);}
+\DoxyCodeLine{321         qtt\_CHECK(std::is\_same\_v<\textcolor{keyword}{decltype}(b), \textcolor{keyword}{const} ccgroup\&>);}
+\DoxyCodeLine{322         qtt\_CHECK\_THROWS\_AS(t2.at(t2.size()), std::out\_of\_range);}
+\DoxyCodeLine{323         qtt\_CHECK\_THROWS\_AS(t1.at(t1.size()), std::out\_of\_range);}
+\DoxyCodeLine{324     \}}
+\DoxyCodeLine{325     qtt\_SUBCASE(\textcolor{stringliteral}{"{}front and back and data"{}})}
+\DoxyCodeLine{326     \{}
+\DoxyCodeLine{327         \textcolor{keyword}{auto}\& f1 = t1.front();}
+\DoxyCodeLine{328         \textcolor{keyword}{auto}\& b1 = t1.back();}
+\DoxyCodeLine{329         \textcolor{keyword}{auto}\& f2 = t2.front();}
+\DoxyCodeLine{330         \textcolor{keyword}{auto}\& b2 = t2.back();}
+\DoxyCodeLine{331         \textcolor{keyword}{auto} d1 = t1.data();}
+\DoxyCodeLine{332         \textcolor{keyword}{auto} d2 = t2.data();}
+\DoxyCodeLine{333         qtt\_CHECK(std::is\_same\_v<\textcolor{keyword}{decltype}(f1), ccgroup\&>);}
+\DoxyCodeLine{334         qtt\_CHECK(std::is\_same\_v<\textcolor{keyword}{decltype}(b1), ccgroup\&>);}
+\DoxyCodeLine{335         qtt\_CHECK(std::is\_same\_v<\textcolor{keyword}{decltype}(f2), \textcolor{keyword}{const} ccgroup\&>);}
+\DoxyCodeLine{336         qtt\_CHECK(std::is\_same\_v<\textcolor{keyword}{decltype}(b2), \textcolor{keyword}{const} ccgroup\&>);}
+\DoxyCodeLine{337         qtt\_CHECK(std::is\_same\_v<\textcolor{keyword}{decltype}(d1), ccgroup*>);}
+\DoxyCodeLine{338         qtt\_CHECK(std::is\_same\_v<\textcolor{keyword}{decltype}(d2), \textcolor{keyword}{const} ccgroup*>);}
+\DoxyCodeLine{339     \}}
+\DoxyCodeLine{340     qtt\_SUBCASE(\textcolor{stringliteral}{"{}capacity"{}})}
+\DoxyCodeLine{341     \{}
+\DoxyCodeLine{342         \textcolor{keyword}{auto} s = t1.size();}
+\DoxyCodeLine{343         \textcolor{keyword}{auto} c = t1.capacity();}
+\DoxyCodeLine{344         qtt\_CHECK\_FALSE(t1.empty());}
+\DoxyCodeLine{345         qtt\_CHECK(t1.max\_size() > 1000);}
+\DoxyCodeLine{346         t1.reserve(c + 5);}
+\DoxyCodeLine{347         qtt\_CHECK(t1.capacity() >= (c + 5));}
+\DoxyCodeLine{348         qtt\_CHECK(t1.size() == s);}
+\DoxyCodeLine{349         t1.shrink\_to\_fit();}
+\DoxyCodeLine{350         qtt\_CHECK(t1.capacity() >= s);}
+\DoxyCodeLine{351         qtt\_WARN\_MESSAGE(t1.capacity() == s, \textcolor{stringliteral}{"{}shrink\_to\_fit doesn't fully shrink the vector. This behavior is allowed by the standard for std::vector"{}});}
+\DoxyCodeLine{352     \}}
+\DoxyCodeLine{353     qtt\_SUBCASE(\textcolor{stringliteral}{"{}modifiers"{}})}
+\DoxyCodeLine{354     \{}
+\DoxyCodeLine{355         t1.emplace(t1.cbegin(), 3, -\/2);}
+\DoxyCodeLine{356         qtt\_CHECK(t1[0] == ccgroup(3, -\/2));}
+\DoxyCodeLine{357         t1.emplace\_back(0, 10);}
+\DoxyCodeLine{358         qtt\_CHECK(t1[t1.size() -\/ 1] == ccgroup(0, 10));}
+\DoxyCodeLine{359         \textcolor{keyword}{auto} s = t1.size();}
+\DoxyCodeLine{360         t1.pop\_back();}
+\DoxyCodeLine{361         qtt\_CHECK(t1.size() == (s -\/ 1));}
+\DoxyCodeLine{362         \textcolor{keyword}{auto} c = t1.capacity();}
+\DoxyCodeLine{363         t1.clear();}
+\DoxyCodeLine{364         qtt\_CHECK(t1.capacity() == c);}
+\DoxyCodeLine{365         qtt\_CHECK(t1.size() == 0);}
+\DoxyCodeLine{366         quantity\_vector<ccgroup> t3\{ccgroup(1, 1), ccgroup(0, 0), ccgroup(1, -\/1)\};}
+\DoxyCodeLine{367         \textcolor{keyword}{auto} data1 = t1.data();}
+\DoxyCodeLine{368         \textcolor{keyword}{auto} data3 = t3.data();}
+\DoxyCodeLine{369         swap(t1, t3);}
+\DoxyCodeLine{370         qtt\_CHECK(data1 == t3.data());}
+\DoxyCodeLine{371         qtt\_CHECK(data3 == t1.data());}
+\DoxyCodeLine{372     \}}
+\DoxyCodeLine{373 \}}
+\DoxyCodeLine{374 qtt\_TEST\_CASE(\textcolor{stringliteral}{"{}polymorphic any\_quantity container with value semantic"{}})}
+\DoxyCodeLine{375 \{}
+\DoxyCodeLine{376     \textcolor{keyword}{using} ccgroup = quantity<conserved::C<2>, conserved::Z>;}
+\DoxyCodeLine{377     quantity\_vector<ccgroup> conc\_t1\{ccgroup(1, 1), ccgroup(0, 0), ccgroup(1, -\/1)\};}
+\DoxyCodeLine{378     \textcolor{keyword}{const} quantity\_vector<ccgroup> conc\_t2\{ccgroup(1, 1), ccgroup(0, 0), ccgroup(1, -\/1)\};}
+\DoxyCodeLine{379     any\_quantity\_vector t1\{any\_quantity(conserved::C<2>(1), conserved::Z(1)), any\_quantity(ccgroup(0, 0)), any\_quantity(ccgroup(1, -\/1))\};}
+\DoxyCodeLine{380     \textcolor{keyword}{const} any\_quantity\_vector t2\{any\_quantity(conserved::C<2>(1), conserved::Z(1)), any\_quantity(ccgroup(0, 0)), any\_quantity(ccgroup(1, -\/1))\};}
+\DoxyCodeLine{381 }
+\DoxyCodeLine{382     qtt\_REQUIRE(t1.size() > 0);}
+\DoxyCodeLine{383     qtt\_REQUIRE(t2.size() > 0);}
+\DoxyCodeLine{384     qtt\_SUBCASE(\textcolor{stringliteral}{"{}Access operator[]"{}})}
+\DoxyCodeLine{385     \{}
+\DoxyCodeLine{386         \textcolor{keyword}{auto}\& a = t1[0]; \textcolor{comment}{//makes a reference}}
+\DoxyCodeLine{387         \textcolor{keyword}{auto}\& b = t2[0]; \textcolor{comment}{//makes a reference}}
+\DoxyCodeLine{388         \textcolor{comment}{//if you want a copy, you have to be specific about the return type.}}
+\DoxyCodeLine{389         \textcolor{comment}{// any\_quantity c = t1[1]; //make a copy of the value.}}
+\DoxyCodeLine{390         qtt\_CHECK(std::is\_same\_v<\textcolor{keyword}{decltype}(a), any\_quantity\_ref>);}
+\DoxyCodeLine{391         qtt\_CHECK(std::is\_same\_v<\textcolor{keyword}{decltype}(b), any\_quantity\_cref>);}
+\DoxyCodeLine{392     \}}
+\DoxyCodeLine{393     qtt\_SUBCASE(\textcolor{stringliteral}{"{}Access method at"{}})}
+\DoxyCodeLine{394     \{}
+\DoxyCodeLine{395         qtt\_REQUIRE\_NOTHROW(t1.at(0));}
+\DoxyCodeLine{396         qtt\_REQUIRE\_NOTHROW(t2.at(0));}
+\DoxyCodeLine{397         \textcolor{keyword}{auto}\& a = t1.at(0); \textcolor{comment}{//makes a reference}}
+\DoxyCodeLine{398         \textcolor{keyword}{auto}\& b = t2.at(0); \textcolor{comment}{//makes a reference}}
+\DoxyCodeLine{399         qtt\_CHECK(std::is\_same\_v<\textcolor{keyword}{decltype}(a), any\_quantity\_ref>);}
+\DoxyCodeLine{400         qtt\_CHECK(std::is\_same\_v<\textcolor{keyword}{decltype}(b), any\_quantity\_cref>);}
+\DoxyCodeLine{401         qtt\_CHECK\_THROWS\_AS(t2.at(t2.size()), std::out\_of\_range);}
+\DoxyCodeLine{402         qtt\_CHECK\_THROWS\_AS(t1.at(t1.size()), std::out\_of\_range);}
+\DoxyCodeLine{403     \}}
+\DoxyCodeLine{404     qtt\_SUBCASE(\textcolor{stringliteral}{"{}front and back and data"{}})}
+\DoxyCodeLine{405     \{}
+\DoxyCodeLine{406         \textcolor{keyword}{auto}\& f1 = t1.front(); \textcolor{comment}{//makes a reference}}
+\DoxyCodeLine{407         \textcolor{keyword}{auto}\& b1 = t1.back();  \textcolor{comment}{//makes a reference}}
+\DoxyCodeLine{408         \textcolor{keyword}{auto}\& f2 = t2.front(); \textcolor{comment}{//makes a reference}}
+\DoxyCodeLine{409         \textcolor{keyword}{auto}\& b2 = t2.back();  \textcolor{comment}{//makes a reference}}
+\DoxyCodeLine{410         \textcolor{keyword}{auto} d1 = t1.data();  \textcolor{comment}{//pointer}}
+\DoxyCodeLine{411         \textcolor{keyword}{auto} d2 = t2.data();  \textcolor{comment}{//pointer}}
+\DoxyCodeLine{412         qtt\_CHECK(std::is\_same\_v<\textcolor{keyword}{decltype}(f1), any\_quantity\_ref>);}
+\DoxyCodeLine{413         qtt\_CHECK(std::is\_same\_v<\textcolor{keyword}{decltype}(b1), any\_quantity\_ref>);}
+\DoxyCodeLine{414         qtt\_CHECK(std::is\_same\_v<\textcolor{keyword}{decltype}(f2), any\_quantity\_cref>);}
+\DoxyCodeLine{415         qtt\_CHECK(std::is\_same\_v<\textcolor{keyword}{decltype}(b2), any\_quantity\_cref>);}
+\DoxyCodeLine{416         qtt\_CHECK(std::is\_same\_v<\textcolor{keyword}{decltype}(d1), \textcolor{keyword}{typename} any\_quantity\_vector::pointer>);}
+\DoxyCodeLine{417         qtt\_CHECK(std::is\_same\_v<\textcolor{keyword}{decltype}(d2), \textcolor{keyword}{typename} any\_quantity\_vector::const\_pointer>);}
+\DoxyCodeLine{418     \}}
+\DoxyCodeLine{419     qtt\_SUBCASE(\textcolor{stringliteral}{"{}capacity"{}})}
+\DoxyCodeLine{420     \{}
+\DoxyCodeLine{421         \textcolor{keyword}{auto} s = t1.size();}
+\DoxyCodeLine{422         \textcolor{keyword}{auto} c = t1.capacity();}
+\DoxyCodeLine{423         qtt\_CHECK\_FALSE(t1.empty());}
+\DoxyCodeLine{424         qtt\_CHECK(t1.max\_size() > 1000);}
+\DoxyCodeLine{425         t1.reserve(c + 5);}
+\DoxyCodeLine{426         qtt\_CHECK(t1.capacity() >= (c + 5));}
+\DoxyCodeLine{427         qtt\_CHECK(t1.size() == s);}
+\DoxyCodeLine{428         t1.shrink\_to\_fit();}
+\DoxyCodeLine{429         qtt\_CHECK(t1.capacity() >= s);}
+\DoxyCodeLine{430         qtt\_WARN\_MESSAGE(t1.capacity() == s, \textcolor{stringliteral}{"{}shrink\_to\_fit doesn't fully (or at all) shrink the vector. This behavior is allowed by the standard for std::vector"{}});}
+\DoxyCodeLine{431     \}}
+\DoxyCodeLine{432     qtt\_SUBCASE(\textcolor{stringliteral}{"{}modifiers"{}})}
+\DoxyCodeLine{433     \{}
+\DoxyCodeLine{434         \textcolor{keyword}{auto} s = t1.size();}
+\DoxyCodeLine{435         t1.pop\_back();}
+\DoxyCodeLine{436         qtt\_CHECK(t1.size() == (s -\/ 1));}
+\DoxyCodeLine{437         \textcolor{keyword}{auto} c = t1.capacity();}
+\DoxyCodeLine{438         t1.clear();}
+\DoxyCodeLine{439         qtt\_CHECK(t1.capacity() == c);}
+\DoxyCodeLine{440         qtt\_CHECK(t1.size() == 0);}
+\DoxyCodeLine{441         t1.push\_back(ccgroup(1,1));}
+\DoxyCodeLine{442         qtt\_CHECK\_NOTHROW(t1.push\_back(ccgroup(1, 1)));}
+\DoxyCodeLine{443         qtt\_CHECK\_THROWS\_AS(t1.push\_back(any\_quantity(conserved::C<2>(1), conserved::C<4>(1))), std::bad\_cast);}
+\DoxyCodeLine{444         any\_quantity\_vector t3\{any\_quantity(ccgroup(1, 1)), any\_quantity(ccgroup(0, 0)), any\_quantity(ccgroup(1, -\/1))\};}
+\DoxyCodeLine{445         qtt\_SUBCASE(\textcolor{stringliteral}{"{}insert, pop\_back and erase"{}})}
+\DoxyCodeLine{446         \{}
+\DoxyCodeLine{447             \textcolor{keyword}{auto} it = t1.begin();}
+\DoxyCodeLine{448             qtt\_CHECK\_THROWS\_AS(t1.insert(t1.begin(), any\_quantity(conserved::C<5>(0))), std::bad\_cast); \textcolor{comment}{// the any\_quantity has the wrong concrete type for the container.}}
+\DoxyCodeLine{449             qtt\_CHECK\_NOTHROW(it = t1.insert(t1.begin(), any\_quantity(ccgroup(1, -\/1))));}
+\DoxyCodeLine{450             qtt\_CHECK(t1[0] == any\_quantity(ccgroup(1, -\/1))); \textcolor{comment}{//The insertion happen *before* the position of the given iterator. In this case the inserted value should become the 0th element}}
+\DoxyCodeLine{451             qtt\_CHECK(it == t1.begin());                      \textcolor{comment}{//the return iterator points to the first (or only) element inserted.}}
+\DoxyCodeLine{452             \textcolor{comment}{//current implementation incorrect because the end() iterator does not point to a valid object... iterator comparator needs to be implemented in a way that doesn't rely on the vtable.}}
+\DoxyCodeLine{453             qtt\_CHECK\_NOTHROW(it = t1.insert(t1.end(), 3, ccgroup(1, 5))); \textcolor{comment}{//insert 3 ccgroup(1,5) before the end;}}
+\DoxyCodeLine{454             \textcolor{keywordflow}{for} (; it != t1.end();++it)}
+\DoxyCodeLine{455             \{}
+\DoxyCodeLine{456                 qtt\_CHECK(*it == ccgroup(1, 5));}
+\DoxyCodeLine{457             \}}
+\DoxyCodeLine{458             any\_quantity\_vector t4\{any\_quantity(conserved::C<2>(1)), conserved::C<2>(0), conserved::C<2>(-\/1)\};}
+\DoxyCodeLine{459             qtt\_CHECK\_THROWS\_AS(it = t1.insert(t1.begin() + 2, t4.begin(), t4.end()), std::bad\_cast); \textcolor{comment}{//t4 is incompatible with t1.}}
+\DoxyCodeLine{460             qtt\_CHECK\_NOTHROW(it = t1.insert(t1.begin() + 2, t3.begin(), t3.end()));}
+\DoxyCodeLine{461             \textcolor{keywordtype}{int} i = 0;}
+\DoxyCodeLine{462             \textcolor{keywordflow}{for}(\textcolor{keyword}{auto} end = it+(t3.end()-\/t3.begin()); it != end;++it )}
+\DoxyCodeLine{463             \{}
+\DoxyCodeLine{464                 qtt\_CHECK(*it == t3[i++]);}
+\DoxyCodeLine{465             \}}
+\DoxyCodeLine{466             qtt\_CHECK\_NOTHROW(it = t1.insert(t1.begin() + 2, t3.rbegin(), t3.rend())); \textcolor{comment}{//insertion by reverse iterator.}}
+\DoxyCodeLine{467             i = t3.size()-\/1;}
+\DoxyCodeLine{468             \textcolor{keywordflow}{for}(\textcolor{keyword}{auto} end = it+(t3.end()-\/t3.begin()); it != end;++it )}
+\DoxyCodeLine{469             \{}
+\DoxyCodeLine{470                 qtt\_CHECK(*it == t3[i-\/-\/]);}
+\DoxyCodeLine{471             \}}
+\DoxyCodeLine{472             any\_quantity last = *(t1.end() -\/ 2);}
+\DoxyCodeLine{473             qtt\_CHECK\_NOTHROW(t1.erase(t1.end() -\/ 1));}
+\DoxyCodeLine{474             qtt\_CHECK(last == *(t1.end() -\/ 1));}
+\DoxyCodeLine{475             \textcolor{keyword}{auto} size = t1.size();}
+\DoxyCodeLine{476             qtt\_CHECK\_NOTHROW(t1.erase(t1.begin(), t1.begin() + 3));}
+\DoxyCodeLine{477             qtt\_CHECK(size -\/ 3 == t1.size());}
+\DoxyCodeLine{478             i = t1.size();}
+\DoxyCodeLine{479             qtt\_CHECK\_NOTHROW(t1.pop\_back());}
+\DoxyCodeLine{480             qtt\_CHECK(i -\/ 1 == t1.size());}
+\DoxyCodeLine{481         \}}
+\DoxyCodeLine{482         \textcolor{keyword}{auto} size = t1.size();}
+\DoxyCodeLine{483         qtt\_CHECK\_NOTHROW(t1.resize(size + 2));}
+\DoxyCodeLine{484         qtt\_CHECK(t1.back() == ccgroup());}
+\DoxyCodeLine{485         qtt\_CHECK(t1.size() == size + 2);}
+\DoxyCodeLine{486         qtt\_CHECK\_NOTHROW(t1.resize(size));}
+\DoxyCodeLine{487         qtt\_CHECK(size == t1.size());}
+\DoxyCodeLine{488         qtt\_CHECK\_NOTHROW(t1.resize(size + 2, ccgroup(1, 10)));}
+\DoxyCodeLine{489         qtt\_CHECK(t1.back() == ccgroup(1, 10));}
+\DoxyCodeLine{490         qtt\_CHECK(t1.size() == size + 2);}
+\DoxyCodeLine{491         \textcolor{keyword}{auto} data1 = t1.data();}
+\DoxyCodeLine{492         \textcolor{keyword}{auto} data3 = t3.data();}
+\DoxyCodeLine{493         swap(t1, t3);}
+\DoxyCodeLine{494         qtt\_CHECK(data1 == t3.data());}
+\DoxyCodeLine{495         qtt\_CHECK(data3 == t1.data());}
+\DoxyCodeLine{496     \}}
+\DoxyCodeLine{497 \}}
+\DoxyCodeLine{498 }
+\DoxyCodeLine{499 }
+\DoxyCodeLine{500 }
+\DoxyCodeLine{501 \} \textcolor{comment}{// namespace quantit}}
+\DoxyCodeLine{502 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* D34E37A6\_732F\_4F45\_9171\_6B931CC1F812 */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

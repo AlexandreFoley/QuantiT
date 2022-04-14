@@ -1,45 +1,32 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
   <compounddef id="quantity__vector_8h" kind="file" language="C++">
     <compoundname>quantity_vector.h</compoundname>
     <includes refid="quantity__vector__impl_8h" local="yes">Conserved/Composite/quantity_vector_impl.h</includes>
     <includes refid="quantity_8h" local="yes">Conserved/quantity.h</includes>
     <includes local="no">vector</includes>
     <includes local="yes">doctest/doctest_proxy.h</includes>
-    <includedby refid="btensor_8h" local="yes">/home/alex/project/quantt/include/blockTensor/btensor.h</includedby>
+    <includedby refid="btensor_8h" local="yes">/Users/alex/Documents/Prog/QuantiT/include/blockTensor/btensor.h</includedby>
     <incdepgraph>
-      <node id="13">
-        <label>functional</label>
-      </node>
-      <node id="21">
-        <label>fmt/format.h</label>
-      </node>
-      <node id="14">
-        <label>iterator</label>
-      </node>
-      <node id="25">
-        <label>cstdint</label>
-      </node>
-      <node id="1">
-        <label>/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h</label>
-        <link refid="quantity__vector_8h"/>
-        <childnode refid="2" relation="include">
+      <node id="3">
+        <label>Conserved/Composite/cquantity.h</label>
+        <link refid="cquantity_8h_source"/>
+        <childnode refid="4" relation="include">
         </childnode>
         <childnode refid="24" relation="include">
         </childnode>
-        <childnode refid="17" relation="include">
+        <childnode refid="18" relation="include">
         </childnode>
-        <childnode refid="7" relation="include">
+        <childnode refid="25" relation="include">
         </childnode>
-      </node>
-      <node id="9">
-        <label>boost/stl_interfaces/iterator_interface.hpp</label>
-      </node>
-      <node id="10">
-        <label>cassert</label>
-      </node>
-      <node id="15">
-        <label>numeric</label>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
       </node>
       <node id="4">
         <label>Conserved/Composite/quantity_impl.h</label>
@@ -61,26 +48,34 @@
         <childnode refid="17" relation="include">
         </childnode>
       </node>
-      <node id="26">
-        <label>ostream</label>
-      </node>
-      <node id="11">
-        <label>fmt/core.h</label>
-      </node>
-      <node id="18">
-        <label>templateMeta.h</label>
-        <link refid="templateMeta_8h_source"/>
-        <childnode refid="19" relation="include">
-        </childnode>
-        <childnode refid="20" relation="include">
-        </childnode>
-      </node>
-      <node id="3">
-        <label>Conserved/Composite/cquantity.h</label>
-        <link refid="cquantity_8h_source"/>
-        <childnode refid="4" relation="include">
+      <node id="1">
+        <label>/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h</label>
+        <link refid="quantity__vector_8h"/>
+        <childnode refid="2" relation="include">
         </childnode>
         <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Conserved/Composite/quantity_vector_impl.h</label>
+        <link refid="quantity__vector__impl_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+      </node>
+      <node id="24">
+        <label>Conserved/quantity.h</label>
+        <link refid="quantity_8h_source"/>
+        <childnode refid="5" relation="include">
         </childnode>
         <childnode refid="18" relation="include">
         </childnode>
@@ -88,15 +83,24 @@
         </childnode>
         <childnode refid="11" relation="include">
         </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
         <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>Conserved/quantity_utils.h</label>
+        <link refid="quantity__utils_8h_source"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
         </childnode>
         <childnode refid="20" relation="include">
         </childnode>
         <childnode refid="16" relation="include">
         </childnode>
-      </node>
-      <node id="22">
-        <label>ios</label>
       </node>
       <node id="6">
         <label>blockTensor/flat_map.h</label>
@@ -124,123 +128,119 @@
         <childnode refid="17" relation="include">
         </childnode>
       </node>
-      <node id="24">
-        <label>Conserved/quantity.h</label>
-        <link refid="quantity_8h_source"/>
-        <childnode refid="5" relation="include">
-        </childnode>
-        <childnode refid="18" relation="include">
-        </childnode>
-        <childnode refid="25" relation="include">
-        </childnode>
-        <childnode refid="11" relation="include">
-        </childnode>
-        <childnode refid="21" relation="include">
-        </childnode>
-        <childnode refid="26" relation="include">
-        </childnode>
-        <childnode refid="7" relation="include">
-        </childnode>
-      </node>
-      <node id="19">
-        <label>tuple</label>
-      </node>
-      <node id="12">
-        <label>fmt/ranges.h</label>
-      </node>
-      <node id="17">
-        <label>vector</label>
-      </node>
-      <node id="16">
-        <label>utility</label>
-      </node>
-      <node id="5">
-        <label>Conserved/quantity_utils.h</label>
-        <link refid="quantity__utils_8h_source"/>
-        <childnode refid="6" relation="include">
-        </childnode>
-        <childnode refid="18" relation="include">
+      <node id="18">
+        <label>templateMeta.h</label>
+        <link refid="templateMeta_8h_source"/>
+        <childnode refid="19" relation="include">
         </childnode>
         <childnode refid="20" relation="include">
         </childnode>
-        <childnode refid="16" relation="include">
-        </childnode>
-      </node>
-      <node id="20">
-        <label>type_traits</label>
       </node>
       <node id="8">
         <label>algorithm</label>
       </node>
-      <node id="2">
-        <label>Conserved/Composite/quantity_vector_impl.h</label>
-        <link refid="quantity__vector__impl_8h_source"/>
-        <childnode refid="3" relation="include">
-        </childnode>
-        <childnode refid="9" relation="include">
-        </childnode>
-        <childnode refid="15" relation="include">
-        </childnode>
-        <childnode refid="17" relation="include">
-        </childnode>
+      <node id="9">
+        <label>boost/stl_interfaces/iterator_interface.hpp</label>
       </node>
-      <node id="23">
-        <label>memory</label>
+      <node id="10">
+        <label>cassert</label>
+      </node>
+      <node id="25">
+        <label>cstdint</label>
       </node>
       <node id="7">
         <label>doctest/doctest_proxy.h</label>
       </node>
+      <node id="11">
+        <label>fmt/core.h</label>
+      </node>
+      <node id="21">
+        <label>fmt/format.h</label>
+      </node>
+      <node id="12">
+        <label>fmt/ranges.h</label>
+      </node>
+      <node id="13">
+        <label>functional</label>
+      </node>
+      <node id="22">
+        <label>ios</label>
+      </node>
+      <node id="14">
+        <label>iterator</label>
+      </node>
+      <node id="23">
+        <label>memory</label>
+      </node>
+      <node id="15">
+        <label>numeric</label>
+      </node>
+      <node id="26">
+        <label>ostream</label>
+      </node>
+      <node id="19">
+        <label>tuple</label>
+      </node>
+      <node id="20">
+        <label>type_traits</label>
+      </node>
+      <node id="16">
+        <label>utility</label>
+      </node>
+      <node id="17">
+        <label>vector</label>
+      </node>
     </incdepgraph>
     <invincdepgraph>
-      <node id="5">
-        <label>/home/alex/project/quantt/include/dmrg.h</label>
-        <link refid="dmrg_8h_source"/>
-      </node>
       <node id="1">
-        <label>/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h</label>
+        <label>/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h</label>
         <link refid="quantity__vector_8h"/>
         <childnode refid="2" relation="include">
         </childnode>
       </node>
-      <node id="8">
-        <label>/home/alex/project/quantt/include/operators.h</label>
-        <link refid="operators_8h_source"/>
-      </node>
-      <node id="6">
-        <label>/home/alex/project/quantt/include/MPT.h</label>
+      <node id="3">
+        <label>/Users/alex/Documents/Prog/QuantiT/include/MPT.h</label>
         <link refid="MPT_8h_source"/>
-        <childnode refid="5" relation="include">
-        </childnode>
         <childnode refid="4" relation="include">
         </childnode>
-        <childnode refid="7" relation="include">
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
         </childnode>
       </node>
-      <node id="3">
-        <label>/home/alex/project/quantt/include/blockTensor/LinearAlgebra.h</label>
+      <node id="7">
+        <label>/Users/alex/Documents/Prog/QuantiT/include/blockTensor/LinearAlgebra.h</label>
         <link refid="blockTensor_2LinearAlgebra_8h_source"/>
       </node>
       <node id="2">
-        <label>/home/alex/project/quantt/include/blockTensor/btensor.h</label>
+        <label>/Users/alex/Documents/Prog/QuantiT/include/blockTensor/btensor.h</label>
         <link refid="btensor_8h_source"/>
         <childnode refid="3" relation="include">
         </childnode>
-        <childnode refid="4" relation="include">
+        <childnode refid="7" relation="include">
         </childnode>
-        <childnode refid="6" relation="include">
+        <childnode refid="5" relation="include">
         </childnode>
         <childnode refid="8" relation="include">
         </childnode>
       </node>
-      <node id="7">
-        <label>/home/alex/project/quantt/include/models.h</label>
+      <node id="4">
+        <label>/Users/alex/Documents/Prog/QuantiT/include/dmrg.h</label>
+        <link refid="dmrg_8h_source"/>
+      </node>
+      <node id="5">
+        <label>/Users/alex/Documents/Prog/QuantiT/include/dmrg_logger.h</label>
+        <link refid="dmrg__logger_8h_source"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>/Users/alex/Documents/Prog/QuantiT/include/models.h</label>
         <link refid="models_8h_source"/>
       </node>
-      <node id="4">
-        <label>/home/alex/project/quantt/include/dmrg_logger.h</label>
-        <link refid="dmrg__logger_8h_source"/>
-        <childnode refid="5" relation="include">
-        </childnode>
+      <node id="8">
+        <label>/Users/alex/Documents/Prog/QuantiT/include/operators.h</label>
+        <link refid="operators_8h_source"/>
       </node>
     </invincdepgraph>
     <innerclass refid="classquantit_1_1any__quantity__vector" prot="public">quantit::any_quantity_vector</innerclass>
@@ -556,8 +556,8 @@
 <codeline lineno="308"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
 <codeline lineno="309"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>a<sp/>=<sp/>t1[0];</highlight></codeline>
 <codeline lineno="310"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>b<sp/>=<sp/>t2[0];</highlight></codeline>
-<codeline lineno="311"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>qtt_CHECK(std::is_same_v&lt;decltype(a),<sp/>ccgroup&amp;&gt;);</highlight></codeline>
-<codeline lineno="312"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>qtt_CHECK(std::is_same_v&lt;decltype(b),<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>ccgroup&amp;&gt;);</highlight></codeline>
+<codeline lineno="311"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>qtt_CHECK(std::is_same_v&lt;</highlight><highlight class="keyword">decltype</highlight><highlight class="normal">(a),<sp/>ccgroup&amp;&gt;);</highlight></codeline>
+<codeline lineno="312"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>qtt_CHECK(std::is_same_v&lt;</highlight><highlight class="keyword">decltype</highlight><highlight class="normal">(b),<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>ccgroup&amp;&gt;);</highlight></codeline>
 <codeline lineno="313"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="314"><highlight class="normal"><sp/><sp/><sp/><sp/>qtt_SUBCASE(</highlight><highlight class="stringliteral">&quot;Access<sp/>method<sp/>at&quot;</highlight><highlight class="normal">)</highlight></codeline>
 <codeline lineno="315"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
@@ -565,8 +565,8 @@
 <codeline lineno="317"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>qtt_REQUIRE_NOTHROW(t2.at(0));</highlight></codeline>
 <codeline lineno="318"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>a<sp/>=<sp/>t1.at(0);</highlight></codeline>
 <codeline lineno="319"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>b<sp/>=<sp/>t2.at(0);</highlight></codeline>
-<codeline lineno="320"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>qtt_CHECK(std::is_same_v&lt;decltype(a),<sp/>ccgroup&amp;&gt;);</highlight></codeline>
-<codeline lineno="321"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>qtt_CHECK(std::is_same_v&lt;decltype(b),<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>ccgroup&amp;&gt;);</highlight></codeline>
+<codeline lineno="320"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>qtt_CHECK(std::is_same_v&lt;</highlight><highlight class="keyword">decltype</highlight><highlight class="normal">(a),<sp/>ccgroup&amp;&gt;);</highlight></codeline>
+<codeline lineno="321"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>qtt_CHECK(std::is_same_v&lt;</highlight><highlight class="keyword">decltype</highlight><highlight class="normal">(b),<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>ccgroup&amp;&gt;);</highlight></codeline>
 <codeline lineno="322"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>qtt_CHECK_THROWS_AS(t2.at(t2.size()),<sp/>std::out_of_range);</highlight></codeline>
 <codeline lineno="323"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>qtt_CHECK_THROWS_AS(t1.at(t1.size()),<sp/>std::out_of_range);</highlight></codeline>
 <codeline lineno="324"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
@@ -578,12 +578,12 @@
 <codeline lineno="330"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>b2<sp/>=<sp/>t2.back();</highlight></codeline>
 <codeline lineno="331"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>d1<sp/>=<sp/>t1.data();</highlight></codeline>
 <codeline lineno="332"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>d2<sp/>=<sp/>t2.data();</highlight></codeline>
-<codeline lineno="333"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>qtt_CHECK(std::is_same_v&lt;decltype(f1),<sp/>ccgroup&amp;&gt;);</highlight></codeline>
-<codeline lineno="334"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>qtt_CHECK(std::is_same_v&lt;decltype(b1),<sp/>ccgroup&amp;&gt;);</highlight></codeline>
-<codeline lineno="335"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>qtt_CHECK(std::is_same_v&lt;decltype(f2),<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>ccgroup&amp;&gt;);</highlight></codeline>
-<codeline lineno="336"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>qtt_CHECK(std::is_same_v&lt;decltype(b2),<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>ccgroup&amp;&gt;);</highlight></codeline>
-<codeline lineno="337"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>qtt_CHECK(std::is_same_v&lt;decltype(d1),<sp/>ccgroup*&gt;);</highlight></codeline>
-<codeline lineno="338"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>qtt_CHECK(std::is_same_v&lt;decltype(d2),<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>ccgroup*&gt;);</highlight></codeline>
+<codeline lineno="333"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>qtt_CHECK(std::is_same_v&lt;</highlight><highlight class="keyword">decltype</highlight><highlight class="normal">(f1),<sp/>ccgroup&amp;&gt;);</highlight></codeline>
+<codeline lineno="334"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>qtt_CHECK(std::is_same_v&lt;</highlight><highlight class="keyword">decltype</highlight><highlight class="normal">(b1),<sp/>ccgroup&amp;&gt;);</highlight></codeline>
+<codeline lineno="335"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>qtt_CHECK(std::is_same_v&lt;</highlight><highlight class="keyword">decltype</highlight><highlight class="normal">(f2),<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>ccgroup&amp;&gt;);</highlight></codeline>
+<codeline lineno="336"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>qtt_CHECK(std::is_same_v&lt;</highlight><highlight class="keyword">decltype</highlight><highlight class="normal">(b2),<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>ccgroup&amp;&gt;);</highlight></codeline>
+<codeline lineno="337"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>qtt_CHECK(std::is_same_v&lt;</highlight><highlight class="keyword">decltype</highlight><highlight class="normal">(d1),<sp/>ccgroup*&gt;);</highlight></codeline>
+<codeline lineno="338"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>qtt_CHECK(std::is_same_v&lt;</highlight><highlight class="keyword">decltype</highlight><highlight class="normal">(d2),<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>ccgroup*&gt;);</highlight></codeline>
 <codeline lineno="339"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="340"><highlight class="normal"><sp/><sp/><sp/><sp/>qtt_SUBCASE(</highlight><highlight class="stringliteral">&quot;capacity&quot;</highlight><highlight class="normal">)</highlight></codeline>
 <codeline lineno="341"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
@@ -635,8 +635,8 @@
 <codeline lineno="387"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>b<sp/>=<sp/>t2[0];<sp/></highlight><highlight class="comment">//makes<sp/>a<sp/>reference</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="388"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//if<sp/>you<sp/>want<sp/>a<sp/>copy,<sp/>you<sp/>have<sp/>to<sp/>be<sp/>specific<sp/>about<sp/>the<sp/>return<sp/>type.</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="389"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>any_quantity<sp/>c<sp/>=<sp/>t1[1];<sp/>//make<sp/>a<sp/>copy<sp/>of<sp/>the<sp/>value.</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="390"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>qtt_CHECK(std::is_same_v&lt;decltype(a),<sp/>any_quantity_ref&gt;);</highlight></codeline>
-<codeline lineno="391"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>qtt_CHECK(std::is_same_v&lt;decltype(b),<sp/>any_quantity_cref&gt;);</highlight></codeline>
+<codeline lineno="390"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>qtt_CHECK(std::is_same_v&lt;</highlight><highlight class="keyword">decltype</highlight><highlight class="normal">(a),<sp/>any_quantity_ref&gt;);</highlight></codeline>
+<codeline lineno="391"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>qtt_CHECK(std::is_same_v&lt;</highlight><highlight class="keyword">decltype</highlight><highlight class="normal">(b),<sp/>any_quantity_cref&gt;);</highlight></codeline>
 <codeline lineno="392"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="393"><highlight class="normal"><sp/><sp/><sp/><sp/>qtt_SUBCASE(</highlight><highlight class="stringliteral">&quot;Access<sp/>method<sp/>at&quot;</highlight><highlight class="normal">)</highlight></codeline>
 <codeline lineno="394"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
@@ -644,8 +644,8 @@
 <codeline lineno="396"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>qtt_REQUIRE_NOTHROW(t2.at(0));</highlight></codeline>
 <codeline lineno="397"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>a<sp/>=<sp/>t1.at(0);<sp/></highlight><highlight class="comment">//makes<sp/>a<sp/>reference</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="398"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>b<sp/>=<sp/>t2.at(0);<sp/></highlight><highlight class="comment">//makes<sp/>a<sp/>reference</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="399"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>qtt_CHECK(std::is_same_v&lt;decltype(a),<sp/>any_quantity_ref&gt;);</highlight></codeline>
-<codeline lineno="400"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>qtt_CHECK(std::is_same_v&lt;decltype(b),<sp/>any_quantity_cref&gt;);</highlight></codeline>
+<codeline lineno="399"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>qtt_CHECK(std::is_same_v&lt;</highlight><highlight class="keyword">decltype</highlight><highlight class="normal">(a),<sp/>any_quantity_ref&gt;);</highlight></codeline>
+<codeline lineno="400"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>qtt_CHECK(std::is_same_v&lt;</highlight><highlight class="keyword">decltype</highlight><highlight class="normal">(b),<sp/>any_quantity_cref&gt;);</highlight></codeline>
 <codeline lineno="401"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>qtt_CHECK_THROWS_AS(t2.at(t2.size()),<sp/>std::out_of_range);</highlight></codeline>
 <codeline lineno="402"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>qtt_CHECK_THROWS_AS(t1.at(t1.size()),<sp/>std::out_of_range);</highlight></codeline>
 <codeline lineno="403"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
@@ -657,12 +657,12 @@
 <codeline lineno="409"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>b2<sp/>=<sp/>t2.back();<sp/><sp/></highlight><highlight class="comment">//makes<sp/>a<sp/>reference</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="410"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>d1<sp/>=<sp/>t1.data();<sp/><sp/></highlight><highlight class="comment">//pointer</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="411"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>d2<sp/>=<sp/>t2.data();<sp/><sp/></highlight><highlight class="comment">//pointer</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="412"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>qtt_CHECK(std::is_same_v&lt;decltype(f1),<sp/>any_quantity_ref&gt;);</highlight></codeline>
-<codeline lineno="413"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>qtt_CHECK(std::is_same_v&lt;decltype(b1),<sp/>any_quantity_ref&gt;);</highlight></codeline>
-<codeline lineno="414"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>qtt_CHECK(std::is_same_v&lt;decltype(f2),<sp/>any_quantity_cref&gt;);</highlight></codeline>
-<codeline lineno="415"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>qtt_CHECK(std::is_same_v&lt;decltype(b2),<sp/>any_quantity_cref&gt;);</highlight></codeline>
-<codeline lineno="416"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>qtt_CHECK(std::is_same_v&lt;decltype(d1),<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>any_quantity_vector::pointer&gt;);</highlight></codeline>
-<codeline lineno="417"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>qtt_CHECK(std::is_same_v&lt;decltype(d2),<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>any_quantity_vector::const_pointer&gt;);</highlight></codeline>
+<codeline lineno="412"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>qtt_CHECK(std::is_same_v&lt;</highlight><highlight class="keyword">decltype</highlight><highlight class="normal">(f1),<sp/>any_quantity_ref&gt;);</highlight></codeline>
+<codeline lineno="413"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>qtt_CHECK(std::is_same_v&lt;</highlight><highlight class="keyword">decltype</highlight><highlight class="normal">(b1),<sp/>any_quantity_ref&gt;);</highlight></codeline>
+<codeline lineno="414"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>qtt_CHECK(std::is_same_v&lt;</highlight><highlight class="keyword">decltype</highlight><highlight class="normal">(f2),<sp/>any_quantity_cref&gt;);</highlight></codeline>
+<codeline lineno="415"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>qtt_CHECK(std::is_same_v&lt;</highlight><highlight class="keyword">decltype</highlight><highlight class="normal">(b2),<sp/>any_quantity_cref&gt;);</highlight></codeline>
+<codeline lineno="416"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>qtt_CHECK(std::is_same_v&lt;</highlight><highlight class="keyword">decltype</highlight><highlight class="normal">(d1),<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>any_quantity_vector::pointer&gt;);</highlight></codeline>
+<codeline lineno="417"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>qtt_CHECK(std::is_same_v&lt;</highlight><highlight class="keyword">decltype</highlight><highlight class="normal">(d2),<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>any_quantity_vector::const_pointer&gt;);</highlight></codeline>
 <codeline lineno="418"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="419"><highlight class="normal"><sp/><sp/><sp/><sp/>qtt_SUBCASE(</highlight><highlight class="stringliteral">&quot;capacity&quot;</highlight><highlight class="normal">)</highlight></codeline>
 <codeline lineno="420"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
@@ -749,6 +749,6 @@
 <codeline lineno="501"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>quantit</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="502"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>D34E37A6_732F_4F45_9171_6B931CC1F812<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
     </programlisting>
-    <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h"/>
+    <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h"/>
   </compounddef>
 </doxygen>

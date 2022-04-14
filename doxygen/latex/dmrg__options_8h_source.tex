@@ -1,0 +1,68 @@
+\hypertarget{dmrg__options_8h_source}{}\doxysection{dmrg\+\_\+options.\+h}
+\label{dmrg__options_8h_source}\index{/Users/alex/Documents/Prog/QuantiT/include/dmrg\_options.h@{/Users/alex/Documents/Prog/QuantiT/include/dmrg\_options.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * File: dmrg\_options.h}}
+\DoxyCodeLine{3 \textcolor{comment}{ * Project: QuantiT}}
+\DoxyCodeLine{4 \textcolor{comment}{ * File Created: Friday, 29th October 2021 4:17:42 pm}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)}}
+\DoxyCodeLine{6 \textcolor{comment}{ * Copyright (c) 2021 Alexandre Foley}}
+\DoxyCodeLine{7 \textcolor{comment}{ * Licensed under GPL v3}}
+\DoxyCodeLine{8 \textcolor{comment}{ */}}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#ifndef INCLUDE\_DMRG\_OPTIONS\_H}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#define INCLUDE\_DMRG\_OPTIONS\_H}}
+\DoxyCodeLine{12 \textcolor{keyword}{namespace }quantit}
+\DoxyCodeLine{13 \{}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{keyword}{struct }\mbox{\hyperlink{structquantit_1_1dmrg__options}{dmrg\_options}}}
+\DoxyCodeLine{16 \{}
+\DoxyCodeLine{17     \textcolor{keywordtype}{double} cutoff;}
+\DoxyCodeLine{18     \textcolor{keywordtype}{double} convergence\_criterion;}
+\DoxyCodeLine{19     \textcolor{keywordtype}{size\_t} maximum\_bond;}
+\DoxyCodeLine{20     \textcolor{keywordtype}{size\_t} minimum\_bond;}
+\DoxyCodeLine{21     \textcolor{keywordtype}{size\_t} maximum\_iterations;}
+\DoxyCodeLine{22     \textcolor{keywordtype}{bool} state\_gradient; \textcolor{comment}{// will default to off! I can't think of a situation where we might want to compute a}}
+\DoxyCodeLine{23     \textcolor{keywordtype}{bool} hamil\_gradient; \textcolor{comment}{// will default to off! I can't think of a situation where we might want to compute a}}
+\DoxyCodeLine{24                            \textcolor{comment}{// gradient through DMRG, but who knows.}}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26     \textcolor{comment}{// default values for constructors.}}
+\DoxyCodeLine{27     \textcolor{comment}{// if a constructor doesn't require user input for some member, it use the values found in the following definition.}}
+\DoxyCodeLine{28     \textcolor{keyword}{constexpr} \textcolor{keyword}{static} \textcolor{keywordtype}{double} def\_cutoff = 1e-\/6;}
+\DoxyCodeLine{29     \textcolor{keyword}{constexpr} \textcolor{keyword}{static} \textcolor{keywordtype}{double} def\_conv\_crit = 1e-\/5;}
+\DoxyCodeLine{30     \textcolor{keyword}{constexpr} \textcolor{keyword}{static} \textcolor{keywordtype}{size\_t} def\_max\_bond = std::numeric\_limits<size\_t>::max(); \textcolor{comment}{// a rather large number.}}
+\DoxyCodeLine{31     \textcolor{keyword}{constexpr} \textcolor{keyword}{static} \textcolor{keywordtype}{size\_t} def\_min\_bond =}
+\DoxyCodeLine{32         4; \textcolor{comment}{// I have found that dmrg behave better if we prevent bond dimension from going too low.}}
+\DoxyCodeLine{33     \textcolor{keyword}{constexpr} \textcolor{keyword}{static} \textcolor{keywordtype}{size\_t} def\_max\_it = 1000;}
+\DoxyCodeLine{34     \textcolor{keyword}{constexpr} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} def\_pytorch\_gradient = \textcolor{keyword}{false};}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36     \mbox{\hyperlink{structquantit_1_1dmrg__options}{dmrg\_options}}(\textcolor{keywordtype}{double} \_cutoff, \textcolor{keywordtype}{double} \_convergence\_criterion)}
+\DoxyCodeLine{37         : cutoff(\_cutoff), convergence\_criterion(\_convergence\_criterion), maximum\_bond(def\_max\_bond),}
+\DoxyCodeLine{38           minimum\_bond(def\_min\_bond), maximum\_iterations(def\_max\_it), state\_gradient(def\_pytorch\_gradient), hamil\_gradient(def\_pytorch\_gradient)}
+\DoxyCodeLine{39     \{}
+\DoxyCodeLine{40     \}}
+\DoxyCodeLine{41     \mbox{\hyperlink{structquantit_1_1dmrg__options}{dmrg\_options}}(\textcolor{keywordtype}{size\_t} \_max\_bond, \textcolor{keywordtype}{size\_t} \_min\_bond, \textcolor{keywordtype}{size\_t} \_max\_iterations)}
+\DoxyCodeLine{42         : cutoff(def\_cutoff), convergence\_criterion(def\_conv\_crit), maximum\_bond(\_max\_bond), minimum\_bond(\_min\_bond),}
+\DoxyCodeLine{43           maximum\_iterations(\_max\_iterations), state\_gradient(def\_pytorch\_gradient), hamil\_gradient(def\_pytorch\_gradient)}
+\DoxyCodeLine{44     \{}
+\DoxyCodeLine{45     \}}
+\DoxyCodeLine{46     \mbox{\hyperlink{structquantit_1_1dmrg__options}{dmrg\_options}}(\textcolor{keywordtype}{double} \_cutoff, \textcolor{keywordtype}{double} \_convergence\_criterion, \textcolor{keywordtype}{size\_t} \_max\_bond, \textcolor{keywordtype}{size\_t} \_min\_bond,}
+\DoxyCodeLine{47                  \textcolor{keywordtype}{size\_t} \_max\_iterations, \textcolor{keywordtype}{bool} \_state\_gradient = def\_pytorch\_gradient,\textcolor{keywordtype}{bool} \_hamil\_gradient = def\_pytorch\_gradient)}
+\DoxyCodeLine{48         : cutoff(\_cutoff), convergence\_criterion(\_convergence\_criterion), maximum\_bond(\_max\_bond),}
+\DoxyCodeLine{49           minimum\_bond(\_min\_bond), maximum\_iterations(\_max\_iterations), state\_gradient(\_state\_gradient), hamil\_gradient(\_hamil\_gradient)}
+\DoxyCodeLine{50     \{}
+\DoxyCodeLine{51     \}}
+\DoxyCodeLine{52     \mbox{\hyperlink{structquantit_1_1dmrg__options}{dmrg\_options}}() : \mbox{\hyperlink{structquantit_1_1dmrg__options}{dmrg\_options}}(def\_cutoff, def\_conv\_crit) \{\}}
+\DoxyCodeLine{53     \mbox{\hyperlink{structquantit_1_1dmrg__options}{dmrg\_options}}(\textcolor{keyword}{const} \mbox{\hyperlink{structquantit_1_1dmrg__options}{dmrg\_options}} \&) = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{54     \mbox{\hyperlink{structquantit_1_1dmrg__options}{dmrg\_options}}(\mbox{\hyperlink{structquantit_1_1dmrg__options}{dmrg\_options}} \&\&) = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{55 }
+\DoxyCodeLine{56     \mbox{\hyperlink{structquantit_1_1dmrg__options}{dmrg\_options}} \&operator=(\textcolor{keyword}{const} \mbox{\hyperlink{structquantit_1_1dmrg__options}{dmrg\_options}} \&) = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{57     \mbox{\hyperlink{structquantit_1_1dmrg__options}{dmrg\_options}} \&operator=(\mbox{\hyperlink{structquantit_1_1dmrg__options}{dmrg\_options}} \&\&) = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{58 \};}
+\DoxyCodeLine{59 \}}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61 }
+\DoxyCodeLine{62 \textcolor{preprocessor}{\#endif }\textcolor{comment}{// INCLUDE\_DMRG\_OPTIONS\_H}}
+
+\end{DoxyCode}

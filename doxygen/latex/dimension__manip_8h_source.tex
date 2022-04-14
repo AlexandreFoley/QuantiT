@@ -1,0 +1,80 @@
+\hypertarget{dimension__manip_8h_source}{}\doxysection{dimension\+\_\+manip.\+h}
+\label{dimension__manip_8h_source}\index{/Users/alex/Documents/Prog/QuantiT/include/dimension\_manip.h@{/Users/alex/Documents/Prog/QuantiT/include/dimension\_manip.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * File: dimension\_manip.h}}
+\DoxyCodeLine{3 \textcolor{comment}{ * Project: QuantiT}}
+\DoxyCodeLine{4 \textcolor{comment}{ * File Created: Thursday, 6th August 2020 11:49:57 am}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)}}
+\DoxyCodeLine{6 \textcolor{comment}{ * -\/-\/-\/-\/-\/}}
+\DoxyCodeLine{7 \textcolor{comment}{ * Last Modified: Thursday, 6th August 2020 11:49:58 am}}
+\DoxyCodeLine{8 \textcolor{comment}{ * Modified By: Alexandre Foley (Alexandre.foley@usherbrooke.ca>)}}
+\DoxyCodeLine{9 \textcolor{comment}{ * -\/-\/-\/-\/-\/}}
+\DoxyCodeLine{10 \textcolor{comment}{ * Copyright (c) 2020 Alexandre Foley}}
+\DoxyCodeLine{11 \textcolor{comment}{ * Licensed under GPL v3}}
+\DoxyCodeLine{12 \textcolor{comment}{ */}}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#ifndef CA372053\_0A7E\_4364\_91C5\_BE90784DCF42}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#define CA372053\_0A7E\_4364\_91C5\_BE90784DCF42}}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include <torch/torch.h>}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include <fmt/core.h>}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include <fmt/ostream.h>}}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#include "{}doctest/doctest\_proxy.h"{}}}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25 \textcolor{keyword}{namespace }quantit\{}
+\DoxyCodeLine{30 std::vector<int64\_t> concat(std::initializer\_list<torch::IntArrayRef> in);}
+\DoxyCodeLine{31 \textcolor{keyword}{template}<\textcolor{keyword}{class}... Args> }
+\DoxyCodeLine{32 std::vector<int64\_t> concat(Args... args)\textcolor{comment}{//allow us to call concat without putting braces.}}
+\DoxyCodeLine{33 \{}
+\DoxyCodeLine{34     \textcolor{comment}{// auto x = \{torch::IntArrayRef(args)...\};//make sure it's a list of intarrayrefs.}}
+\DoxyCodeLine{35     \textcolor{keywordflow}{return} concat(\{args...\}); \textcolor{comment}{// use the implementation for lists of intarrayrefs}}
+\DoxyCodeLine{36 \}}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39 }
+\DoxyCodeLine{46 int64\_t prod(torch::IntArrayRef dims, \textcolor{keywordtype}{size\_t} start, \textcolor{keywordtype}{size\_t} n);}
+\DoxyCodeLine{47 int64\_t prod(torch::IntArrayRef dims);}
+\DoxyCodeLine{48 }
+\DoxyCodeLine{52 std::vector<int64\_t> reverse(torch::IntArrayRef dims);}
+\DoxyCodeLine{53 }
+\DoxyCodeLine{54 torch::IntArrayRef slice(\textcolor{keyword}{const} std::vector<int64\_t>\& in, \textcolor{keywordtype}{size\_t} start, \textcolor{keywordtype}{size\_t} n);}
+\DoxyCodeLine{55 torch::IntArrayRef slice(torch::IntArrayRef in, \textcolor{keywordtype}{size\_t} start, \textcolor{keywordtype}{size\_t} n);}
+\DoxyCodeLine{56 }
+\DoxyCodeLine{57 qtt\_TEST\_CASE(\textcolor{stringliteral}{"{}dimension manipulation tools"{}})}
+\DoxyCodeLine{58 \{}
+\DoxyCodeLine{59     std::vector<int64\_t> dim1(\{2,3,4\});}
+\DoxyCodeLine{60     std::vector<int64\_t> dim2(\{5,6\});}
+\DoxyCodeLine{61     std::vector<int64\_t> dim3(\{7,8\});}
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63     qtt\_CHECK(prod(dim1) == 24);}
+\DoxyCodeLine{64     qtt\_CHECK(prod(dim2) == 30);}
+\DoxyCodeLine{65     qtt\_CHECK(prod(dim3) == 56);}
+\DoxyCodeLine{66     qtt\_CHECK(prod(dim1, 0, 3) == 24);}
+\DoxyCodeLine{67     qtt\_CHECK(prod(dim2, 0, 2) == 30);}
+\DoxyCodeLine{68     qtt\_CHECK(prod(dim3, 0, 2) == 56);}
+\DoxyCodeLine{69     qtt\_CHECK\_NOTHROW(\textcolor{keyword}{auto} ref1 = slice(dim1, 0, 1));}
+\DoxyCodeLine{70     std::vector<int64\_t> concat12 = \{2,3,4,5,6\};}
+\DoxyCodeLine{71     std::vector<int64\_t> concat21 = \{5,6,2,3,4\} ;}
+\DoxyCodeLine{72     qtt\_CHECK(concat12 == concat(dim1, dim2));}
+\DoxyCodeLine{73     qtt\_CHECK(concat21 == concat(dim2, dim1));}
+\DoxyCodeLine{74     std::vector<int64\_t> concat123 = \{2,3,4,5,6,7,8\};}
+\DoxyCodeLine{75     qtt\_CHECK(concat123 == concat(dim1, dim2, dim3));}
+\DoxyCodeLine{76 }
+\DoxyCodeLine{77     qtt\_CHECK(prod(concat(dim1, dim2, dim3)) == 40320);}
+\DoxyCodeLine{78 \}}
+\DoxyCodeLine{79 }
+\DoxyCodeLine{80 }
+\DoxyCodeLine{81 }
+\DoxyCodeLine{82 }
+\DoxyCodeLine{83 \}\textcolor{comment}{//QuantiT}}
+\DoxyCodeLine{84 }
+\DoxyCodeLine{85 }
+\DoxyCodeLine{86 }
+\DoxyCodeLine{87 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* CA372053\_0A7E\_4364\_91C5\_BE90784DCF42 */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

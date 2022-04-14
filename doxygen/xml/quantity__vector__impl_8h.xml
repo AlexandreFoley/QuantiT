@@ -1,33 +1,32 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
   <compounddef id="quantity__vector__impl_8h" kind="file" language="C++">
     <compoundname>quantity_vector_impl.h</compoundname>
     <includes refid="cquantity_8h" local="yes">Conserved/Composite/cquantity.h</includes>
     <includes local="yes">boost/stl_interfaces/iterator_interface.hpp</includes>
     <includes local="no">numeric</includes>
     <includes local="no">vector</includes>
-    <includedby refid="quantity__vector_8h" local="yes">/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h</includedby>
+    <includedby refid="quantity__vector_8h" local="yes">/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h</includedby>
     <incdepgraph>
-      <node id="12">
-        <label>functional</label>
-      </node>
-      <node id="20">
-        <label>fmt/format.h</label>
-      </node>
-      <node id="13">
-        <label>iterator</label>
-      </node>
-      <node id="24">
-        <label>cstdint</label>
-      </node>
-      <node id="8">
-        <label>boost/stl_interfaces/iterator_interface.hpp</label>
-      </node>
-      <node id="9">
-        <label>cassert</label>
-      </node>
-      <node id="14">
-        <label>numeric</label>
+      <node id="2">
+        <label>Conserved/Composite/cquantity.h</label>
+        <link refid="cquantity_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
       </node>
       <node id="3">
         <label>Conserved/Composite/quantity_impl.h</label>
@@ -49,26 +48,22 @@
         <childnode refid="16" relation="include">
         </childnode>
       </node>
-      <node id="25">
-        <label>ostream</label>
-      </node>
-      <node id="10">
-        <label>fmt/core.h</label>
-      </node>
-      <node id="17">
-        <label>templateMeta.h</label>
-        <link refid="templateMeta_8h_source"/>
-        <childnode refid="18" relation="include">
+      <node id="1">
+        <label>/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector_impl.h</label>
+        <link refid="quantity__vector__impl_8h"/>
+        <childnode refid="2" relation="include">
         </childnode>
-        <childnode refid="19" relation="include">
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
         </childnode>
       </node>
-      <node id="2">
-        <label>Conserved/Composite/cquantity.h</label>
-        <link refid="cquantity_8h_source"/>
-        <childnode refid="3" relation="include">
-        </childnode>
-        <childnode refid="23" relation="include">
+      <node id="23">
+        <label>Conserved/quantity.h</label>
+        <link refid="quantity_8h_source"/>
+        <childnode refid="4" relation="include">
         </childnode>
         <childnode refid="17" relation="include">
         </childnode>
@@ -76,15 +71,24 @@
         </childnode>
         <childnode refid="10" relation="include">
         </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
         <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>Conserved/quantity_utils.h</label>
+        <link refid="quantity__utils_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
         </childnode>
         <childnode refid="19" relation="include">
         </childnode>
         <childnode refid="15" relation="include">
         </childnode>
-      </node>
-      <node id="21">
-        <label>ios</label>
       </node>
       <node id="5">
         <label>blockTensor/flat_map.h</label>
@@ -112,129 +116,125 @@
         <childnode refid="16" relation="include">
         </childnode>
       </node>
-      <node id="23">
-        <label>Conserved/quantity.h</label>
-        <link refid="quantity_8h_source"/>
-        <childnode refid="4" relation="include">
-        </childnode>
-        <childnode refid="17" relation="include">
-        </childnode>
-        <childnode refid="24" relation="include">
-        </childnode>
-        <childnode refid="10" relation="include">
-        </childnode>
-        <childnode refid="20" relation="include">
-        </childnode>
-        <childnode refid="25" relation="include">
-        </childnode>
-        <childnode refid="6" relation="include">
-        </childnode>
-      </node>
-      <node id="18">
-        <label>tuple</label>
-      </node>
-      <node id="11">
-        <label>fmt/ranges.h</label>
-      </node>
-      <node id="16">
-        <label>vector</label>
-      </node>
-      <node id="15">
-        <label>utility</label>
-      </node>
-      <node id="4">
-        <label>Conserved/quantity_utils.h</label>
-        <link refid="quantity__utils_8h_source"/>
-        <childnode refid="5" relation="include">
-        </childnode>
-        <childnode refid="17" relation="include">
+      <node id="17">
+        <label>templateMeta.h</label>
+        <link refid="templateMeta_8h_source"/>
+        <childnode refid="18" relation="include">
         </childnode>
         <childnode refid="19" relation="include">
         </childnode>
-        <childnode refid="15" relation="include">
-        </childnode>
-      </node>
-      <node id="19">
-        <label>type_traits</label>
       </node>
       <node id="7">
         <label>algorithm</label>
       </node>
-      <node id="1">
-        <label>/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h</label>
-        <link refid="quantity__vector__impl_8h"/>
-        <childnode refid="2" relation="include">
-        </childnode>
-        <childnode refid="8" relation="include">
-        </childnode>
-        <childnode refid="14" relation="include">
-        </childnode>
-        <childnode refid="16" relation="include">
-        </childnode>
+      <node id="8">
+        <label>boost/stl_interfaces/iterator_interface.hpp</label>
       </node>
-      <node id="22">
-        <label>memory</label>
+      <node id="9">
+        <label>cassert</label>
+      </node>
+      <node id="24">
+        <label>cstdint</label>
       </node>
       <node id="6">
         <label>doctest/doctest_proxy.h</label>
       </node>
+      <node id="10">
+        <label>fmt/core.h</label>
+      </node>
+      <node id="20">
+        <label>fmt/format.h</label>
+      </node>
+      <node id="11">
+        <label>fmt/ranges.h</label>
+      </node>
+      <node id="12">
+        <label>functional</label>
+      </node>
+      <node id="21">
+        <label>ios</label>
+      </node>
+      <node id="13">
+        <label>iterator</label>
+      </node>
+      <node id="22">
+        <label>memory</label>
+      </node>
+      <node id="14">
+        <label>numeric</label>
+      </node>
+      <node id="25">
+        <label>ostream</label>
+      </node>
+      <node id="18">
+        <label>tuple</label>
+      </node>
+      <node id="19">
+        <label>type_traits</label>
+      </node>
+      <node id="15">
+        <label>utility</label>
+      </node>
+      <node id="16">
+        <label>vector</label>
+      </node>
     </incdepgraph>
     <invincdepgraph>
-      <node id="6">
-        <label>/home/alex/project/quantt/include/dmrg.h</label>
-        <link refid="dmrg_8h_source"/>
-      </node>
       <node id="2">
-        <label>/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h</label>
+        <label>/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h</label>
         <link refid="quantity__vector_8h_source"/>
         <childnode refid="3" relation="include">
         </childnode>
       </node>
-      <node id="9">
-        <label>/home/alex/project/quantt/include/operators.h</label>
-        <link refid="operators_8h_source"/>
-      </node>
-      <node id="7">
-        <label>/home/alex/project/quantt/include/MPT.h</label>
-        <link refid="MPT_8h_source"/>
-        <childnode refid="6" relation="include">
-        </childnode>
-        <childnode refid="5" relation="include">
-        </childnode>
-        <childnode refid="8" relation="include">
+      <node id="1">
+        <label>/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector_impl.h</label>
+        <link refid="quantity__vector__impl_8h"/>
+        <childnode refid="2" relation="include">
         </childnode>
       </node>
       <node id="4">
-        <label>/home/alex/project/quantt/include/blockTensor/LinearAlgebra.h</label>
+        <label>/Users/alex/Documents/Prog/QuantiT/include/MPT.h</label>
+        <link refid="MPT_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>/Users/alex/Documents/Prog/QuantiT/include/blockTensor/LinearAlgebra.h</label>
         <link refid="blockTensor_2LinearAlgebra_8h_source"/>
       </node>
       <node id="3">
-        <label>/home/alex/project/quantt/include/blockTensor/btensor.h</label>
+        <label>/Users/alex/Documents/Prog/QuantiT/include/blockTensor/btensor.h</label>
         <link refid="btensor_8h_source"/>
         <childnode refid="4" relation="include">
         </childnode>
-        <childnode refid="5" relation="include">
+        <childnode refid="8" relation="include">
         </childnode>
-        <childnode refid="7" relation="include">
+        <childnode refid="6" relation="include">
         </childnode>
         <childnode refid="9" relation="include">
         </childnode>
       </node>
-      <node id="8">
-        <label>/home/alex/project/quantt/include/models.h</label>
+      <node id="5">
+        <label>/Users/alex/Documents/Prog/QuantiT/include/dmrg.h</label>
+        <link refid="dmrg_8h_source"/>
+      </node>
+      <node id="6">
+        <label>/Users/alex/Documents/Prog/QuantiT/include/dmrg_logger.h</label>
+        <link refid="dmrg__logger_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>/Users/alex/Documents/Prog/QuantiT/include/models.h</label>
         <link refid="models_8h_source"/>
       </node>
-      <node id="5">
-        <label>/home/alex/project/quantt/include/dmrg_logger.h</label>
-        <link refid="dmrg__logger_8h_source"/>
-        <childnode refid="6" relation="include">
-        </childnode>
-      </node>
-      <node id="1">
-        <label>/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h</label>
-        <link refid="quantity__vector__impl_8h"/>
-        <childnode refid="2" relation="include">
-        </childnode>
+      <node id="9">
+        <label>/Users/alex/Documents/Prog/QuantiT/include/operators.h</label>
+        <link refid="operators_8h_source"/>
       </node>
     </invincdepgraph>
     <innerclass refid="classquantit_1_1blocklist" prot="public">quantit::blocklist</innerclass>
@@ -338,8 +338,8 @@
 <codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>const<sp/>vquantity<sp/>*&amp;base_reference()<sp/>noexcept<sp/>{<sp/>return<sp/>it;<sp/>}</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>const<sp/>vquantity<sp/>*base_reference()<sp/>const<sp/>noexcept<sp/>{<sp/>return<sp/>it;<sp/>}</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="91"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
-<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/><ref refid="structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator" kindref="compound">const_cgroup_iterator</ref>()<sp/>:<sp/>it(</highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">),<sp/>ar(</highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">)<sp/>{}</highlight></codeline>
-<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/><ref refid="structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator" kindref="compound">const_cgroup_iterator</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref><sp/>*_it,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="structquantit_1_1vQuantiT__iterator_1_1virt__ptr__aritmetic" kindref="compound">virt_ptr_aritmetic</ref><sp/>*_ar)<sp/>:<sp/>it(_it),<sp/>ar(_ar)<sp/>{}</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/><ref refid="structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator" kindref="compound">const_cgroup_iterator</ref>()<sp/>:<sp/>it(</highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">),<sp/>ar(</highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">)<sp/>{}</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/><ref refid="structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator" kindref="compound">const_cgroup_iterator</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref><sp/>*_it,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="structquantit_1_1vQuantiT__iterator_1_1virt__ptr__aritmetic" kindref="compound">virt_ptr_aritmetic</ref><sp/>*_ar)<sp/>:<sp/>it(_it),<sp/>ar(_ar)<sp/>{}</highlight></codeline>
 <codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>base_type<sp/>=<sp/>boost::stl_interfaces::iterator_interface&lt;<ref refid="structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator" kindref="compound">const_cgroup_iterator</ref>,<sp/>std::random_access_iterator_tag,</highlight></codeline>
 <codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classquantit_1_1any__quantity" kindref="compound">any_quantity</ref>,<sp/><ref refid="classquantit_1_1vquantity" kindref="compound">any_quantity_cref</ref>,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref><sp/>*&gt;;</highlight></codeline>
 <codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classquantit_1_1vquantity" kindref="compound">any_quantity_cref</ref><sp/>operator*()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>*it;<sp/>}</highlight></codeline>
@@ -372,8 +372,8 @@
 <codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>vquantity<sp/>*base_reference()<sp/>const<sp/>noexcept<sp/>{<sp/>return<sp/>it;<sp/>}</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="124"><highlight class="normal"></highlight></codeline>
 <codeline lineno="125"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
-<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/><ref refid="structquantit_1_1vQuantiT__iterator_1_1cgroup__iterator" kindref="compound">cgroup_iterator</ref>()<sp/>:<sp/>it(</highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">),<sp/>ar(</highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">)<sp/>{}</highlight></codeline>
-<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/><ref refid="structquantit_1_1vQuantiT__iterator_1_1cgroup__iterator" kindref="compound">cgroup_iterator</ref>(<ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref><sp/>*_it,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="structquantit_1_1vQuantiT__iterator_1_1virt__ptr__aritmetic" kindref="compound">virt_ptr_aritmetic</ref><sp/>*_ar)<sp/>:<sp/>it(_it),<sp/>ar(_ar)<sp/>{}</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/><ref refid="structquantit_1_1vQuantiT__iterator_1_1cgroup__iterator" kindref="compound">cgroup_iterator</ref>()<sp/>:<sp/>it(</highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">),<sp/>ar(</highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">)<sp/>{}</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/><ref refid="structquantit_1_1vQuantiT__iterator_1_1cgroup__iterator" kindref="compound">cgroup_iterator</ref>(<ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref><sp/>*_it,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="structquantit_1_1vQuantiT__iterator_1_1virt__ptr__aritmetic" kindref="compound">virt_ptr_aritmetic</ref><sp/>*_ar)<sp/>:<sp/>it(_it),<sp/>ar(_ar)<sp/>{}</highlight></codeline>
 <codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>base_type<sp/>=</highlight></codeline>
 <codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>boost::stl_interfaces::iterator_interface&lt;<ref refid="structquantit_1_1vQuantiT__iterator_1_1cgroup__iterator" kindref="compound">cgroup_iterator</ref>,<sp/>std::random_access_iterator_tag,</highlight></codeline>
 <codeline lineno="130"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classquantit_1_1any__quantity" kindref="compound">any_quantity</ref>,<sp/><ref refid="classquantit_1_1vquantity" kindref="compound">any_quantity_ref</ref>,<sp/><ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref><sp/>*,<sp/>std::ptrdiff_t&gt;;</highlight></codeline>
@@ -400,13 +400,13 @@
 <codeline lineno="169"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>reverse_iterator<sp/>=<sp/>std::reverse_iterator&lt;iterator&gt;;</highlight></codeline>
 <codeline lineno="170"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>const_reverse_iterator<sp/>=<sp/>std::reverse_iterator&lt;const_iterator&gt;;</highlight></codeline>
 <codeline lineno="171"><highlight class="normal"></highlight></codeline>
-<codeline lineno="172"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/>~<ref refid="classquantit_1_1vquantity__vector" kindref="compound">vquantity_vector</ref>()<sp/>{}</highlight></codeline>
+<codeline lineno="172"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="classquantit_1_1vquantity__vector" kindref="compound">~vquantity_vector</ref>()<sp/>{}</highlight></codeline>
 <codeline lineno="173"><highlight class="normal"></highlight></codeline>
 <codeline lineno="174"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="classquantit_1_1blocklist" kindref="compound">blocklist</ref><sp/>identify_blocks(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classquantit_1_1btensor" kindref="compound">btensor</ref><sp/>&amp;)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>=<sp/>0;</highlight></codeline>
 <codeline lineno="175"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/>std::unique_ptr&lt;vquantity_vector&gt;<sp/>clone()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>=<sp/>0;</highlight></codeline>
 <codeline lineno="176"><highlight class="normal"></highlight></codeline>
-<codeline lineno="183" refid="classquantit_1_1vquantity__vector_1a73daccea7b560113dda1bdd131f3039e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref><sp/>&amp;<ref refid="classquantit_1_1vquantity__vector_1a73daccea7b560113dda1bdd131f3039e" kindref="member">operator[]</ref>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal">)<sp/>=<sp/>0;</highlight></codeline>
-<codeline lineno="184"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref><sp/>&amp;<ref refid="classquantit_1_1vquantity__vector_1a73daccea7b560113dda1bdd131f3039e" kindref="member">operator[]</ref>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal">)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="183" refid="classquantit_1_1vquantity__vector_1a84aeb9157de3f3cd981b8c2eb35b284b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref><sp/>&amp;<ref refid="classquantit_1_1vquantity__vector_1a84aeb9157de3f3cd981b8c2eb35b284b" kindref="member">operator[]</ref>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal">)<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="184"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref><sp/>&amp;<ref refid="classquantit_1_1vquantity__vector_1a84aeb9157de3f3cd981b8c2eb35b284b" kindref="member">operator[]</ref>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal">)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>=<sp/>0;</highlight></codeline>
 <codeline lineno="185"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref><sp/>&amp;at(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal">)<sp/>=<sp/>0;</highlight></codeline>
 <codeline lineno="186"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref><sp/>&amp;at(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal">)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>=<sp/>0;</highlight></codeline>
 <codeline lineno="187"><highlight class="normal"></highlight></codeline>
@@ -496,8 +496,8 @@
 <codeline lineno="280"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="classquantit_1_1blocklist" kindref="compound">blocklist</ref>();</highlight></codeline>
 <codeline lineno="281"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="282"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>since<sp/>both<sp/>parent<sp/>class<sp/>define<sp/>those<sp/>functions,<sp/>we<sp/>have<sp/>to<sp/>disambiguate<sp/>which<sp/>to<sp/>use<sp/>or<sp/>override.</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="283" refid="classquantit_1_1quantity__vector_1af184f0e8a275938590a86d252abb2f24" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>S<sp/>&amp;<ref refid="classquantit_1_1quantity__vector_1af184f0e8a275938590a86d252abb2f24" kindref="member">operator[]</ref>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>n)</highlight><highlight class="keyword"><sp/>override<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>base_vector::operator[](n);<sp/>}</highlight></codeline>
-<codeline lineno="284"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>S<sp/>&amp;<ref refid="classquantit_1_1quantity__vector_1af184f0e8a275938590a86d252abb2f24" kindref="member">operator[]</ref>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>n)</highlight><highlight class="keyword"><sp/>const<sp/>override<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>base_vector::operator[](n);<sp/>}</highlight></codeline>
+<codeline lineno="283" refid="classquantit_1_1quantity__vector_1a48919579edbd88731d59a37ccf184a64" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>S<sp/>&amp;<ref refid="classquantit_1_1quantity__vector_1a48919579edbd88731d59a37ccf184a64" kindref="member">operator[]</ref>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>n)</highlight><highlight class="keyword"><sp/>override<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>base_vector::operator[](n);<sp/>}</highlight></codeline>
+<codeline lineno="284"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>S<sp/>&amp;<ref refid="classquantit_1_1quantity__vector_1a48919579edbd88731d59a37ccf184a64" kindref="member">operator[]</ref>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>n)</highlight><highlight class="keyword"><sp/>const<sp/>override<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>base_vector::operator[](n);<sp/>}</highlight></codeline>
 <codeline lineno="285"><highlight class="normal"><sp/><sp/><sp/><sp/>S<sp/>&amp;at(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>n)</highlight><highlight class="keyword"><sp/>override<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>base_vector::at(n);<sp/>}</highlight></codeline>
 <codeline lineno="286"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>S<sp/>&amp;at(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>n)</highlight><highlight class="keyword"><sp/>const<sp/>override<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>base_vector::at(n);<sp/>}</highlight></codeline>
 <codeline lineno="287"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>iterators</highlight><highlight class="normal"></highlight></codeline>
@@ -568,7 +568,7 @@
 <codeline lineno="352"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="353"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref><sp/>*ptr_add(<ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref><sp/>*ptr,<sp/>std::ptrdiff_t<sp/>n)</highlight><highlight class="keyword"><sp/>const<sp/>override<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="normal">S<sp/>*</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(ptr)<sp/>+<sp/>n;<sp/>}</highlight></codeline>
 <codeline lineno="354"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
-<codeline lineno="355"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="structquantit_1_1quantity__vector_1_1ptr__aritmetic__t" kindref="compound">ptr_aritmetic_t</ref><sp/>ar<sp/>=<sp/><ref refid="structquantit_1_1quantity__vector_1_1ptr__aritmetic__t" kindref="compound">ptr_aritmetic_t</ref>();</highlight></codeline>
+<codeline lineno="355"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="structquantit_1_1quantity__vector_1_1ptr__aritmetic__t" kindref="compound">ptr_aritmetic_t</ref><sp/>ar<sp/>=<sp/><ref refid="structquantit_1_1quantity__vector_1_1ptr__aritmetic__t" kindref="compound">ptr_aritmetic_t</ref>();</highlight></codeline>
 <codeline lineno="356"><highlight class="normal"></highlight></codeline>
 <codeline lineno="357"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>base_vector::insert;</highlight></codeline>
 <codeline lineno="358"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="structquantit_1_1vQuantiT__iterator_1_1cgroup__iterator" kindref="compound">vquantity_vector::iterator</ref><sp/>insert(<ref refid="structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator" kindref="compound">vquantity_vector::const_iterator</ref><sp/>pos,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref><sp/>&amp;Val)</highlight><highlight class="keyword"><sp/>override</highlight></codeline>
@@ -728,6 +728,6 @@
 <codeline lineno="512"><highlight class="normal"></highlight></codeline>
 <codeline lineno="513"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>BBF1F73E_87CC_4C69_9CCC_5D2526535A4F<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
     </programlisting>
-    <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h"/>
+    <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector_impl.h"/>
   </compounddef>
 </doxygen>

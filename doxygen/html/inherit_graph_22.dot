@@ -1,0 +1,8 @@
+digraph "Graphical Class Hierarchy"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node0 [label="quantit::conserved\l::constexprequal_test\l\< subject, std::enable\l_if_t\< is_detected_v\< comparatorequal\l_sig, subject \> \> \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structquantit_1_1conserved_1_1constexprequal__test_3_01subject_00_01std_1_1enable__if__t_3_01is_e132d3cd872a172980fdb6e254265e40.html",tooltip=" "];
+}

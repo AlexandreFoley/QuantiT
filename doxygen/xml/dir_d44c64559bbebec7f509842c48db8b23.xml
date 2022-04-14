@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
   <compounddef id="dir_d44c64559bbebec7f509842c48db8b23" kind="dir">
-    <compoundname>/home/alex/project/quantt/include</compoundname>
-    <innerdir refid="dir_7a13f9132e4f8cac71358e1544611c31">/home/alex/project/quantt/include/blockTensor</innerdir>
-    <innerdir refid="dir_5e1df155f8d8ecbed2b2526afe4b577f">/home/alex/project/quantt/include/Conserved</innerdir>
+    <compoundname>/Users/alex/Documents/Prog/QuantiT/include</compoundname>
+    <innerdir refid="dir_7a13f9132e4f8cac71358e1544611c31">/Users/alex/Documents/Prog/QuantiT/include/blockTensor</innerdir>
+    <innerdir refid="dir_5e1df155f8d8ecbed2b2526afe4b577f">/Users/alex/Documents/Prog/QuantiT/include/Conserved</innerdir>
     <innerfile refid="dimension__manip_8h">dimension_manip.h</innerfile>
     <innerfile refid="dmrg_8h">dmrg.h</innerfile>
     <innerfile refid="dmrg__logger_8h">dmrg_logger.h</innerfile>
@@ -21,6 +21,6 @@
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/alex/project/quantt/include/"/>
+    <location file="/Users/alex/Documents/Prog/QuantiT/include/"/>
   </compounddef>
 </doxygen>

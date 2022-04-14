@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
   <compounddef id="dir_7a13f9132e4f8cac71358e1544611c31" kind="dir">
-    <compoundname>/home/alex/project/quantt/include/blockTensor</compoundname>
+    <compoundname>/Users/alex/Documents/Prog/QuantiT/include/blockTensor</compoundname>
     <innerfile refid="btensor_8h">btensor.h</innerfile>
     <innerfile refid="flat__map_8h">flat_map.h</innerfile>
     <innerfile refid="blockTensor_2LinearAlgebra_8h">LinearAlgebra.h</innerfile>
@@ -9,6 +9,6 @@
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/alex/project/quantt/include/blockTensor/"/>
+    <location file="/Users/alex/Documents/Prog/QuantiT/include/blockTensor/"/>
   </compounddef>
 </doxygen>

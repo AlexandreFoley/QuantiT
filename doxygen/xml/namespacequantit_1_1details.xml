@@ -1,16 +1,17 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
   <compounddef id="namespacequantit_1_1details" kind="namespace" language="C++">
     <compoundname>quantit::details</compoundname>
-    <innerclass refid="structquantit_1_1details_1_1nonesuch" prot="public">quantit::details::nonesuch</innerclass>
     <innerclass refid="structquantit_1_1details_1_1detector" prot="public">quantit::details::detector</innerclass>
     <innerclass refid="structquantit_1_1details_1_1detector_3_01Default_00_01_1_1std_1_1void__t_3_01Op_3_01Args_8_8_8_00db8b1790b58b63207c1df117cb08912" prot="public">quantit::details::detector&lt; Default, ::std::void_t&lt; Op&lt; Args... &gt; &gt;, Op, Args... &gt;</innerclass>
+    <innerclass refid="structquantit_1_1details_1_1nonesuch" prot="public">quantit::details::nonesuch</innerclass>
       <sectiondef kind="func">
       <memberdef kind="function" id="dmrg_8h_1a2f2af7fd7735fe6eb49f3b2f53972856" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type><ref refid="classquantit_1_1btensor" kindref="compound">btensor</ref></type>
         <definition>btensor quantit::details::dmrg_impl</definition>
         <argsstring>(const bMPO &amp;hamiltonian, const bMPT &amp;two_sites_hamil, bMPS &amp;in_out_state, const dmrg_options &amp;options, benv_holder &amp;Env, dmrg_logger &amp;logger)</argsstring>
         <name>dmrg_impl</name>
+        <qualifiedname>quantit::details::dmrg_impl</qualifiedname>
         <param>
           <type>const <ref refid="classquantit_1_1bMPO" kindref="compound">bMPO</ref> &amp;</type>
           <declname>hamiltonian</declname>
@@ -41,13 +42,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/dmrg.h" line="55" column="9" declfile="/home/alex/project/quantt/include/dmrg.h" declline="55" declcolumn="9"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/dmrg.h" line="55" column="9" declfile="/Users/alex/Documents/Prog/QuantiT/include/dmrg.h" declline="55" declcolumn="9"/>
       </memberdef>
       <memberdef kind="function" id="dmrg_8h_1a8f67a115afad46b15cc19e0705530f66" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>torch::Tensor</type>
         <definition>torch::Tensor quantit::details::dmrg_impl</definition>
         <argsstring>(const MPO &amp;hamiltonian, const MPT &amp;two_sites_hamil, MPS &amp;in_out_state, const dmrg_options &amp;options, env_holder &amp;Env, dmrg_logger &amp;logger)</argsstring>
         <name>dmrg_impl</name>
+        <qualifiedname>quantit::details::dmrg_impl</qualifiedname>
         <param>
           <type>const <ref refid="classquantit_1_1MPO" kindref="compound">MPO</ref> &amp;</type>
           <declname>hamiltonian</declname>
@@ -131,13 +133,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/dmrg.h" line="57" column="15" declfile="/home/alex/project/quantt/include/dmrg.h" declline="57" declcolumn="15"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/dmrg.h" line="57" column="15" declfile="/Users/alex/Documents/Prog/QuantiT/include/dmrg.h" declline="57" declcolumn="15"/>
       </memberdef>
-      <memberdef kind="function" id="dmrg_8h_1a09974562e2b8dc6a403294a9c1e779f7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="dmrg_8h_1a976e26a54613d4c3eb9281eb3841a3c9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>std::tuple&lt; torch::Tensor, torch::Tensor, torch::Tensor &gt;</type>
-        <definition>std::tuple&lt;torch::Tensor, torch::Tensor, torch::Tensor&gt; quantit::details::eig2x2Mat</definition>
+        <definition>std::tuple&lt; torch::Tensor, torch::Tensor, torch::Tensor &gt; quantit::details::eig2x2Mat</definition>
         <argsstring>(const torch::Tensor &amp;a0, const torch::Tensor &amp;a1, const torch::Tensor &amp;b)</argsstring>
         <name>eig2x2Mat</name>
+        <qualifiedname>quantit::details::eig2x2Mat</qualifiedname>
         <param>
           <type>const torch::Tensor &amp;</type>
           <declname>a0</declname>
@@ -156,13 +159,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/dmrg.h" line="59" column="12" declfile="/home/alex/project/quantt/include/dmrg.h" declline="59" declcolumn="12"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/dmrg.h" line="59" column="12" declfile="/Users/alex/Documents/Prog/QuantiT/include/dmrg.h" declline="59" declcolumn="12"/>
       </memberdef>
-      <memberdef kind="function" id="dmrg_8h_1a3263ec7685f99a0f16b6bbbfc1f4f773" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="dmrg_8h_1a26282ea3809e8893dbb5566f09123978" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>std::tuple&lt; <ref refid="classquantit_1_1btensor" kindref="compound">btensor</ref>, <ref refid="classquantit_1_1btensor" kindref="compound">btensor</ref>, <ref refid="classquantit_1_1btensor" kindref="compound">btensor</ref> &gt;</type>
-        <definition>std::tuple&lt;btensor, btensor, btensor&gt; quantit::details::eig2x2Mat</definition>
+        <definition>std::tuple&lt; btensor, btensor, btensor &gt; quantit::details::eig2x2Mat</definition>
         <argsstring>(const btensor &amp;a0, const btensor &amp;a1, const btensor &amp;b)</argsstring>
         <name>eig2x2Mat</name>
+        <qualifiedname>quantit::details::eig2x2Mat</qualifiedname>
         <param>
           <type>const <ref refid="classquantit_1_1btensor" kindref="compound">btensor</ref> &amp;</type>
           <declname>a0</declname>
@@ -181,13 +185,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/dmrg.h" line="61" column="12" declfile="/home/alex/project/quantt/include/dmrg.h" declline="61" declcolumn="12"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/dmrg.h" line="61" column="12" declfile="/Users/alex/Documents/Prog/QuantiT/include/dmrg.h" declline="61" declcolumn="12"/>
       </memberdef>
       <memberdef kind="function" id="dmrg_8h_1aea36cebe01f5b796ce745e796cfa9842" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>torch::Tensor</type>
         <definition>torch::Tensor quantit::details::hamil2site_times_state</definition>
         <argsstring>(const torch::Tensor &amp;state, const torch::Tensor &amp;hamil, const torch::Tensor &amp;Lenv, const torch::Tensor &amp;Renv)</argsstring>
         <name>hamil2site_times_state</name>
+        <qualifiedname>quantit::details::hamil2site_times_state</qualifiedname>
         <param>
           <type>const torch::Tensor &amp;</type>
           <declname>state</declname>
@@ -210,13 +215,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/dmrg.h" line="62" column="15" declfile="/home/alex/project/quantt/include/dmrg.h" declline="62" declcolumn="15"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/dmrg.h" line="62" column="15" declfile="/Users/alex/Documents/Prog/QuantiT/include/dmrg.h" declline="62" declcolumn="15"/>
       </memberdef>
       <memberdef kind="function" id="dmrg_8h_1a1276f208e89dcd017e255f56ead136aa" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type><ref refid="classquantit_1_1btensor" kindref="compound">btensor</ref></type>
         <definition>btensor quantit::details::hamil2site_times_state</definition>
         <argsstring>(const btensor &amp;state, const btensor &amp;hamil, const btensor &amp;Lenv, const btensor &amp;Renv)</argsstring>
         <name>hamil2site_times_state</name>
+        <qualifiedname>quantit::details::hamil2site_times_state</qualifiedname>
         <param>
           <type>const <ref refid="classquantit_1_1btensor" kindref="compound">btensor</ref> &amp;</type>
           <declname>state</declname>
@@ -239,13 +245,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/dmrg.h" line="64" column="9" declfile="/home/alex/project/quantt/include/dmrg.h" declline="64" declcolumn="9"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/dmrg.h" line="64" column="9" declfile="/Users/alex/Documents/Prog/QuantiT/include/dmrg.h" declline="64" declcolumn="9"/>
       </memberdef>
       <memberdef kind="function" id="dmrg_8h_1aa8fa59bea86f1c6f5f34652310547f58" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type><ref refid="classquantit_1_1MPT" kindref="compound">MPT</ref></type>
         <definition>MPT quantit::details::compute_2sitesHamil</definition>
         <argsstring>(const MPO &amp;hamil)</argsstring>
         <name>compute_2sitesHamil</name>
+        <qualifiedname>quantit::details::compute_2sitesHamil</qualifiedname>
         <param>
           <type>const <ref refid="classquantit_1_1MPO" kindref="compound">MPO</ref> &amp;</type>
           <declname>hamil</declname>
@@ -256,13 +263,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/dmrg.h" line="65" column="5" declfile="/home/alex/project/quantt/include/dmrg.h" declline="65" declcolumn="5"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/dmrg.h" line="65" column="5" declfile="/Users/alex/Documents/Prog/QuantiT/include/dmrg.h" declline="65" declcolumn="5"/>
       </memberdef>
       <memberdef kind="function" id="dmrg_8h_1aeac618bb198dad016ba97fedc58b40a3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type><ref refid="classquantit_1_1bMPT" kindref="compound">bMPT</ref></type>
         <definition>bMPT quantit::details::compute_2sitesHamil</definition>
         <argsstring>(const bMPO &amp;hamil)</argsstring>
         <name>compute_2sitesHamil</name>
+        <qualifiedname>quantit::details::compute_2sitesHamil</qualifiedname>
         <param>
           <type>const <ref refid="classquantit_1_1bMPO" kindref="compound">bMPO</ref> &amp;</type>
           <declname>hamil</declname>
@@ -273,13 +281,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/dmrg.h" line="66" column="6" declfile="/home/alex/project/quantt/include/dmrg.h" declline="66" declcolumn="6"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/dmrg.h" line="66" column="6" declfile="/Users/alex/Documents/Prog/QuantiT/include/dmrg.h" declline="66" declcolumn="6"/>
       </memberdef>
-      <memberdef kind="function" id="dmrg_8h_1ac17bfa9645fe352891db8fcc0fa18a01" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="dmrg_8h_1a605d338230ea54bf4bf8db93054bdd57" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>std::tuple&lt; torch::Tensor, torch::Tensor, torch::Tensor, torch::Tensor &gt;</type>
-        <definition>std::tuple&lt;torch::Tensor, torch::Tensor, torch::Tensor, torch::Tensor&gt; quantit::details::one_step_lanczos</definition>
+        <definition>std::tuple&lt; torch::Tensor, torch::Tensor, torch::Tensor, torch::Tensor &gt; quantit::details::one_step_lanczos</definition>
         <argsstring>(const torch::Tensor &amp;state, const torch::Tensor &amp;hamil, const torch::Tensor &amp;Lenv, const torch::Tensor &amp;Renv)</argsstring>
         <name>one_step_lanczos</name>
+        <qualifiedname>quantit::details::one_step_lanczos</qualifiedname>
         <param>
           <type>const torch::Tensor &amp;</type>
           <declname>state</declname>
@@ -302,13 +311,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/dmrg.h" line="67" column="12" declfile="/home/alex/project/quantt/include/dmrg.h" declline="67" declcolumn="12"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/dmrg.h" line="67" column="12" declfile="/Users/alex/Documents/Prog/QuantiT/include/dmrg.h" declline="67" declcolumn="12"/>
       </memberdef>
-      <memberdef kind="function" id="dmrg_8h_1ac777a7dfa77b7cbbc10f2b37776f3ca1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="dmrg_8h_1ab726bfbbe67d36b8830bb7947eb3490f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>std::tuple&lt; <ref refid="classquantit_1_1btensor" kindref="compound">btensor</ref>, <ref refid="classquantit_1_1btensor" kindref="compound">btensor</ref>, <ref refid="classquantit_1_1btensor" kindref="compound">btensor</ref>, <ref refid="classquantit_1_1btensor" kindref="compound">btensor</ref> &gt;</type>
-        <definition>std::tuple&lt;btensor, btensor, btensor, btensor&gt; quantit::details::one_step_lanczos</definition>
+        <definition>std::tuple&lt; btensor, btensor, btensor, btensor &gt; quantit::details::one_step_lanczos</definition>
         <argsstring>(const btensor &amp;state, const btensor &amp;hamil, const btensor &amp;Lenv, const btensor &amp;Renv)</argsstring>
         <name>one_step_lanczos</name>
+        <qualifiedname>quantit::details::one_step_lanczos</qualifiedname>
         <param>
           <type>const <ref refid="classquantit_1_1btensor" kindref="compound">btensor</ref> &amp;</type>
           <declname>state</declname>
@@ -331,13 +341,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/dmrg.h" line="71" column="12" declfile="/home/alex/project/quantt/include/dmrg.h" declline="71" declcolumn="12"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/dmrg.h" line="71" column="12" declfile="/Users/alex/Documents/Prog/QuantiT/include/dmrg.h" declline="71" declcolumn="12"/>
       </memberdef>
       <memberdef kind="function" id="dmrg_8h_1af42ab06d37055dd69aeee5a0207d74a1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type><ref refid="classquantit_1_1btensor" kindref="compound">btensor</ref></type>
         <definition>btensor quantit::details::edge_shape_prep</definition>
         <argsstring>(const btensor &amp;tens, int64_t dim)</argsstring>
         <name>edge_shape_prep</name>
+        <qualifiedname>quantit::details::edge_shape_prep</qualifiedname>
         <param>
           <type>const <ref refid="classquantit_1_1btensor" kindref="compound">btensor</ref> &amp;</type>
           <declname>tens</declname>
@@ -352,13 +363,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/dmrg.h" line="73" column="9" declfile="/home/alex/project/quantt/include/dmrg.h" declline="73" declcolumn="9"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/dmrg.h" line="73" column="9" declfile="/Users/alex/Documents/Prog/QuantiT/include/dmrg.h" declline="73" declcolumn="9"/>
       </memberdef>
       <memberdef kind="function" id="dmrg_8h_1a6684117d1949cc41b24e6f0a0344e3ad" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type><ref refid="structquantit_1_1torch__shape" kindref="compound">torch_shape</ref></type>
         <definition>torch_shape quantit::details::edge_shape_prep</definition>
         <argsstring>(const torch_shape &amp;tens, int64_t dim)</argsstring>
         <name>edge_shape_prep</name>
+        <qualifiedname>quantit::details::edge_shape_prep</qualifiedname>
         <param>
           <type>const <ref refid="structquantit_1_1torch__shape" kindref="compound">torch_shape</ref> &amp;</type>
           <declname>tens</declname>
@@ -373,13 +385,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/dmrg.h" line="74" column="13" declfile="/home/alex/project/quantt/include/dmrg.h" declline="74" declcolumn="13"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/dmrg.h" line="74" column="13" declfile="/Users/alex/Documents/Prog/QuantiT/include/dmrg.h" declline="74" declcolumn="13"/>
       </memberdef>
       <memberdef kind="function" id="dmrg_8h_1a24ac456f424795db447fbd6194295205" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>torch::Tensor</type>
         <definition>torch::Tensor quantit::details::trivial_edge</definition>
         <argsstring>(const torch::Tensor &amp;lower_state, const torch::Tensor &amp;Hamil, const torch::Tensor &amp;upper_state, int64_t index_low, int64_t index_op, int64_t index_up)</argsstring>
         <name>trivial_edge</name>
+        <qualifiedname>quantit::details::trivial_edge</qualifiedname>
         <param>
           <type>const torch::Tensor &amp;</type>
           <declname>lower_state</declname>
@@ -410,13 +423,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/dmrg.h" line="75" column="15" declfile="/home/alex/project/quantt/include/dmrg.h" declline="75" declcolumn="15"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/dmrg.h" line="75" column="15" declfile="/Users/alex/Documents/Prog/QuantiT/include/dmrg.h" declline="75" declcolumn="15"/>
       </memberdef>
       <memberdef kind="function" id="dmrg_8h_1a2e21cf76b1d27a30800c683e3a825533" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type><ref refid="classquantit_1_1btensor" kindref="compound">btensor</ref></type>
         <definition>btensor quantit::details::trivial_edge</definition>
         <argsstring>(const btensor &amp;lower_state, const btensor &amp;Hamil, const btensor &amp;upper_state, int64_t index_low, int64_t index_op, int64_t index_up)</argsstring>
         <name>trivial_edge</name>
+        <qualifiedname>quantit::details::trivial_edge</qualifiedname>
         <param>
           <type>const <ref refid="classquantit_1_1btensor" kindref="compound">btensor</ref> &amp;</type>
           <declname>lower_state</declname>
@@ -447,13 +461,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/dmrg.h" line="77" column="9" declfile="/home/alex/project/quantt/include/dmrg.h" declline="77" declcolumn="9"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/dmrg.h" line="77" column="9" declfile="/Users/alex/Documents/Prog/QuantiT/include/dmrg.h" declline="77" declcolumn="9"/>
       </memberdef>
       <memberdef kind="function" id="models_8h_1a5d1ae10891cafa4dd05d02f51ea64951" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type><ref refid="classquantit_1_1MPO" kindref="compound">MPO</ref></type>
         <definition>MPO quantit::details::Heisenberg_impl</definition>
         <argsstring>(torch::Tensor J, size_t lenght)</argsstring>
         <name>Heisenberg_impl</name>
+        <qualifiedname>quantit::details::Heisenberg_impl</qualifiedname>
         <param>
           <type>torch::Tensor</type>
           <declname>J</declname>
@@ -468,13 +483,13 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/models.h" line="31" column="5" declfile="/home/alex/project/quantt/include/models.h" declline="31" declcolumn="5"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/models.h" line="33" column="5" declfile="/Users/alex/Documents/Prog/QuantiT/include/models.h" declline="33" declcolumn="5"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/alex/project/quantt/include/dmrg.h" line="52" column="1"/>
+    <location file="/Users/alex/Documents/Prog/QuantiT/include/dmrg.h" line="52" column="1"/>
   </compounddef>
 </doxygen>

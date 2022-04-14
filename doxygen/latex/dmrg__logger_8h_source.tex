@@ -1,0 +1,143 @@
+\hypertarget{dmrg__logger_8h_source}{}\doxysection{dmrg\+\_\+logger.\+h}
+\label{dmrg__logger_8h_source}\index{/Users/alex/Documents/Prog/QuantiT/include/dmrg\_logger.h@{/Users/alex/Documents/Prog/QuantiT/include/dmrg\_logger.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * File: dmrg\_logger.h}}
+\DoxyCodeLine{3 \textcolor{comment}{ * Project: QuantiT}}
+\DoxyCodeLine{4 \textcolor{comment}{ * File Created: Friday, 29th October 2021 4:10:27 pm}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)}}
+\DoxyCodeLine{6 \textcolor{comment}{ * Copyright (c) 2021 Alexandre Foley}}
+\DoxyCodeLine{7 \textcolor{comment}{ * Licensed under GPL v3}}
+\DoxyCodeLine{8 \textcolor{comment}{ */}}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#ifndef INCLUDE\_DMRG\_LOGGER\_H}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#define INCLUDE\_DMRG\_LOGGER\_H}}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include "{}MPT.h"{}}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include "{}blockTensor/btensor.h"{}}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include "{}dmrg\_options.h"{}}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include <torch/torch.h>}}
+\DoxyCodeLine{17 }
+\DoxyCodeLine{18 \textcolor{keyword}{namespace }quantit}
+\DoxyCodeLine{19 \{}
+\DoxyCodeLine{27 \textcolor{keyword}{class }\mbox{\hyperlink{classquantit_1_1dmrg__logger}{dmrg\_logger}}}
+\DoxyCodeLine{28 \{}
+\DoxyCodeLine{29   \textcolor{keyword}{public}:}
+\DoxyCodeLine{30     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} log\_step(\textcolor{keywordtype}{size\_t}) = 0;}
+\DoxyCodeLine{31     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} log\_energy(\textcolor{keyword}{const} torch::Tensor \&) = 0;}
+\DoxyCodeLine{32     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} log\_energy(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&) = 0;}
+\DoxyCodeLine{33     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} log\_bond\_dims(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1MPS}{MPS}} \&) = 0;}
+\DoxyCodeLine{34     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} log\_bond\_dims(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1bMPS}{bMPS}} \&) = 0;}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} init(\textcolor{keyword}{const} \mbox{\hyperlink{structquantit_1_1dmrg__options}{dmrg\_options}} \&) \{\}}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{45     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} \mbox{\hyperlink{classquantit_1_1dmrg__logger_aec679b092519a3b96ca9d4df7b388af5}{it\_log\_all}}(\textcolor{keywordtype}{size\_t} step\_num, \textcolor{keyword}{const} torch::Tensor \&E, \textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1MPS}{MPS}} \&state) \{ \mbox{\hyperlink{classquantit_1_1dmrg__logger_a9f638588362a5b58350f5cbbec1b417e}{log\_all}}(step\_num, E, state); \}}
+\DoxyCodeLine{53     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} \mbox{\hyperlink{classquantit_1_1dmrg__logger_ae174380571b94f642328d02b1ef0e997}{it\_log\_all}}(\textcolor{keywordtype}{size\_t} step\_num, \textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&E, \textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1bMPS}{bMPS}} \&state) \{ \mbox{\hyperlink{classquantit_1_1dmrg__logger_a9f638588362a5b58350f5cbbec1b417e}{log\_all}}(step\_num, E, state); \}}
+\DoxyCodeLine{61     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} \mbox{\hyperlink{classquantit_1_1dmrg__logger_a40e35a635a42df1666b452aaaeba3c22}{end\_log\_all}}(\textcolor{keywordtype}{size\_t} step\_num, \textcolor{keyword}{const} torch::Tensor \&E, \textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1MPS}{MPS}} \&state) \{ \mbox{\hyperlink{classquantit_1_1dmrg__logger_a9f638588362a5b58350f5cbbec1b417e}{log\_all}}(step\_num, E, state); \}}
+\DoxyCodeLine{69     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} \mbox{\hyperlink{classquantit_1_1dmrg__logger_aefe31347ea89511837801ca25bce9c3a}{end\_log\_all}}(\textcolor{keywordtype}{size\_t} step\_num, \textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&E, \textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1bMPS}{bMPS}} \&state) \{ \mbox{\hyperlink{classquantit_1_1dmrg__logger_a9f638588362a5b58350f5cbbec1b417e}{log\_all}}(step\_num, E, state); \}}
+\DoxyCodeLine{70 }
+\DoxyCodeLine{78     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} \mbox{\hyperlink{classquantit_1_1dmrg__logger_a9f638588362a5b58350f5cbbec1b417e}{log\_all}}(\textcolor{keywordtype}{size\_t} step\_num, \textcolor{keyword}{const} torch::Tensor \&E, \textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1MPS}{MPS}} \&state)}
+\DoxyCodeLine{79     \{}
+\DoxyCodeLine{80         log\_step(step\_num);}
+\DoxyCodeLine{81         log\_energy(E);}
+\DoxyCodeLine{82         log\_bond\_dims(state);}
+\DoxyCodeLine{83     \}}
+\DoxyCodeLine{91     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} \mbox{\hyperlink{classquantit_1_1dmrg__logger_ac04464f362a6f8e37b38696ccbcf067a}{log\_all}}(\textcolor{keywordtype}{size\_t} step\_num, \textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&E, \textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1bMPS}{bMPS}} \&state)}
+\DoxyCodeLine{92     \{}
+\DoxyCodeLine{93         log\_step(step\_num);}
+\DoxyCodeLine{94         log\_energy(E);}
+\DoxyCodeLine{95         log\_bond\_dims(state);}
+\DoxyCodeLine{96     \}}
+\DoxyCodeLine{97 }
+\DoxyCodeLine{98     \textcolor{keyword}{virtual} \mbox{\hyperlink{classquantit_1_1dmrg__logger}{\string~dmrg\_logger}}() \{\}}
+\DoxyCodeLine{99 \};}
+\DoxyCodeLine{103 \textcolor{keyword}{class }\mbox{\hyperlink{classquantit_1_1dmrg__default__logger}{dmrg\_default\_logger}} : \textcolor{keyword}{public} \mbox{\hyperlink{classquantit_1_1dmrg__logger}{dmrg\_logger}}}
+\DoxyCodeLine{104 \{}
+\DoxyCodeLine{105   \textcolor{keyword}{public}:}
+\DoxyCodeLine{106     \textcolor{keywordtype}{void} log\_step(\textcolor{keywordtype}{size\_t})\textcolor{keyword}{ override }\{\}}
+\DoxyCodeLine{107     \textcolor{keywordtype}{void} log\_energy(\textcolor{keyword}{const} torch::Tensor \&)\textcolor{keyword}{ override }\{\}}
+\DoxyCodeLine{108     \textcolor{keywordtype}{void} log\_energy(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&)\textcolor{keyword}{ override }\{\}}
+\DoxyCodeLine{109     \textcolor{keywordtype}{void} log\_bond\_dims(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1MPS}{MPS}} \&)\textcolor{keyword}{ override }\{\}}
+\DoxyCodeLine{110     \textcolor{keywordtype}{void} log\_bond\_dims(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1bMPS}{bMPS}} \&)\textcolor{keyword}{ override }\{\}}
+\DoxyCodeLine{111 \};}
+\DoxyCodeLine{112 }
+\DoxyCodeLine{113 \textcolor{keyword}{class }\mbox{\hyperlink{classquantit_1_1dmrg__log__simple}{dmrg\_log\_simple}} final : \textcolor{keyword}{public} \mbox{\hyperlink{classquantit_1_1dmrg__default__logger}{quantit::dmrg\_default\_logger}}}
+\DoxyCodeLine{114 \{}
+\DoxyCodeLine{115   \textcolor{keyword}{public}:}
+\DoxyCodeLine{116     \textcolor{keywordtype}{size\_t} it\_num;}
+\DoxyCodeLine{117     \textcolor{keywordtype}{size\_t} middle\_bond\_dim;}
+\DoxyCodeLine{118 }
+\DoxyCodeLine{119     \textcolor{keywordtype}{void} log\_step(\textcolor{keywordtype}{size\_t} it)\textcolor{keyword}{ override }\{ it\_num = it; \}}
+\DoxyCodeLine{120     \textcolor{keywordtype}{void} log\_bond\_dims(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1bMPS}{quantit::bMPS}} \&mps)\textcolor{keyword}{ override }\{ log\_bond\_impl(mps); \}}
+\DoxyCodeLine{121     \textcolor{keywordtype}{void} log\_bond\_dims(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1MPS}{quantit::MPS}} \&mps)\textcolor{keyword}{ override }\{ log\_bond\_impl(mps); \}}
+\DoxyCodeLine{122     \textcolor{keywordtype}{void} \mbox{\hyperlink{classquantit_1_1dmrg__log__simple_a474aeafcac00435f639aa70211feed3d}{it\_log\_all}}(\textcolor{keywordtype}{size\_t}, \textcolor{keyword}{const} torch::Tensor \&, \textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1MPS}{quantit::MPS}} \&)\textcolor{keyword}{ override }\{\}}
+\DoxyCodeLine{123     \textcolor{keywordtype}{void} \mbox{\hyperlink{classquantit_1_1dmrg__log__simple_adc0139d3f688086acdac169e0af2df8b}{it\_log\_all}}(\textcolor{keywordtype}{size\_t}, \textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&, \textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1bMPS}{bMPS}} \&)\textcolor{keyword}{ override }\{\}}
+\DoxyCodeLine{124 }
+\DoxyCodeLine{125   \textcolor{keyword}{private}:}
+\DoxyCodeLine{126     \textcolor{keyword}{template} <\textcolor{keyword}{class} tMPS>}
+\DoxyCodeLine{127     \textcolor{keywordtype}{void} log\_bond\_impl(\textcolor{keyword}{const} tMPS \&mps)}
+\DoxyCodeLine{128     \{}
+\DoxyCodeLine{129         \textcolor{keyword}{auto} pos = mps.size() / 2;}
+\DoxyCodeLine{130         middle\_bond\_dim = std::max(mps[pos].sizes()[0], mps[pos].sizes()[2]);}
+\DoxyCodeLine{131     \}}
+\DoxyCodeLine{132 \};}
+\DoxyCodeLine{133 \textcolor{keyword}{class }\mbox{\hyperlink{classquantit_1_1dmrg__log__sweeptime}{dmrg\_log\_sweeptime}} final : \textcolor{keyword}{public} \mbox{\hyperlink{classquantit_1_1dmrg__default__logger}{quantit::dmrg\_default\_logger}}}
+\DoxyCodeLine{134 \{}
+\DoxyCodeLine{135   \textcolor{keyword}{public}:}
+\DoxyCodeLine{136     \textcolor{keywordtype}{size\_t} it\_num;}
+\DoxyCodeLine{137     \textcolor{keywordtype}{size\_t} middle\_bond\_dim;}
+\DoxyCodeLine{138     std::chrono::steady\_clock::time\_point then;}
+\DoxyCodeLine{139     std::vector<double> time\_list;}
+\DoxyCodeLine{140     std::vector<size\_t> bond\_list;}
+\DoxyCodeLine{141 }
+\DoxyCodeLine{142     \textcolor{keywordtype}{void} log\_step(\textcolor{keywordtype}{size\_t} it)\textcolor{keyword}{ override }\{ it\_num = it; \}}
+\DoxyCodeLine{143     \textcolor{keywordtype}{void} log\_energy(\textcolor{keyword}{const} torch::Tensor \&)\textcolor{keyword}{ override }\{\}}
+\DoxyCodeLine{144     \textcolor{keywordtype}{void} log\_energy(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1btensor}{quantit::btensor}} \&)\textcolor{keyword}{ override }\{\}}
+\DoxyCodeLine{145 }
+\DoxyCodeLine{146     \textcolor{keywordtype}{void} init(\textcolor{keyword}{const} \mbox{\hyperlink{structquantit_1_1dmrg__options}{quantit::dmrg\_options}} \&opt)\textcolor{keyword}{ override}}
+\DoxyCodeLine{147 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{148         then = std::chrono::steady\_clock::now();}
+\DoxyCodeLine{149         time\_list = std::vector<double>(opt.maximum\_iterations);}
+\DoxyCodeLine{150         bond\_list = std::vector<size\_t>(opt.maximum\_iterations);}
+\DoxyCodeLine{151     \}}
+\DoxyCodeLine{152 }
+\DoxyCodeLine{153     \textcolor{keywordtype}{void} log\_bond\_dims(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1MPS}{quantit::MPS}} \&mps)\textcolor{keyword}{ override}}
+\DoxyCodeLine{154 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{155         \textcolor{keyword}{auto} pos = mps.size() / 2;}
+\DoxyCodeLine{156         middle\_bond\_dim = std::max(mps[pos].sizes()[0], mps[pos].sizes()[2]);}
+\DoxyCodeLine{157     \}}
+\DoxyCodeLine{158     \textcolor{keywordtype}{void} log\_bond\_dims(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1bMPS}{quantit::bMPS}} \&mps)\textcolor{keyword}{ override}}
+\DoxyCodeLine{159 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{160         \textcolor{keyword}{auto} pos = mps.size() / 2;}
+\DoxyCodeLine{161         middle\_bond\_dim = std::max(mps[pos].sizes()[0], mps[pos].sizes()[2]);}
+\DoxyCodeLine{162     \}}
+\DoxyCodeLine{163     \textcolor{keywordtype}{void} \mbox{\hyperlink{classquantit_1_1dmrg__log__sweeptime_a94e0c72a29ed2bcc51d2066eb41f4d0d}{it\_log\_all}}(\textcolor{keywordtype}{size\_t} it, \textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1btensor}{quantit::btensor}} \&E0, \textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1bMPS}{quantit::bMPS}} \&mps)\textcolor{keyword}{ override}}
+\DoxyCodeLine{164 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{165         \textcolor{keyword}{auto} now = std::chrono::steady\_clock::now();}
+\DoxyCodeLine{166         std::chrono::duration<double> elapsed\_seconds = now -\/ then;}
+\DoxyCodeLine{167         then = now;}
+\DoxyCodeLine{168         log\_bond\_dims(mps);}
+\DoxyCodeLine{169         bond\_list[it] = middle\_bond\_dim;}
+\DoxyCodeLine{170         time\_list[it] = elapsed\_seconds.count();}
+\DoxyCodeLine{171         log\_step(it);}
+\DoxyCodeLine{172         log\_energy(E0);}
+\DoxyCodeLine{173     \}}
+\DoxyCodeLine{174     \textcolor{keywordtype}{void} \mbox{\hyperlink{classquantit_1_1dmrg__log__sweeptime_acf8dafd8065d0417a90a1d55dad06745}{it\_log\_all}}(\textcolor{keywordtype}{size\_t} it, \textcolor{keyword}{const} torch::Tensor \&E0, \textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1MPS}{quantit::MPS}} \&mps)\textcolor{keyword}{ override}}
+\DoxyCodeLine{175 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{176         \textcolor{keyword}{auto} now = std::chrono::steady\_clock::now();}
+\DoxyCodeLine{177         std::chrono::duration<double> elapsed\_seconds = now -\/ then;}
+\DoxyCodeLine{178         then = now;}
+\DoxyCodeLine{179         log\_bond\_dims(mps);}
+\DoxyCodeLine{180         bond\_list[it] = middle\_bond\_dim;}
+\DoxyCodeLine{181         time\_list[it] = elapsed\_seconds.count();}
+\DoxyCodeLine{182         log\_step(it);}
+\DoxyCodeLine{183         log\_energy(E0);}
+\DoxyCodeLine{184     \}}
+\DoxyCodeLine{185 \};}
+\DoxyCodeLine{186 }
+\DoxyCodeLine{187 \} \textcolor{comment}{// namespace quantit}}
+\DoxyCodeLine{188 }
+\DoxyCodeLine{189 \textcolor{preprocessor}{\#endif }\textcolor{comment}{// INCLUDE\_DMRG\_LOGGER\_H}}
+
+\end{DoxyCode}

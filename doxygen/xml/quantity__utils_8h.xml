@@ -1,38 +1,24 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
   <compounddef id="quantity__utils_8h" kind="file" language="C++">
     <compoundname>quantity_utils.h</compoundname>
     <includes refid="flat__map_8h" local="yes">blockTensor/flat_map.h</includes>
     <includes refid="templateMeta_8h" local="yes">templateMeta.h</includes>
     <includes local="no">type_traits</includes>
     <includes local="no">utility</includes>
-    <includedby refid="quantity__impl_8h" local="yes">/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h</includedby>
-    <includedby refid="quantity_8h" local="yes">/home/alex/project/quantt/include/Conserved/quantity.h</includedby>
+    <includedby refid="quantity__impl_8h" local="yes">/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h</includedby>
+    <includedby refid="quantity_8h" local="yes">/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h</includedby>
     <incdepgraph>
-      <node id="9">
-        <label>functional</label>
-      </node>
-      <node id="10">
-        <label>iterator</label>
-      </node>
-      <node id="5">
-        <label>boost/stl_interfaces/iterator_interface.hpp</label>
-      </node>
-      <node id="6">
-        <label>cassert</label>
-      </node>
-      <node id="11">
-        <label>numeric</label>
-      </node>
-      <node id="7">
-        <label>fmt/core.h</label>
-      </node>
-      <node id="14">
-        <label>templateMeta.h</label>
-        <link refid="templateMeta_8h_source"/>
-        <childnode refid="15" relation="include">
+      <node id="1">
+        <label>/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity_utils.h</label>
+        <link refid="quantity__utils_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
         </childnode>
         <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
         </childnode>
       </node>
       <node id="2">
@@ -61,130 +47,144 @@
         <childnode refid="13" relation="include">
         </childnode>
       </node>
-      <node id="15">
-        <label>tuple</label>
-      </node>
-      <node id="8">
-        <label>fmt/ranges.h</label>
-      </node>
-      <node id="13">
-        <label>vector</label>
-      </node>
-      <node id="12">
-        <label>utility</label>
-      </node>
-      <node id="1">
-        <label>/home/alex/project/quantt/include/Conserved/quantity_utils.h</label>
-        <link refid="quantity__utils_8h"/>
-        <childnode refid="2" relation="include">
-        </childnode>
-        <childnode refid="14" relation="include">
+      <node id="14">
+        <label>templateMeta.h</label>
+        <link refid="templateMeta_8h_source"/>
+        <childnode refid="15" relation="include">
         </childnode>
         <childnode refid="16" relation="include">
         </childnode>
-        <childnode refid="12" relation="include">
-        </childnode>
-      </node>
-      <node id="16">
-        <label>type_traits</label>
       </node>
       <node id="4">
         <label>algorithm</label>
       </node>
+      <node id="5">
+        <label>boost/stl_interfaces/iterator_interface.hpp</label>
+      </node>
+      <node id="6">
+        <label>cassert</label>
+      </node>
       <node id="3">
         <label>doctest/doctest_proxy.h</label>
       </node>
-    </incdepgraph>
-    <invincdepgraph>
       <node id="7">
-        <label>/home/alex/project/quantt/include/dmrg.h</label>
-        <link refid="dmrg_8h_source"/>
+        <label>fmt/core.h</label>
       </node>
-      <node id="12">
-        <label>/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h</label>
-        <link refid="quantity__vector_8h_source"/>
-        <childnode refid="4" relation="include">
-        </childnode>
+      <node id="8">
+        <label>fmt/ranges.h</label>
+      </node>
+      <node id="9">
+        <label>functional</label>
       </node>
       <node id="10">
-        <label>/home/alex/project/quantt/include/operators.h</label>
-        <link refid="operators_8h_source"/>
+        <label>iterator</label>
+      </node>
+      <node id="11">
+        <label>numeric</label>
+      </node>
+      <node id="15">
+        <label>tuple</label>
+      </node>
+      <node id="16">
+        <label>type_traits</label>
+      </node>
+      <node id="12">
+        <label>utility</label>
+      </node>
+      <node id="13">
+        <label>vector</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="3">
+        <label>/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h</label>
+        <link refid="cquantity_8h_source"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
       </node>
       <node id="2">
-        <label>/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h</label>
+        <label>/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h</label>
         <link refid="quantity__impl_8h_source"/>
         <childnode refid="3" relation="include">
         </childnode>
       </node>
-      <node id="3">
-        <label>/home/alex/project/quantt/include/Conserved/Composite/cquantity.h</label>
-        <link refid="cquantity_8h_source"/>
-        <childnode refid="4" relation="include">
-        </childnode>
-        <childnode refid="11" relation="include">
-        </childnode>
-      </node>
-      <node id="8">
-        <label>/home/alex/project/quantt/include/MPT.h</label>
-        <link refid="MPT_8h_source"/>
-        <childnode refid="7" relation="include">
-        </childnode>
+      <node id="5">
+        <label>/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h</label>
+        <link refid="quantity__vector_8h_source"/>
         <childnode refid="6" relation="include">
         </childnode>
-        <childnode refid="9" relation="include">
+      </node>
+      <node id="4">
+        <label>/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector_impl.h</label>
+        <link refid="quantity__vector__impl_8h_source"/>
+        <childnode refid="5" relation="include">
         </childnode>
       </node>
       <node id="13">
-        <label>/home/alex/project/quantt/include/Conserved/quantity.h</label>
+        <label>/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h</label>
         <link refid="quantity_8h_source"/>
-        <childnode refid="4" relation="include">
-        </childnode>
         <childnode refid="3" relation="include">
         </childnode>
-        <childnode refid="12" relation="include">
-        </childnode>
-        <childnode refid="10" relation="include">
-        </childnode>
-      </node>
-      <node id="5">
-        <label>/home/alex/project/quantt/include/blockTensor/LinearAlgebra.h</label>
-        <link refid="blockTensor_2LinearAlgebra_8h_source"/>
-      </node>
-      <node id="4">
-        <label>/home/alex/project/quantt/include/blockTensor/btensor.h</label>
-        <link refid="btensor_8h_source"/>
         <childnode refid="5" relation="include">
         </childnode>
         <childnode refid="6" relation="include">
         </childnode>
-        <childnode refid="8" relation="include">
+        <childnode refid="12" relation="include">
         </childnode>
-        <childnode refid="10" relation="include">
-        </childnode>
-      </node>
-      <node id="9">
-        <label>/home/alex/project/quantt/include/models.h</label>
-        <link refid="models_8h_source"/>
       </node>
       <node id="1">
-        <label>/home/alex/project/quantt/include/Conserved/quantity_utils.h</label>
+        <label>/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity_utils.h</label>
         <link refid="quantity__utils_8h"/>
         <childnode refid="2" relation="include">
         </childnode>
         <childnode refid="13" relation="include">
         </childnode>
       </node>
-      <node id="6">
-        <label>/home/alex/project/quantt/include/dmrg_logger.h</label>
-        <link refid="dmrg__logger_8h_source"/>
-        <childnode refid="7" relation="include">
+      <node id="7">
+        <label>/Users/alex/Documents/Prog/QuantiT/include/MPT.h</label>
+        <link refid="MPT_8h_source"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
         </childnode>
       </node>
       <node id="11">
-        <label>/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h</label>
-        <link refid="quantity__vector__impl_8h_source"/>
+        <label>/Users/alex/Documents/Prog/QuantiT/include/blockTensor/LinearAlgebra.h</label>
+        <link refid="blockTensor_2LinearAlgebra_8h_source"/>
+      </node>
+      <node id="6">
+        <label>/Users/alex/Documents/Prog/QuantiT/include/blockTensor/btensor.h</label>
+        <link refid="btensor_8h_source"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
         <childnode refid="12" relation="include">
         </childnode>
+      </node>
+      <node id="8">
+        <label>/Users/alex/Documents/Prog/QuantiT/include/dmrg.h</label>
+        <link refid="dmrg_8h_source"/>
+      </node>
+      <node id="9">
+        <label>/Users/alex/Documents/Prog/QuantiT/include/dmrg_logger.h</label>
+        <link refid="dmrg__logger_8h_source"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>/Users/alex/Documents/Prog/QuantiT/include/models.h</label>
+        <link refid="models_8h_source"/>
+      </node>
+      <node id="12">
+        <label>/Users/alex/Documents/Prog/QuantiT/include/operators.h</label>
+        <link refid="operators_8h_source"/>
       </node>
     </invincdepgraph>
     <innerclass refid="structquantit_1_1conserved_1_1constexprequal__membertest" prot="public">quantit::conserved::constexprequal_membertest</innerclass>
@@ -234,76 +234,76 @@
 <codeline lineno="27"><highlight class="normal"></highlight><highlight class="comment">//<sp/>try<sp/>to<sp/>implement<sp/>Grp&amp;<sp/>op(Grp&amp;&amp;<sp/>other)<sp/>in<sp/>such<sp/>a<sp/>way<sp/>that<sp/>this<sp/>template</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="28"><highlight class="normal"></highlight><highlight class="comment">//<sp/>is<sp/>efficient.</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="29"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>T&gt;</highlight></codeline>
-<codeline lineno="30"><highlight class="normal">constexpr<sp/>T<sp/>op(T<sp/>lhs,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>T&amp;<sp/>rhs)<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>lhs.op(rhs);<sp/>}</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>T<sp/>op(T<sp/>lhs,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>T&amp;<sp/>rhs)<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>lhs.op(rhs);<sp/>}</highlight></codeline>
 <codeline lineno="31"><highlight class="normal"></highlight></codeline>
 <codeline lineno="32"><highlight class="normal"></highlight><highlight class="comment">//<sp/>custom<sp/>simple<sp/>greoup<sp/>must<sp/>satisfy<sp/>the<sp/>following<sp/>type<sp/>traits<sp/>to<sp/>work<sp/>with<sp/>the</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="33"><highlight class="normal"></highlight><highlight class="comment">//<sp/>composite<sp/>group<sp/>type<sp/>cgoups.</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="34"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>T&gt;</highlight></codeline>
-<codeline lineno="35"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>op2_sig<sp/>=<sp/>decltype(</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>op2_sig<sp/>=<sp/></highlight><highlight class="keyword">decltype</highlight><highlight class="normal">(</highlight></codeline>
 <codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/>conserved::op(std::declval&lt;const<sp/>T&amp;&gt;(),</highlight></codeline>
 <codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::declval&lt;const<sp/>T&amp;&gt;()));<sp/></highlight><highlight class="comment">//<sp/>this<sp/>template<sp/>must<sp/>work<sp/>with<sp/>your</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>implemented<sp/>group.</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="39"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>T&gt;</highlight></codeline>
-<codeline lineno="40"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>op_sig<sp/>=<sp/>decltype(std::declval&lt;T&amp;&gt;().op(std::declval&lt;T&amp;&gt;()));</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>op_sig<sp/>=<sp/></highlight><highlight class="keyword">decltype</highlight><highlight class="normal">(std::declval&lt;T&amp;&gt;().op(std::declval&lt;T&amp;&gt;()));</highlight></codeline>
 <codeline lineno="41"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>T&gt;</highlight></codeline>
 <codeline lineno="42"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>has_op<sp/>=</highlight></codeline>
 <codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/>and_&lt;is_detected_exact&lt;T&amp;,<sp/>op_sig,<sp/>T&gt;,<sp/>is_detected_exact&lt;T,<sp/>op2_sig,<sp/>T&gt;&gt;;</highlight></codeline>
 <codeline lineno="44"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>T&gt;</highlight></codeline>
-<codeline lineno="45"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>inverse__sig<sp/>=<sp/>decltype(std::declval&lt;T&amp;&gt;().inverse_());</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>inverse__sig<sp/>=<sp/></highlight><highlight class="keyword">decltype</highlight><highlight class="normal">(std::declval&lt;T&amp;&gt;().inverse_());</highlight></codeline>
 <codeline lineno="46"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>T&gt;</highlight></codeline>
 <codeline lineno="47"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>has_inverse_<sp/>=<sp/>is_detected_exact&lt;T&amp;,<sp/>inverse__sig,<sp/>T&gt;;</highlight></codeline>
 <codeline lineno="48"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>T&gt;</highlight></codeline>
-<codeline lineno="49"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>commute__sig<sp/>=<sp/>decltype(std::declval&lt;T&amp;&gt;().commute_(std::declval&lt;T&amp;&gt;()));</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>commute__sig<sp/>=<sp/></highlight><highlight class="keyword">decltype</highlight><highlight class="normal">(std::declval&lt;T&amp;&gt;().commute_(std::declval&lt;T&amp;&gt;()));</highlight></codeline>
 <codeline lineno="50"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>T&gt;</highlight></codeline>
 <codeline lineno="51"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>has_commute_<sp/>=<sp/>is_detected_exact&lt;void,<sp/>commute__sig,<sp/>T&gt;;</highlight></codeline>
 <codeline lineno="52"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>T&gt;</highlight></codeline>
 <codeline lineno="53"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>commute_sig<sp/>=</highlight></codeline>
-<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/>decltype(std::declval&lt;const<sp/>T&amp;&gt;().commute(std::declval&lt;T&amp;&gt;()));</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">decltype</highlight><highlight class="normal">(std::declval&lt;const<sp/>T&amp;&gt;().commute(std::declval&lt;T&amp;&gt;()));</highlight></codeline>
 <codeline lineno="55"><highlight class="normal"></highlight></codeline>
 <codeline lineno="56"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>T&gt;</highlight></codeline>
 <codeline lineno="57"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>comparatorequal_sig<sp/>=</highlight></codeline>
-<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/>decltype(</highlight><highlight class="keyword">operator</highlight><highlight class="normal">==(std::declval&lt;const<sp/>T&amp;&gt;(),<sp/>std::declval&lt;const<sp/>T&amp;&gt;()));</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">decltype</highlight><highlight class="normal">(operator==(std::declval&lt;const<sp/>T&amp;&gt;(),<sp/>std::declval&lt;const<sp/>T&amp;&gt;()));</highlight></codeline>
 <codeline lineno="59"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>T&gt;</highlight></codeline>
 <codeline lineno="60"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>comparatorequal_member_sig<sp/>=</highlight></codeline>
-<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/>decltype(std::declval&lt;const<sp/>T&amp;&gt;().</highlight><highlight class="keyword">operator</highlight><highlight class="normal">==(std::declval&lt;const<sp/>T&amp;&gt;()));</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">decltype</highlight><highlight class="normal">(std::declval&lt;const<sp/>T&amp;&gt;().operator==(std::declval&lt;const<sp/>T&amp;&gt;()));</highlight></codeline>
 <codeline lineno="62"><highlight class="normal"></highlight></codeline>
 <codeline lineno="63"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>subject,<sp/></highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>E<sp/>=<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal">&gt;</highlight></codeline>
 <codeline lineno="64" refid="structquantit_1_1conserved_1_1constexprequal__membertest" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structquantit_1_1conserved_1_1constexprequal__membertest" kindref="compound">constexprequal_membertest</ref></highlight></codeline>
 <codeline lineno="65"><highlight class="normal">{</highlight></codeline>
-<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>call()<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;<sp/>}</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>call()<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;<sp/>}</highlight></codeline>
 <codeline lineno="67"><highlight class="normal">};</highlight></codeline>
 <codeline lineno="68"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>subject&gt;</highlight></codeline>
 <codeline lineno="69" refid="structquantit_1_1conserved_1_1constexprequal__membertest_3_01subject_00_01std_1_1enable__if__t_3ef0d61a01dcb0d0d7c1e449e122da3dc" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structquantit_1_1conserved_1_1constexprequal__membertest" kindref="compound">constexprequal_membertest</ref>&lt;subject,<sp/>std::enable_if_t&lt;is_detected_v&lt;comparatorequal_member_sig,<sp/>subject&gt;&gt;&gt;</highlight></codeline>
 <codeline lineno="70"><highlight class="normal">{</highlight></codeline>
 <codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>Value<sp/>=<sp/>subject().operator==(subject())&gt;</highlight></codeline>
-<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>std::true_type<sp/>do_call(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal">)<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>std::true_type();<sp/>}</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>std::true_type<sp/>do_call(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal">)<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>std::true_type();<sp/>}</highlight></codeline>
 <codeline lineno="73"><highlight class="normal"></highlight></codeline>
-<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>std::false_type<sp/>do_call(...)<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>std::false_type();<sp/>}</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>std::false_type<sp/>do_call(...)<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>std::false_type();<sp/>}</highlight></codeline>
 <codeline lineno="75"><highlight class="normal"></highlight></codeline>
-<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>call()<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>do_call(0);<sp/>}</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>call()<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>do_call(0);<sp/>}</highlight></codeline>
 <codeline lineno="77"><highlight class="normal">};</highlight></codeline>
 <codeline lineno="78"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>T&gt;</highlight></codeline>
 <codeline lineno="79"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>has_constexpr_equal_member<sp/>=<sp/>std::bool_constant&lt;constexprequal_membertest&lt;T&gt;::call()&gt;;</highlight></codeline>
 <codeline lineno="80"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>subject,<sp/></highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>E<sp/>=<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal">&gt;</highlight></codeline>
 <codeline lineno="81" refid="structquantit_1_1conserved_1_1constexprequal__test" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structquantit_1_1conserved_1_1constexprequal__test" kindref="compound">constexprequal_test</ref></highlight></codeline>
 <codeline lineno="82"><highlight class="normal">{</highlight></codeline>
-<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>call()<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;<sp/>}</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>call()<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;<sp/>}</highlight></codeline>
 <codeline lineno="84"><highlight class="normal">};</highlight></codeline>
 <codeline lineno="85"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>subject&gt;</highlight></codeline>
 <codeline lineno="86" refid="structquantit_1_1conserved_1_1constexprequal__test_3_01subject_00_01std_1_1enable__if__t_3_01is_e132d3cd872a172980fdb6e254265e40" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structquantit_1_1conserved_1_1constexprequal__test" kindref="compound">constexprequal_test</ref>&lt;subject,<sp/>std::enable_if_t&lt;is_detected_v&lt;comparatorequal_sig,<sp/>subject&gt;&gt;&gt;</highlight></codeline>
 <codeline lineno="87"><highlight class="normal">{</highlight></codeline>
 <codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>Value<sp/>=<sp/>operator==(subject(),<sp/>subject())&gt;</highlight></codeline>
-<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>std::true_type<sp/>do_call(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal">)<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>std::true_type();<sp/>}</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>std::true_type<sp/>do_call(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal">)<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>std::true_type();<sp/>}</highlight></codeline>
 <codeline lineno="90"><highlight class="normal"></highlight></codeline>
-<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>std::false_type<sp/>do_call(...)<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>std::false_type();<sp/>}</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>std::false_type<sp/>do_call(...)<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>std::false_type();<sp/>}</highlight></codeline>
 <codeline lineno="92"><highlight class="normal"></highlight></codeline>
-<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>call()<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>do_call(0);<sp/>}</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>call()<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>do_call(0);<sp/>}</highlight></codeline>
 <codeline lineno="94"><highlight class="normal">};</highlight></codeline>
 <codeline lineno="95"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal">&lt;&gt;</highlight></codeline>
 <codeline lineno="96" refid="structquantit_1_1conserved_1_1constexprequal__test_3_01quantit_1_1vquantity_01_4" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structquantit_1_1conserved_1_1constexprequal__test" kindref="compound">constexprequal_test</ref>&lt;quantit::<ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref>&gt;</highlight></codeline>
 <codeline lineno="97"><highlight class="normal">{</highlight></codeline>
 <codeline lineno="98"><highlight class="normal"></highlight></codeline>
-<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>call()<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>std::false_type();<sp/>}</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>call()<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>std::false_type();<sp/>}</highlight></codeline>
 <codeline lineno="100"><highlight class="normal">};</highlight></codeline>
 <codeline lineno="101"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>T&gt;</highlight></codeline>
 <codeline lineno="102"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>has_constexpr_equal_outclass<sp/>=<sp/>std::bool_constant&lt;constexprequal_test&lt;T&gt;::call()&gt;;</highlight></codeline>
@@ -314,10 +314,10 @@
 <codeline lineno="107"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/><ref refid="structquantit_1_1or__" kindref="compound">has_comparatorequal</ref><sp/>=<sp/><ref refid="structquantit_1_1or__" kindref="compound">or_&lt;is_detected_exact&lt;bool, comparatorequal_member_sig, T&gt;</ref>,<sp/>is_detected_exact&lt;bool,<sp/>comparatorequal_sig,<sp/>T&gt;&gt;;</highlight></codeline>
 <codeline lineno="108"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>T&gt;</highlight></codeline>
 <codeline lineno="109"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>comparatornotequal_member_sig<sp/>=</highlight></codeline>
-<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/>decltype(std::declval&lt;const<sp/>T&amp;&gt;().</highlight><highlight class="keyword">operator</highlight><highlight class="normal">!=(std::declval&lt;const<sp/>T&amp;&gt;()));</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">decltype</highlight><highlight class="normal">(std::declval&lt;const<sp/>T&amp;&gt;().operator!=(std::declval&lt;const<sp/>T&amp;&gt;()));</highlight></codeline>
 <codeline lineno="111"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>T&gt;</highlight></codeline>
 <codeline lineno="112"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>comparatornotequal_sig<sp/>=</highlight></codeline>
-<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/>decltype(</highlight><highlight class="keyword">operator</highlight><highlight class="normal">!=(std::declval&lt;const<sp/>T&amp;&gt;(),<sp/>std::declval&lt;const<sp/>T&amp;&gt;()));</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">decltype</highlight><highlight class="normal">(operator!=(std::declval&lt;const<sp/>T&amp;&gt;(),<sp/>std::declval&lt;const<sp/>T&amp;&gt;()));</highlight></codeline>
 <codeline lineno="114"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>T&gt;</highlight></codeline>
 <codeline lineno="115"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/><ref refid="structquantit_1_1or__" kindref="compound">has_comparatornotequal</ref><sp/>=</highlight></codeline>
 <codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="structquantit_1_1or__" kindref="compound">or_&lt;is_detected_exact&lt;bool, comparatornotequal_member_sig, T&gt;</ref>,</highlight></codeline>
@@ -338,7 +338,7 @@
 <codeline lineno="131"><highlight class="normal">{</highlight></codeline>
 <codeline lineno="132"><highlight class="normal">};</highlight></codeline>
 <codeline lineno="133"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>T&gt;</highlight></codeline>
-<codeline lineno="134"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>abelian_present<sp/>=<sp/>decltype(T::is_Abelian);</highlight></codeline>
+<codeline lineno="134"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>abelian_present<sp/>=<sp/></highlight><highlight class="keyword">decltype</highlight><highlight class="normal">(T::is_Abelian);</highlight></codeline>
 <codeline lineno="135"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>T&gt;</highlight></codeline>
 <codeline lineno="136" refid="structquantit_1_1conserved_1_1is__Abelian_3_01T_00_01std_1_1enable__if__t_3_01is__detected__v_3_fa9b4f4cc9babaf4e2b0df0ea289c6d3" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structquantit_1_1conserved_1_1is__Abelian" kindref="compound">is_Abelian</ref>&lt;T,<sp/>std::enable_if_t&lt;is_detected_v&lt;abelian_present,<sp/>T&gt;&gt;&gt;<sp/>:<sp/>std::integral_constant&lt;bool,<sp/>T::is_Abelian&gt;</highlight></codeline>
 <codeline lineno="137"><highlight class="normal">{</highlight></codeline>
@@ -355,16 +355,16 @@
 <codeline lineno="148" refid="structquantit_1_1conserved_1_1is__conserved__QuantiT_3_01quantit_1_1flat__map_3_01Args_8_8_8_01_4_01_4" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structquantit_1_1conserved_1_1is__conserved__QuantiT" kindref="compound">is_conserved_QuantiT</ref>&lt;quantit::<ref refid="classquantit_1_1flat__map" kindref="compound">flat_map</ref>&lt;Args...&gt;<sp/>&gt;:<sp/>std::false_type<sp/>{};</highlight></codeline>
 <codeline lineno="149"><highlight class="normal"></highlight></codeline>
 <codeline lineno="150"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>T&gt;</highlight></codeline>
-<codeline lineno="151"><highlight class="normal">constexpr<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>is_conserved_QuantiT_v<sp/>=<sp/><ref refid="structquantit_1_1conserved_1_1is__conserved__QuantiT" kindref="compound">is_conserved_QuantiT&lt;T&gt;::value</ref>;</highlight></codeline>
+<codeline lineno="151"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>is_conserved_QuantiT_v<sp/>=<sp/><ref refid="structquantit_1_1conserved_1_1is__conserved__QuantiT" kindref="compound">is_conserved_QuantiT&lt;T&gt;::value</ref>;</highlight></codeline>
 <codeline lineno="152"><highlight class="normal"></highlight></codeline>
 <codeline lineno="153"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal">...<sp/>T&gt;</highlight></codeline>
 <codeline lineno="154"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/><ref refid="structquantit_1_1and__" kindref="compound">all_conserved_QuantiT</ref><sp/>=<sp/><ref refid="structquantit_1_1and__" kindref="compound">and_&lt;is_conserved_QuantiT&lt;T&gt;</ref>...&gt;;</highlight></codeline>
 <codeline lineno="155"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal">...<sp/>T&gt;</highlight></codeline>
-<codeline lineno="156"><highlight class="normal">constexpr<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>all_group_v<sp/>=<sp/><ref refid="structquantit_1_1and__" kindref="compound">all_conserved_QuantiT</ref>&lt;T...&gt;::value;</highlight></codeline>
+<codeline lineno="156"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>all_group_v<sp/>=<sp/><ref refid="structquantit_1_1and__" kindref="compound">all_conserved_QuantiT</ref>&lt;T...&gt;::value;</highlight></codeline>
 <codeline lineno="157"><highlight class="normal"></highlight></codeline>
 <codeline lineno="158"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>__cplusplus<sp/>==<sp/>202002L</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="159"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>T&gt;</highlight></codeline>
-<codeline lineno="160"><highlight class="normal">concept<sp/>a_group<sp/>=<sp/>is_conserved_QuantiT_v&lt;T&gt;;</highlight></codeline>
+<codeline lineno="160"><highlight class="normal"></highlight><highlight class="keyword">concept<sp/></highlight><highlight class="normal">a_group<sp/>=<sp/>is_conserved_QuantiT_v&lt;T&gt;;</highlight></codeline>
 <codeline lineno="161"><highlight class="normal"></highlight></codeline>
 <codeline lineno="162"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="163"><highlight class="normal"></highlight></codeline>
@@ -373,6 +373,6 @@
 <codeline lineno="166"><highlight class="normal"></highlight></codeline>
 <codeline lineno="167"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>D241DFD2_9200_4C66_8225_2C3BBD27EDE4<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
     </programlisting>
-    <location file="/home/alex/project/quantt/include/Conserved/quantity_utils.h"/>
+    <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity_utils.h"/>
   </compounddef>
 </doxygen>

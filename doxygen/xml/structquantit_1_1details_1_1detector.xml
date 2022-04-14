@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
   <compounddef id="structquantit_1_1details_1_1detector" kind="struct" language="C++" prot="public">
     <compoundname>quantit::details::detector</compoundname>
     <templateparamlist>
@@ -26,33 +26,35 @@
         <definition>using quantit::details::detector&lt; Default, AlwaysVoid, Op, Args &gt;::value_t =  std::false_type</definition>
         <argsstring></argsstring>
         <name>value_t</name>
+        <qualifiedname>quantit::details::detector::value_t</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/templateMeta.h" line="42" column="1" bodyfile="/home/alex/project/quantt/include/templateMeta.h" bodystart="42" bodyend="-1"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/templateMeta.h" line="42" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/templateMeta.h" bodystart="42" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="structquantit_1_1details_1_1detector_1a5a2686ab6298020bbf9fdd3e029f9c1c" prot="public" static="no">
         <type>Default</type>
         <definition>using quantit::details::detector&lt; Default, AlwaysVoid, Op, Args &gt;::type =  Default</definition>
         <argsstring></argsstring>
         <name>type</name>
+        <qualifiedname>quantit::details::detector::type</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/templateMeta.h" line="43" column="1" bodyfile="/home/alex/project/quantt/include/templateMeta.h" bodystart="43" bodyend="-1"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/templateMeta.h" line="43" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/templateMeta.h" bodystart="43" bodyend="-1"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/alex/project/quantt/include/templateMeta.h" line="40" column="1" bodyfile="/home/alex/project/quantt/include/templateMeta.h" bodystart="41" bodyend="44"/>
+    <location file="/Users/alex/Documents/Prog/QuantiT/include/templateMeta.h" line="40" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/templateMeta.h" bodystart="41" bodyend="44"/>
     <listofallmembers>
       <member refid="structquantit_1_1details_1_1detector_1a5a2686ab6298020bbf9fdd3e029f9c1c" prot="public" virt="non-virtual"><scope>quantit::details::detector</scope><name>type</name></member>
       <member refid="structquantit_1_1details_1_1detector_1a301e86483b4467546b0b14f536931c4c" prot="public" virt="non-virtual"><scope>quantit::details::detector</scope><name>value_t</name></member>

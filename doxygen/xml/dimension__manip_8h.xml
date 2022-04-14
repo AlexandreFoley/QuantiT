@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
   <compounddef id="dimension__manip_8h" kind="file" language="C++">
     <compoundname>dimension_manip.h</compoundname>
     <includes local="no">torch/torch.h</includes>
@@ -8,20 +8,8 @@
     <includes local="no">fmt/ostream.h</includes>
     <includes local="yes">doctest/doctest_proxy.h</includes>
     <incdepgraph>
-      <node id="5">
-        <label>fmt/ostream.h</label>
-      </node>
-      <node id="4">
-        <label>fmt/core.h</label>
-      </node>
-      <node id="3">
-        <label>vector</label>
-      </node>
-      <node id="2">
-        <label>torch/torch.h</label>
-      </node>
       <node id="1">
-        <label>/home/alex/project/quantt/include/dimension_manip.h</label>
+        <label>/Users/alex/Documents/Prog/QuantiT/include/dimension_manip.h</label>
         <link refid="dimension__manip_8h"/>
         <childnode refid="2" relation="include">
         </childnode>
@@ -36,6 +24,18 @@
       </node>
       <node id="6">
         <label>doctest/doctest_proxy.h</label>
+      </node>
+      <node id="4">
+        <label>fmt/core.h</label>
+      </node>
+      <node id="5">
+        <label>fmt/ostream.h</label>
+      </node>
+      <node id="2">
+        <label>torch/torch.h</label>
+      </node>
+      <node id="3">
+        <label>vector</label>
       </node>
     </incdepgraph>
     <innernamespace refid="namespacequantit">quantit</innernamespace>
@@ -119,6 +119,6 @@
 <codeline lineno="86"><highlight class="normal"></highlight></codeline>
 <codeline lineno="87"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>CA372053_0A7E_4364_91C5_BE90784DCF42<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
     </programlisting>
-    <location file="/home/alex/project/quantt/include/dimension_manip.h"/>
+    <location file="/Users/alex/Documents/Prog/QuantiT/include/dimension_manip.h"/>
   </compounddef>
 </doxygen>

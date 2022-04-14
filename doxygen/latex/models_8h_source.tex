@@ -1,0 +1,80 @@
+\hypertarget{models_8h_source}{}\doxysection{models.\+h}
+\label{models_8h_source}\index{/Users/alex/Documents/Prog/QuantiT/include/models.h@{/Users/alex/Documents/Prog/QuantiT/include/models.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * File: models.h}}
+\DoxyCodeLine{3 \textcolor{comment}{ * Project: QuantiT}}
+\DoxyCodeLine{4 \textcolor{comment}{ * File Created: Monday, 17th August 2020 10:31:00 am}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)}}
+\DoxyCodeLine{6 \textcolor{comment}{ * -\/-\/-\/-\/-\/}}
+\DoxyCodeLine{7 \textcolor{comment}{ * Last Modified: Monday, 17th August 2020 10:31:00 am}}
+\DoxyCodeLine{8 \textcolor{comment}{ * Modified By: Alexandre Foley (Alexandre.foley@usherbrooke.ca>)}}
+\DoxyCodeLine{9 \textcolor{comment}{ * -\/-\/-\/-\/-\/}}
+\DoxyCodeLine{10 \textcolor{comment}{ * Copyright (c) 2020 Alexandre Foley}}
+\DoxyCodeLine{11 \textcolor{comment}{ * Licensed under GPL v3}}
+\DoxyCodeLine{12 \textcolor{comment}{ */}}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#ifndef FC769B14\_0341\_4EB5\_9CD2\_E7CA2865AD73}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#define FC769B14\_0341\_4EB5\_9CD2\_E7CA2865AD73}}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include <torch/torch.h>}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}MPT.h"{}}}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include "{}doctest/doctest\_proxy.h"{}}}
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{namespace }quantit}
+\DoxyCodeLine{23 \{}
+\DoxyCodeLine{27     MPO Heisenberg(torch::Tensor J,\textcolor{keywordtype}{size\_t} lenght);}
+\DoxyCodeLine{28     bMPO Heisenberg(torch::Tensor J, \textcolor{keywordtype}{size\_t} lenght,\textcolor{keyword}{const} btensor\& local\_shape);}
+\DoxyCodeLine{29     \textcolor{keyword}{inline} MPO Heisenberg(torch::Scalar J, \textcolor{keywordtype}{size\_t} lenght) \{ \textcolor{keywordflow}{return} Heisenberg(torch::full(\{\},J),lenght); \}}
+\DoxyCodeLine{30     \textcolor{keyword}{inline} bMPO Heisenberg(torch::Scalar J, \textcolor{keywordtype}{size\_t} lenght,\textcolor{keyword}{const} btensor local\_shape) \{ \textcolor{keywordflow}{return} Heisenberg(torch::full(\{\},J),lenght,local\_shape); \}}
+\DoxyCodeLine{31     \textcolor{keyword}{namespace }details}
+\DoxyCodeLine{32     \{}
+\DoxyCodeLine{33         MPO Heisenberg\_impl(torch::Tensor J,\textcolor{keywordtype}{size\_t} lenght);}
+\DoxyCodeLine{34     \}}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{39     MPO Hubbard(torch::Tensor U,torch::Tensor mu,\textcolor{keywordtype}{size\_t} lenght); }
+\DoxyCodeLine{40     bMPO Hubbard(torch::Tensor U,torch::Tensor mu,\textcolor{keywordtype}{size\_t} lenght,\textcolor{keyword}{const} btensor\& local\_shape); }
+\DoxyCodeLine{41     \textcolor{keyword}{inline} bMPO Hubbard(torch::Scalar U, torch::Scalar mu, \textcolor{keywordtype}{size\_t} lenght,\textcolor{keyword}{const} btensor\& local\_shape)\{\textcolor{keywordflow}{return} Hubbard(torch::full(\{\},U),torch::full(\{\},mu),lenght,local\_shape);\}}
+\DoxyCodeLine{42     \textcolor{keyword}{inline} MPO Hubbard(torch::Scalar U, torch::Scalar mu, \textcolor{keywordtype}{size\_t} lenght)\{\textcolor{keywordflow}{return} Hubbard(torch::full(\{\},U),torch::full(\{\},mu),lenght);\}}
+\DoxyCodeLine{43 }
+\DoxyCodeLine{44 qtt\_TEST\_CASE(\textcolor{stringliteral}{"{}Heisenberg"{}})}
+\DoxyCodeLine{45 \{}
+\DoxyCodeLine{46     \textcolor{keywordtype}{int} J(1);}
+\DoxyCodeLine{47     \textcolor{comment}{// qtt\_REQUIRE(J.isIntegral(false) );}}
+\DoxyCodeLine{48     \textcolor{keyword}{auto} Heis = details::Heisenberg\_impl(torch::tensor(J),3);}
+\DoxyCodeLine{49     qtt\_CHECK(Heis[0].sizes().size() == 4);}
+\DoxyCodeLine{50     \textcolor{keyword}{auto} size\_left\_edge = std::vector<int64\_t>\{1l,2l,5l,2l\};}
+\DoxyCodeLine{51     qtt\_CHECK(Heis[0].sizes().vec() == size\_left\_edge);}
+\DoxyCodeLine{52     qtt\_CHECK(Heis[1].sizes().size() == 4);}
+\DoxyCodeLine{53     \textcolor{keyword}{auto} size\_middle = std::vector<int64\_t>\{5l,2l,5l,2l\};}
+\DoxyCodeLine{54     qtt\_CHECK(Heis[1].sizes().vec() == size\_middle);}
+\DoxyCodeLine{55     qtt\_CHECK(Heis[2].sizes().size() == 4);}
+\DoxyCodeLine{56     \textcolor{keyword}{auto} size\_right\_edge = std::vector<int64\_t>\{5l,2l,1l,2l\}; }
+\DoxyCodeLine{57     qtt\_CHECK(Heis[2].sizes().vec() == size\_right\_edge);}
+\DoxyCodeLine{58 }
+\DoxyCodeLine{59     qtt\_REQUIRE(!Heis[0].is\_floating\_point());}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61 }
+\DoxyCodeLine{62     \textcolor{keyword}{auto} test\_Heis =  torch::zeros(\{8,8\},torch::kInt8);}
+\DoxyCodeLine{63     \{}
+\DoxyCodeLine{64         \textcolor{keyword}{auto} acc = test\_Heis.accessor<int8\_t,2>();}
+\DoxyCodeLine{65         acc[0][0] = acc[2][1] = acc[1][2] = 2;}
+\DoxyCodeLine{66         acc[4][2] = acc[2][4] = acc[5][3] = acc[3][5] = 2;}
+\DoxyCodeLine{67         acc[7][7] = acc[6][5] = acc[5][6] = 2;}
+\DoxyCodeLine{68         acc[2][2] = acc[5][5] = -\/2;}
+\DoxyCodeLine{69     \}}
+\DoxyCodeLine{70 }
+\DoxyCodeLine{71     \textcolor{keyword}{auto} cont\_Heis = torch::tensordot(Heis[0],Heis[1],\{2\},\{0\}).permute(\{0,1,3,4,2,5\}).reshape(\{1,4,5,4\});}
+\DoxyCodeLine{72     cont\_Heis = torch::tensordot(cont\_Heis,Heis[2],\{2\},\{0\}).permute(\{0,1,3,4,2,5\}).reshape(\{8,8\});}
+\DoxyCodeLine{73     qtt\_CHECK(torch::equal(cont\_Heis,test\_Heis));}
+\DoxyCodeLine{74 \}}
+\DoxyCodeLine{75 }
+\DoxyCodeLine{76 }
+\DoxyCodeLine{77 \}\textcolor{comment}{//QuantiT}}
+\DoxyCodeLine{78 }
+\DoxyCodeLine{79 }
+\DoxyCodeLine{80 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* FC769B14\_0341\_4EB5\_9CD2\_E7CA2865AD73 */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

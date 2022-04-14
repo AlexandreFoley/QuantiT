@@ -1,16 +1,16 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
   <compounddef id="templateMeta_8h" kind="file" language="C++">
     <compoundname>templateMeta.h</compoundname>
     <includes local="no">tuple</includes>
     <includes local="no">type_traits</includes>
-    <includedby refid="cquantity_8h" local="yes">/home/alex/project/quantt/include/Conserved/Composite/cquantity.h</includedby>
-    <includedby refid="quantity__impl_8h" local="yes">/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h</includedby>
-    <includedby refid="quantity_8h" local="yes">/home/alex/project/quantt/include/Conserved/quantity.h</includedby>
-    <includedby refid="quantity__utils_8h" local="yes">/home/alex/project/quantt/include/Conserved/quantity_utils.h</includedby>
+    <includedby refid="cquantity_8h" local="yes">/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h</includedby>
+    <includedby refid="quantity__impl_8h" local="yes">/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h</includedby>
+    <includedby refid="quantity_8h" local="yes">/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h</includedby>
+    <includedby refid="quantity__utils_8h" local="yes">/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity_utils.h</includedby>
     <incdepgraph>
       <node id="1">
-        <label>/home/alex/project/quantt/include/templateMeta.h</label>
+        <label>/Users/alex/Documents/Prog/QuantiT/include/templateMeta.h</label>
         <link refid="templateMeta_8h"/>
         <childnode refid="2" relation="include">
         </childnode>
@@ -25,28 +25,98 @@
       </node>
     </incdepgraph>
     <invincdepgraph>
-      <node id="6">
-        <label>/home/alex/project/quantt/include/dmrg.h</label>
-        <link refid="dmrg_8h_source"/>
-      </node>
-      <node id="11">
-        <label>/home/alex/project/quantt/include/Conserved/Composite/quantity_vector.h</label>
-        <link refid="quantity__vector_8h_source"/>
+      <node id="2">
+        <label>/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h</label>
+        <link refid="cquantity_8h_source"/>
         <childnode refid="3" relation="include">
         </childnode>
-      </node>
-      <node id="9">
-        <label>/home/alex/project/quantt/include/operators.h</label>
-        <link refid="operators_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
       </node>
       <node id="12">
-        <label>/home/alex/project/quantt/include/Conserved/Composite/quantity_impl.h</label>
+        <label>/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_impl.h</label>
         <link refid="quantity__impl_8h_source"/>
         <childnode refid="2" relation="include">
         </childnode>
       </node>
+      <node id="4">
+        <label>/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector.h</label>
+        <link refid="quantity__vector_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector_impl.h</label>
+        <link refid="quantity__vector__impl_8h_source"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="13">
+        <label>/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h</label>
+        <link refid="quantity_8h_source"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity_utils.h</label>
+        <link refid="quantity__utils_8h_source"/>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>/Users/alex/Documents/Prog/QuantiT/include/MPT.h</label>
+        <link refid="MPT_8h_source"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>/Users/alex/Documents/Prog/QuantiT/include/blockTensor/LinearAlgebra.h</label>
+        <link refid="blockTensor_2LinearAlgebra_8h_source"/>
+      </node>
+      <node id="5">
+        <label>/Users/alex/Documents/Prog/QuantiT/include/blockTensor/btensor.h</label>
+        <link refid="btensor_8h_source"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>/Users/alex/Documents/Prog/QuantiT/include/dmrg.h</label>
+        <link refid="dmrg_8h_source"/>
+      </node>
+      <node id="8">
+        <label>/Users/alex/Documents/Prog/QuantiT/include/dmrg_logger.h</label>
+        <link refid="dmrg__logger_8h_source"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>/Users/alex/Documents/Prog/QuantiT/include/models.h</label>
+        <link refid="models_8h_source"/>
+      </node>
+      <node id="11">
+        <label>/Users/alex/Documents/Prog/QuantiT/include/operators.h</label>
+        <link refid="operators_8h_source"/>
+      </node>
       <node id="1">
-        <label>/home/alex/project/quantt/include/templateMeta.h</label>
+        <label>/Users/alex/Documents/Prog/QuantiT/include/templateMeta.h</label>
         <link refid="templateMeta_8h"/>
         <childnode refid="2" relation="include">
         </childnode>
@@ -55,76 +125,6 @@
         <childnode refid="13" relation="include">
         </childnode>
         <childnode refid="14" relation="include">
-        </childnode>
-      </node>
-      <node id="2">
-        <label>/home/alex/project/quantt/include/Conserved/Composite/cquantity.h</label>
-        <link refid="cquantity_8h_source"/>
-        <childnode refid="3" relation="include">
-        </childnode>
-        <childnode refid="10" relation="include">
-        </childnode>
-      </node>
-      <node id="7">
-        <label>/home/alex/project/quantt/include/MPT.h</label>
-        <link refid="MPT_8h_source"/>
-        <childnode refid="6" relation="include">
-        </childnode>
-        <childnode refid="5" relation="include">
-        </childnode>
-        <childnode refid="8" relation="include">
-        </childnode>
-      </node>
-      <node id="13">
-        <label>/home/alex/project/quantt/include/Conserved/quantity.h</label>
-        <link refid="quantity_8h_source"/>
-        <childnode refid="3" relation="include">
-        </childnode>
-        <childnode refid="2" relation="include">
-        </childnode>
-        <childnode refid="11" relation="include">
-        </childnode>
-        <childnode refid="9" relation="include">
-        </childnode>
-      </node>
-      <node id="4">
-        <label>/home/alex/project/quantt/include/blockTensor/LinearAlgebra.h</label>
-        <link refid="blockTensor_2LinearAlgebra_8h_source"/>
-      </node>
-      <node id="3">
-        <label>/home/alex/project/quantt/include/blockTensor/btensor.h</label>
-        <link refid="btensor_8h_source"/>
-        <childnode refid="4" relation="include">
-        </childnode>
-        <childnode refid="5" relation="include">
-        </childnode>
-        <childnode refid="7" relation="include">
-        </childnode>
-        <childnode refid="9" relation="include">
-        </childnode>
-      </node>
-      <node id="8">
-        <label>/home/alex/project/quantt/include/models.h</label>
-        <link refid="models_8h_source"/>
-      </node>
-      <node id="14">
-        <label>/home/alex/project/quantt/include/Conserved/quantity_utils.h</label>
-        <link refid="quantity__utils_8h_source"/>
-        <childnode refid="12" relation="include">
-        </childnode>
-        <childnode refid="13" relation="include">
-        </childnode>
-      </node>
-      <node id="5">
-        <label>/home/alex/project/quantt/include/dmrg_logger.h</label>
-        <link refid="dmrg__logger_8h_source"/>
-        <childnode refid="6" relation="include">
-        </childnode>
-      </node>
-      <node id="10">
-        <label>/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h</label>
-        <link refid="quantity__vector__impl_8h_source"/>
-        <childnode refid="11" relation="include">
         </childnode>
       </node>
     </invincdepgraph>
@@ -175,7 +175,7 @@
 <codeline lineno="31" refid="structquantit_1_1details_1_1nonesuch" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structquantit_1_1details_1_1nonesuch" kindref="compound">nonesuch</ref></highlight></codeline>
 <codeline lineno="32"><highlight class="normal">{</highlight></codeline>
 <codeline lineno="33"><highlight class="normal"></highlight></codeline>
-<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/>~<ref refid="structquantit_1_1details_1_1nonesuch" kindref="compound">nonesuch</ref>()<sp/>=<sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="structquantit_1_1details_1_1nonesuch" kindref="compound">~nonesuch</ref>()<sp/>=<sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal">;</highlight></codeline>
 <codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="structquantit_1_1details_1_1nonesuch" kindref="compound">nonesuch</ref>(<ref refid="structquantit_1_1details_1_1nonesuch" kindref="compound">nonesuch</ref><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>&amp;)<sp/>=<sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal">;</highlight></codeline>
 <codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>operator=(<ref refid="structquantit_1_1details_1_1nonesuch" kindref="compound">nonesuch</ref><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>&amp;)<sp/>=<sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal">;</highlight></codeline>
 <codeline lineno="37"><highlight class="normal">};</highlight></codeline>
@@ -206,17 +206,17 @@
 <codeline lineno="62"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/><ref refid="structquantit_1_1details_1_1detector" kindref="compound">detected_or</ref><sp/>=<sp/><ref refid="structquantit_1_1details_1_1detector" kindref="compound">details::detector</ref>&lt;Default,<sp/>void,<sp/>Op,<sp/>Args...&gt;;</highlight></codeline>
 <codeline lineno="63"><highlight class="normal"></highlight></codeline>
 <codeline lineno="64"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal">...&gt;<sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">Op,<sp/></highlight><highlight class="keyword">class</highlight><highlight class="normal">...<sp/>Args&gt;</highlight></codeline>
-<codeline lineno="65"><highlight class="normal">constexpr<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>is_detected_v<sp/>=<sp/>is_detected&lt;Op,<sp/>Args...&gt;::value;</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>is_detected_v<sp/>=<sp/>is_detected&lt;Op,<sp/>Args...&gt;::value;</highlight></codeline>
 <codeline lineno="66"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">Default,<sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal">...&gt;<sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">Op,<sp/></highlight><highlight class="keyword">class</highlight><highlight class="normal">...<sp/>Args&gt;</highlight></codeline>
 <codeline lineno="67"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>detected_or_t<sp/>=<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/><ref refid="structquantit_1_1details_1_1detector" kindref="compound">detected_or</ref>&lt;Default,<sp/>Op,<sp/>Args...&gt;::type;</highlight></codeline>
 <codeline lineno="68"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">Expected,<sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal">...&gt;<sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">Op,<sp/></highlight><highlight class="keyword">class</highlight><highlight class="normal">...<sp/>Args&gt;</highlight></codeline>
 <codeline lineno="69"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>is_detected_exact<sp/>=<sp/>::std::is_same&lt;Expected,<sp/>detected_t&lt;Op,<sp/>Args...&gt;&gt;;</highlight></codeline>
 <codeline lineno="70"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">Expected,<sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal">...&gt;<sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">Op,<sp/></highlight><highlight class="keyword">class</highlight><highlight class="normal">...<sp/>Args&gt;</highlight></codeline>
-<codeline lineno="71"><highlight class="normal">constexpr<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>is_detected_exact_v<sp/>=<sp/>is_detected_exact&lt;Expected,<sp/>Op,<sp/>Args...&gt;::value;</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>is_detected_exact_v<sp/>=<sp/>is_detected_exact&lt;Expected,<sp/>Op,<sp/>Args...&gt;::value;</highlight></codeline>
 <codeline lineno="72"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">To,<sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal">...&gt;<sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">Op,<sp/></highlight><highlight class="keyword">class</highlight><highlight class="normal">...<sp/>Args&gt;</highlight></codeline>
 <codeline lineno="73"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>is_detected_convertible<sp/>=<sp/>::std::is_convertible&lt;detected_t&lt;Op,<sp/>Args...&gt;,<sp/>To&gt;;</highlight></codeline>
 <codeline lineno="74"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">To,<sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal">...&gt;<sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">Op,<sp/></highlight><highlight class="keyword">class</highlight><highlight class="normal">...<sp/>Args&gt;</highlight></codeline>
-<codeline lineno="75"><highlight class="normal">constexpr<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>is_detected_convertible_v<sp/>=<sp/>is_detected_convertible&lt;To,<sp/>Op,<sp/>Args...&gt;::value;</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>is_detected_convertible_v<sp/>=<sp/>is_detected_convertible&lt;To,<sp/>Op,<sp/>Args...&gt;::value;</highlight></codeline>
 <codeline lineno="76"><highlight class="normal"></highlight></codeline>
 <codeline lineno="77"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
 <codeline lineno="78"><highlight class="comment"><sp/>*<sp/>Template<sp/>metaprograming<sp/>to<sp/>apply<sp/>&quot;logic<sp/>and&quot;<sp/>and<sp/>&quot;logic<sp/>or&quot;<sp/>to<sp/>template<sp/>parameter<sp/>pack<sp/>of</highlight></codeline>
@@ -243,11 +243,11 @@
 <codeline lineno="109"><highlight class="normal">};</highlight></codeline>
 <codeline lineno="110"><highlight class="normal"></highlight></codeline>
 <codeline lineno="120"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>Tuple1,<sp/></highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>F&gt;</highlight></codeline>
-<codeline lineno="121"><highlight class="normal">constexpr<sp/>decltype(</highlight><highlight class="keyword">auto</highlight><highlight class="normal">)<sp/>for_each(Tuple1<sp/>&amp;&amp;T1,<sp/>F<sp/>&amp;&amp;f)</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">decltype</highlight><highlight class="normal">(</highlight><highlight class="keyword">auto</highlight><highlight class="normal">)<sp/>for_each(Tuple1<sp/>&amp;&amp;T1,<sp/>F<sp/>&amp;&amp;f)</highlight></codeline>
 <codeline lineno="122"><highlight class="normal">{</highlight></codeline>
 <codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>std::apply(</highlight></codeline>
 <codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>[&amp;](</highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>&amp;&amp;...<sp/>t1)<sp/>{</highlight></codeline>
-<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>constexpr<sp/>(std::is_same_v&lt;decltype(f(std::get&lt;0&gt;(T1))),<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal">&gt;)</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>(std::is_same_v&lt;decltype(f(std::get&lt;0&gt;(T1))),<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal">&gt;)</highlight></codeline>
 <codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>we<sp/>return<sp/>void..</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(f(t1),<sp/>...);<sp/></highlight><highlight class="comment">//<sp/>apply<sp/>the<sp/>function<sp/>to<sp/>each<sp/>arguments</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
@@ -260,7 +260,7 @@
 <codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>T1);</highlight></codeline>
 <codeline lineno="136"><highlight class="normal">}</highlight></codeline>
 <codeline lineno="148"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>Tuple1,<sp/></highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>Tuple2,<sp/></highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>F&gt;</highlight></codeline>
-<codeline lineno="149"><highlight class="normal">constexpr<sp/>decltype(</highlight><highlight class="keyword">auto</highlight><highlight class="normal">)<sp/>for_each2(Tuple1<sp/>&amp;&amp;T1,<sp/>Tuple2<sp/>&amp;&amp;T2,<sp/>F<sp/>&amp;&amp;f)</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">decltype</highlight><highlight class="normal">(</highlight><highlight class="keyword">auto</highlight><highlight class="normal">)<sp/>for_each2(Tuple1<sp/>&amp;&amp;T1,<sp/>Tuple2<sp/>&amp;&amp;T2,<sp/>F<sp/>&amp;&amp;f)</highlight></codeline>
 <codeline lineno="150"><highlight class="normal">{</highlight></codeline>
 <codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>std::apply(</highlight></codeline>
 <codeline lineno="152"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>[&amp;](</highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>&amp;&amp;...<sp/>t1)<sp/>{<sp/></highlight><highlight class="comment">//<sp/>std::apply<sp/>require<sp/>gcc7<sp/>or<sp/>more<sp/>recent</highlight><highlight class="normal"></highlight></codeline>
@@ -284,6 +284,6 @@
 <codeline lineno="170"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>quantit</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="171"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>D5434AD3_7D18_4065_A1ED_CD37C3E10D7A<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
     </programlisting>
-    <location file="/home/alex/project/quantt/include/templateMeta.h"/>
+    <location file="/Users/alex/Documents/Prog/QuantiT/include/templateMeta.h"/>
   </compounddef>
 </doxygen>

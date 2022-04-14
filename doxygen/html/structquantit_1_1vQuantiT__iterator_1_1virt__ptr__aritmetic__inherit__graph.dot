@@ -1,0 +1,9 @@
+digraph "quantit::vQuantiT_iterator::virt_ptr_aritmetic"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node1 [label="quantit::vQuantiT_iterator\l::virt_ptr_aritmetic",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="A class to to pointer arithmetic on a virtual pointer."];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="quantit::quantity_vector\l\< S, Allocator, class \>\l::ptr_aritmetic_t",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",URL="$structquantit_1_1quantity__vector_1_1ptr__aritmetic__t.html",tooltip=" "];
+}

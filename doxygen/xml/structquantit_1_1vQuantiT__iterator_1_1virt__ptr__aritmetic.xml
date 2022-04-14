@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
   <compounddef id="structquantit_1_1vQuantiT__iterator_1_1virt__ptr__aritmetic" kind="struct" language="C++" prot="public" abstract="yes">
     <compoundname>quantit::vQuantiT_iterator::virt_ptr_aritmetic</compoundname>
     <derivedcompoundref refid="structquantit_1_1quantity__vector_1_1ptr__aritmetic__t" prot="public" virt="non-virtual">quantit::quantity_vector&lt; S, Allocator, class &gt;::ptr_aritmetic_t</derivedcompoundref>
@@ -10,6 +10,7 @@
         <definition>virtual std::ptrdiff_t quantit::vQuantiT_iterator::virt_ptr_aritmetic::ptr_diff</definition>
         <argsstring>(const vquantity *lhs, const vquantity *rhs) const =0</argsstring>
         <name>ptr_diff</name>
+        <qualifiedname>quantit::vQuantiT_iterator::virt_ptr_aritmetic::ptr_diff</qualifiedname>
         <reimplementedby refid="structquantit_1_1quantity__vector_1_1ptr__aritmetic__t_1a755a7a1a7d72e9c6dd949d55b9597f03">ptr_diff</reimplementedby>
         <param>
           <type>const <ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref> *</type>
@@ -25,14 +26,15 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" line="68" column="24"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector_impl.h" line="68" column="24"/>
       </memberdef>
-      <memberdef kind="function" id="structquantit_1_1vQuantiT__iterator_1_1virt__ptr__aritmetic_1a9e2af66a1f424445f94ec444aee33a3f" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+      <memberdef kind="function" id="structquantit_1_1vQuantiT__iterator_1_1virt__ptr__aritmetic_1ab52e0af431fd79c6fe899ac2917a1704" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
         <type><ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref> *</type>
-        <definition>virtual vquantity* quantit::vQuantiT_iterator::virt_ptr_aritmetic::ptr_add</definition>
+        <definition>virtual vquantity * quantit::vQuantiT_iterator::virt_ptr_aritmetic::ptr_add</definition>
         <argsstring>(vquantity *ptr, std::ptrdiff_t n) const =0</argsstring>
         <name>ptr_add</name>
-        <reimplementedby refid="structquantit_1_1quantity__vector_1_1ptr__aritmetic__t_1a68ae6138fb9d658eb271c1b9a80e79ea">ptr_add</reimplementedby>
+        <qualifiedname>quantit::vQuantiT_iterator::virt_ptr_aritmetic::ptr_add</qualifiedname>
+        <reimplementedby refid="structquantit_1_1quantity__vector_1_1ptr__aritmetic__t_1af1ba8b43cd07db98ca4271bc03a0ff60">ptr_add</reimplementedby>
         <param>
           <type><ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref> *</type>
           <declname>ptr</declname>
@@ -47,14 +49,15 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" line="69" column="19"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector_impl.h" line="69" column="19"/>
       </memberdef>
-      <memberdef kind="function" id="structquantit_1_1vQuantiT__iterator_1_1virt__ptr__aritmetic_1a124f96b073fab6a5dd232216952a4503" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+      <memberdef kind="function" id="structquantit_1_1vQuantiT__iterator_1_1virt__ptr__aritmetic_1aabb4790de35d5f113cb5ca62a899206c" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
         <type>const <ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref> *</type>
-        <definition>virtual const vquantity* quantit::vQuantiT_iterator::virt_ptr_aritmetic::ptr_add</definition>
+        <definition>virtual const vquantity * quantit::vQuantiT_iterator::virt_ptr_aritmetic::ptr_add</definition>
         <argsstring>(const vquantity *ptr, std::ptrdiff_t n) const =0</argsstring>
         <name>ptr_add</name>
-        <reimplementedby refid="structquantit_1_1quantity__vector_1_1ptr__aritmetic__t_1a5a5299db584ca78350cd164533d8a52e">ptr_add</reimplementedby>
+        <qualifiedname>quantit::vQuantiT_iterator::virt_ptr_aritmetic::ptr_add</qualifiedname>
+        <reimplementedby refid="structquantit_1_1quantity__vector_1_1ptr__aritmetic__t_1ae30249fe8d73fbbb674d6f50d0f3b25e">ptr_add</reimplementedby>
         <param>
           <type>const <ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref> *</type>
           <declname>ptr</declname>
@@ -69,7 +72,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" line="70" column="25"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector_impl.h" line="70" column="25"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
@@ -78,21 +81,21 @@
     <detaileddescription>
     </detaileddescription>
     <inheritancegraph>
-      <node id="1">
-        <label>quantit::vQuantiT_iterator::virt_ptr_aritmetic</label>
-        <link refid="structquantit_1_1vQuantiT__iterator_1_1virt__ptr__aritmetic"/>
-      </node>
       <node id="2">
         <label>quantit::quantity_vector&lt; S, Allocator, class &gt;::ptr_aritmetic_t</label>
         <link refid="structquantit_1_1quantity__vector_1_1ptr__aritmetic__t"/>
         <childnode refid="1" relation="public-inheritance">
         </childnode>
       </node>
+      <node id="1">
+        <label>quantit::vQuantiT_iterator::virt_ptr_aritmetic</label>
+        <link refid="structquantit_1_1vQuantiT__iterator_1_1virt__ptr__aritmetic"/>
+      </node>
     </inheritancegraph>
-    <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" line="66" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" bodystart="67" bodyend="78"/>
+    <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector_impl.h" line="66" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector_impl.h" bodystart="67" bodyend="78"/>
     <listofallmembers>
-      <member refid="structquantit_1_1vQuantiT__iterator_1_1virt__ptr__aritmetic_1a9e2af66a1f424445f94ec444aee33a3f" prot="public" virt="pure-virtual"><scope>quantit::vQuantiT_iterator::virt_ptr_aritmetic</scope><name>ptr_add</name></member>
-      <member refid="structquantit_1_1vQuantiT__iterator_1_1virt__ptr__aritmetic_1a124f96b073fab6a5dd232216952a4503" prot="public" virt="pure-virtual"><scope>quantit::vQuantiT_iterator::virt_ptr_aritmetic</scope><name>ptr_add</name></member>
+      <member refid="structquantit_1_1vQuantiT__iterator_1_1virt__ptr__aritmetic_1ab52e0af431fd79c6fe899ac2917a1704" prot="public" virt="pure-virtual"><scope>quantit::vQuantiT_iterator::virt_ptr_aritmetic</scope><name>ptr_add</name></member>
+      <member refid="structquantit_1_1vQuantiT__iterator_1_1virt__ptr__aritmetic_1aabb4790de35d5f113cb5ca62a899206c" prot="public" virt="pure-virtual"><scope>quantit::vQuantiT_iterator::virt_ptr_aritmetic</scope><name>ptr_add</name></member>
       <member refid="structquantit_1_1vQuantiT__iterator_1_1virt__ptr__aritmetic_1a447a36741c01c4b3628ae100a7a78f0b" prot="public" virt="pure-virtual"><scope>quantit::vQuantiT_iterator::virt_ptr_aritmetic</scope><name>ptr_diff</name></member>
     </listofallmembers>
   </compounddef>

@@ -1,0 +1,173 @@
+\hypertarget{quantity__utils_8h_source}{}\doxysection{quantity\+\_\+utils.\+h}
+\label{quantity__utils_8h_source}\index{/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity\_utils.h@{/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity\_utils.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * File:quantity\_utils.h}}
+\DoxyCodeLine{3 \textcolor{comment}{ * Project: QuantiT}}
+\DoxyCodeLine{4 \textcolor{comment}{ * File Created: Tuesday, 15th September 2020 1:16:37 pm}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)}}
+\DoxyCodeLine{6 \textcolor{comment}{ * -\/-\/-\/-\/-\/}}
+\DoxyCodeLine{7 \textcolor{comment}{ * Last Modified: Tuesday, 15th September 2020 1:16:37 pm}}
+\DoxyCodeLine{8 \textcolor{comment}{ * Modified By: Alexandre Foley (Alexandre.foley@usherbrooke.ca>)}}
+\DoxyCodeLine{9 \textcolor{comment}{ * -\/-\/-\/-\/-\/}}
+\DoxyCodeLine{10 \textcolor{comment}{ * Copyright (c) 2020 Alexandre Foley}}
+\DoxyCodeLine{11 \textcolor{comment}{ * Licensed under GPL v3}}
+\DoxyCodeLine{12 \textcolor{comment}{ */}}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#ifndef D241DFD2\_9200\_4C66\_8225\_2C3BBD27EDE4}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#define D241DFD2\_9200\_4C66\_8225\_2C3BBD27EDE4}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include "{}blockTensor/flat\_map.h"{}}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}templateMeta.h"{}}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include <type\_traits>}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include <utility>}}
+\DoxyCodeLine{20 \textcolor{keyword}{namespace }quantit}
+\DoxyCodeLine{21 \{}
+\DoxyCodeLine{22     \textcolor{keyword}{class }vquantity;}
+\DoxyCodeLine{23 \textcolor{keyword}{namespace }conserved}
+\DoxyCodeLine{24 \{}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26 \textcolor{comment}{// this template must work with your implemented group.}}
+\DoxyCodeLine{27 \textcolor{comment}{// try to implement Grp\& op(Grp\&\& other) in such a way that this template}}
+\DoxyCodeLine{28 \textcolor{comment}{// is efficient.}}
+\DoxyCodeLine{29 \textcolor{keyword}{template} <\textcolor{keyword}{class} T>}
+\DoxyCodeLine{30 \textcolor{keyword}{constexpr} T op(T lhs, \textcolor{keyword}{const} T\& rhs) \{ \textcolor{keywordflow}{return} lhs.op(rhs); \}}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32 \textcolor{comment}{// custom simple greoup must satisfy the following type traits to work with the}}
+\DoxyCodeLine{33 \textcolor{comment}{// composite group type cgoups.}}
+\DoxyCodeLine{34 \textcolor{keyword}{template} <\textcolor{keyword}{class} T>}
+\DoxyCodeLine{35 \textcolor{keyword}{using} op2\_sig = \textcolor{keyword}{decltype}(}
+\DoxyCodeLine{36     conserved::op(std::declval<const T\&>(),}
+\DoxyCodeLine{37                   std::declval<const T\&>())); \textcolor{comment}{// this template must work with your}}
+\DoxyCodeLine{38                                               \textcolor{comment}{// implemented group.}}
+\DoxyCodeLine{39 \textcolor{keyword}{template} <\textcolor{keyword}{class} T>}
+\DoxyCodeLine{40 \textcolor{keyword}{using} op\_sig = \textcolor{keyword}{decltype}(std::declval<T\&>().op(std::declval<T\&>()));}
+\DoxyCodeLine{41 \textcolor{keyword}{template} <\textcolor{keyword}{class} T>}
+\DoxyCodeLine{42 \textcolor{keyword}{using} has\_op =}
+\DoxyCodeLine{43     and\_<is\_detected\_exact<T\&, op\_sig, T>, is\_detected\_exact<T, op2\_sig, T>>;}
+\DoxyCodeLine{44 \textcolor{keyword}{template} <\textcolor{keyword}{class} T>}
+\DoxyCodeLine{45 \textcolor{keyword}{using} inverse\_\_sig = \textcolor{keyword}{decltype}(std::declval<T\&>().inverse\_());}
+\DoxyCodeLine{46 \textcolor{keyword}{template} <\textcolor{keyword}{class} T>}
+\DoxyCodeLine{47 \textcolor{keyword}{using} has\_inverse\_ = is\_detected\_exact<T\&, inverse\_\_sig, T>;}
+\DoxyCodeLine{48 \textcolor{keyword}{template} <\textcolor{keyword}{class} T>}
+\DoxyCodeLine{49 \textcolor{keyword}{using} commute\_\_sig = \textcolor{keyword}{decltype}(std::declval<T\&>().commute\_(std::declval<T\&>()));}
+\DoxyCodeLine{50 \textcolor{keyword}{template} <\textcolor{keyword}{class} T>}
+\DoxyCodeLine{51 \textcolor{keyword}{using} has\_commute\_ = is\_detected\_exact<void, commute\_\_sig, T>;}
+\DoxyCodeLine{52 \textcolor{keyword}{template} <\textcolor{keyword}{class} T>}
+\DoxyCodeLine{53 \textcolor{keyword}{using} commute\_sig =}
+\DoxyCodeLine{54     \textcolor{keyword}{decltype}(std::declval<const T\&>().commute(std::declval<T\&>()));}
+\DoxyCodeLine{55 }
+\DoxyCodeLine{56 \textcolor{keyword}{template} <\textcolor{keyword}{class} T>}
+\DoxyCodeLine{57 \textcolor{keyword}{using} comparatorequal\_sig =}
+\DoxyCodeLine{58     \textcolor{keyword}{decltype}(operator==(std::declval<const T\&>(), std::declval<const T\&>()));}
+\DoxyCodeLine{59 \textcolor{keyword}{template} <\textcolor{keyword}{class} T>}
+\DoxyCodeLine{60 \textcolor{keyword}{using} comparatorequal\_member\_sig =}
+\DoxyCodeLine{61     \textcolor{keyword}{decltype}(std::declval<const T\&>().operator==(std::declval<const T\&>()));}
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63 \textcolor{keyword}{template} <\textcolor{keyword}{class} subject, \textcolor{keyword}{class} E = \textcolor{keywordtype}{void}>}
+\DoxyCodeLine{64 \textcolor{keyword}{struct }\mbox{\hyperlink{structquantit_1_1conserved_1_1constexprequal__membertest}{constexprequal\_membertest}}}
+\DoxyCodeLine{65 \{}
+\DoxyCodeLine{66     \textcolor{keyword}{constexpr} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} call() \{ \textcolor{keywordflow}{return} \textcolor{keyword}{false}; \}}
+\DoxyCodeLine{67 \};}
+\DoxyCodeLine{68 \textcolor{keyword}{template} <\textcolor{keyword}{class} subject>}
+\DoxyCodeLine{69 \textcolor{keyword}{struct }\mbox{\hyperlink{structquantit_1_1conserved_1_1constexprequal__membertest}{constexprequal\_membertest}}<subject, std::enable\_if\_t<is\_detected\_v<comparatorequal\_member\_sig, subject>>>}
+\DoxyCodeLine{70 \{}
+\DoxyCodeLine{71     \textcolor{keyword}{template} <\textcolor{keywordtype}{int} Value = subject().operator==(subject())>}
+\DoxyCodeLine{72     \textcolor{keyword}{constexpr} \textcolor{keyword}{static} std::true\_type do\_call(\textcolor{keywordtype}{int}) \{ \textcolor{keywordflow}{return} std::true\_type(); \}}
+\DoxyCodeLine{73 }
+\DoxyCodeLine{74     \textcolor{keyword}{constexpr} \textcolor{keyword}{static} std::false\_type do\_call(...) \{ \textcolor{keywordflow}{return} std::false\_type(); \}}
+\DoxyCodeLine{75 }
+\DoxyCodeLine{76     \textcolor{keyword}{constexpr} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} call() \{ \textcolor{keywordflow}{return} do\_call(0); \}}
+\DoxyCodeLine{77 \};}
+\DoxyCodeLine{78 \textcolor{keyword}{template} <\textcolor{keyword}{class} T>}
+\DoxyCodeLine{79 \textcolor{keyword}{using} has\_constexpr\_equal\_member = std::bool\_constant<constexprequal\_membertest<T>::call()>;}
+\DoxyCodeLine{80 \textcolor{keyword}{template} <\textcolor{keyword}{class} subject, \textcolor{keyword}{class} E = \textcolor{keywordtype}{void}>}
+\DoxyCodeLine{81 \textcolor{keyword}{struct }\mbox{\hyperlink{structquantit_1_1conserved_1_1constexprequal__test}{constexprequal\_test}}}
+\DoxyCodeLine{82 \{}
+\DoxyCodeLine{83     \textcolor{keyword}{constexpr} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} call() \{ \textcolor{keywordflow}{return} \textcolor{keyword}{false}; \}}
+\DoxyCodeLine{84 \};}
+\DoxyCodeLine{85 \textcolor{keyword}{template} <\textcolor{keyword}{class} subject>}
+\DoxyCodeLine{86 \textcolor{keyword}{struct }\mbox{\hyperlink{structquantit_1_1conserved_1_1constexprequal__test}{constexprequal\_test}}<subject, std::enable\_if\_t<is\_detected\_v<comparatorequal\_sig, subject>>>}
+\DoxyCodeLine{87 \{}
+\DoxyCodeLine{88     \textcolor{keyword}{template} <\textcolor{keywordtype}{int} Value = operator==(subject(), subject())>}
+\DoxyCodeLine{89     \textcolor{keyword}{constexpr} \textcolor{keyword}{static} std::true\_type do\_call(\textcolor{keywordtype}{int}) \{ \textcolor{keywordflow}{return} std::true\_type(); \}}
+\DoxyCodeLine{90 }
+\DoxyCodeLine{91     \textcolor{keyword}{constexpr} \textcolor{keyword}{static} std::false\_type do\_call(...) \{ \textcolor{keywordflow}{return} std::false\_type(); \}}
+\DoxyCodeLine{92 }
+\DoxyCodeLine{93     \textcolor{keyword}{constexpr} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} call() \{ \textcolor{keywordflow}{return} do\_call(0); \}}
+\DoxyCodeLine{94 \};}
+\DoxyCodeLine{95 \textcolor{keyword}{template}<>}
+\DoxyCodeLine{96 \textcolor{keyword}{struct }\mbox{\hyperlink{structquantit_1_1conserved_1_1constexprequal__test}{constexprequal\_test}}<quantit::\mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}}>}
+\DoxyCodeLine{97 \{}
+\DoxyCodeLine{98 }
+\DoxyCodeLine{99     \textcolor{keyword}{constexpr} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} call() \{ \textcolor{keywordflow}{return} std::false\_type(); \}}
+\DoxyCodeLine{100 \};}
+\DoxyCodeLine{101 \textcolor{keyword}{template} <\textcolor{keyword}{class} T>}
+\DoxyCodeLine{102 \textcolor{keyword}{using} has\_constexpr\_equal\_outclass = std::bool\_constant<constexprequal\_test<T>::call()>;}
+\DoxyCodeLine{103 \textcolor{keyword}{template} <\textcolor{keyword}{class} T>}
+\DoxyCodeLine{104 \textcolor{keyword}{using} \mbox{\hyperlink{structquantit_1_1or__}{has\_constexpr\_equal}} = \mbox{\hyperlink{structquantit_1_1or__}{or\_<has\_constexpr\_equal\_member<T>}}, has\_constexpr\_equal\_outclass<T>>;}
+\DoxyCodeLine{105 }
+\DoxyCodeLine{106 \textcolor{keyword}{template} <\textcolor{keyword}{class} T>}
+\DoxyCodeLine{107 \textcolor{keyword}{using} \mbox{\hyperlink{structquantit_1_1or__}{has\_comparatorequal}} = \mbox{\hyperlink{structquantit_1_1or__}{or\_<is\_detected\_exact<bool, comparatorequal\_member\_sig, T>}}, is\_detected\_exact<bool, comparatorequal\_sig, T>>;}
+\DoxyCodeLine{108 \textcolor{keyword}{template} <\textcolor{keyword}{class} T>}
+\DoxyCodeLine{109 \textcolor{keyword}{using} comparatornotequal\_member\_sig =}
+\DoxyCodeLine{110     \textcolor{keyword}{decltype}(std::declval<const T\&>().operator!=(std::declval<const T\&>()));}
+\DoxyCodeLine{111 \textcolor{keyword}{template} <\textcolor{keyword}{class} T>}
+\DoxyCodeLine{112 \textcolor{keyword}{using} comparatornotequal\_sig =}
+\DoxyCodeLine{113     \textcolor{keyword}{decltype}(operator!=(std::declval<const T\&>(), std::declval<const T\&>()));}
+\DoxyCodeLine{114 \textcolor{keyword}{template} <\textcolor{keyword}{class} T>}
+\DoxyCodeLine{115 \textcolor{keyword}{using} \mbox{\hyperlink{structquantit_1_1or__}{has\_comparatornotequal}} =}
+\DoxyCodeLine{116     \mbox{\hyperlink{structquantit_1_1or__}{or\_<is\_detected\_exact<bool, comparatornotequal\_member\_sig, T>}},}
+\DoxyCodeLine{117         is\_detected\_exact<bool, comparatornotequal\_sig, T>>;}
+\DoxyCodeLine{118 }
+\DoxyCodeLine{119 \textcolor{keyword}{template} <\textcolor{keyword}{class} T, \textcolor{keyword}{class} = \textcolor{keywordtype}{void}>}
+\DoxyCodeLine{120 \textcolor{keyword}{struct }\mbox{\hyperlink{structquantit_1_1conserved_1_1default__to__neutral}{default\_to\_neutral}} : std::false\_type}
+\DoxyCodeLine{121 \{}
+\DoxyCodeLine{122 \};}
+\DoxyCodeLine{123 }
+\DoxyCodeLine{124 \textcolor{keyword}{template} <\textcolor{keyword}{class} T>}
+\DoxyCodeLine{125 \textcolor{keyword}{struct }\mbox{\hyperlink{structquantit_1_1conserved_1_1default__to__neutral}{default\_to\_neutral}}<T, std::enable\_if\_t<has\_op<T>::value \&\& std::is\_default\_constructible\_v<T> \&\& has\_inverse\_<T>::value \&\& has\_constexpr\_equal<T>::value>>}
+\DoxyCodeLine{126     : std::integral\_constant<bool, T() == conserved::op(T(), T().inverse\_())>}
+\DoxyCodeLine{127 \{}
+\DoxyCodeLine{128 \};}
+\DoxyCodeLine{129 \textcolor{keyword}{template} <\textcolor{keyword}{class} T, \textcolor{keyword}{class} = \textcolor{keywordtype}{void}>}
+\DoxyCodeLine{130 \textcolor{keyword}{struct }\mbox{\hyperlink{structquantit_1_1conserved_1_1is__Abelian}{is\_Abelian}} : std::false\_type}
+\DoxyCodeLine{131 \{}
+\DoxyCodeLine{132 \};}
+\DoxyCodeLine{133 \textcolor{keyword}{template} <\textcolor{keyword}{class} T>}
+\DoxyCodeLine{134 \textcolor{keyword}{using} abelian\_present = \textcolor{keyword}{decltype}(T::is\_Abelian);}
+\DoxyCodeLine{135 \textcolor{keyword}{template} <\textcolor{keyword}{class} T>}
+\DoxyCodeLine{136 \textcolor{keyword}{struct }\mbox{\hyperlink{structquantit_1_1conserved_1_1is__Abelian}{is\_Abelian}}<T, std::enable\_if\_t<is\_detected\_v<abelian\_present, T>>> : std::integral\_constant<bool, T::is\_Abelian>}
+\DoxyCodeLine{137 \{}
+\DoxyCodeLine{138 \};}
+\DoxyCodeLine{139 \textcolor{comment}{// the following compile time template constant is true iff the template}}
+\DoxyCodeLine{140 \textcolor{comment}{// parameter satisfy the constraint for a group that will work with any\_quantity}}
+\DoxyCodeLine{141 }
+\DoxyCodeLine{142 \textcolor{keyword}{template}<\textcolor{keyword}{class} T>}
+\DoxyCodeLine{143 \textcolor{keyword}{struct }\mbox{\hyperlink{structquantit_1_1conserved_1_1is__conserved__QuantiT}{is\_conserved\_QuantiT}} : \mbox{\hyperlink{structquantit_1_1and__}{and\_}}<is\_Abelian<T>, default\_to\_neutral<T>, has\_op<T>, has\_inverse\_<T>,}
+\DoxyCodeLine{144          has\_comparatorequal<T>, has\_comparatornotequal<T>>}
+\DoxyCodeLine{145 \{\};}
+\DoxyCodeLine{146 }
+\DoxyCodeLine{147 \textcolor{keyword}{template}<\textcolor{keyword}{class}... Args>}
+\DoxyCodeLine{148 \textcolor{keyword}{struct }\mbox{\hyperlink{structquantit_1_1conserved_1_1is__conserved__QuantiT}{is\_conserved\_QuantiT}}<quantit::\mbox{\hyperlink{classquantit_1_1flat__map}{flat\_map}}<Args...> >: std::false\_type \{\};}
+\DoxyCodeLine{149 }
+\DoxyCodeLine{150 \textcolor{keyword}{template} <\textcolor{keyword}{class} T>}
+\DoxyCodeLine{151 \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} is\_conserved\_QuantiT\_v = \mbox{\hyperlink{structquantit_1_1conserved_1_1is__conserved__QuantiT}{is\_conserved\_QuantiT<T>::value}};}
+\DoxyCodeLine{152 }
+\DoxyCodeLine{153 \textcolor{keyword}{template} <\textcolor{keyword}{class}... T>}
+\DoxyCodeLine{154 \textcolor{keyword}{using} \mbox{\hyperlink{structquantit_1_1and__}{all\_conserved\_QuantiT}} = \mbox{\hyperlink{structquantit_1_1and__}{and\_<is\_conserved\_QuantiT<T>}}...>;}
+\DoxyCodeLine{155 \textcolor{keyword}{template} <\textcolor{keyword}{class}... T>}
+\DoxyCodeLine{156 \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} all\_group\_v = \mbox{\hyperlink{structquantit_1_1and__}{all\_conserved\_QuantiT}}<T...>::value;}
+\DoxyCodeLine{157 }
+\DoxyCodeLine{158 \textcolor{preprocessor}{\#if \_\_cplusplus == 202002L}}
+\DoxyCodeLine{159 \textcolor{keyword}{template} <\textcolor{keyword}{class} T>}
+\DoxyCodeLine{160 \textcolor{keyword}{concept }a\_group = is\_conserved\_QuantiT\_v<T>;}
+\DoxyCodeLine{161 }
+\DoxyCodeLine{162 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{163 }
+\DoxyCodeLine{164 \} \textcolor{comment}{// namespace conserved}}
+\DoxyCodeLine{165 \} \textcolor{comment}{// namespace quantit}}
+\DoxyCodeLine{166 }
+\DoxyCodeLine{167 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* D241DFD2\_9200\_4C66\_8225\_2C3BBD27EDE4 */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

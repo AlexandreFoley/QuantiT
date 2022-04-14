@@ -1,0 +1,352 @@
+\hypertarget{quantity_8h_source}{}\doxysection{quantity.\+h}
+\label{quantity_8h_source}\index{/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h@{/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * File:quantity.h}}
+\DoxyCodeLine{3 \textcolor{comment}{ * Project: QuantiT}}
+\DoxyCodeLine{4 \textcolor{comment}{ * File Created: Tuesday, 15th September 2020 12:19:54 pm}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)}}
+\DoxyCodeLine{6 \textcolor{comment}{ * -\/-\/-\/-\/-\/}}
+\DoxyCodeLine{7 \textcolor{comment}{ * Last Modified: Tuesday, 15th September 2020 12:19:54 pm}}
+\DoxyCodeLine{8 \textcolor{comment}{ * Modified By: Alexandre Foley (Alexandre.foley@usherbrooke.ca>)}}
+\DoxyCodeLine{9 \textcolor{comment}{ * -\/-\/-\/-\/-\/}}
+\DoxyCodeLine{10 \textcolor{comment}{ * Copyright (c) 2020 Alexandre Foley}}
+\DoxyCodeLine{11 \textcolor{comment}{ * Licensed under GPL v3}}
+\DoxyCodeLine{12 \textcolor{comment}{ */}}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#ifndef EF30AFAC\_8403\_46CD\_A139\_264F626DA567}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#define EF30AFAC\_8403\_46CD\_A139\_264F626DA567}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include "{}Conserved/quantity\_utils.h"{}}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}templateMeta.h"{}}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include <cstdint>}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include <fmt/core.h>}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include <fmt/format.h>}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include <ostream>}}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#include "{}doctest/doctest\_proxy.h"{}}}
+\DoxyCodeLine{24 \textcolor{keyword}{namespace }quantit}
+\DoxyCodeLine{25 \{}
+\DoxyCodeLine{31 \textcolor{keyword}{namespace }conserved}
+\DoxyCodeLine{32 \{}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34 \textcolor{keyword}{namespace}}
+\DoxyCodeLine{35 \{}
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37 \textcolor{keyword}{template} <\textcolor{keyword}{class} T>}
+\DoxyCodeLine{38 \textcolor{keyword}{constexpr} int64\_t distance2\_impl(T a, T b)}
+\DoxyCodeLine{39 \{}
+\DoxyCodeLine{40     \textcolor{keyword}{auto} x = \textcolor{keyword}{static\_cast<}int64\_t\textcolor{keyword}{>}(a.get\_val()) -\/ b.get\_val();}
+\DoxyCodeLine{41     \textcolor{keywordflow}{return} x * x;}
+\DoxyCodeLine{42 \}}
+\DoxyCodeLine{43 }
+\DoxyCodeLine{44 \textcolor{keyword}{template} <\textcolor{keyword}{class} T>}
+\DoxyCodeLine{45 \textcolor{keyword}{constexpr} \textcolor{keywordtype}{double} distance\_impl(T a, T b)}
+\DoxyCodeLine{46 \{}
+\DoxyCodeLine{47     \textcolor{keywordflow}{return} std::sqrt(distance2\_impl(a, b));}
+\DoxyCodeLine{48 \}}
+\DoxyCodeLine{49 }
+\DoxyCodeLine{50 \} \textcolor{comment}{// anonymous namespace}}
+\DoxyCodeLine{51 }
+\DoxyCodeLine{62 \textcolor{keyword}{template} <u\textcolor{keywordtype}{int}16\_t mod>}
+\DoxyCodeLine{63 \textcolor{keyword}{class }\mbox{\hyperlink{classquantit_1_1conserved_1_1C}{C}}}
+\DoxyCodeLine{64 \{}
+\DoxyCodeLine{65   \textcolor{keyword}{public}:}
+\DoxyCodeLine{66     \textcolor{keyword}{static} \textcolor{keyword}{constexpr} uint16\_t N = mod;}
+\DoxyCodeLine{67 }
+\DoxyCodeLine{68   \textcolor{keyword}{private}:}
+\DoxyCodeLine{69     \textcolor{keyword}{static\_assert}(N > 0, \textcolor{stringliteral}{"{}only value greater than zero make sense, only "{}}}
+\DoxyCodeLine{70                          \textcolor{stringliteral}{"{}greater than 1 are useful."{}});}
+\DoxyCodeLine{71     uint16\_t val;}
+\DoxyCodeLine{72 }
+\DoxyCodeLine{73   \textcolor{keyword}{public}:}
+\DoxyCodeLine{74     \textcolor{keyword}{constexpr} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{structquantit_1_1conserved_1_1is__Abelian}{is\_Abelian}} = \textcolor{keyword}{true}; \textcolor{comment}{// Make sure that your group is actually Abelian. I can't think of a way to}}
+\DoxyCodeLine{75                                              \textcolor{comment}{// check this property in finite time using the compiler.}}
+\DoxyCodeLine{76 }
+\DoxyCodeLine{77     \textcolor{comment}{// Can't have this one with the signed integer case because of interference from implicit conversions of fundamental}}
+\DoxyCodeLine{78     \textcolor{comment}{// types explicit constexpr C(uint16\_t \_val) // constexpr value contructor, necessary for one of the checks for}}
+\DoxyCodeLine{79     \textcolor{comment}{// any\_quantity}}
+\DoxyCodeLine{80     \textcolor{comment}{//     noexcept}}
+\DoxyCodeLine{81     \textcolor{comment}{//     : val(\_val)}}
+\DoxyCodeLine{82     \textcolor{comment}{// \{}}
+\DoxyCodeLine{83     \textcolor{comment}{//  val \%= N; // only usage of modulo. that thing is expensive.}}
+\DoxyCodeLine{84     \textcolor{comment}{//            // this can be bad, if the input is greater than N,}}
+\DoxyCodeLine{85     \textcolor{comment}{//            // it is unclear that the user realize what they're doing.}}
+\DoxyCodeLine{86     \textcolor{comment}{//            // Perhaps they made a mistake, but the code will happily keep}}
+\DoxyCodeLine{87     \textcolor{comment}{//            // going.}}
+\DoxyCodeLine{88     \textcolor{comment}{// \}}}
+\DoxyCodeLine{96 \textcolor{comment}{}    \textcolor{keyword}{constexpr} \mbox{\hyperlink{classquantit_1_1conserved_1_1C_afbdccb8d9b7932103fb1fab7e226a36a}{C}}(int16\_t \_val) noexcept : val(  (\_val != -\/N)*(\_val < 0) * N + (\_val \% N) )}
+\DoxyCodeLine{97     \{}
+\DoxyCodeLine{98         \textcolor{comment}{/*}}
+\DoxyCodeLine{99 \textcolor{comment}{         * A quick explanation of the init line for val:}}
+\DoxyCodeLine{100 \textcolor{comment}{         * The modulo operation on signed integers preserve the sign of the value, and give the same absolute value for}}
+\DoxyCodeLine{101 \textcolor{comment}{         * both possible input sign. To get the correct (positive) value, the inverse of the absolute of the input, we}}
+\DoxyCodeLine{102 \textcolor{comment}{         * must first take the modulo of the negative number to bring it in range ]-\/N,N[. Then if it is negative, we add}}
+\DoxyCodeLine{103 \textcolor{comment}{         * N to bring it in the range [0,N[, and assign to the unsigned storage of this type. After this initial}}
+\DoxyCodeLine{104 \textcolor{comment}{         * assigment business, no modulo operation are ever needed.}}
+\DoxyCodeLine{105 \textcolor{comment}{         */}}
+\DoxyCodeLine{106     \}}
+\DoxyCodeLine{107     \textcolor{keyword}{constexpr} \mbox{\hyperlink{classquantit_1_1conserved_1_1C}{C}}() : val(0) \{\} \textcolor{comment}{// default to the neutral element.}}
+\DoxyCodeLine{108 }
+\DoxyCodeLine{109     \textcolor{keywordtype}{void} swap(C \&other) \textcolor{keyword}{noexcept}}
+\DoxyCodeLine{110     \{}
+\DoxyCodeLine{111         \textcolor{keyword}{using} std::swap;}
+\DoxyCodeLine{112         swap(other.val, val);}
+\DoxyCodeLine{113     \}}
+\DoxyCodeLine{114     \textcolor{keyword}{constexpr} \textcolor{keyword}{operator} uint16\_t() const noexcept \{ \textcolor{keywordflow}{return} val; \}}
+\DoxyCodeLine{115     \textcolor{keyword}{constexpr} uint16\_t get\_val() const noexcept \{ \textcolor{keywordflow}{return} val; \}}
+\DoxyCodeLine{116     \textcolor{keyword}{constexpr} \mbox{\hyperlink{classquantit_1_1conserved_1_1C_afbdccb8d9b7932103fb1fab7e226a36a}{C}} \&operator+=(C other) \textcolor{keyword}{noexcept} \{ \textcolor{keywordflow}{return} op(other); \}}
+\DoxyCodeLine{117     \textcolor{comment}{// this function is what is actually used by the group compositor.}}
+\DoxyCodeLine{118     \textcolor{keyword}{constexpr} \mbox{\hyperlink{classquantit_1_1conserved_1_1C_afbdccb8d9b7932103fb1fab7e226a36a}{C}} \&op(C other) \textcolor{keyword}{noexcept} \{ \textcolor{keywordflow}{return} op(other, \textcolor{keyword}{true}); \}}
+\DoxyCodeLine{119 }
+\DoxyCodeLine{120     \textcolor{keyword}{constexpr} \mbox{\hyperlink{classquantit_1_1conserved_1_1C_afbdccb8d9b7932103fb1fab7e226a36a}{C}} \&op(C other, \textcolor{keywordtype}{bool} cond) \textcolor{keyword}{noexcept}}
+\DoxyCodeLine{121     \{}
+\DoxyCodeLine{122         val += cond * other.val;}
+\DoxyCodeLine{123         val -\/= (val >= N) * N;}
+\DoxyCodeLine{124         \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{125     \}}
+\DoxyCodeLine{126 }
+\DoxyCodeLine{127     \textcolor{keyword}{constexpr} \mbox{\hyperlink{classquantit_1_1conserved_1_1C_afbdccb8d9b7932103fb1fab7e226a36a}{C}} \&operator*=(C other) \textcolor{keyword}{noexcept} \textcolor{comment}{// in group theory we typically talk of a}}
+\DoxyCodeLine{128                                               \textcolor{comment}{// product operator.}}
+\DoxyCodeLine{129     \{}
+\DoxyCodeLine{130         \textcolor{keywordflow}{return} (*\textcolor{keyword}{this}) += other;}
+\DoxyCodeLine{131     \}}
+\DoxyCodeLine{132     \textcolor{keyword}{constexpr} \textcolor{keyword}{friend} \mbox{\hyperlink{classquantit_1_1conserved_1_1C_afbdccb8d9b7932103fb1fab7e226a36a}{C}} operator+(C lhs, C rhs) \textcolor{keyword}{noexcept} \{ \textcolor{keywordflow}{return} lhs += rhs; \}}
+\DoxyCodeLine{133     }
+\DoxyCodeLine{134     \textcolor{keyword}{friend} \textcolor{keyword}{constexpr} \mbox{\hyperlink{classquantit_1_1conserved_1_1C_afbdccb8d9b7932103fb1fab7e226a36a}{C}} operator*(C lhs, C rhs) \textcolor{keyword}{noexcept} \{ \textcolor{keywordflow}{return} lhs *= rhs; \}}
+\DoxyCodeLine{135     \textcolor{keyword}{constexpr} \mbox{\hyperlink{classquantit_1_1conserved_1_1C_afbdccb8d9b7932103fb1fab7e226a36a}{C}} \&inverse\_() noexcept}
+\DoxyCodeLine{136     \{}
+\DoxyCodeLine{137         val = bool(val) * (N -\/ val);}
+\DoxyCodeLine{138         \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{139     \}}
+\DoxyCodeLine{140     \textcolor{keyword}{constexpr} \mbox{\hyperlink{classquantit_1_1conserved_1_1C_afbdccb8d9b7932103fb1fab7e226a36a}{C}} inverse() const noexcept}
+\DoxyCodeLine{141     \{}
+\DoxyCodeLine{142         \mbox{\hyperlink{classquantit_1_1conserved_1_1C_afbdccb8d9b7932103fb1fab7e226a36a}{C}} out(*\textcolor{keyword}{this});}
+\DoxyCodeLine{143         \textcolor{keywordflow}{return} out.inverse\_();}
+\DoxyCodeLine{144     \}}
+\DoxyCodeLine{145     int64\_t distance2(C other)\textcolor{keyword}{ const }}
+\DoxyCodeLine{146 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{147         \textcolor{keywordflow}{return} distance2\_impl(*\textcolor{keyword}{this}, other);}
+\DoxyCodeLine{148     \}}
+\DoxyCodeLine{149     \textcolor{keywordtype}{double} distance( C other)\textcolor{keyword}{ const}}
+\DoxyCodeLine{150 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{151         \textcolor{keywordflow}{return} distance\_impl(*\textcolor{keyword}{this}, other);}
+\DoxyCodeLine{152     \}}
+\DoxyCodeLine{153 }
+\DoxyCodeLine{154     \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} operator==(C other) \textcolor{keyword}{const} \textcolor{keyword}{noexcept} \{ \textcolor{keywordflow}{return} val == other.val; \}}
+\DoxyCodeLine{155     \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} operator<(C other) \textcolor{keyword}{const} \textcolor{keyword}{noexcept} \{ \textcolor{keywordflow}{return} val < other.val; \}}
+\DoxyCodeLine{156     \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} operator>(C other) \textcolor{keyword}{const} \textcolor{keyword}{noexcept} \{ \textcolor{keywordflow}{return} val > other.val; \}}
+\DoxyCodeLine{157     \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} operator!=(C other) \textcolor{keyword}{const} \textcolor{keyword}{noexcept} \{ \textcolor{keywordflow}{return} val != other.val; \}}
+\DoxyCodeLine{158 }
+\DoxyCodeLine{159     \textcolor{keyword}{friend} std::ostream \&operator<<(std::ostream \&out, \textcolor{keyword}{const} C \&c)}
+\DoxyCodeLine{160     \{}
+\DoxyCodeLine{161         out << fmt::format(\textcolor{stringliteral}{"{}grp::C<\{\}>(\{\})"{}}, C::N, c.val);}
+\DoxyCodeLine{162         \textcolor{keywordflow}{return} out;}
+\DoxyCodeLine{163     \}}
+\DoxyCodeLine{164     \textcolor{keyword}{friend} \textcolor{keyword}{struct }fmt::formatter<quantit::conserved::C<N>>;}
+\DoxyCodeLine{165 \};}
+\DoxyCodeLine{166 }
+\DoxyCodeLine{175 class \mbox{\hyperlink{classquantit_1_1conserved_1_1Z}{Z}}}
+\DoxyCodeLine{176 \{}
+\DoxyCodeLine{177     int16\_t val;}
+\DoxyCodeLine{178 }
+\DoxyCodeLine{179   \textcolor{keyword}{public}:}
+\DoxyCodeLine{180     \textcolor{keyword}{constexpr} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{structquantit_1_1conserved_1_1is__Abelian}{is\_Abelian}} = \textcolor{keyword}{true}; \textcolor{comment}{// Tag that the conserved quantity emerge from an Abelian group.}}
+\DoxyCodeLine{181     \textcolor{comment}{// conserved quantities that emerge from non-\/abelian symmetries are currently not supported.}}
+\DoxyCodeLine{182     \textcolor{comment}{// This tag MUST be set to true for the conserved quantitie class to be accepted.}}
+\DoxyCodeLine{183     \textcolor{keyword}{constexpr} \mbox{\hyperlink{classquantit_1_1conserved_1_1Z}{Z}}(int16\_t \_val) \textcolor{comment}{// constexpr value contructor, necessary for one of the checks for any\_quantity}}
+\DoxyCodeLine{184         noexcept}
+\DoxyCodeLine{185         : val(\_val)}
+\DoxyCodeLine{186     \{}
+\DoxyCodeLine{187     \}}
+\DoxyCodeLine{188     \textcolor{keyword}{constexpr} \mbox{\hyperlink{classquantit_1_1conserved_1_1Z}{Z}}() : val(0) \{\} \textcolor{comment}{// constexpr value contructor, necessary for one of the checks for any\_quantity}}
+\DoxyCodeLine{189     \textcolor{keyword}{constexpr} \textcolor{keyword}{operator} int16\_t() \textcolor{keyword}{noexcept} \{ \textcolor{keywordflow}{return} val; \}}
+\DoxyCodeLine{190     \textcolor{keyword}{constexpr} int16\_t get\_val() \textcolor{keyword}{const} \textcolor{keyword}{noexcept} \{ \textcolor{keywordflow}{return} val; \}}
+\DoxyCodeLine{191     \textcolor{keywordtype}{void} swap(\mbox{\hyperlink{classquantit_1_1conserved_1_1Z}{Z}} \&other) \textcolor{keyword}{noexcept}}
+\DoxyCodeLine{192     \{}
+\DoxyCodeLine{193         \textcolor{keyword}{using} std::swap;}
+\DoxyCodeLine{194         swap(other.val, val);}
+\DoxyCodeLine{195     \}}
+\DoxyCodeLine{196     \textcolor{keyword}{constexpr} \mbox{\hyperlink{classquantit_1_1conserved_1_1Z}{Z}} \&operator+=(\mbox{\hyperlink{classquantit_1_1conserved_1_1Z}{Z}} other) \textcolor{keyword}{noexcept} \{ \textcolor{keywordflow}{return} op(other); \}}
+\DoxyCodeLine{197     \textcolor{keyword}{constexpr} \mbox{\hyperlink{classquantit_1_1conserved_1_1Z}{Z}} \&operator*=(\mbox{\hyperlink{classquantit_1_1conserved_1_1Z}{Z}} other) \textcolor{keyword}{noexcept} \textcolor{comment}{// in group theory we typically talk of a}}
+\DoxyCodeLine{198                                               \textcolor{comment}{// product operator.}}
+\DoxyCodeLine{199     \{}
+\DoxyCodeLine{200         \textcolor{keywordflow}{return} (*\textcolor{keyword}{this}) += other;}
+\DoxyCodeLine{201     \}}
+\DoxyCodeLine{202     \textcolor{keyword}{friend} \textcolor{keyword}{constexpr} \mbox{\hyperlink{classquantit_1_1conserved_1_1Z}{Z}} operator+(\mbox{\hyperlink{classquantit_1_1conserved_1_1Z}{Z}} lhs, \mbox{\hyperlink{classquantit_1_1conserved_1_1Z}{Z}} rhs) \textcolor{keyword}{noexcept} \{ \textcolor{keywordflow}{return} lhs += rhs; \}}
+\DoxyCodeLine{203     \textcolor{keyword}{friend} \textcolor{keyword}{constexpr} \mbox{\hyperlink{classquantit_1_1conserved_1_1Z}{Z}} operator*(\mbox{\hyperlink{classquantit_1_1conserved_1_1Z}{Z}} lhs, \mbox{\hyperlink{classquantit_1_1conserved_1_1Z}{Z}} rhs) \textcolor{keyword}{noexcept} \{ \textcolor{keywordflow}{return} lhs *= rhs; \}}
+\DoxyCodeLine{204     \textcolor{comment}{// Z\& op( other) is the function used by any\_quantity.}}
+\DoxyCodeLine{205     \textcolor{keyword}{constexpr} \mbox{\hyperlink{classquantit_1_1conserved_1_1Z}{Z}} \&op(\mbox{\hyperlink{classquantit_1_1conserved_1_1Z}{Z}} other) \textcolor{keyword}{noexcept} \{ \textcolor{keywordflow}{return} op(other, \textcolor{keyword}{true}); \}}
+\DoxyCodeLine{206     \textcolor{keyword}{constexpr} \mbox{\hyperlink{classquantit_1_1conserved_1_1Z}{Z}} \&op(\mbox{\hyperlink{classquantit_1_1conserved_1_1Z}{Z}} other, \textcolor{keywordtype}{bool} cond) \textcolor{keyword}{noexcept}}
+\DoxyCodeLine{207     \{}
+\DoxyCodeLine{208 }
+\DoxyCodeLine{209         val += cond * other.val;}
+\DoxyCodeLine{210         \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{211     \}}
+\DoxyCodeLine{212     \textcolor{keyword}{constexpr} \mbox{\hyperlink{classquantit_1_1conserved_1_1Z}{Z}} \&inverse\_() \textcolor{keyword}{noexcept}}
+\DoxyCodeLine{213     \{}
+\DoxyCodeLine{214         val = -\/val;}
+\DoxyCodeLine{215         \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{216     \}}
+\DoxyCodeLine{217     \textcolor{keyword}{constexpr} \mbox{\hyperlink{classquantit_1_1conserved_1_1Z}{Z}} inverse() \textcolor{keyword}{const} \textcolor{keyword}{noexcept} \textcolor{comment}{// must be constexpr, allow compiler to verify a necessary property}}
+\DoxyCodeLine{218     \{}
+\DoxyCodeLine{219         \mbox{\hyperlink{classquantit_1_1conserved_1_1Z}{Z}} out(*\textcolor{keyword}{this});}
+\DoxyCodeLine{220         \textcolor{keywordflow}{return} out.inverse\_();}
+\DoxyCodeLine{221     \}}
+\DoxyCodeLine{222     \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} operator==(\mbox{\hyperlink{classquantit_1_1conserved_1_1Z}{Z}} other) \textcolor{keyword}{const} \textcolor{comment}{// must be constexpr, allow compiler to verify a necessary property}}
+\DoxyCodeLine{223     \{}
+\DoxyCodeLine{224         \textcolor{keywordflow}{return} val == other.val;}
+\DoxyCodeLine{225     \}}
+\DoxyCodeLine{226     int64\_t distance2(\mbox{\hyperlink{classquantit_1_1conserved_1_1Z}{Z}} other)\textcolor{keyword}{ const}}
+\DoxyCodeLine{227 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{228         \textcolor{keywordflow}{return} distance2\_impl(*\textcolor{keyword}{this}, other);}
+\DoxyCodeLine{229     \}}
+\DoxyCodeLine{230     \textcolor{keywordtype}{double} distance( \mbox{\hyperlink{classquantit_1_1conserved_1_1Z}{Z}} other)\textcolor{keyword}{ const}}
+\DoxyCodeLine{231 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{232         \textcolor{keywordflow}{return} distance\_impl(*\textcolor{keyword}{this}, other);}
+\DoxyCodeLine{233     \}}
+\DoxyCodeLine{234     \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} operator!=(\mbox{\hyperlink{classquantit_1_1conserved_1_1Z}{Z}} other)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} val != other.val; \}}
+\DoxyCodeLine{235     \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} operator<(\mbox{\hyperlink{classquantit_1_1conserved_1_1Z}{Z}} other)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} val < other.val; \}}
+\DoxyCodeLine{236     \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} operator>(\mbox{\hyperlink{classquantit_1_1conserved_1_1Z}{Z}} other)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} val > other.val; \}}
+\DoxyCodeLine{237     \textcolor{keyword}{friend} std::ostream \&operator<<(std::ostream \&out, \textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1conserved_1_1Z}{Z}} \&c);}
+\DoxyCodeLine{238     \textcolor{keyword}{friend} \textcolor{keyword}{struct }fmt::formatter<quantit::\mbox{\hyperlink{classquantit_1_1conserved_1_1Z}{conserved::Z}}>;}
+\DoxyCodeLine{239 \};}
+\DoxyCodeLine{240 }
+\DoxyCodeLine{241 }
+\DoxyCodeLine{242 template <uint16\_t N>}
+\DoxyCodeLine{243 int64\_t distance2(C<N> a, C<N> b)}
+\DoxyCodeLine{244 \{}
+\DoxyCodeLine{245     \textcolor{keywordflow}{return} distance2\_impl(a, b);}
+\DoxyCodeLine{246 \}}
+\DoxyCodeLine{247 \textcolor{keyword}{template} <u\textcolor{keywordtype}{int}16\_t N>}
+\DoxyCodeLine{248 \textcolor{keywordtype}{double} distance(\mbox{\hyperlink{classquantit_1_1conserved_1_1C}{C<N>}} a, \mbox{\hyperlink{classquantit_1_1conserved_1_1C}{C<N>}} b)}
+\DoxyCodeLine{249 \{}
+\DoxyCodeLine{250     \textcolor{keywordflow}{return} distance\_impl(a, b);}
+\DoxyCodeLine{251 \}}
+\DoxyCodeLine{252 \textcolor{keyword}{inline} int64\_t distance2(\mbox{\hyperlink{classquantit_1_1conserved_1_1Z}{Z}} a, \mbox{\hyperlink{classquantit_1_1conserved_1_1Z}{Z}} b) \{ \textcolor{keywordflow}{return} distance2\_impl(a, b); \}}
+\DoxyCodeLine{253 \textcolor{keyword}{inline} \textcolor{keywordtype}{double} distance(\mbox{\hyperlink{classquantit_1_1conserved_1_1Z}{Z}} a, \mbox{\hyperlink{classquantit_1_1conserved_1_1Z}{Z}} b) \{ \textcolor{keywordflow}{return} distance\_impl(a, b); \}}
+\DoxyCodeLine{254 }
+\DoxyCodeLine{255 \textcolor{keyword}{inline} \textcolor{keywordtype}{void} swap(\mbox{\hyperlink{classquantit_1_1conserved_1_1Z}{Z}} \&lhs, \mbox{\hyperlink{classquantit_1_1conserved_1_1Z}{Z}} \&rhs) \textcolor{keyword}{noexcept} \{ lhs.swap(rhs); \}}
+\DoxyCodeLine{256 \textcolor{keyword}{template} <u\textcolor{keywordtype}{int}16\_t N>}
+\DoxyCodeLine{257 \textcolor{keywordtype}{void} swap(\mbox{\hyperlink{classquantit_1_1conserved_1_1C}{C<N>}} \&lhs, \mbox{\hyperlink{classquantit_1_1conserved_1_1C}{C<N>}} \&rhs) \textcolor{keyword}{noexcept}}
+\DoxyCodeLine{258 \{}
+\DoxyCodeLine{259     lhs.swap(rhs);}
+\DoxyCodeLine{260 \}}
+\DoxyCodeLine{261 }
+\DoxyCodeLine{262 \textcolor{comment}{// using is\_conversed\_QuantiT =     and\_<default\_to\_neutral<T>, has\_op<T>, has\_inverse\_<T>,}}
+\DoxyCodeLine{263 \textcolor{comment}{//         has\_comparatorequal<T>, has\_comparatornotequal<T>, is\_Abelian<T>>;}}
+\DoxyCodeLine{264 \textcolor{keyword}{static\_assert}(\mbox{\hyperlink{structquantit_1_1or__}{has\_constexpr\_equal<Z>::value}}, \textcolor{stringliteral}{"{}debug"{}});}
+\DoxyCodeLine{265 }
+\DoxyCodeLine{266 \textcolor{keyword}{static\_assert}(is\_conserved\_QuantiT\_v<Z>, \textcolor{stringliteral}{"{}Z isn't a group?! something is very wrong"{}});}
+\DoxyCodeLine{267 \textcolor{keyword}{static\_assert}(is\_conserved\_QuantiT\_v<C<5>>, \textcolor{stringliteral}{"{}C<5> isn't a group?! something is very wrong"{}});}
+\DoxyCodeLine{268 }
+\DoxyCodeLine{269 \} \textcolor{comment}{// namespace conserved}}
+\DoxyCodeLine{270 }
+\DoxyCodeLine{271 qtt\_TEST\_CASE(\textcolor{stringliteral}{"{}simple conserved"{}})}
+\DoxyCodeLine{272 \{}
+\DoxyCodeLine{273     \textcolor{keyword}{using namespace }conserved;}
+\DoxyCodeLine{274     qtt\_SUBCASE(\textcolor{stringliteral}{"{}Cyclical conserved values"{}})}
+\DoxyCodeLine{275     \{}
+\DoxyCodeLine{276         \mbox{\hyperlink{classquantit_1_1conserved_1_1C}{C<2>}} c2\_1(1);}
+\DoxyCodeLine{277         \mbox{\hyperlink{classquantit_1_1conserved_1_1C}{C<2>}} c2\_0(0);}
+\DoxyCodeLine{278         \mbox{\hyperlink{classquantit_1_1conserved_1_1C}{C<2>}} c2\_11 = c2\_1 * c2\_1;}
+\DoxyCodeLine{279         qtt\_CHECK(c2\_0 == c2\_11);}
+\DoxyCodeLine{280 }
+\DoxyCodeLine{281         \mbox{\hyperlink{classquantit_1_1conserved_1_1C}{C<5>}} c5\_3(3);}
+\DoxyCodeLine{282         \mbox{\hyperlink{classquantit_1_1conserved_1_1C}{C<5>}} c5\_2(2);}
+\DoxyCodeLine{283         qtt\_CHECK(c5\_3 != c5\_2);}
+\DoxyCodeLine{284         qtt\_CHECK(c5\_3.inverse() * c5\_3 == \mbox{\hyperlink{classquantit_1_1conserved_1_1C}{C<5>}}(0)); \textcolor{comment}{// the product with one's own inverse give the trivial element.}}
+\DoxyCodeLine{285         qtt\_CHECK(c5\_3.inverse() == c5\_2);}
+\DoxyCodeLine{286         qtt\_CHECK(c5\_2.inverse() == c5\_3);}
+\DoxyCodeLine{287         qtt\_CHECK(c5\_2.inverse().inverse() == c5\_2);         \textcolor{comment}{// inverse twice gives back the original value}}
+\DoxyCodeLine{288         qtt\_CHECK(\mbox{\hyperlink{classquantit_1_1conserved_1_1C}{C<5>}}(c5\_2).inverse\_().inverse\_() == c5\_2); \textcolor{comment}{// inverse in place twice gives back the original value}}
+\DoxyCodeLine{289         qtt\_CHECK(c5\_2.op(c5\_2) == \mbox{\hyperlink{classquantit_1_1conserved_1_1C}{C<5>}}(4));}
+\DoxyCodeLine{290         qtt\_CHECK(c5\_2.op(c5\_2, \textcolor{keyword}{false}) == \mbox{\hyperlink{classquantit_1_1conserved_1_1C}{C<5>}}(4));}
+\DoxyCodeLine{291     \}}
+\DoxyCodeLine{292     qtt\_SUBCASE(\textcolor{stringliteral}{"{}signed integer conserved values"{}})}
+\DoxyCodeLine{293     \{}
+\DoxyCodeLine{294         Z Z\_1(1);}
+\DoxyCodeLine{295         Z Z\_2(2);}
+\DoxyCodeLine{296         Z Z\_11 = Z\_1 * Z\_1;}
+\DoxyCodeLine{297         qtt\_CHECK(Z\_2 == Z\_11);}
+\DoxyCodeLine{298 }
+\DoxyCodeLine{299         Z Z\_3(3);}
+\DoxyCodeLine{300         Z Z\_m3(-\/3);}
+\DoxyCodeLine{301         \textcolor{keyword}{auto} x = distance2\_impl(Z\_3,Z\_m3);}
+\DoxyCodeLine{302         qtt\_CHECK(x == 36);}
+\DoxyCodeLine{303         qtt\_CHECK(Z\_3 != Z\_m3);}
+\DoxyCodeLine{304         qtt\_CHECK(Z\_3.inverse() * Z\_3 == Z(0)); \textcolor{comment}{// the product with one's own inverse give the trivial element.}}
+\DoxyCodeLine{305         qtt\_CHECK(Z\_3.inverse() == Z\_m3);}
+\DoxyCodeLine{306         qtt\_CHECK(Z\_m3.inverse() == Z\_3);}
+\DoxyCodeLine{307         qtt\_CHECK(Z\_m3.inverse().inverse() == Z\_m3);      \textcolor{comment}{// inverse twice gives back the original value}}
+\DoxyCodeLine{308         qtt\_CHECK(Z(Z\_m3).inverse\_().inverse\_() == Z\_m3); \textcolor{comment}{// inverse in place twice gives back the original value}}
+\DoxyCodeLine{309         qtt\_CHECK(Z\_3.op(Z\_3) == Z(6));}
+\DoxyCodeLine{310         qtt\_CHECK(Z\_3.op(Z\_3, \textcolor{keyword}{false}) == Z(6));}
+\DoxyCodeLine{311     \}}
+\DoxyCodeLine{312     qtt\_SUBCASE(\textcolor{stringliteral}{"{}distance"{}})}
+\DoxyCodeLine{313     \{}
+\DoxyCodeLine{314         Z Z\_1(1);}
+\DoxyCodeLine{315         Z Z\_2(2);}
+\DoxyCodeLine{316         qtt\_CHECK(distance2(Z\_1,Z\_2) == 1); }
+\DoxyCodeLine{317         C<2> C2\_1(1);}
+\DoxyCodeLine{318         C<2> C2\_0(0);}
+\DoxyCodeLine{319         qtt\_CHECK(distance2(C2\_1,C2\_0) == 1);}
+\DoxyCodeLine{320     \}}
+\DoxyCodeLine{321 \}}
+\DoxyCodeLine{322 }
+\DoxyCodeLine{323 \} \textcolor{comment}{// namespace quantit}}
+\DoxyCodeLine{324 }
+\DoxyCodeLine{325 \textcolor{keyword}{template} <u\textcolor{keywordtype}{int}16\_t N>}
+\DoxyCodeLine{326 \textcolor{keyword}{struct }fmt::formatter<quantit::conserved::C<N>>}
+\DoxyCodeLine{327 \{}
+\DoxyCodeLine{328     \textcolor{keyword}{constexpr} \textcolor{keyword}{auto} parse(format\_parse\_context \&ctx)}
+\DoxyCodeLine{329     \{}
+\DoxyCodeLine{330         \textcolor{keyword}{auto} it = ctx.begin(), end = ctx.end();}
+\DoxyCodeLine{331         \textcolor{keywordflow}{if} (it)}
+\DoxyCodeLine{332         \{}
+\DoxyCodeLine{333             \textcolor{keywordflow}{if} (it != end and *it != \textcolor{charliteral}{'\}'})}
+\DoxyCodeLine{334                 \textcolor{keywordflow}{throw} format\_error(\textcolor{stringliteral}{"{}invalid format, no formatting option for quantit::quantity"{}});}
+\DoxyCodeLine{335             \textcolor{keywordflow}{if} (*it != \textcolor{charliteral}{'\}'})}
+\DoxyCodeLine{336                 \textcolor{keywordflow}{throw} format\_error(\textcolor{stringliteral}{"{}invalid format,closing brace missing"{}});}
+\DoxyCodeLine{337         \}}
+\DoxyCodeLine{338         \textcolor{comment}{// Return an iterator past the end of the parsed range:}}
+\DoxyCodeLine{339         \textcolor{keywordflow}{return} it;}
+\DoxyCodeLine{340     \}}
+\DoxyCodeLine{341 }
+\DoxyCodeLine{342     \textcolor{keyword}{template} <\textcolor{keyword}{class} FormatContext>}
+\DoxyCodeLine{343     \textcolor{keyword}{auto} format(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1conserved_1_1C}{quantit::conserved::C<N>}} \&z, FormatContext \&ctx)\textcolor{keyword}{ const}}
+\DoxyCodeLine{344 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{345 }
+\DoxyCodeLine{346         \textcolor{keywordflow}{return} format\_to(}
+\DoxyCodeLine{347             ctx.out(), \textcolor{stringliteral}{"{}C<\{\}>(\{\})"{}}, N,}
+\DoxyCodeLine{348             z.val); \textcolor{comment}{// right now qt.format\_to is only define for fmt::format\_context. Should work for any output stream.}}
+\DoxyCodeLine{349     \}}
+\DoxyCodeLine{350 \};}
+\DoxyCodeLine{351 \textcolor{keyword}{template} <>}
+\DoxyCodeLine{352 \textcolor{keyword}{struct }fmt::formatter<quantit::conserved::Z>}
+\DoxyCodeLine{353 \{}
+\DoxyCodeLine{354     \textcolor{keyword}{constexpr} \textcolor{keyword}{auto} parse(format\_parse\_context \&ctx)}
+\DoxyCodeLine{355     \{}
+\DoxyCodeLine{356         \textcolor{keyword}{auto} it = ctx.begin(), end = ctx.end();}
+\DoxyCodeLine{357         \textcolor{keywordflow}{if} (it)}
+\DoxyCodeLine{358         \{}
+\DoxyCodeLine{359             \textcolor{keywordflow}{if} (it != end and *it != \textcolor{charliteral}{'\}'})}
+\DoxyCodeLine{360                 \textcolor{keywordflow}{throw} format\_error(\textcolor{stringliteral}{"{}invalid format, no formatting option for quantit::conserved::Z"{}});}
+\DoxyCodeLine{361             \textcolor{keywordflow}{if} (*it != \textcolor{charliteral}{'\}'})}
+\DoxyCodeLine{362                 \textcolor{keywordflow}{throw} format\_error(\textcolor{stringliteral}{"{}invalid format,closing brace missing"{}});}
+\DoxyCodeLine{363         \}}
+\DoxyCodeLine{364         \textcolor{comment}{// Return an iterator past the end of the parsed range:}}
+\DoxyCodeLine{365         \textcolor{keywordflow}{return} it;}
+\DoxyCodeLine{366     \}}
+\DoxyCodeLine{367 }
+\DoxyCodeLine{368     \textcolor{keyword}{template} <\textcolor{keyword}{class} FormatContext>}
+\DoxyCodeLine{369     \textcolor{keyword}{auto} format(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1conserved_1_1Z}{quantit::conserved::Z}} \&z, FormatContext \&ctx)\textcolor{keyword}{ const}}
+\DoxyCodeLine{370 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{371         \textcolor{keywordflow}{return} format\_to(}
+\DoxyCodeLine{372             ctx.out(), \textcolor{stringliteral}{"{}Z(\{\})"{}},}
+\DoxyCodeLine{373             z.val); \textcolor{comment}{// right now qt.format\_to is only define for fmt::format\_context. Should work for any output stream.}}
+\DoxyCodeLine{374     \}}
+\DoxyCodeLine{375 \};}
+\DoxyCodeLine{376 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* EF30AFAC\_8403\_46CD\_A139\_264F626DA567 */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

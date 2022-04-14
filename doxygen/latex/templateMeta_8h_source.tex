@@ -1,0 +1,147 @@
+\hypertarget{templateMeta_8h_source}{}\doxysection{template\+Meta.\+h}
+\label{templateMeta_8h_source}\index{/Users/alex/Documents/Prog/QuantiT/include/templateMeta.h@{/Users/alex/Documents/Prog/QuantiT/include/templateMeta.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * File: method\_detect.h}}
+\DoxyCodeLine{3 \textcolor{comment}{ * Project: QuantiT}}
+\DoxyCodeLine{4 \textcolor{comment}{ * File Created: Friday, 4th September 2020 1:08:51 pm}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)}}
+\DoxyCodeLine{6 \textcolor{comment}{ * -\/-\/-\/-\/-\/}}
+\DoxyCodeLine{7 \textcolor{comment}{ * Last Modified: Friday, 4th September 2020 1:08:51 pm}}
+\DoxyCodeLine{8 \textcolor{comment}{ * Modified By: Alexandre Foley (Alexandre.foley@usherbrooke.ca>)}}
+\DoxyCodeLine{9 \textcolor{comment}{ * -\/-\/-\/-\/-\/}}
+\DoxyCodeLine{10 \textcolor{comment}{ * Copyright (c) 2020 Alexandre Foley}}
+\DoxyCodeLine{11 \textcolor{comment}{ * Licensed under GPL v3}}
+\DoxyCodeLine{12 \textcolor{comment}{ */}}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#ifndef D5434AD3\_7D18\_4065\_A1ED\_CD37C3E10D7A}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#define D5434AD3\_7D18\_4065\_A1ED\_CD37C3E10D7A}}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include <tuple>}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include <type\_traits>}}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 \textcolor{keyword}{namespace }quantit}
+\DoxyCodeLine{21 \{}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23 \textcolor{comment}{/*}}
+\DoxyCodeLine{24 \textcolor{comment}{ * Template metaprograming to detect methods and functions.}}
+\DoxyCodeLine{25 \textcolor{comment}{ * All of the stuff in here can be replaced with a simple c++20 concept's require statement.}}
+\DoxyCodeLine{26 \textcolor{comment}{ * Will do that when it officially comes out.}}
+\DoxyCodeLine{27 \textcolor{comment}{ * The code is lifted from cpp possible implementation about std::experiemental.}}
+\DoxyCodeLine{28 \textcolor{comment}{ */}}
+\DoxyCodeLine{29 \textcolor{keyword}{namespace }details}
+\DoxyCodeLine{30 \{}
+\DoxyCodeLine{31 \textcolor{keyword}{struct }\mbox{\hyperlink{structquantit_1_1details_1_1nonesuch}{nonesuch}}}
+\DoxyCodeLine{32 \{}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34     \mbox{\hyperlink{structquantit_1_1details_1_1nonesuch}{\string~nonesuch}}() = \textcolor{keyword}{delete};}
+\DoxyCodeLine{35     \mbox{\hyperlink{structquantit_1_1details_1_1nonesuch}{nonesuch}}(\mbox{\hyperlink{structquantit_1_1details_1_1nonesuch}{nonesuch}} \textcolor{keyword}{const} \&) = \textcolor{keyword}{delete};}
+\DoxyCodeLine{36     \textcolor{keywordtype}{void} operator=(\mbox{\hyperlink{structquantit_1_1details_1_1nonesuch}{nonesuch}} \textcolor{keyword}{const} \&) = \textcolor{keyword}{delete};}
+\DoxyCodeLine{37 \};}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39 \textcolor{keyword}{template} <\textcolor{keyword}{class }Default, \textcolor{keyword}{class }AlwaysVoid, \textcolor{keyword}{template} <\textcolor{keyword}{class}...> \textcolor{keyword}{class }Op, \textcolor{keyword}{class}... Args>}
+\DoxyCodeLine{40 \textcolor{keyword}{struct }\mbox{\hyperlink{structquantit_1_1details_1_1detector}{detector}}}
+\DoxyCodeLine{41 \{}
+\DoxyCodeLine{42     \textcolor{keyword}{using} value\_t = std::false\_type;}
+\DoxyCodeLine{43     \textcolor{keyword}{using} type = Default;}
+\DoxyCodeLine{44 \};}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46 \textcolor{keyword}{template} <\textcolor{keyword}{class }Default, \textcolor{keyword}{template} <\textcolor{keyword}{class}...> \textcolor{keyword}{class }Op, \textcolor{keyword}{class}... Args>}
+\DoxyCodeLine{47 \textcolor{keyword}{struct }\mbox{\hyperlink{structquantit_1_1details_1_1detector}{detector}}<Default, ::std::void\_t<Op<Args...>>, Op, Args...>}
+\DoxyCodeLine{48 \{}
+\DoxyCodeLine{49     \textcolor{keyword}{using} value\_t = std::true\_type;}
+\DoxyCodeLine{50     \textcolor{keyword}{using} type = Op<Args...>;}
+\DoxyCodeLine{51 \};}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53 \} \textcolor{comment}{// namespace details}}
+\DoxyCodeLine{54 }
+\DoxyCodeLine{55 \textcolor{keyword}{template} <\textcolor{keyword}{template} <\textcolor{keyword}{class}...> \textcolor{keyword}{class }Op, \textcolor{keyword}{class}... Args>}
+\DoxyCodeLine{56 \textcolor{keyword}{using} is\_detected = \textcolor{keyword}{typename} \mbox{\hyperlink{structquantit_1_1details_1_1detector}{details::detector}}<\mbox{\hyperlink{structquantit_1_1details_1_1nonesuch}{details::nonesuch}}, void, Op, Args...>::value\_t;}
+\DoxyCodeLine{57 }
+\DoxyCodeLine{58 \textcolor{keyword}{template} <\textcolor{keyword}{template} <\textcolor{keyword}{class}...> \textcolor{keyword}{class }Op, \textcolor{keyword}{class}... Args>}
+\DoxyCodeLine{59 \textcolor{keyword}{using} detected\_t = \textcolor{keyword}{typename} \mbox{\hyperlink{structquantit_1_1details_1_1detector}{details::detector}}<\mbox{\hyperlink{structquantit_1_1details_1_1nonesuch}{details::nonesuch}}, void, Op, Args...>::type;}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61 \textcolor{keyword}{template} <\textcolor{keyword}{class }Default, \textcolor{keyword}{template} <\textcolor{keyword}{class}...> \textcolor{keyword}{class }Op, \textcolor{keyword}{class}... Args>}
+\DoxyCodeLine{62 \textcolor{keyword}{using} \mbox{\hyperlink{structquantit_1_1details_1_1detector}{detected\_or}} = \mbox{\hyperlink{structquantit_1_1details_1_1detector}{details::detector}}<Default, void, Op, Args...>;}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{64 \textcolor{keyword}{template} <\textcolor{keyword}{template} <\textcolor{keyword}{class}...> \textcolor{keyword}{class }Op, \textcolor{keyword}{class}... Args>}
+\DoxyCodeLine{65 \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} is\_detected\_v = is\_detected<Op, Args...>::value;}
+\DoxyCodeLine{66 \textcolor{keyword}{template} <\textcolor{keyword}{class }Default, \textcolor{keyword}{template} <\textcolor{keyword}{class}...> \textcolor{keyword}{class }Op, \textcolor{keyword}{class}... Args>}
+\DoxyCodeLine{67 \textcolor{keyword}{using} detected\_or\_t = \textcolor{keyword}{typename} \mbox{\hyperlink{structquantit_1_1details_1_1detector}{detected\_or}}<Default, Op, Args...>::type;}
+\DoxyCodeLine{68 \textcolor{keyword}{template} <\textcolor{keyword}{class }Expected, \textcolor{keyword}{template} <\textcolor{keyword}{class}...> \textcolor{keyword}{class }Op, \textcolor{keyword}{class}... Args>}
+\DoxyCodeLine{69 \textcolor{keyword}{using} is\_detected\_exact = ::std::is\_same<Expected, detected\_t<Op, Args...>>;}
+\DoxyCodeLine{70 \textcolor{keyword}{template} <\textcolor{keyword}{class }Expected, \textcolor{keyword}{template} <\textcolor{keyword}{class}...> \textcolor{keyword}{class }Op, \textcolor{keyword}{class}... Args>}
+\DoxyCodeLine{71 \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} is\_detected\_exact\_v = is\_detected\_exact<Expected, Op, Args...>::value;}
+\DoxyCodeLine{72 \textcolor{keyword}{template} <\textcolor{keyword}{class }To, \textcolor{keyword}{template} <\textcolor{keyword}{class}...> \textcolor{keyword}{class }Op, \textcolor{keyword}{class}... Args>}
+\DoxyCodeLine{73 \textcolor{keyword}{using} is\_detected\_convertible = ::std::is\_convertible<detected\_t<Op, Args...>, To>;}
+\DoxyCodeLine{74 \textcolor{keyword}{template} <\textcolor{keyword}{class }To, \textcolor{keyword}{template} <\textcolor{keyword}{class}...> \textcolor{keyword}{class }Op, \textcolor{keyword}{class}... Args>}
+\DoxyCodeLine{75 \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} is\_detected\_convertible\_v = is\_detected\_convertible<To, Op, Args...>::value;}
+\DoxyCodeLine{76 }
+\DoxyCodeLine{77 \textcolor{comment}{/*}}
+\DoxyCodeLine{78 \textcolor{comment}{ * Template metaprograming to apply "{}logic and"{} and "{}logic or"{} to template parameter pack of}}
+\DoxyCodeLine{79 \textcolor{comment}{ * std::integral\_constant<bool,T> or other classes with a value constexpr static member implicitly}}
+\DoxyCodeLine{80 \textcolor{comment}{ * convertible to bool (with short circuit).}}
+\DoxyCodeLine{81 \textcolor{comment}{ */}}
+\DoxyCodeLine{82 }
+\DoxyCodeLine{88 \textcolor{keyword}{template} <\textcolor{keyword}{typename}... Conds>}
+\DoxyCodeLine{89 \textcolor{keyword}{struct }\mbox{\hyperlink{structquantit_1_1and__}{and\_}} : std::true\_type}
+\DoxyCodeLine{90 \{}
+\DoxyCodeLine{91 \};}
+\DoxyCodeLine{92 }
+\DoxyCodeLine{93 \textcolor{keyword}{template} <\textcolor{keyword}{typename} Cond, \textcolor{keyword}{typename}... Conds>}
+\DoxyCodeLine{94 \textcolor{keyword}{struct }\mbox{\hyperlink{structquantit_1_1and__}{and\_}}<Cond, Conds...> : std::conditional\_t<Cond::value, and\_<Conds...>, std::false\_type>}
+\DoxyCodeLine{95 \{}
+\DoxyCodeLine{96 \};}
+\DoxyCodeLine{102 \textcolor{keyword}{template} <\textcolor{keyword}{class}... Conds>}
+\DoxyCodeLine{103 \textcolor{keyword}{struct }\mbox{\hyperlink{structquantit_1_1or__}{or\_}} : std::false\_type}
+\DoxyCodeLine{104 \{}
+\DoxyCodeLine{105 \};}
+\DoxyCodeLine{106 \textcolor{keyword}{template} <\textcolor{keyword}{class }cond, \textcolor{keyword}{class}... conds>}
+\DoxyCodeLine{107 \textcolor{keyword}{struct }\mbox{\hyperlink{structquantit_1_1or__}{or\_}}<cond, conds...> : std::conditional\_t<cond::value, std::true\_type, or\_<conds...>>}
+\DoxyCodeLine{108 \{}
+\DoxyCodeLine{109 \};}
+\DoxyCodeLine{110 }
+\DoxyCodeLine{120 \textcolor{keyword}{template} <\textcolor{keyword}{class} Tuple1, \textcolor{keyword}{class} F>}
+\DoxyCodeLine{121 \textcolor{keyword}{constexpr} \textcolor{keyword}{decltype}(\textcolor{keyword}{auto}) for\_each(Tuple1 \&\&T1, F \&\&f)}
+\DoxyCodeLine{122 \{}
+\DoxyCodeLine{123     \textcolor{keywordflow}{return} std::apply(}
+\DoxyCodeLine{124         [\&](\textcolor{keyword}{auto} \&\&... t1) \{}
+\DoxyCodeLine{125             \textcolor{keywordflow}{if} \textcolor{keyword}{constexpr} (std::is\_same\_v<decltype(f(std::get<0>(T1))), \textcolor{keywordtype}{void}>)}
+\DoxyCodeLine{126             \{                 \textcolor{comment}{// we return void..}}
+\DoxyCodeLine{127                 (f(t1), ...); \textcolor{comment}{// apply the function to each arguments}}
+\DoxyCodeLine{128             \}}
+\DoxyCodeLine{129             \textcolor{keywordflow}{else}}
+\DoxyCodeLine{130             \{}
+\DoxyCodeLine{131                 \textcolor{keywordflow}{return} std::tuple(f(t1)...); \textcolor{comment}{// apply the function to each agruments and form}}
+\DoxyCodeLine{132                                              \textcolor{comment}{// a tuple with the result.}}
+\DoxyCodeLine{133             \}}
+\DoxyCodeLine{134         \},}
+\DoxyCodeLine{135         T1);}
+\DoxyCodeLine{136 \}}
+\DoxyCodeLine{148 \textcolor{keyword}{template} <\textcolor{keyword}{class} Tuple1, \textcolor{keyword}{class} Tuple2, \textcolor{keyword}{class} F>}
+\DoxyCodeLine{149 \textcolor{keyword}{constexpr} \textcolor{keyword}{decltype}(\textcolor{keyword}{auto}) for\_each2(Tuple1 \&\&T1, Tuple2 \&\&T2, F \&\&f)}
+\DoxyCodeLine{150 \{}
+\DoxyCodeLine{151     \textcolor{keywordflow}{return} std::apply(}
+\DoxyCodeLine{152         [\&](\textcolor{keyword}{auto} \&\&... t1) \{ \textcolor{comment}{// std::apply require gcc7 or more recent}}
+\DoxyCodeLine{153             \textcolor{keywordflow}{return} std::apply(}
+\DoxyCodeLine{154                 [\&T1, \&T2, \&f, \&t1...](\textcolor{keyword}{auto} \&\&... t2) \{}
+\DoxyCodeLine{155                     \textcolor{comment}{// need explicit capture list here for clang8 and older.}}
+\DoxyCodeLine{156                     if constexpr (std::is\_same\_v<decltype(f(std::get<0>(T1), std::get<0>(T2))), void>)}
+\DoxyCodeLine{157                     \{                     \textcolor{comment}{// we return void..}}
+\DoxyCodeLine{158                         (f(t1, t2), ...); \textcolor{comment}{// apply the function to each pair of arguments}}
+\DoxyCodeLine{159                     \}}
+\DoxyCodeLine{160                     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{161                     \{}
+\DoxyCodeLine{162                         return std::tuple(f(t1, t2)...); \textcolor{comment}{// apply the function to each pair and form}}
+\DoxyCodeLine{163                                                          \textcolor{comment}{// a tuple with the result.}}
+\DoxyCodeLine{164                     \}}
+\DoxyCodeLine{165                 \},}
+\DoxyCodeLine{166                 T2);}
+\DoxyCodeLine{167         \},}
+\DoxyCodeLine{168         T1);}
+\DoxyCodeLine{169 \}}
+\DoxyCodeLine{170 \} \textcolor{comment}{// namespace quantit}}
+\DoxyCodeLine{171 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* D5434AD3\_7D18\_4065\_A1ED\_CD37C3E10D7A */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

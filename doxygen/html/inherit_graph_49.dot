@@ -1,0 +1,16 @@
+digraph "Graphical Class Hierarchy"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node0 [label="std::true_type",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node0 -> Node1 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 [label="quantit::and_\< is_Abelian\l\< T \>, default_to_neutral\l\< T \>, has_op\< T \>, has_inverse\l_\< T \>, has_comparatorequal\<\l T \>, has_comparatornotequal\< T \> \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structquantit_1_1and__.html",tooltip=" "];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="quantit::conserved\l::is_conserved_QuantiT\< T \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structquantit_1_1conserved_1_1is__conserved__QuantiT.html",tooltip=" "];
+  Node0 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="quantit::and_\< Conds \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structquantit_1_1and__.html",tooltip="logical and for template parameter pack"];
+  Node3 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="quantit::is_conc_cgroup\l_impl\< quantity\< S... \> \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structquantit_1_1is__conc__cgroup__impl_3_01quantity_3_01S_8_8_8_01_4_01_4.html",tooltip=" "];
+}

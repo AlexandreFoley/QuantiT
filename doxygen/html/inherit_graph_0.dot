@@ -1,0 +1,22 @@
+digraph "Graphical Class Hierarchy"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node0 [label="boost::stl_interfaces\l::iterator_interface",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node0 -> Node1 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 [label="quantit::btensor::block\l_prop_iter\< const_value\l_iter \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structquantit_1_1btensor_1_1block__prop__iter.html",tooltip=" "];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="quantit::btensor::const\l_block_prop_iter\< const\l_value_iter, value_iter \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structquantit_1_1btensor_1_1const__block__prop__iter.html",tooltip=" "];
+  Node0 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="quantit::btensor::block\l_prop_iter\< value_iterator \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structquantit_1_1btensor_1_1block__prop__iter.html",tooltip=" "];
+  Node0 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="quantit::flat_map\<\l Key, Value, Comp_less,\l Allocator, Array \>::const\l_iterator",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classquantit_1_1flat__map_1_1const__iterator.html",tooltip=" "];
+  Node0 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="quantit::flat_map\<\l Key, Value, Comp_less,\l Allocator, Array \>::iterator",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classquantit_1_1flat__map_1_1iterator.html",tooltip=" "];
+  Node0 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="quantit::vQuantiT_iterator\l::cgroup_iterator",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structquantit_1_1vQuantiT__iterator_1_1cgroup__iterator.html",tooltip=" "];
+  Node0 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="quantit::vQuantiT_iterator\l::const_cgroup_iterator",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator.html",tooltip=" "];
+}

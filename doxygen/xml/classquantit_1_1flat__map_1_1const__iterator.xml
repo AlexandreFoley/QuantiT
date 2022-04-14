@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
   <compounddef id="classquantit_1_1flat__map_1_1const__iterator" kind="class" language="C++" prot="public">
     <compoundname>quantit::flat_map::const_iterator</compoundname>
     <basecompoundref prot="public" virt="non-virtual">boost::stl_interfaces::iterator_interface&lt; const_iterator, const_iterator_tag, const value_type, const_reference, const_pointer, difference_type &gt;</basecompoundref>
@@ -9,13 +9,14 @@
         <definition>using quantit::flat_map&lt; Key, Value, Comp_less, Allocator, Array &gt;::const_iterator::it_type =  typename content_t::const_iterator</definition>
         <argsstring></argsstring>
         <name>it_type</name>
+        <qualifiedname>quantit::flat_map::const_iterator::it_type</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/blockTensor/flat_map.h" line="95" column="1" bodyfile="/home/alex/project/quantt/include/blockTensor/flat_map.h" bodystart="95" bodyend="-1"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/blockTensor/flat_map.h" line="95" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/blockTensor/flat_map.h" bodystart="95" bodyend="-1"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="private-attrib">
@@ -24,26 +25,28 @@
         <definition>it_type quantit::flat_map&lt; Key, Value, Comp_less, Allocator, Array &gt;::const_iterator::it</definition>
         <argsstring></argsstring>
         <name>it</name>
+        <qualifiedname>quantit::flat_map::const_iterator::it</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/blockTensor/flat_map.h" line="96" column="9" bodyfile="/home/alex/project/quantt/include/blockTensor/flat_map.h" bodystart="96" bodyend="-1"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/blockTensor/flat_map.h" line="96" column="9" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/blockTensor/flat_map.h" bodystart="96" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classquantit_1_1flat__map_1_1const__iterator_1a0889564ef8be29227f91170544fb092c" prot="private" static="no" mutable="no">
         <type>friend</type>
         <definition>friend quantit::flat_map&lt; Key, Value, Comp_less, Allocator, Array &gt;::const_iterator::flat_map</definition>
         <argsstring></argsstring>
         <name>flat_map</name>
+        <qualifiedname>quantit::flat_map::const_iterator::flat_map</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/blockTensor/flat_map.h" line="116" column="8" bodyfile="/home/alex/project/quantt/include/blockTensor/flat_map.h" bodystart="116" bodyend="-1"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/blockTensor/flat_map.h" line="116" column="8" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/blockTensor/flat_map.h" bodystart="116" bodyend="-1"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="public-func">
@@ -52,6 +55,7 @@
         <definition>constexpr quantit::flat_map&lt; Key, Value, Comp_less, Allocator, Array &gt;::const_iterator::const_iterator</definition>
         <argsstring>(const typename content_t::iterator &amp;in)</argsstring>
         <name>const_iterator</name>
+        <qualifiedname>quantit::flat_map::const_iterator::const_iterator</qualifiedname>
         <param>
           <type>const typename content_t::iterator &amp;</type>
           <declname>in</declname>
@@ -62,13 +66,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/blockTensor/flat_map.h" line="99" column="20" bodyfile="/home/alex/project/quantt/include/blockTensor/flat_map.h" bodystart="99" bodyend="99"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/blockTensor/flat_map.h" line="99" column="20" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/blockTensor/flat_map.h" bodystart="99" bodyend="99"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1flat__map_1_1const__iterator_1abbf0f75d059a9011633a2ff7ef0f9d93" prot="public" static="no" constexpr="yes" const="no" explicit="yes" inline="yes" virt="non-virtual">
         <type>constexpr</type>
         <definition>constexpr quantit::flat_map&lt; Key, Value, Comp_less, Allocator, Array &gt;::const_iterator::const_iterator</definition>
         <argsstring>(const typename content_t::const_iterator &amp;in)</argsstring>
         <name>const_iterator</name>
+        <qualifiedname>quantit::flat_map::const_iterator::const_iterator</qualifiedname>
         <param>
           <type>const typename content_t::const_iterator &amp;</type>
           <declname>in</declname>
@@ -79,26 +84,28 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/blockTensor/flat_map.h" line="100" column="20" bodyfile="/home/alex/project/quantt/include/blockTensor/flat_map.h" bodystart="100" bodyend="100"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/blockTensor/flat_map.h" line="100" column="20" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/blockTensor/flat_map.h" bodystart="100" bodyend="100"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1flat__map_1_1const__iterator_1a9b2d04a2d8645602dea4d33e342251b3" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>constexpr</type>
         <definition>constexpr quantit::flat_map&lt; Key, Value, Comp_less, Allocator, Array &gt;::const_iterator::const_iterator</definition>
         <argsstring>()</argsstring>
         <name>const_iterator</name>
+        <qualifiedname>quantit::flat_map::const_iterator::const_iterator</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/blockTensor/flat_map.h" line="101" column="11" bodyfile="/home/alex/project/quantt/include/blockTensor/flat_map.h" bodystart="101" bodyend="101"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/blockTensor/flat_map.h" line="101" column="11" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/blockTensor/flat_map.h" bodystart="101" bodyend="101"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1flat__map_1_1const__iterator_1ac27559cd331534a5a4b63653b92fe80d" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>constexpr</type>
         <definition>constexpr quantit::flat_map&lt; Key, Value, Comp_less, Allocator, Array &gt;::const_iterator::const_iterator</definition>
         <argsstring>(const iterator &amp;in)</argsstring>
         <name>const_iterator</name>
+        <qualifiedname>quantit::flat_map::const_iterator::const_iterator</qualifiedname>
         <param>
           <type>const <ref refid="classquantit_1_1flat__map_1_1iterator" kindref="compound">iterator</ref> &amp;</type>
           <declname>in</declname>
@@ -109,13 +116,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/blockTensor/flat_map.h" line="102" column="11" bodyfile="/home/alex/project/quantt/include/blockTensor/flat_map.h" bodystart="102" bodyend="102"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/blockTensor/flat_map.h" line="102" column="11" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/blockTensor/flat_map.h" bodystart="102" bodyend="102"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1flat__map_1_1const__iterator_1a7b6abb873278399d808402051d064791" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>constexpr</type>
         <definition>constexpr quantit::flat_map&lt; Key, Value, Comp_less, Allocator, Array &gt;::const_iterator::const_iterator</definition>
         <argsstring>(const const_iterator &amp;in)</argsstring>
         <name>const_iterator</name>
+        <qualifiedname>quantit::flat_map::const_iterator::const_iterator</qualifiedname>
         <param>
           <type>const <ref refid="classquantit_1_1flat__map_1_1const__iterator" kindref="compound">const_iterator</ref> &amp;</type>
           <declname>in</declname>
@@ -126,13 +134,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/blockTensor/flat_map.h" line="103" column="11" bodyfile="/home/alex/project/quantt/include/blockTensor/flat_map.h" bodystart="103" bodyend="103"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/blockTensor/flat_map.h" line="103" column="11" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/blockTensor/flat_map.h" bodystart="103" bodyend="103"/>
       </memberdef>
-      <memberdef kind="function" id="classquantit_1_1flat__map_1_1const__iterator_1a282d06d61c4f7a9205a2eaba1fe10518" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+      <memberdef kind="function" id="classquantit_1_1flat__map_1_1const__iterator_1afa1c653047543032df1333d28382aed1" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>constexpr <ref refid="classquantit_1_1flat__map_1_1const__iterator" kindref="compound">const_iterator</ref> &amp;</type>
-        <definition>constexpr const_iterator&amp; quantit::flat_map&lt; Key, Value, Comp_less, Allocator, Array &gt;::const_iterator::operator+=</definition>
+        <definition>constexpr const_iterator &amp; quantit::flat_map&lt; Key, Value, Comp_less, Allocator, Array &gt;::const_iterator::operator+=</definition>
         <argsstring>(std::ptrdiff_t in)</argsstring>
         <name>operator+=</name>
+        <qualifiedname>quantit::flat_map::const_iterator::operator+=</qualifiedname>
         <param>
           <type>std::ptrdiff_t</type>
           <declname>in</declname>
@@ -143,74 +152,79 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/blockTensor/flat_map.h" line="104" column="26" bodyfile="/home/alex/project/quantt/include/blockTensor/flat_map.h" bodystart="104" bodyend="108"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/blockTensor/flat_map.h" line="104" column="26" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/blockTensor/flat_map.h" bodystart="104" bodyend="108"/>
       </memberdef>
-      <memberdef kind="function" id="classquantit_1_1flat__map_1_1const__iterator_1a68d48dbe60797a4ca3f6ebbc54d287b3" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+      <memberdef kind="function" id="classquantit_1_1flat__map_1_1const__iterator_1a8a8f968a69de48970a6372bc32fd277d" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>constexpr const value_type *</type>
-        <definition>constexpr const value_type* quantit::flat_map&lt; Key, Value, Comp_less, Allocator, Array &gt;::const_iterator::base</definition>
+        <definition>constexpr const value_type * quantit::flat_map&lt; Key, Value, Comp_less, Allocator, Array &gt;::const_iterator::base</definition>
         <argsstring>()</argsstring>
         <name>base</name>
+        <qualifiedname>quantit::flat_map::const_iterator::base</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/blockTensor/flat_map.h" line="110" column="28" bodyfile="/home/alex/project/quantt/include/blockTensor/flat_map.h" bodystart="110" bodyend="110"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/blockTensor/flat_map.h" line="110" column="28" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/blockTensor/flat_map.h" bodystart="110" bodyend="110"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1flat__map_1_1const__iterator_1ac2864e70dd3b83dc03284e008aaf15c7" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type></type>
         <definition>quantit::flat_map&lt; Key, Value, Comp_less, Allocator, Array &gt;::const_iterator::operator it_type</definition>
         <argsstring>()</argsstring>
         <name>operator it_type</name>
+        <qualifiedname>quantit::flat_map::const_iterator::operator it_type</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/blockTensor/flat_map.h" line="113" column="1" bodyfile="/home/alex/project/quantt/include/blockTensor/flat_map.h" bodystart="113" bodyend="113"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/blockTensor/flat_map.h" line="113" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/blockTensor/flat_map.h" bodystart="113" bodyend="113"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="private-func">
-      <memberdef kind="function" id="classquantit_1_1flat__map_1_1const__iterator_1ab32fe646b831c22bb52135a5b97e3eab" prot="private" static="no" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+      <memberdef kind="function" id="classquantit_1_1flat__map_1_1const__iterator_1ae18d44740a2a75dece3b2cd985eedf61" prot="private" static="no" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
         <type>constexpr it_type &amp;</type>
-        <definition>constexpr it_type&amp; quantit::flat_map&lt; Key, Value, Comp_less, Allocator, Array &gt;::const_iterator::base_reference</definition>
+        <definition>constexpr it_type &amp; quantit::flat_map&lt; Key, Value, Comp_less, Allocator, Array &gt;::const_iterator::base_reference</definition>
         <argsstring>() noexcept</argsstring>
         <name>base_reference</name>
+        <qualifiedname>quantit::flat_map::const_iterator::base_reference</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/blockTensor/flat_map.h" line="117" column="19" bodyfile="/home/alex/project/quantt/include/blockTensor/flat_map.h" bodystart="117" bodyend="117"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/blockTensor/flat_map.h" line="117" column="19" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/blockTensor/flat_map.h" bodystart="117" bodyend="117"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1flat__map_1_1const__iterator_1a700fd8dc585585a232c5338bc2dcbc66" prot="private" static="no" constexpr="yes" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
         <type>constexpr it_type</type>
         <definition>constexpr it_type quantit::flat_map&lt; Key, Value, Comp_less, Allocator, Array &gt;::const_iterator::base_reference</definition>
         <argsstring>() const noexcept</argsstring>
         <name>base_reference</name>
+        <qualifiedname>quantit::flat_map::const_iterator::base_reference</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/blockTensor/flat_map.h" line="118" column="19" bodyfile="/home/alex/project/quantt/include/blockTensor/flat_map.h" bodystart="118" bodyend="118"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/blockTensor/flat_map.h" line="118" column="19" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/blockTensor/flat_map.h" bodystart="118" bodyend="118"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1flat__map_1_1const__iterator_1ad5d35d4e837aa8b2d28cb329e3e0e24e" prot="private" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type></type>
         <definition>quantit::flat_map&lt; Key, Value, Comp_less, Allocator, Array &gt;::const_iterator::operator it_type</definition>
         <argsstring>() const</argsstring>
         <name>operator it_type</name>
+        <qualifiedname>quantit::flat_map::const_iterator::operator it_type</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/blockTensor/flat_map.h" line="119" column="1" bodyfile="/home/alex/project/quantt/include/blockTensor/flat_map.h" bodystart="119" bodyend="119"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/blockTensor/flat_map.h" line="119" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/blockTensor/flat_map.h" bodystart="119" bodyend="119"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
@@ -218,31 +232,31 @@
     <detaileddescription>
     </detaileddescription>
     <inheritancegraph>
+      <node id="2">
+        <label>boost::stl_interfaces::iterator_interface&lt; const_iterator, const_iterator_tag, const value_type, const_reference, const_pointer, difference_type &gt;</label>
+      </node>
       <node id="1">
         <label>quantit::flat_map&lt; Key, Value, Comp_less, Allocator, Array &gt;::const_iterator</label>
         <link refid="classquantit_1_1flat__map_1_1const__iterator"/>
         <childnode refid="2" relation="public-inheritance">
         </childnode>
-      </node>
-      <node id="2">
-        <label>boost::stl_interfaces::iterator_interface&lt; const_iterator, const_iterator_tag, const value_type, const_reference, const_pointer, difference_type &gt;</label>
       </node>
     </inheritancegraph>
     <collaborationgraph>
+      <node id="2">
+        <label>boost::stl_interfaces::iterator_interface&lt; const_iterator, const_iterator_tag, const value_type, const_reference, const_pointer, difference_type &gt;</label>
+      </node>
       <node id="1">
         <label>quantit::flat_map&lt; Key, Value, Comp_less, Allocator, Array &gt;::const_iterator</label>
         <link refid="classquantit_1_1flat__map_1_1const__iterator"/>
         <childnode refid="2" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="2">
-        <label>boost::stl_interfaces::iterator_interface&lt; const_iterator, const_iterator_tag, const value_type, const_reference, const_pointer, difference_type &gt;</label>
-      </node>
     </collaborationgraph>
-    <location file="/home/alex/project/quantt/include/blockTensor/flat_map.h" line="90" column="1" bodyfile="/home/alex/project/quantt/include/blockTensor/flat_map.h" bodystart="94" bodyend="120"/>
+    <location file="/Users/alex/Documents/Prog/QuantiT/include/blockTensor/flat_map.h" line="90" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/blockTensor/flat_map.h" bodystart="94" bodyend="120"/>
     <listofallmembers>
-      <member refid="classquantit_1_1flat__map_1_1const__iterator_1a68d48dbe60797a4ca3f6ebbc54d287b3" prot="public" virt="non-virtual"><scope>quantit::flat_map::const_iterator</scope><name>base</name></member>
-      <member refid="classquantit_1_1flat__map_1_1const__iterator_1ab32fe646b831c22bb52135a5b97e3eab" prot="private" virt="non-virtual"><scope>quantit::flat_map::const_iterator</scope><name>base_reference</name></member>
+      <member refid="classquantit_1_1flat__map_1_1const__iterator_1a8a8f968a69de48970a6372bc32fd277d" prot="public" virt="non-virtual"><scope>quantit::flat_map::const_iterator</scope><name>base</name></member>
+      <member refid="classquantit_1_1flat__map_1_1const__iterator_1ae18d44740a2a75dece3b2cd985eedf61" prot="private" virt="non-virtual"><scope>quantit::flat_map::const_iterator</scope><name>base_reference</name></member>
       <member refid="classquantit_1_1flat__map_1_1const__iterator_1a700fd8dc585585a232c5338bc2dcbc66" prot="private" virt="non-virtual"><scope>quantit::flat_map::const_iterator</scope><name>base_reference</name></member>
       <member refid="classquantit_1_1flat__map_1_1const__iterator_1a4bddf46011f5bad7ea25de30f13af90d" prot="public" virt="non-virtual"><scope>quantit::flat_map::const_iterator</scope><name>const_iterator</name></member>
       <member refid="classquantit_1_1flat__map_1_1const__iterator_1abbf0f75d059a9011633a2ff7ef0f9d93" prot="public" virt="non-virtual"><scope>quantit::flat_map::const_iterator</scope><name>const_iterator</name></member>
@@ -254,7 +268,7 @@
       <member refid="classquantit_1_1flat__map_1_1const__iterator_1a418cf55ab5767696c6065cae734b1c6a" prot="private" virt="non-virtual"><scope>quantit::flat_map::const_iterator</scope><name>it_type</name></member>
       <member refid="classquantit_1_1flat__map_1_1const__iterator_1ac2864e70dd3b83dc03284e008aaf15c7" prot="public" virt="non-virtual"><scope>quantit::flat_map::const_iterator</scope><name>operator it_type</name></member>
       <member refid="classquantit_1_1flat__map_1_1const__iterator_1ad5d35d4e837aa8b2d28cb329e3e0e24e" prot="private" virt="non-virtual"><scope>quantit::flat_map::const_iterator</scope><name>operator it_type</name></member>
-      <member refid="classquantit_1_1flat__map_1_1const__iterator_1a282d06d61c4f7a9205a2eaba1fe10518" prot="public" virt="non-virtual"><scope>quantit::flat_map::const_iterator</scope><name>operator+=</name></member>
+      <member refid="classquantit_1_1flat__map_1_1const__iterator_1afa1c653047543032df1333d28382aed1" prot="public" virt="non-virtual"><scope>quantit::flat_map::const_iterator</scope><name>operator+=</name></member>
     </listofallmembers>
   </compounddef>
 </doxygen>

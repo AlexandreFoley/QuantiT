@@ -1,20 +1,20 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
   <compounddef id="namespacequantit_1_1conserved" kind="namespace" language="C++">
     <compoundname>quantit::conserved</compoundname>
     <innerclass refid="classquantit_1_1conserved_1_1C" prot="public">quantit::conserved::C</innerclass>
-    <innerclass refid="classquantit_1_1conserved_1_1Z" prot="public">quantit::conserved::Z</innerclass>
     <innerclass refid="structquantit_1_1conserved_1_1constexprequal__membertest" prot="public">quantit::conserved::constexprequal_membertest</innerclass>
     <innerclass refid="structquantit_1_1conserved_1_1constexprequal__membertest_3_01subject_00_01std_1_1enable__if__t_3ef0d61a01dcb0d0d7c1e449e122da3dc" prot="public">quantit::conserved::constexprequal_membertest&lt; subject, std::enable_if_t&lt; is_detected_v&lt; comparatorequal_member_sig, subject &gt; &gt; &gt;</innerclass>
     <innerclass refid="structquantit_1_1conserved_1_1constexprequal__test" prot="public">quantit::conserved::constexprequal_test</innerclass>
-    <innerclass refid="structquantit_1_1conserved_1_1constexprequal__test_3_01subject_00_01std_1_1enable__if__t_3_01is_e132d3cd872a172980fdb6e254265e40" prot="public">quantit::conserved::constexprequal_test&lt; subject, std::enable_if_t&lt; is_detected_v&lt; comparatorequal_sig, subject &gt; &gt; &gt;</innerclass>
     <innerclass refid="structquantit_1_1conserved_1_1constexprequal__test_3_01quantit_1_1vquantity_01_4" prot="public">quantit::conserved::constexprequal_test&lt; quantit::vquantity &gt;</innerclass>
+    <innerclass refid="structquantit_1_1conserved_1_1constexprequal__test_3_01subject_00_01std_1_1enable__if__t_3_01is_e132d3cd872a172980fdb6e254265e40" prot="public">quantit::conserved::constexprequal_test&lt; subject, std::enable_if_t&lt; is_detected_v&lt; comparatorequal_sig, subject &gt; &gt; &gt;</innerclass>
     <innerclass refid="structquantit_1_1conserved_1_1default__to__neutral" prot="public">quantit::conserved::default_to_neutral</innerclass>
     <innerclass refid="structquantit_1_1conserved_1_1default__to__neutral_3_01T_00_01std_1_1enable__if__t_3_01has__op_355861d3f89e640fd17366de3746df00a" prot="public">quantit::conserved::default_to_neutral&lt; T, std::enable_if_t&lt; has_op&lt; T &gt;::value &amp;&amp;std::is_default_constructible_v&lt; T &gt; &amp;&amp;has_inverse_&lt; T &gt;::value &amp;&amp;has_constexpr_equal&lt; T &gt;::value &gt; &gt;</innerclass>
     <innerclass refid="structquantit_1_1conserved_1_1is__Abelian" prot="public">quantit::conserved::is_Abelian</innerclass>
     <innerclass refid="structquantit_1_1conserved_1_1is__Abelian_3_01T_00_01std_1_1enable__if__t_3_01is__detected__v_3_fa9b4f4cc9babaf4e2b0df0ea289c6d3" prot="public">quantit::conserved::is_Abelian&lt; T, std::enable_if_t&lt; is_detected_v&lt; abelian_present, T &gt; &gt; &gt;</innerclass>
     <innerclass refid="structquantit_1_1conserved_1_1is__conserved__QuantiT" prot="public">quantit::conserved::is_conserved_QuantiT</innerclass>
     <innerclass refid="structquantit_1_1conserved_1_1is__conserved__QuantiT_3_01quantit_1_1flat__map_3_01Args_8_8_8_01_4_01_4" prot="public">quantit::conserved::is_conserved_QuantiT&lt; quantit::flat_map&lt; Args... &gt; &gt;</innerclass>
+    <innerclass refid="classquantit_1_1conserved_1_1Z" prot="public">quantit::conserved::Z</innerclass>
       <sectiondef kind="typedef">
       <memberdef kind="typedef" id="namespacequantit_1_1conserved_1a0e3da50d8ef9a37bb6a34307dc619912" prot="public" static="no">
         <templateparamlist>
@@ -26,13 +26,14 @@
         <definition>using quantit::conserved::op2_sig = typedef decltype( conserved::op(std::declval&lt;const T&amp;&gt;(), std::declval&lt;const T&amp;&gt;()))</definition>
         <argsstring></argsstring>
         <name>op2_sig</name>
+        <qualifiedname>quantit::conserved::op2_sig</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/quantity_utils.h" line="35" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/quantity_utils.h" bodystart="37" bodyend="-1"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity_utils.h" line="35" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity_utils.h" bodystart="37" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="namespacequantit_1_1conserved_1aba7df796153d8b784c693bd656adc3e2" prot="public" static="no">
         <templateparamlist>
@@ -44,13 +45,14 @@
         <definition>using quantit::conserved::op_sig = typedef decltype(std::declval&lt;T&amp;&gt;().op(std::declval&lt;T&amp;&gt;()))</definition>
         <argsstring></argsstring>
         <name>op_sig</name>
+        <qualifiedname>quantit::conserved::op_sig</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/quantity_utils.h" line="40" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/quantity_utils.h" bodystart="40" bodyend="-1"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity_utils.h" line="40" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity_utils.h" bodystart="40" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="namespacequantit_1_1conserved_1ab14617fa0dd8fc9e46c20377b22aa886" prot="public" static="no">
         <templateparamlist>
@@ -62,13 +64,14 @@
         <definition>using quantit::conserved::has_op = typedef and_&lt;is_detected_exact&lt;T&amp;, op_sig, T&gt;, is_detected_exact&lt;T, op2_sig, T&gt; &gt;</definition>
         <argsstring></argsstring>
         <name>has_op</name>
+        <qualifiedname>quantit::conserved::has_op</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/quantity_utils.h" line="42" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/quantity_utils.h" bodystart="43" bodyend="-1"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity_utils.h" line="42" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity_utils.h" bodystart="43" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="namespacequantit_1_1conserved_1ae3e11fd92261f074373fbc1295c29675" prot="public" static="no">
         <templateparamlist>
@@ -80,13 +83,14 @@
         <definition>using quantit::conserved::inverse__sig = typedef decltype(std::declval&lt;T&amp;&gt;().inverse_())</definition>
         <argsstring></argsstring>
         <name>inverse__sig</name>
+        <qualifiedname>quantit::conserved::inverse__sig</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/quantity_utils.h" line="45" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/quantity_utils.h" bodystart="45" bodyend="-1"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity_utils.h" line="45" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity_utils.h" bodystart="45" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="namespacequantit_1_1conserved_1a59b42d4c39770c076fe17903404ecf60" prot="public" static="no">
         <templateparamlist>
@@ -98,13 +102,14 @@
         <definition>using quantit::conserved::has_inverse_ = typedef is_detected_exact&lt;T&amp;, inverse__sig, T&gt;</definition>
         <argsstring></argsstring>
         <name>has_inverse_</name>
+        <qualifiedname>quantit::conserved::has_inverse_</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/quantity_utils.h" line="47" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/quantity_utils.h" bodystart="47" bodyend="-1"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity_utils.h" line="47" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity_utils.h" bodystart="47" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="namespacequantit_1_1conserved_1acc035f563b769b4e5b1bc4b158fb3f32" prot="public" static="no">
         <templateparamlist>
@@ -116,13 +121,14 @@
         <definition>using quantit::conserved::commute__sig = typedef decltype(std::declval&lt;T&amp;&gt;().commute_(std::declval&lt;T&amp;&gt;()))</definition>
         <argsstring></argsstring>
         <name>commute__sig</name>
+        <qualifiedname>quantit::conserved::commute__sig</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/quantity_utils.h" line="49" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/quantity_utils.h" bodystart="49" bodyend="-1"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity_utils.h" line="49" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity_utils.h" bodystart="49" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="namespacequantit_1_1conserved_1abee11043922299431298e56cb171e092" prot="public" static="no">
         <templateparamlist>
@@ -134,13 +140,14 @@
         <definition>using quantit::conserved::has_commute_ = typedef is_detected_exact&lt;void, commute__sig, T&gt;</definition>
         <argsstring></argsstring>
         <name>has_commute_</name>
+        <qualifiedname>quantit::conserved::has_commute_</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/quantity_utils.h" line="51" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/quantity_utils.h" bodystart="51" bodyend="-1"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity_utils.h" line="51" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity_utils.h" bodystart="51" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="namespacequantit_1_1conserved_1a2041a5bb8e85fdc26e638ccfa4554a50" prot="public" static="no">
         <templateparamlist>
@@ -152,13 +159,14 @@
         <definition>using quantit::conserved::commute_sig = typedef decltype(std::declval&lt;const T&amp;&gt;().commute(std::declval&lt;T&amp;&gt;()))</definition>
         <argsstring></argsstring>
         <name>commute_sig</name>
+        <qualifiedname>quantit::conserved::commute_sig</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/quantity_utils.h" line="53" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/quantity_utils.h" bodystart="54" bodyend="-1"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity_utils.h" line="53" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity_utils.h" bodystart="54" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="namespacequantit_1_1conserved_1a20e2ce120f1e701b7c8f86733078ed02" prot="public" static="no">
         <templateparamlist>
@@ -170,13 +178,14 @@
         <definition>using quantit::conserved::comparatorequal_sig = typedef decltype(operator==(std::declval&lt;const T&amp;&gt;(), std::declval&lt;const T&amp;&gt;()))</definition>
         <argsstring></argsstring>
         <name>comparatorequal_sig</name>
+        <qualifiedname>quantit::conserved::comparatorequal_sig</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/quantity_utils.h" line="57" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/quantity_utils.h" bodystart="58" bodyend="-1"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity_utils.h" line="57" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity_utils.h" bodystart="58" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="namespacequantit_1_1conserved_1a1ccf2884f449c74d68dc65a4e7d53d1f" prot="public" static="no">
         <templateparamlist>
@@ -188,13 +197,14 @@
         <definition>using quantit::conserved::comparatorequal_member_sig = typedef decltype(std::declval&lt;const T&amp;&gt;().operator==(std::declval&lt;const T&amp;&gt;()))</definition>
         <argsstring></argsstring>
         <name>comparatorequal_member_sig</name>
+        <qualifiedname>quantit::conserved::comparatorequal_member_sig</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/quantity_utils.h" line="60" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/quantity_utils.h" bodystart="61" bodyend="-1"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity_utils.h" line="60" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity_utils.h" bodystart="61" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="namespacequantit_1_1conserved_1a9ff1a8113ba97863fcc4c9dbd44a6a55" prot="public" static="no">
         <templateparamlist>
@@ -206,13 +216,14 @@
         <definition>using quantit::conserved::has_constexpr_equal_member = typedef std::bool_constant&lt;constexprequal_membertest&lt;T&gt;::call()&gt;</definition>
         <argsstring></argsstring>
         <name>has_constexpr_equal_member</name>
+        <qualifiedname>quantit::conserved::has_constexpr_equal_member</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/quantity_utils.h" line="79" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/quantity_utils.h" bodystart="79" bodyend="-1"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity_utils.h" line="79" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity_utils.h" bodystart="79" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="namespacequantit_1_1conserved_1ada82c9a3d0d95b857b5a2d15ac8166bc" prot="public" static="no">
         <templateparamlist>
@@ -224,13 +235,14 @@
         <definition>using quantit::conserved::has_constexpr_equal_outclass = typedef std::bool_constant&lt;constexprequal_test&lt;T&gt;::call()&gt;</definition>
         <argsstring></argsstring>
         <name>has_constexpr_equal_outclass</name>
+        <qualifiedname>quantit::conserved::has_constexpr_equal_outclass</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/quantity_utils.h" line="102" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/quantity_utils.h" bodystart="102" bodyend="-1"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity_utils.h" line="102" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity_utils.h" bodystart="102" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="namespacequantit_1_1conserved_1a1c00a5bb4fb5d288fe8aed67eda4a739" prot="public" static="no">
         <templateparamlist>
@@ -242,13 +254,14 @@
         <definition>using quantit::conserved::has_constexpr_equal = typedef or_&lt;has_constexpr_equal_member&lt;T&gt;, has_constexpr_equal_outclass&lt;T&gt; &gt;</definition>
         <argsstring></argsstring>
         <name>has_constexpr_equal</name>
+        <qualifiedname>quantit::conserved::has_constexpr_equal</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/quantity_utils.h" line="104" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/quantity_utils.h" bodystart="104" bodyend="-1"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity_utils.h" line="104" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity_utils.h" bodystart="104" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="namespacequantit_1_1conserved_1aa05c75acba0b20f825cd30186ae09f6c" prot="public" static="no">
         <templateparamlist>
@@ -260,13 +273,14 @@
         <definition>using quantit::conserved::has_comparatorequal = typedef or_&lt;is_detected_exact&lt;bool, comparatorequal_member_sig, T&gt;, is_detected_exact&lt;bool, comparatorequal_sig, T&gt; &gt;</definition>
         <argsstring></argsstring>
         <name>has_comparatorequal</name>
+        <qualifiedname>quantit::conserved::has_comparatorequal</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/quantity_utils.h" line="107" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/quantity_utils.h" bodystart="107" bodyend="-1"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity_utils.h" line="107" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity_utils.h" bodystart="107" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="namespacequantit_1_1conserved_1add74f6e961aeff86410e1e44ef9617cd" prot="public" static="no">
         <templateparamlist>
@@ -278,13 +292,14 @@
         <definition>using quantit::conserved::comparatornotequal_member_sig = typedef decltype(std::declval&lt;const T&amp;&gt;().operator!=(std::declval&lt;const T&amp;&gt;()))</definition>
         <argsstring></argsstring>
         <name>comparatornotequal_member_sig</name>
+        <qualifiedname>quantit::conserved::comparatornotequal_member_sig</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/quantity_utils.h" line="109" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/quantity_utils.h" bodystart="110" bodyend="-1"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity_utils.h" line="109" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity_utils.h" bodystart="110" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="namespacequantit_1_1conserved_1a8c282dfa5a8a50936c8578374e7d2d57" prot="public" static="no">
         <templateparamlist>
@@ -296,13 +311,14 @@
         <definition>using quantit::conserved::comparatornotequal_sig = typedef decltype(operator!=(std::declval&lt;const T&amp;&gt;(), std::declval&lt;const T&amp;&gt;()))</definition>
         <argsstring></argsstring>
         <name>comparatornotequal_sig</name>
+        <qualifiedname>quantit::conserved::comparatornotequal_sig</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/quantity_utils.h" line="112" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/quantity_utils.h" bodystart="113" bodyend="-1"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity_utils.h" line="112" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity_utils.h" bodystart="113" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="namespacequantit_1_1conserved_1af70619420a3354c5f759832de377e83c" prot="public" static="no">
         <templateparamlist>
@@ -314,13 +330,14 @@
         <definition>using quantit::conserved::has_comparatornotequal = typedef or_&lt;is_detected_exact&lt;bool, comparatornotequal_member_sig, T&gt;, is_detected_exact&lt;bool, comparatornotequal_sig, T&gt; &gt;</definition>
         <argsstring></argsstring>
         <name>has_comparatornotequal</name>
+        <qualifiedname>quantit::conserved::has_comparatornotequal</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/quantity_utils.h" line="115" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/quantity_utils.h" bodystart="117" bodyend="-1"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity_utils.h" line="115" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity_utils.h" bodystart="117" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="namespacequantit_1_1conserved_1a95000e6a6b4a2eb83f594db2ebb94b7b" prot="public" static="no">
         <templateparamlist>
@@ -332,13 +349,14 @@
         <definition>using quantit::conserved::abelian_present = typedef decltype(T::is_Abelian)</definition>
         <argsstring></argsstring>
         <name>abelian_present</name>
+        <qualifiedname>quantit::conserved::abelian_present</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/quantity_utils.h" line="134" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/quantity_utils.h" bodystart="134" bodyend="-1"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity_utils.h" line="134" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity_utils.h" bodystart="134" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="namespacequantit_1_1conserved_1a28fcd84fe217fdc9486b490a726b0de5" prot="public" static="no">
         <templateparamlist>
@@ -352,13 +370,14 @@
         <definition>using quantit::conserved::all_conserved_QuantiT = typedef and_&lt;is_conserved_QuantiT&lt;T&gt;...&gt;</definition>
         <argsstring></argsstring>
         <name>all_conserved_QuantiT</name>
+        <qualifiedname>quantit::conserved::all_conserved_QuantiT</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/quantity_utils.h" line="154" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/quantity_utils.h" bodystart="154" bodyend="-1"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity_utils.h" line="154" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity_utils.h" bodystart="154" bodyend="-1"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="var">
@@ -372,6 +391,7 @@
         <definition>constexpr bool quantit::conserved::is_conserved_QuantiT_v</definition>
         <argsstring></argsstring>
         <name>is_conserved_QuantiT_v</name>
+        <qualifiedname>quantit::conserved::is_conserved_QuantiT_v</qualifiedname>
         <initializer>= <ref refid="structquantit_1_1conserved_1_1is__conserved__QuantiT" kindref="compound">is_conserved_QuantiT</ref>&lt;T&gt;::value</initializer>
         <briefdescription>
         </briefdescription>
@@ -379,7 +399,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/quantity_utils.h" line="151" column="16" bodyfile="/home/alex/project/quantt/include/Conserved/quantity_utils.h" bodystart="151" bodyend="-1"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity_utils.h" line="151" column="16" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity_utils.h" bodystart="151" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="namespacequantit_1_1conserved_1a055e71674b0f6f197fb67084116e28b7" prot="public" static="no" constexpr="yes" mutable="no">
         <templateparamlist>
@@ -393,6 +413,7 @@
         <definition>constexpr bool quantit::conserved::all_group_v</definition>
         <argsstring></argsstring>
         <name>all_group_v</name>
+        <qualifiedname>quantit::conserved::all_group_v</qualifiedname>
         <initializer>= <ref refid="structquantit_1_1and__" kindref="compound">all_conserved_QuantiT</ref>&lt;T...&gt;::value</initializer>
         <briefdescription>
         </briefdescription>
@@ -400,7 +421,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/quantity_utils.h" line="156" column="16" bodyfile="/home/alex/project/quantt/include/Conserved/quantity_utils.h" bodystart="156" bodyend="-1"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity_utils.h" line="156" column="16" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity_utils.h" bodystart="156" bodyend="-1"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="func">
@@ -416,6 +437,7 @@
         <definition>int64_t quantit::conserved::distance2</definition>
         <argsstring>(C&lt; N &gt; a, C&lt; N &gt; b)</argsstring>
         <name>distance2</name>
+        <qualifiedname>quantit::conserved::distance2</qualifiedname>
         <param>
           <type><ref refid="classquantit_1_1conserved_1_1C" kindref="compound">C</ref>&lt; N &gt;</type>
           <declname>a</declname>
@@ -430,7 +452,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/quantity.h" line="242" column="9" bodyfile="/home/alex/project/quantt/include/Conserved/quantity.h" bodystart="242" bodyend="245"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h" line="243" column="9" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h" bodystart="243" bodyend="246"/>
       </memberdef>
       <memberdef kind="function" id="namespacequantit_1_1conserved_1ad81067a44304f4564af20a62c3234442" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
@@ -444,6 +466,7 @@
         <definition>double quantit::conserved::distance</definition>
         <argsstring>(C&lt; N &gt; a, C&lt; N &gt; b)</argsstring>
         <name>distance</name>
+        <qualifiedname>quantit::conserved::distance</qualifiedname>
         <param>
           <type><ref refid="classquantit_1_1conserved_1_1C" kindref="compound">C</ref>&lt; N &gt;</type>
           <declname>a</declname>
@@ -458,13 +481,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/quantity.h" line="247" column="8" bodyfile="/home/alex/project/quantt/include/Conserved/quantity.h" bodystart="247" bodyend="250"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h" line="248" column="8" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h" bodystart="248" bodyend="251"/>
       </memberdef>
       <memberdef kind="function" id="namespacequantit_1_1conserved_1a295e4df8a9722ebe97228820cd2f7014" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>int64_t</type>
         <definition>int64_t quantit::conserved::distance2</definition>
         <argsstring>(Z a, Z b)</argsstring>
         <name>distance2</name>
+        <qualifiedname>quantit::conserved::distance2</qualifiedname>
         <param>
           <type><ref refid="classquantit_1_1conserved_1_1Z" kindref="compound">Z</ref></type>
           <declname>a</declname>
@@ -479,13 +503,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/quantity.h" line="251" column="16" bodyfile="/home/alex/project/quantt/include/Conserved/quantity.h" bodystart="251" bodyend="251"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h" line="252" column="16" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h" bodystart="252" bodyend="252"/>
       </memberdef>
       <memberdef kind="function" id="namespacequantit_1_1conserved_1ab01d278a86ebf124bc1e0355870f1fad" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>double</type>
         <definition>double quantit::conserved::distance</definition>
         <argsstring>(Z a, Z b)</argsstring>
         <name>distance</name>
+        <qualifiedname>quantit::conserved::distance</qualifiedname>
         <param>
           <type><ref refid="classquantit_1_1conserved_1_1Z" kindref="compound">Z</ref></type>
           <declname>a</declname>
@@ -500,13 +525,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/quantity.h" line="252" column="15" bodyfile="/home/alex/project/quantt/include/Conserved/quantity.h" bodystart="252" bodyend="252"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h" line="253" column="15" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h" bodystart="253" bodyend="253"/>
       </memberdef>
       <memberdef kind="function" id="namespacequantit_1_1conserved_1a5e9fa82d0954131b904814c3d2bb4554" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
         <type>void</type>
         <definition>void quantit::conserved::swap</definition>
         <argsstring>(Z &amp;lhs, Z &amp;rhs) noexcept</argsstring>
         <name>swap</name>
+        <qualifiedname>quantit::conserved::swap</qualifiedname>
         <param>
           <type><ref refid="classquantit_1_1conserved_1_1Z" kindref="compound">Z</ref> &amp;</type>
           <declname>lhs</declname>
@@ -521,7 +547,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/quantity.h" line="254" column="13" bodyfile="/home/alex/project/quantt/include/Conserved/quantity.h" bodystart="254" bodyend="254"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h" line="255" column="13" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h" bodystart="255" bodyend="255"/>
       </memberdef>
       <memberdef kind="function" id="namespacequantit_1_1conserved_1a9a22ad7c0635c163b8a4c7e6444cf049" prot="public" static="no" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
         <templateparamlist>
@@ -535,6 +561,7 @@
         <definition>void quantit::conserved::swap</definition>
         <argsstring>(C&lt; N &gt; &amp;lhs, C&lt; N &gt; &amp;rhs) noexcept</argsstring>
         <name>swap</name>
+        <qualifiedname>quantit::conserved::swap</qualifiedname>
         <param>
           <type><ref refid="classquantit_1_1conserved_1_1C" kindref="compound">C</ref>&lt; N &gt; &amp;</type>
           <declname>lhs</declname>
@@ -549,7 +576,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/quantity.h" line="256" column="6" bodyfile="/home/alex/project/quantt/include/Conserved/quantity.h" bodystart="256" bodyend="259"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h" line="257" column="6" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h" bodystart="257" bodyend="260"/>
       </memberdef>
       <memberdef kind="function" id="namespacequantit_1_1conserved_1a8ffce82a2be496c0a1d38267fc7b73f7" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
@@ -561,6 +588,7 @@
         <definition>constexpr T quantit::conserved::op</definition>
         <argsstring>(T lhs, const T &amp;rhs)</argsstring>
         <name>op</name>
+        <qualifiedname>quantit::conserved::op</qualifiedname>
         <param>
           <type>T</type>
           <declname>lhs</declname>
@@ -575,7 +603,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/quantity_utils.h" line="30" column="13" bodyfile="/home/alex/project/quantt/include/Conserved/quantity_utils.h" bodystart="30" bodyend="30"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity_utils.h" line="30" column="13" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity_utils.h" bodystart="30" bodyend="30"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
@@ -583,6 +611,6 @@
     <detaileddescription>
 <para>Groups tend to have <bold>very</bold> short names in the litterature. I want it to be easy to refer to litterature, so we use those short names. So a namespace will protect us from name clashes. </para>
     </detaileddescription>
-    <location file="/home/alex/project/quantt/include/Conserved/quantity.h" line="31" column="1"/>
+    <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h" line="31" column="1"/>
   </compounddef>
 </doxygen>

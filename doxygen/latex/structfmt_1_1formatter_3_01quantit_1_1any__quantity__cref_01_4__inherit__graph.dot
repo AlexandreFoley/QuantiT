@@ -1,0 +1,14 @@
+digraph "fmt::formatter&lt; quantit::any_quantity_cref &gt;"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="fmt::formatter\< quantit\l::any_quantity_cref \>",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node2 -> Node1 [dir="back",color="midnightblue",fontsize="10",style="solid"];
+  Node2 [label="fmt::formatter\< quantit\l::vquantity \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",URL="$structfmt_1_1formatter_3_01quantit_1_1vquantity_01_4.html",tooltip=" "];
+  Node1 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid"];
+  Node3 [label="fmt::formatter\< quantit\l::any_quantity \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",URL="$structfmt_1_1formatter_3_01quantit_1_1any__quantity_01_4.html",tooltip=" "];
+  Node1 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid"];
+  Node4 [label="fmt::formatter\< quantit\l::any_quantity_ref \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",URL="$structfmt_1_1formatter_3_01quantit_1_1any__quantity__ref_01_4.html",tooltip=" "];
+}

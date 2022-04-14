@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
   <compounddef id="structquantit_1_1conserved_1_1constexprequal__test_3_01subject_00_01std_1_1enable__if__t_3_01is_e132d3cd872a172980fdb6e254265e40" kind="struct" language="C++" prot="public">
     <compoundname>quantit::conserved::constexprequal_test&lt; subject, std::enable_if_t&lt; is_detected_v&lt; comparatorequal_sig, subject &gt; &gt; &gt;</compoundname>
     <templateparamlist>
@@ -8,7 +8,7 @@
       </param>
     </templateparamlist>
       <sectiondef kind="public-static-func">
-      <memberdef kind="function" id="structquantit_1_1conserved_1_1constexprequal__test_3_01subject_00_01std_1_1enable__if__t_3_01is_e132d3cd872a172980fdb6e254265e40_1a89a9d0e9e9912ce35fa6165dbe4bb9b3" prot="public" static="yes" constexpr="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+      <memberdef kind="function" id="structquantit_1_1conserved_1_1constexprequal__test_3_01subject_00_01std_1_1enable__if__t_3_01is_e132d3cd872a172980fdb6e254265e40_1a308dda92dfa9fce59d906ba71073688e" prot="public" static="yes" constexpr="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
         <templateparamlist>
           <param>
             <type>int</type>
@@ -17,10 +17,11 @@
             <defval>operator==(subject(), subject())</defval>
           </param>
         </templateparamlist>
-        <type>constexpr static std::true_type</type>
-        <definition>constexpr static std::true_type quantit::conserved::constexprequal_test&lt; subject, std::enable_if_t&lt; is_detected_v&lt; comparatorequal_sig, subject &gt; &gt; &gt;::do_call</definition>
+        <type>constexpr std::true_type</type>
+        <definition>static constexpr std::true_type quantit::conserved::constexprequal_test&lt; subject, std::enable_if_t&lt; is_detected_v&lt; comparatorequal_sig, subject &gt; &gt; &gt;::do_call</definition>
         <argsstring>(int)</argsstring>
         <name>do_call</name>
+        <qualifiedname>quantit::conserved::constexprequal_test&lt; subject, std::enable_if_t&lt; is_detected_v&lt; comparatorequal_sig, subject &gt; &gt; &gt;::do_call</qualifiedname>
         <param>
           <type>int</type>
         </param>
@@ -30,13 +31,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/quantity_utils.h" line="89" column="33" bodyfile="/home/alex/project/quantt/include/Conserved/quantity_utils.h" bodystart="89" bodyend="89"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity_utils.h" line="89" column="33" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity_utils.h" bodystart="89" bodyend="89"/>
       </memberdef>
-      <memberdef kind="function" id="structquantit_1_1conserved_1_1constexprequal__test_3_01subject_00_01std_1_1enable__if__t_3_01is_e132d3cd872a172980fdb6e254265e40_1ab16691b0e6d366b43504d6a59c2fa0b1" prot="public" static="yes" constexpr="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
-        <type>constexpr static std::false_type</type>
-        <definition>constexpr static std::false_type quantit::conserved::constexprequal_test&lt; subject, std::enable_if_t&lt; is_detected_v&lt; comparatorequal_sig, subject &gt; &gt; &gt;::do_call</definition>
+      <memberdef kind="function" id="structquantit_1_1conserved_1_1constexprequal__test_3_01subject_00_01std_1_1enable__if__t_3_01is_e132d3cd872a172980fdb6e254265e40_1a8b9df241c05aed951b634d021910815a" prot="public" static="yes" constexpr="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>constexpr std::false_type</type>
+        <definition>static constexpr std::false_type quantit::conserved::constexprequal_test&lt; subject, std::enable_if_t&lt; is_detected_v&lt; comparatorequal_sig, subject &gt; &gt; &gt;::do_call</definition>
         <argsstring>(...)</argsstring>
         <name>do_call</name>
+        <qualifiedname>quantit::conserved::constexprequal_test&lt; subject, std::enable_if_t&lt; is_detected_v&lt; comparatorequal_sig, subject &gt; &gt; &gt;::do_call</qualifiedname>
         <param>
           <type>...</type>
         </param>
@@ -46,31 +48,32 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/quantity_utils.h" line="91" column="34" bodyfile="/home/alex/project/quantt/include/Conserved/quantity_utils.h" bodystart="91" bodyend="91"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity_utils.h" line="91" column="34" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity_utils.h" bodystart="91" bodyend="91"/>
       </memberdef>
-      <memberdef kind="function" id="structquantit_1_1conserved_1_1constexprequal__test_3_01subject_00_01std_1_1enable__if__t_3_01is_e132d3cd872a172980fdb6e254265e40_1aba9ab4bcb3e9551a8f82e07093896abf" prot="public" static="yes" constexpr="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
-        <type>constexpr static bool</type>
-        <definition>constexpr static bool quantit::conserved::constexprequal_test&lt; subject, std::enable_if_t&lt; is_detected_v&lt; comparatorequal_sig, subject &gt; &gt; &gt;::call</definition>
+      <memberdef kind="function" id="structquantit_1_1conserved_1_1constexprequal__test_3_01subject_00_01std_1_1enable__if__t_3_01is_e132d3cd872a172980fdb6e254265e40_1a9151712a8d9ee94ed747a70552eb3051" prot="public" static="yes" constexpr="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>constexpr bool</type>
+        <definition>static constexpr bool quantit::conserved::constexprequal_test&lt; subject, std::enable_if_t&lt; is_detected_v&lt; comparatorequal_sig, subject &gt; &gt; &gt;::call</definition>
         <argsstring>()</argsstring>
         <name>call</name>
+        <qualifiedname>quantit::conserved::constexprequal_test&lt; subject, std::enable_if_t&lt; is_detected_v&lt; comparatorequal_sig, subject &gt; &gt; &gt;::call</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/quantity_utils.h" line="93" column="23" bodyfile="/home/alex/project/quantt/include/Conserved/quantity_utils.h" bodystart="93" bodyend="93"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity_utils.h" line="93" column="23" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity_utils.h" bodystart="93" bodyend="93"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/alex/project/quantt/include/Conserved/quantity_utils.h" line="86" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/quantity_utils.h" bodystart="87" bodyend="94"/>
+    <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity_utils.h" line="86" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity_utils.h" bodystart="87" bodyend="94"/>
     <listofallmembers>
-      <member refid="structquantit_1_1conserved_1_1constexprequal__test_3_01subject_00_01std_1_1enable__if__t_3_01is_e132d3cd872a172980fdb6e254265e40_1aba9ab4bcb3e9551a8f82e07093896abf" prot="public" virt="non-virtual"><scope>quantit::conserved::constexprequal_test&lt; subject, std::enable_if_t&lt; is_detected_v&lt; comparatorequal_sig, subject &gt; &gt; &gt;</scope><name>call</name></member>
-      <member refid="structquantit_1_1conserved_1_1constexprequal__test_3_01subject_00_01std_1_1enable__if__t_3_01is_e132d3cd872a172980fdb6e254265e40_1a89a9d0e9e9912ce35fa6165dbe4bb9b3" prot="public" virt="non-virtual"><scope>quantit::conserved::constexprequal_test&lt; subject, std::enable_if_t&lt; is_detected_v&lt; comparatorequal_sig, subject &gt; &gt; &gt;</scope><name>do_call</name></member>
-      <member refid="structquantit_1_1conserved_1_1constexprequal__test_3_01subject_00_01std_1_1enable__if__t_3_01is_e132d3cd872a172980fdb6e254265e40_1ab16691b0e6d366b43504d6a59c2fa0b1" prot="public" virt="non-virtual"><scope>quantit::conserved::constexprequal_test&lt; subject, std::enable_if_t&lt; is_detected_v&lt; comparatorequal_sig, subject &gt; &gt; &gt;</scope><name>do_call</name></member>
+      <member refid="structquantit_1_1conserved_1_1constexprequal__test_3_01subject_00_01std_1_1enable__if__t_3_01is_e132d3cd872a172980fdb6e254265e40_1a9151712a8d9ee94ed747a70552eb3051" prot="public" virt="non-virtual"><scope>quantit::conserved::constexprequal_test&lt; subject, std::enable_if_t&lt; is_detected_v&lt; comparatorequal_sig, subject &gt; &gt; &gt;</scope><name>call</name></member>
+      <member refid="structquantit_1_1conserved_1_1constexprequal__test_3_01subject_00_01std_1_1enable__if__t_3_01is_e132d3cd872a172980fdb6e254265e40_1a308dda92dfa9fce59d906ba71073688e" prot="public" virt="non-virtual"><scope>quantit::conserved::constexprequal_test&lt; subject, std::enable_if_t&lt; is_detected_v&lt; comparatorequal_sig, subject &gt; &gt; &gt;</scope><name>do_call</name></member>
+      <member refid="structquantit_1_1conserved_1_1constexprequal__test_3_01subject_00_01std_1_1enable__if__t_3_01is_e132d3cd872a172980fdb6e254265e40_1a8b9df241c05aed951b634d021910815a" prot="public" virt="non-virtual"><scope>quantit::conserved::constexprequal_test&lt; subject, std::enable_if_t&lt; is_detected_v&lt; comparatorequal_sig, subject &gt; &gt; &gt;</scope><name>do_call</name></member>
     </listofallmembers>
   </compounddef>
 </doxygen>

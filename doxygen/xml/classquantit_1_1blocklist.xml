@@ -1,12 +1,12 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
   <compounddef id="classquantit_1_1blocklist" kind="class" language="C++" prot="public">
     <compoundname>quantit::blocklist</compoundname>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" line="55" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/quantity_vector_impl.h" bodystart="56" bodyend="57"/>
+    <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector_impl.h" line="55" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/quantity_vector_impl.h" bodystart="56" bodyend="57"/>
     <listofallmembers>
     </listofallmembers>
   </compounddef>

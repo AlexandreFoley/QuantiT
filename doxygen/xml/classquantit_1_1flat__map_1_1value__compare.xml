@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
   <compounddef id="classquantit_1_1flat__map_1_1value__compare" kind="class" language="C++" prot="public">
     <compoundname>quantit::flat_map::value_compare</compoundname>
       <sectiondef kind="friend">
@@ -8,6 +8,7 @@
         <definition>friend class flat_map</definition>
         <argsstring></argsstring>
         <name>flat_map</name>
+        <qualifiedname>quantit::flat_map::value_compare::flat_map</qualifiedname>
         <param>
           <type><ref refid="classquantit_1_1flat__map" kindref="compound">flat_map</ref></type>
         </param>
@@ -17,7 +18,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/blockTensor/flat_map.h" line="125" column="1" bodyfile="/home/alex/project/quantt/include/blockTensor/flat_map.h" bodystart="125" bodyend="-1"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/blockTensor/flat_map.h" line="125" column="14" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/blockTensor/flat_map.h" bodystart="125" bodyend="-1"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="protected-attrib">
@@ -26,13 +27,14 @@
         <definition>key_compare quantit::flat_map&lt; Key, Value, Comp_less, Allocator, Array &gt;::value_compare::comp</definition>
         <argsstring></argsstring>
         <name>comp</name>
+        <qualifiedname>quantit::flat_map::value_compare::comp</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/blockTensor/flat_map.h" line="128" column="13" bodyfile="/home/alex/project/quantt/include/blockTensor/flat_map.h" bodystart="128" bodyend="-1"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/blockTensor/flat_map.h" line="128" column="13" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/blockTensor/flat_map.h" bodystart="128" bodyend="-1"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="public-func">
@@ -41,6 +43,7 @@
         <definition>quantit::flat_map&lt; Key, Value, Comp_less, Allocator, Array &gt;::value_compare::value_compare</definition>
         <argsstring>(Comp_less _c)</argsstring>
         <name>value_compare</name>
+        <qualifiedname>quantit::flat_map::value_compare::value_compare</qualifiedname>
         <param>
           <type>Comp_less</type>
           <declname>_c</declname>
@@ -51,26 +54,28 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/blockTensor/flat_map.h" line="131" column="1" bodyfile="/home/alex/project/quantt/include/blockTensor/flat_map.h" bodystart="131" bodyend="131"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/blockTensor/flat_map.h" line="131" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/blockTensor/flat_map.h" bodystart="131" bodyend="131"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1flat__map_1_1value__compare_1ae3758ac18d064e5a1a9ce911359db386" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type></type>
         <definition>quantit::flat_map&lt; Key, Value, Comp_less, Allocator, Array &gt;::value_compare::value_compare</definition>
         <argsstring>()</argsstring>
         <name>value_compare</name>
+        <qualifiedname>quantit::flat_map::value_compare::value_compare</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/blockTensor/flat_map.h" line="132" column="1" bodyfile="/home/alex/project/quantt/include/blockTensor/flat_map.h" bodystart="132" bodyend="132"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/blockTensor/flat_map.h" line="132" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/blockTensor/flat_map.h" bodystart="132" bodyend="132"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1flat__map_1_1value__compare_1a21368b70f320ea805cfa22e13f631185" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>bool</type>
         <definition>bool quantit::flat_map&lt; Key, Value, Comp_less, Allocator, Array &gt;::value_compare::operator()</definition>
         <argsstring>(const value_type &amp;a, const value_type &amp;b) const</argsstring>
         <name>operator()</name>
+        <qualifiedname>quantit::flat_map::value_compare::operator()</qualifiedname>
         <param>
           <type>const value_type &amp;</type>
           <declname>a</declname>
@@ -85,13 +90,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/blockTensor/flat_map.h" line="133" column="6" bodyfile="/home/alex/project/quantt/include/blockTensor/flat_map.h" bodystart="133" bodyend="133"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/blockTensor/flat_map.h" line="133" column="6" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/blockTensor/flat_map.h" bodystart="133" bodyend="133"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1flat__map_1_1value__compare_1adc137c386cbb4f30d4e69a3414a1033f" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>bool</type>
         <definition>bool quantit::flat_map&lt; Key, Value, Comp_less, Allocator, Array &gt;::value_compare::operator()</definition>
         <argsstring>(const value_type &amp;a, const key_type &amp;b) const</argsstring>
         <name>operator()</name>
+        <qualifiedname>quantit::flat_map::value_compare::operator()</qualifiedname>
         <param>
           <type>const value_type &amp;</type>
           <declname>a</declname>
@@ -106,13 +112,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/blockTensor/flat_map.h" line="134" column="6" bodyfile="/home/alex/project/quantt/include/blockTensor/flat_map.h" bodystart="134" bodyend="134"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/blockTensor/flat_map.h" line="134" column="6" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/blockTensor/flat_map.h" bodystart="134" bodyend="134"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1flat__map_1_1value__compare_1ad45d19fdeee630743bb672840a6491d4" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>bool</type>
         <definition>bool quantit::flat_map&lt; Key, Value, Comp_less, Allocator, Array &gt;::value_compare::operator()</definition>
         <argsstring>(const key_type &amp;a, const value_type &amp;b) const</argsstring>
         <name>operator()</name>
+        <qualifiedname>quantit::flat_map::value_compare::operator()</qualifiedname>
         <param>
           <type>const key_type &amp;</type>
           <declname>a</declname>
@@ -127,13 +134,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/blockTensor/flat_map.h" line="135" column="6" bodyfile="/home/alex/project/quantt/include/blockTensor/flat_map.h" bodystart="135" bodyend="135"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/blockTensor/flat_map.h" line="135" column="6" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/blockTensor/flat_map.h" bodystart="135" bodyend="135"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1flat__map_1_1value__compare_1a8ef89c00273cce77edb5c709345d41e6" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>bool</type>
         <definition>bool quantit::flat_map&lt; Key, Value, Comp_less, Allocator, Array &gt;::value_compare::operator()</definition>
         <argsstring>(const key_type &amp;a, const key_type &amp;b) const</argsstring>
         <name>operator()</name>
+        <qualifiedname>quantit::flat_map::value_compare::operator()</qualifiedname>
         <param>
           <type>const key_type &amp;</type>
           <declname>a</declname>
@@ -148,14 +156,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/blockTensor/flat_map.h" line="136" column="6" bodyfile="/home/alex/project/quantt/include/blockTensor/flat_map.h" bodystart="136" bodyend="136"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/blockTensor/flat_map.h" line="136" column="6" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/blockTensor/flat_map.h" bodystart="136" bodyend="136"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/alex/project/quantt/include/blockTensor/flat_map.h" line="123" column="1" bodyfile="/home/alex/project/quantt/include/blockTensor/flat_map.h" bodystart="124" bodyend="137"/>
+    <location file="/Users/alex/Documents/Prog/QuantiT/include/blockTensor/flat_map.h" line="123" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/blockTensor/flat_map.h" bodystart="124" bodyend="137"/>
     <listofallmembers>
       <member refid="classquantit_1_1flat__map_1_1value__compare_1af597be1b1941e3bf727daa3355d55089" prot="protected" virt="non-virtual"><scope>quantit::flat_map::value_compare</scope><name>comp</name></member>
       <member refid="classquantit_1_1flat__map_1_1value__compare_1adbbd10b106f181b5f6ceb099a3bd36a9" prot="private" virt="non-virtual"><scope>quantit::flat_map::value_compare</scope><name>flat_map</name></member>

@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
   <compounddef id="classquantit_1_1any__quantity" kind="class" language="C++" prot="public" final="yes">
     <compoundname>quantit::any_quantity</compoundname>
     <includes refid="cquantity_8h" local="no">cquantity.h</includes>
@@ -9,13 +9,14 @@
         <definition>std::unique_ptr&lt;vquantity&gt; quantit::any_quantity::impl</definition>
         <argsstring></argsstring>
         <name>impl</name>
+        <qualifiedname>quantit::any_quantity::impl</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/cquantity.h" line="42" column="17" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/cquantity.h" bodystart="42" bodyend="-1"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h" line="42" column="17" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h" bodystart="42" bodyend="-1"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="public-func">
@@ -24,6 +25,7 @@
         <definition>quantit::any_quantity::any_quantity</definition>
         <argsstring>(const vquantity &amp;other)</argsstring>
         <name>any_quantity</name>
+        <qualifiedname>quantit::any_quantity::any_quantity</qualifiedname>
         <param>
           <type>const <ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref> &amp;</type>
           <declname>other</declname>
@@ -34,13 +36,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/cquantity.h" line="48" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/cquantity.h" bodystart="48" bodyend="48"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h" line="48" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h" bodystart="48" bodyend="48"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity_1a1863cfdbac4bb1ae90a6ad97ddf8215b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type></type>
         <definition>quantit::any_quantity::any_quantity</definition>
         <argsstring>(std::unique_ptr&lt; vquantity &gt; &amp;&amp;_impl)</argsstring>
         <name>any_quantity</name>
+        <qualifiedname>quantit::any_quantity::any_quantity</qualifiedname>
         <param>
           <type>std::unique_ptr&lt; <ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref> &gt; &amp;&amp;</type>
           <declname>_impl</declname>
@@ -51,7 +54,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/cquantity.h" line="51" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/cquantity.h" bodystart="51" bodyend="51"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h" line="51" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h" bodystart="51" bodyend="51"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity_1a0d55a33316ff6b8caf4ed91fcaa98496" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <templateparamlist>
@@ -69,6 +72,7 @@
         <definition>quantit::any_quantity::any_quantity</definition>
         <argsstring>(Groups... grps)</argsstring>
         <name>any_quantity</name>
+        <qualifiedname>quantit::any_quantity::any_quantity</qualifiedname>
         <param>
           <type>Groups...</type>
           <declname>grps</declname>
@@ -107,13 +111,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/cquantity.h" line="68" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/cquantity.h" bodystart="68" bodyend="75"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h" line="68" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h" bodystart="68" bodyend="75"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity_1a00bc0f329e8f9bb6c20a4736bd214400" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type></type>
         <definition>quantit::any_quantity::any_quantity</definition>
         <argsstring>()</argsstring>
         <name>any_quantity</name>
+        <qualifiedname>quantit::any_quantity::any_quantity</qualifiedname>
         <briefdescription>
 <para>Construct a new <ref refid="classquantit_1_1any__quantity" kindref="compound">any_quantity</ref> object, initialized with a representation of the trivial group. </para>
         </briefdescription>
@@ -121,13 +126,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/cquantity.h" line="81" column="1"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h" line="81" column="1"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity_1a767df070bdc539bc0849f1bf2501af3a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type></type>
         <definition>quantit::any_quantity::any_quantity</definition>
         <argsstring>(const any_quantity &amp;other)</argsstring>
         <name>any_quantity</name>
+        <qualifiedname>quantit::any_quantity::any_quantity</qualifiedname>
         <param>
           <type>const <ref refid="classquantit_1_1any__quantity" kindref="compound">any_quantity</ref> &amp;</type>
           <declname>other</declname>
@@ -138,13 +144,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/cquantity.h" line="82" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/cquantity.h" bodystart="82" bodyend="85"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h" line="82" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h" bodystart="82" bodyend="85"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity_1a1d6a84eead603a1dba8f89d55a374da8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type></type>
         <definition>quantit::any_quantity::any_quantity</definition>
         <argsstring>(any_quantity &amp;&amp;)=default</argsstring>
         <name>any_quantity</name>
+        <qualifiedname>quantit::any_quantity::any_quantity</qualifiedname>
         <param>
           <type><ref refid="classquantit_1_1any__quantity" kindref="compound">any_quantity</ref> &amp;&amp;</type>
         </param>
@@ -154,39 +161,42 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/cquantity.h" line="88" column="1"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h" line="88" column="1"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity_1a41e86ea3afdd514bd530f293940100ee" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type><ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref> &amp;</type>
         <definition>vquantity &amp; quantit::any_quantity::get</definition>
         <argsstring>()</argsstring>
         <name>get</name>
+        <qualifiedname>quantit::any_quantity::get</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/cquantity.h" line="90" column="11" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/cquantity.h" bodystart="288" bodyend="288"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h" line="90" column="11" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h" bodystart="288" bodyend="288"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity_1a7bd0acf869c5f45532d1a683f696541b" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>const <ref refid="classquantit_1_1vquantity" kindref="compound">vquantity</ref> &amp;</type>
         <definition>const vquantity &amp; quantit::any_quantity::get</definition>
         <argsstring>() const</argsstring>
         <name>get</name>
+        <qualifiedname>quantit::any_quantity::get</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/cquantity.h" line="91" column="17" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/cquantity.h" bodystart="289" bodyend="289"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h" line="91" column="17" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h" bodystart="289" bodyend="289"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity_1ad0d315c7b2da8a1328e2b902835f22d4" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
         <type>void</type>
         <definition>void quantit::any_quantity::swap</definition>
         <argsstring>(any_quantity &amp;other) noexcept</argsstring>
         <name>swap</name>
+        <qualifiedname>quantit::any_quantity::swap</qualifiedname>
         <param>
           <type><ref refid="classquantit_1_1any__quantity" kindref="compound">any_quantity</ref> &amp;</type>
           <declname>other</declname>
@@ -208,13 +218,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/cquantity.h" line="98" column="6" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/cquantity.h" bodystart="218" bodyend="222"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h" line="98" column="6" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h" bodystart="218" bodyend="222"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity_1a90757051196169d5e2d10787de6ed9f6" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
         <definition>void quantit::any_quantity::swap</definition>
         <argsstring>(any_quantity_ref other)</argsstring>
         <name>swap</name>
+        <qualifiedname>quantit::any_quantity::swap</qualifiedname>
         <param>
           <type><ref refid="classquantit_1_1vquantity" kindref="compound">any_quantity_ref</ref></type>
           <declname>other</declname>
@@ -225,13 +236,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/cquantity.h" line="100" column="6" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/cquantity.h" bodystart="245" bodyend="245"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h" line="100" column="6" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h" bodystart="245" bodyend="245"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity_1aa8c093a2b1d5c34d94f3ab592ff7e13d" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type><ref refid="classquantit_1_1any__quantity" kindref="compound">any_quantity</ref></type>
         <definition>any_quantity quantit::any_quantity::neutral</definition>
         <argsstring>() const</argsstring>
         <name>neutral</name>
+        <qualifiedname>quantit::any_quantity::neutral</qualifiedname>
         <briefdescription>
 <para>generate the neutral element of the underlying gorup. </para>
         </briefdescription>
@@ -242,13 +254,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/cquantity.h" line="107" column="14" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/cquantity.h" bodystart="191" bodyend="191"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h" line="107" column="14" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h" bodystart="191" bodyend="191"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity_1a6b6c29d553dcf03438472ddc7b5a95b1" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type><ref refid="classquantit_1_1vquantity" kindref="compound">any_quantity_ref</ref></type>
         <definition>any_quantity_ref quantit::any_quantity::operator=</definition>
         <argsstring>(any_quantity_cref other)</argsstring>
         <name>operator=</name>
+        <qualifiedname>quantit::any_quantity::operator=</qualifiedname>
         <param>
           <type><ref refid="classquantit_1_1vquantity" kindref="compound">any_quantity_cref</ref></type>
           <declname>other</declname>
@@ -272,13 +285,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/cquantity.h" line="115" column="18" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/cquantity.h" bodystart="262" bodyend="271"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h" line="115" column="18" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h" bodystart="262" bodyend="271"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity_1a1c328cdd7adb6fb98dcf9055498a8f7f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type><ref refid="classquantit_1_1vquantity" kindref="compound">any_quantity_ref</ref></type>
         <definition>any_quantity_ref quantit::any_quantity::operator=</definition>
         <argsstring>(any_quantity_ref other)</argsstring>
         <name>operator=</name>
+        <qualifiedname>quantit::any_quantity::operator=</qualifiedname>
         <param>
           <type><ref refid="classquantit_1_1vquantity" kindref="compound">any_quantity_ref</ref></type>
           <declname>other</declname>
@@ -289,13 +303,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/cquantity.h" line="116" column="18"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h" line="116" column="18"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity_1ae77d58e9bfa7a7647d66926e16c8904f" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type><ref refid="classquantit_1_1vquantity" kindref="compound">any_quantity_ref</ref></type>
         <definition>any_quantity_ref quantit::any_quantity::operator=</definition>
         <argsstring>(const any_quantity &amp;other)</argsstring>
         <name>operator=</name>
+        <qualifiedname>quantit::any_quantity::operator=</qualifiedname>
         <param>
           <type>const <ref refid="classquantit_1_1any__quantity" kindref="compound">any_quantity</ref> &amp;</type>
           <declname>other</declname>
@@ -306,13 +321,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/cquantity.h" line="117" column="18" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/cquantity.h" bodystart="240" bodyend="244"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h" line="117" column="18" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h" bodystart="240" bodyend="244"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity_1a09b8d708df66713eea0cb6906d7659e3" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type><ref refid="classquantit_1_1vquantity" kindref="compound">any_quantity_ref</ref></type>
         <definition>any_quantity_ref quantit::any_quantity::operator=</definition>
         <argsstring>(any_quantity &amp;&amp;other)</argsstring>
         <name>operator=</name>
+        <qualifiedname>quantit::any_quantity::operator=</qualifiedname>
         <param>
           <type><ref refid="classquantit_1_1any__quantity" kindref="compound">any_quantity</ref> &amp;&amp;</type>
           <declname>other</declname>
@@ -323,13 +339,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/cquantity.h" line="118" column="18" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/cquantity.h" bodystart="223" bodyend="228"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h" line="118" column="18" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h" bodystart="223" bodyend="228"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity_1ae056980308dca3d6fda141061ce1e29e" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type></type>
         <definition>quantit::any_quantity::operator any_quantity_cref</definition>
         <argsstring>() const</argsstring>
         <name>operator any_quantity_cref</name>
+        <qualifiedname>quantit::any_quantity::operator any_quantity_cref</qualifiedname>
         <briefdescription>
 <para>implicit conversion to the reference to const type </para>
         </briefdescription>
@@ -340,13 +357,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/cquantity.h" line="124" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/cquantity.h" bodystart="248" bodyend="248"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h" line="124" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h" bodystart="248" bodyend="248"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity_1a890408ca918ea9cb0de2e36b5323d282" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type></type>
         <definition>quantit::any_quantity::operator any_quantity_ref</definition>
         <argsstring>()</argsstring>
         <name>operator any_quantity_ref</name>
+        <qualifiedname>quantit::any_quantity::operator any_quantity_ref</qualifiedname>
         <briefdescription>
 <para>implicit conversion to the reference type </para>
         </briefdescription>
@@ -357,26 +375,28 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/cquantity.h" line="130" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/cquantity.h" bodystart="249" bodyend="249"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h" line="130" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h" bodystart="249" bodyend="249"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity_1a7443a3a827eaa958ac86bdc3c26c95e5" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type></type>
         <definition>quantit::any_quantity::~any_quantity</definition>
         <argsstring>()</argsstring>
         <name>~any_quantity</name>
+        <qualifiedname>quantit::any_quantity::~any_quantity</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/cquantity.h" line="132" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/cquantity.h" bodystart="132" bodyend="132"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h" line="132" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h" bodystart="132" bodyend="132"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity_1a9c54f38103926637b9d7717c4ccd3398" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type><ref refid="classquantit_1_1vquantity" kindref="compound">any_quantity_ref</ref></type>
         <definition>any_quantity_ref quantit::any_quantity::operator*=</definition>
         <argsstring>(any_quantity_cref other)</argsstring>
         <name>operator*=</name>
+        <qualifiedname>quantit::any_quantity::operator*=</qualifiedname>
         <param>
           <type><ref refid="classquantit_1_1vquantity" kindref="compound">any_quantity_cref</ref></type>
           <declname>other</declname>
@@ -400,13 +420,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/cquantity.h" line="140" column="18" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/cquantity.h" bodystart="250" bodyend="254"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h" line="140" column="18" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h" bodystart="250" bodyend="254"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity_1a83fb9cad11b7f0f589c698301093b3bf" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type><ref refid="classquantit_1_1vquantity" kindref="compound">any_quantity_ref</ref></type>
         <definition>any_quantity_ref quantit::any_quantity::operator+=</definition>
         <argsstring>(any_quantity_cref other)</argsstring>
         <name>operator+=</name>
+        <qualifiedname>quantit::any_quantity::operator+=</qualifiedname>
         <param>
           <type><ref refid="classquantit_1_1vquantity" kindref="compound">any_quantity_cref</ref></type>
           <declname>other</declname>
@@ -417,13 +438,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/cquantity.h" line="141" column="18" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/cquantity.h" bodystart="273" bodyend="273"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h" line="141" column="18" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h" bodystart="273" bodyend="273"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity_1a154e128e37a2c5385d7d3293b8b5971b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type><ref refid="classquantit_1_1vquantity" kindref="compound">any_quantity_ref</ref></type>
         <definition>any_quantity_ref quantit::any_quantity::op</definition>
         <argsstring>(any_quantity_cref other, bool cond)</argsstring>
         <name>op</name>
+        <qualifiedname>quantit::any_quantity::op</qualifiedname>
         <param>
           <type><ref refid="classquantit_1_1vquantity" kindref="compound">any_quantity_cref</ref></type>
           <declname>other</declname>
@@ -438,13 +460,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/cquantity.h" line="142" column="18" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/cquantity.h" bodystart="256" bodyend="260"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h" line="142" column="18" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h" bodystart="256" bodyend="260"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity_1a547346ca6b62b9c7ef8da68c5f5d2f2b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type><ref refid="classquantit_1_1vquantity" kindref="compound">any_quantity_ref</ref></type>
         <definition>any_quantity_ref quantit::any_quantity::inverse_</definition>
         <argsstring>()</argsstring>
         <name>inverse_</name>
+        <qualifiedname>quantit::any_quantity::inverse_</qualifiedname>
         <briefdescription>
 <para>in place inverse </para>
         </briefdescription>
@@ -455,13 +478,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/cquantity.h" line="164" column="18" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/cquantity.h" bodystart="229" bodyend="233"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h" line="164" column="18" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h" bodystart="229" bodyend="233"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity_1acc3573b702443d7407650cd46ff4befe" prot="public" static="no" const="yes" explicit="no" inline="yes" refqual="lvalue" virt="non-virtual">
         <type><ref refid="classquantit_1_1any__quantity" kindref="compound">any_quantity</ref></type>
         <definition>any_quantity quantit::any_quantity::inverse</definition>
         <argsstring>() const &amp;</argsstring>
         <name>inverse</name>
+        <qualifiedname>quantit::any_quantity::inverse</qualifiedname>
         <briefdescription>
 <para>return a new <ref refid="classquantit_1_1any__quantity" kindref="compound">any_quantity</ref> object that is the inverse of this. </para>
         </briefdescription>
@@ -472,20 +496,21 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/cquantity.h" line="170" column="14" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/cquantity.h" bodystart="234" bodyend="234"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h" line="170" column="14" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h" bodystart="234" bodyend="234"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1any__quantity_1abd368f8d264f9a9650ed1f4ea5aabc29" prot="public" static="no" const="no" explicit="no" inline="yes" refqual="rvalue" virt="non-virtual">
         <type><ref refid="classquantit_1_1any__quantity" kindref="compound">any_quantity</ref></type>
         <definition>any_quantity quantit::any_quantity::inverse</definition>
         <argsstring>() &amp;&amp;</argsstring>
         <name>inverse</name>
+        <qualifiedname>quantit::any_quantity::inverse</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/cquantity.h" line="171" column="14" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/cquantity.h" bodystart="235" bodyend="239"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h" line="171" column="14" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h" bodystart="235" bodyend="239"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="friend">
@@ -494,6 +519,7 @@
         <definition>any_quantity operator*</definition>
         <argsstring>(any_quantity_cref lhs, any_quantity_cref rhs)</argsstring>
         <name>operator*</name>
+        <qualifiedname>quantit::any_quantity::operator*</qualifiedname>
         <param>
           <type><ref refid="classquantit_1_1vquantity" kindref="compound">any_quantity_cref</ref></type>
           <declname>lhs</declname>
@@ -529,13 +555,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/cquantity.h" line="150" column="21" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/cquantity.h" bodystart="255" bodyend="255"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h" line="150" column="21" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h" bodystart="255" bodyend="255"/>
       </memberdef>
       <memberdef kind="friend" id="classquantit_1_1any__quantity_1a5015430246a1f5c6b0ce20156dbe84f3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type><ref refid="classquantit_1_1any__quantity" kindref="compound">any_quantity</ref></type>
         <definition>any_quantity operator+</definition>
         <argsstring>(any_quantity_cref lhs, any_quantity_cref rhs)</argsstring>
         <name>operator+</name>
+        <qualifiedname>quantit::any_quantity::operator+</qualifiedname>
         <param>
           <type><ref refid="classquantit_1_1vquantity" kindref="compound">any_quantity_cref</ref></type>
           <declname>lhs</declname>
@@ -550,13 +577,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/cquantity.h" line="151" column="21" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/cquantity.h" bodystart="261" bodyend="261"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h" line="151" column="21" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h" bodystart="261" bodyend="261"/>
       </memberdef>
       <memberdef kind="friend" id="classquantit_1_1any__quantity_1a15b3013775efa0739e9990a02819f7b8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type><ref refid="classquantit_1_1any__quantity" kindref="compound">any_quantity</ref></type>
         <definition>any_quantity operator*</definition>
         <argsstring>(any_quantity_cref lhs, any_quantity &amp;&amp;rhs)</argsstring>
         <name>operator*</name>
+        <qualifiedname>quantit::any_quantity::operator*</qualifiedname>
         <param>
           <type><ref refid="classquantit_1_1vquantity" kindref="compound">any_quantity_cref</ref></type>
           <declname>lhs</declname>
@@ -571,13 +599,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/cquantity.h" line="152" column="21" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/cquantity.h" bodystart="291" bodyend="295"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h" line="152" column="21" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h" bodystart="291" bodyend="295"/>
       </memberdef>
       <memberdef kind="friend" id="classquantit_1_1any__quantity_1a67a57b391b23657b1e60e29c9331b753" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type><ref refid="classquantit_1_1any__quantity" kindref="compound">any_quantity</ref></type>
         <definition>any_quantity operator+</definition>
         <argsstring>(any_quantity_cref lhs, any_quantity &amp;&amp;rhs)</argsstring>
         <name>operator+</name>
+        <qualifiedname>quantit::any_quantity::operator+</qualifiedname>
         <param>
           <type><ref refid="classquantit_1_1vquantity" kindref="compound">any_quantity_cref</ref></type>
           <declname>lhs</declname>
@@ -592,13 +621,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/cquantity.h" line="153" column="21" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/cquantity.h" bodystart="296" bodyend="300"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h" line="153" column="21" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h" bodystart="296" bodyend="300"/>
       </memberdef>
       <memberdef kind="friend" id="classquantit_1_1any__quantity_1a061732166ad36e4c1cb93e9ff98b1ac2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type><ref refid="classquantit_1_1any__quantity" kindref="compound">any_quantity</ref></type>
         <definition>any_quantity operator*</definition>
         <argsstring>(any_quantity &amp;&amp;lhs, any_quantity_cref rhs)</argsstring>
         <name>operator*</name>
+        <qualifiedname>quantit::any_quantity::operator*</qualifiedname>
         <param>
           <type><ref refid="classquantit_1_1any__quantity" kindref="compound">any_quantity</ref> &amp;&amp;</type>
           <declname>lhs</declname>
@@ -613,13 +643,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/cquantity.h" line="154" column="21" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/cquantity.h" bodystart="301" bodyend="305"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h" line="154" column="21" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h" bodystart="301" bodyend="305"/>
       </memberdef>
       <memberdef kind="friend" id="classquantit_1_1any__quantity_1a4fa66fb0e94a92fa2047fae70a86eecc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type><ref refid="classquantit_1_1any__quantity" kindref="compound">any_quantity</ref></type>
         <definition>any_quantity operator+</definition>
         <argsstring>(any_quantity &amp;&amp;lhs, any_quantity_cref rhs)</argsstring>
         <name>operator+</name>
+        <qualifiedname>quantit::any_quantity::operator+</qualifiedname>
         <param>
           <type><ref refid="classquantit_1_1any__quantity" kindref="compound">any_quantity</ref> &amp;&amp;</type>
           <declname>lhs</declname>
@@ -634,13 +665,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/cquantity.h" line="155" column="21" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/cquantity.h" bodystart="306" bodyend="310"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h" line="155" column="21" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h" bodystart="306" bodyend="310"/>
       </memberdef>
       <memberdef kind="friend" id="classquantit_1_1any__quantity_1ad777e0adb4130624f6ef2a113a652b3f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type><ref refid="classquantit_1_1any__quantity" kindref="compound">any_quantity</ref></type>
         <definition>any_quantity operator*</definition>
         <argsstring>(any_quantity &amp;&amp;lhs, any_quantity &amp;&amp;rhs)</argsstring>
         <name>operator*</name>
+        <qualifiedname>quantit::any_quantity::operator*</qualifiedname>
         <param>
           <type><ref refid="classquantit_1_1any__quantity" kindref="compound">any_quantity</ref> &amp;&amp;</type>
           <declname>lhs</declname>
@@ -655,13 +687,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/cquantity.h" line="156" column="21" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/cquantity.h" bodystart="311" bodyend="311"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h" line="156" column="21" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h" bodystart="311" bodyend="311"/>
       </memberdef>
       <memberdef kind="friend" id="classquantit_1_1any__quantity_1ae3b279db007fb2ff4013bdfed186a95d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type><ref refid="classquantit_1_1any__quantity" kindref="compound">any_quantity</ref></type>
         <definition>any_quantity operator+</definition>
         <argsstring>(any_quantity &amp;&amp;lhs, any_quantity &amp;&amp;rhs)</argsstring>
         <name>operator+</name>
+        <qualifiedname>quantit::any_quantity::operator+</qualifiedname>
         <param>
           <type><ref refid="classquantit_1_1any__quantity" kindref="compound">any_quantity</ref> &amp;&amp;</type>
           <declname>lhs</declname>
@@ -676,7 +709,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/Composite/cquantity.h" line="157" column="21" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/cquantity.h" bodystart="312" bodyend="312"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h" line="157" column="21" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h" bodystart="312" bodyend="312"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
@@ -684,7 +717,7 @@
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/alex/project/quantt/include/Conserved/Composite/cquantity.h" line="40" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/Composite/cquantity.h" bodystart="41" bodyend="190"/>
+    <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h" line="40" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h" bodystart="41" bodyend="190"/>
     <listofallmembers>
       <member refid="classquantit_1_1any__quantity_1ae8506bebe0e2fb8419cfbd371148c5a1" prot="public" virt="non-virtual"><scope>quantit::any_quantity</scope><name>any_quantity</name></member>
       <member refid="classquantit_1_1any__quantity_1a1863cfdbac4bb1ae90a6ad97ddf8215b" prot="public" virt="non-virtual"><scope>quantit::any_quantity</scope><name>any_quantity</name></member>

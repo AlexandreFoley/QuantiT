@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
   <compounddef id="classquantit_1_1dmrg__default__logger" kind="class" language="C++" prot="public">
     <compoundname>quantit::dmrg_default_logger</compoundname>
     <basecompoundref refid="classquantit_1_1dmrg__logger" prot="public" virt="non-virtual">quantit::dmrg_logger</basecompoundref>
@@ -12,6 +12,7 @@
         <definition>void quantit::dmrg_default_logger::log_step</definition>
         <argsstring>(size_t) override</argsstring>
         <name>log_step</name>
+        <qualifiedname>quantit::dmrg_default_logger::log_step</qualifiedname>
         <reimplements refid="classquantit_1_1dmrg__logger_1aa78f23c04e3821c9ee4cd262ed170a05">log_step</reimplements>
         <reimplementedby refid="classquantit_1_1dmrg__log__simple_1a97a573fc095627c512c488942adcfca9">log_step</reimplementedby>
         <reimplementedby refid="classquantit_1_1dmrg__log__sweeptime_1a88836501c6ee0b9efb9b0a655ece6fbb">log_step</reimplementedby>
@@ -24,13 +25,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/dmrg_logger.h" line="106" column="6" bodyfile="/home/alex/project/quantt/include/dmrg_logger.h" bodystart="106" bodyend="106"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/dmrg_logger.h" line="106" column="6" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/dmrg_logger.h" bodystart="106" bodyend="106"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1dmrg__default__logger_1a2ca8bec802551042f5faddd2096532b9" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
         <definition>void quantit::dmrg_default_logger::log_energy</definition>
         <argsstring>(const torch::Tensor &amp;) override</argsstring>
         <name>log_energy</name>
+        <qualifiedname>quantit::dmrg_default_logger::log_energy</qualifiedname>
         <reimplements refid="classquantit_1_1dmrg__logger_1adf57a1768566ea3d8c1cc12bb02123c7">log_energy</reimplements>
         <reimplementedby refid="classquantit_1_1dmrg__log__sweeptime_1a389dab85289bd6b53c6b01a0e26e8ef5">log_energy</reimplementedby>
         <param>
@@ -42,13 +44,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/dmrg_logger.h" line="107" column="6" bodyfile="/home/alex/project/quantt/include/dmrg_logger.h" bodystart="107" bodyend="107"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/dmrg_logger.h" line="107" column="6" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/dmrg_logger.h" bodystart="107" bodyend="107"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1dmrg__default__logger_1af639c233e813832f6054f8beb93cb4eb" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
         <definition>void quantit::dmrg_default_logger::log_energy</definition>
         <argsstring>(const btensor &amp;) override</argsstring>
         <name>log_energy</name>
+        <qualifiedname>quantit::dmrg_default_logger::log_energy</qualifiedname>
         <reimplements refid="classquantit_1_1dmrg__logger_1aa2cbfa33cfa1478cee7d00327c4d9bb9">log_energy</reimplements>
         <reimplementedby refid="classquantit_1_1dmrg__log__sweeptime_1a44db410afddac9861524d34e2e1e6be9">log_energy</reimplementedby>
         <param>
@@ -60,13 +63,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/dmrg_logger.h" line="108" column="6" bodyfile="/home/alex/project/quantt/include/dmrg_logger.h" bodystart="108" bodyend="108"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/dmrg_logger.h" line="108" column="6" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/dmrg_logger.h" bodystart="108" bodyend="108"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1dmrg__default__logger_1ac9216b600e0e625aae2f7ff8a27daa09" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
         <definition>void quantit::dmrg_default_logger::log_bond_dims</definition>
         <argsstring>(const MPS &amp;) override</argsstring>
         <name>log_bond_dims</name>
+        <qualifiedname>quantit::dmrg_default_logger::log_bond_dims</qualifiedname>
         <reimplements refid="classquantit_1_1dmrg__logger_1a983bec9428099710c6fe8bd79567df69">log_bond_dims</reimplements>
         <reimplementedby refid="classquantit_1_1dmrg__log__simple_1a0ab2fa53e8af659b4f142e264760da18">log_bond_dims</reimplementedby>
         <reimplementedby refid="classquantit_1_1dmrg__log__sweeptime_1a7be33057e9ecc6f9cdf557fe648189a4">log_bond_dims</reimplementedby>
@@ -79,13 +83,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/dmrg_logger.h" line="109" column="6" bodyfile="/home/alex/project/quantt/include/dmrg_logger.h" bodystart="109" bodyend="109"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/dmrg_logger.h" line="109" column="6" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/dmrg_logger.h" bodystart="109" bodyend="109"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1dmrg__default__logger_1a6ca24a9c43841bfa95e540ea01d42725" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
         <definition>void quantit::dmrg_default_logger::log_bond_dims</definition>
         <argsstring>(const bMPS &amp;) override</argsstring>
         <name>log_bond_dims</name>
+        <qualifiedname>quantit::dmrg_default_logger::log_bond_dims</qualifiedname>
         <reimplements refid="classquantit_1_1dmrg__logger_1a88687e6fcca72a0ce6672f05d3f87ed4">log_bond_dims</reimplements>
         <reimplementedby refid="classquantit_1_1dmrg__log__simple_1afff2dadf5090e7658c6d10a025717d57">log_bond_dims</reimplementedby>
         <reimplementedby refid="classquantit_1_1dmrg__log__sweeptime_1a3e2b8dfe6c30d628a9113228c02bd53d">log_bond_dims</reimplementedby>
@@ -98,13 +103,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/dmrg_logger.h" line="110" column="6" bodyfile="/home/alex/project/quantt/include/dmrg_logger.h" bodystart="110" bodyend="110"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/dmrg_logger.h" line="110" column="6" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/dmrg_logger.h" bodystart="110" bodyend="110"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1dmrg__logger_1aefeab435b25cd1e822d53d0c01fcf7cc" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
         <definition>virtual void quantit::dmrg_logger::init</definition>
         <argsstring>(const dmrg_options &amp;)</argsstring>
         <name>init</name>
+        <qualifiedname>quantit::dmrg_logger::init</qualifiedname>
         <reimplementedby refid="classquantit_1_1dmrg__log__sweeptime_1a2d27e6b93bbca9fe40b1bc309268b341">init</reimplementedby>
         <param>
           <type>const <ref refid="structquantit_1_1dmrg__options" kindref="compound">dmrg_options</ref> &amp;</type>
@@ -115,13 +121,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/dmrg_logger.h" line="36" column="14" bodyfile="/home/alex/project/quantt/include/dmrg_logger.h" bodystart="36" bodyend="36"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/dmrg_logger.h" line="36" column="14" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/dmrg_logger.h" bodystart="36" bodyend="36"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1dmrg__logger_1aec679b092519a3b96ca9d4df7b388af5" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
         <definition>virtual void quantit::dmrg_logger::it_log_all</definition>
         <argsstring>(size_t step_num, const torch::Tensor &amp;E, const MPS &amp;state)</argsstring>
         <name>it_log_all</name>
+        <qualifiedname>quantit::dmrg_logger::it_log_all</qualifiedname>
         <reimplementedby refid="classquantit_1_1dmrg__log__sweeptime_1acf8dafd8065d0417a90a1d55dad06745">it_log_all</reimplementedby>
         <reimplementedby refid="classquantit_1_1dmrg__log__simple_1a474aeafcac00435f639aa70211feed3d">it_log_all</reimplementedby>
         <param>
@@ -169,13 +176,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/dmrg_logger.h" line="45" column="14" bodyfile="/home/alex/project/quantt/include/dmrg_logger.h" bodystart="45" bodyend="45"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/dmrg_logger.h" line="45" column="14" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/dmrg_logger.h" bodystart="45" bodyend="45"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1dmrg__logger_1ae174380571b94f642328d02b1ef0e997" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
         <definition>virtual void quantit::dmrg_logger::it_log_all</definition>
         <argsstring>(size_t step_num, const btensor &amp;E, const bMPS &amp;state)</argsstring>
         <name>it_log_all</name>
+        <qualifiedname>quantit::dmrg_logger::it_log_all</qualifiedname>
         <reimplementedby refid="classquantit_1_1dmrg__log__sweeptime_1a94e0c72a29ed2bcc51d2066eb41f4d0d">it_log_all</reimplementedby>
         <reimplementedby refid="classquantit_1_1dmrg__log__simple_1adc0139d3f688086acdac169e0af2df8b">it_log_all</reimplementedby>
         <param>
@@ -223,13 +231,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/dmrg_logger.h" line="53" column="14" bodyfile="/home/alex/project/quantt/include/dmrg_logger.h" bodystart="53" bodyend="53"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/dmrg_logger.h" line="53" column="14" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/dmrg_logger.h" bodystart="53" bodyend="53"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1dmrg__logger_1a40e35a635a42df1666b452aaaeba3c22" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
         <definition>virtual void quantit::dmrg_logger::end_log_all</definition>
         <argsstring>(size_t step_num, const torch::Tensor &amp;E, const MPS &amp;state)</argsstring>
         <name>end_log_all</name>
+        <qualifiedname>quantit::dmrg_logger::end_log_all</qualifiedname>
         <param>
           <type>size_t</type>
           <declname>step_num</declname>
@@ -275,13 +284,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/dmrg_logger.h" line="61" column="14" bodyfile="/home/alex/project/quantt/include/dmrg_logger.h" bodystart="61" bodyend="61"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/dmrg_logger.h" line="61" column="14" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/dmrg_logger.h" bodystart="61" bodyend="61"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1dmrg__logger_1aefe31347ea89511837801ca25bce9c3a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
         <definition>virtual void quantit::dmrg_logger::end_log_all</definition>
         <argsstring>(size_t step_num, const btensor &amp;E, const bMPS &amp;state)</argsstring>
         <name>end_log_all</name>
+        <qualifiedname>quantit::dmrg_logger::end_log_all</qualifiedname>
         <param>
           <type>size_t</type>
           <declname>step_num</declname>
@@ -327,13 +337,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/dmrg_logger.h" line="69" column="14" bodyfile="/home/alex/project/quantt/include/dmrg_logger.h" bodystart="69" bodyend="69"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/dmrg_logger.h" line="69" column="14" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/dmrg_logger.h" bodystart="69" bodyend="69"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1dmrg__logger_1a9f638588362a5b58350f5cbbec1b417e" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
         <definition>virtual void quantit::dmrg_logger::log_all</definition>
         <argsstring>(size_t step_num, const torch::Tensor &amp;E, const MPS &amp;state)</argsstring>
         <name>log_all</name>
+        <qualifiedname>quantit::dmrg_logger::log_all</qualifiedname>
         <param>
           <type>size_t</type>
           <declname>step_num</declname>
@@ -379,13 +390,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/dmrg_logger.h" line="78" column="14" bodyfile="/home/alex/project/quantt/include/dmrg_logger.h" bodystart="78" bodyend="83"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/dmrg_logger.h" line="78" column="14" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/dmrg_logger.h" bodystart="78" bodyend="83"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1dmrg__logger_1ac04464f362a6f8e37b38696ccbcf067a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
         <definition>virtual void quantit::dmrg_logger::log_all</definition>
         <argsstring>(size_t step_num, const btensor &amp;E, const bMPS &amp;state)</argsstring>
         <name>log_all</name>
+        <qualifiedname>quantit::dmrg_logger::log_all</qualifiedname>
         <param>
           <type>size_t</type>
           <declname>step_num</declname>
@@ -431,7 +443,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/dmrg_logger.h" line="91" column="14" bodyfile="/home/alex/project/quantt/include/dmrg_logger.h" bodystart="91" bodyend="96"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/dmrg_logger.h" line="91" column="14" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/dmrg_logger.h" bodystart="91" bodyend="96"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
@@ -446,6 +458,12 @@
         <childnode refid="2" relation="public-inheritance">
         </childnode>
       </node>
+      <node id="3">
+        <label>quantit::dmrg_log_simple</label>
+        <link refid="classquantit_1_1dmrg__log__simple"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
       <node id="4">
         <label>quantit::dmrg_log_sweeptime</label>
         <link refid="classquantit_1_1dmrg__log__sweeptime"/>
@@ -455,12 +473,6 @@
       <node id="2">
         <label>quantit::dmrg_logger</label>
         <link refid="classquantit_1_1dmrg__logger"/>
-      </node>
-      <node id="3">
-        <label>quantit::dmrg_log_simple</label>
-        <link refid="classquantit_1_1dmrg__log__simple"/>
-        <childnode refid="1" relation="public-inheritance">
-        </childnode>
       </node>
     </inheritancegraph>
     <collaborationgraph>
@@ -475,7 +487,7 @@
         <link refid="classquantit_1_1dmrg__logger"/>
       </node>
     </collaborationgraph>
-    <location file="/home/alex/project/quantt/include/dmrg_logger.h" line="103" column="1" bodyfile="/home/alex/project/quantt/include/dmrg_logger.h" bodystart="104" bodyend="111"/>
+    <location file="/Users/alex/Documents/Prog/QuantiT/include/dmrg_logger.h" line="103" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/dmrg_logger.h" bodystart="104" bodyend="111"/>
     <listofallmembers>
       <member refid="classquantit_1_1dmrg__logger_1a40e35a635a42df1666b452aaaeba3c22" prot="public" virt="virtual"><scope>quantit::dmrg_default_logger</scope><name>end_log_all</name></member>
       <member refid="classquantit_1_1dmrg__logger_1aefe31347ea89511837801ca25bce9c3a" prot="public" virt="virtual"><scope>quantit::dmrg_default_logger</scope><name>end_log_all</name></member>

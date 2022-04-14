@@ -1,15 +1,15 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
   <compounddef id="namespacefmt" kind="namespace" language="C++">
     <compoundname>fmt</compoundname>
-    <innerclass refid="structfmt_1_1formatter_3_01quantit_1_1btensor_01_4" prot="public">fmt::formatter&lt; quantit::btensor &gt;</innerclass>
+    <innerclass refid="structfmt_1_1formatter_3_01quantit_1_1any__quantity_01_4" prot="public">fmt::formatter&lt; quantit::any_quantity &gt;</innerclass>
     <innerclass refid="structfmt_1_1formatter_3_01quantit_1_1any__quantity__cref_01_4" prot="public">fmt::formatter&lt; quantit::any_quantity_cref &gt;</innerclass>
     <innerclass refid="structfmt_1_1formatter_3_01quantit_1_1any__quantity__ref_01_4" prot="public">fmt::formatter&lt; quantit::any_quantity_ref &gt;</innerclass>
-    <innerclass refid="structfmt_1_1formatter_3_01quantit_1_1any__quantity_01_4" prot="public">fmt::formatter&lt; quantit::any_quantity &gt;</innerclass>
-    <innerclass refid="structfmt_1_1formatter_3_01quantit_1_1quantity_3_01Groups_8_8_8_01_4_01_4" prot="public">fmt::formatter&lt; quantit::quantity&lt; Groups... &gt; &gt;</innerclass>
-    <innerclass refid="structfmt_1_1formatter_3_01quantit_1_1vquantity_01_4" prot="public">fmt::formatter&lt; quantit::vquantity &gt;</innerclass>
+    <innerclass refid="structfmt_1_1formatter_3_01quantit_1_1btensor_01_4" prot="public">fmt::formatter&lt; quantit::btensor &gt;</innerclass>
     <innerclass refid="structfmt_1_1formatter_3_01quantit_1_1conserved_1_1C_3_01N_01_4_01_4" prot="public">fmt::formatter&lt; quantit::conserved::C&lt; N &gt; &gt;</innerclass>
     <innerclass refid="structfmt_1_1formatter_3_01quantit_1_1conserved_1_1Z_01_4" prot="public">fmt::formatter&lt; quantit::conserved::Z &gt;</innerclass>
+    <innerclass refid="structfmt_1_1formatter_3_01quantit_1_1quantity_3_01Groups_8_8_8_01_4_01_4" prot="public">fmt::formatter&lt; quantit::quantity&lt; Groups... &gt; &gt;</innerclass>
+    <innerclass refid="structfmt_1_1formatter_3_01quantit_1_1vquantity_01_4" prot="public">fmt::formatter&lt; quantit::vquantity &gt;</innerclass>
     <innerclass refid="structfmt_1_1formatter_3_01torch_1_1Tensor_01_4" prot="public">fmt::formatter&lt; torch::Tensor &gt;</innerclass>
     <briefdescription>
     </briefdescription>

@@ -1,25 +1,16 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
   <compounddef id="torch__formatter_8h" kind="file" language="C++">
     <compoundname>torch_formatter.h</compoundname>
     <includes local="no">torch/torch.h</includes>
     <includes local="no">fmt/ostream.h</includes>
     <includes local="no">fmt/format.h</includes>
     <includes local="no">charconv</includes>
-    <includedby refid="btensor_8h" local="yes">/home/alex/project/quantt/include/blockTensor/btensor.h</includedby>
-    <includedby refid="LinearAlgebra_8h" local="yes">/home/alex/project/quantt/include/LinearAlgebra.h</includedby>
+    <includedby refid="LinearAlgebra_8h" local="yes">/Users/alex/Documents/Prog/QuantiT/include/LinearAlgebra.h</includedby>
+    <includedby refid="btensor_8h" local="yes">/Users/alex/Documents/Prog/QuantiT/include/blockTensor/btensor.h</includedby>
     <incdepgraph>
-      <node id="4">
-        <label>fmt/format.h</label>
-      </node>
-      <node id="5">
-        <label>charconv</label>
-      </node>
-      <node id="3">
-        <label>fmt/ostream.h</label>
-      </node>
       <node id="1">
-        <label>/home/alex/project/quantt/include/torch_formatter.h</label>
+        <label>/Users/alex/Documents/Prog/QuantiT/include/torch_formatter.h</label>
         <link refid="torch__formatter_8h"/>
         <childnode refid="2" relation="include">
         </childnode>
@@ -29,66 +20,75 @@
         </childnode>
         <childnode refid="5" relation="include">
         </childnode>
+      </node>
+      <node id="5">
+        <label>charconv</label>
+      </node>
+      <node id="4">
+        <label>fmt/format.h</label>
+      </node>
+      <node id="3">
+        <label>fmt/ostream.h</label>
       </node>
       <node id="2">
         <label>torch/torch.h</label>
       </node>
     </incdepgraph>
     <invincdepgraph>
-      <node id="5">
-        <label>/home/alex/project/quantt/include/dmrg.h</label>
-        <link refid="dmrg_8h_source"/>
-      </node>
-      <node id="8">
-        <label>/home/alex/project/quantt/include/operators.h</label>
-        <link refid="operators_8h_source"/>
-      </node>
-      <node id="9">
-        <label>/home/alex/project/quantt/include/LinearAlgebra.h</label>
+      <node id="2">
+        <label>/Users/alex/Documents/Prog/QuantiT/include/LinearAlgebra.h</label>
         <link refid="LinearAlgebra_8h_source"/>
       </node>
-      <node id="1">
-        <label>/home/alex/project/quantt/include/torch_formatter.h</label>
-        <link refid="torch__formatter_8h"/>
-        <childnode refid="2" relation="include">
-        </childnode>
-        <childnode refid="9" relation="include">
-        </childnode>
-      </node>
-      <node id="6">
-        <label>/home/alex/project/quantt/include/MPT.h</label>
+      <node id="4">
+        <label>/Users/alex/Documents/Prog/QuantiT/include/MPT.h</label>
         <link refid="MPT_8h_source"/>
         <childnode refid="5" relation="include">
         </childnode>
-        <childnode refid="4" relation="include">
+        <childnode refid="6" relation="include">
         </childnode>
         <childnode refid="7" relation="include">
         </childnode>
       </node>
-      <node id="3">
-        <label>/home/alex/project/quantt/include/blockTensor/LinearAlgebra.h</label>
+      <node id="8">
+        <label>/Users/alex/Documents/Prog/QuantiT/include/blockTensor/LinearAlgebra.h</label>
         <link refid="blockTensor_2LinearAlgebra_8h_source"/>
       </node>
-      <node id="2">
-        <label>/home/alex/project/quantt/include/blockTensor/btensor.h</label>
+      <node id="3">
+        <label>/Users/alex/Documents/Prog/QuantiT/include/blockTensor/btensor.h</label>
         <link refid="btensor_8h_source"/>
-        <childnode refid="3" relation="include">
-        </childnode>
         <childnode refid="4" relation="include">
-        </childnode>
-        <childnode refid="6" relation="include">
         </childnode>
         <childnode refid="8" relation="include">
         </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
       </node>
-      <node id="7">
-        <label>/home/alex/project/quantt/include/models.h</label>
-        <link refid="models_8h_source"/>
+      <node id="5">
+        <label>/Users/alex/Documents/Prog/QuantiT/include/dmrg.h</label>
+        <link refid="dmrg_8h_source"/>
       </node>
-      <node id="4">
-        <label>/home/alex/project/quantt/include/dmrg_logger.h</label>
+      <node id="6">
+        <label>/Users/alex/Documents/Prog/QuantiT/include/dmrg_logger.h</label>
         <link refid="dmrg__logger_8h_source"/>
         <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>/Users/alex/Documents/Prog/QuantiT/include/models.h</label>
+        <link refid="models_8h_source"/>
+      </node>
+      <node id="9">
+        <label>/Users/alex/Documents/Prog/QuantiT/include/operators.h</label>
+        <link refid="operators_8h_source"/>
+      </node>
+      <node id="1">
+        <label>/Users/alex/Documents/Prog/QuantiT/include/torch_formatter.h</label>
+        <link refid="torch__formatter_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
         </childnode>
       </node>
     </invincdepgraph>
@@ -128,7 +128,7 @@
 <codeline lineno="31"><highlight class="normal">{</highlight></codeline>
 <codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/>uint<sp/>linelenght<sp/>=<sp/>80;</highlight></codeline>
 <codeline lineno="33"><highlight class="normal"></highlight></codeline>
-<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>parse(format_parse_context&amp;<sp/>ctx)</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>parse(format_parse_context&amp;<sp/>ctx)</highlight></codeline>
 <codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
 <codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>it<sp/>=<sp/>ctx.begin(),<sp/>end<sp/>=<sp/>ctx.end();</highlight></codeline>
 <codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(it<sp/>and<sp/>*it<sp/>!=<sp/></highlight><highlight class="charliteral">&apos;}&apos;</highlight><highlight class="normal">)</highlight></codeline>
@@ -189,6 +189,6 @@
 <codeline lineno="92"><highlight class="normal"></highlight></codeline>
 <codeline lineno="93"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>FD137415_7533_4BFF_A130_17B4315FE304<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
     </programlisting>
-    <location file="/home/alex/project/quantt/include/torch_formatter.h"/>
+    <location file="/Users/alex/Documents/Prog/QuantiT/include/torch_formatter.h"/>
   </compounddef>
 </doxygen>

@@ -1,23 +1,23 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
   <compounddef id="tensorgdot_8h" kind="file" language="C++">
     <compoundname>tensorgdot.h</compoundname>
     <includes local="yes">doctest/doctest_proxy.h</includes>
     <includes local="no">torch/torch.h</includes>
     <incdepgraph>
       <node id="1">
-        <label>/home/alex/project/quantt/include/tensorgdot.h</label>
+        <label>/Users/alex/Documents/Prog/QuantiT/include/tensorgdot.h</label>
         <link refid="tensorgdot_8h"/>
         <childnode refid="2" relation="include">
         </childnode>
         <childnode refid="3" relation="include">
         </childnode>
       </node>
-      <node id="3">
-        <label>torch/torch.h</label>
-      </node>
       <node id="2">
         <label>doctest/doctest_proxy.h</label>
+      </node>
+      <node id="3">
+        <label>torch/torch.h</label>
       </node>
     </incdepgraph>
     <innernamespace refid="namespacequantit">quantit</innernamespace>
@@ -104,6 +104,6 @@
 <codeline lineno="129"><highlight class="normal"></highlight></codeline>
 <codeline lineno="130"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>BD5A9C21_B42C_4168_AD9F_A788AD4621C8<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
     </programlisting>
-    <location file="/home/alex/project/quantt/include/tensorgdot.h"/>
+    <location file="/Users/alex/Documents/Prog/QuantiT/include/tensorgdot.h"/>
   </compounddef>
 </doxygen>

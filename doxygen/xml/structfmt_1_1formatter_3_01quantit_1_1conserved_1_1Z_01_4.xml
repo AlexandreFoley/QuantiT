@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
   <compounddef id="structfmt_1_1formatter_3_01quantit_1_1conserved_1_1Z_01_4" kind="struct" language="C++" prot="public">
     <compoundname>fmt::formatter&lt; quantit::conserved::Z &gt;</compoundname>
     <templateparamlist>
@@ -10,6 +10,7 @@
         <definition>constexpr auto fmt::formatter&lt; quantit::conserved::Z &gt;::parse</definition>
         <argsstring>(format_parse_context &amp;ctx)</argsstring>
         <name>parse</name>
+        <qualifiedname>fmt::formatter&lt; quantit::conserved::Z &gt;::parse</qualifiedname>
         <param>
           <type>format_parse_context &amp;</type>
           <declname>ctx</declname>
@@ -20,7 +21,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/quantity.h" line="353" column="16" bodyfile="/home/alex/project/quantt/include/Conserved/quantity.h" bodystart="353" bodyend="365"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h" line="354" column="16" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h" bodystart="354" bodyend="366"/>
       </memberdef>
       <memberdef kind="function" id="structfmt_1_1formatter_3_01quantit_1_1conserved_1_1Z_01_4_1a8b8d356be382a0974b8b8e7a86849f31" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <templateparamlist>
@@ -32,6 +33,7 @@
         <definition>auto fmt::formatter&lt; quantit::conserved::Z &gt;::format</definition>
         <argsstring>(const quantit::conserved::Z &amp;z, FormatContext &amp;ctx) const</argsstring>
         <name>format</name>
+        <qualifiedname>fmt::formatter&lt; quantit::conserved::Z &gt;::format</qualifiedname>
         <param>
           <type>const <ref refid="classquantit_1_1conserved_1_1Z" kindref="compound">quantit::conserved::Z</ref> &amp;</type>
           <declname>z</declname>
@@ -46,14 +48,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/quantity.h" line="368" column="6" bodyfile="/home/alex/project/quantt/include/Conserved/quantity.h" bodystart="368" bodyend="373"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h" line="369" column="6" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h" bodystart="369" bodyend="374"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/alex/project/quantt/include/Conserved/quantity.h" line="351" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/quantity.h" bodystart="352" bodyend="374"/>
+    <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h" line="352" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h" bodystart="353" bodyend="375"/>
     <listofallmembers>
       <member refid="structfmt_1_1formatter_3_01quantit_1_1conserved_1_1Z_01_4_1a8b8d356be382a0974b8b8e7a86849f31" prot="public" virt="non-virtual"><scope>fmt::formatter&lt; quantit::conserved::Z &gt;</scope><name>format</name></member>
       <member refid="structfmt_1_1formatter_3_01quantit_1_1conserved_1_1Z_01_4_1a98c1f0fd2ddabd8ad73a5be91b879241" prot="public" virt="non-virtual"><scope>fmt::formatter&lt; quantit::conserved::Z &gt;</scope><name>parse</name></member>

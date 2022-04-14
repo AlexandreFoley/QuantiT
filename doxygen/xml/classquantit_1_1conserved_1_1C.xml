@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
   <compounddef id="classquantit_1_1conserved_1_1C" kind="class" language="C++" prot="public">
     <compoundname>quantit::conserved::C</compoundname>
     <includes refid="quantity_8h" local="no">quantity.h</includes>
@@ -16,6 +16,7 @@
         <definition>constexpr uint16_t quantit::conserved::C&lt; mod &gt;::N</definition>
         <argsstring></argsstring>
         <name>N</name>
+        <qualifiedname>quantit::conserved::C::N</qualifiedname>
         <initializer>= mod</initializer>
         <briefdescription>
         </briefdescription>
@@ -23,13 +24,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/quantity.h" line="66" column="27" bodyfile="/home/alex/project/quantt/include/Conserved/quantity.h" bodystart="66" bodyend="-1"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h" line="66" column="27" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h" bodystart="66" bodyend="-1"/>
       </memberdef>
-      <memberdef kind="variable" id="classquantit_1_1conserved_1_1C_1affa493ce83ff3151a7d6847302de624c" prot="public" static="yes" constexpr="yes" mutable="no">
-        <type>constexpr static bool</type>
-        <definition>constexpr static bool quantit::conserved::C&lt; mod &gt;::is_Abelian</definition>
+      <memberdef kind="variable" id="classquantit_1_1conserved_1_1C_1acadfca297deeebc603519b25527a9e43" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr bool</type>
+        <definition>constexpr bool quantit::conserved::C&lt; mod &gt;::is_Abelian</definition>
         <argsstring></argsstring>
         <name>is_Abelian</name>
+        <qualifiedname>quantit::conserved::C::is_Abelian</qualifiedname>
         <initializer>= true</initializer>
         <briefdescription>
         </briefdescription>
@@ -37,7 +39,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/quantity.h" line="74" column="23" bodyfile="/home/alex/project/quantt/include/Conserved/quantity.h" bodystart="74" bodyend="-1"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h" line="74" column="23" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h" bodystart="74" bodyend="-1"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="private-attrib">
@@ -46,13 +48,14 @@
         <definition>uint16_t quantit::conserved::C&lt; mod &gt;::val</definition>
         <argsstring></argsstring>
         <name>val</name>
+        <qualifiedname>quantit::conserved::C::val</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/quantity.h" line="71" column="10" bodyfile="/home/alex/project/quantt/include/Conserved/quantity.h" bodystart="70" bodyend="-1"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h" line="71" column="10" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h" bodystart="70" bodyend="-1"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="friend">
@@ -61,6 +64,7 @@
         <definition>friend struct fmt::formatter&lt; quantit::conserved::C&lt; N &gt; &gt;</definition>
         <argsstring></argsstring>
         <name>fmt::formatter&lt; quantit::conserved::C&lt; N &gt; &gt;</name>
+        <qualifiedname>quantit::conserved::C::formatter&lt; quantit::conserved::C&lt; N &gt; &gt;</qualifiedname>
         <param>
           <type>fmt::formatter&lt; <ref refid="classquantit_1_1conserved_1_1C" kindref="compound">quantit::conserved::C</ref>&lt; N &gt; &gt;</type>
         </param>
@@ -70,13 +74,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/quantity.h" line="158" column="8" bodyfile="/home/alex/project/quantt/include/Conserved/quantity.h" bodystart="163" bodyend="-1"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h" line="159" column="8" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h" bodystart="164" bodyend="-1"/>
       </memberdef>
       <memberdef kind="friend" id="classquantit_1_1conserved_1_1C_1aec5542e071abcd108bc671ddfa4a52a5" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
         <type>constexpr friend <ref refid="classquantit_1_1conserved_1_1C" kindref="compound">C</ref></type>
         <definition>constexpr friend C operator+</definition>
         <argsstring>(C lhs, C rhs) noexcept</argsstring>
         <name>operator+</name>
+        <qualifiedname>quantit::conserved::C::operator+</qualifiedname>
         <param>
           <type><ref refid="classquantit_1_1conserved_1_1C" kindref="compound">C</ref></type>
           <declname>lhs</declname>
@@ -91,13 +96,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/quantity.h" line="132" column="20" bodyfile="/home/alex/project/quantt/include/Conserved/quantity.h" bodystart="132" bodyend="132"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h" line="132" column="20" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h" bodystart="132" bodyend="132"/>
       </memberdef>
-      <memberdef kind="friend" id="classquantit_1_1conserved_1_1C_1a98f16a8a504cdfd26778e21da76b5463" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
-        <type>constexpr friend <ref refid="classquantit_1_1conserved_1_1C" kindref="compound">C</ref></type>
-        <definition>constexpr friend C operator*</definition>
+      <memberdef kind="friend" id="classquantit_1_1conserved_1_1C_1a6a9123ecf64daba982218f160af0d5a2" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr <ref refid="classquantit_1_1conserved_1_1C" kindref="compound">C</ref></type>
+        <definition>constexpr C operator*</definition>
         <argsstring>(C lhs, C rhs) noexcept</argsstring>
         <name>operator*</name>
+        <qualifiedname>quantit::conserved::C::operator*</qualifiedname>
         <param>
           <type><ref refid="classquantit_1_1conserved_1_1C" kindref="compound">C</ref></type>
           <declname>lhs</declname>
@@ -112,13 +118,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/quantity.h" line="133" column="20" bodyfile="/home/alex/project/quantt/include/Conserved/quantity.h" bodystart="133" bodyend="133"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h" line="134" column="20" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h" bodystart="134" bodyend="134"/>
       </memberdef>
-      <memberdef kind="friend" id="classquantit_1_1conserved_1_1C_1a232fbe17fb539b9a8c399410fc234997" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+      <memberdef kind="friend" id="classquantit_1_1conserved_1_1C_1a68cf925fd49cdacd11f041fce320a30f" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>std::ostream &amp;</type>
-        <definition>std::ostream&amp; operator&lt;&lt;</definition>
+        <definition>std::ostream &amp; operator&lt;&lt;</definition>
         <argsstring>(std::ostream &amp;out, const C &amp;c)</argsstring>
         <name>operator&lt;&lt;</name>
+        <qualifiedname>quantit::conserved::C::operator&lt;&lt;</qualifiedname>
         <param>
           <type>std::ostream &amp;</type>
           <declname>out</declname>
@@ -133,7 +140,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/quantity.h" line="158" column="8" bodyfile="/home/alex/project/quantt/include/Conserved/quantity.h" bodystart="158" bodyend="162"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h" line="159" column="8" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h" bodystart="159" bodyend="163"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="public-func">
@@ -142,6 +149,7 @@
         <definition>constexpr quantit::conserved::C&lt; mod &gt;::C</definition>
         <argsstring>(int16_t _val) noexcept</argsstring>
         <name>C</name>
+        <qualifiedname>quantit::conserved::C::C</qualifiedname>
         <param>
           <type>int16_t</type>
           <declname>_val</declname>
@@ -154,26 +162,28 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/quantity.h" line="96" column="11" bodyfile="/home/alex/project/quantt/include/Conserved/quantity.h" bodystart="96" bodyend="106"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h" line="96" column="11" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h" bodystart="96" bodyend="106"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1conserved_1_1C_1aae8a8b6d8dd471dd4e9030ed70b83a50" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>constexpr</type>
         <definition>constexpr quantit::conserved::C&lt; mod &gt;::C</definition>
         <argsstring>()</argsstring>
         <name>C</name>
+        <qualifiedname>quantit::conserved::C::C</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/quantity.h" line="107" column="11" bodyfile="/home/alex/project/quantt/include/Conserved/quantity.h" bodystart="107" bodyend="107"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h" line="107" column="11" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h" bodystart="107" bodyend="107"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1conserved_1_1C_1a3ffb86c857a8135152ca70ba36cb5ec8" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
         <type>void</type>
         <definition>void quantit::conserved::C&lt; mod &gt;::swap</definition>
         <argsstring>(C &amp;other) noexcept</argsstring>
         <name>swap</name>
+        <qualifiedname>quantit::conserved::C::swap</qualifiedname>
         <param>
           <type><ref refid="classquantit_1_1conserved_1_1C" kindref="compound">C</ref> &amp;</type>
           <declname>other</declname>
@@ -184,39 +194,42 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/quantity.h" line="109" column="6" bodyfile="/home/alex/project/quantt/include/Conserved/quantity.h" bodystart="109" bodyend="113"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h" line="109" column="6" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h" bodystart="109" bodyend="113"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1conserved_1_1C_1ae62939de9fe6c0b4aae1702aa0674392" prot="public" static="no" constexpr="yes" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
         <type>constexpr</type>
         <definition>constexpr quantit::conserved::C&lt; mod &gt;::operator uint16_t</definition>
         <argsstring>() const noexcept</argsstring>
         <name>operator uint16_t</name>
+        <qualifiedname>quantit::conserved::C::operator uint16_t</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/quantity.h" line="114" column="11" bodyfile="/home/alex/project/quantt/include/Conserved/quantity.h" bodystart="114" bodyend="114"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h" line="114" column="11" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h" bodystart="114" bodyend="114"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1conserved_1_1C_1a40e45834c5e2b6189cee39ce3512ec68" prot="public" static="no" constexpr="yes" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
         <type>constexpr uint16_t</type>
         <definition>constexpr uint16_t quantit::conserved::C&lt; mod &gt;::get_val</definition>
         <argsstring>() const noexcept</argsstring>
         <name>get_val</name>
+        <qualifiedname>quantit::conserved::C::get_val</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/quantity.h" line="115" column="20" bodyfile="/home/alex/project/quantt/include/Conserved/quantity.h" bodystart="115" bodyend="115"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h" line="115" column="20" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h" bodystart="115" bodyend="115"/>
       </memberdef>
-      <memberdef kind="function" id="classquantit_1_1conserved_1_1C_1a168c261ced2a923c26a7e038727d7a29" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+      <memberdef kind="function" id="classquantit_1_1conserved_1_1C_1a84492fd84c014d7e47caf4c4730477e0" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
         <type>constexpr <ref refid="classquantit_1_1conserved_1_1C" kindref="compound">C</ref> &amp;</type>
-        <definition>constexpr C&amp; quantit::conserved::C&lt; mod &gt;::operator+=</definition>
+        <definition>constexpr C &amp; quantit::conserved::C&lt; mod &gt;::operator+=</definition>
         <argsstring>(C other) noexcept</argsstring>
         <name>operator+=</name>
+        <qualifiedname>quantit::conserved::C::operator+=</qualifiedname>
         <param>
           <type><ref refid="classquantit_1_1conserved_1_1C" kindref="compound">C</ref></type>
           <declname>other</declname>
@@ -227,13 +240,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/quantity.h" line="116" column="13" bodyfile="/home/alex/project/quantt/include/Conserved/quantity.h" bodystart="116" bodyend="116"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h" line="116" column="13" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h" bodystart="116" bodyend="116"/>
       </memberdef>
-      <memberdef kind="function" id="classquantit_1_1conserved_1_1C_1a61a04cede598f7fde5ed939ed08e6543" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+      <memberdef kind="function" id="classquantit_1_1conserved_1_1C_1ab76db7c07504f02dc3ca2db6292a5d0f" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
         <type>constexpr <ref refid="classquantit_1_1conserved_1_1C" kindref="compound">C</ref> &amp;</type>
-        <definition>constexpr C&amp; quantit::conserved::C&lt; mod &gt;::op</definition>
+        <definition>constexpr C &amp; quantit::conserved::C&lt; mod &gt;::op</definition>
         <argsstring>(C other) noexcept</argsstring>
         <name>op</name>
+        <qualifiedname>quantit::conserved::C::op</qualifiedname>
         <param>
           <type><ref refid="classquantit_1_1conserved_1_1C" kindref="compound">C</ref></type>
           <declname>other</declname>
@@ -244,13 +258,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/quantity.h" line="118" column="13" bodyfile="/home/alex/project/quantt/include/Conserved/quantity.h" bodystart="118" bodyend="118"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h" line="118" column="13" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h" bodystart="118" bodyend="118"/>
       </memberdef>
-      <memberdef kind="function" id="classquantit_1_1conserved_1_1C_1a2067f015c0735f7de0dd6b498f4b64eb" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+      <memberdef kind="function" id="classquantit_1_1conserved_1_1C_1a0aa13ab08180c20fb6f6cb45b3bada8d" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
         <type>constexpr <ref refid="classquantit_1_1conserved_1_1C" kindref="compound">C</ref> &amp;</type>
-        <definition>constexpr C&amp; quantit::conserved::C&lt; mod &gt;::op</definition>
+        <definition>constexpr C &amp; quantit::conserved::C&lt; mod &gt;::op</definition>
         <argsstring>(C other, bool cond) noexcept</argsstring>
         <name>op</name>
+        <qualifiedname>quantit::conserved::C::op</qualifiedname>
         <param>
           <type><ref refid="classquantit_1_1conserved_1_1C" kindref="compound">C</ref></type>
           <declname>other</declname>
@@ -265,13 +280,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/quantity.h" line="120" column="13" bodyfile="/home/alex/project/quantt/include/Conserved/quantity.h" bodystart="120" bodyend="125"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h" line="120" column="13" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h" bodystart="120" bodyend="125"/>
       </memberdef>
-      <memberdef kind="function" id="classquantit_1_1conserved_1_1C_1a014286eb806f5aa752f553dae33c035c" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+      <memberdef kind="function" id="classquantit_1_1conserved_1_1C_1ae269326e5e12e60a66031774012f1762" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
         <type>constexpr <ref refid="classquantit_1_1conserved_1_1C" kindref="compound">C</ref> &amp;</type>
-        <definition>constexpr C&amp; quantit::conserved::C&lt; mod &gt;::operator*=</definition>
+        <definition>constexpr C &amp; quantit::conserved::C&lt; mod &gt;::operator*=</definition>
         <argsstring>(C other) noexcept</argsstring>
         <name>operator*=</name>
+        <qualifiedname>quantit::conserved::C::operator*=</qualifiedname>
         <param>
           <type><ref refid="classquantit_1_1conserved_1_1C" kindref="compound">C</ref></type>
           <declname>other</declname>
@@ -282,39 +298,42 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/quantity.h" line="127" column="13" bodyfile="/home/alex/project/quantt/include/Conserved/quantity.h" bodystart="127" bodyend="131"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h" line="127" column="13" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h" bodystart="127" bodyend="131"/>
       </memberdef>
-      <memberdef kind="function" id="classquantit_1_1conserved_1_1C_1a2ee224ac46fb556287dfc7779084b824" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+      <memberdef kind="function" id="classquantit_1_1conserved_1_1C_1aef71b52c93ab5ec4bf0d509629955f92" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
         <type>constexpr <ref refid="classquantit_1_1conserved_1_1C" kindref="compound">C</ref> &amp;</type>
-        <definition>constexpr C&amp; quantit::conserved::C&lt; mod &gt;::inverse_</definition>
+        <definition>constexpr C &amp; quantit::conserved::C&lt; mod &gt;::inverse_</definition>
         <argsstring>() noexcept</argsstring>
         <name>inverse_</name>
+        <qualifiedname>quantit::conserved::C::inverse_</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/quantity.h" line="134" column="13" bodyfile="/home/alex/project/quantt/include/Conserved/quantity.h" bodystart="134" bodyend="138"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h" line="135" column="13" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h" bodystart="135" bodyend="139"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1conserved_1_1C_1a54d060ed53f1ba97ae8ab5123a4e1b3d" prot="public" static="no" constexpr="yes" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
         <type>constexpr <ref refid="classquantit_1_1conserved_1_1C" kindref="compound">C</ref></type>
         <definition>constexpr C quantit::conserved::C&lt; mod &gt;::inverse</definition>
         <argsstring>() const noexcept</argsstring>
         <name>inverse</name>
+        <qualifiedname>quantit::conserved::C::inverse</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/quantity.h" line="139" column="13" bodyfile="/home/alex/project/quantt/include/Conserved/quantity.h" bodystart="139" bodyend="143"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h" line="140" column="13" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h" bodystart="140" bodyend="144"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1conserved_1_1C_1a91a0cea32e74047d70f25f5d9a6a0ef4" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>int64_t</type>
         <definition>int64_t quantit::conserved::C&lt; mod &gt;::distance2</definition>
         <argsstring>(C other) const</argsstring>
         <name>distance2</name>
+        <qualifiedname>quantit::conserved::C::distance2</qualifiedname>
         <param>
           <type><ref refid="classquantit_1_1conserved_1_1C" kindref="compound">C</ref></type>
           <declname>other</declname>
@@ -325,13 +344,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/quantity.h" line="144" column="9" bodyfile="/home/alex/project/quantt/include/Conserved/quantity.h" bodystart="144" bodyend="147"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h" line="145" column="9" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h" bodystart="145" bodyend="148"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1conserved_1_1C_1acd3e3e92891b86d9554774bd9c5351b4" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>double</type>
         <definition>double quantit::conserved::C&lt; mod &gt;::distance</definition>
         <argsstring>(C other) const</argsstring>
         <name>distance</name>
+        <qualifiedname>quantit::conserved::C::distance</qualifiedname>
         <param>
           <type><ref refid="classquantit_1_1conserved_1_1C" kindref="compound">C</ref></type>
           <declname>other</declname>
@@ -342,13 +362,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/quantity.h" line="148" column="8" bodyfile="/home/alex/project/quantt/include/Conserved/quantity.h" bodystart="148" bodyend="151"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h" line="149" column="8" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h" bodystart="149" bodyend="152"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1conserved_1_1C_1ac9a50ced05581341a57427dff6219b4c" prot="public" static="no" constexpr="yes" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
         <type>constexpr bool</type>
         <definition>constexpr bool quantit::conserved::C&lt; mod &gt;::operator==</definition>
         <argsstring>(C other) const noexcept</argsstring>
         <name>operator==</name>
+        <qualifiedname>quantit::conserved::C::operator==</qualifiedname>
         <param>
           <type><ref refid="classquantit_1_1conserved_1_1C" kindref="compound">C</ref></type>
           <declname>other</declname>
@@ -359,13 +380,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/quantity.h" line="153" column="16" bodyfile="/home/alex/project/quantt/include/Conserved/quantity.h" bodystart="153" bodyend="153"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h" line="154" column="16" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h" bodystart="154" bodyend="154"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1conserved_1_1C_1af6f77cbb7f0328606f3dabbf48edae49" prot="public" static="no" constexpr="yes" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
         <type>constexpr bool</type>
         <definition>constexpr bool quantit::conserved::C&lt; mod &gt;::operator&lt;</definition>
         <argsstring>(C other) const noexcept</argsstring>
         <name>operator&lt;</name>
+        <qualifiedname>quantit::conserved::C::operator&lt;</qualifiedname>
         <param>
           <type><ref refid="classquantit_1_1conserved_1_1C" kindref="compound">C</ref></type>
           <declname>other</declname>
@@ -376,13 +398,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/quantity.h" line="154" column="11" bodyfile="/home/alex/project/quantt/include/Conserved/quantity.h" bodystart="154" bodyend="154"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h" line="155" column="11" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h" bodystart="155" bodyend="155"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1conserved_1_1C_1a906465ab85bc679d459748a59498cd10" prot="public" static="no" constexpr="yes" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
         <type>constexpr bool</type>
         <definition>constexpr bool quantit::conserved::C&lt; mod &gt;::operator&gt;</definition>
         <argsstring>(C other) const noexcept</argsstring>
         <name>operator&gt;</name>
+        <qualifiedname>quantit::conserved::C::operator&gt;</qualifiedname>
         <param>
           <type><ref refid="classquantit_1_1conserved_1_1C" kindref="compound">C</ref></type>
           <declname>other</declname>
@@ -393,13 +416,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/quantity.h" line="155" column="16" bodyfile="/home/alex/project/quantt/include/Conserved/quantity.h" bodystart="155" bodyend="155"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h" line="156" column="16" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h" bodystart="156" bodyend="156"/>
       </memberdef>
       <memberdef kind="function" id="classquantit_1_1conserved_1_1C_1a670b65189950226066fb7f065aec54dd" prot="public" static="no" constexpr="yes" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
         <type>constexpr bool</type>
         <definition>constexpr bool quantit::conserved::C&lt; mod &gt;::operator!=</definition>
         <argsstring>(C other) const noexcept</argsstring>
         <name>operator!=</name>
+        <qualifiedname>quantit::conserved::C::operator!=</qualifiedname>
         <param>
           <type><ref refid="classquantit_1_1conserved_1_1C" kindref="compound">C</ref></type>
           <declname>other</declname>
@@ -410,7 +434,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/Conserved/quantity.h" line="156" column="16" bodyfile="/home/alex/project/quantt/include/Conserved/quantity.h" bodystart="156" bodyend="156"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h" line="157" column="16" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h" bodystart="157" bodyend="157"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
@@ -420,7 +444,7 @@
 <para>Oftentime called Z_N in the literature. This would create a name clash with the infinite group <ref refid="classquantit_1_1conserved_1_1Z" kindref="compound">Z</ref>.</para>
 <para>Note that the implementation limits the length of the cycle to less than 2^16-1 </para>
     </detaileddescription>
-    <location file="/home/alex/project/quantt/include/Conserved/quantity.h" line="63" column="1" bodyfile="/home/alex/project/quantt/include/Conserved/quantity.h" bodystart="64" bodyend="164"/>
+    <location file="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h" line="63" column="1" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/Conserved/quantity.h" bodystart="64" bodyend="165"/>
     <listofallmembers>
       <member refid="classquantit_1_1conserved_1_1C_1afbdccb8d9b7932103fb1fab7e226a36a" prot="public" virt="non-virtual"><scope>quantit::conserved::C</scope><name>C</name></member>
       <member refid="classquantit_1_1conserved_1_1C_1aae8a8b6d8dd471dd4e9030ed70b83a50" prot="public" virt="non-virtual"><scope>quantit::conserved::C</scope><name>C</name></member>
@@ -429,19 +453,19 @@
       <member refid="classquantit_1_1conserved_1_1C_1ad0427928b3ad92ea4807a52e099a23bc" prot="public" virt="non-virtual"><scope>quantit::conserved::C</scope><name>fmt::formatter&lt; quantit::conserved::C&lt; N &gt; &gt;</name></member>
       <member refid="classquantit_1_1conserved_1_1C_1a40e45834c5e2b6189cee39ce3512ec68" prot="public" virt="non-virtual"><scope>quantit::conserved::C</scope><name>get_val</name></member>
       <member refid="classquantit_1_1conserved_1_1C_1a54d060ed53f1ba97ae8ab5123a4e1b3d" prot="public" virt="non-virtual"><scope>quantit::conserved::C</scope><name>inverse</name></member>
-      <member refid="classquantit_1_1conserved_1_1C_1a2ee224ac46fb556287dfc7779084b824" prot="public" virt="non-virtual"><scope>quantit::conserved::C</scope><name>inverse_</name></member>
-      <member refid="classquantit_1_1conserved_1_1C_1affa493ce83ff3151a7d6847302de624c" prot="public" virt="non-virtual"><scope>quantit::conserved::C</scope><name>is_Abelian</name></member>
+      <member refid="classquantit_1_1conserved_1_1C_1aef71b52c93ab5ec4bf0d509629955f92" prot="public" virt="non-virtual"><scope>quantit::conserved::C</scope><name>inverse_</name></member>
+      <member refid="classquantit_1_1conserved_1_1C_1acadfca297deeebc603519b25527a9e43" prot="public" virt="non-virtual"><scope>quantit::conserved::C</scope><name>is_Abelian</name></member>
       <member refid="classquantit_1_1conserved_1_1C_1afd0679280fdbaaeb20d1077bcec9a5a2" prot="public" virt="non-virtual"><scope>quantit::conserved::C</scope><name>N</name></member>
-      <member refid="classquantit_1_1conserved_1_1C_1a61a04cede598f7fde5ed939ed08e6543" prot="public" virt="non-virtual"><scope>quantit::conserved::C</scope><name>op</name></member>
-      <member refid="classquantit_1_1conserved_1_1C_1a2067f015c0735f7de0dd6b498f4b64eb" prot="public" virt="non-virtual"><scope>quantit::conserved::C</scope><name>op</name></member>
+      <member refid="classquantit_1_1conserved_1_1C_1ab76db7c07504f02dc3ca2db6292a5d0f" prot="public" virt="non-virtual"><scope>quantit::conserved::C</scope><name>op</name></member>
+      <member refid="classquantit_1_1conserved_1_1C_1a0aa13ab08180c20fb6f6cb45b3bada8d" prot="public" virt="non-virtual"><scope>quantit::conserved::C</scope><name>op</name></member>
       <member refid="classquantit_1_1conserved_1_1C_1ae62939de9fe6c0b4aae1702aa0674392" prot="public" virt="non-virtual"><scope>quantit::conserved::C</scope><name>operator uint16_t</name></member>
       <member refid="classquantit_1_1conserved_1_1C_1a670b65189950226066fb7f065aec54dd" prot="public" virt="non-virtual"><scope>quantit::conserved::C</scope><name>operator!=</name></member>
-      <member refid="classquantit_1_1conserved_1_1C_1a98f16a8a504cdfd26778e21da76b5463" prot="public" virt="non-virtual"><scope>quantit::conserved::C</scope><name>operator*</name></member>
-      <member refid="classquantit_1_1conserved_1_1C_1a014286eb806f5aa752f553dae33c035c" prot="public" virt="non-virtual"><scope>quantit::conserved::C</scope><name>operator*=</name></member>
+      <member refid="classquantit_1_1conserved_1_1C_1a6a9123ecf64daba982218f160af0d5a2" prot="public" virt="non-virtual"><scope>quantit::conserved::C</scope><name>operator*</name></member>
+      <member refid="classquantit_1_1conserved_1_1C_1ae269326e5e12e60a66031774012f1762" prot="public" virt="non-virtual"><scope>quantit::conserved::C</scope><name>operator*=</name></member>
       <member refid="classquantit_1_1conserved_1_1C_1aec5542e071abcd108bc671ddfa4a52a5" prot="public" virt="non-virtual"><scope>quantit::conserved::C</scope><name>operator+</name></member>
-      <member refid="classquantit_1_1conserved_1_1C_1a168c261ced2a923c26a7e038727d7a29" prot="public" virt="non-virtual"><scope>quantit::conserved::C</scope><name>operator+=</name></member>
+      <member refid="classquantit_1_1conserved_1_1C_1a84492fd84c014d7e47caf4c4730477e0" prot="public" virt="non-virtual"><scope>quantit::conserved::C</scope><name>operator+=</name></member>
       <member refid="classquantit_1_1conserved_1_1C_1af6f77cbb7f0328606f3dabbf48edae49" prot="public" virt="non-virtual"><scope>quantit::conserved::C</scope><name>operator&lt;</name></member>
-      <member refid="classquantit_1_1conserved_1_1C_1a232fbe17fb539b9a8c399410fc234997" prot="public" virt="non-virtual"><scope>quantit::conserved::C</scope><name>operator&lt;&lt;</name></member>
+      <member refid="classquantit_1_1conserved_1_1C_1a68cf925fd49cdacd11f041fce320a30f" prot="public" virt="non-virtual"><scope>quantit::conserved::C</scope><name>operator&lt;&lt;</name></member>
       <member refid="classquantit_1_1conserved_1_1C_1ac9a50ced05581341a57427dff6219b4c" prot="public" virt="non-virtual"><scope>quantit::conserved::C</scope><name>operator==</name></member>
       <member refid="classquantit_1_1conserved_1_1C_1a906465ab85bc679d459748a59498cd10" prot="public" virt="non-virtual"><scope>quantit::conserved::C</scope><name>operator&gt;</name></member>
       <member refid="classquantit_1_1conserved_1_1C_1a3ffb86c857a8135152ca70ba36cb5ec8" prot="public" virt="non-virtual"><scope>quantit::conserved::C</scope><name>swap</name></member>

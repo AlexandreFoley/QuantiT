@@ -1,0 +1,346 @@
+\hypertarget{cquantity_8h_source}{}\doxysection{cquantity.\+h}
+\label{cquantity_8h_source}\index{/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h@{/Users/alex/Documents/Prog/QuantiT/include/Conserved/Composite/cquantity.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * File: TensorGroup.h}}
+\DoxyCodeLine{3 \textcolor{comment}{ * Project: QuantiT}}
+\DoxyCodeLine{4 \textcolor{comment}{ * File Created: Tuesday, 1st September 2020 1:39:16 pm}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)}}
+\DoxyCodeLine{6 \textcolor{comment}{ * -\/-\/-\/-\/-\/}}
+\DoxyCodeLine{7 \textcolor{comment}{ * Last Modified: Tuesday, 1st September 2020 1:39:17 pm}}
+\DoxyCodeLine{8 \textcolor{comment}{ * Modified By: Alexandre Foley (Alexandre.foley@usherbrooke.ca>)}}
+\DoxyCodeLine{9 \textcolor{comment}{ * -\/-\/-\/-\/-\/}}
+\DoxyCodeLine{10 \textcolor{comment}{ * Copyright (c) 2020 Alexandre Foley}}
+\DoxyCodeLine{11 \textcolor{comment}{ * Licensed under GPL v3}}
+\DoxyCodeLine{12 \textcolor{comment}{ */}}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{comment}{// TODO: replace the dynamic\_cast<(const) quantity\&> with a custom}}
+\DoxyCodeLine{15 \textcolor{comment}{// function that allow for}}
+\DoxyCodeLine{16 \textcolor{comment}{//      a more useful customized message when a bad cast happen.}}
+\DoxyCodeLine{17 }
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#ifndef D56E4C12\_98E1\_4C9E\_B0C4\_5B35A5A3CD17}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#define D56E4C12\_98E1\_4C9E\_B0C4\_5B35A5A3CD17}}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include "{}Conserved/Composite/quantity\_impl.h"{}}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#include "{}Conserved/quantity.h"{}}}
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#include "{}templateMeta.h"{}}}
+\DoxyCodeLine{24 \textcolor{preprocessor}{\#include <cstdint>}}
+\DoxyCodeLine{25 \textcolor{preprocessor}{\#include <fmt/core.h>}}
+\DoxyCodeLine{26 \textcolor{preprocessor}{\#include <ostream>}}
+\DoxyCodeLine{27 \textcolor{preprocessor}{\#include <type\_traits>}}
+\DoxyCodeLine{28 \textcolor{preprocessor}{\#include <utility>}}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30 \textcolor{keyword}{namespace }quantit}
+\DoxyCodeLine{31 \{}
+\DoxyCodeLine{32 \textcolor{keyword}{using} any\_quantity\_cref = \textcolor{keyword}{const} vquantity \&;}
+\DoxyCodeLine{33 \textcolor{keyword}{using} any\_quantity\_ref = vquantity \&;}
+\DoxyCodeLine{34 \textcolor{keyword}{class }any\_quantity;}
+\DoxyCodeLine{40 \textcolor{keyword}{class }\mbox{\hyperlink{classquantit_1_1any__quantity}{any\_quantity}} final}
+\DoxyCodeLine{41 \{}
+\DoxyCodeLine{42     std::unique\_ptr<vquantity> impl;}
+\DoxyCodeLine{43 }
+\DoxyCodeLine{44     \textcolor{comment}{// friend any\_quantity\_ref;}}
+\DoxyCodeLine{45     \textcolor{comment}{// friend any\_quantity\_cref;}}
+\DoxyCodeLine{46 }
+\DoxyCodeLine{47   \textcolor{keyword}{public}:}
+\DoxyCodeLine{48     \mbox{\hyperlink{classquantit_1_1any__quantity_a00bc0f329e8f9bb6c20a4736bd214400}{any\_quantity}}(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \&other) : impl(other.clone()) \{\}}
+\DoxyCodeLine{49     \textcolor{comment}{// template <class... Groups, class = std::enable\_if\_t<conserved::all\_group\_v<Groups...>>>}}
+\DoxyCodeLine{50     \textcolor{comment}{// any\_quantity(const quantity<Groups...>\& other) : impl(other.clone()) \{\}}}
+\DoxyCodeLine{51     \mbox{\hyperlink{classquantit_1_1any__quantity_a00bc0f329e8f9bb6c20a4736bd214400}{any\_quantity}}(std::unique\_ptr<vquantity> \&\&\_impl) : impl(std::move(\_impl)) \{\}}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{62     \textcolor{keyword}{template} <\textcolor{keyword}{class}... Groups,}
+\DoxyCodeLine{63               \textcolor{keyword}{class }= std::enable\_if\_t< \textcolor{comment}{// instantiate this template only if the following condition are satisfied:}}
+\DoxyCodeLine{64                   !std::disjunction\_v<std::is\_same<Groups, any\_quantity\_cref>..., \textcolor{comment}{// refuse any reference type}}
+\DoxyCodeLine{65                                       std::is\_same<Groups, any\_quantity\_ref>...,  \textcolor{comment}{// refuse any ref type}}
+\DoxyCodeLine{66                                       std::is\_same<Groups, any\_quantity>...>      \textcolor{comment}{// no recursion.}}
+\DoxyCodeLine{67                   and conserved::all\_group\_v<Groups...>>> \textcolor{comment}{// all element satisfy the constraint of an abelian group}}
+\DoxyCodeLine{68     \mbox{\hyperlink{classquantit_1_1any__quantity_a0d55a33316ff6b8caf4ed91fcaa98496}{any\_quantity}}(Groups... grps) : impl(std::make\_unique<\mbox{\hyperlink{classquantit_1_1quantity}{quantity}}<Groups...>>(grps...))}
+\DoxyCodeLine{69     \{}
+\DoxyCodeLine{70         \textcolor{keyword}{static\_assert}(conserved::all\_group\_v<Groups...> and}
+\DoxyCodeLine{71                           not std::disjunction\_v<std::is\_same<Groups, any\_quantity\_cref>...,}
+\DoxyCodeLine{72                                                  std::is\_same<Groups, any\_quantity\_ref>...,}
+\DoxyCodeLine{73                                                  std::is\_same<Groups, any\_quantity>...>,}
+\DoxyCodeLine{74                       \textcolor{stringliteral}{"{}Don't bypass the enable if."{}});}
+\DoxyCodeLine{75     \}}
+\DoxyCodeLine{76 }
+\DoxyCodeLine{81     \mbox{\hyperlink{classquantit_1_1any__quantity_a00bc0f329e8f9bb6c20a4736bd214400}{any\_quantity}}(); \textcolor{comment}{// default to a group that contain only the neutral element. avoid having an unitialized unique\_ptr.}}
+\DoxyCodeLine{82     \mbox{\hyperlink{classquantit_1_1any__quantity_a00bc0f329e8f9bb6c20a4736bd214400}{any\_quantity}}(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1any__quantity}{any\_quantity}} \&other) : impl(}
+\DoxyCodeLine{83         other.impl?}
+\DoxyCodeLine{84          other.impl-\/>clone():}
+\DoxyCodeLine{85           \mbox{\hyperlink{classquantit_1_1any__quantity}{any\_quantity}}(conserved::C<1>(0)).impl-\/>clone() ) \{\}}
+\DoxyCodeLine{86     \textcolor{comment}{// any\_quantity(any\_quantity\_cref other); // explicit to avoid accidental copies and ambiguous overloads}}
+\DoxyCodeLine{87     \textcolor{comment}{// any\_quantity(any\_quantity\_ref other);  // explicit to avoid accidental copies and ambiguous overloads}}
+\DoxyCodeLine{88     \mbox{\hyperlink{classquantit_1_1any__quantity_a00bc0f329e8f9bb6c20a4736bd214400}{any\_quantity}}(\mbox{\hyperlink{classquantit_1_1any__quantity}{any\_quantity}} \&\&) = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{89 }
+\DoxyCodeLine{90     \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \&get();}
+\DoxyCodeLine{91     \textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1vquantity}{vquantity}} \&get() \textcolor{keyword}{const};}
+\DoxyCodeLine{92 }
+\DoxyCodeLine{98     \textcolor{keywordtype}{void} \mbox{\hyperlink{classquantit_1_1any__quantity_ad0d315c7b2da8a1328e2b902835f22d4}{swap}}(\mbox{\hyperlink{classquantit_1_1any__quantity}{any\_quantity}} \&other) \textcolor{keyword}{noexcept};}
+\DoxyCodeLine{99 }
+\DoxyCodeLine{100     \textcolor{keywordtype}{void} \mbox{\hyperlink{classquantit_1_1any__quantity_ad0d315c7b2da8a1328e2b902835f22d4}{swap}}(\mbox{\hyperlink{classquantit_1_1vquantity}{any\_quantity\_ref}} other); \textcolor{comment}{// only work if the underlying types ARE the same.}}
+\DoxyCodeLine{101 }
+\DoxyCodeLine{107     \mbox{\hyperlink{classquantit_1_1any__quantity}{any\_quantity}} \mbox{\hyperlink{classquantit_1_1any__quantity_aa8c093a2b1d5c34d94f3ab592ff7e13d}{neutral}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{115     \mbox{\hyperlink{classquantit_1_1vquantity}{any\_quantity\_ref}} \mbox{\hyperlink{classquantit_1_1any__quantity_a6b6c29d553dcf03438472ddc7b5a95b1}{operator=}}(\mbox{\hyperlink{classquantit_1_1vquantity}{any\_quantity\_cref}} other);}
+\DoxyCodeLine{116     \mbox{\hyperlink{classquantit_1_1vquantity}{any\_quantity\_ref}} \mbox{\hyperlink{classquantit_1_1any__quantity_a6b6c29d553dcf03438472ddc7b5a95b1}{operator=}}(\mbox{\hyperlink{classquantit_1_1vquantity}{any\_quantity\_ref}} other);}
+\DoxyCodeLine{117     \mbox{\hyperlink{classquantit_1_1vquantity}{any\_quantity\_ref}} \mbox{\hyperlink{classquantit_1_1any__quantity_a6b6c29d553dcf03438472ddc7b5a95b1}{operator=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1any__quantity}{any\_quantity}} \&other);}
+\DoxyCodeLine{118     \mbox{\hyperlink{classquantit_1_1vquantity}{any\_quantity\_ref}} \mbox{\hyperlink{classquantit_1_1any__quantity_a6b6c29d553dcf03438472ddc7b5a95b1}{operator=}}(\mbox{\hyperlink{classquantit_1_1any__quantity}{any\_quantity}} \&\&other);}
+\DoxyCodeLine{124     \textcolor{keyword}{operator} \mbox{\hyperlink{classquantit_1_1vquantity}{any\_quantity\_cref}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{130     \textcolor{keyword}{operator} \mbox{\hyperlink{classquantit_1_1vquantity}{any\_quantity\_ref}}();}
+\DoxyCodeLine{131 }
+\DoxyCodeLine{132     \mbox{\hyperlink{classquantit_1_1any__quantity}{\string~any\_quantity}}() \{\}}
+\DoxyCodeLine{140     any\_quantity\_ref \mbox{\hyperlink{classquantit_1_1any__quantity_a9c54f38103926637b9d7717c4ccd3398}{operator*=}}(any\_quantity\_cref other);}
+\DoxyCodeLine{141     any\_quantity\_ref operator+=(any\_quantity\_cref other);}
+\DoxyCodeLine{142     any\_quantity\_ref op(any\_quantity\_cref other, \textcolor{keywordtype}{bool} cond);}
+\DoxyCodeLine{150     \textcolor{keyword}{friend} \mbox{\hyperlink{classquantit_1_1any__quantity_a00bc0f329e8f9bb6c20a4736bd214400}{any\_quantity}} \mbox{\hyperlink{classquantit_1_1any__quantity_a27770f0b29b8f58e0d4d39c74d93c3fd}{operator*}}(any\_quantity\_cref lhs, any\_quantity\_cref rhs);}
+\DoxyCodeLine{151     \textcolor{keyword}{friend} \mbox{\hyperlink{classquantit_1_1any__quantity_a00bc0f329e8f9bb6c20a4736bd214400}{any\_quantity}} operator+(any\_quantity\_cref lhs, any\_quantity\_cref rhs);}
+\DoxyCodeLine{152     \textcolor{keyword}{friend} \mbox{\hyperlink{classquantit_1_1any__quantity_a00bc0f329e8f9bb6c20a4736bd214400}{any\_quantity}} \mbox{\hyperlink{classquantit_1_1any__quantity_a27770f0b29b8f58e0d4d39c74d93c3fd}{operator*}}(any\_quantity\_cref lhs, \mbox{\hyperlink{classquantit_1_1any__quantity_a00bc0f329e8f9bb6c20a4736bd214400}{any\_quantity}} \&\&rhs);}
+\DoxyCodeLine{153     \textcolor{keyword}{friend} \mbox{\hyperlink{classquantit_1_1any__quantity_a00bc0f329e8f9bb6c20a4736bd214400}{any\_quantity}} operator+(any\_quantity\_cref lhs, \mbox{\hyperlink{classquantit_1_1any__quantity_a00bc0f329e8f9bb6c20a4736bd214400}{any\_quantity}} \&\&rhs);}
+\DoxyCodeLine{154     \textcolor{keyword}{friend} \mbox{\hyperlink{classquantit_1_1any__quantity_a00bc0f329e8f9bb6c20a4736bd214400}{any\_quantity}} \mbox{\hyperlink{classquantit_1_1any__quantity_a27770f0b29b8f58e0d4d39c74d93c3fd}{operator*}}(\mbox{\hyperlink{classquantit_1_1any__quantity_a00bc0f329e8f9bb6c20a4736bd214400}{any\_quantity}} \&\&lhs, any\_quantity\_cref rhs);}
+\DoxyCodeLine{155     \textcolor{keyword}{friend} \mbox{\hyperlink{classquantit_1_1any__quantity_a00bc0f329e8f9bb6c20a4736bd214400}{any\_quantity}} operator+(\mbox{\hyperlink{classquantit_1_1any__quantity_a00bc0f329e8f9bb6c20a4736bd214400}{any\_quantity}} \&\&lhs, any\_quantity\_cref rhs);}
+\DoxyCodeLine{156     \textcolor{keyword}{friend} \mbox{\hyperlink{classquantit_1_1any__quantity_a00bc0f329e8f9bb6c20a4736bd214400}{any\_quantity}} \mbox{\hyperlink{classquantit_1_1any__quantity_a27770f0b29b8f58e0d4d39c74d93c3fd}{operator*}}(\mbox{\hyperlink{classquantit_1_1any__quantity_a00bc0f329e8f9bb6c20a4736bd214400}{any\_quantity}} \&\&lhs, \mbox{\hyperlink{classquantit_1_1any__quantity_a00bc0f329e8f9bb6c20a4736bd214400}{any\_quantity}} \&\&rhs);}
+\DoxyCodeLine{157     \textcolor{keyword}{friend} \mbox{\hyperlink{classquantit_1_1any__quantity_a00bc0f329e8f9bb6c20a4736bd214400}{any\_quantity}} operator+(\mbox{\hyperlink{classquantit_1_1any__quantity_a00bc0f329e8f9bb6c20a4736bd214400}{any\_quantity}} \&\&lhs, \mbox{\hyperlink{classquantit_1_1any__quantity_a00bc0f329e8f9bb6c20a4736bd214400}{any\_quantity}} \&\&rhs);}
+\DoxyCodeLine{158 }
+\DoxyCodeLine{164     any\_quantity\_ref \mbox{\hyperlink{classquantit_1_1any__quantity_a547346ca6b62b9c7ef8da68c5f5d2f2b}{inverse\_}}();}
+\DoxyCodeLine{170     \mbox{\hyperlink{classquantit_1_1any__quantity_a00bc0f329e8f9bb6c20a4736bd214400}{any\_quantity}} \mbox{\hyperlink{classquantit_1_1any__quantity_acc3573b702443d7407650cd46ff4befe}{inverse}}() const \&;}
+\DoxyCodeLine{171     \mbox{\hyperlink{classquantit_1_1any__quantity_a00bc0f329e8f9bb6c20a4736bd214400}{any\_quantity}} \mbox{\hyperlink{classquantit_1_1any__quantity_acc3573b702443d7407650cd46ff4befe}{inverse}}() \&\&;}
+\DoxyCodeLine{180     \textcolor{comment}{// friend bool operator==(any\_quantity\_cref lhs, any\_quantity\_cref rhs);}}
+\DoxyCodeLine{189 \textcolor{comment}{}    \textcolor{comment}{// friend bool operator!=(any\_quantity\_cref lhs, any\_quantity\_cref rhs);}}
+\DoxyCodeLine{190 \};}
+\DoxyCodeLine{191 inline \mbox{\hyperlink{classquantit_1_1any__quantity}{any\_quantity}} \mbox{\hyperlink{classquantit_1_1any__quantity}{any\_quantity}}::\mbox{\hyperlink{classquantit_1_1any__quantity_aa8c093a2b1d5c34d94f3ab592ff7e13d}{neutral}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \mbox{\hyperlink{classquantit_1_1any__quantity_a00bc0f329e8f9bb6c20a4736bd214400}{any\_quantity}}(impl-\/>neutral()); \}}
+\DoxyCodeLine{201 \textcolor{keyword}{inline} int64\_t distance2(\mbox{\hyperlink{classquantit_1_1vquantity}{any\_quantity\_cref}} a, \mbox{\hyperlink{classquantit_1_1vquantity}{any\_quantity\_cref}} b)}
+\DoxyCodeLine{202 \{}
+\DoxyCodeLine{203     \textcolor{keywordflow}{return} a.distance2(b);}
+\DoxyCodeLine{204 \}}
+\DoxyCodeLine{214 \textcolor{keyword}{inline} \textcolor{keywordtype}{double} distance(any\_quantity\_cref a, any\_quantity\_cref b)}
+\DoxyCodeLine{215 \{}
+\DoxyCodeLine{216     \textcolor{keywordflow}{return} a.distance(b);}
+\DoxyCodeLine{217 \}}
+\DoxyCodeLine{218 \textcolor{keyword}{inline} \textcolor{keywordtype}{void} \mbox{\hyperlink{classquantit_1_1any__quantity_ad0d315c7b2da8a1328e2b902835f22d4}{any\_quantity::swap}}(\mbox{\hyperlink{classquantit_1_1any__quantity}{any\_quantity}} \&other) \textcolor{keyword}{noexcept}}
+\DoxyCodeLine{219 \{}
+\DoxyCodeLine{220     \textcolor{keyword}{using} std::swap;}
+\DoxyCodeLine{221     \mbox{\hyperlink{classquantit_1_1any__quantity_ad0d315c7b2da8a1328e2b902835f22d4}{swap}}(other.impl, impl);}
+\DoxyCodeLine{222 \}}
+\DoxyCodeLine{223 \textcolor{keyword}{inline} \mbox{\hyperlink{classquantit_1_1vquantity}{any\_quantity\_ref}} \mbox{\hyperlink{classquantit_1_1any__quantity_a6b6c29d553dcf03438472ddc7b5a95b1}{any\_quantity::operator=}}(}
+\DoxyCodeLine{224     \mbox{\hyperlink{classquantit_1_1any__quantity}{any\_quantity}} \&\&other) \textcolor{comment}{// will work even when the underlying type isn't the same...}}
+\DoxyCodeLine{225 \{}
+\DoxyCodeLine{226     \mbox{\hyperlink{classquantit_1_1any__quantity_ad0d315c7b2da8a1328e2b902835f22d4}{swap}}(other);}
+\DoxyCodeLine{227     \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{228 \}}
+\DoxyCodeLine{229 \textcolor{keyword}{inline} \mbox{\hyperlink{classquantit_1_1vquantity}{any\_quantity\_ref}} \mbox{\hyperlink{classquantit_1_1any__quantity_a547346ca6b62b9c7ef8da68c5f5d2f2b}{any\_quantity::inverse\_}}()}
+\DoxyCodeLine{230 \{}
+\DoxyCodeLine{231     impl-\/>\mbox{\hyperlink{classquantit_1_1vquantity_a4f83f301617d71c928821df9b3ace621}{inverse\_}}();}
+\DoxyCodeLine{232     \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{233 \}}
+\DoxyCodeLine{234 \textcolor{keyword}{inline} \mbox{\hyperlink{classquantit_1_1any__quantity}{any\_quantity}} \mbox{\hyperlink{classquantit_1_1any__quantity_acc3573b702443d7407650cd46ff4befe}{any\_quantity::inverse}}() const \& \{ \textcolor{keywordflow}{return} \mbox{\hyperlink{classquantit_1_1any__quantity_a00bc0f329e8f9bb6c20a4736bd214400}{any\_quantity}}(*this).inverse\_(); \}}
+\DoxyCodeLine{235 \textcolor{keyword}{inline} \mbox{\hyperlink{classquantit_1_1any__quantity}{any\_quantity}} \mbox{\hyperlink{classquantit_1_1any__quantity_acc3573b702443d7407650cd46ff4befe}{any\_quantity::inverse}}() \&\&}
+\DoxyCodeLine{236 \{}
+\DoxyCodeLine{237     \mbox{\hyperlink{classquantit_1_1any__quantity_a547346ca6b62b9c7ef8da68c5f5d2f2b}{inverse\_}}();}
+\DoxyCodeLine{238     \textcolor{keywordflow}{return} std::move(*\textcolor{keyword}{this});}
+\DoxyCodeLine{239 \}}
+\DoxyCodeLine{240 \textcolor{keyword}{inline} any\_quantity\_ref \mbox{\hyperlink{classquantit_1_1any__quantity_a6b6c29d553dcf03438472ddc7b5a95b1}{any\_quantity::operator=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1any__quantity_a00bc0f329e8f9bb6c20a4736bd214400}{any\_quantity}} \&other)}
+\DoxyCodeLine{241 \{}
+\DoxyCodeLine{242     *impl = *other.impl;}
+\DoxyCodeLine{243     \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{244 \}}
+\DoxyCodeLine{245 \textcolor{keyword}{inline} \textcolor{keywordtype}{void} \mbox{\hyperlink{classquantit_1_1any__quantity_ad0d315c7b2da8a1328e2b902835f22d4}{any\_quantity::swap}}(any\_quantity\_ref other) \{ impl-\/>swap(other); \}}
+\DoxyCodeLine{246 \textcolor{keyword}{inline} \textcolor{keywordtype}{void} \mbox{\hyperlink{classquantit_1_1any__quantity_ad0d315c7b2da8a1328e2b902835f22d4}{swap}}(\mbox{\hyperlink{classquantit_1_1any__quantity_a00bc0f329e8f9bb6c20a4736bd214400}{any\_quantity}} \&lhs, \mbox{\hyperlink{classquantit_1_1any__quantity_a00bc0f329e8f9bb6c20a4736bd214400}{any\_quantity}} \&rhs) \{ lhs.swap(rhs); \}}
+\DoxyCodeLine{247 \textcolor{keyword}{inline} \textcolor{keywordtype}{void} \mbox{\hyperlink{classquantit_1_1any__quantity_ad0d315c7b2da8a1328e2b902835f22d4}{swap}}(any\_quantity\_ref lhs, any\_quantity\_ref rhs) \{ lhs.swap(rhs); \}}
+\DoxyCodeLine{248 \textcolor{keyword}{inline} any\_quantity::operator \mbox{\hyperlink{classquantit_1_1vquantity}{any\_quantity\_cref}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \mbox{\hyperlink{classquantit_1_1vquantity}{any\_quantity\_cref}}(*impl.get()); \}}
+\DoxyCodeLine{249 \textcolor{keyword}{inline} any\_quantity::operator \mbox{\hyperlink{classquantit_1_1vquantity}{any\_quantity\_ref}}() \{ \textcolor{keywordflow}{return} \mbox{\hyperlink{classquantit_1_1vquantity}{any\_quantity\_ref}}(*impl.get()); \}}
+\DoxyCodeLine{250 \textcolor{keyword}{inline} \mbox{\hyperlink{classquantit_1_1vquantity}{any\_quantity\_ref}} \mbox{\hyperlink{classquantit_1_1any__quantity_a9c54f38103926637b9d7717c4ccd3398}{any\_quantity::operator*=}}(\mbox{\hyperlink{classquantit_1_1vquantity}{any\_quantity\_cref}} other)}
+\DoxyCodeLine{251 \{}
+\DoxyCodeLine{252     impl-\/>\mbox{\hyperlink{classquantit_1_1vquantity_a18b07748f79d061f88dd654e3dcfa649}{op}}(other);}
+\DoxyCodeLine{253     \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{254 \}}
+\DoxyCodeLine{255 \textcolor{keyword}{inline} \mbox{\hyperlink{classquantit_1_1any__quantity}{any\_quantity}} \mbox{\hyperlink{classquantit_1_1any__quantity_a27770f0b29b8f58e0d4d39c74d93c3fd}{operator*}}(\mbox{\hyperlink{classquantit_1_1vquantity}{any\_quantity\_cref}} lhs, \mbox{\hyperlink{classquantit_1_1vquantity}{any\_quantity\_cref}} rhs) \{ \textcolor{keywordflow}{return} \mbox{\hyperlink{classquantit_1_1any__quantity_a00bc0f329e8f9bb6c20a4736bd214400}{any\_quantity}}(lhs) *= rhs; \}}
+\DoxyCodeLine{256 \textcolor{keyword}{inline} \mbox{\hyperlink{classquantit_1_1vquantity}{any\_quantity\_ref}} any\_quantity::op(\mbox{\hyperlink{classquantit_1_1vquantity}{any\_quantity\_cref}} other, \textcolor{keywordtype}{bool} cond)}
+\DoxyCodeLine{257 \{}
+\DoxyCodeLine{258     impl-\/>\mbox{\hyperlink{classquantit_1_1vquantity_a18b07748f79d061f88dd654e3dcfa649}{op}}(other, cond);}
+\DoxyCodeLine{259     \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{260 \}}
+\DoxyCodeLine{261 \textcolor{keyword}{inline} \mbox{\hyperlink{classquantit_1_1any__quantity_a00bc0f329e8f9bb6c20a4736bd214400}{any\_quantity}} operator+(any\_quantity\_cref lhs, any\_quantity\_cref rhs) \{ \textcolor{keywordflow}{return} lhs * rhs; \}}
+\DoxyCodeLine{262 \textcolor{keyword}{inline} \mbox{\hyperlink{classquantit_1_1vquantity}{any\_quantity\_ref}} \mbox{\hyperlink{classquantit_1_1any__quantity_a6b6c29d553dcf03438472ddc7b5a95b1}{any\_quantity::operator=}}(\mbox{\hyperlink{classquantit_1_1vquantity}{any\_quantity\_cref}} other)}
+\DoxyCodeLine{263 \{}
+\DoxyCodeLine{264     impl = other.clone(); \textcolor{comment}{// allocate a new thing or copy the value? allocating a new thing allow changing the}}
+\DoxyCodeLine{265                           \textcolor{comment}{// underlying type}}
+\DoxyCodeLine{266     \textcolor{comment}{// allocate a new thing, without easily changing the underlying type, we cannot have a default initialization for}}
+\DoxyCodeLine{267     \textcolor{comment}{// any\_quantity.}}
+\DoxyCodeLine{268     \textcolor{comment}{// this make for wonky and fiddly code in many situation.}}
+\DoxyCodeLine{269     \textcolor{comment}{// The only other valid option is to test the type and take a decision.}}
+\DoxyCodeLine{270     \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{271 \}}
+\DoxyCodeLine{272 \textcolor{keyword}{inline} \mbox{\hyperlink{classquantit_1_1vquantity}{any\_quantity\_ref}} \mbox{\hyperlink{classquantit_1_1any__quantity_a6b6c29d553dcf03438472ddc7b5a95b1}{any\_quantity::operator=}}(\mbox{\hyperlink{classquantit_1_1vquantity}{any\_quantity\_ref}} other) \{ \textcolor{keywordflow}{return} \mbox{\hyperlink{classquantit_1_1any__quantity_a6b6c29d553dcf03438472ddc7b5a95b1}{operator=}}(\mbox{\hyperlink{classquantit_1_1vquantity}{any\_quantity\_cref}}(other)); \}}
+\DoxyCodeLine{273 \textcolor{keyword}{inline} any\_quantity\_ref any\_quantity::operator+=(any\_quantity\_cref other) \{ \textcolor{keywordflow}{return} (*\textcolor{keyword}{this}) *= other; \}}
+\DoxyCodeLine{274 }
+\DoxyCodeLine{275 \textcolor{comment}{// inline bool operator!=(any\_quantity\_cref left, any\_quantity\_cref right) \{ return left.operator!=(right); \}}}
+\DoxyCodeLine{276 \textcolor{comment}{// inline bool operator==(any\_quantity\_cref left, any\_quantity\_cref right) \{ return left.operator==(right); \}}}
+\DoxyCodeLine{277 }
+\DoxyCodeLine{285 \textcolor{keyword}{inline} \mbox{\hyperlink{classquantit_1_1any__quantity}{any\_quantity}} \mbox{\hyperlink{classquantit_1_1vquantity_a3625d2f986585bb6ba22fc09c845bd64}{vquantity::inverse}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} clone()-\/>\mbox{\hyperlink{classquantit_1_1any__quantity_a547346ca6b62b9c7ef8da68c5f5d2f2b}{inverse\_}}(); \}}
+\DoxyCodeLine{286 \textcolor{keyword}{inline} \mbox{\hyperlink{classquantit_1_1any__quantity}{any\_quantity}} vquantity::inv()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \mbox{\hyperlink{classquantit_1_1any__quantity_acc3573b702443d7407650cd46ff4befe}{inverse}}(); \}}
+\DoxyCodeLine{287 \textcolor{keyword}{inline} \mbox{\hyperlink{classquantit_1_1any__quantity_a00bc0f329e8f9bb6c20a4736bd214400}{any\_quantity}} vquantity::neutral()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} make\_neutral(); \}}
+\DoxyCodeLine{288 \textcolor{keyword}{inline} vquantity \&any\_quantity::get() \{ \textcolor{keywordflow}{return} *impl; \}}
+\DoxyCodeLine{289 \textcolor{keyword}{inline} \textcolor{keyword}{const} vquantity \&any\_quantity::get()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} *impl; \}}
+\DoxyCodeLine{290 }
+\DoxyCodeLine{291 \textcolor{keyword}{inline} \mbox{\hyperlink{classquantit_1_1any__quantity_a00bc0f329e8f9bb6c20a4736bd214400}{any\_quantity}} \mbox{\hyperlink{classquantit_1_1any__quantity_a27770f0b29b8f58e0d4d39c74d93c3fd}{operator*}}(any\_quantity\_cref lhs, \mbox{\hyperlink{classquantit_1_1any__quantity_a00bc0f329e8f9bb6c20a4736bd214400}{any\_quantity}} \&\&rhs)}
+\DoxyCodeLine{292 \{}
+\DoxyCodeLine{293     lhs.op\_to(rhs);}
+\DoxyCodeLine{294     \textcolor{keywordflow}{return} std::move(rhs);}
+\DoxyCodeLine{295 \}}
+\DoxyCodeLine{296 \textcolor{keyword}{inline} \mbox{\hyperlink{classquantit_1_1any__quantity_a00bc0f329e8f9bb6c20a4736bd214400}{any\_quantity}} operator+(any\_quantity\_cref lhs, \mbox{\hyperlink{classquantit_1_1any__quantity_a00bc0f329e8f9bb6c20a4736bd214400}{any\_quantity}} \&\&rhs)}
+\DoxyCodeLine{297 \{}
+\DoxyCodeLine{298     lhs.op\_to(rhs);}
+\DoxyCodeLine{299     \textcolor{keywordflow}{return} std::move(rhs);}
+\DoxyCodeLine{300 \}}
+\DoxyCodeLine{301 \textcolor{keyword}{inline} \mbox{\hyperlink{classquantit_1_1any__quantity_a00bc0f329e8f9bb6c20a4736bd214400}{any\_quantity}} \mbox{\hyperlink{classquantit_1_1any__quantity_a27770f0b29b8f58e0d4d39c74d93c3fd}{operator*}}(\mbox{\hyperlink{classquantit_1_1any__quantity_a00bc0f329e8f9bb6c20a4736bd214400}{any\_quantity}} \&\&lhs, any\_quantity\_cref rhs)}
+\DoxyCodeLine{302 \{}
+\DoxyCodeLine{303     lhs *= rhs;}
+\DoxyCodeLine{304     \textcolor{keywordflow}{return} std::move(lhs);}
+\DoxyCodeLine{305 \}}
+\DoxyCodeLine{306 \textcolor{keyword}{inline} \mbox{\hyperlink{classquantit_1_1any__quantity_a00bc0f329e8f9bb6c20a4736bd214400}{any\_quantity}} operator+(\mbox{\hyperlink{classquantit_1_1any__quantity_a00bc0f329e8f9bb6c20a4736bd214400}{any\_quantity}} \&\&lhs, any\_quantity\_cref rhs)}
+\DoxyCodeLine{307 \{}
+\DoxyCodeLine{308     lhs += rhs;}
+\DoxyCodeLine{309     \textcolor{keywordflow}{return} std::move(lhs);}
+\DoxyCodeLine{310 \}}
+\DoxyCodeLine{311 \textcolor{keyword}{inline} \mbox{\hyperlink{classquantit_1_1any__quantity_a00bc0f329e8f9bb6c20a4736bd214400}{any\_quantity}} \mbox{\hyperlink{classquantit_1_1any__quantity_a27770f0b29b8f58e0d4d39c74d93c3fd}{operator*}}(\mbox{\hyperlink{classquantit_1_1any__quantity_a00bc0f329e8f9bb6c20a4736bd214400}{any\_quantity}} \&\&lhs, \mbox{\hyperlink{classquantit_1_1any__quantity_a00bc0f329e8f9bb6c20a4736bd214400}{any\_quantity}} \&\&rhs) \{ \textcolor{keywordflow}{return} std::move(lhs) * rhs.get(); \}}
+\DoxyCodeLine{312 \textcolor{keyword}{inline} \mbox{\hyperlink{classquantit_1_1any__quantity_a00bc0f329e8f9bb6c20a4736bd214400}{any\_quantity}} operator+(\mbox{\hyperlink{classquantit_1_1any__quantity_a00bc0f329e8f9bb6c20a4736bd214400}{any\_quantity}} \&\&lhs, \mbox{\hyperlink{classquantit_1_1any__quantity_a00bc0f329e8f9bb6c20a4736bd214400}{any\_quantity}} \&\&rhs) \{ \textcolor{keywordflow}{return} std::move(lhs) + rhs.get(); \}}
+\DoxyCodeLine{313 }
+\DoxyCodeLine{314 }
+\DoxyCodeLine{315 qtt\_TEST\_CASE(\textcolor{stringliteral}{"{}composite conserved"{}})}
+\DoxyCodeLine{316 \{}
+\DoxyCodeLine{317     \textcolor{keyword}{using namespace }quantit;}
+\DoxyCodeLine{318     \textcolor{keyword}{using namespace }conserved;}
+\DoxyCodeLine{319     \mbox{\hyperlink{classquantit_1_1any__quantity}{any\_quantity}} A(C<2>(0), Z(3)); \textcolor{comment}{// order matters.}}
+\DoxyCodeLine{320     \mbox{\hyperlink{classquantit_1_1any__quantity}{any\_quantity}} B(C<2>(1), Z(-\/1));}
+\DoxyCodeLine{321     \textcolor{keyword}{using} ccgroup = \mbox{\hyperlink{classquantit_1_1quantity}{quantity<C<2>}}, Z>;}
+\DoxyCodeLine{322     \textcolor{keyword}{auto} EFF = \mbox{\hyperlink{classquantit_1_1any__quantity_a00bc0f329e8f9bb6c20a4736bd214400}{any\_quantity}}(ccgroup(0, 0));}
+\DoxyCodeLine{323     qtt\_CHECK\_NOTHROW(\textcolor{keyword}{auto} a = \mbox{\hyperlink{classquantit_1_1any__quantity_a00bc0f329e8f9bb6c20a4736bd214400}{any\_quantity}}(ccgroup(0, 0)));}
+\DoxyCodeLine{324     \mbox{\hyperlink{classquantit_1_1any__quantity}{any\_quantity}} A\_copy(A);}
+\DoxyCodeLine{325     \mbox{\hyperlink{classquantit_1_1any__quantity}{any\_quantity}} B\_copy(B);}
+\DoxyCodeLine{326     qtt\_CHECK\_NOTHROW(\textcolor{keyword}{auto} c = A + B);}
+\DoxyCodeLine{327     \mbox{\hyperlink{classquantit_1_1any__quantity}{any\_quantity}} D(Z(0), C<2>(1)); \textcolor{comment}{// D has a different underlying type.}}
+\DoxyCodeLine{328     \textcolor{comment}{// the cast to void silences warnings about unused return values and}}
+\DoxyCodeLine{329     \textcolor{comment}{// comparison. We know, it's ok.}}
+\DoxyCodeLine{330     qtt\_CHECK\_THROWS\_AS((\textcolor{keywordtype}{void})(D == A),}
+\DoxyCodeLine{331                         \textcolor{keyword}{const} std::bad\_cast \&); \textcolor{comment}{// A and D have different derived}}
+\DoxyCodeLine{332                                                 \textcolor{comment}{// type: they're not compatible}}
+\DoxyCodeLine{333     qtt\_CHECK\_THROWS\_AS((\textcolor{keywordtype}{void})(D != A),}
+\DoxyCodeLine{334                         \textcolor{keyword}{const} std::bad\_cast \&); \textcolor{comment}{// A and D have different derived}}
+\DoxyCodeLine{335                                                 \textcolor{comment}{// type: they're not compatible}}
+\DoxyCodeLine{336     qtt\_CHECK\_THROWS\_AS((\textcolor{keywordtype}{void})(D * A),}
+\DoxyCodeLine{337                         \textcolor{keyword}{const} std::bad\_cast \&); \textcolor{comment}{// A and D have different derived}}
+\DoxyCodeLine{338                                                 \textcolor{comment}{// type: they're not compatible}}
+\DoxyCodeLine{339     qtt\_CHECK\_THROWS\_AS(D *= A,}
+\DoxyCodeLine{340                         \textcolor{keyword}{const} std::bad\_cast \&); \textcolor{comment}{// A and D have different derived}}
+\DoxyCodeLine{341                                                 \textcolor{comment}{// type: they're not compatible}}
+\DoxyCodeLine{342     qtt\_CHECK\_THROWS\_AS(D += A,}
+\DoxyCodeLine{343                         \textcolor{keyword}{const} std::bad\_cast \&); \textcolor{comment}{// A and D have different derived}}
+\DoxyCodeLine{344                                                 \textcolor{comment}{// type: they're not compatible}}
+\DoxyCodeLine{345     qtt\_CHECK\_THROWS\_AS((\textcolor{keywordtype}{void})(D + A),}
+\DoxyCodeLine{346                         \textcolor{keyword}{const} std::bad\_cast \&); \textcolor{comment}{// A and D have different derived}}
+\DoxyCodeLine{347                                                 \textcolor{comment}{// type: they're not compatible}}
+\DoxyCodeLine{348     \mbox{\hyperlink{classquantit_1_1vquantity}{any\_quantity\_ref}} A\_ref(A);}
+\DoxyCodeLine{349     \mbox{\hyperlink{classquantit_1_1vquantity}{any\_quantity\_cref}} A\_cref(A);}
+\DoxyCodeLine{350     \mbox{\hyperlink{classquantit_1_1vquantity}{any\_quantity\_cref}} B\_cref(B);}
+\DoxyCodeLine{351     \mbox{\hyperlink{classquantit_1_1vquantity}{any\_quantity\_ref}} B\_ref(B);}
+\DoxyCodeLine{352     \textcolor{comment}{// any\_quantity\_ref is a drop-\/in replacement for a reference to any\_quantity}}
+\DoxyCodeLine{353     \textcolor{comment}{// any\_quantity\_cref is a drop-\/in-\/replacement for a reference to a constant}}
+\DoxyCodeLine{354     \textcolor{comment}{// any\_quantity. Those two classes exists to facilitate manipulation of single}}
+\DoxyCodeLine{355     \textcolor{comment}{// any\_quantity located within a special container for this polymorphic type. We}}
+\DoxyCodeLine{356     \textcolor{comment}{// make extensive use of the reference type within the tests specifically to}}
+\DoxyCodeLine{357     \textcolor{comment}{// verify the correctness of their implementation. We advise avoiding those}}
+\DoxyCodeLine{358     \textcolor{comment}{// two reference type whenever possible. const any\_quantity\& and any\_quantity\& are}}
+\DoxyCodeLine{359     \textcolor{comment}{// perfectly fine for most purpose.}}
+\DoxyCodeLine{360     qtt\_CHECK\_NOTHROW(A\_copy = A\_ref);}
+\DoxyCodeLine{361     qtt\_CHECK\_NOTHROW(A\_copy = A\_cref);}
+\DoxyCodeLine{362     \textcolor{comment}{// Checking that the ref type doesn't loose track of its target.}}
+\DoxyCodeLine{363     qtt\_CHECK(A\_cref == A\_ref);}
+\DoxyCodeLine{364     qtt\_CHECK(A\_ref == A\_cref);}
+\DoxyCodeLine{365     qtt\_CHECK(A\_ref == A);}
+\DoxyCodeLine{366     qtt\_CHECK\_NOTHROW(A\_ref *= B);}
+\DoxyCodeLine{367     qtt\_CHECK(A\_ref == A);}
+\DoxyCodeLine{368     qtt\_CHECK(A\_ref == A\_cref);}
+\DoxyCodeLine{369     qtt\_CHECK\_NOTHROW(A\_ref += B);}
+\DoxyCodeLine{370     qtt\_CHECK(A\_ref == A);}
+\DoxyCodeLine{371     qtt\_CHECK(A\_ref == A\_cref);}
+\DoxyCodeLine{372     A\_copy = A;}
+\DoxyCodeLine{373     qtt\_CHECK(B == B\_copy); \textcolor{comment}{// commute\_ act on the the calling object only.}}
+\DoxyCodeLine{374     qtt\_CHECK(A\_copy == A); \textcolor{comment}{// this is an abelian group.}}
+\DoxyCodeLine{375     qtt\_SUBCASE(\textcolor{stringliteral}{"{}Cast ambiguity"{}})}
+\DoxyCodeLine{376     \{}
+\DoxyCodeLine{377         \textcolor{comment}{// In this subcase with test different combination of any\_quantity,any\_quantity\_ref}}
+\DoxyCodeLine{378         \textcolor{comment}{// and any\_quantity\_cref to make sure all operation resolve correctly. Because}}
+\DoxyCodeLine{379         \textcolor{comment}{// of the different type and the ways in which they are equivalent, a}}
+\DoxyCodeLine{380         \textcolor{comment}{// mistake could lead to some operations failing.}}
+\DoxyCodeLine{381         qtt\_CHECK\_NOTHROW(\textcolor{keyword}{auto} \_t = A * B);}
+\DoxyCodeLine{382         qtt\_CHECK\_NOTHROW(\textcolor{keyword}{auto} \_t = A\_ref * B);}
+\DoxyCodeLine{383         qtt\_CHECK\_NOTHROW(\textcolor{keyword}{auto} \_t = A\_cref * B);}
+\DoxyCodeLine{384         qtt\_CHECK\_NOTHROW(\textcolor{keyword}{auto} \_t = A * B\_ref);}
+\DoxyCodeLine{385         qtt\_CHECK\_NOTHROW(\textcolor{keyword}{auto} \_t = A\_ref * B\_ref);}
+\DoxyCodeLine{386         qtt\_CHECK\_NOTHROW(\textcolor{keyword}{auto} \_t = A\_cref * B\_ref);}
+\DoxyCodeLine{387         qtt\_CHECK\_NOTHROW(\textcolor{keyword}{auto} \_t = A * B\_cref);}
+\DoxyCodeLine{388         qtt\_CHECK\_NOTHROW(\textcolor{keyword}{auto} \_t = A\_ref * B\_cref);}
+\DoxyCodeLine{389         qtt\_CHECK\_NOTHROW(\textcolor{keyword}{auto} \_t = A\_cref * B\_cref);}
+\DoxyCodeLine{390         qtt\_CHECK\_NOTHROW(\textcolor{keyword}{auto} \_t = A * B\_cref.inverse());     \textcolor{comment}{// this should use the}}
+\DoxyCodeLine{391                                                                \textcolor{comment}{// operator*(any\_quantity\_cref\&,any\_quantity\&\&);}}
+\DoxyCodeLine{392         qtt\_CHECK\_NOTHROW(\textcolor{keyword}{auto} \_t = A\_ref * B.inverse());      \textcolor{comment}{// this should use the}}
+\DoxyCodeLine{393                                                                \textcolor{comment}{// operator*(any\_quantity\_cref\&,any\_quantity\&\&);}}
+\DoxyCodeLine{394         qtt\_CHECK\_NOTHROW(\textcolor{keyword}{auto} \_t = A\_cref * B\_ref.inverse()); \textcolor{comment}{// this should use the}}
+\DoxyCodeLine{395                                                                \textcolor{comment}{// operator*(any\_quantity\_cref\&,any\_quantity\&\&);}}
+\DoxyCodeLine{396         \textcolor{comment}{//+ and * are completly equivalent.}}
+\DoxyCodeLine{397         qtt\_CHECK\_NOTHROW(\textcolor{keyword}{auto} \_t = A + B);}
+\DoxyCodeLine{398         qtt\_CHECK\_NOTHROW(\textcolor{keyword}{auto} \_t = A\_ref + B);}
+\DoxyCodeLine{399         qtt\_CHECK\_NOTHROW(\textcolor{keyword}{auto} \_t = A\_cref + B);}
+\DoxyCodeLine{400         qtt\_CHECK\_NOTHROW(\textcolor{keyword}{auto} \_t = A + B\_ref);}
+\DoxyCodeLine{401         qtt\_CHECK\_NOTHROW(\textcolor{keyword}{auto} \_t = A\_ref + B\_ref);}
+\DoxyCodeLine{402         qtt\_CHECK\_NOTHROW(\textcolor{keyword}{auto} \_t = A\_cref + B\_ref);}
+\DoxyCodeLine{403         qtt\_CHECK\_NOTHROW(\textcolor{keyword}{auto} \_t = A + B\_cref);}
+\DoxyCodeLine{404         qtt\_CHECK\_NOTHROW(\textcolor{keyword}{auto} \_t = A\_ref + B\_cref);}
+\DoxyCodeLine{405         qtt\_CHECK\_NOTHROW(\textcolor{keyword}{auto} \_t = A\_cref + B\_cref);}
+\DoxyCodeLine{406         qtt\_CHECK\_NOTHROW(\textcolor{keyword}{auto} \_t = A + B\_cref.inverse());     \textcolor{comment}{// this should use the}}
+\DoxyCodeLine{407                                                                \textcolor{comment}{// operator+(any\_quantity\_cref\&,any\_quantity\&\&);}}
+\DoxyCodeLine{408         qtt\_CHECK\_NOTHROW(\textcolor{keyword}{auto} \_t = A\_ref + B.inverse());      \textcolor{comment}{// this should use the}}
+\DoxyCodeLine{409                                                                \textcolor{comment}{// operator+(any\_quantity\_cref\&,any\_quantity\&\&);}}
+\DoxyCodeLine{410         qtt\_CHECK\_NOTHROW(\textcolor{keyword}{auto} \_t = A\_cref + B\_ref.inverse()); \textcolor{comment}{// this should use the}}
+\DoxyCodeLine{411                                                                \textcolor{comment}{// operator+(any\_quantity\_cref\&,any\_quantity\&\&);}}
+\DoxyCodeLine{412     \}}
+\DoxyCodeLine{413     \textcolor{keyword}{auto} C = \mbox{\hyperlink{classquantit_1_1any__quantity_a00bc0f329e8f9bb6c20a4736bd214400}{any\_quantity}}(B\_cref);}
+\DoxyCodeLine{414     \textcolor{comment}{// C == A\_ref *B\_cref;}}
+\DoxyCodeLine{415     \textcolor{comment}{// C == B\_cref *A\_cref.inverse();}}
+\DoxyCodeLine{416     \textcolor{comment}{// C == A\_ref *B\_cref *A\_cref.inverse();           //A.commute(B) should be}}
+\DoxyCodeLine{417     \textcolor{comment}{// an optimisation of the formula on the right.}}
+\DoxyCodeLine{418     qtt\_CHECK(C == A\_ref * B\_cref * A\_cref.inverse()); \textcolor{comment}{// A.commute(B) should be an optimisation}}
+\DoxyCodeLine{419                                                        \textcolor{comment}{// of the formula on the right.}}
+\DoxyCodeLine{420     C = A;}
+\DoxyCodeLine{421     qtt\_CHECK(C == B.inverse() * A * B); \textcolor{comment}{// A.commute\_(B) should be an optimization}}
+\DoxyCodeLine{422                                          \textcolor{comment}{// of the formula on the right.}}
+\DoxyCodeLine{423 \}}
+\DoxyCodeLine{424 }
+\DoxyCodeLine{425 \} \textcolor{comment}{// namespace quantit}}
+\DoxyCodeLine{426 }
+\DoxyCodeLine{427 \textcolor{keyword}{template} <>}
+\DoxyCodeLine{428 \textcolor{keyword}{struct }\mbox{\hyperlink{structfmt_1_1formatter_3_01quantit_1_1any__quantity__cref_01_4}{fmt::formatter<quantit::any\_quantity\_cref>}} : \mbox{\hyperlink{structfmt_1_1formatter_3_01quantit_1_1vquantity_01_4}{fmt::formatter<quantit::vquantity>}}}
+\DoxyCodeLine{429 \{}
+\DoxyCodeLine{430     \textcolor{keyword}{template} <\textcolor{keyword}{class} FormatContext>}
+\DoxyCodeLine{431     \textcolor{keyword}{auto} format(\mbox{\hyperlink{classquantit_1_1vquantity}{quantit::any\_quantity\_cref}} \&qt, FormatContext \&ctx)\textcolor{keyword}{ const}}
+\DoxyCodeLine{432 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{433         \textcolor{keywordflow}{return} fmt::formatter<quantit::vquantity>::format(}
+\DoxyCodeLine{434             qt,}
+\DoxyCodeLine{435             ctx); \textcolor{comment}{// right now qt.format\_to is only define for fmt::format\_context. Should work for any output stream.}}
+\DoxyCodeLine{436     \}}
+\DoxyCodeLine{437 \};}
+\DoxyCodeLine{438 \textcolor{keyword}{template} <>}
+\DoxyCodeLine{439 \textcolor{keyword}{struct }\mbox{\hyperlink{structfmt_1_1formatter_3_01quantit_1_1any__quantity__ref_01_4}{fmt::formatter<quantit::any\_quantity\_ref>}} : \textcolor{keyword}{public} \mbox{\hyperlink{structfmt_1_1formatter_3_01quantit_1_1any__quantity__cref_01_4}{fmt::formatter<quantit::any\_quantity\_cref>}}}
+\DoxyCodeLine{440 \{}
+\DoxyCodeLine{441 \};}
+\DoxyCodeLine{442 \textcolor{keyword}{template} <>}
+\DoxyCodeLine{443 \textcolor{keyword}{struct }\mbox{\hyperlink{structfmt_1_1formatter_3_01quantit_1_1any__quantity_01_4}{fmt::formatter<quantit::any\_quantity>}} : \textcolor{keyword}{public} \mbox{\hyperlink{structfmt_1_1formatter_3_01quantit_1_1any__quantity__cref_01_4}{fmt::formatter<quantit::any\_quantity\_cref>}}}
+\DoxyCodeLine{444 \{}
+\DoxyCodeLine{445     \textcolor{comment}{// exploits implicit conversion to get the job done.}}
+\DoxyCodeLine{446 \};}
+\DoxyCodeLine{447 }
+\DoxyCodeLine{448 std::string to\_string(\mbox{\hyperlink{classquantit_1_1vquantity}{quantit::any\_quantity\_cref}} cqtt);}
+\DoxyCodeLine{449 }
+\DoxyCodeLine{450 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* D56E4C12\_98E1\_4C9E\_B0C4\_5B35A5A3CD17 */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

@@ -1,0 +1,420 @@
+\hypertarget{blockTensor_2LinearAlgebra_8h_source}{}\doxysection{Linear\+Algebra.\+h}
+\label{blockTensor_2LinearAlgebra_8h_source}\index{/Users/alex/Documents/Prog/QuantiT/include/blockTensor/LinearAlgebra.h@{/Users/alex/Documents/Prog/QuantiT/include/blockTensor/LinearAlgebra.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * File: LinearAlgebra.h}}
+\DoxyCodeLine{3 \textcolor{comment}{ * Project: QuantiT}}
+\DoxyCodeLine{4 \textcolor{comment}{ * File Created: Thursday, 13th May 2021 11:22:38 am}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)}}
+\DoxyCodeLine{6 \textcolor{comment}{ * Copyright (c) 2021 Alexandre Foley}}
+\DoxyCodeLine{7 \textcolor{comment}{ * Licensed under GPL v3}}
+\DoxyCodeLine{8 \textcolor{comment}{ */}}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#ifndef BTENSORLINEARALGEBRA\_H}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#define BTENSORLINEARALGEBRA\_H}}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include "{}blockTensor/btensor.h"{}}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include "{}doctest/doctest\_proxy.h"{}}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include <ATen/Functions.h>}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include <ATen/TensorIndexing.h>}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include <fmt/core.h>}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include <fmt/ranges.h>}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include <ostream>}}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{keyword}{namespace }quantit}
+\DoxyCodeLine{22 \{}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{30 \textcolor{keyword}{struct }\mbox{\hyperlink{structquantit_1_1BOOL}{BOOL}}}
+\DoxyCodeLine{31 \{}
+\DoxyCodeLine{32     \textcolor{keywordtype}{bool} val;}
+\DoxyCodeLine{33     \mbox{\hyperlink{structquantit_1_1BOOL}{BOOL}}(\textcolor{keywordtype}{bool} \_val) noexcept : val(\_val) \{\}}
+\DoxyCodeLine{34     \textcolor{keyword}{operator} bool() \textcolor{keyword}{const} \textcolor{keyword}{noexcept} \{ \textcolor{keywordflow}{return} val; \}}
+\DoxyCodeLine{35 \};}
+\DoxyCodeLine{74 std::tuple<btensor, btensor, btensor> svd(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&tensor, \mbox{\hyperlink{structquantit_1_1BOOL}{BOOL}} some = \textcolor{keyword}{true}, \mbox{\hyperlink{structquantit_1_1BOOL}{BOOL}} compute\_uv = \textcolor{keyword}{true});}
+\DoxyCodeLine{75 }
+\DoxyCodeLine{87 std::tuple<btensor, btensor, btensor> svd(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&tensor, \textcolor{keywordtype}{size\_t} split);}
+\DoxyCodeLine{92 \textcolor{keyword}{inline} std::tuple<btensor, btensor, btensor> svd(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&tensor, \textcolor{keywordtype}{int} split)}
+\DoxyCodeLine{93 \{}
+\DoxyCodeLine{94     \textcolor{keywordflow}{return} svd(tensor, \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(split));}
+\DoxyCodeLine{95 \}}
+\DoxyCodeLine{96 }
+\DoxyCodeLine{115 std::tuple<btensor, btensor, btensor> svd(\textcolor{keyword}{const} btensor \&A, \textcolor{keywordtype}{size\_t} split, btensor::Scalar tol, \textcolor{keywordtype}{size\_t} min\_size,}
+\DoxyCodeLine{116                                           \textcolor{keywordtype}{size\_t} max\_size, btensor::Scalar pow = 2);}
+\DoxyCodeLine{121 \textcolor{keyword}{inline} std::tuple<btensor, btensor, btensor> svd(\textcolor{keyword}{const} btensor \&A, \textcolor{keywordtype}{int} split, btensor::Scalar tol, \textcolor{keywordtype}{size\_t} min\_size,}
+\DoxyCodeLine{122                                                  \textcolor{keywordtype}{size\_t} max\_size, btensor::Scalar pow = 2)}
+\DoxyCodeLine{123 \{}
+\DoxyCodeLine{124     \textcolor{keywordflow}{return} svd(A, \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(split), tol, min\_size, max\_size, pow);}
+\DoxyCodeLine{125 \}}
+\DoxyCodeLine{142 std::tuple<btensor, btensor, btensor> svd(\textcolor{keyword}{const} btensor \&A, \textcolor{keywordtype}{size\_t} split, btensor::Scalar tol, btensor::Scalar pow = 2);}
+\DoxyCodeLine{146 \textcolor{keyword}{inline} std::tuple<btensor, btensor, btensor> svd(\textcolor{keyword}{const} btensor \&A, \textcolor{keywordtype}{int} split, btensor::Scalar tol,}
+\DoxyCodeLine{147                                                  btensor::Scalar pow = 2)}
+\DoxyCodeLine{148 \{}
+\DoxyCodeLine{149     \textcolor{keywordflow}{return} svd(A, \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(split), tol, pow);}
+\DoxyCodeLine{150 \}}
+\DoxyCodeLine{159 std::tuple<btensor, btensor> eigh(\textcolor{keyword}{const} btensor \&tensor, BOOL upper = \textcolor{keyword}{false});}
+\DoxyCodeLine{167 std::tuple<btensor, btensor> eigh(\textcolor{keyword}{const} btensor \&tensor, \textcolor{keywordtype}{size\_t} split);}
+\DoxyCodeLine{180 std::tuple<btensor, btensor> eigh(\textcolor{keyword}{const} btensor \&A, \textcolor{keywordtype}{size\_t} split, btensor::Scalar tol, \textcolor{keywordtype}{size\_t} min\_size,}
+\DoxyCodeLine{181                                     \textcolor{keywordtype}{size\_t} max\_size, btensor::Scalar pow = 1);}
+\DoxyCodeLine{192 std::tuple<btensor, btensor> eigh(\textcolor{keyword}{const} btensor \&A, \textcolor{keywordtype}{size\_t} split, btensor::Scalar tol, btensor::Scalar pow = 1);}
+\DoxyCodeLine{193 }
+\DoxyCodeLine{194 \textcolor{keyword}{namespace }LA\_helpers}
+\DoxyCodeLine{195 \{}
+\DoxyCodeLine{208 btensor::block\_list\_t::content\_t reorder\_by\_cvals(\textcolor{keyword}{const} btensor \&tensor);}
+\DoxyCodeLine{209 }
+\DoxyCodeLine{220 std::tuple<torch::Tensor, btensor::index\_list, std::vector<std::tuple<int, torch::indexing::Slice>>,}
+\DoxyCodeLine{221            std::vector<std::tuple<int, torch::indexing::Slice>>>}
+\DoxyCodeLine{222 compact\_dense\_single(\textcolor{keyword}{typename} btensor::block\_list\_t::content\_t::const\_iterator start,}
+\DoxyCodeLine{223                      \textcolor{keyword}{typename} btensor::block\_list\_t::content\_t::const\_iterator end);}
+\DoxyCodeLine{224 }
+\DoxyCodeLine{225 \textcolor{keyword}{using} Slice = torch::indexing::Slice;}
+\DoxyCodeLine{226 \textcolor{keyword}{using} TensInd = torch::indexing::TensorIndex;}
+\DoxyCodeLine{227 std::tuple<btensor::index\_list, std::array<TensInd, 3>> build\_index\_slice(\textcolor{keyword}{const} btensor::index\_list \&other\_indices,}
+\DoxyCodeLine{228                                                                           \textcolor{keyword}{const} std::tuple<int, Slice> \&rb\_slices,}
+\DoxyCodeLine{229                                                                           \textcolor{keyword}{const} std::tuple<int, Slice> \&cb\_slices);}
+\DoxyCodeLine{230 }
+\DoxyCodeLine{231 std::vector<std::tuple<torch::Tensor, btensor::index\_list, std::vector<std::tuple<int, torch::indexing::Slice>>,}
+\DoxyCodeLine{232                        std::vector<std::tuple<int, torch::indexing::Slice>>>>}
+\DoxyCodeLine{233 compact\_dense(\textcolor{keyword}{const} btensor \&tensor);}
+\DoxyCodeLine{234 \} \textcolor{comment}{// namespace LA\_helpers}}
+\DoxyCodeLine{235 }
+\DoxyCodeLine{236 \textcolor{keyword}{inline} std::ostream \&operator<<(std::ostream \&out, any\_quantity\_cref qt)}
+\DoxyCodeLine{237 \{}
+\DoxyCodeLine{238     out << fmt::format(\textcolor{stringliteral}{"{}\{\}"{}}, qt);}
+\DoxyCodeLine{239     \textcolor{keywordflow}{return} out;}
+\DoxyCodeLine{240 \}}
+\DoxyCodeLine{241 }
+\DoxyCodeLine{242 std::string qformat(any\_quantity\_cref qt);}
+\DoxyCodeLine{243 }
+\DoxyCodeLine{244 std::tuple<btensor, btensor> truncate(btensor \&\&e, btensor \&\&S, \textcolor{keywordtype}{size\_t} max, \textcolor{keywordtype}{size\_t} min,}
+\DoxyCodeLine{245                                                btensor::Scalar tol, btensor::Scalar pow);}
+\DoxyCodeLine{246 std::tuple<btensor, btensor, btensor> truncate(btensor \&\&U, btensor \&\&d, btensor \&\&V, \textcolor{keywordtype}{size\_t} max, \textcolor{keywordtype}{size\_t} min,}
+\DoxyCodeLine{247                                                btensor::Scalar tol, btensor::Scalar pow);}
+\DoxyCodeLine{248 }
+\DoxyCodeLine{249 qtt\_TEST\_CASE(\textcolor{stringliteral}{"{}btensor Linear algebra"{}})}
+\DoxyCodeLine{250 \{}
+\DoxyCodeLine{251     qtt\_SUBCASE(\textcolor{stringliteral}{"{}decompositions"{}})}
+\DoxyCodeLine{252     \{}
+\DoxyCodeLine{253         \textcolor{keyword}{using} cqt = conserved::C<5>;}
+\DoxyCodeLine{254         \textcolor{keyword}{using} index = btensor::index\_list;}
+\DoxyCodeLine{255         any\_quantity selection\_rule(cqt(0)); \textcolor{comment}{// DMRJulia flux}}
+\DoxyCodeLine{256         btensor A(\{\{\{2, cqt(0)\}, \{3, cqt(1)\}\},}
+\DoxyCodeLine{257                    \{\{1, cqt(1)\}, \{2, cqt(0)\}, \{3, cqt(-\/1)\}, \{1, cqt(1)\}\},}
+\DoxyCodeLine{258                    \{\{3, cqt(0)\}, \{2, cqt(-\/2)\}, \{2, cqt(-\/1)\}\}\},}
+\DoxyCodeLine{259                   selection\_rule);}
+\DoxyCodeLine{260         A.block(\{0, 0, 2\}) = torch::rand(\{2, 1, 2\});}
+\DoxyCodeLine{261         A.block(\{0, 1, 0\}) = torch::rand(\{2, 2, 3\});}
+\DoxyCodeLine{262         A.block(\{0, 3, 2\}) = torch::rand(\{2, 1, 2\});}
+\DoxyCodeLine{263         A.block(\{1, 0, 1\}) = torch::rand(\{3, 1, 2\});}
+\DoxyCodeLine{264         A.block(\{1, 1, 2\}) = torch::rand(\{3, 2, 2\});}
+\DoxyCodeLine{265         A.block(\{1, 2, 0\}) = torch::rand(\{3, 3, 3\});}
+\DoxyCodeLine{266         A.block(\{1, 3, 1\}) = torch::rand(\{3, 1, 2\});}
+\DoxyCodeLine{267         qtt\_REQUIRE\_NOTHROW(\mbox{\hyperlink{classquantit_1_1btensor_a5d8897e8e51c880654c5d467b2b0a8bc}{btensor::throw\_bad\_tensor}}(A));}
+\DoxyCodeLine{268         btensor U,d,V;}
+\DoxyCodeLine{269         qtt\_REQUIRE\_NOTHROW( std::tie(U, d, V) = svd(A));}
+\DoxyCodeLine{270 \textcolor{preprocessor}{\#ifndef NDEBUG}}
+\DoxyCodeLine{271         \textcolor{comment}{// those helpers are not in the header when not in debug mode.}}
+\DoxyCodeLine{272         qtt\_SUBCASE(\textcolor{stringliteral}{"{}btensor linear algebra helpers"{}})}
+\DoxyCodeLine{273         \{}
+\DoxyCodeLine{274             \{}
+\DoxyCodeLine{275                 \textcolor{keyword}{auto} reordered\_block = LA\_helpers::reorder\_by\_cvals(A);}
+\DoxyCodeLine{276                 std::vector<btensor::index\_list> exp\_blocks = \{\{0, 1, 0\}, \{1, 1, 2\}, \{1, 0, 1\}, \{1, 3, 1\},}
+\DoxyCodeLine{277                                                                \{0, 0, 2\}, \{0, 3, 2\}, \{1, 2, 0\}\};}
+\DoxyCodeLine{278                 qtt\_CHECK(exp\_blocks.size() == reordered\_block.size());}
+\DoxyCodeLine{279                 \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} [block, expec] = std::make\_tuple(reordered\_block.begin(), exp\_blocks.begin());}
+\DoxyCodeLine{280                      block != reordered\_block.end(); ++block, ++expec)}
+\DoxyCodeLine{281                 \{}
+\DoxyCodeLine{282                     \textcolor{comment}{// auto cvals\_view = A.block\_quantities(std::get<0>(*block));}}
+\DoxyCodeLine{283                     \textcolor{comment}{// fmt::print( "{}cvals: \{\}\(\backslash\)n"{},fmt::join(cvals\_view.begin(),cvals\_view.end(),"{},"{}));}}
+\DoxyCodeLine{284                     \textcolor{comment}{// fmt::print("{}block index: \{\}\(\backslash\)n"{}, std::get<0>(*block));}}
+\DoxyCodeLine{285                     qtt\_CHECK(std::get<0>(*block) == *expec);}
+\DoxyCodeLine{286                 \}}
+\DoxyCodeLine{287                 \textcolor{comment}{// reordered\_block[2:4] is a set of block with the same c\_vals on the last two indices, and with the}}
+\DoxyCodeLine{288                 \textcolor{comment}{// same block indices for all but the last two dims.}}
+\DoxyCodeLine{289                 \textcolor{keyword}{auto} [compact\_tensor, other\_indices, row\_block\_slices, col\_block\_slices] =}
+\DoxyCodeLine{290                     LA\_helpers::compact\_dense\_single(reordered\_block.begin() + 2, reordered\_block.begin() + 4);}
+\DoxyCodeLine{291                 qtt\_REQUIRE(other\_indices.size() == 1);}
+\DoxyCodeLine{292                 \textcolor{keywordflow}{for} (\textcolor{keyword}{const} \textcolor{keyword}{auto} \&rb\_slices : row\_block\_slices)}
+\DoxyCodeLine{293                 \{}
+\DoxyCodeLine{294                     \textcolor{keywordflow}{for} (\textcolor{keyword}{const} \textcolor{keyword}{auto} \&cb\_slices : col\_block\_slices)}
+\DoxyCodeLine{295                     \{}
+\DoxyCodeLine{296                         \textcolor{keyword}{auto} [block\_ind, slice] = LA\_helpers::build\_index\_slice(other\_indices, rb\_slices, cb\_slices);}
+\DoxyCodeLine{297                         \textcolor{comment}{// we have rebuilt the block index in block\_ind. It would be good to have a function to do that.}}
+\DoxyCodeLine{298                         qtt\_CHECK(torch::equal(A.block(block\_ind), compact\_tensor.index(slice)));}
+\DoxyCodeLine{299                         \textcolor{comment}{// then we verify that the blocks from the original tensor can be obtained from the stored}}
+\DoxyCodeLine{300                         \textcolor{comment}{// slincing of the compacted tensor}}
+\DoxyCodeLine{301                     \}}
+\DoxyCodeLine{302                 \}}
+\DoxyCodeLine{303             \}}
+\DoxyCodeLine{304             \{}
+\DoxyCodeLine{305                 btensor B;}
+\DoxyCodeLine{306                 qtt\_REQUIRE\_NOTHROW(B = A.reshape(\{1\})); \textcolor{comment}{// joins dimensions 2 and 1}}
+\DoxyCodeLine{307                 \textcolor{comment}{// fmt::print("{}tensor \{\}\(\backslash\)n"{},B);}}
+\DoxyCodeLine{308                 \textcolor{keyword}{auto} reordered\_block = LA\_helpers::reorder\_by\_cvals(B);}
+\DoxyCodeLine{309                 std::vector<btensor::index\_list> exp\_blocks = \{\{0, 2\}, \{0, 3\}, \{0, 11\}, \{1, 1\},}
+\DoxyCodeLine{310                                                                \{1, 5\}, \{1, 6\}, \{1, 10\}\};}
+\DoxyCodeLine{311                 qtt\_CHECK(exp\_blocks.size() == reordered\_block.size());}
+\DoxyCodeLine{312                 \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} [block, expec] = std::make\_tuple(reordered\_block.begin(), exp\_blocks.begin());}
+\DoxyCodeLine{313                      block != reordered\_block.end(); ++block, ++expec)}
+\DoxyCodeLine{314                 \{}
+\DoxyCodeLine{315                     \textcolor{comment}{// auto cvals\_view = B.block\_quantities(std::get<0>(*block));}}
+\DoxyCodeLine{316                     \textcolor{comment}{// fmt::print( "{}cvals: \{\}\(\backslash\)n"{},fmt::join(cvals\_view.begin(),cvals\_view.end(),"{},"{}));}}
+\DoxyCodeLine{317                     \textcolor{comment}{// fmt::print("{}block index: \{\}\(\backslash\)n"{}, std::get<0>(*block));}}
+\DoxyCodeLine{318                     qtt\_CHECK(std::get<0>(*block) == *expec);}
+\DoxyCodeLine{319                 \}}
+\DoxyCodeLine{320                 \textcolor{keyword}{auto} [compact\_tensor, other\_indices, row\_block\_slices, col\_block\_slices] =}
+\DoxyCodeLine{321                     LA\_helpers::compact\_dense\_single(reordered\_block.begin(), reordered\_block.begin() + 3);}
+\DoxyCodeLine{322                 qtt\_REQUIRE(other\_indices.size() == 0);}
+\DoxyCodeLine{323                 \textcolor{keywordflow}{for} (\textcolor{keyword}{const} \textcolor{keyword}{auto} \&rb\_slices : row\_block\_slices)}
+\DoxyCodeLine{324                 \{}
+\DoxyCodeLine{325                     \textcolor{keywordflow}{for} (\textcolor{keyword}{const} \textcolor{keyword}{auto} \&cb\_slices : col\_block\_slices)}
+\DoxyCodeLine{326                     \{}
+\DoxyCodeLine{327                         \textcolor{keyword}{auto} [block\_ind, slice] = LA\_helpers::build\_index\_slice(other\_indices, rb\_slices, cb\_slices);}
+\DoxyCodeLine{328                         \textcolor{comment}{// fmt::print("{}block \{\}, cval \{\}\(\backslash\)n"{},block\_ind,B.block\_quantities(block\_ind));}}
+\DoxyCodeLine{329                         qtt\_CHECK(torch::equal(B.block(block\_ind), compact\_tensor.index(slice)));}
+\DoxyCodeLine{330                         \textcolor{comment}{// then we verify that the blocks from the original tensor can be obtained from the stored}}
+\DoxyCodeLine{331                         \textcolor{comment}{// slincing of the compacted tensor}}
+\DoxyCodeLine{332                     \}}
+\DoxyCodeLine{333                 \}}
+\DoxyCodeLine{334             \}}
+\DoxyCodeLine{335         \}}
+\DoxyCodeLine{336 \textcolor{preprocessor}{\#endif }\textcolor{comment}{// NDEBUG}}
+\DoxyCodeLine{337        \textcolor{comment}{// fmt::print("{}V \{\}\(\backslash\)n"{},V);}}
+\DoxyCodeLine{338         qtt\_CHECK\_NOTHROW(\mbox{\hyperlink{classquantit_1_1btensor_a5d8897e8e51c880654c5d467b2b0a8bc}{btensor::throw\_bad\_tensor}}(U));}
+\DoxyCodeLine{339         qtt\_CHECK\_NOTHROW(\mbox{\hyperlink{classquantit_1_1btensor_a5d8897e8e51c880654c5d467b2b0a8bc}{btensor::throw\_bad\_tensor}}(d));}
+\DoxyCodeLine{340         qtt\_REQUIRE\_NOTHROW(\mbox{\hyperlink{classquantit_1_1btensor_a5d8897e8e51c880654c5d467b2b0a8bc}{btensor::throw\_bad\_tensor}}(V));}
+\DoxyCodeLine{341         \textcolor{keyword}{auto} d\_r =}
+\DoxyCodeLine{342             d.reshape\_as(shape\_from(d, btensor(\{\{\{1, d.selection\_rule-\/>neutral()\}\}\}, d.selection\_rule-\/>neutral())))}
+\DoxyCodeLine{343                 .transpose\_(-\/1, -\/2);}
+\DoxyCodeLine{344         \textcolor{keyword}{auto} Vt = V.transpose(-\/1, -\/2).conj();}
+\DoxyCodeLine{345         \textcolor{keyword}{auto} AA = U.mul(d\_r).bmm(Vt);}
+\DoxyCodeLine{346         \textcolor{comment}{// fmt::print("{}U \{\}\(\backslash\)n"{},U);}}
+\DoxyCodeLine{347         \textcolor{comment}{// fmt::print("{}V \{\}\(\backslash\)n"{},V);}}
+\DoxyCodeLine{348         \textcolor{keyword}{auto} it\_AA = AA.begin();}
+\DoxyCodeLine{349         \textcolor{keyword}{auto} it\_A = A.begin();}
+\DoxyCodeLine{350         qtt\_REQUIRE(std::distance(it\_AA, AA.end()) == std::distance(it\_A, A.end()));}
+\DoxyCodeLine{351         \textcolor{keywordflow}{for} (; it\_AA != AA.end(); ++it\_AA, ++it\_A)}
+\DoxyCodeLine{352         \{}
+\DoxyCodeLine{353             \textcolor{keyword}{auto} \&AA\_ind = std::get<0>(*it\_AA);}
+\DoxyCodeLine{354             \textcolor{keyword}{auto} \&A\_ind = std::get<0>(*it\_A);}
+\DoxyCodeLine{355             \textcolor{keyword}{auto} \&AA\_tens = std::get<1>(*it\_AA);}
+\DoxyCodeLine{356             \textcolor{keyword}{auto} \&A\_tens = std::get<1>(*it\_A);}
+\DoxyCodeLine{357             qtt\_CHECK(AA\_ind == A\_ind);}
+\DoxyCodeLine{358             qtt\_CHECK(torch::allclose(AA\_tens, A\_tens));}
+\DoxyCodeLine{359         \}}
+\DoxyCodeLine{360         \textcolor{keyword}{auto} Ut = U.transpose(-\/2, -\/1).conj();}
+\DoxyCodeLine{361         \textcolor{comment}{// fmt::print("{}Ut \{\}\(\backslash\)n"{},Ut );}}
+\DoxyCodeLine{362         \textcolor{comment}{// fmt::print("{}U \{\}\(\backslash\)n"{}, U);}}
+\DoxyCodeLine{363         \textcolor{keyword}{auto} ID\_u = U.bmm(Ut); \textcolor{comment}{// ATTN! In general, Ut.bmm(Ut) != identity}}
+\DoxyCodeLine{364         \textcolor{keyword}{auto} ID\_v = Vt.bmm(V); \textcolor{comment}{// ATTN! In general, V.bmm(Vt) != Identity}}
+\DoxyCodeLine{365         \textcolor{comment}{// fmt::print("{}ID\_U \{\}"{}, ID\_u);}}
+\DoxyCodeLine{366         \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} \&block : ID\_u)}
+\DoxyCodeLine{367         \{}
+\DoxyCodeLine{368             \textcolor{keyword}{auto} \&ind = std::get<0>(block);}
+\DoxyCodeLine{369             \textcolor{keyword}{auto} \&tens = std::get<1>(block);}
+\DoxyCodeLine{370             \textcolor{keywordflow}{if} (ind[ind.size() -\/ 1] == ind[ind.size() -\/ 2])}
+\DoxyCodeLine{371             \{}
+\DoxyCodeLine{372                 qtt\_CHECK(tens.sizes()[tens.dim() -\/ 1] == tens.sizes()[tens.dim() -\/ 2]);}
+\DoxyCodeLine{373                 \textcolor{keyword}{auto} \textcolor{keywordtype}{id} = torch::eye(tens.sizes()[tens.dim() -\/ 1]);}
+\DoxyCodeLine{374                 qtt\_CHECK(torch::allclose(\textcolor{keywordtype}{id}, tens));}
+\DoxyCodeLine{375             \}}
+\DoxyCodeLine{376             \textcolor{keywordflow}{else}}
+\DoxyCodeLine{377             \{}
+\DoxyCodeLine{378                 \textcolor{keyword}{auto} zer = torch::zeros(\{tens.sizes()[tens.dim() -\/ 2], tens.sizes()[tens.dim() -\/ 1]\});}
+\DoxyCodeLine{379                 qtt\_CHECK(torch::allclose(zer, tens));}
+\DoxyCodeLine{380             \}}
+\DoxyCodeLine{381         \}}
+\DoxyCodeLine{382         \textcolor{comment}{// fmt::print("{}ID\_V \(\backslash\)n\{\}\(\backslash\)n\(\backslash\)n"{},ID\_v);}}
+\DoxyCodeLine{383         \textcolor{comment}{// fmt::print("{}Vt \(\backslash\)n\{\}\(\backslash\)n\(\backslash\)n"{},Vt);}}
+\DoxyCodeLine{384         \textcolor{comment}{// fmt::print("{}V \(\backslash\)n\{\}\(\backslash\)n\(\backslash\)n"{},V);}}
+\DoxyCodeLine{385         \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} \&block : ID\_v)}
+\DoxyCodeLine{386         \{}
+\DoxyCodeLine{387             \textcolor{keyword}{auto} \&ind = std::get<0>(block);}
+\DoxyCodeLine{388             \textcolor{keyword}{auto} \&tens = std::get<1>(block);}
+\DoxyCodeLine{389             \textcolor{keywordflow}{if} (ind[ind.size() -\/ 1] == ind[ind.size() -\/ 2])}
+\DoxyCodeLine{390             \{}
+\DoxyCodeLine{391                 qtt\_CHECK(tens.sizes()[tens.dim() -\/ 1] == tens.sizes()[tens.dim() -\/ 2]);}
+\DoxyCodeLine{392                 \textcolor{keyword}{auto} \textcolor{keywordtype}{id} = torch::eye(tens.sizes()[tens.dim() -\/ 1]);}
+\DoxyCodeLine{393                 qtt\_CHECK(torch::allclose(\textcolor{keywordtype}{id}, tens));}
+\DoxyCodeLine{394             \}}
+\DoxyCodeLine{395             \textcolor{keywordflow}{else}}
+\DoxyCodeLine{396             \{}
+\DoxyCodeLine{397                 \textcolor{keyword}{auto} zer = torch::zeros(\{tens.sizes()[tens.dim() -\/ 2], tens.sizes()[tens.dim() -\/ 1]\});}
+\DoxyCodeLine{398                 qtt\_CHECK(torch::allclose(zer, tens));}
+\DoxyCodeLine{399             \}}
+\DoxyCodeLine{400         \}}
+\DoxyCodeLine{401     \}}
+\DoxyCodeLine{402     qtt\_SUBCASE(\textcolor{stringliteral}{"{}tensor decomposition"{}})}
+\DoxyCodeLine{403     \{}
+\DoxyCodeLine{404         \textcolor{keyword}{using} cqt = conserved::C<5>;}
+\DoxyCodeLine{405         \textcolor{keyword}{using} index = btensor::index\_list;}
+\DoxyCodeLine{406         \textcolor{keywordtype}{double} tole = 1e-\/5;}
+\DoxyCodeLine{407         any\_quantity selection\_rule(cqt(0)); \textcolor{comment}{// DMRJulia flux}}
+\DoxyCodeLine{408         btensor A(\{\{\{2, cqt(0)\}, \{3, cqt(1)\}\},}
+\DoxyCodeLine{409                    \{\{1, cqt(1)\}, \{2, cqt(0)\}, \{3, cqt(-\/1)\}, \{1, cqt(1)\}\},}
+\DoxyCodeLine{410                    \{\{3, cqt(0)\}, \{2, cqt(-\/2)\}, \{2, cqt(-\/1)\}\}\},}
+\DoxyCodeLine{411                   selection\_rule);}
+\DoxyCodeLine{412         A.block(\{0, 0, 2\}) = tole * torch::rand(\{2, 1, 2\});}
+\DoxyCodeLine{413         A.block(\{0, 1, 0\}) = tole * torch::rand(\{2, 2, 3\});}
+\DoxyCodeLine{414         A.block(\{0, 3, 2\}) = 0.1 * tole * torch::rand(\{2, 1, 2\});}
+\DoxyCodeLine{415         A.block(\{1, 0, 1\}) = tole * torch::rand(\{3, 1, 2\});}
+\DoxyCodeLine{416         A.block(\{1, 1, 2\}) = tole * torch::rand(\{3, 2, 2\});}
+\DoxyCodeLine{417         A.block(\{1, 2, 0\}) = 0.1 * tole * torch::rand(\{3, 3, 3\});}
+\DoxyCodeLine{418         A.block(\{1, 3, 1\}) = tole * torch::rand(\{3, 1, 2\});}
+\DoxyCodeLine{419         \textcolor{comment}{// fmt::print("{}A \(\backslash\)n\{\}\(\backslash\)n\(\backslash\)n"{},A);}}
+\DoxyCodeLine{420         qtt\_REQUIRE\_NOTHROW(\mbox{\hyperlink{classquantit_1_1btensor_a5d8897e8e51c880654c5d467b2b0a8bc}{btensor::throw\_bad\_tensor}}(A));}
+\DoxyCodeLine{421         qtt\_SUBCASE(\textcolor{stringliteral}{"{}tensor singular decomposition"{}})}
+\DoxyCodeLine{422         \{}
+\DoxyCodeLine{423             btensor U, d, V;}
+\DoxyCodeLine{424             qtt\_REQUIRE\_NOTHROW(std::tie(U, d, V) = svd(A, 1));}
+\DoxyCodeLine{425             \textcolor{comment}{// fmt::print("{}U \(\backslash\)n\{\}\(\backslash\)n\(\backslash\)n"{},U);}}
+\DoxyCodeLine{426             \textcolor{comment}{// fmt::print("{}d \(\backslash\)n\{\}\(\backslash\)n\(\backslash\)n"{},d);}}
+\DoxyCodeLine{427             \textcolor{comment}{// fmt::print("{}V \(\backslash\)n\{\}\(\backslash\)n\(\backslash\)n"{},V);}}
+\DoxyCodeLine{428             \textcolor{keyword}{auto} Ud = U.mul(d);}
+\DoxyCodeLine{429             \textcolor{comment}{// fmt::print("{}Ud \(\backslash\)n\{\}\(\backslash\)n\(\backslash\)n"{},Ud);}}
+\DoxyCodeLine{430             \textcolor{keyword}{auto} AA = tensordot(Ud, V.conj(), \{U.dim() -\/ 1\}, \{V.dim() -\/ 1\});}
+\DoxyCodeLine{431             \textcolor{comment}{// fmt::print("{}AA \(\backslash\)n\{\}\(\backslash\)n\(\backslash\)n"{},AA);}}
+\DoxyCodeLine{432             \textcolor{keyword}{auto} AA\_it = AA.begin();}
+\DoxyCodeLine{433             \textcolor{keyword}{auto} A\_it = A.begin();}
+\DoxyCodeLine{434             qtt\_REQUIRE(std::distance(AA\_it, AA.end()) == std::distance(A\_it, A.end()));}
+\DoxyCodeLine{435             \textcolor{keywordflow}{while} (AA\_it != AA.end())}
+\DoxyCodeLine{436             \{}
+\DoxyCodeLine{437                 \textcolor{keyword}{auto} AA\_ind = std::get<0>(*AA\_it);}
+\DoxyCodeLine{438                 \textcolor{keyword}{auto} A\_ind = std::get<0>(*A\_it);}
+\DoxyCodeLine{439                 \textcolor{keyword}{auto} AA\_tens = std::get<1>(*AA\_it);}
+\DoxyCodeLine{440                 \textcolor{keyword}{auto} A\_tens = std::get<1>(*A\_it);}
+\DoxyCodeLine{441                 qtt\_CHECK(AA\_ind == A\_ind);}
+\DoxyCodeLine{442                 qtt\_CHECK(torch::allclose(AA\_tens, A\_tens));}
+\DoxyCodeLine{443                 ++AA\_it;}
+\DoxyCodeLine{444                 ++A\_it;}
+\DoxyCodeLine{445             \}}
+\DoxyCodeLine{446         \}}
+\DoxyCodeLine{447         qtt\_SUBCASE(\textcolor{stringliteral}{"{}random tensor decomposition"{}})}
+\DoxyCodeLine{448         \{}
+\DoxyCodeLine{449             \textcolor{keyword}{using} cqt = conserved::C<2>;}
+\DoxyCodeLine{450             btensor dummy = rand(\{\}, cqt(0));}
+\DoxyCodeLine{451             btensor X = quantit::rand(\{\{\{2, cqt(-\/2)\}, \{2, cqt(0)\}, \{2, cqt(2)\}\},}
+\DoxyCodeLine{452                                       \{\{1, cqt(1)\}, \{1, cqt(-\/1)\}\},}
+\DoxyCodeLine{453                                       \{\{1, cqt(1)\}, \{1, cqt(-\/1)\}\},}
+\DoxyCodeLine{454                                       \{\{2, cqt(2)\}, \{2, cqt(0)\}, \{2, cqt(-\/2)\}\}\},}
+\DoxyCodeLine{455                                      cqt(0));}
+\DoxyCodeLine{456             \textcolor{keyword}{auto} [U, d, V] = svd(X, 2);}
+\DoxyCodeLine{457             qtt\_CHECK(tensordot(U, U.conj(), \{0, 1, 2\}, \{0, 1, 2\}).\mbox{\hyperlink{classquantit_1_1btensor_a01c490238e0022b585dc430b13ec7dd1}{item}}().toDouble() == doctest::Approx(d.sizes()[0]));}
+\DoxyCodeLine{458             qtt\_CHECK(tensordot(V, V.conj(), \{0, 1, 2\}, \{0, 1, 2\}).\mbox{\hyperlink{classquantit_1_1btensor_a01c490238e0022b585dc430b13ec7dd1}{item}}().toDouble() == doctest::Approx(d.sizes()[0]));}
+\DoxyCodeLine{459             qtt\_CHECK(tensordot(U, U.conj(), \{2, 0, 1\}, \{2, 0, 1\}).\mbox{\hyperlink{classquantit_1_1btensor_a01c490238e0022b585dc430b13ec7dd1}{item}}().toDouble() == doctest::Approx(d.sizes()[0]));}
+\DoxyCodeLine{460             qtt\_CHECK(tensordot(V, V.conj(), \{2, 0, 1\}, \{2, 0, 1\}).\mbox{\hyperlink{classquantit_1_1btensor_a01c490238e0022b585dc430b13ec7dd1}{item}}().toDouble() == doctest::Approx(d.sizes()[0]));}
+\DoxyCodeLine{461             \textcolor{comment}{// fmt::print("{}U shape \{\}\(\backslash\)n\(\backslash\)nV shape \{\}\(\backslash\)n\(\backslash\)n d \{\}\(\backslash\)n\(\backslash\)n"{},shape\_from(U,dummy),shape\_from(V,dummy),d);}}
+\DoxyCodeLine{462             \textcolor{keyword}{auto} U2 = U.reshape(\{2\});}
+\DoxyCodeLine{463             \textcolor{keyword}{auto} V2 = V.reshape(\{2\});}
+\DoxyCodeLine{464             \textcolor{comment}{// fmt::print("{}U \{\}\(\backslash\)n\(\backslash\)nV \{\}\(\backslash\)n\(\backslash\)n"{}, tensordot(U2,U2.conj(), \{1,0\},\{1,0\}),tensordot(V2,V2.conj(),\{1,0\},\{1,0\}));}}
+\DoxyCodeLine{465             qtt\_CHECK(allclose(tensordot(U.mul(d), V.conj(), \{2\}, \{2\}), X));}
+\DoxyCodeLine{466             \textcolor{comment}{// auto XX = tensordot(U.mul(d), V.conj(), \{2\}, \{2\});}}
+\DoxyCodeLine{467             \textcolor{comment}{// fmt::print("{}X\(\backslash\)n\{\}\(\backslash\)n\(\backslash\)n"{}, shape\_from(X, dummy));}}
+\DoxyCodeLine{468             \textcolor{comment}{// fmt::print("{}reconstituded X\(\backslash\)n\{\}\(\backslash\)n\(\backslash\)n"{}, shape\_from(XX, dummy));}}
+\DoxyCodeLine{469             \textcolor{comment}{// fmt::print("{}U\(\backslash\)n\{\}\(\backslash\)n\(\backslash\)n"{}, shape\_from(U, dummy));}}
+\DoxyCodeLine{470             \textcolor{comment}{// fmt::print("{}d\(\backslash\)n\{\}\(\backslash\)n\(\backslash\)n"{}, shape\_from(d, dummy));}}
+\DoxyCodeLine{471             \textcolor{comment}{// fmt::print("{}V\(\backslash\)n\{\}\(\backslash\)n\(\backslash\)n"{}, shape\_from(V, dummy));}}
+\DoxyCodeLine{472         \}}
+\DoxyCodeLine{473         qtt\_SUBCASE(\textcolor{stringliteral}{"{}truncating tensor singular decomposition"{}})}
+\DoxyCodeLine{474         \{}
+\DoxyCodeLine{475             btensor U, d, V;}
+\DoxyCodeLine{476             qtt\_REQUIRE\_NOTHROW(std::tie(U, d, V) = svd(A, 1, tole));}
+\DoxyCodeLine{477             \textcolor{comment}{// fmt::print("{}U \(\backslash\)n\{\}\(\backslash\)n\(\backslash\)n"{},U);}}
+\DoxyCodeLine{478             \textcolor{comment}{// fmt::print("{}d \(\backslash\)n\{\}\(\backslash\)n\(\backslash\)n"{},d);}}
+\DoxyCodeLine{479             \textcolor{comment}{// fmt::print("{}V \(\backslash\)n\{\}\(\backslash\)n\(\backslash\)n"{},V);}}
+\DoxyCodeLine{480             \textcolor{keyword}{auto} AA = tensordot(U.mul(d), V.conj(), \{U.dim() -\/ 1\}, \{V.dim() -\/ 1\});}
+\DoxyCodeLine{481             \textcolor{comment}{// fmt::print("{}AA \(\backslash\)n\{\}\(\backslash\)n\(\backslash\)n"{},AA);}}
+\DoxyCodeLine{482             \textcolor{keyword}{auto} AA\_it = AA.begin();}
+\DoxyCodeLine{483             \textcolor{keyword}{auto} A\_it = A.begin();}
+\DoxyCodeLine{484             qtt\_REQUIRE(std::distance(AA\_it, AA.end()) <= std::distance(A\_it, A.end()));}
+\DoxyCodeLine{485             \textcolor{keywordflow}{while} (AA\_it != AA.end())}
+\DoxyCodeLine{486             \{}
+\DoxyCodeLine{487                 \textcolor{keyword}{auto} AA\_ind = std::get<0>(*AA\_it);}
+\DoxyCodeLine{488                 \textcolor{keyword}{auto} A\_ind = std::get<0>(*A\_it);}
+\DoxyCodeLine{489                 \textcolor{keyword}{auto} AA\_tens = std::get<1>(*AA\_it);}
+\DoxyCodeLine{490                 \textcolor{keyword}{auto} A\_tens = std::get<1>(*A\_it);}
+\DoxyCodeLine{491                 \textcolor{keywordflow}{if} (AA\_ind == A\_ind)}
+\DoxyCodeLine{492                 \{}
+\DoxyCodeLine{493                     qtt\_CHECK(torch::all(torch::less(torch::abs(A\_tens -\/ AA\_tens), tole)).item().to<bool>());}
+\DoxyCodeLine{494                     \textcolor{comment}{// if (not torch::all(torch::less(torch::abs(A\_tens-\/AA\_tens),tol)).item().to<bool>())}}
+\DoxyCodeLine{495                     \textcolor{comment}{// \{}}
+\DoxyCodeLine{496                     \textcolor{comment}{//  fmt::print("{}reduction check failed: ind \{\}\(\backslash\)n"{},A\_ind);}}
+\DoxyCodeLine{497                     \textcolor{comment}{//  fmt::print("{}absolute difference \(\backslash\)n\{\}\(\backslash\)n\(\backslash\)n"{},torch::abs(A\_tens-\/AA\_tens));}}
+\DoxyCodeLine{498                     \textcolor{comment}{// \}}}
+\DoxyCodeLine{499                     \textcolor{comment}{// qtt\_CHECK(torch::allclose(AA\_tens, A\_tens, tol, tol));}}
+\DoxyCodeLine{500                     ++AA\_it;}
+\DoxyCodeLine{501                     ++A\_it;}
+\DoxyCodeLine{502                 \}}
+\DoxyCodeLine{503                 \textcolor{keywordflow}{else}}
+\DoxyCodeLine{504                 \{}
+\DoxyCodeLine{505                     \textcolor{comment}{// if a block from A is literally not present in AA, then that block must be all zeros to the}}
+\DoxyCodeLine{506                     \textcolor{comment}{// tol.}}
+\DoxyCodeLine{507                     qtt\_CHECK(torch::all(torch::less(torch::abs(A\_tens), tole)).item().to<bool>());}
+\DoxyCodeLine{508                     \textcolor{comment}{// if (not torch::all(torch::less(torch::abs(A\_tens),tol)).item().to<bool>())}}
+\DoxyCodeLine{509                     \textcolor{comment}{// \{}}
+\DoxyCodeLine{510                     \textcolor{comment}{//  fmt::print("{}block removed check failed: ind \{\}\(\backslash\)n"{},A\_ind);}}
+\DoxyCodeLine{511                     \textcolor{comment}{//  fmt::print("{}a\_tens \(\backslash\)n\{\}\(\backslash\)n\(\backslash\)n"{},A\_tens);}}
+\DoxyCodeLine{512                     \textcolor{comment}{// \}}}
+\DoxyCodeLine{513                     \textcolor{comment}{// qtt\_CHECK(torch::allclose(A\_tens,torch::zeros\_like(A\_tens),tol,tol));}}
+\DoxyCodeLine{514                     \textcolor{keywordtype}{bool} AAlessA = AA\_ind < A\_ind;}
+\DoxyCodeLine{515                     AA\_it += AAlessA;}
+\DoxyCodeLine{516                     A\_it += !AAlessA;}
+\DoxyCodeLine{517                 \}}
+\DoxyCodeLine{518             \}}
+\DoxyCodeLine{519         \}}
+\DoxyCodeLine{520         qtt\_SUBCASE(\textcolor{stringliteral}{"{}truncating smaller tensor singular decomposition"{}})}
+\DoxyCodeLine{521         \{}
+\DoxyCodeLine{522             btensor U, d, V;}
+\DoxyCodeLine{523             A.mul\_(0.3);}
+\DoxyCodeLine{524             qtt\_REQUIRE\_NOTHROW(std::tie(U, d, V) = svd(A, 1, tole));}
+\DoxyCodeLine{525             \textcolor{comment}{// fmt::print("{}U \(\backslash\)n\{\}\(\backslash\)n\(\backslash\)n"{},U);}}
+\DoxyCodeLine{526             \textcolor{comment}{// fmt::print("{}d \(\backslash\)n\{\}\(\backslash\)n\(\backslash\)n"{},d);}}
+\DoxyCodeLine{527             \textcolor{comment}{// fmt::print("{}V \(\backslash\)n\{\}\(\backslash\)n\(\backslash\)n"{},V);}}
+\DoxyCodeLine{528             \textcolor{keyword}{auto} AA = tensordot(U.mul(d), V.conj(), \{U.dim() -\/ 1\}, \{V.dim() -\/ 1\});}
+\DoxyCodeLine{529             \textcolor{comment}{// fmt::print("{}AA \(\backslash\)n\{\}\(\backslash\)n\(\backslash\)n"{},AA);}}
+\DoxyCodeLine{530             \textcolor{keyword}{auto} AA\_it = AA.begin();}
+\DoxyCodeLine{531             \textcolor{keyword}{auto} A\_it = A.begin();}
+\DoxyCodeLine{532             qtt\_REQUIRE(std::distance(AA\_it, AA.end()) <= std::distance(A\_it, A.end()));}
+\DoxyCodeLine{533             \textcolor{keywordflow}{while} (AA\_it != AA.end())}
+\DoxyCodeLine{534             \{}
+\DoxyCodeLine{535                 \textcolor{keyword}{auto} AA\_ind = std::get<0>(*AA\_it);}
+\DoxyCodeLine{536                 \textcolor{keyword}{auto} A\_ind = std::get<0>(*A\_it);}
+\DoxyCodeLine{537                 \textcolor{keyword}{auto} AA\_tens = std::get<1>(*AA\_it);}
+\DoxyCodeLine{538                 \textcolor{keyword}{auto} A\_tens = std::get<1>(*A\_it);}
+\DoxyCodeLine{539                 \textcolor{keywordflow}{if} (AA\_ind == A\_ind)}
+\DoxyCodeLine{540                 \{}
+\DoxyCodeLine{541                     qtt\_CHECK(torch::all(torch::less(torch::abs(A\_tens -\/ AA\_tens), tole)).item().to<bool>());}
+\DoxyCodeLine{542                     \textcolor{comment}{// if (not torch::all(torch::less(torch::abs(A\_tens-\/AA\_tens),tol)).item().to<bool>())}}
+\DoxyCodeLine{543                     \textcolor{comment}{// \{}}
+\DoxyCodeLine{544                     \textcolor{comment}{//  fmt::print("{}reduction check failed: ind \{\}\(\backslash\)n"{},A\_ind);}}
+\DoxyCodeLine{545                     \textcolor{comment}{//  fmt::print("{}absolute difference \(\backslash\)n\{\}\(\backslash\)n\(\backslash\)n"{},torch::abs(A\_tens-\/AA\_tens));}}
+\DoxyCodeLine{546                     \textcolor{comment}{// \}}}
+\DoxyCodeLine{547                     \textcolor{comment}{// qtt\_CHECK(torch::allclose(AA\_tens, A\_tens, tol, tol));}}
+\DoxyCodeLine{548                     ++AA\_it;}
+\DoxyCodeLine{549                     ++A\_it;}
+\DoxyCodeLine{550                 \}}
+\DoxyCodeLine{551                 \textcolor{keywordflow}{else}}
+\DoxyCodeLine{552                 \{}
+\DoxyCodeLine{553                     \textcolor{comment}{// if a block from A is literally not present in AA, then that block must be all zeros to the}}
+\DoxyCodeLine{554                     \textcolor{comment}{// tol.}}
+\DoxyCodeLine{555                     qtt\_CHECK(torch::all(torch::less(torch::abs(A\_tens), tole)).item().to<bool>());}
+\DoxyCodeLine{556                     \textcolor{comment}{// if (not torch::all(torch::less(torch::abs(A\_tens),tol)).item().to<bool>())}}
+\DoxyCodeLine{557                     \textcolor{comment}{// \{}}
+\DoxyCodeLine{558                     \textcolor{comment}{//  fmt::print("{}block removed check failed: ind \{\}\(\backslash\)n"{},A\_ind);}}
+\DoxyCodeLine{559                     \textcolor{comment}{//  fmt::print("{}a\_tens \(\backslash\)n\{\}\(\backslash\)n\(\backslash\)n"{},A\_tens);}}
+\DoxyCodeLine{560                     \textcolor{comment}{// \}}}
+\DoxyCodeLine{561                     \textcolor{comment}{// qtt\_CHECK(torch::allclose(A\_tens,torch::zeros\_like(A\_tens),tol,tol));}}
+\DoxyCodeLine{562                     \textcolor{keywordtype}{bool} AAlessA = AA\_ind < A\_ind;}
+\DoxyCodeLine{563                     AA\_it += AAlessA;}
+\DoxyCodeLine{564                     A\_it += !AAlessA;}
+\DoxyCodeLine{565                 \}}
+\DoxyCodeLine{566             \}}
+\DoxyCodeLine{567         \}}
+\DoxyCodeLine{568     \}}
+\DoxyCodeLine{569 \}}
+\DoxyCodeLine{570 }
+\DoxyCodeLine{571 \} \textcolor{comment}{// namespace quantit}}
+\DoxyCodeLine{572 }
+\DoxyCodeLine{573 \textcolor{preprocessor}{\#endif }\textcolor{comment}{// BTENSORLINEARALGEBRA\_H}}
+
+\end{DoxyCode}

@@ -1,16 +1,13 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
   <compounddef id="numeric_8h" kind="file" language="C++">
     <compoundname>numeric.h</compoundname>
     <includes local="no">torch/torch.h</includes>
     <includes local="no">limits</includes>
     <includes local="no">type_traits</includes>
     <incdepgraph>
-      <node id="3">
-        <label>limits</label>
-      </node>
       <node id="1">
-        <label>/home/alex/project/quantt/include/numeric.h</label>
+        <label>/Users/alex/Documents/Prog/QuantiT/include/numeric.h</label>
         <link refid="numeric_8h"/>
         <childnode refid="2" relation="include">
         </childnode>
@@ -18,6 +15,9 @@
         </childnode>
         <childnode refid="4" relation="include">
         </childnode>
+      </node>
+      <node id="3">
+        <label>limits</label>
       </node>
       <node id="2">
         <label>torch/torch.h</label>
@@ -43,7 +43,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/numeric.h" line="62" column="9" bodyfile="/home/alex/project/quantt/include/numeric.h" bodystart="62" bodyend="-1"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/numeric.h" line="62" column="9" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/numeric.h" bodystart="62" bodyend="-1"/>
       </memberdef>
       <memberdef kind="define" id="numeric_8h_1a3abf7f1802890dcf53f5ad9376f69798" prot="public" static="no">
         <name>RET_EPS</name>
@@ -58,7 +58,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/numeric.h" line="72" column="9" bodyfile="/home/alex/project/quantt/include/numeric.h" bodystart="72" bodyend="-1"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/numeric.h" line="72" column="9" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/numeric.h" bodystart="72" bodyend="-1"/>
       </memberdef>
       <memberdef kind="define" id="numeric_8h_1ab7569147655a518b40c8c3e39ba20bde" prot="public" static="no">
         <name>RET_REAL_TYPE</name>
@@ -73,7 +73,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/alex/project/quantt/include/numeric.h" line="87" column="10" bodyfile="/home/alex/project/quantt/include/numeric.h" bodystart="87" bodyend="-1"/>
+        <location file="/Users/alex/Documents/Prog/QuantiT/include/numeric.h" line="87" column="10" bodyfile="/Users/alex/Documents/Prog/QuantiT/include/numeric.h" bodystart="87" bodyend="-1"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
@@ -116,14 +116,14 @@
 <codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>};</highlight></codeline>
 <codeline lineno="34"><highlight class="normal"></highlight></codeline>
 <codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">T,<sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal">...&gt;<sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">U&gt;</highlight></codeline>
-<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>constexpr<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>is_instance_v<sp/>=<sp/>is_instance&lt;std::decay_t&lt;T&gt;,<sp/>U&gt;::value;<sp/></highlight><highlight class="comment">//<sp/>std::decay<sp/>remove<sp/>the<sp/>const<sp/>and<sp/>ref<sp/>specification<sp/>from<sp/>the<sp/>type.<sp/>not<sp/>removing<sp/>it<sp/>would<sp/>lead<sp/>to<sp/>false<sp/>in<sp/>situation<sp/>where<sp/>we<sp/>expect<sp/>true</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>is_instance_v<sp/>=<sp/>is_instance&lt;std::decay_t&lt;T&gt;,<sp/>U&gt;::value;<sp/></highlight><highlight class="comment">//<sp/>std::decay<sp/>remove<sp/>the<sp/>const<sp/>and<sp/>ref<sp/>specification<sp/>from<sp/>the<sp/>type.<sp/>not<sp/>removing<sp/>it<sp/>would<sp/>lead<sp/>to<sp/>false<sp/>in<sp/>situation<sp/>where<sp/>we<sp/>expect<sp/>true</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="37"><highlight class="normal"></highlight></codeline>
 <codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>T&gt;</highlight></codeline>
 <codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">num_lim</highlight></codeline>
 <codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
-<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>constexpr<sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>eps()<sp/>noexcept</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>eps()<sp/>noexcept</highlight></codeline>
 <codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
-<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>constexpr<sp/>(is_instance_v&lt;T,<sp/>c10::complex&gt;)</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>(is_instance_v&lt;T,<sp/>c10::complex&gt;)</highlight></codeline>
 <codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
 <codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>std::numeric_limits&lt;typename<sp/>T::value_type&gt;::epsilon();</highlight></codeline>
 <codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
@@ -133,9 +133,9 @@
 <codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="52"><highlight class="normal"></highlight></codeline>
-<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>real_type<sp/>=<sp/>decltype(eps());</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>real_type<sp/>=<sp/></highlight><highlight class="keyword">decltype</highlight><highlight class="normal">(eps());</highlight></codeline>
 <codeline lineno="54"><highlight class="normal"></highlight></codeline>
-<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>constexpr<sp/>torch::ScalarType<sp/>enum_val()</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>torch::ScalarType<sp/>enum_val()</highlight></codeline>
 <codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
 <codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>torch::ScalarType::Undefined;</highlight></codeline>
 <codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
@@ -185,6 +185,6 @@
 <codeline lineno="102"><highlight class="normal"></highlight></codeline>
 <codeline lineno="103"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>BEAD62BB_7BE8_44DB_9116_0DFFA7FAB98C<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
     </programlisting>
-    <location file="/home/alex/project/quantt/include/numeric.h"/>
+    <location file="/Users/alex/Documents/Prog/QuantiT/include/numeric.h"/>
   </compounddef>
 </doxygen>

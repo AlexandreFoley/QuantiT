@@ -1,0 +1,1281 @@
+\hypertarget{btensor_8h_source}{}\doxysection{btensor.\+h}
+\label{btensor_8h_source}\index{/Users/alex/Documents/Prog/QuantiT/include/blockTensor/btensor.h@{/Users/alex/Documents/Prog/QuantiT/include/blockTensor/btensor.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * File: btensor.h}}
+\DoxyCodeLine{3 \textcolor{comment}{ * Project: QuantiT}}
+\DoxyCodeLine{4 \textcolor{comment}{ * File Created: Thursday, 1st October 2020 10:54:53 am}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Author: Alexandre Foley (Alexandre.foley@usherbrooke.ca)}}
+\DoxyCodeLine{6 \textcolor{comment}{ * -\/-\/-\/-\/-\/}}
+\DoxyCodeLine{7 \textcolor{comment}{ * Last Modified: Friday, 8th January 2021 12:02:08 pm}}
+\DoxyCodeLine{8 \textcolor{comment}{ * Modified By: Alexandre Foley (Alexandre.foley@usherbrooke.ca>)}}
+\DoxyCodeLine{9 \textcolor{comment}{ * -\/-\/-\/-\/-\/}}
+\DoxyCodeLine{10 \textcolor{comment}{ * Copyright (c) 2021 Alexandre Foley}}
+\DoxyCodeLine{11 \textcolor{comment}{ * Licensed under GPL v3}}
+\DoxyCodeLine{12 \textcolor{comment}{ */}}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#ifndef D49FFA60\_85C4\_431A\_BA62\_9B1D30D67E86}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#define D49FFA60\_85C4\_431A\_BA62\_9B1D30D67E86}}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}Conserved/Composite/cquantity.h"{}}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}Conserved/Composite/quantity\_vector.h"{}}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include "{}Conserved/quantity.h"{}}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include "{}blockTensor/flat\_map.h"{}}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include "{}boost/stl\_interfaces/iterator\_interface.hpp"{}}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#include "{}boost/stl\_interfaces/view\_interface.hpp"{}}}
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#include "{}property.h"{}}}
+\DoxyCodeLine{24 \textcolor{preprocessor}{\#include "{}torch\_formatter.h"{}}}
+\DoxyCodeLine{25 \textcolor{preprocessor}{\#include <ATen/Functions.h>}}
+\DoxyCodeLine{26 \textcolor{preprocessor}{\#include <algorithm>}}
+\DoxyCodeLine{27 \textcolor{preprocessor}{\#include <c10/core/ScalarTypeToTypeMeta.h>}}
+\DoxyCodeLine{28 \textcolor{preprocessor}{\#include <c10/core/TensorOptions.h>}}
+\DoxyCodeLine{29 \textcolor{preprocessor}{\#include <cstdint>}}
+\DoxyCodeLine{30 \textcolor{preprocessor}{\#include <exception>}}
+\DoxyCodeLine{31 \textcolor{preprocessor}{\#include <stdexcept>}}
+\DoxyCodeLine{32 \textcolor{preprocessor}{\#include <torch/csrc/utils/variadic.h>}}
+\DoxyCodeLine{33 \textcolor{preprocessor}{\#include <torch/torch.h>}}
+\DoxyCodeLine{34 \textcolor{preprocessor}{\#include <type\_traits>}}
+\DoxyCodeLine{35 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37 \textcolor{preprocessor}{\#include "{}doctest/doctest\_proxy.h"{}}}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39 \textcolor{keyword}{namespace }quantit}
+\DoxyCodeLine{40 \{}
+\DoxyCodeLine{41 \textcolor{keyword}{class }block\_qtt\_view;}
+\DoxyCodeLine{42 \textcolor{keyword}{enum class} btensor\_size}
+\DoxyCodeLine{43 \{}
+\DoxyCodeLine{44     max}
+\DoxyCodeLine{45 \};}
+\DoxyCodeLine{46 \textcolor{keyword}{enum class} reshape\_mode}
+\DoxyCodeLine{47 \{}
+\DoxyCodeLine{48     dims\_only,}
+\DoxyCodeLine{49     overwrite\_c\_vals}
+\DoxyCodeLine{50 \};}
+\DoxyCodeLine{57 \textcolor{keyword}{template} <\textcolor{keyword}{class} T>}
+\DoxyCodeLine{58 \textcolor{keywordtype}{bool} any\_truth(\textcolor{keyword}{const} T \&in)}
+\DoxyCodeLine{59 \{}
+\DoxyCodeLine{60     \textcolor{keywordtype}{bool} out = \textcolor{keyword}{false};}
+\DoxyCodeLine{61     \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} \&it : in)}
+\DoxyCodeLine{62     \{}
+\DoxyCodeLine{63         out |= bool(it);}
+\DoxyCodeLine{64         \textcolor{keywordflow}{if} (out)}
+\DoxyCodeLine{65             \textcolor{keywordflow}{break};}
+\DoxyCodeLine{66     \}}
+\DoxyCodeLine{67     \textcolor{keywordflow}{return} out;}
+\DoxyCodeLine{68 \}}
+\DoxyCodeLine{105 \textcolor{keyword}{class }\mbox{\hyperlink{classquantit_1_1btensor}{btensor}}}
+\DoxyCodeLine{106 \{}
+\DoxyCodeLine{107   \textcolor{keyword}{public}:}
+\DoxyCodeLine{108     \textcolor{keyword}{using} index\_list = std::vector<int64\_t>;}
+\DoxyCodeLine{109     \textcolor{keyword}{using} \mbox{\hyperlink{classquantit_1_1flat__map}{block\_list\_t}} = \mbox{\hyperlink{classquantit_1_1flat__map}{flat\_map<index\_list, torch::Tensor>}};}
+\DoxyCodeLine{110     \textcolor{keyword}{using} init\_list\_t = std::initializer\_list<std::initializer\_list<std::tuple<size\_t, any\_quantity>>>;}
+\DoxyCodeLine{111     \textcolor{keyword}{using} vec\_list\_t = std::vector<std::vector<std::tuple<size\_t, any\_quantity>>>;}
+\DoxyCodeLine{112 }
+\DoxyCodeLine{113     \textcolor{keyword}{using} Scalar = torch::Scalar;}
+\DoxyCodeLine{114     \mbox{\hyperlink{classproperty}{property<any\_quantity, btensor, any\_quantity\_cref>}} selection\_rule; \textcolor{comment}{// dmrjulia equiv: the flux.}}
+\DoxyCodeLine{123 \textcolor{comment}{}    \mbox{\hyperlink{classquantit_1_1btensor_a7b943710b36561f1f76f2bec7e5fa63b}{btensor}}(\textcolor{keyword}{const} vec\_list\_t \&dir\_block\_size\_cqtt, \mbox{\hyperlink{classquantit_1_1vquantity}{any\_quantity\_cref}} selection\_rule, c10::TensorOptions opt = \{\});}
+\DoxyCodeLine{124     \mbox{\hyperlink{classquantit_1_1btensor}{btensor}}(\textcolor{keyword}{const} vec\_list\_t \&dir\_block\_size\_cqtt, \mbox{\hyperlink{classquantit_1_1vquantity}{any\_quantity\_cref}} selection\_rule, \textcolor{keywordtype}{size\_t} num\_blocks,}
+\DoxyCodeLine{125             c10::TensorOptions opt = \{\});}
+\DoxyCodeLine{126     \textcolor{comment}{// btensor(vec\_list\_t, any\_quantity,c10::TensorOptions opt = \{\}); //for python}}
+\DoxyCodeLine{135 \textcolor{comment}{}    \mbox{\hyperlink{classquantit_1_1btensor_a7c4b39c3944d26c53ce30924d9d19221}{btensor}}(index\_list \_sections\_by\_dim, \mbox{\hyperlink{classquantit_1_1any__quantity__vector}{any\_quantity\_vector}} \_c\_vals, index\_list \_section\_sizes, \mbox{\hyperlink{classquantit_1_1any__quantity}{any\_quantity}} \_sel\_rule,}
+\DoxyCodeLine{136             c10::TensorOptions opt = \{\});}
+\DoxyCodeLine{137     \mbox{\hyperlink{classquantit_1_1btensor}{btensor}}(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&other)}
+\DoxyCodeLine{138         : selection\_rule((other.selection\_rule.value)), rank(other.rank), sections\_by\_dim((other.sections\_by\_dim)),}
+\DoxyCodeLine{139           sections\_sizes((other.sections\_sizes)), blocks\_list((other.blocks\_list)), c\_vals((other.c\_vals)),}
+\DoxyCodeLine{140           \_options(other.\_options)}
+\DoxyCodeLine{141     \{}
+\DoxyCodeLine{142     \}}
+\DoxyCodeLine{143     btensor(btensor \&\&other)}
+\DoxyCodeLine{144         : selection\_rule(std::move(other.selection\_rule.value)), rank(other.rank),}
+\DoxyCodeLine{145           sections\_by\_dim(std::move(other.sections\_by\_dim)), sections\_sizes(std::move(other.sections\_sizes)),}
+\DoxyCodeLine{146           blocks\_list(std::move(other.blocks\_list)), c\_vals(std::move(other.c\_vals)),}
+\DoxyCodeLine{147           \_options(std::move(other.\_options))}
+\DoxyCodeLine{148     \{}
+\DoxyCodeLine{149     \}}
+\DoxyCodeLine{150     \mbox{\hyperlink{classquantit_1_1btensor_a7b943710b36561f1f76f2bec7e5fa63b}{btensor}} \&operator=(btensor other)}
+\DoxyCodeLine{151     \{}
+\DoxyCodeLine{152         swap(other);}
+\DoxyCodeLine{153         \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{154     \}}
+\DoxyCodeLine{155     \textcolor{keyword}{explicit} \mbox{\hyperlink{classquantit_1_1btensor_a7b943710b36561f1f76f2bec7e5fa63b}{btensor}}() = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{168     \mbox{\hyperlink{classquantit_1_1btensor_a9c4b09d43d375bcacfde1e9d3828c9f4}{btensor}}(\textcolor{keywordtype}{size\_t} \_rank, \mbox{\hyperlink{classquantit_1_1flat__map}{block\_list\_t}} \_blocks, index\_list \_sections\_by\_dims, index\_list \_sections\_sizes,}
+\DoxyCodeLine{169             \mbox{\hyperlink{classquantit_1_1any__quantity__vector}{any\_quantity\_vector}} \_c\_vals, \mbox{\hyperlink{classquantit_1_1any__quantity}{any\_quantity}} \_sel\_rule, c10::TensorOptions opt = \{\});}
+\DoxyCodeLine{170 }
+\DoxyCodeLine{176     std::vector<int64\_t> \mbox{\hyperlink{classquantit_1_1btensor_ab204bff573ef96384149471dba9276f8}{sizes}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{182     btensor::Scalar \mbox{\hyperlink{classquantit_1_1btensor_a01c490238e0022b585dc430b13ec7dd1}{item}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{188     \textcolor{keywordtype}{void} \mbox{\hyperlink{classquantit_1_1btensor_a7831359050b455e8bf4ead7bf205a1ae}{block\_increment}}(btensor::index\_list \&block\_index) \textcolor{keyword}{const};}
+\DoxyCodeLine{189     \textcolor{keyword}{static} \textcolor{keywordtype}{size\_t} btensor\_compute\_max\_size(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&btens, \textcolor{keywordtype}{size\_t} max = std::numeric\_limits<size\_t>::max());}
+\DoxyCodeLine{190     \textcolor{keyword}{static} \textcolor{keywordtype}{void} add\_tensor\_check(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&a, \textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&b);}
+\DoxyCodeLine{191 }
+\DoxyCodeLine{192     \textcolor{keywordtype}{void} swap(\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&);}
+\DoxyCodeLine{193     \textcolor{comment}{// utility classes}}
+\DoxyCodeLine{194     \textcolor{keyword}{template} <\textcolor{keyword}{class} val\_iter>}
+\DoxyCodeLine{195     \textcolor{keyword}{struct }\mbox{\hyperlink{structquantit_1_1btensor_1_1block__prop__iter}{block\_prop\_iter}};}
+\DoxyCodeLine{196     \textcolor{keyword}{template} <\textcolor{keyword}{class} const\_val\_iter, \textcolor{keyword}{class} val\_iter>}
+\DoxyCodeLine{197     \textcolor{keyword}{struct }\mbox{\hyperlink{structquantit_1_1btensor_1_1const__block__prop__iter}{const\_block\_prop\_iter}};}
+\DoxyCodeLine{198     \textcolor{keyword}{template} <\textcolor{keyword}{class} iter>}
+\DoxyCodeLine{199     \textcolor{keyword}{struct }\mbox{\hyperlink{structquantit_1_1btensor_1_1block__prop__view}{block\_prop\_view}};}
+\DoxyCodeLine{200     \textcolor{keyword}{template} <\textcolor{keyword}{class} const\_iterator, \textcolor{keyword}{class} iterator>}
+\DoxyCodeLine{201     \textcolor{keyword}{struct }\mbox{\hyperlink{structquantit_1_1btensor_1_1const__block__prop__view}{const\_block\_prop\_view}};}
+\DoxyCodeLine{202     \textcolor{keyword}{using} \mbox{\hyperlink{structquantit_1_1btensor_1_1block__prop__iter}{block\_qtt\_iter}} = \mbox{\hyperlink{structquantit_1_1btensor_1_1block__prop__iter}{block\_prop\_iter<any\_quantity\_vector::iterator>}};}
+\DoxyCodeLine{203     \textcolor{keyword}{using} \mbox{\hyperlink{structquantit_1_1btensor_1_1const__block__prop__iter}{const\_block\_qtt\_iter}} =}
+\DoxyCodeLine{204         \mbox{\hyperlink{structquantit_1_1btensor_1_1const__block__prop__iter}{const\_block\_prop\_iter<any\_quantity\_vector::const\_iterator, any\_quantity\_vector::iterator>}};}
+\DoxyCodeLine{205     \textcolor{keyword}{using} \mbox{\hyperlink{structquantit_1_1btensor_1_1block__prop__view}{block\_qtt\_view}} = \mbox{\hyperlink{structquantit_1_1btensor_1_1block__prop__view}{block\_prop\_view<block\_qtt\_iter>}};}
+\DoxyCodeLine{206     \textcolor{keyword}{using} \mbox{\hyperlink{structquantit_1_1btensor_1_1const__block__prop__view}{const\_block\_qtt\_view}} = \mbox{\hyperlink{structquantit_1_1btensor_1_1const__block__prop__view}{const\_block\_prop\_view<const\_block\_qtt\_iter, block\_qtt\_iter>}};}
+\DoxyCodeLine{207     \textcolor{keyword}{using} \mbox{\hyperlink{structquantit_1_1btensor_1_1block__prop__iter}{block\_size\_iter}} = \mbox{\hyperlink{structquantit_1_1btensor_1_1block__prop__iter}{block\_prop\_iter<index\_list::iterator>}};}
+\DoxyCodeLine{208     \textcolor{keyword}{using} \mbox{\hyperlink{structquantit_1_1btensor_1_1const__block__prop__iter}{const\_block\_size\_iter}} = \mbox{\hyperlink{structquantit_1_1btensor_1_1const__block__prop__iter}{const\_block\_prop\_iter<index\_list::const\_iterator, index\_list::iterator>}};}
+\DoxyCodeLine{209     \textcolor{keyword}{using} \mbox{\hyperlink{structquantit_1_1btensor_1_1block__prop__view}{block\_size\_view}} = \mbox{\hyperlink{structquantit_1_1btensor_1_1block__prop__view}{block\_prop\_view<block\_size\_iter>}};}
+\DoxyCodeLine{210     \textcolor{keyword}{using} \mbox{\hyperlink{structquantit_1_1btensor_1_1const__block__prop__view}{const\_block\_size\_view}} = \mbox{\hyperlink{structquantit_1_1btensor_1_1const__block__prop__view}{const\_block\_prop\_view<const\_block\_size\_iter, block\_size\_iter>}};}
+\DoxyCodeLine{211 }
+\DoxyCodeLine{212     \textcolor{keywordtype}{bool} block\_conservation\_rule\_test(index\_list block\_index) \textcolor{keyword}{const};}
+\DoxyCodeLine{213 }
+\DoxyCodeLine{214     \textcolor{keywordtype}{size\_t} section\_size(\textcolor{keywordtype}{size\_t} \mbox{\hyperlink{classquantit_1_1btensor_a399cee30857b6b711c46817bbc0a9c56}{dim}}, \textcolor{keywordtype}{size\_t} section) \textcolor{keyword}{const};}
+\DoxyCodeLine{215     std::tuple<index\_list::const\_iterator, index\_list::const\_iterator> section\_sizes(\textcolor{keywordtype}{size\_t} \mbox{\hyperlink{classquantit_1_1btensor_a399cee30857b6b711c46817bbc0a9c56}{dim}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{216     std::tuple<any\_quantity\_vector::const\_iterator, any\_quantity\_vector::const\_iterator> section\_cqtts(}
+\DoxyCodeLine{217         \textcolor{keywordtype}{size\_t} \mbox{\hyperlink{classquantit_1_1btensor_a399cee30857b6b711c46817bbc0a9c56}{dim}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{218     std::tuple<index\_list::const\_iterator, index\_list::const\_iterator, \mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator}{any\_quantity\_vector::const\_iterator}},}
+\DoxyCodeLine{219                \mbox{\hyperlink{structquantit_1_1vQuantiT__iterator_1_1const__cgroup__iterator}{any\_quantity\_vector::const\_iterator}}>}
+\DoxyCodeLine{220     section\_sizes\_cqtts(\textcolor{keywordtype}{size\_t} \mbox{\hyperlink{classquantit_1_1btensor_a399cee30857b6b711c46817bbc0a9c56}{dim}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{221 }
+\DoxyCodeLine{222     \mbox{\hyperlink{classquantit_1_1vquantity}{any\_quantity\_cref}} section\_conserved\_qtt(\textcolor{keywordtype}{size\_t} \mbox{\hyperlink{classquantit_1_1btensor_a399cee30857b6b711c46817bbc0a9c56}{dim}}, \textcolor{keywordtype}{size\_t} section) \textcolor{keyword}{const};}
+\DoxyCodeLine{223     \mbox{\hyperlink{classquantit_1_1vquantity}{any\_quantity\_cref}} element\_conserved\_qtt(\textcolor{keywordtype}{size\_t} \mbox{\hyperlink{classquantit_1_1btensor_a399cee30857b6b711c46817bbc0a9c56}{dim}}, \textcolor{keywordtype}{size\_t} element) \textcolor{keyword}{const};}
+\DoxyCodeLine{224     std::tuple<any\_quantity\_vector::const\_iterator, any\_quantity\_vector::const\_iterator> section\_conserved\_qtt\_range(}
+\DoxyCodeLine{225         \textcolor{keywordtype}{size\_t} \mbox{\hyperlink{classquantit_1_1btensor_ab59f73f7c6380e0bd8ca60e576d4b8d2}{index}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{226     std::tuple<size\_t, any\_quantity\_cref> section\_size\_cqtt(\textcolor{keywordtype}{size\_t} \mbox{\hyperlink{classquantit_1_1btensor_a399cee30857b6b711c46817bbc0a9c56}{dim}}, \textcolor{keywordtype}{size\_t} section) \textcolor{keyword}{const};}
+\DoxyCodeLine{227     \textcolor{comment}{// block accessor}}
+\DoxyCodeLine{235 \textcolor{comment}{}    torch::Tensor \&\mbox{\hyperlink{classquantit_1_1btensor_af22e8f75e1b81a471f2916613003a147}{block\_at}}(\textcolor{keyword}{const} index\_list \&);}
+\DoxyCodeLine{243     torch::Tensor \&\mbox{\hyperlink{classquantit_1_1btensor_ad92a3ed434c246a76dc9835c82ca5379}{block}}(\textcolor{keyword}{const} index\_list \&); \textcolor{comment}{// create the block if it isn't present and allowed}}
+\DoxyCodeLine{244 }
+\DoxyCodeLine{250     \textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1flat__map}{block\_list\_t}} \&\mbox{\hyperlink{classquantit_1_1btensor_a67fdd7c3f131d560e05a37c2a6bbdba7}{blocks}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{251 }
+\DoxyCodeLine{261     \mbox{\hyperlink{structquantit_1_1btensor_1_1const__block__prop__view}{const\_block\_qtt\_view}} \mbox{\hyperlink{classquantit_1_1btensor_a1720ff8aa74853ae8bb00909342b6776}{block\_quantities}}(\textcolor{keyword}{const} index\_list \&block\_index) \textcolor{keyword}{const};}
+\DoxyCodeLine{270     \mbox{\hyperlink{structquantit_1_1btensor_1_1const__block__prop__view}{const\_block\_size\_view}} \mbox{\hyperlink{classquantit_1_1btensor_a18efb9612ab0b9c34f438f0197abc502}{block\_sizes}}(\textcolor{keyword}{const} index\_list \&block\_index) \textcolor{keyword}{const};}
+\DoxyCodeLine{276     int64\_t \mbox{\hyperlink{classquantit_1_1btensor_a399cee30857b6b711c46817bbc0a9c56}{dim}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} rank; \}}
+\DoxyCodeLine{283     \textcolor{keywordtype}{size\_t} \mbox{\hyperlink{classquantit_1_1btensor_af88cd6bb654832133a7dfbefa8f629c1}{section\_number}}(\textcolor{keywordtype}{size\_t} \mbox{\hyperlink{classquantit_1_1btensor_a399cee30857b6b711c46817bbc0a9c56}{dim}})\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} sections\_by\_dim[\mbox{\hyperlink{classquantit_1_1btensor_a399cee30857b6b711c46817bbc0a9c56}{dim}}]; \}}
+\DoxyCodeLine{289     \textcolor{keyword}{const} \textcolor{keyword}{auto} \&\mbox{\hyperlink{classquantit_1_1btensor_aa11f7a79a9966a75b8b3c8cf80d09a9a}{section\_numbers}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} sections\_by\_dim; \}}
+\DoxyCodeLine{290     \textcolor{comment}{// block\_qtt\_view block\_quantities(index\_list block\_index);}}
+\DoxyCodeLine{291 }
+\DoxyCodeLine{292     \textcolor{keyword}{const} \textcolor{keyword}{auto} \&get\_cvals()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} c\_vals; \}}
+\DoxyCodeLine{293 }
+\DoxyCodeLine{303     \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \mbox{\hyperlink{classquantit_1_1btensor_aee959f8823a1ccb165e6ddeced75b0f6}{shape\_from}}(\textcolor{keyword}{const} std::vector<int64\_t> \&dims) \textcolor{keyword}{const};}
+\DoxyCodeLine{312     \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \mbox{\hyperlink{classquantit_1_1btensor_a8619fb2e99352fa12aa8525ea3ecdcf0}{basic\_create\_view}}(\textcolor{keyword}{const} std::vector<int64\_t> \&dims, \textcolor{keywordtype}{bool} preserve\_rank = \textcolor{keyword}{false});}
+\DoxyCodeLine{320     \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&\mbox{\hyperlink{classquantit_1_1btensor_a871afaeeeb3c9216561f667ba5aa9048}{basic\_index\_put\_}}(\textcolor{keyword}{const} std::vector<int64\_t> \&dims, \textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&value);}
+\DoxyCodeLine{321     \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&\mbox{\hyperlink{classquantit_1_1btensor_a871afaeeeb3c9216561f667ba5aa9048}{basic\_index\_put\_}}(\textcolor{keyword}{const} std::vector<int64\_t> \&dims, \textcolor{keyword}{const} torch::Tensor \&value);}
+\DoxyCodeLine{322 }
+\DoxyCodeLine{323     \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} neutral\_shape() \textcolor{keyword}{const};}
+\DoxyCodeLine{329     \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&\mbox{\hyperlink{classquantit_1_1btensor_ad63bbb721a2c36d3fa0329cb08b758de}{neutral\_shape\_}}();}
+\DoxyCodeLine{339     \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \mbox{\hyperlink{classquantit_1_1btensor_ad0a016599b6c1ba4a98111075081acda}{tensor\_product\_shape}}(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&other) \textcolor{keyword}{const};}
+\DoxyCodeLine{340 }
+\DoxyCodeLine{350     \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \mbox{\hyperlink{classquantit_1_1btensor_ab59f73f7c6380e0bd8ca60e576d4b8d2}{index}}(torch::ArrayRef<torch::indexing::TensorIndex> indices) \textcolor{keyword}{const};}
+\DoxyCodeLine{360     \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \mbox{\hyperlink{classquantit_1_1btensor_aa058a2117553c629ce362eb711945e58}{index}}(std::initializer\_list<torch::indexing::TensorIndex> indices) \textcolor{keyword}{const};}
+\DoxyCodeLine{371     \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&\mbox{\hyperlink{classquantit_1_1btensor_a3081108604c102459bd65a175ca1ea54}{index\_put\_}}(torch::ArrayRef<torch::indexing::TensorIndex> indices, \textcolor{keyword}{const} torch::Tensor \&rhs);}
+\DoxyCodeLine{381     \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&\mbox{\hyperlink{classquantit_1_1btensor_abd6888c5d2b49f450c8da320d5ce4f1e}{index\_put\_}}(torch::ArrayRef<torch::indexing::TensorIndex> indices, \textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&rhs);}
+\DoxyCodeLine{392     \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&\mbox{\hyperlink{classquantit_1_1btensor_a6a7f8e2656bf15cadedc165a8f66b9cf}{index\_put\_}}(torch::ArrayRef<torch::indexing::TensorIndex> indices, \textcolor{keyword}{const} Scalar \&v);}
+\DoxyCodeLine{403     \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&\mbox{\hyperlink{classquantit_1_1btensor_aef48cb1ecdfc2cfc8994fea7e617f5b4}{index\_put\_}}(std::initializer\_list<torch::indexing::TensorIndex> indices, \textcolor{keyword}{const} torch::Tensor \&rhs);}
+\DoxyCodeLine{413     \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&\mbox{\hyperlink{classquantit_1_1btensor_a749af5bef1d88e0ee8d460af1e2c8e84}{index\_put\_}}(std::initializer\_list<torch::indexing::TensorIndex> indices, \textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&rhs);}
+\DoxyCodeLine{424     \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&\mbox{\hyperlink{classquantit_1_1btensor_ac233931f73c7b4ccb1733a668818fcfa}{index\_put\_}}(std::initializer\_list<torch::indexing::TensorIndex> indices, \textcolor{keyword}{const} Scalar \&v);}
+\DoxyCodeLine{425 }
+\DoxyCodeLine{426     \textcolor{comment}{// iterator}}
+\DoxyCodeLine{427     block\_list\_t::const\_iterator begin()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} blocks\_list.begin(); \}}
+\DoxyCodeLine{428     block\_list\_t::const\_iterator end()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} blocks\_list.end(); \}}
+\DoxyCodeLine{429     block\_list\_t::const\_iterator cbegin()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} blocks\_list.cbegin(); \}}
+\DoxyCodeLine{430     block\_list\_t::const\_iterator cend()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} blocks\_list.cend(); \}}
+\DoxyCodeLine{431     block\_list\_t::iterator begin() \{ \textcolor{keywordflow}{return} blocks\_list.begin(); \}}
+\DoxyCodeLine{432     block\_list\_t::iterator end() \{ \textcolor{keywordflow}{return} blocks\_list.end(); \}}
+\DoxyCodeLine{433     block\_list\_t::reverse\_iterator rbegin() \{ \textcolor{keywordflow}{return} blocks\_list.rbegin(); \}}
+\DoxyCodeLine{434     block\_list\_t::reverse\_iterator rend() \{ \textcolor{keywordflow}{return} blocks\_list.rend(); \}}
+\DoxyCodeLine{435     block\_list\_t::const\_reverse\_iterator rbegin()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} blocks\_list.rbegin(); \}}
+\DoxyCodeLine{436     block\_list\_t::const\_reverse\_iterator rend()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} blocks\_list.rend(); \}}
+\DoxyCodeLine{437     block\_list\_t::const\_reverse\_iterator crbegin()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} blocks\_list.crbegin(); \}}
+\DoxyCodeLine{438     block\_list\_t::const\_reverse\_iterator crend()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} blocks\_list.crend(); \}}
+\DoxyCodeLine{439 }
+\DoxyCodeLine{445     torch::Tensor \mbox{\hyperlink{classquantit_1_1btensor_a6a97b9d52b04fe14bf7bb5a55a810382}{to\_dense}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{455     \textcolor{keyword}{static} std::string \mbox{\hyperlink{classquantit_1_1btensor_aaba4b107e02154ce231380c1bb844766}{check\_tensor}}(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&);}
+\DoxyCodeLine{460     \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{classquantit_1_1btensor_a5d8897e8e51c880654c5d467b2b0a8bc}{throw\_bad\_tensor}}(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&);}
+\DoxyCodeLine{461     \textcolor{comment}{// Algebra !!Attention!! most of this stuff isn't implemented.}}
+\DoxyCodeLine{462     \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} add(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&other, Scalar alpha = 1) \textcolor{keyword}{const};}
+\DoxyCodeLine{463     \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} add(\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&\&other, Scalar alpha = 1) \textcolor{keyword}{const};}
+\DoxyCodeLine{464     \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&add\_(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&other, Scalar alpha = 1);}
+\DoxyCodeLine{465     \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&add\_(\mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&\&other, Scalar alpha = 1);}
+\DoxyCodeLine{466     \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} add(Scalar other, Scalar alpha = 1) \textcolor{keyword}{const};}
+\DoxyCodeLine{467     \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&add\_(Scalar other, Scalar alpha = 1);}
+\DoxyCodeLine{468     \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&operator+=(Scalar other) \{ \textcolor{keywordflow}{return} add\_(other); \};}
+\DoxyCodeLine{469     \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&operator-\/=(Scalar other) \{ \textcolor{keywordflow}{return} sub\_(other); \};}
+\DoxyCodeLine{470     btensor \&operator+=(\textcolor{keyword}{const} btensor \&other) \{ \textcolor{keywordflow}{return} add\_(other); \}}
+\DoxyCodeLine{471     \mbox{\hyperlink{classquantit_1_1btensor_a7b943710b36561f1f76f2bec7e5fa63b}{btensor}} \&operator+=(btensor \&\&other) \{ \textcolor{keywordflow}{return} add\_(std::move(other)); \}}
+\DoxyCodeLine{472     \mbox{\hyperlink{classquantit_1_1btensor_a7b943710b36561f1f76f2bec7e5fa63b}{btensor}} \&operator-\/=(\textcolor{keyword}{const} btensor \&other) \{ \textcolor{keywordflow}{return} add\_(other, -\/1); \}}
+\DoxyCodeLine{473     \mbox{\hyperlink{classquantit_1_1btensor_a7b943710b36561f1f76f2bec7e5fa63b}{btensor}} \&operator-\/=(btensor \&\&other) \{ \textcolor{keywordflow}{return} add\_(std::move(other), -\/1); \}}
+\DoxyCodeLine{474     \mbox{\hyperlink{classquantit_1_1btensor_a7b943710b36561f1f76f2bec7e5fa63b}{btensor}} addmv(\textcolor{keyword}{const} btensor \&mat, \textcolor{keyword}{const} btensor \&vec, Scalar beta = 1, Scalar alpha = 1) \textcolor{keyword}{const};}
+\DoxyCodeLine{475     \mbox{\hyperlink{classquantit_1_1btensor_a7b943710b36561f1f76f2bec7e5fa63b}{btensor}} \&addmv(\textcolor{keyword}{const} btensor \&mat, \textcolor{keyword}{const} btensor \&vec, Scalar beta = 1);}
+\DoxyCodeLine{476     \textcolor{comment}{// addmm do fused matrix multiply-\/add on the last two dimensions, with broadcasting on the other dimensions}}
+\DoxyCodeLine{477     \mbox{\hyperlink{classquantit_1_1btensor_a7b943710b36561f1f76f2bec7e5fa63b}{btensor}} addmm(\textcolor{keyword}{const} btensor \&mat, \textcolor{keyword}{const} btensor \&mat2, Scalar beta = 1, Scalar alpha = 1) \textcolor{keyword}{const};}
+\DoxyCodeLine{478     \mbox{\hyperlink{classquantit_1_1btensor_a7b943710b36561f1f76f2bec7e5fa63b}{btensor}} \&addmm\_(\textcolor{keyword}{const} btensor \&mat, \textcolor{keyword}{const} btensor \&mat2, Scalar beta = 1, Scalar alpha = 1);}
+\DoxyCodeLine{479     \textcolor{comment}{// addbmm function do fused matrix multiply-\/add, with a reduction on the first tensor index. See baddbmm if}}
+\DoxyCodeLine{480     \textcolor{comment}{// reduction is not desired}}
+\DoxyCodeLine{481     \mbox{\hyperlink{classquantit_1_1btensor_a7b943710b36561f1f76f2bec7e5fa63b}{btensor}} addbmm(\textcolor{keyword}{const} btensor \&mat, \textcolor{keyword}{const} btensor \&mat2, Scalar beta = 1, Scalar alpha = 1) \textcolor{keyword}{const};}
+\DoxyCodeLine{482     \mbox{\hyperlink{classquantit_1_1btensor_a7b943710b36561f1f76f2bec7e5fa63b}{btensor}} \&addbmm\_(\textcolor{keyword}{const} btensor \&mat, \textcolor{keyword}{const} btensor \&mat2, Scalar beta = 1, Scalar alpha = 1);}
+\DoxyCodeLine{483     \mbox{\hyperlink{classquantit_1_1btensor_a7b943710b36561f1f76f2bec7e5fa63b}{btensor}} \&addcdiv\_(\textcolor{keyword}{const} btensor \&tensor1, \textcolor{keyword}{const} btensor \&tensor2, Scalar beta = 1);}
+\DoxyCodeLine{484     \mbox{\hyperlink{classquantit_1_1btensor_a7b943710b36561f1f76f2bec7e5fa63b}{btensor}} addcdiv(\textcolor{keyword}{const} btensor \&tensor1, \textcolor{keyword}{const} btensor \&tensor2, Scalar beta = 1);}
+\DoxyCodeLine{485     \mbox{\hyperlink{classquantit_1_1btensor_a7b943710b36561f1f76f2bec7e5fa63b}{btensor}} \&addcmul\_(\textcolor{keyword}{const} btensor \&tensor1, \textcolor{keyword}{const} btensor \&tensor2, Scalar beta = 1);}
+\DoxyCodeLine{486     \mbox{\hyperlink{classquantit_1_1btensor_a7b943710b36561f1f76f2bec7e5fa63b}{btensor}} addcmul(\textcolor{keyword}{const} btensor \&tensor1, \textcolor{keyword}{const} btensor \&tensor2, Scalar beta = 1);}
+\DoxyCodeLine{487     \textcolor{comment}{// baddbmm is the batched fused mutiply add.}}
+\DoxyCodeLine{488     \mbox{\hyperlink{classquantit_1_1btensor_a7b943710b36561f1f76f2bec7e5fa63b}{btensor}} baddbmm(\textcolor{keyword}{const} btensor \&bathc1, \textcolor{keyword}{const} btensor \&batch2, Scalar beta = 1, Scalar alpha = 1) \textcolor{keyword}{const};}
+\DoxyCodeLine{489     \mbox{\hyperlink{classquantit_1_1btensor_a7b943710b36561f1f76f2bec7e5fa63b}{btensor}} \&baddbmm\_(\textcolor{keyword}{const} btensor \&bathc1, \textcolor{keyword}{const} btensor \&batch2, Scalar beta = 1, Scalar alpha = 1);}
+\DoxyCodeLine{490     \textcolor{comment}{// batched matrix-\/multiply, no broadcast}}
+\DoxyCodeLine{491     \mbox{\hyperlink{classquantit_1_1btensor_a7b943710b36561f1f76f2bec7e5fa63b}{btensor}} bmm(\textcolor{keyword}{const} btensor \&mat) \textcolor{keyword}{const};}
+\DoxyCodeLine{492     \mbox{\hyperlink{classquantit_1_1btensor_a7b943710b36561f1f76f2bec7e5fa63b}{btensor}} dot(\textcolor{keyword}{const} btensor \&other) \textcolor{keyword}{const};}
+\DoxyCodeLine{493     \mbox{\hyperlink{classquantit_1_1btensor_a7b943710b36561f1f76f2bec7e5fa63b}{btensor}} vdot(\textcolor{keyword}{const} btensor \&other) \textcolor{keyword}{const};}
+\DoxyCodeLine{494     \mbox{\hyperlink{classquantit_1_1btensor_a7b943710b36561f1f76f2bec7e5fa63b}{btensor}} kron(\textcolor{keyword}{const} btensor \&other) \textcolor{keyword}{const};}
+\DoxyCodeLine{495     \textcolor{comment}{// broadcasting matmul (batched)}}
+\DoxyCodeLine{496     \mbox{\hyperlink{classquantit_1_1btensor_a7b943710b36561f1f76f2bec7e5fa63b}{btensor}} matmul(\textcolor{keyword}{const} btensor \&other) \textcolor{keyword}{const};}
+\DoxyCodeLine{497     \textcolor{comment}{// matmul no broadcast}}
+\DoxyCodeLine{498     \mbox{\hyperlink{classquantit_1_1btensor_a7b943710b36561f1f76f2bec7e5fa63b}{btensor}} mm(\textcolor{keyword}{const} btensor \&other) \textcolor{keyword}{const};}
+\DoxyCodeLine{499     \mbox{\hyperlink{classquantit_1_1btensor_a7b943710b36561f1f76f2bec7e5fa63b}{btensor}} sum() \textcolor{keyword}{const};}
+\DoxyCodeLine{500 }
+\DoxyCodeLine{501     \mbox{\hyperlink{classquantit_1_1btensor_a7b943710b36561f1f76f2bec7e5fa63b}{btensor}} t()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \mbox{\hyperlink{classquantit_1_1btensor_a6176a831cc6ebf1769453bbd38846e3f}{transpose}}(\mbox{\hyperlink{classquantit_1_1btensor_a399cee30857b6b711c46817bbc0a9c56}{dim}}() -\/ 1, \mbox{\hyperlink{classquantit_1_1btensor_a399cee30857b6b711c46817bbc0a9c56}{dim}}() -\/ 2); \}}
+\DoxyCodeLine{502     \mbox{\hyperlink{classquantit_1_1btensor_a7b943710b36561f1f76f2bec7e5fa63b}{btensor}} \&t\_() \{ \textcolor{keywordflow}{return} transpose\_(\mbox{\hyperlink{classquantit_1_1btensor_a399cee30857b6b711c46817bbc0a9c56}{dim}}() -\/ 1, \mbox{\hyperlink{classquantit_1_1btensor_a399cee30857b6b711c46817bbc0a9c56}{dim}}() -\/ 2); \}}
+\DoxyCodeLine{503     \mbox{\hyperlink{classquantit_1_1btensor_a7b943710b36561f1f76f2bec7e5fa63b}{btensor}} sqrt() \textcolor{keyword}{const};}
+\DoxyCodeLine{504     \mbox{\hyperlink{classquantit_1_1btensor_a7b943710b36561f1f76f2bec7e5fa63b}{btensor}} \&sqrt\_();}
+\DoxyCodeLine{505     \mbox{\hyperlink{classquantit_1_1btensor_a7b943710b36561f1f76f2bec7e5fa63b}{btensor}} abs() \textcolor{keyword}{const};}
+\DoxyCodeLine{506     \mbox{\hyperlink{classquantit_1_1btensor_a7b943710b36561f1f76f2bec7e5fa63b}{btensor}} \&abs\_();}
+\DoxyCodeLine{507     \mbox{\hyperlink{classquantit_1_1btensor_a7b943710b36561f1f76f2bec7e5fa63b}{btensor}} pow(btensor::Scalar exponent) \textcolor{keyword}{const};}
+\DoxyCodeLine{508     \mbox{\hyperlink{classquantit_1_1btensor_a7b943710b36561f1f76f2bec7e5fa63b}{btensor}} \&pow\_(btensor::Scalar exponent);}
+\DoxyCodeLine{509     \mbox{\hyperlink{classquantit_1_1btensor_a7b943710b36561f1f76f2bec7e5fa63b}{btensor}} pow(\textcolor{keyword}{const} btensor \&exponent) \textcolor{keyword}{const};}
+\DoxyCodeLine{510     \mbox{\hyperlink{classquantit_1_1btensor_a7b943710b36561f1f76f2bec7e5fa63b}{btensor}} \&pow\_(\textcolor{keyword}{const} btensor \&exponent);}
+\DoxyCodeLine{511     \mbox{\hyperlink{classquantit_1_1btensor_a7b943710b36561f1f76f2bec7e5fa63b}{btensor}} ge(btensor::Scalar other) \textcolor{keyword}{const};}
+\DoxyCodeLine{512     \mbox{\hyperlink{classquantit_1_1btensor_a7b943710b36561f1f76f2bec7e5fa63b}{btensor}} ge(\textcolor{keyword}{const} btensor \&other) \textcolor{keyword}{const};}
+\DoxyCodeLine{513     \mbox{\hyperlink{classquantit_1_1btensor_a7b943710b36561f1f76f2bec7e5fa63b}{btensor}} le(btensor::Scalar other) \textcolor{keyword}{const};}
+\DoxyCodeLine{514     \mbox{\hyperlink{classquantit_1_1btensor_a7b943710b36561f1f76f2bec7e5fa63b}{btensor}} le(\textcolor{keyword}{const} btensor \&other) \textcolor{keyword}{const};}
+\DoxyCodeLine{515     \mbox{\hyperlink{classquantit_1_1btensor_a7b943710b36561f1f76f2bec7e5fa63b}{btensor}} less(\textcolor{keyword}{const} btensor \&other) \textcolor{keyword}{const};}
+\DoxyCodeLine{516     \mbox{\hyperlink{classquantit_1_1btensor_a7b943710b36561f1f76f2bec7e5fa63b}{btensor}} less(btensor::Scalar other) \textcolor{keyword}{const};}
+\DoxyCodeLine{517     \mbox{\hyperlink{classquantit_1_1btensor_a7b943710b36561f1f76f2bec7e5fa63b}{btensor}} greater(\textcolor{keyword}{const} btensor \&other) \textcolor{keyword}{const};}
+\DoxyCodeLine{518     \mbox{\hyperlink{classquantit_1_1btensor_a7b943710b36561f1f76f2bec7e5fa63b}{btensor}} greater(btensor::Scalar other) \textcolor{keyword}{const};}
+\DoxyCodeLine{519     \mbox{\hyperlink{classquantit_1_1btensor_a7b943710b36561f1f76f2bec7e5fa63b}{btensor}} eq(btensor::Scalar other) \textcolor{keyword}{const};}
+\DoxyCodeLine{520     \mbox{\hyperlink{classquantit_1_1btensor_a7b943710b36561f1f76f2bec7e5fa63b}{btensor}} eq(\textcolor{keyword}{const} btensor \&other) \textcolor{keyword}{const};}
+\DoxyCodeLine{521     \mbox{\hyperlink{classquantit_1_1btensor_a7b943710b36561f1f76f2bec7e5fa63b}{btensor}} not\_equal(btensor::Scalar other) \textcolor{keyword}{const};}
+\DoxyCodeLine{522     \mbox{\hyperlink{classquantit_1_1btensor_a7b943710b36561f1f76f2bec7e5fa63b}{btensor}} not\_equal(\textcolor{keyword}{const} btensor \&other) \textcolor{keyword}{const};}
+\DoxyCodeLine{523 }
+\DoxyCodeLine{524     \mbox{\hyperlink{classquantit_1_1btensor_a7b943710b36561f1f76f2bec7e5fa63b}{btensor}} div(btensor::Scalar) \textcolor{keyword}{const};}
+\DoxyCodeLine{525     \mbox{\hyperlink{classquantit_1_1btensor_a7b943710b36561f1f76f2bec7e5fa63b}{btensor}} \&div\_(btensor::Scalar);}
+\DoxyCodeLine{526     \mbox{\hyperlink{classquantit_1_1btensor_a7b943710b36561f1f76f2bec7e5fa63b}{btensor}} div(\textcolor{keyword}{const} btensor \&other) \textcolor{keyword}{const};}
+\DoxyCodeLine{527     \mbox{\hyperlink{classquantit_1_1btensor_a7b943710b36561f1f76f2bec7e5fa63b}{btensor}} \&div\_(\textcolor{keyword}{const} btensor \&other);}
+\DoxyCodeLine{528 }
+\DoxyCodeLine{529     \mbox{\hyperlink{classquantit_1_1btensor_a7b943710b36561f1f76f2bec7e5fa63b}{btensor}} \&operator*=(btensor::Scalar val) \{ \textcolor{keywordflow}{return} \mbox{\hyperlink{classquantit_1_1btensor_a9a897211f5745485c575f520a9f2e810}{mul\_}}(val); \}}
+\DoxyCodeLine{530     \mbox{\hyperlink{classquantit_1_1btensor_a7b943710b36561f1f76f2bec7e5fa63b}{btensor}} \&operator*=(\textcolor{keyword}{const} btensor \&other) \{ \textcolor{keywordflow}{return} \mbox{\hyperlink{classquantit_1_1btensor_a9a897211f5745485c575f520a9f2e810}{mul\_}}(other); \}}
+\DoxyCodeLine{531     \mbox{\hyperlink{classquantit_1_1btensor_a7b943710b36561f1f76f2bec7e5fa63b}{btensor}} \&operator/=(btensor::Scalar val) \{ \textcolor{keywordflow}{return} div\_(val); \}}
+\DoxyCodeLine{532     \mbox{\hyperlink{classquantit_1_1btensor_a7b943710b36561f1f76f2bec7e5fa63b}{btensor}} \&operator/=(\textcolor{keyword}{const} btensor \&other) \{ \textcolor{keywordflow}{return} div\_(other); \}}
+\DoxyCodeLine{533     \mbox{\hyperlink{classquantit_1_1btensor_a7b943710b36561f1f76f2bec7e5fa63b}{btensor}} operator-\/() \{ \textcolor{keywordflow}{return} mul(-\/1); \}}
+\DoxyCodeLine{534 }
+\DoxyCodeLine{546     \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&\mbox{\hyperlink{classquantit_1_1btensor_a9a897211f5745485c575f520a9f2e810}{mul\_}}(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&other);}
+\DoxyCodeLine{547     \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} mul(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&other) \textcolor{keyword}{const};}
+\DoxyCodeLine{548     \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} mul(Scalar other) \textcolor{keyword}{const};}
+\DoxyCodeLine{549     \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&\mbox{\hyperlink{classquantit_1_1btensor_a9a897211f5745485c575f520a9f2e810}{mul\_}}(Scalar other);}
+\DoxyCodeLine{550     \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} multiply(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&other) \textcolor{keyword}{const};}
+\DoxyCodeLine{551     \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&multiply\_(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&other);}
+\DoxyCodeLine{552     \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} multiply(Scalar other)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} mul(other); \}}
+\DoxyCodeLine{553     \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&multiply\_(Scalar other) \{ \textcolor{keywordflow}{return} \mbox{\hyperlink{classquantit_1_1btensor_a9a897211f5745485c575f520a9f2e810}{mul\_}}(other); \}}
+\DoxyCodeLine{554     btensor mv(\textcolor{keyword}{const} btensor \&vec) \textcolor{keyword}{const};}
+\DoxyCodeLine{555     btensor permute(torch::IntArrayRef) \textcolor{keyword}{const};}
+\DoxyCodeLine{556     btensor \&permute\_(torch::IntArrayRef);}
+\DoxyCodeLine{569     \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \mbox{\hyperlink{classquantit_1_1btensor_a444e6084e8589ae5ae4236cb35c27f01}{reshape}}(torch::IntArrayRef index\_group) \textcolor{keyword}{const};}
+\DoxyCodeLine{585     \textcolor{keyword}{template} <reshape\_mode mode = reshape\_mode::dims\_only>}
+\DoxyCodeLine{586     \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \mbox{\hyperlink{classquantit_1_1btensor_a5c0f704cd6343d24b4a42031e2e22bc5}{reshape\_as}}(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&other) \textcolor{keyword}{const};}
+\DoxyCodeLine{587 }
+\DoxyCodeLine{600     \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \mbox{\hyperlink{classquantit_1_1btensor_a391e6d73f73bc486c0f080e6cd8ab7a8}{reshape}}(std::initializer\_list<int64\_t> a) \{ \textcolor{keywordflow}{return} \mbox{\hyperlink{classquantit_1_1btensor_a391e6d73f73bc486c0f080e6cd8ab7a8}{reshape}}(torch::IntArrayRef(a)); \}}
+\DoxyCodeLine{610     \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \mbox{\hyperlink{classquantit_1_1btensor_a6176a831cc6ebf1769453bbd38846e3f}{transpose}}(int64\_t dim0, int64\_t dim1) \textcolor{keyword}{const};}
+\DoxyCodeLine{611     \textcolor{comment}{// btensor transpose(torch::Dimname dim0, torch::Dimname dim1) const;}}
+\DoxyCodeLine{612     \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&transpose\_(int64\_t dim0, int64\_t dim1);}
+\DoxyCodeLine{613     \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} sub(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&other, Scalar alpha = 1)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} add(other, -\/alpha); \}}
+\DoxyCodeLine{614     \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&sub\_(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&other, Scalar alpha = 1) \{ \textcolor{keywordflow}{return} add\_(other, -\/alpha); \}}
+\DoxyCodeLine{615     btensor sub(btensor \&\&other, Scalar alpha = 1)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} add(std::move(other), -\/alpha); \}}
+\DoxyCodeLine{616     \mbox{\hyperlink{classquantit_1_1btensor_a7b943710b36561f1f76f2bec7e5fa63b}{btensor}} \&sub\_(btensor \&\&other, Scalar alpha = 1) \{ \textcolor{keywordflow}{return} add\_(std::move(other), -\/alpha); \}}
+\DoxyCodeLine{617     \mbox{\hyperlink{classquantit_1_1btensor_a7b943710b36561f1f76f2bec7e5fa63b}{btensor}} sub(Scalar other, Scalar alpha = 1)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} add(other, -\/alpha); \}}
+\DoxyCodeLine{618     \mbox{\hyperlink{classquantit_1_1btensor_a7b943710b36561f1f76f2bec7e5fa63b}{btensor}} \&sub\_(Scalar other, Scalar alpha = 1) \{ \textcolor{keywordflow}{return} add\_(other, -\/alpha); \};}
+\DoxyCodeLine{619     \mbox{\hyperlink{classquantit_1_1btensor_a7b943710b36561f1f76f2bec7e5fa63b}{btensor}} subtract(\textcolor{keyword}{const} btensor \&other, Scalar alpha = 1)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} sub(other, alpha); \}}
+\DoxyCodeLine{620     \mbox{\hyperlink{classquantit_1_1btensor_a7b943710b36561f1f76f2bec7e5fa63b}{btensor}} \&subtract\_(\textcolor{keyword}{const} btensor \&other, Scalar alpha = 1) \{ \textcolor{keywordflow}{return} sub\_(other, alpha); \}}
+\DoxyCodeLine{621     \mbox{\hyperlink{classquantit_1_1btensor_a7b943710b36561f1f76f2bec7e5fa63b}{btensor}} subtract(Scalar other, Scalar alpha = 1)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} sub(other, alpha); \}}
+\DoxyCodeLine{622     \mbox{\hyperlink{classquantit_1_1btensor_a7b943710b36561f1f76f2bec7e5fa63b}{btensor}} \&subtract\_(Scalar other, Scalar alpha = 1) \{ \textcolor{keywordflow}{return} sub\_(other, alpha); \}}
+\DoxyCodeLine{623     \mbox{\hyperlink{classquantit_1_1btensor_a7b943710b36561f1f76f2bec7e5fa63b}{btensor}} tensordot(\textcolor{keyword}{const} btensor \&other, torch::IntArrayRef dim\_self, torch::IntArrayRef dims\_other) \textcolor{keyword}{const};}
+\DoxyCodeLine{624     \mbox{\hyperlink{classquantit_1_1btensor_a7b943710b36561f1f76f2bec7e5fa63b}{btensor}} tensorgdot(\textcolor{keyword}{const} btensor \&mul1, \textcolor{keyword}{const} btensor \&mul2, torch::IntArrayRef dims1, torch::IntArrayRef dims2,}
+\DoxyCodeLine{625                        Scalar beta = 1, Scalar alpha = 1) \textcolor{keyword}{const};}
+\DoxyCodeLine{626     \mbox{\hyperlink{classquantit_1_1btensor_a7b943710b36561f1f76f2bec7e5fa63b}{btensor}} \&tensorgdot\_(\textcolor{keyword}{const} btensor \&mul1, \textcolor{keyword}{const} btensor \&mul2, torch::IntArrayRef dims1, torch::IntArrayRef dims2,}
+\DoxyCodeLine{627                          Scalar beta = 1, Scalar alpha = 1);}
+\DoxyCodeLine{628     \mbox{\hyperlink{classquantit_1_1btensor_a7b943710b36561f1f76f2bec7e5fa63b}{btensor}} squeeze() \textcolor{keyword}{const};}
+\DoxyCodeLine{629     \mbox{\hyperlink{classquantit_1_1btensor_a7b943710b36561f1f76f2bec7e5fa63b}{btensor}} squeeze(int64\_t \mbox{\hyperlink{classquantit_1_1btensor_a399cee30857b6b711c46817bbc0a9c56}{dim}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{630     \mbox{\hyperlink{classquantit_1_1btensor_a7b943710b36561f1f76f2bec7e5fa63b}{btensor}} \&squeeze\_(int64\_t \mbox{\hyperlink{classquantit_1_1btensor_a399cee30857b6b711c46817bbc0a9c56}{dim}});}
+\DoxyCodeLine{631     \mbox{\hyperlink{classquantit_1_1btensor_a7b943710b36561f1f76f2bec7e5fa63b}{btensor}} \&squeeze\_();}
+\DoxyCodeLine{632     \mbox{\hyperlink{classquantit_1_1btensor_a7b943710b36561f1f76f2bec7e5fa63b}{btensor}} isnan() \textcolor{keyword}{const};}
+\DoxyCodeLine{633     torch::Tensor any() \textcolor{keyword}{const};}
+\DoxyCodeLine{634     \textcolor{keywordtype}{bool} anynan() \textcolor{keyword}{const};}
+\DoxyCodeLine{649     \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \mbox{\hyperlink{classquantit_1_1btensor_a7ecbb590915372481349263bcc60cfd8}{conj}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{658     \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \mbox{\hyperlink{classquantit_1_1btensor_a902003e818128aef05e5e6a39ac77501}{conj\_only}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{659 }
+\DoxyCodeLine{669     \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \mbox{\hyperlink{classquantit_1_1btensor_a1742f2450d18a58b0508799e9d48c469}{inverse\_cvals}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{677     \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&\mbox{\hyperlink{classquantit_1_1btensor_ad1d4e7311e7a45772e91ae094a5ac676}{inverse\_cvals\_}}();}
+\DoxyCodeLine{685     \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \mbox{\hyperlink{classquantit_1_1btensor_aef10a4a7f737d8d45fb4e457440bf7de}{cval\_shift}}(\mbox{\hyperlink{classquantit_1_1vquantity}{any\_quantity\_cref}} shift, int64\_t \mbox{\hyperlink{classquantit_1_1btensor_a399cee30857b6b711c46817bbc0a9c56}{dim}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{693     \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&\mbox{\hyperlink{classquantit_1_1btensor_a81cae58d3453fdbb9b65791d2e636208}{cval\_shift\_}}(\mbox{\hyperlink{classquantit_1_1vquantity}{any\_quantity\_cref}} shift, int64\_t \mbox{\hyperlink{classquantit_1_1btensor_a399cee30857b6b711c46817bbc0a9c56}{dim}});}
+\DoxyCodeLine{702     \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&\mbox{\hyperlink{classquantit_1_1btensor_a985e7a37e076a25ef818e18f430158ae}{non\_conserving\_cval\_shift\_}}(\mbox{\hyperlink{classquantit_1_1vquantity}{any\_quantity\_cref}} shift, int64\_t \mbox{\hyperlink{classquantit_1_1btensor_a399cee30857b6b711c46817bbc0a9c56}{dim}});}
+\DoxyCodeLine{709     \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&\mbox{\hyperlink{classquantit_1_1btensor_a0c5e2ac216e47f05d268f4b3753d42a5}{shift\_selection\_rule\_}}(\mbox{\hyperlink{classquantit_1_1vquantity}{any\_quantity\_cref}} shift);}
+\DoxyCodeLine{710 }
+\DoxyCodeLine{716     \textcolor{keywordtype}{void} \mbox{\hyperlink{classquantit_1_1btensor_af1f9b62db4386110f2b9db59615638f1}{reserve\_space\_}}(\textcolor{keywordtype}{size\_t} N);}
+\DoxyCodeLine{717     \textcolor{keywordtype}{void} \mbox{\hyperlink{classquantit_1_1btensor_af1f9b62db4386110f2b9db59615638f1}{reserve\_space\_}}(btensor\_size);}
+\DoxyCodeLine{718 }
+\DoxyCodeLine{727     \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&\mbox{\hyperlink{classquantit_1_1btensor_ae64b0db3feecc7466634ef9d8d248461}{set\_selection\_rule\_}}(\mbox{\hyperlink{classquantit_1_1vquantity}{any\_quantity\_cref}} value);}
+\DoxyCodeLine{728     \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&neutral\_selection\_rule\_() \{ \textcolor{keywordflow}{return} \mbox{\hyperlink{classquantit_1_1btensor_ae64b0db3feecc7466634ef9d8d248461}{set\_selection\_rule\_}}(selection\_rule-\/>neutral()); \}}
+\DoxyCodeLine{729     \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} neutral\_selection\_rule()\textcolor{keyword}{ const}}
+\DoxyCodeLine{730 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{731         \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} out = *\textcolor{keyword}{this};}
+\DoxyCodeLine{732         \textcolor{keywordflow}{return} out.\mbox{\hyperlink{classquantit_1_1btensor_ae64b0db3feecc7466634ef9d8d248461}{set\_selection\_rule\_}}(selection\_rule-\/>neutral());}
+\DoxyCodeLine{733     \}}
+\DoxyCodeLine{734     \textcolor{keyword}{template} <\textcolor{keyword}{class}... BTENS>}
+\DoxyCodeLine{735     \textcolor{keyword}{friend} std::tuple<btensor, std::tuple<BTENS...>> truncate\_impl(btensor \&\&d, std::tuple<BTENS...> \&\&unitaries,}
+\DoxyCodeLine{736                                                                    \textcolor{keywordtype}{size\_t} max, \textcolor{keywordtype}{size\_t} min, btensor::Scalar tol,}
+\DoxyCodeLine{737                                                                    btensor::Scalar pow);}
+\DoxyCodeLine{738 }
+\DoxyCodeLine{739     btensor to(\textcolor{keyword}{const} torch::TensorOptions \&options = \{\}, \textcolor{keywordtype}{bool} non\_blocking = \textcolor{keyword}{false}, \textcolor{keywordtype}{bool} copy = \textcolor{keyword}{false},}
+\DoxyCodeLine{740                c10::optional<c10::MemoryFormat> memory\_format = c10::nullopt) \textcolor{keyword}{const}}
+\DoxyCodeLine{741     \{}
+\DoxyCodeLine{742         btensor::block\_list\_t out\_list =}
+\DoxyCodeLine{743             new\_block\_list\_apply\_to\_all\_blocks([\&options, non\_blocking, copy, memory\_format](\textcolor{keyword}{const} \textcolor{keyword}{auto} \&atensor)}
+\DoxyCodeLine{744                                                \{ \textcolor{keywordflow}{return} atensor.to(options, non\_blocking, copy, memory\_format); \});}
+\DoxyCodeLine{745         \textcolor{keyword}{auto} out = btensor(*\textcolor{keyword}{this}, std::move(out\_list));}
+\DoxyCodeLine{746         out.\_options = out.begin()!= out.end() ? out.begin()-\/>second.options() : torch::empty(\{\},options).options();}
+\DoxyCodeLine{747         \textcolor{keywordflow}{return} out;}
+\DoxyCodeLine{748     \}}
+\DoxyCodeLine{749     btensor to(\textcolor{keyword}{const} btensor \&other, \textcolor{keywordtype}{bool} non\_blocking = \textcolor{keyword}{false}, \textcolor{keywordtype}{bool} copy = \textcolor{keyword}{false},}
+\DoxyCodeLine{750                c10::optional<c10::MemoryFormat> memory\_format = c10::nullopt)\textcolor{keyword}{ const}}
+\DoxyCodeLine{751 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{752         \textcolor{keyword}{auto} options = other.options();}
+\DoxyCodeLine{753         \textcolor{keywordflow}{return} to(options, non\_blocking, copy, memory\_format);}
+\DoxyCodeLine{754     \}}
+\DoxyCodeLine{755     btensor to(torch::Device device, torch::ScalarType dtype, \textcolor{keywordtype}{bool} non\_blocking = \textcolor{keyword}{false}, \textcolor{keywordtype}{bool} copy = \textcolor{keyword}{false},}
+\DoxyCodeLine{756                c10::optional<c10::MemoryFormat> memory\_format = c10::nullopt)\textcolor{keyword}{ const}}
+\DoxyCodeLine{757 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{758         btensor::block\_list\_t out\_list = new\_block\_list\_apply\_to\_all\_blocks(}
+\DoxyCodeLine{759             [device, dtype, non\_blocking, copy, memory\_format](\textcolor{keyword}{const} \textcolor{keyword}{auto} \&atensor)}
+\DoxyCodeLine{760             \{ \textcolor{keywordflow}{return} atensor.to(device, dtype, non\_blocking, copy, memory\_format); \});}
+\DoxyCodeLine{761         \textcolor{keyword}{auto} out = btensor(*\textcolor{keyword}{this}, std::move(out\_list));}
+\DoxyCodeLine{762         out.\_options = out.begin()!= out.end() ? out.begin()-\/>second.options() : torch::empty(\{\},torch::TensorOptions().device(device).dtype(dtype).memory\_format(memory\_format)).options();}
+\DoxyCodeLine{763         \textcolor{keywordflow}{return} out;}
+\DoxyCodeLine{764     \}}
+\DoxyCodeLine{765     btensor to(torch::ScalarType dtype, \textcolor{keywordtype}{bool} non\_blocking = \textcolor{keyword}{false}, \textcolor{keywordtype}{bool} copy = \textcolor{keyword}{false},}
+\DoxyCodeLine{766                c10::optional<c10::MemoryFormat> memory\_format = c10::nullopt)\textcolor{keyword}{ const}}
+\DoxyCodeLine{767 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{768         btensor::block\_list\_t out\_list =}
+\DoxyCodeLine{769             new\_block\_list\_apply\_to\_all\_blocks([dtype, non\_blocking, copy, memory\_format](\textcolor{keyword}{const} \textcolor{keyword}{auto} \&atensor)}
+\DoxyCodeLine{770                                                \{ \textcolor{keywordflow}{return} atensor.to(dtype, non\_blocking, copy, memory\_format); \});}
+\DoxyCodeLine{771         \textcolor{keyword}{auto} out = btensor(*\textcolor{keyword}{this}, std::move(out\_list));}
+\DoxyCodeLine{772         out.\_options = out.begin()!= out.end() ? out.begin()-\/>second.options() :torch::empty(\{\},torch::TensorOptions().dtype(dtype).memory\_format(memory\_format)).options();}
+\DoxyCodeLine{773         \textcolor{keywordflow}{return} out;}
+\DoxyCodeLine{774     \}}
+\DoxyCodeLine{775     btensor to(caffe2::TypeMeta type\_meta, \textcolor{keywordtype}{bool} non\_blocking = \textcolor{keyword}{false}, \textcolor{keywordtype}{bool} copy = \textcolor{keyword}{false},}
+\DoxyCodeLine{776                c10::optional<c10::MemoryFormat> memory\_format = c10::nullopt)\textcolor{keyword}{ const}}
+\DoxyCodeLine{777 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{778         btensor::block\_list\_t out\_list =}
+\DoxyCodeLine{779             new\_block\_list\_apply\_to\_all\_blocks([type\_meta, non\_blocking, copy, memory\_format](\textcolor{keyword}{const} \textcolor{keyword}{auto} \&atensor)}
+\DoxyCodeLine{780                                                \{ \textcolor{keywordflow}{return} atensor.to(type\_meta, non\_blocking, copy, memory\_format); \});}
+\DoxyCodeLine{781         \textcolor{keyword}{auto} out = btensor(*\textcolor{keyword}{this}, std::move(out\_list));}
+\DoxyCodeLine{782         out.\_options = out.begin()!= out.end() ? out.begin()-\/>second.options() : torch::empty(\{\},torch::TensorOptions().dtype(torch::typeMetaToScalarType(type\_meta)).memory\_format(memory\_format)).options();}
+\DoxyCodeLine{783         \textcolor{keywordflow}{return} out;}
+\DoxyCodeLine{784     \}}
+\DoxyCodeLine{785     btensor to(\textcolor{keyword}{const} torch::Tensor \&other, \textcolor{keywordtype}{bool} non\_blocking = \textcolor{keyword}{false}, \textcolor{keywordtype}{bool} copy = \textcolor{keyword}{false},}
+\DoxyCodeLine{786                c10::optional<c10::MemoryFormat> memory\_format = c10::nullopt)\textcolor{keyword}{ const}}
+\DoxyCodeLine{787 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{788         btensor::block\_list\_t out\_list =}
+\DoxyCodeLine{789             new\_block\_list\_apply\_to\_all\_blocks([\&other, non\_blocking, copy, memory\_format](\textcolor{keyword}{const} \textcolor{keyword}{auto} \&atensor)}
+\DoxyCodeLine{790                                                \{ \textcolor{keywordflow}{return} atensor.to(other, non\_blocking, copy, memory\_format); \});}
+\DoxyCodeLine{791         \textcolor{keyword}{auto} out = btensor(*\textcolor{keyword}{this}, std::move(out\_list));}
+\DoxyCodeLine{792         out.\_options = out.begin()!= out.end() ? out.begin()-\/>second.options() : torch::empty\_like(other,\{\},memory\_format).options();}
+\DoxyCodeLine{793         \textcolor{keywordflow}{return} out;}
+\DoxyCodeLine{794     \}}
+\DoxyCodeLine{795     c10::TensorOptions options()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \_options; \}}
+\DoxyCodeLine{796     \textcolor{keyword}{friend} \textcolor{keyword}{inline} btensor \mbox{\hyperlink{classquantit_1_1btensor_a17d65b7567711e3a99727df6139563d8}{sparse\_zeros\_like}}(\textcolor{keyword}{const} btensor \&tens, c10::TensorOptions opt);}
+\DoxyCodeLine{797     \textcolor{keyword}{template} <\textcolor{keywordtype}{bool} Throws = false>}
+\DoxyCodeLine{798     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} check\_product\_compat(\textcolor{keyword}{const} btensor \&in1, \textcolor{keyword}{const} btensor \&in2, torch::IntArrayRef dims1,}
+\DoxyCodeLine{799                                      torch::IntArrayRef dims2) \textcolor{keyword}{noexcept}(!Throws);}
+\DoxyCodeLine{807     \textcolor{keyword}{static} std::vector<torch::indexing::TensorIndex> \mbox{\hyperlink{classquantit_1_1btensor_a99688b3d3861495620faaa3cce599822}{full\_slice}}(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&tensor,}
+\DoxyCodeLine{808                                                                 \textcolor{keyword}{const} btensor::index\_list \&\mbox{\hyperlink{classquantit_1_1btensor_ad92a3ed434c246a76dc9835c82ca5379}{block}});}
+\DoxyCodeLine{809 }
+\DoxyCodeLine{810     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} test\_same\_shape(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&a, \textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&b);}
+\DoxyCodeLine{811 }
+\DoxyCodeLine{818     std::tuple<index\_list, index\_list> \mbox{\hyperlink{classquantit_1_1btensor_a07f4eaadabe34bc28f9df00b0237589a}{element\_index\_decompose}}(\textcolor{keyword}{const} index\_list \&element\_index) \textcolor{keyword}{const};}
+\DoxyCodeLine{819 }
+\DoxyCodeLine{820   \textcolor{keyword}{private}:}
+\DoxyCodeLine{821     \textcolor{keywordtype}{int} rank;}
+\DoxyCodeLine{826     index\_list sections\_by\_dim;}
+\DoxyCodeLine{831     index\_list sections\_sizes; \textcolor{comment}{// for non-\/empty slices, this is strictly redundent: the information could be found by}}
+\DoxyCodeLine{832                                \textcolor{comment}{// inspecting the blocks}}
+\DoxyCodeLine{833     \textcolor{comment}{// truncation should remove any and all empty slices, but user-\/written tensor could have empty slices.}}
+\DoxyCodeLine{834     \mbox{\hyperlink{classquantit_1_1flat__map}{block\_list\_t}} blocks\_list; \textcolor{comment}{//}}
+\DoxyCodeLine{835     \mbox{\hyperlink{classquantit_1_1any__quantity__vector}{any\_quantity\_vector}}}
+\DoxyCodeLine{836         c\_vals; \textcolor{comment}{// dmrjulia equiv: QnumSum in the QTensor class. This structure doesn't need the full list (QnumMat)}}
+\DoxyCodeLine{837     c10::TensorOptions \_options;}
+\DoxyCodeLine{838     \textcolor{keyword}{friend} \textcolor{keyword}{struct }fmt::formatter<quantit::\mbox{\hyperlink{classquantit_1_1btensor}{btensor}}>;}
+\DoxyCodeLine{839     friend class mul\_helpers;}
+\DoxyCodeLine{840     friend \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \mbox{\hyperlink{classquantit_1_1btensor_ac56cbb1dbc7e3b803e8e44aca0a02c45}{eye\_like}}(const btensor\& shape,c10::TensorOptions opt);}
+\DoxyCodeLine{841 }
+\DoxyCodeLine{849     \mbox{\hyperlink{classquantit_1_1btensor}{btensor}}(const btensor \&shape, block\_list\_t \&\&block\_list, c10::TensorOptions opt = \{\})}
+\DoxyCodeLine{850         : selection\_rule(shape.selection\_rule.value), rank(shape.rank), sections\_by\_dim(shape.sections\_by\_dim),}
+\DoxyCodeLine{851           sections\_sizes(shape.sections\_sizes), blocks\_list(std::move(block\_list)), c\_vals(shape.c\_vals),}
+\DoxyCodeLine{852           \_options(shape.\_options.merge\_in(opt))}
+\DoxyCodeLine{853     \{}
+\DoxyCodeLine{854     \}}
+\DoxyCodeLine{861     std::tuple<any\_quantity\_vector::iterator, any\_quantity\_vector::iterator> section\_conserved\_qtt\_range(\textcolor{keywordtype}{size\_t} \mbox{\hyperlink{classquantit_1_1btensor_ab59f73f7c6380e0bd8ca60e576d4b8d2}{index}});}
+\DoxyCodeLine{868     \textcolor{keywordtype}{void} shift\_impl(\mbox{\hyperlink{classquantit_1_1vquantity}{any\_quantity\_cref}} shift, int64\_t \mbox{\hyperlink{classquantit_1_1btensor_a399cee30857b6b711c46817bbc0a9c56}{dim}});}
+\DoxyCodeLine{879     \textcolor{keyword}{template} <\textcolor{keyword}{class }A, \textcolor{keyword}{class }F, \textcolor{keyword}{class}... Args>}
+\DoxyCodeLine{880     \textcolor{keywordtype}{void} apply\_to\_all\_blocks\_mod\_index(A \&\&a, F \&\&f, Args \&\&...args)}
+\DoxyCodeLine{881     \{}
+\DoxyCodeLine{882         \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} \&b : blocks\_list)}
+\DoxyCodeLine{883         \{}
+\DoxyCodeLine{884             a(std::get<0>(b));}
+\DoxyCodeLine{885             std::invoke(std::forward<F>(f), std::get<1>(b), std::forward<Args>(args)...);}
+\DoxyCodeLine{886         \}}
+\DoxyCodeLine{887     \}}
+\DoxyCodeLine{896     \textcolor{keyword}{template} <\textcolor{keyword}{class }F, \textcolor{keyword}{class}... Args>}
+\DoxyCodeLine{897     \textcolor{keywordtype}{void} apply\_to\_all\_blocks(F \&\&f, Args \&\&...args)}
+\DoxyCodeLine{898     \{}
+\DoxyCodeLine{899         apply\_to\_all\_blocks\_mod\_index([](\textcolor{keyword}{auto} \&x) \{\}, std::forward<F>(f), std::forward<Args>(args)...);}
+\DoxyCodeLine{900     \}}
+\DoxyCodeLine{911     \textcolor{keyword}{template} <\textcolor{keyword}{class }A, \textcolor{keyword}{class }F, \textcolor{keyword}{class}... Args>}
+\DoxyCodeLine{912     \textcolor{keywordtype}{void} force\_inplace\_apply\_to\_all\_blocks\_mod\_index(A \&\&a, F \&\&f, Args \&\&...args)}
+\DoxyCodeLine{913     \{}
+\DoxyCodeLine{914         \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} \&b : blocks\_list)}
+\DoxyCodeLine{915         \{}
+\DoxyCodeLine{916             a(std::get<0>(b));}
+\DoxyCodeLine{917             std::get<1>(b) = std::invoke(std::forward<F>(f), std::get<1>(b), std::forward<Args>(args)...);}
+\DoxyCodeLine{918         \};}
+\DoxyCodeLine{919     \}}
+\DoxyCodeLine{928     \textcolor{keyword}{template} <\textcolor{keyword}{class }F, \textcolor{keyword}{class}... Args>}
+\DoxyCodeLine{929     \textcolor{keywordtype}{void} force\_inplace\_apply\_to\_all\_blocks(F \&\&f, Args \&\&...args)}
+\DoxyCodeLine{930     \{}
+\DoxyCodeLine{931         force\_inplace\_apply\_to\_all\_blocks\_mod\_index([](\textcolor{keyword}{auto} \&) \{\}, std::forward<F>(f), std::forward<Args>(args)...);}
+\DoxyCodeLine{932     \}}
+\DoxyCodeLine{933 }
+\DoxyCodeLine{945     \textcolor{keyword}{template} <\textcolor{keyword}{class }A, \textcolor{keyword}{class }F, \textcolor{keyword}{class}... Args>}
+\DoxyCodeLine{946     block\_list\_t new\_block\_list\_apply\_to\_all\_blocks\_mod\_index(A \&\&a, F \&\&f, Args \&\&...args)\textcolor{keyword}{ const}}
+\DoxyCodeLine{947 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{948         block\_list\_t new\_blocks;}
+\DoxyCodeLine{949         new\_blocks.reserve(blocks\_list.size());}
+\DoxyCodeLine{950         \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} \&b : blocks\_list)}
+\DoxyCodeLine{951         \{}
+\DoxyCodeLine{952             new\_blocks.emplace(new\_blocks.end(), std::get<0>(b),}
+\DoxyCodeLine{953                                std::invoke(std::forward<F>(f), std::get<1>(b), std::forward<Args>(args)...));}
+\DoxyCodeLine{954             a(std::get<0>(*(new\_blocks.end() -\/ 1)));}
+\DoxyCodeLine{955         \}}
+\DoxyCodeLine{956         \textcolor{keywordflow}{return} new\_blocks;}
+\DoxyCodeLine{957     \}}
+\DoxyCodeLine{967     \textcolor{keyword}{template} <\textcolor{keyword}{class }F, \textcolor{keyword}{class}... Args>}
+\DoxyCodeLine{968     block\_list\_t new\_block\_list\_apply\_to\_all\_blocks(F \&\&f, Args \&\&...args)\textcolor{keyword}{ const}}
+\DoxyCodeLine{969 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{970         \textcolor{keywordflow}{return} new\_block\_list\_apply\_to\_all\_blocks\_mod\_index([](\textcolor{keyword}{auto} \&) \{\}, std::forward<F>(f),}
+\DoxyCodeLine{971                                                             std::forward<Args>(args)...);}
+\DoxyCodeLine{972     \}}
+\DoxyCodeLine{973     \textcolor{keyword}{template} <\textcolor{keyword}{class} F, \textcolor{keywordtype}{bool} promote = true>}
+\DoxyCodeLine{974     btensor broadcast\_operation(\textcolor{keyword}{const} btensor \&other, F \&\&f) \textcolor{keyword}{const};}
+\DoxyCodeLine{975     \textcolor{keyword}{template} <\textcolor{keyword}{class} F, \textcolor{keyword}{class} F\_>}
+\DoxyCodeLine{976     btensor \&broadcast\_operation\_(\textcolor{keyword}{const} btensor \&other, F \&\&f, F\_ \&\&f\_);}
+\DoxyCodeLine{977     btensor \&impl\_basic\_index\_put\_(\textcolor{keyword}{const} std::vector<int64\_t> \&dims, \textcolor{keyword}{const} btensor \&value);}
+\DoxyCodeLine{978 \};}
+\DoxyCodeLine{979 }
+\DoxyCodeLine{987 \textcolor{keyword}{inline} \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} sparse\_zeros\_like(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&tens, c10::TensorOptions opt = \{\})}
+\DoxyCodeLine{988 \{}
+\DoxyCodeLine{989     \textcolor{keyword}{auto} out = \mbox{\hyperlink{classquantit_1_1btensor}{btensor}}(tens,\mbox{\hyperlink{classquantit_1_1flat__map}{btensor::block\_list\_t}}());}
+\DoxyCodeLine{990     out.\_options = out.\_options.merge\_in(opt);}
+\DoxyCodeLine{991     \textcolor{keywordflow}{return} out;}
+\DoxyCodeLine{992 \}}
+\DoxyCodeLine{1001 \textcolor{keyword}{inline} btensor shape\_from(\textcolor{keyword}{const} std::vector<btensor> \&btens\_list)}
+\DoxyCodeLine{1002 \{}
+\DoxyCodeLine{1003     \textcolor{comment}{// now what's missing is a way to make view on btensors. For that i will almost definitly need to reproduce the}}
+\DoxyCodeLine{1004     \textcolor{comment}{// equivalent part of pytorch. I had hoped to make that at a much later point, but it needed now. This function will}}
+\DoxyCodeLine{1005     \textcolor{comment}{// be very useful to implement the tensor (kronecker) product}}
+\DoxyCodeLine{1006     \textcolor{keyword}{auto} out = quantit::sparse\_zeros\_like(*btens\_list.begin());}
+\DoxyCodeLine{1007     \textcolor{keyword}{auto} tens\_it = btens\_list.begin();}
+\DoxyCodeLine{1008     ++tens\_it;}
+\DoxyCodeLine{1009     \textcolor{keywordflow}{for} (; tens\_it != btens\_list.end(); ++tens\_it)}
+\DoxyCodeLine{1010     \{}
+\DoxyCodeLine{1011         out = out.tensor\_product\_shape(*tens\_it);}
+\DoxyCodeLine{1012     \}}
+\DoxyCodeLine{1013     \textcolor{keywordflow}{return} out;}
+\DoxyCodeLine{1014 \}}
+\DoxyCodeLine{1022 \textcolor{keyword}{inline} btensor disambiguated\_shape\_from(\textcolor{keyword}{const} std::vector<btensor> \&btens\_list) \{ \textcolor{keywordflow}{return} shape\_from(btens\_list); \}}
+\DoxyCodeLine{1023 \textcolor{preprocessor}{\#if \_\_cplusplus <= 201703L}}
+\DoxyCodeLine{1024 \textcolor{keyword}{template} <\textcolor{keyword}{class} A>}
+\DoxyCodeLine{1025 \textcolor{keyword}{using} remove\_cvref\_t = std::remove\_cv\_t<std::remove\_reference\_t<A>>;}
+\DoxyCodeLine{1026 \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{1027 \textcolor{keyword}{template} <\textcolor{keyword}{class} A>}
+\DoxyCodeLine{1028 \textcolor{keyword}{using} remove\_cvref\_t = std::remove\_cvref\_t<A>;}
+\DoxyCodeLine{1029 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{1030 }
+\DoxyCodeLine{1044 \textcolor{keyword}{inline} btensor shape\_from(\textcolor{keyword}{const} btensor \&tens, \textcolor{keyword}{const} std::vector<int64\_t> \&inds) \{ \textcolor{keywordflow}{return} tens.\mbox{\hyperlink{classquantit_1_1btensor_aee959f8823a1ccb165e6ddeced75b0f6}{shape\_from}}(inds); \}}
+\DoxyCodeLine{1045 }
+\DoxyCodeLine{1046 \textcolor{keyword}{struct }\mbox{\hyperlink{structquantit_1_1torch__shape}{torch\_shape}}}
+\DoxyCodeLine{1047 \{}
+\DoxyCodeLine{1048     std::vector<int64\_t> \_sizes;}
+\DoxyCodeLine{1049     torch::TensorOptions opt;}
+\DoxyCodeLine{1050     \mbox{\hyperlink{structquantit_1_1torch__shape}{torch\_shape}}() = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{1051     \mbox{\hyperlink{structquantit_1_1torch__shape}{torch\_shape}}(\textcolor{keyword}{const} torch::Tensor \&tens) : \_sizes(tens.sizes().begin(), tens.sizes().end()), opt(tens.options()) \{\}}
+\DoxyCodeLine{1052     \mbox{\hyperlink{structquantit_1_1torch__shape}{torch\_shape}}(std::vector<int64\_t> \_sizes, torch::TensorOptions \_opt)}
+\DoxyCodeLine{1053         : \_sizes(std::move(\_sizes)), opt(std::move(\_opt))}
+\DoxyCodeLine{1054     \{}
+\DoxyCodeLine{1055     \}}
+\DoxyCodeLine{1056     int64\_t dim()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \_sizes.size(); \}}
+\DoxyCodeLine{1057     torch::IntArrayRef sizes()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \_sizes; \}}
+\DoxyCodeLine{1058     \textcolor{keyword}{operator} torch::Tensor()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} torch::empty(\_sizes, opt); \}}
+\DoxyCodeLine{1059     \mbox{\hyperlink{structquantit_1_1torch__shape}{torch\_shape}} neutral\_shape() \{ \textcolor{keywordflow}{return} *\textcolor{keyword}{this}; \}}
+\DoxyCodeLine{1060     \mbox{\hyperlink{structquantit_1_1torch__shape}{torch\_shape}} \&neutral\_shape\_() \{ \textcolor{keywordflow}{return} *\textcolor{keyword}{this}; \}}
+\DoxyCodeLine{1061     \mbox{\hyperlink{structquantit_1_1torch__shape}{torch\_shape}} \&inverse\_cvals() \{ \textcolor{keywordflow}{return} *\textcolor{keyword}{this}; \}}
+\DoxyCodeLine{1062     \mbox{\hyperlink{structquantit_1_1torch__shape}{torch\_shape}} inverse\_cvals\_() \{ \textcolor{keywordflow}{return} *\textcolor{keyword}{this}; \}}
+\DoxyCodeLine{1063     \mbox{\hyperlink{structquantit_1_1torch__shape}{torch\_shape}} neutral\_selection\_rule() \{ \textcolor{keywordflow}{return} *\textcolor{keyword}{this}; \}}
+\DoxyCodeLine{1064     \mbox{\hyperlink{structquantit_1_1torch__shape}{torch\_shape}} \&neutral\_selection\_rule\_() \{ \textcolor{keywordflow}{return} *\textcolor{keyword}{this}; \}}
+\DoxyCodeLine{1065     \mbox{\hyperlink{structquantit_1_1torch__shape}{torch\_shape}} \&set\_selection\_rule\_(\mbox{\hyperlink{classquantit_1_1vquantity}{any\_quantity\_cref}}) \{ \textcolor{keywordflow}{return} *\textcolor{keyword}{this}; \}}
+\DoxyCodeLine{1066 \};}
+\DoxyCodeLine{1067 \textcolor{keyword}{inline} \mbox{\hyperlink{classquantit_1_1any__quantity}{any\_quantity}} get\_section\_cval(\textcolor{keyword}{const} \mbox{\hyperlink{structquantit_1_1torch__shape}{torch\_shape}} \&, \textcolor{keywordtype}{size\_t}, \textcolor{keywordtype}{size\_t}) \{ \textcolor{keywordflow}{return} \mbox{\hyperlink{classquantit_1_1quantity}{quantity<conserved::C<1>}}>(0); \}}
+\DoxyCodeLine{1068 \textcolor{keyword}{inline} any\_quantity\_cref get\_section\_cval(\textcolor{keyword}{const} btensor \&tens, \textcolor{keywordtype}{size\_t} dim, \textcolor{keywordtype}{size\_t} section)}
+\DoxyCodeLine{1069 \{}
+\DoxyCodeLine{1070     \textcolor{keywordflow}{return} tens.section\_conserved\_qtt(dim, section);}
+\DoxyCodeLine{1071 \}}
+\DoxyCodeLine{1072 torch\_shape shape\_from(std::initializer\_list<torch\_shape> shapes);}
+\DoxyCodeLine{1084 \textcolor{keyword}{template} <\textcolor{keyword}{class}... Args, \textcolor{keyword}{class }Enabled = std::enable\_if\_t<}
+\DoxyCodeLine{1085                              std::conjunction\_v<std::is\_convertible<remove\_cvref\_t<Args>, torch\_shape>...> or}
+\DoxyCodeLine{1086                              std::conjunction\_v<std::is\_same<remove\_cvref\_t<Args>, btensor>...>>>}
+\DoxyCodeLine{1087 \textcolor{keyword}{inline} \textcolor{keyword}{auto} shape\_from(\textcolor{keyword}{const} Args \&...args)}
+\DoxyCodeLine{1088 \{}
+\DoxyCodeLine{1089     \textcolor{keyword}{static\_assert}(std::conjunction\_v<std::is\_convertible<Args, torch\_shape>...> or}
+\DoxyCodeLine{1090                       std::conjunction\_v<std::is\_same<remove\_cvref\_t<Args>, btensor>...>,}
+\DoxyCodeLine{1091                   \textcolor{stringliteral}{"{}All the arguments must be either torch\_shape or btensor to get into this function, don't try to "{}}}
+\DoxyCodeLine{1092                   \textcolor{stringliteral}{"{}side-\/step the enable if."{}});}
+\DoxyCodeLine{1093     \textcolor{keywordflow}{return} shape\_from(\{args...\});}
+\DoxyCodeLine{1094 \}}
+\DoxyCodeLine{1095 torch\_shape shape\_from(\textcolor{keyword}{const} torch\_shape \&shape, \textcolor{keyword}{const} std::vector<int64\_t> inds);}
+\DoxyCodeLine{1096 }
+\DoxyCodeLine{1097 \textcolor{keywordtype}{size\_t} get\_refcount(\textcolor{keyword}{const} torch::Tensor \&tens);}
+\DoxyCodeLine{1098 }
+\DoxyCodeLine{1099 \textcolor{keyword}{inline} \textcolor{keywordtype}{void} swap(btensor \&a, btensor \&b) \{ a.swap(b); \}}
+\DoxyCodeLine{1100 }
+\DoxyCodeLine{1101 \textcolor{keyword}{template} <\textcolor{keyword}{class} value\_iterator>}
+\DoxyCodeLine{1102 \textcolor{keyword}{struct }\mbox{\hyperlink{structquantit_1_1btensor_1_1block__prop__iter}{btensor::block\_prop\_iter}}}
+\DoxyCodeLine{1103     : boost::stl\_interfaces::iterator\_interface<block\_prop\_iter<value\_iterator>, std::bidirectional\_iterator\_tag,}
+\DoxyCodeLine{1104                                                 typename value\_iterator::value\_type, typename value\_iterator::reference,}
+\DoxyCodeLine{1105                                                 typename value\_iterator::pointer,}
+\DoxyCodeLine{1106                                                 typename value\_iterator::difference\_type>}
+\DoxyCodeLine{1107 \{}
+\DoxyCodeLine{1108     \textcolor{keyword}{using} il\_iter = \textcolor{keyword}{typename} btensor::index\_list::const\_iterator;}
+\DoxyCodeLine{1109     \textcolor{keyword}{using} ValueIterator = value\_iterator;}
+\DoxyCodeLine{1110 }
+\DoxyCodeLine{1111   \textcolor{keyword}{private}:}
+\DoxyCodeLine{1112     value\_iterator val\_iter;}
+\DoxyCodeLine{1113     il\_iter section\_by\_dim;}
+\DoxyCodeLine{1114     il\_iter block\_index;}
+\DoxyCodeLine{1115 }
+\DoxyCodeLine{1116   \textcolor{keyword}{public}:}
+\DoxyCodeLine{1117     \mbox{\hyperlink{structquantit_1_1btensor_1_1block__prop__iter}{block\_prop\_iter}}(value\_iterator val\_it, il\_iter sect\_by\_dim, il\_iter block\_ind)}
+\DoxyCodeLine{1118         : val\_iter(val\_it), section\_by\_dim(sect\_by\_dim), block\_index(block\_ind)}
+\DoxyCodeLine{1119     \{}
+\DoxyCodeLine{1120     \}}
+\DoxyCodeLine{1121     \mbox{\hyperlink{structquantit_1_1btensor_1_1block__prop__iter}{block\_prop\_iter}}() : val\_iter(), section\_by\_dim(), block\_index() \{\}}
+\DoxyCodeLine{1122     \textcolor{keyword}{using} base\_type = boost::stl\_interfaces::iterator\_interface<}
+\DoxyCodeLine{1123         \mbox{\hyperlink{structquantit_1_1btensor_1_1block__prop__iter}{block\_prop\_iter}}, std::bidirectional\_iterator\_tag, \textcolor{keyword}{typename} value\_iterator::value\_type,}
+\DoxyCodeLine{1124         \textcolor{keyword}{typename} value\_iterator::reference, \textcolor{keyword}{typename} value\_iterator::pointer, \textcolor{keyword}{typename} value\_iterator::difference\_type>;}
+\DoxyCodeLine{1125     \textcolor{keyword}{typename} base\_type::reference operator*() \{ \textcolor{keywordflow}{return} *(val\_iter + *block\_index); \}}
+\DoxyCodeLine{1126     \textcolor{keywordtype}{bool} operator==(\textcolor{keyword}{const} \mbox{\hyperlink{structquantit_1_1btensor_1_1block__prop__iter}{block\_prop\_iter}} \&other)}
+\DoxyCodeLine{1127     \{ \textcolor{comment}{// comparison between the iterators of 2 different view object will alway return not equal, enev if constructed}}
+\DoxyCodeLine{1128       \textcolor{comment}{// from the same block index}}
+\DoxyCodeLine{1129         \textcolor{keywordflow}{return} val\_iter == other.val\_iter \&\& section\_by\_dim == other.section\_by\_dim \&\& block\_index == other.block\_index;}
+\DoxyCodeLine{1130     \}}
+\DoxyCodeLine{1131     \mbox{\hyperlink{structquantit_1_1btensor_1_1block__prop__iter}{block\_prop\_iter}} \&operator++()}
+\DoxyCodeLine{1132     \{}
+\DoxyCodeLine{1133         ++block\_index;}
+\DoxyCodeLine{1134         val\_iter += *section\_by\_dim;}
+\DoxyCodeLine{1135         ++section\_by\_dim;}
+\DoxyCodeLine{1136         \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{1137     \}}
+\DoxyCodeLine{1138     \mbox{\hyperlink{structquantit_1_1btensor_1_1block__prop__iter}{block\_prop\_iter}} \&operator-\/-\/()}
+\DoxyCodeLine{1139     \{}
+\DoxyCodeLine{1140         -\/-\/section\_by\_dim;}
+\DoxyCodeLine{1141         val\_iter -\/= *section\_by\_dim;}
+\DoxyCodeLine{1142         -\/-\/block\_index;}
+\DoxyCodeLine{1143         \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{1144     \}}
+\DoxyCodeLine{1145     \textcolor{keyword}{using} base\_type::operator++;}
+\DoxyCodeLine{1146     \textcolor{keyword}{using} base\_type::operator-\/-\/;}
+\DoxyCodeLine{1147 }
+\DoxyCodeLine{1148     \textcolor{keyword}{const} value\_iterator \&get\_val\_iter()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} val\_iter; \}}
+\DoxyCodeLine{1149     \textcolor{keyword}{const} il\_iter \&get\_section()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} section\_by\_dim; \}}
+\DoxyCodeLine{1150     \textcolor{keyword}{const} il\_iter \&get\_bi()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} block\_index; \}}
+\DoxyCodeLine{1151 \};}
+\DoxyCodeLine{1152 \textcolor{keyword}{template} <\textcolor{keyword}{class} const\_value\_iter, \textcolor{keyword}{class} value\_iter>}
+\DoxyCodeLine{1153 \textcolor{keyword}{struct }\mbox{\hyperlink{structquantit_1_1btensor_1_1const__block__prop__iter}{btensor::const\_block\_prop\_iter}} : \mbox{\hyperlink{structquantit_1_1btensor_1_1block__prop__iter}{btensor::block\_prop\_iter}}<const\_value\_iter>}
+\DoxyCodeLine{1154 \{}
+\DoxyCodeLine{1155     \mbox{\hyperlink{structquantit_1_1btensor_1_1const__block__prop__iter}{const\_block\_prop\_iter}}(\textcolor{keyword}{const} \mbox{\hyperlink{structquantit_1_1btensor_1_1block__prop__iter}{block\_prop\_iter<value\_iter>}} \&other)}
+\DoxyCodeLine{1156         : \mbox{\hyperlink{structquantit_1_1btensor_1_1block__prop__iter}{block\_prop\_iter<const\_value\_iter>}}(other.get\_val\_iter(), other.get\_section(), other.get\_bi())}
+\DoxyCodeLine{1157     \{}
+\DoxyCodeLine{1158     \}}
+\DoxyCodeLine{1159     \textcolor{keyword}{using} \mbox{\hyperlink{structquantit_1_1btensor_1_1block__prop__iter}{block\_prop\_iter<const\_value\_iter>::block\_prop\_iter}};}
+\DoxyCodeLine{1160     \mbox{\hyperlink{structquantit_1_1btensor_1_1const__block__prop__iter}{const\_block\_prop\_iter}} \&operator++()}
+\DoxyCodeLine{1161     \{}
+\DoxyCodeLine{1162         \mbox{\hyperlink{structquantit_1_1btensor_1_1block__prop__iter}{block\_prop\_iter<const\_value\_iter>::operator++}}();}
+\DoxyCodeLine{1163         \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{1164     \}}
+\DoxyCodeLine{1165     \mbox{\hyperlink{structquantit_1_1btensor_1_1const__block__prop__iter}{const\_block\_prop\_iter}} \&operator-\/-\/()}
+\DoxyCodeLine{1166     \{}
+\DoxyCodeLine{1167         \mbox{\hyperlink{structquantit_1_1btensor_1_1block__prop__iter}{block\_prop\_iter<const\_value\_iter>::operator-\/-\/}}();}
+\DoxyCodeLine{1168         \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{1169     \}}
+\DoxyCodeLine{1170     \mbox{\hyperlink{structquantit_1_1btensor_1_1const__block__prop__iter}{const\_block\_prop\_iter}} operator++(\textcolor{keywordtype}{int})}
+\DoxyCodeLine{1171     \{}
+\DoxyCodeLine{1172         \textcolor{keyword}{auto} out = *\textcolor{keyword}{this};}
+\DoxyCodeLine{1173         \mbox{\hyperlink{structquantit_1_1btensor_1_1block__prop__iter}{block\_prop\_iter<const\_value\_iter>::operator++}}();}
+\DoxyCodeLine{1174         \textcolor{keywordflow}{return} out;}
+\DoxyCodeLine{1175     \}}
+\DoxyCodeLine{1176     \mbox{\hyperlink{structquantit_1_1btensor_1_1const__block__prop__iter}{const\_block\_prop\_iter}} operator-\/-\/(\textcolor{keywordtype}{int})}
+\DoxyCodeLine{1177     \{}
+\DoxyCodeLine{1178         \textcolor{keyword}{auto} out = *\textcolor{keyword}{this};}
+\DoxyCodeLine{1179         \mbox{\hyperlink{structquantit_1_1btensor_1_1block__prop__iter}{block\_prop\_iter<const\_value\_iter>::operator-\/-\/}}();}
+\DoxyCodeLine{1180         \textcolor{keywordflow}{return} out;}
+\DoxyCodeLine{1181     \}}
+\DoxyCodeLine{1182 \};}
+\DoxyCodeLine{1183 }
+\DoxyCodeLine{1184 \textcolor{keyword}{template} <\textcolor{keyword}{class} iterator>}
+\DoxyCodeLine{1185 \textcolor{keyword}{struct }\mbox{\hyperlink{structquantit_1_1btensor_1_1block__prop__view}{btensor::block\_prop\_view}} : boost::stl\_interfaces::view\_interface<block\_prop\_view<iterator>>}
+\DoxyCodeLine{1186 \{}
+\DoxyCodeLine{1187     \mbox{\hyperlink{structquantit_1_1btensor_1_1block__prop__view}{block\_prop\_view}}() = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{1188     \mbox{\hyperlink{structquantit_1_1btensor_1_1block__prop__view}{block\_prop\_view}}(\textcolor{keyword}{typename} iterator::ValueIterator val\_first, \textcolor{keyword}{typename} iterator::ValueIterator val\_last,}
+\DoxyCodeLine{1189                     index\_list::const\_iterator section\_by\_dim\_begin, index\_list::const\_iterator section\_by\_dim\_end,}
+\DoxyCodeLine{1190                     index\_list \_block\_index)}
+\DoxyCodeLine{1191         : block\_index(std::move(\_block\_index)), first(val\_first, section\_by\_dim\_begin, block\_index.begin()),}
+\DoxyCodeLine{1192           last(val\_last, section\_by\_dim\_end, block\_index.end())}
+\DoxyCodeLine{1193     \{}
+\DoxyCodeLine{1194     \}}
+\DoxyCodeLine{1195     \mbox{\hyperlink{structquantit_1_1btensor_1_1block__prop__view}{block\_prop\_view}}(\textcolor{keyword}{typename} iterator::ValueIterator val\_first, \textcolor{keyword}{typename} iterator::ValueIterator val\_last,}
+\DoxyCodeLine{1196                     \textcolor{keyword}{const} index\_list \&section\_by\_dim, index\_list \_block\_index)}
+\DoxyCodeLine{1197         : block\_index(std::move(\_block\_index)), first(val\_first, section\_by\_dim.begin(), block\_index.begin()),}
+\DoxyCodeLine{1198           last(val\_last, section\_by\_dim.end(), block\_index.end())}
+\DoxyCodeLine{1199     \{}
+\DoxyCodeLine{1200     \}}
+\DoxyCodeLine{1201     \textcolor{keyword}{auto} begin()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} first; \}}
+\DoxyCodeLine{1202     \textcolor{keyword}{auto} end()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} last; \}}
+\DoxyCodeLine{1203 }
+\DoxyCodeLine{1204     \textcolor{keyword}{const} index\_list \&get\_index()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} block\_index; \}}
+\DoxyCodeLine{1205 }
+\DoxyCodeLine{1206   \textcolor{keyword}{private}:}
+\DoxyCodeLine{1207     btensor::index\_list block\_index;}
+\DoxyCodeLine{1208     iterator first;}
+\DoxyCodeLine{1209     iterator last;}
+\DoxyCodeLine{1210 \};}
+\DoxyCodeLine{1211 \textcolor{keyword}{template} <\textcolor{keyword}{class} const\_iterator, \textcolor{keyword}{class} iterator>}
+\DoxyCodeLine{1212 \textcolor{keyword}{struct }\mbox{\hyperlink{structquantit_1_1btensor_1_1const__block__prop__view}{btensor::const\_block\_prop\_view}} : \mbox{\hyperlink{structquantit_1_1btensor_1_1block__prop__view}{btensor::block\_prop\_view}}<const\_iterator>}
+\DoxyCodeLine{1213 \{}
+\DoxyCodeLine{1214     \textcolor{keyword}{using} \mbox{\hyperlink{structquantit_1_1btensor_1_1block__prop__view}{block\_prop\_view<const\_iterator>::block\_prop\_view}};}
+\DoxyCodeLine{1215     \mbox{\hyperlink{structquantit_1_1btensor_1_1const__block__prop__view}{const\_block\_prop\_view}}(\textcolor{keyword}{const} \mbox{\hyperlink{structquantit_1_1btensor_1_1block__prop__view}{btensor::block\_prop\_view<iterator>}} \&other)}
+\DoxyCodeLine{1216         : \mbox{\hyperlink{structquantit_1_1btensor_1_1block__prop__view}{block\_prop\_view<const\_iterator>}}(other.begin().get\_val\_iter(), other.end().get\_val\_iter(),}
+\DoxyCodeLine{1217                                           other.begin().get\_section(), other.end().get\_section(), other.get\_index())}
+\DoxyCodeLine{1218     \{}
+\DoxyCodeLine{1219     \}}
+\DoxyCodeLine{1220 \};}
+\DoxyCodeLine{1230 \textcolor{keyword}{inline} \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} tensordot(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&left, \textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&right, torch::IntArrayRef dims\_left,}
+\DoxyCodeLine{1231                          torch::IntArrayRef dims\_right)}
+\DoxyCodeLine{1232 \{}
+\DoxyCodeLine{1233     \textcolor{keywordflow}{return} left.tensordot(right, dims\_left, dims\_right);}
+\DoxyCodeLine{1234 \}}
+\DoxyCodeLine{1247 \textcolor{keyword}{inline} \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} tensorgdot(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&add, \textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&mul1, \textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1btensor}{btensor}} \&mul2, torch::IntArrayRef dims1,}
+\DoxyCodeLine{1248                           torch::IntArrayRef dims2, btensor::Scalar beta = 1, btensor::Scalar alpha = 1)}
+\DoxyCodeLine{1249 \{}
+\DoxyCodeLine{1250     \textcolor{keywordflow}{return} add.tensorgdot(mul1, mul2, dims1, dims2, beta, alpha);}
+\DoxyCodeLine{1251 \}}
+\DoxyCodeLine{1264 \textcolor{keyword}{inline} btensor \&tensorgdot\_(btensor \&add, \textcolor{keyword}{const} btensor \&mul1, \textcolor{keyword}{const} btensor \&mul2, torch::IntArrayRef dims1,}
+\DoxyCodeLine{1265                             torch::IntArrayRef dims2, btensor::Scalar beta = 1, btensor::Scalar alpha = 1)}
+\DoxyCodeLine{1266 \{}
+\DoxyCodeLine{1267     \textcolor{keywordflow}{return} add.tensorgdot\_(mul1, mul2, dims1, dims2, beta, alpha);}
+\DoxyCodeLine{1268 \}}
+\DoxyCodeLine{1269 }
+\DoxyCodeLine{1270 \textcolor{keyword}{inline} btensor sparse\_zeros(\textcolor{keyword}{const} btensor::vec\_list\_t \&shape\_spec, any\_quantity selection\_rule,}
+\DoxyCodeLine{1271                             c10::TensorOptions opt = \{\})}
+\DoxyCodeLine{1272 \{}
+\DoxyCodeLine{1273     \textcolor{keywordflow}{return} btensor(shape\_spec, std::move(selection\_rule), std::move(opt) );}
+\DoxyCodeLine{1274 \}}
+\DoxyCodeLine{1275 btensor zeros(\textcolor{keyword}{const} btensor::vec\_list\_t \&shape\_spec, any\_quantity selection\_rule, c10::TensorOptions opt = \{\});}
+\DoxyCodeLine{1276 btensor zeros\_like(\textcolor{keyword}{const} btensor \&tens, c10::TensorOptions opt = \{\});}
+\DoxyCodeLine{1277 btensor ones(\textcolor{keyword}{const} btensor::vec\_list\_t \&shape\_spec, any\_quantity selection\_rule, c10::TensorOptions opt = \{\});}
+\DoxyCodeLine{1278 btensor ones\_like(\textcolor{keyword}{const} btensor \&tens, c10::TensorOptions opt = \{\});}
+\DoxyCodeLine{1279 btensor empty(\textcolor{keyword}{const} btensor::vec\_list\_t \&shape\_spec, any\_quantity selection\_rule, c10::TensorOptions opt = \{\});}
+\DoxyCodeLine{1280 btensor empty\_like(\textcolor{keyword}{const} btensor \&tens, c10::TensorOptions opt = \{\});}
+\DoxyCodeLine{1281 btensor rand(\textcolor{keyword}{const} btensor::vec\_list\_t \&shape\_spec, any\_quantity selection\_rule, c10::TensorOptions opt = \{\});}
+\DoxyCodeLine{1282 btensor rand\_like(\textcolor{keyword}{const} btensor \&tens, c10::TensorOptions opt = \{\});}
+\DoxyCodeLine{1283 btensor full(\textcolor{keyword}{const} btensor::vec\_list\_t \&shape\_spec, any\_quantity selection\_rule, btensor::Scalar fill\_value,}
+\DoxyCodeLine{1284              c10::TensorOptions opt = \{\});}
+\DoxyCodeLine{1285 btensor full\_like(\textcolor{keyword}{const} btensor \&tens, btensor::Scalar fill\_value, c10::TensorOptions opt = \{\});}
+\DoxyCodeLine{1286 btensor randint(int64\_t low, int64\_t high, \textcolor{keyword}{const} btensor::vec\_list\_t \&shape\_spec, any\_quantity selection\_rule,}
+\DoxyCodeLine{1287                 c10::TensorOptions opt = \{\});}
+\DoxyCodeLine{1288 \textcolor{keyword}{inline} btensor randint(\textcolor{keyword}{const} btensor::vec\_list\_t \&shape\_spec, any\_quantity selection\_rule, int64\_t low, int64\_t high,}
+\DoxyCodeLine{1289                        c10::TensorOptions opt = \{\})}
+\DoxyCodeLine{1290 \{}
+\DoxyCodeLine{1291     \textcolor{keywordflow}{return} randint(low, high, shape\_spec, selection\_rule, opt);}
+\DoxyCodeLine{1292 \}}
+\DoxyCodeLine{1293 btensor randint\_like(int64\_t low, int64\_t high, \textcolor{keyword}{const} btensor \&tens, c10::TensorOptions opt = \{\});}
+\DoxyCodeLine{1294 \textcolor{keyword}{inline} btensor randint\_like(\textcolor{keyword}{const} btensor \&shape, int64\_t low, int64\_t high, c10::TensorOptions opt = \{\})}
+\DoxyCodeLine{1295 \{}
+\DoxyCodeLine{1296     \textcolor{keywordflow}{return} randint\_like(low, high, shape, opt);}
+\DoxyCodeLine{1297 \}}
+\DoxyCodeLine{1298 \textcolor{keyword}{inline} btensor randint(int64\_t high, \textcolor{keyword}{const} btensor::vec\_list\_t \&shape\_spec, any\_quantity selection\_rule,}
+\DoxyCodeLine{1299                        c10::TensorOptions opt = \{\})}
+\DoxyCodeLine{1300 \{}
+\DoxyCodeLine{1301     \textcolor{keywordflow}{return} randint(0, high, shape\_spec, selection\_rule, opt);}
+\DoxyCodeLine{1302 \}}
+\DoxyCodeLine{1303 \textcolor{keyword}{inline} btensor randint\_like(int64\_t high, \textcolor{keyword}{const} btensor \&tens, c10::TensorOptions opt = \{\})}
+\DoxyCodeLine{1304 \{}
+\DoxyCodeLine{1305     \textcolor{keywordflow}{return} randint\_like(0, high, tens, opt);}
+\DoxyCodeLine{1306 \}}
+\DoxyCodeLine{1307 }
+\DoxyCodeLine{1308 \textcolor{keyword}{inline} btensor randint\_like(\textcolor{keyword}{const} btensor \&tens, int64\_t high, c10::TensorOptions opt = \{\})}
+\DoxyCodeLine{1309 \{}
+\DoxyCodeLine{1310     \textcolor{keywordflow}{return} randint\_like(high, tens, opt);}
+\DoxyCodeLine{1311 \}}
+\DoxyCodeLine{1312 \textcolor{keyword}{inline} btensor randint(\textcolor{keyword}{const} btensor::vec\_list\_t \&shape\_spec, any\_quantity selection\_rule, int64\_t high,}
+\DoxyCodeLine{1313                        c10::TensorOptions opt = \{\})}
+\DoxyCodeLine{1314 \{}
+\DoxyCodeLine{1315     \textcolor{keywordflow}{return} randint(high, shape\_spec, selection\_rule, opt);}
+\DoxyCodeLine{1316 \}}
+\DoxyCodeLine{1324 btensor eye(\textcolor{keyword}{const} btensor::vec\_list\_t\& shape\_n,c10::TensorOptions opt =\{\});}
+\DoxyCodeLine{1332 btensor eye\_like(\textcolor{keyword}{const} btensor\& shape,c10::TensorOptions opt =\{\});}
+\DoxyCodeLine{1333 }
+\DoxyCodeLine{1334 btensor randn(\textcolor{keyword}{const} btensor::vec\_list\_t \&shape\_spec, any\_quantity selection\_rule, c10::TensorOptions opt = \{\});}
+\DoxyCodeLine{1335 btensor randn\_like(\textcolor{keyword}{const} btensor \&tens, c10::TensorOptions opt = \{\});}
+\DoxyCodeLine{1336 }
+\DoxyCodeLine{1337 btensor from\_basic\_tensor(\textcolor{keyword}{const} btensor::vec\_list\_t \&shape\_spec, any\_quantity selection\_rule,}
+\DoxyCodeLine{1338                           \textcolor{keyword}{const} torch::Tensor \&values, \textcolor{keyword}{const} torch::Scalar cutoff = 1e-\/16, c10::TensorOptions = \{\});}
+\DoxyCodeLine{1339 btensor from\_basic\_tensor\_like(\textcolor{keyword}{const} btensor \&shape, \textcolor{keyword}{const} torch::Tensor \&values, \textcolor{keyword}{const} torch::Scalar cutoff = 1e-\/16,}
+\DoxyCodeLine{1340                                c10::TensorOptions = \{\});}
+\DoxyCodeLine{1341 }
+\DoxyCodeLine{1342 \textcolor{keyword}{inline} torch::Tensor zeros\_like(\textcolor{keyword}{const} torch\_shape \&shape, c10::TensorOptions opt = \{\})}
+\DoxyCodeLine{1343 \{}
+\DoxyCodeLine{1344     \textcolor{keywordflow}{return} torch::zeros(shape.\_sizes, shape.opt.merge\_in(opt));}
+\DoxyCodeLine{1345 \}}
+\DoxyCodeLine{1346 \textcolor{keyword}{inline} torch::Tensor eye\_like(\textcolor{keyword}{const} torch\_shape \&shape, c10::TensorOptions opt = \{\})}
+\DoxyCodeLine{1347 \{}
+\DoxyCodeLine{1348     \textcolor{keywordflow}{if} (shape.\_sizes.size() != 2) \textcolor{keywordflow}{throw} std::invalid\_argument(\textcolor{stringliteral}{"{}eye\_like only accept rank 2 shapes."{}});}
+\DoxyCodeLine{1349     \textcolor{keywordflow}{return} torch::eye(shape.\_sizes[0],shape.\_sizes[1], shape.opt.merge\_in(opt));}
+\DoxyCodeLine{1350 \}}
+\DoxyCodeLine{1351 \textcolor{keyword}{inline} torch::Tensor ones\_like(\textcolor{keyword}{const} torch\_shape \&shape, c10::TensorOptions opt = \{\})}
+\DoxyCodeLine{1352 \{}
+\DoxyCodeLine{1353     \textcolor{keywordflow}{return} torch::ones(shape.\_sizes, shape.opt.merge\_in(opt));}
+\DoxyCodeLine{1354 \}}
+\DoxyCodeLine{1355 \textcolor{keyword}{inline} torch::Tensor empty\_like(\textcolor{keyword}{const} torch\_shape \&shape, c10::TensorOptions opt = \{\})}
+\DoxyCodeLine{1356 \{}
+\DoxyCodeLine{1357     \textcolor{keywordflow}{return} torch::empty(shape.\_sizes, shape.opt.merge\_in(opt));}
+\DoxyCodeLine{1358 \}}
+\DoxyCodeLine{1359 \textcolor{keyword}{inline} torch::Tensor rand\_like(\textcolor{keyword}{const} torch\_shape \&shape, c10::TensorOptions opt = \{\})}
+\DoxyCodeLine{1360 \{}
+\DoxyCodeLine{1361     \textcolor{keywordflow}{return} torch::rand(shape.\_sizes, shape.opt.merge\_in(opt));}
+\DoxyCodeLine{1362 \}}
+\DoxyCodeLine{1363 \textcolor{keyword}{inline} torch::Tensor full\_like(\textcolor{keyword}{const} torch\_shape \&shape, btensor::Scalar fill, c10::TensorOptions opt = \{\})}
+\DoxyCodeLine{1364 \{}
+\DoxyCodeLine{1365     \textcolor{keywordflow}{return} torch::full(shape.\_sizes, fill, shape.opt.merge\_in(opt));}
+\DoxyCodeLine{1366 \}}
+\DoxyCodeLine{1367 \textcolor{keyword}{inline} torch::Tensor randint\_like(int64\_t low, int64\_t high, \textcolor{keyword}{const} torch\_shape \&shape, c10::TensorOptions opt = \{\})}
+\DoxyCodeLine{1368 \{}
+\DoxyCodeLine{1369     \textcolor{keywordflow}{return} torch::randint(low, high, shape.\_sizes, shape.opt.merge\_in(opt));}
+\DoxyCodeLine{1370 \}}
+\DoxyCodeLine{1371 \textcolor{keyword}{inline} torch::Tensor randint\_like(int64\_t high, \textcolor{keyword}{const} torch\_shape \&shape, c10::TensorOptions opt = \{\})}
+\DoxyCodeLine{1372 \{}
+\DoxyCodeLine{1373     \textcolor{keywordflow}{return} torch::randint(0, high, shape.\_sizes, shape.opt.merge\_in(opt));}
+\DoxyCodeLine{1374 \}}
+\DoxyCodeLine{1375 \textcolor{keyword}{inline} torch::Tensor randn\_like(\textcolor{keyword}{const} torch\_shape \&shape, c10::TensorOptions opt = \{\})}
+\DoxyCodeLine{1376 \{}
+\DoxyCodeLine{1377     \textcolor{keywordflow}{return} torch::randn(shape.\_sizes, shape.opt.merge\_in(opt));}
+\DoxyCodeLine{1378 \}}
+\DoxyCodeLine{1379 }
+\DoxyCodeLine{1380 \textcolor{keyword}{inline} btensor operator+(\textcolor{keyword}{const} btensor \&A, \textcolor{keyword}{const} btensor \&B) \{ \textcolor{keywordflow}{return} A.add(B); \}}
+\DoxyCodeLine{1381 \textcolor{keyword}{inline} btensor operator-\/(\textcolor{keyword}{const} btensor \&A, \textcolor{keyword}{const} btensor \&B) \{ \textcolor{keywordflow}{return} A.sub(B); \}}
+\DoxyCodeLine{1382 \textcolor{keyword}{inline} btensor operator-\/(\textcolor{keyword}{const} btensor \&A) \{ \textcolor{keywordflow}{return} A.mul(-\/1); \}}
+\DoxyCodeLine{1383 \textcolor{keyword}{inline} btensor operator*(\textcolor{keyword}{const} btensor \&A, \textcolor{keyword}{const} btensor \&B) \{ \textcolor{keywordflow}{return} A.mul(B); \}}
+\DoxyCodeLine{1384 \textcolor{keyword}{inline} btensor operator*(\textcolor{keyword}{const} btensor \&A, \textcolor{keyword}{const} btensor::Scalar \&B) \{ \textcolor{keywordflow}{return} A.mul(B); \}}
+\DoxyCodeLine{1385 \textcolor{keyword}{inline} btensor operator*(\textcolor{keyword}{const} btensor::Scalar \&B, \textcolor{keyword}{const} btensor \&A) \{ \textcolor{keywordflow}{return} A.mul(B); \}}
+\DoxyCodeLine{1386 \textcolor{keyword}{inline} btensor operator/(\textcolor{keyword}{const} btensor \&A, \textcolor{keyword}{const} btensor \&B) \{ \textcolor{keywordflow}{return} A.div(B); \}}
+\DoxyCodeLine{1387 \textcolor{keyword}{inline} btensor operator/(\textcolor{keyword}{const} btensor \&A, \textcolor{keyword}{const} btensor::Scalar \&B) \{ \textcolor{keywordflow}{return} A.div(B); \}}
+\DoxyCodeLine{1388 btensor operator/(\textcolor{keyword}{const} btensor::Scalar \&A, \textcolor{keyword}{const} btensor \&B);}
+\DoxyCodeLine{1389 }
+\DoxyCodeLine{1390 \textcolor{keyword}{inline} btensor sqrt(\textcolor{keyword}{const} btensor \&A) \{ \textcolor{keywordflow}{return} A.sqrt(); \}}
+\DoxyCodeLine{1391 \textcolor{keyword}{inline} btensor \&sqrt\_(btensor \&A) \{ \textcolor{keywordflow}{return} A.sqrt\_(); \}}
+\DoxyCodeLine{1392 \textcolor{keyword}{inline} btensor pow(\textcolor{keyword}{const} btensor \&A, btensor::Scalar p) \{ \textcolor{keywordflow}{return} A.pow(p); \}}
+\DoxyCodeLine{1393 \textcolor{keyword}{inline} btensor pow(\textcolor{keyword}{const} btensor \&A, \textcolor{keyword}{const} btensor \&p) \{ \textcolor{keywordflow}{return} A.pow(p); \}}
+\DoxyCodeLine{1394 \textcolor{keyword}{inline} btensor \&pow\_(btensor \&A, btensor::Scalar p) \{ \textcolor{keywordflow}{return} A.pow\_(p); \}}
+\DoxyCodeLine{1395 \textcolor{keyword}{inline} btensor \&pow\_(btensor \&A, \textcolor{keyword}{const} btensor \&p) \{ \textcolor{keywordflow}{return} A.pow\_(p); \}}
+\DoxyCodeLine{1396 }
+\DoxyCodeLine{1397 \textcolor{keyword}{inline} btensor ge(\textcolor{keyword}{const} btensor \&A, btensor::Scalar other) \{ \textcolor{keywordflow}{return} A.ge(other); \}}
+\DoxyCodeLine{1398 \textcolor{keyword}{inline} btensor ge(\textcolor{keyword}{const} btensor \&A, \textcolor{keyword}{const} btensor \&other) \{ \textcolor{keywordflow}{return} A.ge(other); \}}
+\DoxyCodeLine{1399 \textcolor{keyword}{inline} btensor le(\textcolor{keyword}{const} btensor \&A, btensor::Scalar other) \{ \textcolor{keywordflow}{return} A.le(other); \}}
+\DoxyCodeLine{1400 \textcolor{keyword}{inline} btensor le(\textcolor{keyword}{const} btensor \&A, \textcolor{keyword}{const} btensor \&other) \{ \textcolor{keywordflow}{return} A.le(other); \}}
+\DoxyCodeLine{1401 \textcolor{keyword}{inline} btensor less(\textcolor{keyword}{const} btensor \&A, \textcolor{keyword}{const} btensor \&other) \{ \textcolor{keywordflow}{return} A.less(other); \}}
+\DoxyCodeLine{1402 \textcolor{keyword}{inline} btensor less(\textcolor{keyword}{const} btensor \&A, btensor::Scalar other) \{ \textcolor{keywordflow}{return} A.less(other); \}}
+\DoxyCodeLine{1403 \textcolor{keyword}{inline} btensor greater(\textcolor{keyword}{const} btensor \&A, \textcolor{keyword}{const} btensor \&other) \{ \textcolor{keywordflow}{return} A.greater(other); \}}
+\DoxyCodeLine{1404 \textcolor{keyword}{inline} btensor greater(\textcolor{keyword}{const} btensor \&A, btensor::Scalar other) \{ \textcolor{keywordflow}{return} A.greater(other); \}}
+\DoxyCodeLine{1405 }
+\DoxyCodeLine{1406 \textcolor{keyword}{inline} btensor greater(btensor::Scalar other, \textcolor{keyword}{const} btensor \&A) \{ \textcolor{keywordflow}{return} A.less(other); \}}
+\DoxyCodeLine{1407 \textcolor{keyword}{inline} btensor less(btensor::Scalar other, \textcolor{keyword}{const} btensor \&A) \{ \textcolor{keywordflow}{return} A.greater(other); \}}
+\DoxyCodeLine{1408 \textcolor{keyword}{inline} btensor le(btensor::Scalar other, \textcolor{keyword}{const} btensor \&A) \{ \textcolor{keywordflow}{return} A.ge(other); \}}
+\DoxyCodeLine{1409 \textcolor{keyword}{inline} btensor ge(btensor::Scalar other, \textcolor{keyword}{const} btensor \&A) \{ \textcolor{keywordflow}{return} A.le(other); \}}
+\DoxyCodeLine{1410 }
+\DoxyCodeLine{1411 \textcolor{keyword}{inline} btensor eq(\textcolor{keyword}{const} btensor \&A, \textcolor{keyword}{const} btensor \&B) \{ \textcolor{keywordflow}{return} A.eq(B); \}}
+\DoxyCodeLine{1412 \textcolor{keyword}{inline} btensor eq(\textcolor{keyword}{const} btensor \&A, btensor::Scalar B) \{ \textcolor{keywordflow}{return} A.eq(B); \}}
+\DoxyCodeLine{1413 \textcolor{keyword}{inline} btensor eq(btensor::Scalar B, \textcolor{keyword}{const} btensor \&A) \{ \textcolor{keywordflow}{return} A.eq(B); \}}
+\DoxyCodeLine{1414 \textcolor{keyword}{inline} btensor not\_equal(\textcolor{keyword}{const} btensor \&A, \textcolor{keyword}{const} btensor \&B) \{ \textcolor{keywordflow}{return} A.not\_equal(B); \}}
+\DoxyCodeLine{1415 \textcolor{keyword}{inline} btensor not\_equal(\textcolor{keyword}{const} btensor \&A, btensor::Scalar B) \{ \textcolor{keywordflow}{return} A.not\_equal(B); \}}
+\DoxyCodeLine{1416 \textcolor{keyword}{inline} btensor not\_equal(btensor::Scalar B, \textcolor{keyword}{const} btensor \&A) \{ \textcolor{keywordflow}{return} A.not\_equal(B); \}}
+\DoxyCodeLine{1417 }
+\DoxyCodeLine{1418 \textcolor{keyword}{inline} btensor operator>(\textcolor{keyword}{const} btensor \&A, btensor::Scalar other) \{ \textcolor{keywordflow}{return} greater(A, other); \}}
+\DoxyCodeLine{1419 \textcolor{keyword}{inline} btensor operator>(\textcolor{keyword}{const} btensor \&A, \textcolor{keyword}{const} btensor \&other) \{ \textcolor{keywordflow}{return} greater(A, other); \}}
+\DoxyCodeLine{1420 \textcolor{keyword}{inline} btensor operator>(btensor::Scalar A, \textcolor{keyword}{const} btensor \&other) \{ \textcolor{keywordflow}{return} greater(A, other); \}}
+\DoxyCodeLine{1421 \textcolor{keyword}{inline} btensor operator<(\textcolor{keyword}{const} btensor \&A, btensor::Scalar other) \{ \textcolor{keywordflow}{return} less(A, other); \}}
+\DoxyCodeLine{1422 \textcolor{keyword}{inline} btensor operator<(\textcolor{keyword}{const} btensor \&A, \textcolor{keyword}{const} btensor \&other) \{ \textcolor{keywordflow}{return} less(A, other); \}}
+\DoxyCodeLine{1423 \textcolor{keyword}{inline} btensor operator<(btensor::Scalar A, \textcolor{keyword}{const} btensor \&other) \{ \textcolor{keywordflow}{return} less(A, other); \}}
+\DoxyCodeLine{1424 \textcolor{keyword}{inline} btensor operator>=(\textcolor{keyword}{const} btensor \&A, btensor::Scalar other) \{ \textcolor{keywordflow}{return} ge(A, other); \}}
+\DoxyCodeLine{1425 \textcolor{keyword}{inline} btensor operator>=(\textcolor{keyword}{const} btensor \&A, \textcolor{keyword}{const} btensor \&other) \{ \textcolor{keywordflow}{return} ge(A, other); \}}
+\DoxyCodeLine{1426 \textcolor{keyword}{inline} btensor operator>=(btensor::Scalar A, \textcolor{keyword}{const} btensor \&other) \{ \textcolor{keywordflow}{return} ge(A, other); \}}
+\DoxyCodeLine{1427 \textcolor{keyword}{inline} btensor operator<=(\textcolor{keyword}{const} btensor \&A, btensor::Scalar other) \{ \textcolor{keywordflow}{return} le(A, other); \}}
+\DoxyCodeLine{1428 \textcolor{keyword}{inline} btensor operator<=(\textcolor{keyword}{const} btensor \&A, \textcolor{keyword}{const} btensor \&other) \{ \textcolor{keywordflow}{return} le(A, other); \}}
+\DoxyCodeLine{1429 \textcolor{keyword}{inline} btensor operator<=(btensor::Scalar A, \textcolor{keyword}{const} btensor \&other) \{ \textcolor{keywordflow}{return} le(A, other); \}}
+\DoxyCodeLine{1430 \textcolor{keyword}{inline} btensor operator==(\textcolor{keyword}{const} btensor \&A, btensor::Scalar other) \{ \textcolor{keywordflow}{return} eq(A, other); \}}
+\DoxyCodeLine{1431 \textcolor{keyword}{inline} btensor operator==(\textcolor{keyword}{const} btensor \&A, \textcolor{keyword}{const} btensor \&other) \{ \textcolor{keywordflow}{return} eq(A, other); \}}
+\DoxyCodeLine{1432 \textcolor{keyword}{inline} btensor operator==(btensor::Scalar A, \textcolor{keyword}{const} btensor \&other) \{ \textcolor{keywordflow}{return} eq(A, other); \}}
+\DoxyCodeLine{1433 \textcolor{keyword}{inline} btensor operator!=(\textcolor{keyword}{const} btensor \&A, btensor::Scalar other) \{ \textcolor{keywordflow}{return} not\_equal(A, other); \}}
+\DoxyCodeLine{1434 \textcolor{keyword}{inline} btensor operator!=(\textcolor{keyword}{const} btensor \&A, \textcolor{keyword}{const} btensor \&other) \{ \textcolor{keywordflow}{return} not\_equal(A, other); \}}
+\DoxyCodeLine{1435 \textcolor{keyword}{inline} btensor operator!=(btensor::Scalar A, \textcolor{keyword}{const} btensor \&other) \{ \textcolor{keywordflow}{return} not\_equal(A, other); \}}
+\DoxyCodeLine{1436 }
+\DoxyCodeLine{1437 \textcolor{keywordtype}{bool} allclose(\textcolor{keyword}{const} btensor \&a, \textcolor{keyword}{const} btensor \&b, \textcolor{keywordtype}{double} rtol = 1e-\/5, \textcolor{keywordtype}{double} atol = 1e-\/8, \textcolor{keywordtype}{bool} equal\_nan = \textcolor{keyword}{false});}
+\DoxyCodeLine{1438 }
+\DoxyCodeLine{1439 \textcolor{keyword}{inline} btensor sum(\textcolor{keyword}{const} btensor \&t) \{ \textcolor{keywordflow}{return} t.sum(); \}}
+\DoxyCodeLine{1440 }
+\DoxyCodeLine{1441 \textcolor{keyword}{using} torch::pow;}
+\DoxyCodeLine{1442 \textcolor{keyword}{using} torch::sqrt;}
+\DoxyCodeLine{1443 \textcolor{keyword}{using} torch::tensordot;}
+\DoxyCodeLine{1444 }
+\DoxyCodeLine{1454 \textcolor{keyword}{inline} btensor inverse\_cvals(\textcolor{keyword}{const} btensor \&tens) \{ \textcolor{keywordflow}{return} tens.\mbox{\hyperlink{classquantit_1_1btensor_a1742f2450d18a58b0508799e9d48c469}{inverse\_cvals}}(); \}}
+\DoxyCodeLine{1455 \textcolor{keyword}{inline} btensor inverse\_cvals(btensor \&\&tens) \{ \textcolor{keywordflow}{return} std::move(tens.inverse\_cvals\_()); \}}
+\DoxyCodeLine{1456 \textcolor{keyword}{inline} torch::Tensor inverse\_cvals(\textcolor{keyword}{const} torch::Tensor \&tens) \{ \textcolor{keywordflow}{return} tens; \}}
+\DoxyCodeLine{1457 \textcolor{keyword}{inline} torch::Tensor inverse\_cvals(torch::Tensor \&\&tens) \{ \textcolor{keywordflow}{return} std::move(tens); \}}
+\DoxyCodeLine{1465 \textcolor{keyword}{inline} btensor \&inverse\_cvals\_(btensor \&tens) \{ \textcolor{keywordflow}{return} tens.\mbox{\hyperlink{classquantit_1_1btensor_ad1d4e7311e7a45772e91ae094a5ac676}{inverse\_cvals\_}}(); \}}
+\DoxyCodeLine{1466 \textcolor{keyword}{inline} torch::Tensor \&inverse\_cvals\_(torch::Tensor \&tens) \{ \textcolor{keywordflow}{return} tens; \}}
+\DoxyCodeLine{1474 \textcolor{keyword}{inline} btensor \&cval\_shift\_(btensor \&tens, any\_quantity\_cref shift, int64\_t dim)}
+\DoxyCodeLine{1475 \{}
+\DoxyCodeLine{1476     \textcolor{keywordflow}{return} tens.\mbox{\hyperlink{classquantit_1_1btensor_a81cae58d3453fdbb9b65791d2e636208}{cval\_shift\_}}(shift, dim);}
+\DoxyCodeLine{1477 \}}
+\DoxyCodeLine{1486 \textcolor{keyword}{inline} btensor \&non\_conserving\_cval\_shift\_(btensor \&tens, any\_quantity\_cref shift, int64\_t dim)}
+\DoxyCodeLine{1487 \{}
+\DoxyCodeLine{1488     \textcolor{keywordflow}{return} tens.\mbox{\hyperlink{classquantit_1_1btensor_a985e7a37e076a25ef818e18f430158ae}{non\_conserving\_cval\_shift\_}}(shift, dim);}
+\DoxyCodeLine{1489 \}}
+\DoxyCodeLine{1490 }
+\DoxyCodeLine{1497 \textcolor{keyword}{inline} btensor \&shift\_selection\_rule\_(btensor \&tens, any\_quantity\_cref shift)}
+\DoxyCodeLine{1498 \{}
+\DoxyCodeLine{1499     \textcolor{keywordflow}{return} tens.\mbox{\hyperlink{classquantit_1_1btensor_a0c5e2ac216e47f05d268f4b3753d42a5}{shift\_selection\_rule\_}}(shift);}
+\DoxyCodeLine{1500 \}}
+\DoxyCodeLine{1501 }
+\DoxyCodeLine{1502 \textcolor{keyword}{inline} btensor squeeze(\textcolor{keyword}{const} btensor \&tens) \{ \textcolor{keywordflow}{return} tens.squeeze(); \}}
+\DoxyCodeLine{1503 \textcolor{keyword}{inline} btensor squeeze(\textcolor{keyword}{const} btensor \&tens, int64\_t dim) \{ \textcolor{keywordflow}{return} tens.squeeze(dim); \}}
+\DoxyCodeLine{1504 \textcolor{keyword}{inline} btensor \&squeeze\_(btensor \&tens) \{ \textcolor{keywordflow}{return} tens.squeeze\_(); \}}
+\DoxyCodeLine{1505 \textcolor{keyword}{inline} btensor \&squeeze\_(btensor \&tens, int64\_t dim) \{ \textcolor{keywordflow}{return} tens.squeeze\_(dim); \}}
+\DoxyCodeLine{1506 }
+\DoxyCodeLine{1516 any\_quantity find\_selection\_rule(\textcolor{keyword}{const} torch::Tensor \&tens, \textcolor{keyword}{const} btensor \&shape, btensor::Scalar cutoff = 0);}
+\DoxyCodeLine{1517 }
+\DoxyCodeLine{1518 \textcolor{keywordtype}{void} increment\_index\_right(btensor::index\_list \&index, torch::IntArrayRef sizes, \textcolor{keywordtype}{size\_t} rank);}
+\DoxyCodeLine{1519 \textcolor{keywordtype}{void} increment\_index\_left(btensor::index\_list \&index, torch::IntArrayRef max\_index, \textcolor{keywordtype}{size\_t} rank);}
+\DoxyCodeLine{1520 \textcolor{keywordtype}{void} print(\textcolor{keyword}{const} btensor \&x);}
+\DoxyCodeLine{1521 std::string to\_string(\textcolor{keyword}{const} btensor \&x);}
+\DoxyCodeLine{1522 }
+\DoxyCodeLine{1531 \textcolor{keyword}{inline} btensor \&set\_selection\_rule\_(btensor \&tens, any\_quantity\_cref value) \{ \textcolor{keywordflow}{return} tens.\mbox{\hyperlink{classquantit_1_1btensor_ae64b0db3feecc7466634ef9d8d248461}{set\_selection\_rule\_}}(value); \}}
+\DoxyCodeLine{1532 qtt\_TEST\_CASE(\textcolor{stringliteral}{"{}btensor"{}})}
+\DoxyCodeLine{1533 \{}
+\DoxyCodeLine{1534     \textcolor{keyword}{using} cqt = conserved::C<5>; \textcolor{comment}{// don't put negative number in the constructor and expect sensible results.}}
+\DoxyCodeLine{1535     \textcolor{keyword}{using} index = btensor::index\_list;}
+\DoxyCodeLine{1536     any\_quantity selection\_rule(cqt(0)); \textcolor{comment}{// DMRJulia flux}}
+\DoxyCodeLine{1537     btensor A(\{\{\{2, cqt(0)\}, \{3, cqt(1)\}\}, \{\{2, cqt(0)\}, \{3, cqt(1).inverse()\}\}\}, selection\_rule);}
+\DoxyCodeLine{1538     \textcolor{keyword}{volatile} \textcolor{keyword}{auto} x = to\_string(A); \textcolor{comment}{// trying to force to\_string into existance for debugging.}}
+\DoxyCodeLine{1539     qtt\_CHECK(A.end() -\/ A.begin() == 0);}
+\DoxyCodeLine{1540     \textcolor{keyword}{auto} A00 = torch::rand(\{2, 2\});}
+\DoxyCodeLine{1541     \textcolor{keyword}{auto} A11 = torch::rand(\{3, 3\});}
+\DoxyCodeLine{1542     A.block(\{0, 0\}) = A00;}
+\DoxyCodeLine{1543     A.block(\{1, 1\}) = A11;}
+\DoxyCodeLine{1544     qtt\_REQUIRE\_NOTHROW(\mbox{\hyperlink{classquantit_1_1btensor_a5d8897e8e51c880654c5d467b2b0a8bc}{btensor::throw\_bad\_tensor}}(A));}
+\DoxyCodeLine{1545     qtt\_CHECK(A.end() -\/ A.begin() == 2);}
+\DoxyCodeLine{1546     qtt\_CHECK\_NOTHROW(A.block\_at(\{0, 0\}));}
+\DoxyCodeLine{1547     qtt\_CHECK\_THROWS\_AS(A.block\_at(\{1, 0\}), std::out\_of\_range);  \textcolor{comment}{// there's no block here.}}
+\DoxyCodeLine{1548     qtt\_CHECK\_THROWS\_AS(A.block(\{1, 0\}), std::invalid\_argument); \textcolor{comment}{// and we can't create one.}}
+\DoxyCodeLine{1549     qtt\_CHECK(\mbox{\hyperlink{classquantit_1_1btensor_aaba4b107e02154ce231380c1bb844766}{btensor::check\_tensor}}(A) == \textcolor{stringliteral}{"{}"{}});}
+\DoxyCodeLine{1550     \textcolor{comment}{// fmt::print("{}\{\}"{}, A);}}
+\DoxyCodeLine{1551     qtt\_SUBCASE(\textcolor{stringliteral}{"{}tensordot trace, index order independence"{}})}
+\DoxyCodeLine{1552     \{}
+\DoxyCodeLine{1553         \textcolor{keyword}{auto} X = rand\_like(shape\_from(A, A.permute(\{1, 0\})));}
+\DoxyCodeLine{1554         \textcolor{comment}{// fmt::print("{}\{\}\(\backslash\)n\(\backslash\)n"{},X);}}
+\DoxyCodeLine{1555         \textcolor{keyword}{auto} XX = X.reshape(\{\});}
+\DoxyCodeLine{1556         std::vector<int64\_t> inds = \{0, 1, 2, 3\};}
+\DoxyCodeLine{1557         \textcolor{keywordtype}{double} correct\_trace = 0;}
+\DoxyCodeLine{1558         \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} \&x : X)}
+\DoxyCodeLine{1559         \{}
+\DoxyCodeLine{1560             \textcolor{keyword}{auto} \&T = std::get<1>(x);}
+\DoxyCodeLine{1561             correct\_trace += tensordot(T, T.conj(), inds, inds).\mbox{\hyperlink{classquantit_1_1btensor_a01c490238e0022b585dc430b13ec7dd1}{item}}().toDouble();}
+\DoxyCodeLine{1562         \}}
+\DoxyCodeLine{1563         \textcolor{keywordtype}{double} trXX = tensordot(XX, XX.conj(), \{0\}, \{0\}).\mbox{\hyperlink{classquantit_1_1btensor_a01c490238e0022b585dc430b13ec7dd1}{item}}().toDouble();}
+\DoxyCodeLine{1564         \textcolor{keywordtype}{double} correct\_trace2 = 0;}
+\DoxyCodeLine{1565         \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} \&x : XX)}
+\DoxyCodeLine{1566         \{}
+\DoxyCodeLine{1567             \textcolor{keyword}{auto} \&T = std::get<1>(x);}
+\DoxyCodeLine{1568             correct\_trace2 += tensordot(T, T.conj(), \{0\}, \{0\}).\mbox{\hyperlink{classquantit_1_1btensor_a01c490238e0022b585dc430b13ec7dd1}{item}}().toDouble();}
+\DoxyCodeLine{1569         \}}
+\DoxyCodeLine{1570         qtt\_CHECK(trXX == doctest::Approx(correct\_trace));}
+\DoxyCodeLine{1571         qtt\_CHECK(correct\_trace2 == doctest::Approx(correct\_trace));}
+\DoxyCodeLine{1572         \textcolor{comment}{// fmt::print("{} correct traces: \{\} \{\}\(\backslash\)n"{},correct\_trace2, correct\_trace);}}
+\DoxyCodeLine{1573         \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} i = 0; i < 16; ++i)}
+\DoxyCodeLine{1574         \{}
+\DoxyCodeLine{1575             \textcolor{keyword}{auto} tr2 = tensordot(X, X.conj(), inds, inds);}
+\DoxyCodeLine{1576             \textcolor{keywordtype}{double} trace2 = tr2.item().toDouble();}
+\DoxyCodeLine{1577             qtt\_CHECK\_MESSAGE(doctest::Approx(correct\_trace) == trace2, fmt::format(\textcolor{stringliteral}{"{}index order: \{\}"{}}, inds));}
+\DoxyCodeLine{1578             std::next\_permutation(inds.begin(), inds.end());}
+\DoxyCodeLine{1579         \}}
+\DoxyCodeLine{1580     \}}
+\DoxyCodeLine{1581     qtt\_SUBCASE(\textcolor{stringliteral}{"{}tensor contraction"{}})}
+\DoxyCodeLine{1582     \{}
+\DoxyCodeLine{1583         btensor B(\{\{\{3, cqt(4)\}, \{2, cqt(0)\}\}, \{\{2, cqt(0)\}, \{3, cqt(1)\}\}, \{\{1, cqt(1)\}, \{3, cqt(0)\}\}\},}
+\DoxyCodeLine{1584                   any\_quantity(cqt(1)));}
+\DoxyCodeLine{1585         \textcolor{keyword}{auto} B100 = torch::rand(\{2, 2, 1\});}
+\DoxyCodeLine{1586         \textcolor{keyword}{auto} B010 = torch::rand(\{3, 3, 1\});}
+\DoxyCodeLine{1587         \textcolor{keyword}{auto} B111 = torch::rand(\{2, 3, 3\});}
+\DoxyCodeLine{1588         B.block(\{0, 1, 0\}) = B010;}
+\DoxyCodeLine{1589         B.block(\{1, 1, 1\}) = B111;}
+\DoxyCodeLine{1590         B.block(\{1, 0, 0\}) = B100;}
+\DoxyCodeLine{1591         qtt\_REQUIRE\_NOTHROW(\mbox{\hyperlink{classquantit_1_1btensor_a5d8897e8e51c880654c5d467b2b0a8bc}{btensor::throw\_bad\_tensor}}(B));}
+\DoxyCodeLine{1592         btensor C;}
+\DoxyCodeLine{1593         \textcolor{keyword}{auto} C100 = torch::tensordot(A11, B010, \{1\}, \{1\});}
+\DoxyCodeLine{1594         \textcolor{keyword}{auto} C010 = torch::tensordot(A00, B100, \{1\}, \{1\});}
+\DoxyCodeLine{1595         \textcolor{keyword}{auto} C111 = torch::tensordot(A11, B111, \{1\}, \{1\});}
+\DoxyCodeLine{1596         qtt\_CHECK\_NOTHROW(C = A.tensordot(B, \{1\}, \{1\}));}
+\DoxyCodeLine{1597         qtt\_REQUIRE\_NOTHROW(C.block\_at(\{0, 1, 0\}));}
+\DoxyCodeLine{1598         qtt\_REQUIRE\_NOTHROW(C.block\_at(\{1, 0, 0\}));}
+\DoxyCodeLine{1599         qtt\_REQUIRE\_NOTHROW(C.block\_at(\{1, 1, 1\}));}
+\DoxyCodeLine{1600         qtt\_CHECK(torch::allclose(C.block\_at(\{0, 1, 0\}), C010));}
+\DoxyCodeLine{1601         qtt\_CHECK(torch::allclose(C.block\_at(\{1, 0, 0\}), C100));}
+\DoxyCodeLine{1602         qtt\_CHECK(torch::allclose(C.block\_at(\{1, 1, 1\}), C111));}
+\DoxyCodeLine{1603 }
+\DoxyCodeLine{1604         btensor A\_trace;}
+\DoxyCodeLine{1605         qtt\_CHECK\_NOTHROW(A\_trace = tensordot(A, A.inverse\_cvals(), \{0, 1\}, \{0, 1\}));}
+\DoxyCodeLine{1606         torch::allclose(A\_trace.block\_at(\{\}),}
+\DoxyCodeLine{1607                         tensordot(A00, A00, \{0, 1\}, \{0, 1\}) + tensordot(A11, A11, \{0, 1\}, \{0, 1\}));}
+\DoxyCodeLine{1608     \}}
+\DoxyCodeLine{1609     qtt\_SUBCASE(\textcolor{stringliteral}{"{}rank 0 tensors"{}})}
+\DoxyCodeLine{1610     \{}
+\DoxyCodeLine{1611         \textcolor{keyword}{auto} x = zeros(\{\}, selection\_rule); \textcolor{comment}{// if this one work all the factories works. Their guts is shared.}}
+\DoxyCodeLine{1612         \textcolor{keyword}{auto} empty\_index\_list = btensor::index\_list\{\};}
+\DoxyCodeLine{1613         \textcolor{keyword}{auto} x\_begin\_first = x.begin()-\/>first;}
+\DoxyCodeLine{1614         qtt\_CHECK(x\_begin\_first == empty\_index\_list);}
+\DoxyCodeLine{1615         qtt\_CHECK(torch::allclose(x.begin()-\/>second, torch::zeros(\{\})));}
+\DoxyCodeLine{1616     \}}
+\DoxyCodeLine{1617     qtt\_SUBCASE(\textcolor{stringliteral}{"{}Tensorproduct from tensordot"{}})}
+\DoxyCodeLine{1618     \{}
+\DoxyCodeLine{1619         btensor C;}
+\DoxyCodeLine{1620         qtt\_CHECK\_NOTHROW(C = A.tensordot(A, \{\}, \{\}));}
+\DoxyCodeLine{1621         qtt\_CHECK(C.dim() == A.dim() * 2);}
+\DoxyCodeLine{1622         qtt\_CHECK(C.block\_at(\{0, 0, 0, 0\}).equal(torch::tensordot(A00, A00, \{\}, \{\})));}
+\DoxyCodeLine{1623         qtt\_CHECK(C.block\_at(\{0, 0, 1, 1\}).equal(torch::tensordot(A00, A11, \{\}, \{\})));}
+\DoxyCodeLine{1624         qtt\_CHECK(C.block\_at(\{1, 1, 0, 0\}).equal(torch::tensordot(A11, A00, \{\}, \{\})));}
+\DoxyCodeLine{1625         qtt\_CHECK(C.block\_at(\{1, 1, 1, 1\}).equal(torch::tensordot(A11, A11, \{\}, \{\})));}
+\DoxyCodeLine{1626         \textcolor{comment}{// fmt::print("{}\{\}\(\backslash\)n"{}, A);}}
+\DoxyCodeLine{1627         \textcolor{comment}{// fmt::print("{}\{\}\(\backslash\)n"{}, C);}}
+\DoxyCodeLine{1628     \}}
+\DoxyCodeLine{1629     qtt\_SUBCASE(\textcolor{stringliteral}{"{}addition"{}})}
+\DoxyCodeLine{1630     \{}
+\DoxyCodeLine{1631         btensor AA00(\{\{\{2, cqt(0)\}, \{3, cqt(1)\}\}, \{\{2, cqt(0)\}, \{3, cqt(1).inverse()\}\}\}, selection\_rule);}
+\DoxyCodeLine{1632         btensor AA11(\{\{\{2, cqt(0)\}, \{3, cqt(1)\}\}, \{\{2, cqt(0)\}, \{3, cqt(1).inverse()\}\}\}, selection\_rule);}
+\DoxyCodeLine{1633         AA00.block(\{0, 0\}) = A00;}
+\DoxyCodeLine{1634         AA11.block(\{1, 1\}) = A11;}
+\DoxyCodeLine{1635         AA00.add\_(AA11);}
+\DoxyCodeLine{1636         \textcolor{keyword}{auto} B00 = 2 * A00;}
+\DoxyCodeLine{1637         \textcolor{keyword}{auto} B11 = 2 * A11;}
+\DoxyCodeLine{1638         \textcolor{keyword}{auto} AP00 = 3 * A00; \textcolor{comment}{// A post add\_}}
+\DoxyCodeLine{1639         \textcolor{keyword}{auto} AP11 = 3 * A11; \textcolor{comment}{// A post add\_}}
+\DoxyCodeLine{1640         \textcolor{keyword}{auto} C00 = 5 * A00;}
+\DoxyCodeLine{1641         \textcolor{keyword}{auto} C11 = 5 * A11;}
+\DoxyCodeLine{1642         \textcolor{keyword}{auto} B = A.add(A);}
+\DoxyCodeLine{1643         \textcolor{keyword}{auto} C = A.add(B);}
+\DoxyCodeLine{1644         C.add\_(B);}
+\DoxyCodeLine{1645         qtt\_CHECK(torch::allclose(A.block\_at(\{0, 0\}), A00));}
+\DoxyCodeLine{1646         qtt\_CHECK(torch::allclose(A.block\_at(\{1, 1\}), A11)); \textcolor{comment}{// A unchanged}}
+\DoxyCodeLine{1647         qtt\_CHECK\_THROWS(A.block\_at(\{0, 1\}));}
+\DoxyCodeLine{1648         qtt\_CHECK\_THROWS(A.block\_at(\{1, 0\}));}
+\DoxyCodeLine{1649         qtt\_CHECK\_THROWS(B.block\_at(\{0, 1\}));}
+\DoxyCodeLine{1650         qtt\_CHECK\_THROWS(B.block\_at(\{1, 0\}));}
+\DoxyCodeLine{1651         qtt\_CHECK\_THROWS(C.block\_at(\{0, 1\}));}
+\DoxyCodeLine{1652         qtt\_CHECK\_THROWS(C.block\_at(\{1, 0\}));}
+\DoxyCodeLine{1653         qtt\_REQUIRE\_NOTHROW(A.block\_at(\{0, 0\}));}
+\DoxyCodeLine{1654         qtt\_REQUIRE\_NOTHROW(A.block\_at(\{1, 1\}));}
+\DoxyCodeLine{1655         qtt\_REQUIRE\_NOTHROW(B.block\_at(\{0, 0\}));}
+\DoxyCodeLine{1656         qtt\_REQUIRE\_NOTHROW(B.block\_at(\{1, 1\}));}
+\DoxyCodeLine{1657         qtt\_REQUIRE\_NOTHROW(C.block\_at(\{0, 0\}));}
+\DoxyCodeLine{1658         qtt\_REQUIRE\_NOTHROW(C.block\_at(\{1, 1\}));}
+\DoxyCodeLine{1659         qtt\_CHECK(torch::allclose(B.block\_at(\{0, 0\}), B00));}
+\DoxyCodeLine{1660         qtt\_CHECK(torch::allclose(B.block\_at(\{1, 1\}), B11));}
+\DoxyCodeLine{1661         qtt\_CHECK(torch::allclose(C.block\_at(\{0, 0\}), C00));}
+\DoxyCodeLine{1662         qtt\_CHECK(torch::allclose(C.block\_at(\{1, 1\}), C11));}
+\DoxyCodeLine{1663         qtt\_REQUIRE\_NOTHROW(AA00.block\_at(\{0, 0\}));}
+\DoxyCodeLine{1664         qtt\_CHECK\_THROWS(AA00.block\_at(\{1, 0\}));}
+\DoxyCodeLine{1665         qtt\_REQUIRE\_NOTHROW(AA00.block\_at(\{1, 1\}));}
+\DoxyCodeLine{1666         qtt\_CHECK\_THROWS(AA00.block\_at(\{0, 1\}));}
+\DoxyCodeLine{1667         A.add\_(std::move(B)); \textcolor{comment}{// this destroys B, so any state verification on it must be done.}}
+\DoxyCodeLine{1668         qtt\_CHECK(torch::allclose(A.block\_at(\{0, 0\}), AP00));}
+\DoxyCodeLine{1669         qtt\_CHECK(torch::allclose(A.block\_at(\{1, 1\}), AP11));}
+\DoxyCodeLine{1670         qtt\_CHECK(get\_refcount(AA00.block\_at(\{1, 1\})) == 1);}
+\DoxyCodeLine{1671     \}}
+\DoxyCodeLine{1672     qtt\_SUBCASE(\textcolor{stringliteral}{"{}substraction"{}})}
+\DoxyCodeLine{1673     \{}
+\DoxyCodeLine{1674         btensor A = rand(\{\}, quantity(cqt(0)));}
+\DoxyCodeLine{1675         btensor B = rand(\{\}, quantity(cqt(0)));}
+\DoxyCodeLine{1676         \textcolor{keyword}{auto} C = A -\/ B;}
+\DoxyCodeLine{1677         qtt\_CHECK\_NOTHROW(A.block\_at(\{\}));}
+\DoxyCodeLine{1678         qtt\_CHECK\_NOTHROW(B.block\_at(\{\}));}
+\DoxyCodeLine{1679         qtt\_CHECK\_NOTHROW(C.block\_at(\{\}));}
+\DoxyCodeLine{1680         qtt\_CHECK(torch::allclose(C.block\_at(\{\}), A.block\_at(\{\}) -\/ B.block(\{\})));}
+\DoxyCodeLine{1681     \}}
+\DoxyCodeLine{1682     qtt\_SUBCASE(\textcolor{stringliteral}{"{}Reshape"{}})}
+\DoxyCodeLine{1683     \{}
+\DoxyCodeLine{1684         \textcolor{keyword}{auto} B = A.reshape(\{\});             \textcolor{comment}{// reshape into a vector.}}
+\DoxyCodeLine{1685         qtt\_CHECK\_NOTHROW(B.block\_at(\{0\})); \textcolor{comment}{// on diagonnal block of A}}
+\DoxyCodeLine{1686         qtt\_CHECK\_NOTHROW(B.block\_at(\{3\})); \textcolor{comment}{// on-\/diagonal block of A}}
+\DoxyCodeLine{1687         qtt\_CHECK\_THROWS(B.block\_at(\{1\}));  \textcolor{comment}{// off-\/diagonal block of A, empty}}
+\DoxyCodeLine{1688         qtt\_CHECK\_THROWS(B.block\_at(\{2\}));  \textcolor{comment}{// off-\/diagonal block of A, empty}}
+\DoxyCodeLine{1689         qtt\_CHECK((*B.block\_quantities(\{0\}).begin()) == any\_quantity(selection\_rule));}
+\DoxyCodeLine{1690         qtt\_CHECK((*B.block\_quantities(\{3\}).begin()) == any\_quantity(selection\_rule));}
+\DoxyCodeLine{1691         qtt\_CHECK((*B.block\_quantities(\{1\}).begin()) == any\_quantity(cqt(4))); \textcolor{comment}{// This is the correct value indeed.}}
+\DoxyCodeLine{1692         qtt\_CHECK((*B.block\_quantities(\{2\}).begin()) == any\_quantity(cqt(1)));}
+\DoxyCodeLine{1693         qtt\_CHECK((*B.block\_sizes(\{0\}).begin()) == 4);}
+\DoxyCodeLine{1694         qtt\_CHECK((*B.block\_sizes(\{3\}).begin()) == 9);}
+\DoxyCodeLine{1695         qtt\_CHECK((*B.block\_sizes(\{1\}).begin()) == 6);}
+\DoxyCodeLine{1696         qtt\_CHECK((*B.block\_sizes(\{2\}).begin()) == 6);}
+\DoxyCodeLine{1697         qtt\_CHECK((B.block\_at(\{0\}).sizes()) == std::vector<int64\_t>\{4\});}
+\DoxyCodeLine{1698         qtt\_CHECK((B.block\_at(\{3\}).sizes()) == std::vector<int64\_t>\{9\});}
+\DoxyCodeLine{1699         \textcolor{keyword}{auto} C = B.reshape\_as(A); \textcolor{comment}{// reshape it back to its' original shape.}}
+\DoxyCodeLine{1700         qtt\_REQUIRE\_NOTHROW(\mbox{\hyperlink{classquantit_1_1btensor_a5d8897e8e51c880654c5d467b2b0a8bc}{btensor::throw\_bad\_tensor}}(C));}
+\DoxyCodeLine{1701         qtt\_CHECK(C.end() -\/ C.begin() == 2);}
+\DoxyCodeLine{1702         qtt\_CHECK\_NOTHROW(C.block\_at(\{0, 0\}));}
+\DoxyCodeLine{1703         qtt\_CHECK\_NOTHROW(C.block\_at(\{1, 1\}));}
+\DoxyCodeLine{1704         qtt\_CHECK\_THROWS\_AS(C.block\_at(\{1, 0\}), std::out\_of\_range);  \textcolor{comment}{// there's no block here.}}
+\DoxyCodeLine{1705         qtt\_CHECK\_THROWS\_AS(C.block(\{1, 0\}), std::invalid\_argument); \textcolor{comment}{// and we can't create one.}}
+\DoxyCodeLine{1706         qtt\_CHECK(C.block\_at(\{0, 0\}).equal(A.block\_at(\{0, 0\})));}
+\DoxyCodeLine{1707         qtt\_CHECK(C.block\_at(\{1, 1\}).equal(A.block\_at(\{1, 1\})));}
+\DoxyCodeLine{1708         qtt\_CHECK(\mbox{\hyperlink{classquantit_1_1btensor_aaba4b107e02154ce231380c1bb844766}{btensor::check\_tensor}}(C) == \textcolor{stringliteral}{"{}"{}});}
+\DoxyCodeLine{1709         \{}
+\DoxyCodeLine{1710             btensor A(\{\{\{2, cqt(0)\}, \{3, cqt(1)\}\},}
+\DoxyCodeLine{1711                        \{\{1, cqt(1)\}, \{2, cqt(0)\}, \{3, cqt(-\/1)\}, \{1, cqt(1)\}\},}
+\DoxyCodeLine{1712                        \{\{3, cqt(0)\}, \{2, cqt(-\/2)\}, \{2, cqt(-\/1)\}\}\},}
+\DoxyCodeLine{1713                       selection\_rule);}
+\DoxyCodeLine{1714             A.block(\{0, 0, 2\}) = torch::rand(\{2, 1, 2\});}
+\DoxyCodeLine{1715             A.block(\{0, 1, 0\}) = torch::rand(\{2, 2, 3\});}
+\DoxyCodeLine{1716             A.block(\{0, 3, 2\}) = torch::rand(\{2, 1, 2\});}
+\DoxyCodeLine{1717             A.block(\{1, 0, 1\}) = torch::rand(\{3, 1, 2\});}
+\DoxyCodeLine{1718             A.block(\{1, 1, 2\}) = torch::rand(\{3, 2, 2\});}
+\DoxyCodeLine{1719             A.block(\{1, 2, 0\}) = torch::rand(\{3, 3, 3\});}
+\DoxyCodeLine{1720             A.block(\{1, 3, 1\}) = torch::rand(\{3, 1, 2\});}
+\DoxyCodeLine{1721             qtt\_CHECK\_NOTHROW(\mbox{\hyperlink{classquantit_1_1btensor_a5d8897e8e51c880654c5d467b2b0a8bc}{btensor::throw\_bad\_tensor}}(A));}
+\DoxyCodeLine{1722             btensor B;}
+\DoxyCodeLine{1723             qtt\_CHECK\_NOTHROW(B = A.reshape(\{1\}));}
+\DoxyCodeLine{1724         \}}
+\DoxyCodeLine{1725     \}}
+\DoxyCodeLine{1726     qtt\_SUBCASE(\textcolor{stringliteral}{"{}Shape building tools"{}})}
+\DoxyCodeLine{1727     \{}
+\DoxyCodeLine{1728         btensor B;}
+\DoxyCodeLine{1729         btensor C;}
+\DoxyCodeLine{1730         qtt\_CHECK\_NOTHROW(B = A.shape\_from(\{-\/1, 0\}));}
+\DoxyCodeLine{1731         qtt\_CHECK\_NOTHROW(C = shape\_from(A, B));}
+\DoxyCodeLine{1732         \textcolor{keywordtype}{int} split = 1;}
+\DoxyCodeLine{1733         A = btensor(\{\{\{2, cqt(0)\}, \{3, cqt(1)\}\},}
+\DoxyCodeLine{1734                      \{\{1, cqt(1)\}, \{2, cqt(0)\}, \{3, cqt(-\/1)\}, \{1, cqt(1)\}\},}
+\DoxyCodeLine{1735                      \{\{3, cqt(0)\}, \{2, cqt(-\/2)\}, \{2, cqt(-\/1)\}\}\},}
+\DoxyCodeLine{1736                     selection\_rule);}
+\DoxyCodeLine{1737         A.block(\{0, 0, 2\}) = torch::rand(\{2, 1, 2\});}
+\DoxyCodeLine{1738         A.block(\{0, 1, 0\}) = torch::rand(\{2, 2, 3\});}
+\DoxyCodeLine{1739         A.block(\{0, 3, 2\}) = torch::rand(\{2, 1, 2\});}
+\DoxyCodeLine{1740         A.block(\{1, 0, 1\}) = torch::rand(\{3, 1, 2\});}
+\DoxyCodeLine{1741         A.block(\{1, 1, 2\}) = torch::rand(\{3, 2, 2\});}
+\DoxyCodeLine{1742         A.block(\{1, 2, 0\}) = torch::rand(\{3, 3, 3\});}
+\DoxyCodeLine{1743         A.block(\{1, 3, 1\}) = torch::rand(\{3, 1, 2\});}
+\DoxyCodeLine{1744         btensor rV(\{\{\{3, cqt(1)\},}
+\DoxyCodeLine{1745                      \{2, cqt(4)\},}
+\DoxyCodeLine{1746                      \{2, cqt(0)\},}
+\DoxyCodeLine{1747                      \{6, cqt(0)\},}
+\DoxyCodeLine{1748                      \{4, cqt(3)\},}
+\DoxyCodeLine{1749                      \{4, cqt(4)\},}
+\DoxyCodeLine{1750                      \{9, cqt(4)\},}
+\DoxyCodeLine{1751                      \{6, cqt(2)\},}
+\DoxyCodeLine{1752                      \{6, cqt(3)\},}
+\DoxyCodeLine{1753                      \{3, cqt(1)\},}
+\DoxyCodeLine{1754                      \{2, cqt(4)\},}
+\DoxyCodeLine{1755                      \{2, cqt(0)\}\},}
+\DoxyCodeLine{1756                     \{\{2, cqt(0)\}, \{3, cqt(1)\}\}\},}
+\DoxyCodeLine{1757                    selection\_rule);}
+\DoxyCodeLine{1758         rV.block(\{2, 0\}) = torch::rand(\{2, 2\});}
+\DoxyCodeLine{1759         rV.block(\{3, 0\}) = torch::rand(\{6, 2\});}
+\DoxyCodeLine{1760         rV.block(\{11, 0\}) = torch::rand(\{2, 2\});}
+\DoxyCodeLine{1761         rV.block(\{1, 1\}) = torch::rand(\{2, 3\});}
+\DoxyCodeLine{1762         rV.block(\{5, 1\}) = torch::rand(\{4, 3\});}
+\DoxyCodeLine{1763         rV.block(\{6, 1\}) = torch::rand(\{9, 3\});}
+\DoxyCodeLine{1764         rV.block(\{10, 1\}) = torch::rand(\{2, 3\});}
+\DoxyCodeLine{1765         qtt\_REQUIRE(\mbox{\hyperlink{classquantit_1_1btensor_aaba4b107e02154ce231380c1bb844766}{btensor::check\_tensor}}(A) == \textcolor{stringliteral}{"{}"{}});}
+\DoxyCodeLine{1766         qtt\_REQUIRE(\mbox{\hyperlink{classquantit_1_1btensor_aaba4b107e02154ce231380c1bb844766}{btensor::check\_tensor}}(rV) == \textcolor{stringliteral}{"{}"{}});}
+\DoxyCodeLine{1767 }
+\DoxyCodeLine{1768         std::vector<int64\_t> V\_shape(A.dim(), -\/1);}
+\DoxyCodeLine{1769         \{}
+\DoxyCodeLine{1770             \textcolor{keywordtype}{size\_t} i = 0;}
+\DoxyCodeLine{1771             \textcolor{keywordflow}{for} (; i < split; ++i)}
+\DoxyCodeLine{1772             \{}
+\DoxyCodeLine{1773                 V\_shape[i] = 0;}
+\DoxyCodeLine{1774             \}}
+\DoxyCodeLine{1775         \}}
+\DoxyCodeLine{1776         \textcolor{keyword}{auto} V\_left\_part = A.shape\_from(V\_shape);}
+\DoxyCodeLine{1777         \textcolor{keyword}{auto} V\_right\_part = rV.shape\_from(\{0, -\/1\});}
+\DoxyCodeLine{1778         \textcolor{comment}{// fmt::print("{}V\_left\_part \(\backslash\)n\{\}\(\backslash\)n\(\backslash\)n"{}, V\_left\_part);}}
+\DoxyCodeLine{1779         \textcolor{comment}{// fmt::print("{}V\_right\_part \(\backslash\)n\{\}\(\backslash\)n\(\backslash\)n"{}, V\_right\_part);}}
+\DoxyCodeLine{1780         qtt\_REQUIRE\_NOTHROW(rV.reshape\_as(shape\_from(V\_left\_part, V\_right\_part)));}
+\DoxyCodeLine{1781     \}}
+\DoxyCodeLine{1782     qtt\_SUBCASE(\textcolor{stringliteral}{"{}elementwise multiplication with broadcasting"{}})}
+\DoxyCodeLine{1783     \{}
+\DoxyCodeLine{1784 }
+\DoxyCodeLine{1785         btensor B(\{\{\{2, cqt(0)\}, \{3, cqt(0)\}\}\}, selection\_rule);}
+\DoxyCodeLine{1786         \textcolor{keyword}{auto} B0 = torch::rand(\{2\});}
+\DoxyCodeLine{1787         \textcolor{keyword}{auto} B1 = torch::rand(\{3\});}
+\DoxyCodeLine{1788         B.block(\{0\}) = B0;}
+\DoxyCodeLine{1789         B.block(\{1\}) = B1;}
+\DoxyCodeLine{1790         \textcolor{keyword}{auto} C = A.mul(B);}
+\DoxyCodeLine{1791         qtt\_CHECK(torch::allclose(C.block(\{0, 0\}), A00.mul(B0)));}
+\DoxyCodeLine{1792         qtt\_CHECK(torch::allclose(C.block(\{1, 1\}), A11.mul(B1)));}
+\DoxyCodeLine{1793         C = A.mul(1); \textcolor{comment}{// create an independant copy?}}
+\DoxyCodeLine{1794         qtt\_CHECK(torch::allclose(C.block(\{0, 0\}), A.block(\{0, 0\})));}
+\DoxyCodeLine{1795         qtt\_CHECK(torch::allclose(C.block(\{1, 1\}), A.block(\{1, 1\})));}
+\DoxyCodeLine{1796         C.mul\_(B);}
+\DoxyCodeLine{1797         qtt\_CHECK(torch::allclose(C.block(\{0, 0\}), A00.mul(B0))); \textcolor{comment}{// The numerical result commutes.}}
+\DoxyCodeLine{1798         qtt\_CHECK(}
+\DoxyCodeLine{1799             torch::allclose(C.block(\{1, 1\}), A11.mul(B1))); \textcolor{comment}{// it's the details of the allocation that depends on order}}
+\DoxyCodeLine{1800         qtt\_WARN\_THROWS(B.mul\_(A));                         \textcolor{comment}{// failure on pytorch side.}}
+\DoxyCodeLine{1801     \}}
+\DoxyCodeLine{1802     qtt\_SUBCASE(\textcolor{stringliteral}{"{}Basic index put"{}})}
+\DoxyCodeLine{1803     \{}
+\DoxyCodeLine{1804         btensor B(\{\{\{3, cqt(1)\}, \{4, cqt(4)\}, \{1, cqt(3)\}\},}
+\DoxyCodeLine{1805                    \{\{2, cqt(-\/1)\}, \{4, cqt(1)\}\},}
+\DoxyCodeLine{1806                    \{\{4, cqt(-\/3)\}, \{4, cqt(-\/2)\}, \{2, cqt(0)\}\}\},}
+\DoxyCodeLine{1807                   any\_quantity(cqt(0)));}
+\DoxyCodeLine{1808         btensor C = quantit::rand(\{\{\{3, cqt(1)\}, \{4, cqt(4)\}, \{1, cqt(3)\}\},}
+\DoxyCodeLine{1809                    \{\{4, cqt(-\/3)\}, \{4, cqt(-\/2)\}, \{2, cqt(0)\}\}\},}
+\DoxyCodeLine{1810                   any\_quantity(cqt(1)));}
+\DoxyCodeLine{1811         qtt\_CHECK\_NOTHROW(B.basic\_index\_put\_(\{-\/1,0,-\/1\},C));}
+\DoxyCodeLine{1812     \}}
+\DoxyCodeLine{1813     qtt\_SUBCASE(\textcolor{stringliteral}{"{}batched matrix multiply"{}})}
+\DoxyCodeLine{1814     \{}
+\DoxyCodeLine{1815         \textcolor{comment}{// B and C are compatible}}
+\DoxyCodeLine{1816         btensor B(\{\{\{3, cqt(1)\}, \{4, cqt(4)\}, \{1, cqt(3)\}\},}
+\DoxyCodeLine{1817                    \{\{2, cqt(-\/1)\}, \{4, cqt(1)\}\},}
+\DoxyCodeLine{1818                    \{\{4, cqt(-\/3)\}, \{4, cqt(-\/2)\}, \{2, cqt(0)\}\}\},}
+\DoxyCodeLine{1819                   any\_quantity(cqt(0)));}
+\DoxyCodeLine{1820         btensor C(\{\{\{3, cqt(1)\}, \{4, cqt(2)\}, \{1, cqt(0)\}\},}
+\DoxyCodeLine{1821                    \{\{4, cqt(-\/3).inverse()\}, \{4, cqt(-\/2).inverse()\}, \{2, cqt(0)\}\},}
+\DoxyCodeLine{1822                    \{\{2, cqt(0)\}, \{2, cqt(-\/3)\}, \{2, cqt(-\/2)\}\}\},}
+\DoxyCodeLine{1823                   any\_quantity(cqt(1)));}
+\DoxyCodeLine{1824         \textcolor{keyword}{auto} B002 = torch::rand(\{3, 2, 2\});}
+\DoxyCodeLine{1825         \textcolor{keyword}{auto} B011 = torch::rand(\{3, 4, 4\});}
+\DoxyCodeLine{1826         B.block(\{0, 0, 2\}) = B002;}
+\DoxyCodeLine{1827         B.block(\{0, 1, 1\}) = B011;}
+\DoxyCodeLine{1828         \textcolor{keyword}{auto} C020 = torch::rand(\{3, 2, 2\});}
+\DoxyCodeLine{1829         \textcolor{keyword}{auto} C001 = torch::rand(\{3, 4, 2\});}
+\DoxyCodeLine{1830         \textcolor{keyword}{auto} C012 = torch::rand(\{3, 4, 2\});}
+\DoxyCodeLine{1831         \textcolor{keyword}{auto} C111 = torch::rand(\{4, 4, 2\});}
+\DoxyCodeLine{1832         \textcolor{keyword}{auto} C202 = torch::rand(\{1, 4, 2\});}
+\DoxyCodeLine{1833         C.block(\{0, 2, 0\}) = C020;}
+\DoxyCodeLine{1834         C.block(\{0, 0, 1\}) = C001;}
+\DoxyCodeLine{1835         C.block(\{0, 1, 2\}) = C012;}
+\DoxyCodeLine{1836         C.block(\{1, 1, 1\}) = C111;}
+\DoxyCodeLine{1837         C.block(\{2, 0, 2\}) = C202;}
+\DoxyCodeLine{1838         btensor BC;}
+\DoxyCodeLine{1839         \textcolor{comment}{// D, E, F, G are incompatible with B}}
+\DoxyCodeLine{1840         \textcolor{comment}{// incompatible batch section number}}
+\DoxyCodeLine{1841         btensor D(\{\{\{4, cqt(2)\}, \{1, cqt(0)\}\}, \{\{4, cqt(-\/3)\}, \{4, cqt(-\/2)\}, \{2, cqt(0)\}\}, \{\{2, cqt(0)\}, \{2, cqt(1)\}\}\},}
+\DoxyCodeLine{1842                   any\_quantity(cqt(-\/1)));}
+\DoxyCodeLine{1843         qtt\_CHECK\_THROWS(B.bmm(D));}
+\DoxyCodeLine{1844         \textcolor{comment}{// incompatible batch sizes}}
+\DoxyCodeLine{1845         btensor G(\{\{\{7, cqt(1)\}, \{4, cqt(2)\}, \{1, cqt(0)\}\},}
+\DoxyCodeLine{1846                    \{\{4, cqt(-\/3)\}, \{4, cqt(-\/2)\}, \{2, cqt(0)\}\},}
+\DoxyCodeLine{1847                    \{\{2, cqt(0)\}, \{2, cqt(1)\}\}\},}
+\DoxyCodeLine{1848                   any\_quantity(cqt(-\/1)));}
+\DoxyCodeLine{1849         qtt\_CHECK\_THROWS(B.bmm(G));}
+\DoxyCodeLine{1850         \textcolor{comment}{// incompatible conserved quantities}}
+\DoxyCodeLine{1851         btensor E(\{\{\{3, cqt(1)\}, \{4, cqt(2)\}, \{1, cqt(0)\}\},}
+\DoxyCodeLine{1852                    \{\{4, cqt(-\/3)\}, \{4, cqt(-\/5)\}, \{2, cqt(0)\}\},}
+\DoxyCodeLine{1853                    \{\{2, cqt(0)\}, \{2, cqt(1)\}\}\},}
+\DoxyCodeLine{1854                   any\_quantity(cqt(-\/1)));}
+\DoxyCodeLine{1855         qtt\_CHECK\_THROWS(B.bmm(E));}
+\DoxyCodeLine{1856         \textcolor{comment}{// incompatible matrix sizes}}
+\DoxyCodeLine{1857         btensor F(\{\{\{3, cqt(1)\}, \{4, cqt(2)\}, \{1, cqt(0)\}\},}
+\DoxyCodeLine{1858                    \{\{4, cqt(-\/3)\}, \{6, cqt(-\/2)\}, \{2, cqt(0)\}\},}
+\DoxyCodeLine{1859                    \{\{2, cqt(0)\}, \{2, cqt(1)\}\}\},}
+\DoxyCodeLine{1860                   any\_quantity(cqt(-\/1)));}
+\DoxyCodeLine{1861         qtt\_CHECK\_THROWS(B.bmm(F));}
+\DoxyCodeLine{1862         qtt\_REQUIRE\_NOTHROW(BC = B.bmm(C));}
+\DoxyCodeLine{1863         \textcolor{comment}{// All the (no)throw check are fine.}}
+\DoxyCodeLine{1864         \textcolor{comment}{// remains to test the correctness of BC.}}
+\DoxyCodeLine{1865         \{ \textcolor{comment}{// number of block and their indices.}}
+\DoxyCodeLine{1866             \textcolor{keywordtype}{size\_t} n = 0;}
+\DoxyCodeLine{1867             \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} \&a : BC)}
+\DoxyCodeLine{1868             \{}
+\DoxyCodeLine{1869                 \textcolor{keyword}{auto} \&ind = std::get<0>(a);}
+\DoxyCodeLine{1870                 \textcolor{keywordtype}{bool} ok = ind == std::vector<int64\_t>\{0, 0, 0\} or ind == std::vector<int64\_t>\{0, 1, 2\};}
+\DoxyCodeLine{1871                 qtt\_REQUIRE(ok);}
+\DoxyCodeLine{1872                 ++n;}
+\DoxyCodeLine{1873             \}}
+\DoxyCodeLine{1874             qtt\_REQUIRE(n == 2);}
+\DoxyCodeLine{1875         \}}
+\DoxyCodeLine{1876         qtt\_CHECK(torch::allclose(BC.block\_at(\{0, 0, 0\}), B002.matmul(C020)));}
+\DoxyCodeLine{1877         qtt\_CHECK(torch::allclose(BC.block\_at(\{0, 1, 2\}), B011.matmul(C012)));}
+\DoxyCodeLine{1878 }
+\DoxyCodeLine{1879         \textcolor{keyword}{auto} b = B.basic\_create\_view(\{1, -\/1, -\/1\});}
+\DoxyCodeLine{1880         \textcolor{keyword}{auto} c = C.basic\_create\_view(\{1, -\/1, -\/1\});}
+\DoxyCodeLine{1881         qtt\_REQUIRE(\mbox{\hyperlink{classquantit_1_1btensor_aaba4b107e02154ce231380c1bb844766}{btensor::check\_tensor}}(b) == \textcolor{stringliteral}{"{}"{}});}
+\DoxyCodeLine{1882         qtt\_REQUIRE(\mbox{\hyperlink{classquantit_1_1btensor_aaba4b107e02154ce231380c1bb844766}{btensor::check\_tensor}}(c) == \textcolor{stringliteral}{"{}"{}});}
+\DoxyCodeLine{1883         qtt\_CHECK\_NOTHROW(b.bmm(c));}
+\DoxyCodeLine{1884     \}}
+\DoxyCodeLine{1885 \}}
+\DoxyCodeLine{1886 }
+\DoxyCodeLine{1887 \textcolor{keyword}{class }\mbox{\hyperlink{classquantit_1_1bad__selection__rule}{bad\_selection\_rule}} : \textcolor{keyword}{public} std::invalid\_argument \{\textcolor{keyword}{using} std::invalid\_argument::invalid\_argument;\};}
+\DoxyCodeLine{1888 \textcolor{keyword}{class }\mbox{\hyperlink{classquantit_1_1non__matching__cvals}{non\_matching\_cvals}} : \textcolor{keyword}{public} std::invalid\_argument \{\textcolor{keyword}{using} std::invalid\_argument::invalid\_argument;\};}
+\DoxyCodeLine{1889 \textcolor{keyword}{class }\mbox{\hyperlink{classquantit_1_1non__matching__sizes}{non\_matching\_sizes}} : \textcolor{keyword}{public} std::invalid\_argument \{\textcolor{keyword}{using} std::invalid\_argument::invalid\_argument;\};}
+\DoxyCodeLine{1890 \} \textcolor{comment}{// namespace quantit}}
+\DoxyCodeLine{1891 }
+\DoxyCodeLine{1892 \textcolor{keyword}{template} <>}
+\DoxyCodeLine{1893 \textcolor{keyword}{struct }fmt::formatter<quantit::btensor>}
+\DoxyCodeLine{1894 \{}
+\DoxyCodeLine{1895     \textcolor{keyword}{constexpr} \textcolor{keyword}{auto} parse(format\_parse\_context \&ctx)}
+\DoxyCodeLine{1896     \{}
+\DoxyCodeLine{1897         \textcolor{keyword}{auto} it = ctx.begin(), end = ctx.end();}
+\DoxyCodeLine{1898         \textcolor{keywordflow}{if} (it)}
+\DoxyCodeLine{1899         \{}
+\DoxyCodeLine{1900             \textcolor{keywordflow}{if} (it != end and *it != \textcolor{charliteral}{'\}'})}
+\DoxyCodeLine{1901                 \textcolor{keywordflow}{throw} format\_error(\textcolor{stringliteral}{"{}invalid format, no formatting option for quantit::btensor"{}});}
+\DoxyCodeLine{1902             \textcolor{keywordflow}{if} (*it != \textcolor{charliteral}{'\}'})}
+\DoxyCodeLine{1903                 \textcolor{keywordflow}{throw} format\_error(\textcolor{stringliteral}{"{}invalid format,closing brace missing"{}});}
+\DoxyCodeLine{1904         \}}
+\DoxyCodeLine{1905         \textcolor{comment}{// Return an iterator past the end of the parsed range:}}
+\DoxyCodeLine{1906         \textcolor{keywordflow}{return} it;}
+\DoxyCodeLine{1907     \}}
+\DoxyCodeLine{1908 }
+\DoxyCodeLine{1909     \textcolor{keyword}{template} <\textcolor{keyword}{class} FormatContext>}
+\DoxyCodeLine{1910     \textcolor{keyword}{auto} format(\textcolor{keyword}{const} \mbox{\hyperlink{classquantit_1_1btensor}{quantit::btensor}} \&t, FormatContext \&ctx)\textcolor{keyword}{ const}}
+\DoxyCodeLine{1911 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{1912         \textcolor{keyword}{constexpr} \textcolor{keyword}{auto} btensor\_fmt\_string = \textcolor{stringliteral}{"{}btensor rank \{\}\(\backslash\)n selection rule \{\}\(\backslash\)n number of sections by dim \{\}\(\backslash\)n "{}}}
+\DoxyCodeLine{1913                                             \textcolor{stringliteral}{"{}sections sizes \{\}\(\backslash\)n sections conserved quantity \{\}\(\backslash\)n"{}};}
+\DoxyCodeLine{1914         \textcolor{keyword}{constexpr} \textcolor{keyword}{auto} btensor\_fmt\_blocks = \textcolor{stringliteral}{"{}block at \{\}\(\backslash\)n \{\}\(\backslash\)n"{}};}
+\DoxyCodeLine{1915         \textcolor{keyword}{auto} out = format\_to(ctx.out(), btensor\_fmt\_string, t.rank, t.selection\_rule, t.sections\_by\_dim,}
+\DoxyCodeLine{1916                              t.sections\_sizes, t.c\_vals);}
+\DoxyCodeLine{1917         \textcolor{keywordflow}{for} (\textcolor{keyword}{const} \textcolor{keyword}{auto} \&b : t.blocks\_list)}
+\DoxyCodeLine{1918         \{}
+\DoxyCodeLine{1919             out = format\_to(out, btensor\_fmt\_blocks, b.first, b.second);}
+\DoxyCodeLine{1920         \}}
+\DoxyCodeLine{1921         \textcolor{keywordflow}{return} out;}
+\DoxyCodeLine{1922     \}}
+\DoxyCodeLine{1923 \};}
+\DoxyCodeLine{1924 }
+\DoxyCodeLine{1925 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* D49FFA60\_85C4\_431A\_BA62\_9B1D30D67E86 */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}
