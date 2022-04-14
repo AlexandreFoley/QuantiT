@@ -20,7 +20,7 @@
 #include <fmt/core.h>
 #include <fmt/ranges.h>
 #include <random>
-// TODO: remove all explicit torch:: can ADL be my friend here?
+// TODO: remove all explicit torch:: function call. Can ADL be my friend here?
 namespace quantit
 {
 
@@ -46,13 +46,11 @@ void MPS::move_oc(int i)
 		auto &next_oc = (*this)[orthogonality_center - 1];
 		dims = curr_oc.sizes();
 
-		// TODO: rewrite this to use QuantiT's SVD implementation. takes care of the reshaping
-		// auto reshaped = curr_oc.reshape({dims[0], prod(1, dims.size())});
 		auto [u, d, v] = quantit::svd(curr_oc, 1);
 		curr_oc =
 		    v.permute({2, 0, 1}).conj(); // needs testing. svd documentation makes no mention of complex numbers case.
 		auto ud = u.mul(d);
-		next_oc = torch::tensordot(next_oc, ud, {2}, {0});
+		next_oc = tensordot(next_oc, ud, {2}, {0});
 		--oc;
 	}
 

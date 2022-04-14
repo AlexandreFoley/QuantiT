@@ -1,6 +1,8 @@
 
 
 
+import pathlib as pl
+
 try:
 	from .quantit import *
 except ImportError as e:
@@ -11,7 +13,6 @@ except ImportError as e:
 	# if not "cannot open shared object file: No such file or directory" in e.msg:
 	# 	#if the error message doesn't relate to missing shared object there's no point in doing the rest, so we raise the execption to the importer.
 	# 	raise e
-	import pathlib as pl
 	
 	
 	init_path = pl.Path(__file__).resolve()
@@ -28,4 +29,4 @@ except ImportError as e:
 	from .quantit import *
 
 def cmake_directory():
-	return pl.Path(__file__).resolve().parent / "share" / "cmake"
+	return str(pl.Path(__file__).resolve().parent / "share" / "cmake")

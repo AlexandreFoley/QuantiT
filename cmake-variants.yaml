@@ -22,11 +22,6 @@ buildType:
 torch:
   default: no
   choices:
-    yes:
-      short: libtorch
-      long: use libtorch located in extern/pytorch/torch
-      settings:
-        USE_EXTERN_TORCH: true
     no:
       short: pytorch
       long: use torch library found in the python install

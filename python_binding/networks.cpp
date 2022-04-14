@@ -30,10 +30,22 @@ void common_core(py::class_<S> &pyclass)
 	// interface function from std::vector
 	// reference at(size_t i) { return tensors.at(i); }
 	pyclass.def(
-	    "at", [](S &self, size_t i) { return self.at(i); }, py::return_value_policy::reference_internal);
+	    "at",
+	    [](S &self, int i)
+	    {
+		    i = (i < 0) * self.size() + i;
+		    return self.at(i);
+	    },
+	    py::return_value_policy::reference_internal);
 	// reference operator[](size_t i) { return tensors[i]; }
 	pyclass.def(
-	    "__getitem__", [](S &self, size_t i) { return self[i]; }, py::return_value_policy::reference_internal);
+	    "__getitem__",
+	    [](S &self, int i)
+	    {
+		    i = (i < 0) * self.size() + i;
+		    return self.at(i);
+	    },
+	    py::return_value_policy::reference_internal);
 	pyclass.def("__getitem__",
 	            [](const S &s, const py::slice &slice) -> S *
 	            {
@@ -63,7 +75,12 @@ void common_core(py::class_<S> &pyclass)
 		            }
 	            });
 	pyclass.def(
-	    "__setitem__", [](S &self, size_t i, const typename S::Tens &val) { self[i] = val; },
+	    "__setitem__",
+	    [](S &self, int i, const typename S::Tens &val)
+	    {
+		    i = (i < 0) * self.size() + i;
+		    self.at(i) = val;
+	    },
 	    py::return_value_policy::reference_internal);
 	// reference front() { return tensors.front(); }
 	pyclass.def(
@@ -72,24 +89,24 @@ void common_core(py::class_<S> &pyclass)
 	pyclass.def(
 	    "back", [](S &self) { return self.back(); }, py::return_value_policy::reference_internal);
 	// iterators
-	pyclass.def("__len__", &S::size);
+	pyclass.def("__len__", [](const S &s) { return s.size(); });
 	pyclass.def("__iter__", [](S &obj) { return py::make_iterator(obj.begin(), obj.end()); });
 	// capacity
 	// [[nodiscard]] auto empty() const noexcept { return tensors.empty(); }
-	pyclass.def("empty", &S::empty);
+	pyclass.def("empty", [](const S &s) { return s.empty(); });
 	// [[nodiscard]] auto size() const noexcept { return tensors.size(); }
-	pyclass.def("size", &S::size);
+	pyclass.def("size", [](const S &s) { return s.size(); });
 	// [[nodiscard]] auto max_size() const noexcept { return tensors.max_size(); }
-	pyclass.def("max_size", &S::max_size);
+	pyclass.def("max_size", [](const S &s) { return s.max_size(); });
 	// void reserve(size_t new_cap) { tensors.reserve(new_cap); }
-	pyclass.def("reserve", &S::reserve);
+	pyclass.def("reserve", [](S &s,size_t new_cap) { return s.reserve(new_cap); });
 	// [[nodiscard]] auto capacity() const noexcept { return tensors.capacity(); }
-	pyclass.def("capacity", &S::capacity);
+	pyclass.def("capacity", [](const S &s) { return s.capacity(); });
 	// void shrink_to_fit() { tensors.shrink_to_fit(); }
-	pyclass.def("shrink_to_fit", &S::shrink_to_fit);
+	pyclass.def("shrink_to_fit", [](S &s) { return s.shrink_to_fit(); });
 	// modifiers
 	// void clear() noexcept { tensors.clear(); }
-	pyclass.def("clear", &S::clear);
+	pyclass.def("clear", [](S &s) { return s.clear(); });
 	// iterator insert(const_iterator pos, const Tens &val) { return tensors.insert(pos, val); }
 	// iterator insert(const_iterator pos, Tens &&val) { return tensors.insert(pos, val); }
 	// iterator insert(const_iterator pos, size_type count, Tens &&val) { return tensors.insert(pos, count, val); }
@@ -127,7 +144,7 @@ void common_core(py::class_<S> &pyclass)
 	// void push_back(Tens &&val) { tensors.push_back(val); }
 	pyclass.def("append", [](S &self, const typename S::Tens &tens) { return self.push_back(tens); });
 	// void pop_back() { tensors.pop_back(); }
-	pyclass.def("pop", &S::pop_back);
+	pyclass.def("pop", [](S &s) { return s.pop_back(); });
 	pyclass.def("pop",
 	            [](S &self, size_t index)
 	            {
@@ -267,7 +284,7 @@ void init_networks(py::module &m)
 	//                  unsigned int seed = (std::random_device())(), torch::TensorOptions opt = {});
 	auto bound_randomBMPSA = TOPT_binder<size_t, size_t, const btensor &, any_quantity>::bind_fl(
 	    [](size_t length, size_t bond_dim, const btensor &phys_dim_spec, any_quantity q_num, torch::TensorOptions opt)
-	    { return random_bMPS(length, bond_dim, phys_dim_spec, q_num, opt,std::random_device()()); });
+	    { return random_bMPS(length, bond_dim, phys_dim_spec, q_num, opt, std::random_device()()); });
 	sub.def("random_bMPS", bound_randomBMPSA,
 	        "generate a MPS constrained by a conservation law, with the specified lenght, bond dimensions, and "
 	        "physical index. The physical index is specified by a rank 1 btensor given in argument",
@@ -278,7 +295,7 @@ void init_networks(py::module &m)
 	//                  unsigned int seed = (std::random_device())(), torch::TensorOptions opt = {});
 	auto bound_randomBMPSB = TOPT_binder<size_t, const bMPO &, any_quantity>::bind_fl(
 	    [](size_t bond_dim, const bMPO &OP, any_quantity q_num, torch::TensorOptions opt)
-	    { return random_bMPS(bond_dim, OP, q_num,opt, std::random_device()()); });
+	    { return random_bMPS(bond_dim, OP, q_num, opt, std::random_device()()); });
 	sub.def(
 	    "random_bMPS", bound_randomBMPSB,
 	    "generate a MPS constrained by a conservation law, with the specified bond dimensions. The physical dimensions "
@@ -290,7 +307,7 @@ void init_networks(py::module &m)
 	//                  unsigned int seed = (std::random_device())(), torch::TensorOptions opt = {});
 	auto bound_randomBMPSC = TOPT_binder<size_t, const std::vector<btensor> &, any_quantity>::bind_fl(
 	    [](size_t bond_dim, const std::vector<btensor> &phys_dim_spec, any_quantity q_num, torch::TensorOptions opt)
-	    { return random_bMPS(bond_dim, phys_dim_spec, q_num,opt, std::random_device()()); });
+	    { return random_bMPS(bond_dim, phys_dim_spec, q_num, opt, std::random_device()()); });
 	sub.def("random_bMPS", bound_randomBMPSC,
 	        "generate a MPS constrained by a conservation law, with the specified bond dimensions. The physical "
 	        "dimensions are specifed by a list of rank 1 tensors, the length is the number of tensors in the list",
